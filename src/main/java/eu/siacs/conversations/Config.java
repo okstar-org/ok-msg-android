@@ -56,12 +56,12 @@ public final class Config {
     public static final Jid BUG_REPORTS = Jid.of("support@monocles.de");
     public static final Uri HELP = Uri.parse("https://help.conversations.im");
 
-    public static final String inviteUserURL = "https://" + monocles() + "/i/";
-    public static final String inviteMUCURL = "https://" + monocles() + "/j/";
-    public static final String inviteHostURL = monocles(); // without http(s)
-    public static final String termsOfUseURL = "https://" + monocles() + "/nutzungsbedingungen/";
-    public static final String privacyURL = "https://" + monocles() + "/datenschutz/";
-    public static final String migrationURL = "https://" + monocles() + "/quick-start/migration-Messenger-monocles/";
+    public static final String inviteUserURL = "https://ocean.monocles.de/apps/registration/";
+    public static final String inviteMUCURL = "https://ocean.monocles.de/apps/registration/";
+    public static final String inviteHostURL = "monocles.de"; // without http(s)
+    public static final String termsOfUseURL = "https://" + "monocles.de" + "/impressum/";
+    public static final String privacyURL = "https://" + "monocles.de" + "/impressum/";
+    public static final String migrationURL = "https://" + "monocles.de/howto/";
 
     public static final String CHANGELOG_URL = "https://codeberg.org/Arne/monocles_chat/src/branch/master/CHANGELOG.md";
     public static final String GIT_URL = "https://codeberg.org/Arne/monocles_chat/";
