@@ -985,7 +985,7 @@
     <string name="ask_for_writeaccess">Por favor, pide permiso de escritura</string>
     <string name="pref_theme_blue">Azul</string>
     <string name="pref_theme_orange">Naranja</string>
-    <string name="pref_theme_monocles">monocles_chat</string>
+    <string name="pref_theme_monocles">monocles</string>
     <string name="pref_theme_grey">Gris</string>
     <string name="pref_theme_pink">Rosa</string>
     <string name="pref_theme_black">Negro (AMOLED)</string>
@@ -1078,8 +1078,8 @@
     <string name="n_missed_calls_from_m_contacts">%1$d llamadas perdidas de %2$d contactos</string>
     <string name="pref_invidious_host_summary">Usar un servidor invidious personalizado</string>
     <string name="pref_invidious_host">Servidor invidious</string>
-    <string name="updated_to_monocles">Hemos actualizado con éxito Pix-Art Messenger a monocles_chat\n\nLa cooperación de los dos proyectos monocles_chat y Pix-Art Messenger se amplió en noviembre de 2020. En el futuro, la aplicación de Android Pix-Art Messenger continuará bajo el nombre monocles_chat.\n\nLo que puede esperar:\n- El rango de funciones sigue siendo el mismo\n- Las salas de chat de soporte se fusionan\n- Los colores y logotipos se adaptan a monocles_chat\n- La aplicación aún está disponible gratis en Google Play Store y F-Droid Store\n\nTu equipo de monocles_chat</string>
-    <string name="updated_to_monocles_google">Tenemos que disculparnos porque no pudimos actualizar directamente a monocles_chat. En el siguiente enlace, recibirás instrucciones sobre cómo transferir todos tus perfiles de Pix-Art Messenger a monocles_chat. Al hacer clic en mover datos, intentamos mover todos los archivos enviados y recibidos desde Pix-Art Messenger a monocles_chat. Después de una migración exitosa, recuerda eliminar Pix-Art Messenger de su dispositivo.</string>
+    <string name="updated_to_monocles">Hemos actualizado con éxito Monocles Messenger a monocles chat\n\nLa cooperación de los dos proyectos monocles chat y Pix-Art Messenger se amplió en noviembre de 2020. En el futuro, la aplicación de Android Monocles Messenger continuará bajo el nombre monocles chat.\n\nLo que puede esperar:\n- El rango de funciones sigue siendo el mismo\n- Las salas de chat de soporte se fusionan\n- Los colores y logotipos se adaptan a monocles chat\n- La aplicación aún está disponible gratis en Google Play Store y F-Droid Store\n\nTu equipo de monocles chat</string>
+    <string name="updated_to_monocles_google">Tenemos que disculparnos porque no pudimos actualizar directamente a monocles chat. En el siguiente enlace, recibirás instrucciones sobre cómo transferir todos tus perfiles de Pix-Art Messenger a monocles chat. Al hacer clic en mover datos, intentamos mover todos los archivos enviados y recibidos desde Pix-Art Messenger a monocles chat. Después de una migración exitosa, recuerda eliminar Pix-Art Messenger de su dispositivo.</string>
     <string name="link">Enlace</string>
     <string name="no_application_found">No se encontró aplicación</string>
     <string name="move_data">Mover datos</string>
@@ -1122,7 +1122,7 @@
     <string name="memory_warning_force">Tu aplicación está usando %1$s (%2$s) de memoria interna.\n\nDeberías habilitar el borrado automático de adjuntos o borrar manualmente los medios almacenados. ¡Tu dispositivo se quedará sin memoria!</string>
     <string name="open_settings">Abrir configuraciones</string>
     <string name="oldAndroidVersion">Versión antigua de Android</string>
-    <string name="oldAndroidVersionMessage">Estás usando una versión de Android antigua que no será soportada en futuras actualizaciones. A partir de la versión 3.1.0 de monocles_chat solo tendrán soporte los dispositivos con Android 5 o superior. Por favor actualiza el firmware de tu dispositivo.</string>
+    <string name="oldAndroidVersionMessage">Estás usando una versión de Android antigua que no será soportada en futuras actualizaciones. A partir de la versión 1.0 de monocles chat solo tendrán soporte los dispositivos con Android 5 o superior. Por favor actualiza el firmware de tu dispositivo.</string>
     <string name="save_x_file">Guardar %s</string>
     <string name="file_copied_to">Fichero copiado a %s</string>
     <string name="use_individual_notifications">Usar notificaciones individuales</string>

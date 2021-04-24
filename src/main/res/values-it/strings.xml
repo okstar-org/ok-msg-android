@@ -93,7 +93,7 @@
     <string name="offering">offrendo…</string>
     <string name="waiting">in attesa…</string>
     <string name="no_pgp_key">Nessuna chiave OpenPGP trovata</string>
-    <string name="contact_has_no_pgp_key">monocles_chat non è in grado di cifrare i tuoi messaggi perché il contatto non sta annunciando la sua chiave pubblica.\n\n<small>Per favore chiedi al tuo contatto di configurare OpenPGP.</small></string>
+    <string name="contact_has_no_pgp_key">monocles chat non è in grado di cifrare i tuoi messaggi perché il contatto non sta annunciando la sua chiave pubblica.\n\n<small>Per favore chiedi al tuo contatto di configurare OpenPGP.</small></string>
     <string name="no_pgp_keys">Nessuna chiave OpenPGP trovata</string>
     <string name="pref_general">Generale</string>
     <string name="pref_accept_files_wifi">Accetta files con connessioni WiFi</string>
@@ -111,7 +111,7 @@
     <string name="pref_sound">Suono di notifica</string>
     <string name="pref_sound_summary">Esegui un suono quando arriva un nuovo messaggio</string>
     <string name="pref_send_crash">Invia riepiloghi dei problemi</string>
-    <string name="pref_send_crash_summary">Inviando queste tracce aiuti lo sviluppo di monocles_chat</string>
+    <string name="pref_send_crash_summary">Inviando queste tracce aiuti lo sviluppo di monocles chat</string>
     <string name="pref_confirm_messages">Conferma messaggi</string>
     <string name="pref_confirm_messages_summary">Fai sapere ai tuoi contatti quando hai ricevuto e letto i loro messaggi</string>
     <string name="pref_ui_options">Interfaccia utente</string>
@@ -436,7 +436,7 @@
     <string name="pref_away_when_screen_off">Non disponibile quando il dispositivo è bloccato</string>
     <string name="pref_away_when_screen_off_summary">Imposta la tua risorsa come non disponibile quando il dispositivo è bloccato</string>
     <string name="pref_dnd_on_silent_mode">\"Non disturbare\" in modalità silenziosa</string>
-    <string name="update_info">monocles_chat sta scaricando e installando la nuova versione automaticamente.\n\nAttendere prego…</string>
+    <string name="update_info">monocles chat sta scaricando e installando la nuova versione automaticamente.\n\nAttendere prego…</string>
     <string name="pref_dnd_on_silent_mode_summary">Segna la tua risorsa come \"Non disturbare\" quando il dispositivo è in modalità silenziosa</string>
     <string name="pref_treat_vibrate_as_silent">Tratta vibrazione come modalità silenziosa</string>
     <string name="pref_treat_vibrate_as_dnd_summary">Segna la tua risorsa come \"Non disturbare\" quando il dispositivo ha solo la vibrazione</string>
@@ -468,9 +468,9 @@
         <item quantity="other">%d messaggi</item>
     </plurals>
     <string name="load_more_messages">Carica altri messaggi</string>
-    <string name="no_storage_permission">monocles_chat richiede il permesso di archiviazione</string>
+    <string name="no_storage_permission">monocles chat richiede il permesso di archiviazione</string>
     <string name="sync_with_contacts">Sincronizza con i contatti</string>
-    <string name="sync_with_contacts_long">monocles_chat vuole confrontare il tuo roster XMPP con i tuoi contatti per mostrare i loro nomi e le immagini di profilo.\n\nmonocles_chat leggerà solamente i contatti e li confronterà localmente senza caricarli sul server.\n\nTi verrà ora chiesto il permesso di accedere ai tuoi contatti.</string>
+    <string name="sync_with_contacts_long">monocles chat vuole confrontare il tuo roster XMPP con i tuoi contatti per mostrare i loro nomi e le immagini di profilo.\n\nmonocles chat leggerà solamente i contatti e li confronterà localmente senza caricarli sul server.\n\nTi verrà ora chiesto il permesso di accedere ai tuoi contatti.</string>
     <string name="notify_on_all_messages">Notifica per tutti i messaggi</string>
     <string name="notify_only_when_highlighted">Notifica solo quando menzionato</string>
     <string name="notify_never">Notifiche disabilitate</string>
@@ -487,8 +487,8 @@
     <string name="always">Sempre</string>
     <string name="always_off">Sempre disattivato</string>
     <string name="battery_optimizations_enabled">Ottimizzazioni batteria abilitate</string>
-    <string name="battery_optimizations_enabled_explained">Il tuo dispositivo sta facendo delle ingenti ottimizzazioni della batteria per monocles_chat che potrebbero portare ritardi alle notifiche o anche perdita di messaggi.\nSi consiglia di disabilitarle.</string>
-    <string name="battery_optimizations_enabled_dialog">Il dispositivo sta facendo alcune pesanti ottimizzazioni di batteria su monocles_chat che potrebbero portare a ritardi nelle notifiche o anche a perdite di messaggi.\n\nOra ti verrà chiesto di disabilitare queste ottimizzazioni.</string>
+    <string name="battery_optimizations_enabled_explained">Il tuo dispositivo sta facendo delle ingenti ottimizzazioni della batteria per monocles chat che potrebbero portare ritardi alle notifiche o anche perdita di messaggi.\nSi consiglia di disabilitarle.</string>
+    <string name="battery_optimizations_enabled_dialog">Il dispositivo sta facendo alcune pesanti ottimizzazioni di batteria su monocles chat che potrebbero portare a ritardi nelle notifiche o anche a perdite di messaggi.\n\nOra ti verrà chiesto di disabilitare queste ottimizzazioni.</string>
     <string name="install_from_unknown_sources_disabled">L\'installazione da sorgenti sconosciute è disabilitata</string>
     <string name="install_from_unknown_sources_disabled_dialog">Il tuo dispositivo è configurato per non consentire installazioni da origini sconosciute ad eccezione di Google PlayStorr. Questo può causare problemi con il nostro servizio di aggiornamento.\n\nOra ti sarà chiesto di consentire l\'installazione da origini sconosciute.</string>
     <string name="disable">Disabilita</string>
@@ -500,7 +500,7 @@
     <string name="correct_message">Correggi messaggio</string>
     <string name="send_corrected_message">Invia messaggio corretto</string>
     <string name="no_keys_just_confirm">Ti fidi già di questo contatto. Selezionando \'fatto\' stai solo confermando che %s fa parte di questa conversazione di gruppo.</string>
-    <string name="contacts_have_no_pgp_keys">monocles_chat non è in grado di criptare i tuoi messaggi perchè i tuoi contatti non stanno annunciando le loro chiavi pubbliche.\n\n</string>
+    <string name="contacts_have_no_pgp_keys">monocles chat non è in grado di criptare i tuoi messaggi perchè i tuoi contatti non stanno annunciando le loro chiavi pubbliche.\n\n</string>
     <string name="this_account_is_disabled">Hai disabilitato questo account</string>
     <string name="no_application_to_share_uri">Nessuna applicazione trovata per condividere l\'URI</string>
     <string name="share_uri_with">Condividi l\'URI con...</string>
@@ -536,9 +536,9 @@
     <string name="import_database">Importa backup</string>
     <string name="invite_again">Invita di nuovo</string>
     <string name="inviteUser_Subject">ti ha invitato via</string>
-    <string name="InviteText">Ciao,\n\nl\'utente %s ti ha invitato/a su monocles_chat. Premi il seguente collegamento…</string>
+    <string name="InviteText">Ciao,\n\nl\'utente %s ti ha invitato/a su monocles chat. Premi il seguente collegamento…</string>
     <string name="pref_broadcast_last_activity">Trasmetti ultima interazione utente</string>
-    <string name="pref_broadcast_last_activity_summary">Fai sapere a tutti i tuoi contatti quando usi monocles_chat</string>
+    <string name="pref_broadcast_last_activity_summary">Fai sapere a tutti i tuoi contatti quando usi monocles chat</string>
     <string name="request_permissions_message">monocles_chat ti chiederà di concedere solo poche autorizzazioni. È importante che tu permetta tutte queste richieste per utilizzare tutte le funzionalità di questa app. Se neghi alcune di queste l\'app si chiuderà da sola.</string>
     <string name="request_permissions_message_again">Hai negato alcune o tutte le autorizzazioni richieste da monocles_chat. Vuoi andare nelle impostazioni e concedere questi permessi? Se neghi qualsiasi di queste autorizzazioni, l\'app si chiuderà da sola.</string>
     <string name="unable_to_connect_to_keychain">Impossibile connettersi a OpenKeychain</string>

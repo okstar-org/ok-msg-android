@@ -30,15 +30,15 @@
     <bool name="btbv">true</bool>
     <bool name="send_button_status">true</bool>
     <bool name="display_enter_key">false</bool>
-    <bool name="show_dynamic_tags">false</bool>
+    <bool name="show_dynamic_tags">true</bool>
     <bool name="presence_colored_names">false</bool>
     <bool name="use_max_brightness">false</bool>
     <bool name="auto_rotate">false</bool>
     <bool name="send_crashreport">true</bool>
     <bool name="use_invidious">false</bool>
-    <string name="invidious_host">invidious.snopyta.org</string>
+    <string name="invidious_host">monocles.live</string>
     <bool name="plain_text_logs">false</bool>
-    <bool name="validate_hostname">false</bool>
+    <bool name="validate_hostname">true</bool>
     <bool name="show_foreground_service">true</bool>
     <bool name="warn_unencrypted_chat">true</bool>
     <bool name="hide_you_are_not_participating">false</bool>
@@ -56,7 +56,7 @@
     <bool name="prefer_xmpp_avatar">true</bool>
     <bool name="show_links_inside">true</bool>
     <bool name="show_maps_inside">true</bool>
-    <string name="mappreview_url">https://monocles_chat/staticmap/staticmap.php</string>
+    <string name="mappreview_url">https://blabber.im/staticmap/staticmap.php</string>
     <bool name="use_internal_updater">true</bool>
     <bool name="show_own_accounts">true</bool>
     <bool name="vibrate_in_chat">true</bool>
@@ -212,14 +212,14 @@
         <item>chat.hipchat.com</item>
         <item>googlemail.com</item>
         <item>nsa.li</item>
-        <item>monocles_chat</item>
+        <item>monocles.de</item>
         <item>buzon.uy</item>
         <item>chapril.org</item>
     </string-array>
 
     <string-array name="support_domains">
         <item>pix-art.de</item>
-        <item>monocles_chat</item>
+        <item>monocles.de</item>
         <item>jabber.de</item>
         <item>dismail.de</item>
         <item>draugr.de</item>
@@ -232,7 +232,7 @@
 
     <string-array name="support_site">
         <item>https://jabber.pix-art.de/impressum/</item>
-        <item>https://monocles_chat/en/kontakt/</item>
+        <item>https://monocles.de/howto/</item>
         <item>https://www.jabber.de/support/</item>
         <item>https://dismail.de/contact.html</item>
         <item>https://www.draugr.de/kontakt/</item>

@@ -59,8 +59,8 @@
     <string name="unblock">Engeli kaldır</string>
     <string name="save">Kaydet</string>
     <string name="ok">Tamam</string>
-    <string name="crash_report_title">monocles_chat hata verdi</string>
-    <string name="crash_report_message">Hata raporlarını göndererek monocles_chat\'in devam eden geliştirmesine yardımcı oluyorsunuz.\n<b>Uyarı:</b> Geliştiriciye hata raporlarını göndermek için XMPP hesabınız kullanılacak.</string>
+    <string name="crash_report_title">monocles chat hata verdi</string>
+    <string name="crash_report_message">Hata raporlarını göndererek monocles chat\'in devam eden geliştirmesine yardımcı oluyorsunuz.\n<b>Uyarı:</b> Geliştiriciye hata raporlarını göndermek için XMPP hesabınız kullanılacak.</string>
     <string name="send_now">Şimdi Gönder</string>
     <string name="send_never">Bir daha sorma</string>
     <string name="problem_connecting_to_account">Sunucuya bağlanılamıyor</string>
@@ -90,7 +90,7 @@
     <string name="offering">teklif yapılıyor…</string>
     <string name="waiting">Bekleniyor…</string>
     <string name="no_pgp_key">Hiç OpenPGP anahtarı bulunamadı</string>
-    <string name="contact_has_no_pgp_key">monocles_chat mesajlarınızı şifreleyemiyor çünkü kişi sizin veya kendisinin açık anahtarını paylaşmıyor.\n\n<small>Lütfen kişiden OpenPGP\'yi kurmasını isteyin.</small></string>
+    <string name="contact_has_no_pgp_key">monocles chat mesajlarınızı şifreleyemiyor çünkü kişi sizin veya kendisinin açık anahtarını paylaşmıyor.\n\n<small>Lütfen kişiden OpenPGP\'yi kurmasını isteyin.</small></string>
     <string name="no_pgp_keys">OpenPGP anahtarları bulunamadı</string>
     <string name="pref_general">Genel</string>
     <string name="pref_accept_files_wifi">WiFi bağlantılarındaki dosyaları kabul et</string>
@@ -108,7 +108,7 @@
     <string name="pref_sound">Zil sesi</string>
     <string name="pref_sound_summary">Yeni bir mesaj geldiği zaman ses çıkar</string>
     <string name="pref_send_crash">Kilitlenme raporlarını gönderin</string>
-    <string name="pref_send_crash_summary">Hata raporları göndererek monocles_chat\'in devam etmekte olan gelişimine yardım ediyorsunuz</string>
+    <string name="pref_send_crash_summary">Hata raporları göndererek monocles chat\'in devam etmekte olan gelişimine yardım ediyorsunuz</string>
     <string name="pref_confirm_messages">Mesajları Onayla</string>
     <string name="pref_confirm_messages_summary">Kişilerinize mesajlarınızı ne zaman aldığınızı ve okuduğunuzu bilmelerini sağlayın</string>
     <string name="pref_ui_options">Arayüz</string>

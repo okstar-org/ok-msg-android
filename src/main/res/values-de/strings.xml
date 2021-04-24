@@ -774,14 +774,14 @@
     <string name="conference_destroyed">Dieser Gruppenchat wurde aufgelöst</string>
     <string name="no_application_found_to_view_contact">Keine Anwendung zum Anzeigen von Kontakten gefunden</string>
     <string name="welcome_server_info">Wir empfehlen dir monocles chat als Provider.</string>
-    <string name="no_location_permission">monocles_chat benötigt Zugriff auf die Standortdienste</string>
+    <string name="no_location_permission">monocles chat benötigt Zugriff auf die Standortdienste</string>
     <string name="pref_show_record_voice_btn_summary">Zeige Sprachaufnahme-Taste als Schnell-Taste in den Chats</string>
     <string name="pref_show_record_voice_btn">Zeige Sprachaufnahme-Taste</string>
     <string name="pref_use_quick_share_attachment_choice_summary">Ersetze Absende-Knopf durch Anlagen-Auswahl, wenn keine Nachricht eingetippt wurde. Andernfalls zeige Schnell-Tasten, welche in der folgenden Einstellung konfiguriert werden können.</string>
     <string name="pref_quick_share_attachment_choice">Anlagen-Auswahl</string>
     <string name="unable_to_save_recording">Aufnahme kann nicht gespeichert werden</string>
     <string name="foreground_service_channel_name">Vordergrunddienst</string>
-    <string name="foreground_service_channel_description">Diese Benachrichtigungskategorie zeigt eine Benachrichtigung, wenn monocles_chat ausgeführt wird.</string>
+    <string name="foreground_service_channel_description">Diese Benachrichtigungskategorie zeigt eine Benachrichtigung, wenn monocles chat ausgeführt wird.</string>
     <string name="notification_group_status_information">Statusinformation</string>
     <string name="error_channel_name">Verbindungsprobleme</string>
     <string name="error_channel_description">Diese Benachrichtigungskategorie zeigt eine Benachrichtigung, wenn ein Verbindungsproblem besteht.</string>
@@ -833,7 +833,7 @@
     <string name="open_with">Öffnen mit…</string>
     <string name="server_info_adhoc_invite">XEP-0050: Ad-Hoc Commands: Benutzer einladen</string>
     <string name="choose_account">Profil wählen</string>
-    <string name="set_profile_picture">monocles_chat Profilbild</string>
+    <string name="set_profile_picture">monocles chat Profilbild</string>
     <string name="restore_backup">Sicherung wiederherstellen</string>
     <string name="restore">Wiederherstellen</string>
     <string name="enter_password_to_restore">Um die Sicherung wiederherzustellen, gib für das Profil %s dein Kennwort ein.</string>
@@ -897,7 +897,7 @@
     <string name="password_forgotten_title">Passwort vergessen</string>
     <string name="password_forgotten_text">Du hast dein Passwort vergessen? Wir versuchen, die Support-Website deines Providers zu öffnen.</string>
     <string name="set_settings_intro">Hier kannst du einige wichtige Einstellungen zur Privatsphäre nach deinen Wünschen vornehmen. Alle Änderungen können auch später angepasst werden.</string>
-    <string name="pref_show_mappreview_inside_summary">Zeige eine Vorschau von Standorten direkt im Chat, dabei wird eine Verbindung zum monocles_chat-Server hergestellt.</string>
+    <string name="pref_show_mappreview_inside_summary">Zeige eine Vorschau von Standorten direkt im Chat, dabei wird eine Verbindung zum monocles chat-Server hergestellt.</string>
     <string name="pref_show_mappreview_inside">Zeige Karten-Vorschau im Chat</string>
     <string name="pref_use_internal_updater_summary">Lasse den Messenger einmal am Tag nach einer neuen Version suchen</string>
     <string name="pref_use_internal_updater">Nach Updates suchen</string>

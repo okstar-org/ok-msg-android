@@ -61,8 +61,8 @@
     <string name="unblock">Débloquer</string>
     <string name="save">Enregistrer</string>
     <string name="ok">OK</string>
-    <string name="crash_report_title">monocles_chat s\'est planté</string>
-    <string name="crash_report_message">En envoyant des informations de débogage, vous aidez au développement en cours de monocles_chat\n<b>Attention :</b> Votre compte XMPP sera utilisé pour envoyer les logs aux développeurs.</string>
+    <string name="crash_report_title">monocles chat s\'est planté</string>
+    <string name="crash_report_message">En envoyant des informations de débogage, vous aidez au développement en cours de monocles chat\n<b>Attention :</b> Votre compte XMPP sera utilisé pour envoyer les logs aux développeurs.</string>
     <string name="send_now">Envoyer</string>
     <string name="send_never">Ne plus demander</string>
     <string name="problem_connecting_to_account">Impossible de se connecter au compte.</string>

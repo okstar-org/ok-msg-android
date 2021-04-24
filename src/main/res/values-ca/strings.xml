@@ -61,8 +61,8 @@
     <string name="unblock">Desbloquejar</string>
     <string name="save">Guardar</string>
     <string name="ok">Acceptar</string>
-    <string name="crash_report_title">monocles_chat s\'ha tancat inesperadament</string>
-    <string name="crash_report_message">En enviar les traces de pila estàs ajudant al desenvolupament continu de monocles_chat\n<b>Advertiment</b> Això utilitzarà el seu compte XMPP per a enviar el seguiment de la pila al desenvolupador.</string>
+    <string name="crash_report_title">monocles chat s\'ha tancat inesperadament</string>
+    <string name="crash_report_message">En enviar les traces de pila estàs ajudant al desenvolupament continu de monocles chat\n<b>Advertiment</b> Això utilitzarà el seu compte XMPP per a enviar el seguiment de la pila al desenvolupador.</string>
     <string name="send_now">Enviar ara</string>
     <string name="send_never">No preguntar de nou</string>
     <string name="problem_connecting_to_account">No s\'ha pogut connectar a el compte</string>
@@ -93,7 +93,7 @@
     <string name="offering">Oferint…</string>
     <string name="waiting">Esperant…</string>
     <string name="no_pgp_key">Clau OpenPGP no localitzada</string>
-    <string name="contact_has_no_pgp_key">monocles_chat no pot xifrar els teus missatges perquè el teu contacte no anuncia la seva clau pública.\n\n<small>Demani al seu contacte que configuri OpenPGP.</small></string>
+    <string name="contact_has_no_pgp_key">monocles chat no pot xifrar els teus missatges perquè el teu contacte no anuncia la seva clau pública.\n\n<small>Demani al seu contacte que configuri OpenPGP.</small></string>
     <string name="no_pgp_keys">Claus OpenPGP no trobades</string>
     <string name="pref_general">General</string>
     <string name="pref_accept_files_wifi">Acceptar arxius en connexions WiFi</string>
@@ -111,7 +111,7 @@
     <string name="pref_sound">To</string>
     <string name="pref_sound_summary">Reprodueix el sol quan arribi un missatge nou</string>
     <string name="pref_send_crash">Enviar informes d\'errors</string>
-    <string name="pref_send_crash_summary">Enviant els stack tracis estàs ajudant al desenvolupament continu de monocles_chat</string>
+    <string name="pref_send_crash_summary">Enviant els stack tracis estàs ajudant al desenvolupament continu de monocles chat</string>
     <string name="pref_confirm_messages">Confirmar missatges</string>
     <string name="pref_confirm_messages_summary">Permetre als teus contactes saber quan has rebut i llegit els seus missatges</string>
     <string name="pref_ui_options">Ui</string>
@@ -436,7 +436,7 @@
     <string name="pref_away_when_screen_off">Absent quan el dispositiu està bloquejat</string>
     <string name="pref_away_when_screen_off_summary">Canviar el teu estat a absent el dispositiu està bloquejat</string>
     <string name="pref_dnd_on_silent_mode">\"No molestar\" en mode silenci</string>
-    <string name="update_info">monocles_chat està descarregant i instal·lant la nova versió automàticament.\n\nSi us plau, esperi…</string>
+    <string name="update_info">monocles chat està descarregant i instal·lant la nova versió automàticament.\n\nSi us plau, esperi…</string>
     <string name="pref_dnd_on_silent_mode_summary">Canvia el teu estat a \"no molestar\" quan el dispositiu està en mode silenci</string>
     <string name="pref_treat_vibrate_as_silent">Mode vibració como a mode silenci</string>
     <string name="pref_treat_vibrate_as_dnd_summary">Canvia el teu estat a \"no molestar\" quan el dispositiu està en mode vibració</string>

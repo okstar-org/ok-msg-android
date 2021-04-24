@@ -56,7 +56,7 @@
 * a lot UI improvements (monocles chat)
 * show backups from other chats (monocles chat)
 * customize notifications for each contact/channel > Android O (monocles chat)
-* automatically remove URL tracking parameters for sent/received links (monocles_chat)
+* automatically remove URL tracking parameters for sent/received links (monocles chat)
 * search individual conversations
 * notify user if message delivery fails
 * remember display names (nicks) from Quicksy users across restarts
@@ -70,17 +70,17 @@
 * fix crash on PlayStore version  
 
 #### Version 2.5.1
-* rework lastseen and don't show offline as online (monocles_chat)
-* improve video quality a bit (monocles_chat)
-* add ability to reject all contact requests via long press (monocles_chat)
-* colorize pinned chats (monocles_chat)
+* rework lastseen and don't show offline as online (monocles chat)
+* improve video quality a bit (monocles chat)
+* add ability to reject all contact requests via long press (monocles chat)
+* colorize pinned chats (monocles chat)
 * add 'Return to chat' to audio call screen
 * improve keyboard shortcuts
 * improve performance for backup restore
 * bug fixes
 
 #### Version 2.5.0
-* remove OTR encryption (monocles_chat)
+* remove OTR encryption (monocles chat)
 * show help button if A/V call fails
 * fixed some annoying crashes
 * fixed Jingle connections (file transfer + calls) with bare JIDs
@@ -96,8 +96,8 @@
 * reduce echo during calls on some devices
 * fix login when passwords contains special characters
 * play dial and busy tones on speaker during video calls
-* move channel discovery choice to ChannelDiscoveryActivity menu (monocles_chat)
-* colorize accept/dismiss actions in call notification (monocles_chat)
+* move channel discovery choice to ChannelDiscoveryActivity menu (monocles chat)
+* colorize accept/dismiss actions in call notification (monocles chat)
 * don't end call on pressing back key (monocles_chat)
 * show used account for calls (monocles_chat)
 * notify on missed calls (monocles_chat)
