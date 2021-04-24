@@ -1,4 +1,4 @@
-package de.monocles.messenger.ui;
+package de.monocles.chat.ui;
 
 import android.Manifest;
 import android.content.Context;

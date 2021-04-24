@@ -1,6 +1,6 @@
 -dontobfuscate
 
--keep class de.monocles.messenger.**
+-keep class de.monocles.chat.**
 -keep class eu.siacs.conversations.**
 -keep class org.whispersystems.**
 -keep class com.kyleduo.switchbutton.Configuration

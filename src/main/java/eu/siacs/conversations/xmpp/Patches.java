@@ -11,8 +11,6 @@ public class Patches {
             XmppConnection.Identity.SLACK
     );
     public static final List<String> ENCRYPTION_EXCEPTIONS = Arrays.asList(
-            "bugs@pix-art.de",
-            "bugs@monocles_messenger"
-
+            "support@monocles.de"
     );
 }

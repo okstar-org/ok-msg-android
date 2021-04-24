@@ -2,7 +2,7 @@
 * properly verify punycode TLS certificates
 * improve stability of RTP session establishment (calling)
 * verify A/V calls with preexisting OMEMO sessions
-* add memory management in attachment settings (monocles_messenger)
-* add setting to delete files older than x days (monocles_messenger)
-* show message on devices with Android 4 that they are outdated (monocles_messenger)
+* add memory management in attachment settings (monocles chat)
+* add setting to delete files older than x days (monocles chat)
+* show message on devices with Android 4 that they are outdated (monocles chat)
 * bug fixes

@@ -45,15 +45,15 @@ public final class Config {
 
     public static String monocles() {
         if (Locale.getDefault().getLanguage().equalsIgnoreCase("de")) {
-            return "monocles_messenger";
+            return "monocles chat";
         } else {
-            return "monocles_messenger/en";
+            return "monocles chat/en";
         }
     }
 
     public static final String LOGTAG = BuildConfig.LOGTAG;
 
-    public static final Jid BUG_REPORTS = Jid.of("bugs@monocles_messenger");
+    public static final Jid BUG_REPORTS = Jid.of("support@monocles.de");
     public static final Uri HELP = Uri.parse("https://help.conversations.im");
 
     public static final String inviteUserURL = "https://" + monocles() + "/i/";
@@ -61,15 +61,15 @@ public final class Config {
     public static final String inviteHostURL = monocles(); // without http(s)
     public static final String termsOfUseURL = "https://" + monocles() + "/nutzungsbedingungen/";
     public static final String privacyURL = "https://" + monocles() + "/datenschutz/";
-    public static final String migrationURL = "https://" + monocles() + "/quick-start/migration-pixart-monocles/";
+    public static final String migrationURL = "https://" + monocles() + "/quick-start/migration-Messenger-monocles/";
 
-    public static final String CHANGELOG_URL = "https://codeberg.org/kriztan/monocles_messenger/src/branch/master/CHANGELOG.md";
-    public static final String GIT_URL = "https://codeberg.org/kriztan/monocles_messenger/";
+    public static final String CHANGELOG_URL = "https://codeberg.org/Arne/monocles_chat/src/branch/master/CHANGELOG.md";
+    public static final String GIT_URL = "https://codeberg.org/Arne/monocles_chat/";
 
     public static final String XMPP_IP = null; //BuildConfig.XMPP_IP; // set to null means disable
     public static final Integer[] XMPP_Ports = null; //BuildConfig.XMPP_Ports; // set to null means disable
     public static final String DOMAIN_LOCK = BuildConfig.DOMAIN_LOCK; //only allow account creation for this domain
-    public static final String MAGIC_CREATE_DOMAIN = BuildConfig.MAGIC_CREATE_DOMAIN; //"monocles_messenger";
+    public static final String MAGIC_CREATE_DOMAIN = BuildConfig.MAGIC_CREATE_DOMAIN; //"monocles.de";
     public static final String QUICKSY_DOMAIN = "quicksy.im";
     public static final String CHANNEL_DISCOVERY = "https://search.jabber.network";
     public static final boolean DISALLOW_REGISTRATION_IN_UI = false; //hide the register checkbox
@@ -170,7 +170,7 @@ public final class Config {
     public static final String UPDATE_URL = BuildConfig.UPDATE_URL;
     public static final long UPDATE_CHECK_TIMER = 24 * 60 * 60; // 24 h in seconds
 
-    public static final String ISSUE_URL = "xmpp://monocles@conference.monocles_messenger?join";
+    public static final String ISSUE_URL = "xmpp://support@conference.monocles.de?join";
 
     public static final String[] ENABLED_CIPHERS = {
             "TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256",

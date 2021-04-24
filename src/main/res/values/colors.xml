@@ -8,7 +8,7 @@
     <color name="accent_light_disabled">#1a000000</color> <!-- light blue accent for disabled accounts-->
 
     <!-- monocles theme -->
-    <color name="primary_monocles">#ff363839</color>
+    <color name="primary_monocles">#7188C3</color>
     <color name="primary_dark_monocles">#ff3e5ea2</color>
     <color name="accent_monocles">#ff7189c5</color>
     <color name="accent_light_monocles">#1aff9843</color>

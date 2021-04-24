@@ -1,8 +1,8 @@
-monocles_messenger is a fork of <a href="https://f-droid.org/packages/eu.siacs.conversations/">Conversations</a> with some changes,
+monocles chat is a fork of balbber.im and <a href="https://f-droid.org/packages/eu.siacs.conversations/">Conversations</a> with some changes,
 to improve usability.
 
 Connection security and the protection of personal data are very important for
-us, so we enforce encrypted connections between messenger and server, making it
+us, so we enforce encrypted connections between chat and server, making it
 almost impossible to intercept and read your messages by strangers.
 If that's not enough for you, end-to-end message encryption such as OMEMO
 or OpenPGP can be used. This allows messages to be encrypted on the sending
@@ -22,4 +22,4 @@ Features:
 * Status messages
 * Daily backup of database to local storage
 
-You need help? Please join our support group chat <a href="https://monocles_messenger/en/j/monocles/conference.monocles_messenger">monocles@conference.monocles_messenger</a>.
+You need help? Please join our support group chat <a href="https://interact.monocles.de/">support@conference.monocles.de</a>.

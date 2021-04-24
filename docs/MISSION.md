@@ -1,6 +1,6 @@
-Conversations is a messenger for the next decade. Based on already established
+Conversations is a chat for the next decade. Based on already established
 internet standards that have been around for over ten years Conversations isn’t
-trying to replace current commercial messengers. It will simply outlive them.
+trying to replace current commercial chats. It will simply outlive them.
 Commercial, closed source products are coming and going. 15 years ago we had ICQ
 which was replaced by Skype. MySpace was replaced by Facebook. WhatsApp and
 Hangouts will disappear soon. Internet standards however stick around. People

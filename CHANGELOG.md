@@ -4,14 +4,14 @@
 * bug fixes for PlayStore version
 
 #### Version 3.0.6
-* show message in chat, during video transcoding (monocles_messenger)
+* show message in chat, during video transcoding (monocles chat)
 * Fixed 'No Connectivity' issues on Android 7.1
 * bug fixes
 
 #### Version 3.0.5
 * improve compatibility with non libwebrtc WebRTC implementations
-* improve memory management (monocles_messenger)
-* ui improvements (monocles_messenger)
+* improve memory management (monocles chat)
+* ui improvements (monocles chat)
 * fix HTTP up/download for users that don’t trust system CAs
 * various bug fixes around Tor support
 * improve call compatibility with Dino
@@ -22,17 +22,17 @@
 * properly verify punycode TLS certificates
 * improve stability of RTP session establishment (calling)
 * verify A/V calls with preexisting OMEMO sessions
-* add memory management in attachment settings (monocles_messenger)
-* add setting to delete files older than x days (monocles_messenger)
-* show message on devices with Android 4 that they are outdated (monocles_messenger)
+* add memory management in attachment settings (monocles chat)
+* add setting to delete files older than x days (monocles chat)
+* show message on devices with Android 4 that they are outdated (monocles chat)
 * bug fixes
 
 #### Version 3.0.3
 
-* add custom tabs (monocles_messenger)
-* show video/gif duration in preview (monocles_messenger)
-* auto download all attachments (monocles_messenger)
-* show notification on muc invites as private messages (monocles_messenger)
+* add custom tabs (monocles chat)
+* show video/gif duration in preview (monocles chat)
+* auto download all attachments (monocles chat)
+* show notification on muc invites as private messages (monocles chat)
 * offer Easy Invite generation on supporting servers
 * display GIFs send from Movim
 * store avatars in cache
@@ -51,12 +51,12 @@
 
 #### Version 3.0.1
 #### Version 3.0.0
-* Pix-Art Messenger is now monocles_messenger
-* rework missed call notifications (monocles_messenger)
-* a lot UI improvements (monocles_messenger)
-* show backups from other messengers (monocles_messenger)
-* customize notifications for each contact/channel > Android O (monocles_messenger)
-* automatically remove URL tracking parameters for sent/received links (monocles_messenger)
+* Pix-Art Messenger is now monocles chat
+* rework missed call notifications (monocles chat)
+* a lot UI improvements (monocles chat)
+* show backups from other chats (monocles chat)
+* customize notifications for each contact/channel > Android O (monocles chat)
+* automatically remove URL tracking parameters for sent/received links (monocles_chat)
 * search individual conversations
 * notify user if message delivery fails
 * remember display names (nicks) from Quicksy users across restarts
@@ -70,17 +70,17 @@
 * fix crash on PlayStore version  
 
 #### Version 2.5.1
-* rework lastseen and don't show offline as online (monocles_messenger)
-* improve video quality a bit (monocles_messenger)
-* add ability to reject all contact requests via long press (monocles_messenger)
-* colorize pinned chats (monocles_messenger)
+* rework lastseen and don't show offline as online (monocles_chat)
+* improve video quality a bit (monocles_chat)
+* add ability to reject all contact requests via long press (monocles_chat)
+* colorize pinned chats (monocles_chat)
 * add 'Return to chat' to audio call screen
 * improve keyboard shortcuts
 * improve performance for backup restore
 * bug fixes
 
 #### Version 2.5.0
-* remove OTR encryption (monocles_messenger)
+* remove OTR encryption (monocles_chat)
 * show help button if A/V call fails
 * fixed some annoying crashes
 * fixed Jingle connections (file transfer + calls) with bare JIDs
@@ -96,11 +96,11 @@
 * reduce echo during calls on some devices
 * fix login when passwords contains special characters
 * play dial and busy tones on speaker during video calls
-* move channel discovery choice to ChannelDiscoveryActivity menu (monocles_messenger)
-* colorize accept/dismiss actions in call notification (monocles_messenger)
-* don't end call on pressing back key (monocles_messenger)
-* show used account for calls (monocles_messenger)
-* notify on missed calls (monocles_messenger)
+* move channel discovery choice to ChannelDiscoveryActivity menu (monocles_chat)
+* colorize accept/dismiss actions in call notification (monocles_chat)
+* don't end call on pressing back key (monocles_chat)
+* show used account for calls (monocles_chat)
+* notify on missed calls (monocles_chat)
 * bug fixes
 
 #### Version 2.4.0
@@ -115,15 +115,15 @@
 
 #### Version 2.3.5
 * start removing OTR
-* rework conference and contact details (big avatar is available via long click) (monocles_messenger)
+* rework conference and contact details (big avatar is available via long click) (monocles_chat)
 * resume download of OMEMO encrypted files
 * channels now use '#' as symbol in avatar
 * support for ?register and ?register;preauth XMPP uri parameters
 * update connection settings
-* use ExoPlayer for video playback (monocles_messenger)
-* show artist - title for audio files (monocles_messenger)
-* show PDF previews (monocles_messenger)
-* minor UI improvements (monocles_messenger)
+* use ExoPlayer for video playback (monocles_chat)
+* show artist - title for audio files (monocles_chat)
+* show PDF previews (monocles_chat)
+* minor UI improvements (monocles_chat)
 * use 12 byte IV for OMEMO
 * a lot of bug fixes
 
@@ -131,7 +131,7 @@
 * fixes for Jingle IBB file transfer
 * fixes for repeated corrections filling up the database
 * switched to Last Message Correction v1.1
-* increase mam messages catchup (monocles_messenger)
+* increase mam messages catchup (monocles_chat)
 * bug fixes
 
 #### Version 2.3.3
@@ -144,17 +144,17 @@
 * bug fixes
 
 #### Version 2.3.0
-* show name in quotes (monocles_messenger)
-* introduce theme based on systems theme (monocles_messenger)
-* increase default video quality (720p instead of 360p) (monocles_messenger)
-* replace YouTube links with Invidious links (monocles_messenger)
-* rework profile view (monocles_messenger)
-* introduce app intro and some help screens (monocles_messenger)
+* show name in quotes (monocles_chat)
+* introduce theme based on systems theme (monocles_chat)
+* increase default video quality (720p instead of 360p) (monocles_chat)
+* replace YouTube links with Invidious links (monocles_chat)
+* rework profile view (monocles_chat)
+* introduce app intro and some help screens (monocles_chat)
 * fixed minor security issues
 * share XMPP uri from channel search by long pressing a result
 * fixed OMEMO self healing (after backup restore) on servers w/o MAM
 * introduce expert setting to perform channel discovery on local server instead of [search.jabber.network](https://search.jabber.network)
-* introduce new orange theme color (monocles_messenger)
+* introduce new orange theme color (monocles_chat)
 * bug fixes
 
 #### Version 2.2.9
@@ -163,12 +163,12 @@
 #### Version 2.2.8
 * stability improvements for group chats and channels
 * allow backups to be restored from anywhere
-* make short vibrate in open chat configurable and respect silent mode (monocles_messenger)
+* make short vibrate in open chat configurable and respect silent mode (monocles_chat)
 * fixes for Jingle file transfer
 * fixed some rare crashes
-* when sharing a message from and to messenger insert it as quote
-* find orphaned files and show them in the chat again instead of showing them deleted (monocles_messenger)
-* introduce file uploads/downloads with queue (monocles_messenger)
+* when sharing a message from and to chat insert it as quote
+* find orphaned files and show them in the chat again instead of showing them deleted (monocles_chat)
+* introduce file uploads/downloads with queue (monocles_chat)
 * fixed connection issues over Tor
 * P2P file transfer (Jingle) now offers direct candidates
 * support XEP-0396: Jingle Encrypted Transports - OMEMO
@@ -182,7 +182,7 @@
 * fix broken updater
 
 #### Version 2.2.5
-* make backup compatible to Conversations (only works for Android >= 8) (monocles_messenger)
+* make backup compatible to Conversations (only works for Android >= 8) (monocles_chat)
 * bug fix
 
 #### Version 2.2.4
@@ -192,7 +192,7 @@
 * set own OMEMO devices to inactive after not seeing them for 60 days. (was 7 days)
 * bug fixes for peer to peer file transfer (Jingle)
 * fixed server info for unlimited/unknown max file size
-* make backup compatible to Conversations (monocles_messenger)
+* make backup compatible to Conversations (monocles_chat)
 * performance improvements
 * bug fixes
 
@@ -200,37 +200,37 @@
 * bug fixes
 
 #### Version 2.2.2
-* add activity to define some important privacy settings on first start (monocles_messenger)
-* add ability to delete account also from server (monocles_messenger)
-* add ability to kick users from room and not just ban them (monocles_messenger)
+* add activity to define some important privacy settings on first start (monocles_chat)
+* add ability to delete account also from server (monocles_chat)
+* add ability to kick users from room and not just ban them (monocles_chat)
 * bug fixes
 
 #### Version 2.2.1
-* use extra activity for enter name during registration (monocles_messenger)
+* use extra activity for enter name during registration (monocles_chat)
 * bug fixes
 
 #### Version 2.2.0
-* add ability to set/edit nickname in own profile (monocles_messenger)
-* add ability to configure autojoin flag in groupchat details (monocles_messenger)
+* add ability to set/edit nickname in own profile (monocles_chat)
+* add ability to configure autojoin flag in groupchat details (monocles_chat)
 * support for Android 9 'message style' notifications
 * OMEMO stability improvements
 * do not show deleted files in media browser
-* added 'Keep Original' as image and video quality choice (monocles_messenger)
+* added 'Keep Original' as image and video quality choice (monocles_chat)
 * fixed avatar not being refreshed in group chats
-* make users avatars configurable (prefer either from xmpp or addressbook) (monocles_messenger)
-* integrate last message deletion on remote devices (server and client need support for message correction) (monocles_messenger)
+* make users avatars configurable (prefer either from xmpp or addressbook) (monocles_chat)
+* integrate last message deletion on remote devices (server and client need support for message correction) (monocles_chat)
 * clearly distinguish between (private) group chats and (public) channels
 * redesigned participants view for group chats and channels
 * redesigned create new contact/group chat/channel flow in Start Conversation screen
 * reworked backup & restore
-* use Ad-Hoc Commands to invite new users (monocles_messenger)
-* show link preview in chat (monocles_messenger)
+* use Ad-Hoc Commands to invite new users (monocles_chat)
+* show link preview in chat (monocles_chat)
 * bug fixes
 
 #### Version 2.1.5
 * improved handling of bookmark nicks
 * long press on 'allow' or 'add back' snackbar to bring up 'reject'
-* let the user forbid android from taking screenshots (monocles_messenger)
+* let the user forbid android from taking screenshots (monocles_chat)
 * make PEP avatars public to play nice with Prosody 0.11
 * fixed re-sending failed files in group chats
 * OMEMO stability improvements
@@ -247,22 +247,22 @@
 * fixed group chat mentions when nick ends in . (dot)
 * fixed not asking for permissions after direct share
 * fixed CVE-2018-18467
-* implement message deletion (monocles_messenger)
+* implement message deletion (monocles_chat)
 * bug fixes
 
 #### Version 2.1.2
 * fix crash with updater
 
 #### Version 2.1.1
-* make quick actions/attachment choice configurable (monocles_messenger)
-* add a hideable separate quick button for voice messages (monocles_messenger)
+* make quick actions/attachment choice configurable (monocles_chat)
+* add a hideable separate quick button for voice messages (monocles_chat)
 * switch between speaker/earpiece while playing audios/voice messages
 * store bookmarks in PEP if server has ability to convert to old bookmarks
 * show Jabber IDs from address book in address book
 * preview and ask for confirmation before sending media files
 * view per conversation media files in contact and conference details screens
 * enable foreground service by default for Android 8 (notification can be disabled by long pressing it)
-* reworked MediaViewer (monocles_messenger)
+* reworked MediaViewer (monocles_chat)
 * support TLSv1.3 (ejabberd ≤ 18.06 is incompatible with openssl 1.1.1 - Update ejabberd or downgrade openssl if you get ›Stream opening error‹)
 * add push messages for playstore versions
 * bug fixes
@@ -285,7 +285,7 @@
 
 #### Version 2.0.1
 * improved recording quality
-* let the user select a public server for account creation (monocles_messenger)
+* let the user select a public server for account creation (monocles_chat)
 * add possibility to de-/activate accounts in multi account mode
 * bug fixes 
 
@@ -296,7 +296,7 @@
 * reworked message search
 * added splash screen at startup
 * integrate dark theme
-* keep OTR, but without further development and support, just for compatibility (monocles_messenger)
+* keep OTR, but without further development and support, just for compatibility (monocles_chat)
 * added configurable font size
 * added global OMEMO preference
 * added scroll to bottom button
@@ -309,7 +309,7 @@
 * bug fixes
 
 #### Version 1.22.0
-* integrated expert option to enable multiple account (monocles_messenger)
+* integrated expert option to enable multiple account (monocles_chat)
 * some UI improvements
 * improved MAM support
 * bug fixes 
@@ -323,20 +323,20 @@
 * bug fixes
 
 #### Version 1.21.1
-* don't use integrated updater if Messenger is installed from F-Droid (monocles_messenger)
-* check if app installs from unknown sources are allowed, if not open settings to allow this (monocles_messenger)
-* show hint in chatview if private message is activated (monocles_messenger)
+* don't use integrated updater if Messenger is installed from F-Droid (monocles_chat)
+* check if app installs from unknown sources are allowed, if not open settings to allow this (monocles_chat)
+* show hint in chatview if private message is activated (monocles_chat)
 * send delivery receipts after MAM catchup
 * reduce number of wake locks
-* add possibility to destroy group chats (monocles_messenger)
-* show progress dialog while downloading update with internal updater (monocles_messenger)
-* implemented message search (monocles_messenger)
+* add possibility to destroy group chats (monocles_chat)
+* show progress dialog while downloading update with internal updater (monocles_chat)
+* implemented message search (monocles_chat)
 * improved self chat
 * bug fixes
 
 #### Version 1.21.0
-* replaced google maps location service with open street map services via leaflet (monocles_messenger)
-* let screen on while playing audio files (monocles_messenger)
+* replaced google maps location service with open street map services via leaflet (monocles_chat)
+* let screen on while playing audio files (monocles_chat)
 * add Turkish translations
 * bug fixes
 
@@ -354,7 +354,7 @@
 * bug fixes
 
 #### Version 1.20.0
-* reworked AppUpdater and show a notification if there is an update available (monocles_messenger)
+* reworked AppUpdater and show a notification if there is an update available (monocles_chat)
 * some UI and performance improvements
 * add french and spanish translations
 * text markup *bold*, _italic_,`monospace` and ~strikethrough~
@@ -362,7 +362,7 @@
 * always open URLs in new tab
 * bring back quick share (default off) and return to previous app after sharing
 * send and show read markers in private, non-anonymous groups
-* warn if chat is unencrypted and switch to OMEMO if available after pressing OK (warning can be disabled in settings) (monocles_messenger)
+* warn if chat is unencrypted and switch to OMEMO if available after pressing OK (warning can be disabled in settings) (monocles_chat)
 * support sending and receiving opus file
 * bug fixes
 
@@ -406,7 +406,7 @@
 
 #### Version 1.18.0
 * enable OTR and OpenPGP again
-* fix bug with updater on devices < SDK 21 (monocles_messenger)
+* fix bug with updater on devices < SDK 21 (monocles_chat)
 * Show colored contact names for their presence status (via settings)
 * treat URL as file if URL is in oob or contains key
 * added support for Android Auto
@@ -415,30 +415,30 @@
 * bug fixes
 
 #### Version 1.17.1
-* grey out offline contacts in StartConversation (monocles_messenger)
+* grey out offline contacts in StartConversation (monocles_chat)
 * change emoji library which supports newer emojis
 * change avatar images to circles
 * Switch Aztec to QR for faster scans
-* make automatic fullscreen media rotation configurable (monocles_messenger)
+* make automatic fullscreen media rotation configurable (monocles_chat)
 * open version can use tor networks
-* make image compression configurable (monocles_messenger)
-* show read/received markers in chatlist (monocles_messenger)
+* make image compression configurable (monocles_chat)
+* show read/received markers in chatlist (monocles_chat)
 * OMEMO: put auth tag into key (verify auth tag as well)
 * offer to block entire domain in message from stanger snackbar
 * bug fixes
 
 #### Version 1.17.0
-* add date bubbles in chat view (monocles_messenger)
+* add date bubbles in chat view (monocles_chat)
 * show last used resource in contact details
-* make brightness overwrite in image/video viewer configurable (monocles_messenger)
-* make video resolution configurable (monocles_messenger)
+* make brightness overwrite in image/video viewer configurable (monocles_chat)
+* make video resolution configurable (monocles_chat)
 * do not notify for messages from strangers by default
 * blocking a JID closes the corresponding conversation
 * show message sender in conversation overview
 * Support for the latest MAM namespace
 * Icons for attach menu
 * send typing notifications in private, non-anonymous MUCs
-* change media directory names (monocles_messenger)
+* change media directory names (monocles_chat)
 * bug fixes
 
 #### Version 1.16.5
@@ -446,8 +446,8 @@
 * bug fixes 
 
 #### Version 1.16.4
-* show failed file uploads in chatlist (monocles_messenger)
-* resend failed file uploads automatically (monocles_messenger)
+* show failed file uploads in chatlist (monocles_chat)
+* resend failed file uploads automatically (monocles_chat)
 * preview files in chatlist
 * move (un)mute settings to contact-/conference details
 * UI performance fixes
@@ -465,15 +465,15 @@
 * bug fixes
 
 #### Version 1.16.0
-* show unread messages in chatlist (monocles_messenger)
-* increase image size to 4k UHD (monocles_messenger)
+* show unread messages in chatlist (monocles_chat)
+* increase image size to 4k UHD (monocles_chat)
 * add support for GIF files
-* reworked video compression (monocles_messenger)
+* reworked video compression (monocles_chat)
 * reworked app updater
 * bug fixes
 
 #### Version 1.15.4
-* improve video compression quality (monocles_messenger)
+* improve video compression quality (monocles_chat)
 * support for POSH (RFC7711)
 * support for quoting messages (via select text)
 * verified messages show shield icon; unverified messages show lock
@@ -495,9 +495,9 @@
 #### Version 1.15.0
 * make OMEMO working with other clients
 * make OMEMO encryption standard for 1:1 chats as default
-* start navigation app directly from show location activity (monocles_messenger)
-* show map preview on shared locations (monocles_messenger)
-* show contacts name on shared VCARDs (monocles_messenger)
+* start navigation app directly from show location activity (monocles_chat)
+* show map preview on shared locations (monocles_chat)
+* show contacts name on shared VCARDs (monocles_chat)
 * send text directly via ShareWithActivity
 * bug fixes 
 
@@ -511,8 +511,8 @@
 * bug fixes
 
 #### Version 1.14.3
-* set different auto-download-sizes for mobile, roaming and WiFi connections (monocles_messenger)
-* add ability to report errors and bugs directly from menu (monocles_messenger)
+* set different auto-download-sizes for mobile, roaming and WiFi connections (monocles_chat)
+* add ability to report errors and bugs directly from menu (monocles_chat)
 * XEP-0377: Smonocles.im Reporting
 * fix rare start up crashes
 * bug fixes
@@ -522,7 +522,7 @@
 * add custom Emojis
 * scroll long actionbar titles
 * some performance improvements
-* some video compression improvements (monocles_messenger)
+* some video compression improvements (monocles_chat)
 * bug fixes
 
 #### Version 1.14.1
@@ -537,8 +537,8 @@
 
 #### Version 1.13.9
 * add icons for files in chat view
-* reworked backup service to automatically backup database encrypted to local storage at 4 am each day (monocles_messenger)
-* make human readable log export optional (monocles_messenger)
+* reworked backup service to automatically backup database encrypted to local storage at 4 am each day (monocles_chat)
+* make human readable log export optional (monocles_chat)
 * bug fixes
 
 #### Version 1.13.8
@@ -549,16 +549,16 @@
 * bug fixes
 
 #### Version 1.13.6
-* share image/video directly from fullscreen view (monocles_messenger)
+* share image/video directly from fullscreen view (monocles_chat)
 * show online status in foreground service
 * support jingle ft:4
 * show contact as DND if one resource is
 * bug fixes
 
 #### Version 1.13.5
-* add image preview before sending single images directly (monocles_messenger)
-* add vibrate notification when app is open (monocles_messenger)
-* hide actionbar in fullscreen image/video view (monocles_messenger)
+* add image preview before sending single images directly (monocles_chat)
+* add vibrate notification when app is open (monocles_chat)
+* hide actionbar in fullscreen image/video view (monocles_chat)
 * bug fixes
 
 #### Version 1.13.4
@@ -566,7 +566,7 @@
 * bug fixes
 
 #### Version 1.13.3
-* new permission check and request at startup (monocles_messenger)
+* new permission check and request at startup (monocles_chat)
 * bug fixes
 
 #### Version 1.13.2
@@ -577,15 +577,15 @@
 * bug fixes
 
 #### Version 1.13.0
-* changed applicationId (monocles_messenger)
-* play videos directly without touching play button (monocles_messenger)
-* add database importer from local storage as backup (monocles_messenger)
-* changed files directories and names (monocles_messenger)
+* changed applicationId (monocles_chat)
+* play videos directly without touching play button (monocles_chat)
+* add database importer from local storage as backup (monocles_chat)
+* changed files directories and names (monocles_chat)
 * bug fixes
 
 #### Version 1.12.6
 * bug fixes
-* add database exporter to local storage as backup (monocles_messenger)
+* add database exporter to local storage as backup (monocles_chat)
 
 #### Version 1.12.5
 * bug fixes
@@ -595,7 +595,7 @@
 * show first unread message on top
 * show geo uri as links
 * circumvent long message DOS
-* integrate simple videoplayer and image viewer (monocles_messenger)
+* integrate simple videoplayer and image viewer (monocles_chat)
 
 #### Version 1.12.3
 * show offline members in conferences
@@ -605,17 +605,17 @@
 * make omemo default when all resources support it
 * show presence of other resources as template
 * start typing in StartConversationsActivity to search
-* show addresses in locations (monocles_messenger)
+* show addresses in locations (monocles_chat)
 * show video previews in chats
 * various bug fixes and improvements
 * fixed pgp presence signing
 
 #### Version 1.12.1
 * expert setting to modify presence
-* added simple audio player (monocles_messenger)
-* added audio recorder (monocles_messenger)
-* added location services (monocles_messenger)
-* changed theme color from green to blue (monocles_messenger)
+* added simple audio player (monocles_chat)
+* added audio recorder (monocles_chat)
+* added location services (monocles_chat)
+* changed theme color from green to blue (monocles_chat)
 * small bug fixes
 
 #### Version 1.12.0
@@ -628,7 +628,7 @@
 * Share xmpp uri from conference details
 * add setting to allow quick sharing
 * use material design icons for android < lollipop
-* make foreground service always activated (monocles_messenger)
+* make foreground service always activated (monocles_chat)
 * disable account deactivation
 * UI improvements
 * various bug fixes
@@ -685,8 +685,8 @@
 #### Version 1.9.2
 * prevent startup crash on Sailfish OS
 * minor bug fixes
-* removed contact-/conferece-details button (monocles_messenger)
-* touch contact name or conference name in action bar opens contact-/conference-details (monocles_messenger)
+* removed contact-/conferece-details button (monocles_chat)
+* touch contact name or conference name in action bar opens contact-/conference-details (monocles_chat)
 
 #### Version 1.9.1
 * minor bug fixes incl. a workaround for nimbuzz.com
@@ -728,9 +728,9 @@
 * bug fixes
 
 #### Versrion 1.7.3
-* changed app name from Conversations to Pix-Art Messenger (monocles_messenger)
+* changed app name from Conversations to Pix-Art Messenger (monocles_chat)
 * changed chat background to light yellow
-* added own name for sent locations (monocles_messenger)
+* added own name for sent locations (monocles_chat)
 
 #### Version 1.7.2
 * let users crop their avatars

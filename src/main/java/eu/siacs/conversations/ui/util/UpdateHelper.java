@@ -33,7 +33,7 @@ public class UpdateHelper {
     private static boolean dataMoved = false;
 
     private static final File PAM_MainDirectory = new File(Environment.getExternalStorageDirectory().getAbsolutePath() + "/Pix-Art Messenger/");
-    private static final File Blabber_MainDirectory = new File(Environment.getExternalStorageDirectory() + "/monocles_messenger/");
+    private static final File Blabber_MainDirectory = new File(Environment.getExternalStorageDirectory() + "/monocles chat/");
     private static final File PAM_PicturesDirectory = new File(Environment.getExternalStorageDirectory().getAbsolutePath() + "/Pix-Art Messenger/Media/Pix-Art Messenger Images/");
     private static final File PAM_FilesDirectory = new File(Environment.getExternalStorageDirectory().getAbsolutePath() + "/Pix-Art Messenger/Media/Pix-Art Messenger Files/");
     private static final File PAM_AudiosDirectory = new File(Environment.getExternalStorageDirectory().getAbsolutePath() + "/Pix-Art Messenger/Media/Pix-Art Messenger Audios/");
@@ -46,7 +46,7 @@ public class UpdateHelper {
             final String Message = "message_shown_" + monocles_message;
             final boolean SHOW_MESSAGE = getPrefs.getBoolean(Message, true);
             if (activity instanceof ConversationsActivity && (SHOW_MESSAGE && updateInstalled(activity) && Config.SHOW_MIGRATION_INFO)) {
-                Log.d(Config.LOGTAG, "UpdateHelper: installed update from Pix-Art Messenger to monocles_messenger");
+                Log.d(Config.LOGTAG, "UpdateHelper: installed update from Pix-Art Messenger to monocles chat");
                 activity.runOnUiThread(() -> {
                     final AlertDialog.Builder builder = new AlertDialog.Builder(activity);
                     builder.setTitle(activity.getString(R.string.title_activity_updater));
@@ -57,7 +57,7 @@ public class UpdateHelper {
                     builder.create().show();
                 });
             } else if (activity instanceof WelcomeActivity && (SHOW_MESSAGE && newInstalled(activity) && !Config.SHOW_MIGRATION_INFO && PAMInstalled(activity))) {
-                Log.d(Config.LOGTAG, "UpdateHelper: new installed monocles_messenger");
+                Log.d(Config.LOGTAG, "UpdateHelper: new installed monocles chat");
                 showNewInstalledDialog(activity);
             }
         });
@@ -128,7 +128,7 @@ public class UpdateHelper {
 
     public static void moveData_PAM_monocles() {
         if (PAM_PicturesDirectory.exists() && PAM_PicturesDirectory.isDirectory()) {
-            final File newPicturesDirectory = new File(Environment.getExternalStorageDirectory() + "/Pix-Art Messenger/Media/monocles_messenger Images/");
+            final File newPicturesDirectory = new File(Environment.getExternalStorageDirectory() + "/Pix-Art Messenger/Media/monocles chat Images/");
             newPicturesDirectory.getParentFile().mkdirs();
             final File[] files = PAM_PicturesDirectory.listFiles();
             if (files == null) {
@@ -141,7 +141,7 @@ public class UpdateHelper {
             }
         }
         if (PAM_FilesDirectory.exists() && PAM_FilesDirectory.isDirectory()) {
-            final File newFilesDirectory = new File(Environment.getExternalStorageDirectory() + "/Pix-Art Messenger/Media/monocles_messenger Files/");
+            final File newFilesDirectory = new File(Environment.getExternalStorageDirectory() + "/Pix-Art Messenger/Media/monocles chat Files/");
             newFilesDirectory.mkdirs();
             final File[] files = PAM_FilesDirectory.listFiles();
             if (files == null) {
@@ -154,7 +154,7 @@ public class UpdateHelper {
             }
         }
         if (PAM_AudiosDirectory.exists() && PAM_AudiosDirectory.isDirectory()) {
-            final File newAudiosDirectory = new File(Environment.getExternalStorageDirectory() + "/Pix-Art Messenger/Media/monocles_messenger Audios/");
+            final File newAudiosDirectory = new File(Environment.getExternalStorageDirectory() + "/Pix-Art Messenger/Media/monocles chat Audios/");
             newAudiosDirectory.mkdirs();
             final File[] files = PAM_AudiosDirectory.listFiles();
             if (files == null) {
@@ -167,7 +167,7 @@ public class UpdateHelper {
             }
         }
         if (PAM_VideosDirectory.exists() && PAM_VideosDirectory.isDirectory()) {
-            final File newVideosDirectory = new File(Environment.getExternalStorageDirectory() + "/Pix-Art Messenger/Media/monocles_messenger Videos/");
+            final File newVideosDirectory = new File(Environment.getExternalStorageDirectory() + "/Pix-Art Messenger/Media/monocles chat Videos/");
             newVideosDirectory.mkdirs();
             final File[] files = PAM_VideosDirectory.listFiles();
             if (files == null) {
@@ -265,7 +265,7 @@ public class UpdateHelper {
     private static boolean PAMInstalled(Activity activity) {
         PackageManager pm = activity.getPackageManager();
         try {
-            return pm.getApplicationLabel(pm.getApplicationInfo("de.monocles.messenger", 0)).equals("Pix-Art Messenger");
+            return pm.getApplicationLabel(pm.getApplicationInfo("de.monocles.chat", 0)).equals("Pix-Art Messenger");
         } catch (PackageManager.NameNotFoundException e) {
             return false;
         }

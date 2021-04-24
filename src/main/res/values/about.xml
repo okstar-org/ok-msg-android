@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string name="pref_about_message" translatable="false"><b>monocles_messenger</b>
+    <string name="pref_about_message" translatable="false"><b>monocles_chat</b>
 			\n\nCopyright © 2014-%s Christian Schneppe
-			\n\nhttps://monocles_messenger
+			\n\nhttps://monocles_chat
 			\n\nThis program is free software: you can redistribute it and/or modify
 			it under the terms of the GNU General Public License as published by
 			the Free Software Foundation, either version 3 of the License, or
@@ -14,9 +14,9 @@
 			\n\nYou should have received a copy of the GNU General Public License
 			along with this program. If not, see https://www.gnu.org/licenses
 			\n\nDownload the full original source code at https://github.com/siacs/Conversations (Copyright © Daniel Gultsch)
-			\n\nDownload the modified source code at https://codeberg.org/kriztan/monocles_messenger
+			\n\nDownload the modified source code at https://codeberg.org/kriztan/monocles_chat
             \n\nYou can support Christian Schneppe by making a donation in form of a gift in sense of § 516 ff BGB i.e. a gratuitous donation via PayPal for pix-art@pix-art.de
-			\n\nYou can support the monocles_messenger provider by making a donation. More information on https://monocles_messenger/en/unterstuetzen
+			\n\nYou can support the monocles_chat provider by making a donation. More information on https://monocles_chat/en/unterstuetzen
 	</string>
     <string name="pref_about_libraries" translatable="false"><b>Libraries</b>
 			\n\nhttps://www.bouncycastle.org\n(The MIT License (MIT))

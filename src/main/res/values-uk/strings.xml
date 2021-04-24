@@ -744,7 +744,7 @@
     <string name="delete_message">Вилучити</string>
     <string name="conference_destroyed">Цю групу закрито</string>
     <string name="no_application_found_to_view_contact">Не знайдено програми, щоб переглянути контакт</string>
-    <string name="welcome_server_info">Рекомендуємо використовувати monocles_messenger як постачальника послуг XMPP. </string>
+    <string name="welcome_server_info">Рекомендуємо використовувати monocles chat як постачальника послуг XMPP. </string>
     <string name="pref_show_record_voice_btn_summary">Показувати у чаті кнопку запису голосу як швидку дію</string>
     <string name="pref_show_record_voice_btn">Показувати кнопку запису голосу</string>
     <string name="pref_use_quick_share_attachment_choice_summary">Замінювати клавішу надсилання під час набору функцією вибору вкладення. В іншому випадку показувати швидкі дії (можна окремо налаштувати)</string>
