@@ -28,12 +28,12 @@ import me.drakeet.support.toast.ToastCompat;
 public class UpdateHelper {
     private static final SimpleDateFormat DATE_FORMAT = new SimpleDateFormat("yyyy-MM-dd", Locale.ENGLISH);
     private static final String INSTALL_DATE = "2020-11-01";
-    private static final String blabber_message = "BLABBER.IM_UPDATE_MESSAGE";
+    private static final String monocles_message = "BLABBER.IM_UPDATE_MESSAGE";
     private static boolean moveData = true;
     private static boolean dataMoved = false;
 
     private static final File PAM_MainDirectory = new File(Environment.getExternalStorageDirectory().getAbsolutePath() + "/Pix-Art Messenger/");
-    private static final File Blabber_MainDirectory = new File(Environment.getExternalStorageDirectory() + "/blabber.im/");
+    private static final File Blabber_MainDirectory = new File(Environment.getExternalStorageDirectory() + "/monocles_messenger/");
     private static final File PAM_PicturesDirectory = new File(Environment.getExternalStorageDirectory().getAbsolutePath() + "/Pix-Art Messenger/Media/Pix-Art Messenger Images/");
     private static final File PAM_FilesDirectory = new File(Environment.getExternalStorageDirectory().getAbsolutePath() + "/Pix-Art Messenger/Media/Pix-Art Messenger Files/");
     private static final File PAM_AudiosDirectory = new File(Environment.getExternalStorageDirectory().getAbsolutePath() + "/Pix-Art Messenger/Media/Pix-Art Messenger Audios/");
@@ -43,21 +43,21 @@ public class UpdateHelper {
         Thread t = new Thread(() -> {
             updateInstalled(activity);
             final SharedPreferences getPrefs = PreferenceManager.getDefaultSharedPreferences(activity.getBaseContext());
-            final String Message = "message_shown_" + blabber_message;
+            final String Message = "message_shown_" + monocles_message;
             final boolean SHOW_MESSAGE = getPrefs.getBoolean(Message, true);
             if (activity instanceof ConversationsActivity && (SHOW_MESSAGE && updateInstalled(activity) && Config.SHOW_MIGRATION_INFO)) {
-                Log.d(Config.LOGTAG, "UpdateHelper: installed update from Pix-Art Messenger to blabber.im");
+                Log.d(Config.LOGTAG, "UpdateHelper: installed update from Pix-Art Messenger to monocles_messenger");
                 activity.runOnUiThread(() -> {
                     final AlertDialog.Builder builder = new AlertDialog.Builder(activity);
                     builder.setTitle(activity.getString(R.string.title_activity_updater));
-                    builder.setMessage(activity.getString(R.string.updated_to_blabber));
+                    builder.setMessage(activity.getString(R.string.updated_to_monocles));
                     builder.setCancelable(false);
-                    builder.setPositiveButton(R.string.ok, (dialog, which) -> SaveMessageShown(activity, blabber_message)
+                    builder.setPositiveButton(R.string.ok, (dialog, which) -> SaveMessageShown(activity, monocles_message)
                     );
                     builder.create().show();
                 });
             } else if (activity instanceof WelcomeActivity && (SHOW_MESSAGE && newInstalled(activity) && !Config.SHOW_MIGRATION_INFO && PAMInstalled(activity))) {
-                Log.d(Config.LOGTAG, "UpdateHelper: new installed blabber.im");
+                Log.d(Config.LOGTAG, "UpdateHelper: new installed monocles_messenger");
                 showNewInstalledDialog(activity);
             }
         });
@@ -72,10 +72,10 @@ public class UpdateHelper {
             }
             final AlertDialog.Builder builder = new AlertDialog.Builder(activity);
             builder.setTitle(activity.getString(R.string.title_activity_updater));
-            builder.setMessage(activity.getString(R.string.updated_to_blabber_google));
+            builder.setMessage(activity.getString(R.string.updated_to_monocles_google));
             builder.setCancelable(false);
             builder.setPositiveButton(R.string.link, (dialog, which) -> {
-                        SaveMessageShown(activity, blabber_message);
+                        SaveMessageShown(activity, monocles_message);
                         try {
                             final Uri uri = Uri.parse(Config.migrationURL);
                             try {
@@ -91,12 +91,12 @@ public class UpdateHelper {
                     }
             );
             builder.setNegativeButton(R.string.move_data, (dialog, which) -> {
-                        SaveMessageShown(activity, blabber_message);
+                        SaveMessageShown(activity, monocles_message);
                         try {
                             if (!moveData) {
                                 ToastCompat.makeText(activity, R.string.error_moving_data, ToastCompat.LENGTH_LONG).show();
                             } else {
-                                moveData_PAM_blabber();
+                                moveData_PAM_monocles();
                             }
                             showNewInstalledDialog(activity);
                         } catch (Exception e) {
@@ -105,7 +105,7 @@ public class UpdateHelper {
                         }
                     }
             );
-            builder.setNeutralButton(R.string.done, (dialog, which) -> SaveMessageShown(activity, blabber_message)
+            builder.setNeutralButton(R.string.done, (dialog, which) -> SaveMessageShown(activity, monocles_message)
             );
             AlertDialog dialog = builder.create();
             dialog.show();
@@ -126,9 +126,9 @@ public class UpdateHelper {
         Log.d(Config.LOGTAG, "UpdateHelper: old data available: " + moveData);
     }
 
-    public static void moveData_PAM_blabber() {
+    public static void moveData_PAM_monocles() {
         if (PAM_PicturesDirectory.exists() && PAM_PicturesDirectory.isDirectory()) {
-            final File newPicturesDirectory = new File(Environment.getExternalStorageDirectory() + "/Pix-Art Messenger/Media/blabber.im Images/");
+            final File newPicturesDirectory = new File(Environment.getExternalStorageDirectory() + "/Pix-Art Messenger/Media/monocles_messenger Images/");
             newPicturesDirectory.getParentFile().mkdirs();
             final File[] files = PAM_PicturesDirectory.listFiles();
             if (files == null) {
@@ -141,7 +141,7 @@ public class UpdateHelper {
             }
         }
         if (PAM_FilesDirectory.exists() && PAM_FilesDirectory.isDirectory()) {
-            final File newFilesDirectory = new File(Environment.getExternalStorageDirectory() + "/Pix-Art Messenger/Media/blabber.im Files/");
+            final File newFilesDirectory = new File(Environment.getExternalStorageDirectory() + "/Pix-Art Messenger/Media/monocles_messenger Files/");
             newFilesDirectory.mkdirs();
             final File[] files = PAM_FilesDirectory.listFiles();
             if (files == null) {
@@ -154,7 +154,7 @@ public class UpdateHelper {
             }
         }
         if (PAM_AudiosDirectory.exists() && PAM_AudiosDirectory.isDirectory()) {
-            final File newAudiosDirectory = new File(Environment.getExternalStorageDirectory() + "/Pix-Art Messenger/Media/blabber.im Audios/");
+            final File newAudiosDirectory = new File(Environment.getExternalStorageDirectory() + "/Pix-Art Messenger/Media/monocles_messenger Audios/");
             newAudiosDirectory.mkdirs();
             final File[] files = PAM_AudiosDirectory.listFiles();
             if (files == null) {
@@ -167,7 +167,7 @@ public class UpdateHelper {
             }
         }
         if (PAM_VideosDirectory.exists() && PAM_VideosDirectory.isDirectory()) {
-            final File newVideosDirectory = new File(Environment.getExternalStorageDirectory() + "/Pix-Art Messenger/Media/blabber.im Videos/");
+            final File newVideosDirectory = new File(Environment.getExternalStorageDirectory() + "/Pix-Art Messenger/Media/monocles_messenger Videos/");
             newVideosDirectory.mkdirs();
             final File[] files = PAM_VideosDirectory.listFiles();
             if (files == null) {
@@ -219,22 +219,22 @@ public class UpdateHelper {
         if (updateDate != null) {
             if (lastUpdateDate != null) {
                 if (firstInstalled.equals(lastUpdate)) {
-                    SaveMessageShown(activity, blabber_message);
+                    SaveMessageShown(activity, monocles_message);
                     return false;
                 } else {
                     if (lastUpdateDate.getTime() <= updateDate.getTime()) {
                         return true;
                     } else {
-                        SaveMessageShown(activity, blabber_message);
+                        SaveMessageShown(activity, monocles_message);
                         return false;
                     }
                 }
             } else {
-                SaveMessageShown(activity, blabber_message);
+                SaveMessageShown(activity, monocles_message);
                 return false;
             }
         } else {
-            SaveMessageShown(activity, blabber_message);
+            SaveMessageShown(activity, monocles_message);
             return false;
         }
     }
@@ -265,7 +265,7 @@ public class UpdateHelper {
     private static boolean PAMInstalled(Activity activity) {
         PackageManager pm = activity.getPackageManager();
         try {
-            return pm.getApplicationLabel(pm.getApplicationInfo("de.pixart.messenger", 0)).equals("Pix-Art Messenger");
+            return pm.getApplicationLabel(pm.getApplicationInfo("de.monocles.messenger", 0)).equals("Pix-Art Messenger");
         } catch (PackageManager.NameNotFoundException e) {
             return false;
         }

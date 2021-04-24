@@ -91,7 +91,7 @@ public class ThemeHelper {
                             return R.style.ConversationsTheme;
                         }
                 }
-            case "blabber":
+            case "monocles":
                 switch (fontSize) {
                     case "medium":
                         if (black) {
@@ -265,7 +265,7 @@ public class ThemeHelper {
                             return R.style.ConversationsTheme_Dialog;
                         }
                 }
-            case "blabber":
+            case "monocles":
                 switch (fontSize) {
                     case "medium":
                         if (black) {
@@ -393,7 +393,7 @@ public class ThemeHelper {
             case R.style.ConversationsTheme_Black:
             case R.style.ConversationsTheme_Black_Large:
             case R.style.ConversationsTheme_Black_Medium:
-                //blabber
+                //monocles
             case R.style.ConversationsTheme_Blabber_Dark:
             case R.style.ConversationsTheme_Blabber_Dark_Large:
             case R.style.ConversationsTheme_Blabber_Dark_Medium:
@@ -441,8 +441,8 @@ public class ThemeHelper {
         switch (themeColor) {
             case "blue":
                 return dark ? ContextCompat.getColorStateList(context, R.color.white70) : ContextCompat.getColorStateList(context, R.color.darkblue);
-            case "blabber":
-                return dark ? ContextCompat.getColorStateList(context, R.color.white70) : ContextCompat.getColorStateList(context, R.color.darkblabber);
+            case "monocles":
+                return dark ? ContextCompat.getColorStateList(context, R.color.white70) : ContextCompat.getColorStateList(context, R.color.darkmonocles);
             case "orange":
                 return dark ? ContextCompat.getColorStateList(context, R.color.white70) : ContextCompat.getColorStateList(context, R.color.darkorange);
             case "grey":
@@ -450,7 +450,7 @@ public class ThemeHelper {
             case "pink":
                 return dark ? ContextCompat.getColorStateList(context, R.color.white70) : ContextCompat.getColorStateList(context, R.color.darkpink);
             default:
-                return dark ? ContextCompat.getColorStateList(context, R.color.white70) : ContextCompat.getColorStateList(context, R.color.darkblabber);
+                return dark ? ContextCompat.getColorStateList(context, R.color.white70) : ContextCompat.getColorStateList(context, R.color.darkmonocles);
         }
     }
 
@@ -465,8 +465,8 @@ public class ThemeHelper {
         switch (themeColor) {
             case "blue":
                 return R.color.primary;
-            case "blabber":
-                return R.color.primary_dark_blabber;
+            case "monocles":
+                return R.color.primary_dark_monocles;
             case "orange":
                 return R.color.primary_orange;
             case "grey":
@@ -474,7 +474,7 @@ public class ThemeHelper {
             case "pink":
                 return R.color.primary_pink;
             default:
-                return R.color.primary_dark_blabber;
+                return R.color.primary_dark_monocles;
         }
     }
 
@@ -500,8 +500,8 @@ public class ThemeHelper {
         switch (themeColor) {
             case "blue":
                 return dark ? getMessageTextColor(context, dark, false) : ContextCompat.getColor(context, R.color.darkblue);
-            case "blabber":
-                return dark ? getMessageTextColor(context, dark, false) : ContextCompat.getColor(context, R.color.darkblabber);
+            case "monocles":
+                return dark ? getMessageTextColor(context, dark, false) : ContextCompat.getColor(context, R.color.darkmonocles);
             case "orange":
                 return dark ? getMessageTextColor(context, dark, false) : ContextCompat.getColor(context, R.color.darkorange);
             case "grey":
@@ -509,7 +509,7 @@ public class ThemeHelper {
             case "pink":
                 return dark ? getMessageTextColor(context, dark, false) : ContextCompat.getColor(context, R.color.darkpink);
             default:
-                return dark ? getMessageTextColor(context, dark, false) : ContextCompat.getColor(context, R.color.darkblabber);
+                return dark ? getMessageTextColor(context, dark, false) : ContextCompat.getColor(context, R.color.darkmonocles);
         }
     }
 
@@ -548,7 +548,7 @@ public class ThemeHelper {
         switch (themeColor) {
             case "blue":
                 return dark ? false : false;
-            case "blabber":
+            case "monocles":
                 return dark ? true : false;
             case "orange":
                 return dark ? true : false;

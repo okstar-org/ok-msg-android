@@ -1,6 +1,6 @@
 -dontobfuscate
 
--keep class de.pixart.messenger.**
+-keep class de.monocles.messenger.**
 -keep class eu.siacs.conversations.**
 -keep class org.whispersystems.**
 -keep class com.kyleduo.switchbutton.Configuration

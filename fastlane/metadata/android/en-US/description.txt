@@ -1,4 +1,4 @@
-blabber.im is a fork of <a href="https://f-droid.org/packages/eu.siacs.conversations/">Conversations</a> with some changes,
+monocles_messenger is a fork of <a href="https://f-droid.org/packages/eu.siacs.conversations/">Conversations</a> with some changes,
 to improve usability.
 
 Connection security and the protection of personal data are very important for
@@ -22,4 +22,4 @@ Features:
 * Status messages
 * Daily backup of database to local storage
 
-You need help? Please join our support group chat <a href="https://blabber.im/en/j/blabber/conference.blabber.im">blabber@conference.blabber.im</a>.
+You need help? Please join our support group chat <a href="https://monocles_messenger/en/j/monocles/conference.monocles_messenger">monocles@conference.monocles_messenger</a>.

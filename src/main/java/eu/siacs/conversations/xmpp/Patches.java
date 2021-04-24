@@ -12,7 +12,7 @@ public class Patches {
     );
     public static final List<String> ENCRYPTION_EXCEPTIONS = Arrays.asList(
             "bugs@pix-art.de",
-            "bugs@blabber.im"
+            "bugs@monocles_messenger"
 
     );
 }

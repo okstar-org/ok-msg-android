@@ -37,6 +37,7 @@ configurations {
 }
 
 dependencies {
+    implementation 'org.webrtc:google-webrtc:1.0.+'
     implementation project(':libs:android-transcoder')
     playstoreImplementation('com.google.firebase:firebase-messaging:21.1.0') { ///higher versions are causing crashes due to missing project IDs
         exclude group: 'com.google.firebase', module: 'firebase-core'
@@ -102,7 +103,7 @@ android {
     compileSdkVersion 29
 
     defaultConfig {
-        minSdkVersion 16
+        minSdkVersion 21
         targetSdkVersion 29
 
         //versionNameSuffix " beta_(2021-04-10)" // " beta_(XXXX-XX-XX)" // activate for beta versions
@@ -112,16 +113,16 @@ android {
 
         archivesBaseName += "-$versionName"
         //archivesBaseName += "$versionNameSuffix"  // activate for beta versions
-        applicationId "de.pixart.messenger"
+        applicationId "de.monocles.messenger"
         multiDexEnabled true
 
-        buildConfigField("String", "LOGTAG", '"blabber.im"')
+        buildConfigField("String", "LOGTAG", '"monocles_messenger"')
         buildConfigField("String", "DOMAIN_LOCK", 'null')
-        buildConfigField("String", "MAGIC_CREATE_DOMAIN", '"blabber.im"')
+        buildConfigField("String", "MAGIC_CREATE_DOMAIN", '"monocles.de"')
         buildConfigField("boolean", "SHOW_INTRO", 'true')
-        buildConfigField("String", "UPDATE_URL", '"https://blabber.im/update/"')
+        buildConfigField("String", "UPDATE_URL", '"https://monocles.de/messenger/update/"')
         resValue "string", "applicationId", applicationId
-        resValue "string", "app_name", "blabber.im"
+        resValue "string", "app_name", "monocles messenger"
     }
 
     dataBinding {
@@ -155,7 +156,7 @@ android {
         playstore {
             dimension "distribution"
             versionNameSuffix "-playstore"
-            applicationId "im.blabber.messenger"
+            applicationId "im.monocles.messenger"
             buildConfigField("boolean", "SHOW_MIGRATION_INFO", 'false')
             resValue "string", "applicationId", applicationId
         }

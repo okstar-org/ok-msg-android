@@ -3,7 +3,7 @@
 
     <!-- contents
     1. blue
-    2. blabber
+    2. monocles
     3. orange
     4. grey
     5. pink
@@ -534,111 +534,111 @@
         <item name="TextSizeHeadline">22sp</item>
     </style>
 
-    <!-- 2. blabber -->
-    <!-- blabber theme -->
+    <!-- 2. monocles -->
+    <!-- monocles theme -->
     <style name="ConversationsTheme.Blabber" parent="ConversationsTheme">
-        <item name="colorPrimary">@color/primary_blabber</item>
-        <item name="colorPrimaryDark">@color/primary_dark_blabber</item>
-        <item name="colorAccent">@color/accent_blabber</item>
-        <item name="colorAccentLight">@color/accent_light_blabber</item>
-        <item name="colorAccentLightDisabled">@color/accent_light_disabled_blabber</item>
-        <item name="colorControlNormal">@color/accent_blabber</item>
-        <item name="colorControlActivated">@color/accent_blabber</item>
-        <item name="color_bubble_light">@color/lightblabber</item>
-        <item name="color_bubble_dark">@color/lightblabber2</item>
+        <item name="colorPrimary">@color/primary_monocles</item>
+        <item name="colorPrimaryDark">@color/primary_dark_monocles</item>
+        <item name="colorAccent">@color/accent_monocles</item>
+        <item name="colorAccentLight">@color/accent_light_monocles</item>
+        <item name="colorAccentLightDisabled">@color/accent_light_disabled_monocles</item>
+        <item name="colorControlNormal">@color/accent_monocles</item>
+        <item name="colorControlActivated">@color/accent_monocles</item>
+        <item name="color_bubble_light">@color/lightmonocles</item>
+        <item name="color_bubble_dark">@color/lightmonocles2</item>
         <item name="color_bubble_date">@color/lightgreen</item>
         <item name="color_bubble_warning">@color/lightred</item>
         <item name="chat_bg">@drawable/bg_light_orange</item>
-        <item name="android:actionModeBackground">@color/accent_blabber</item>
+        <item name="android:actionModeBackground">@color/accent_monocles</item>
     </style>
 
-    <!-- blabber theme - dark -->
+    <!-- monocles theme - dark -->
     <style name="ConversationsTheme.Blabber.Dark" parent="ConversationsTheme.Dark">
-        <item name="colorPrimary">@color/primary_blabber</item>
-        <item name="colorPrimaryDark">@color/primary_dark_blabber</item>
-        <item name="colorAccent">@color/accent_blabber</item>
-        <item name="colorAccentLight">@color/accent_light_blabber</item>
-        <item name="colorAccentLightDisabled">@color/accent_light_disabled_blabber</item>
-        <item name="colorControlNormal">@color/accent_blabber</item>
-        <item name="colorControlActivated">@color/accent_blabber</item>
-        <item name="color_bubble_light">@color/middleblabber</item>
-        <item name="color_bubble_dark">@color/darkblabber</item>
+        <item name="colorPrimary">@color/primary_monocles</item>
+        <item name="colorPrimaryDark">@color/primary_dark_monocles</item>
+        <item name="colorAccent">@color/accent_monocles</item>
+        <item name="colorAccentLight">@color/accent_light_monocles</item>
+        <item name="colorAccentLightDisabled">@color/accent_light_disabled_monocles</item>
+        <item name="colorControlNormal">@color/accent_monocles</item>
+        <item name="colorControlActivated">@color/accent_monocles</item>
+        <item name="color_bubble_light">@color/middlemonocles</item>
+        <item name="color_bubble_dark">@color/darkmonocles</item>
         <item name="chat_bg">@drawable/bg_dark_orange</item>
-        <item name="android:actionModeBackground">@color/accent_blabber</item>
+        <item name="android:actionModeBackground">@color/accent_monocles</item>
     </style>
 
-    <!-- blabber theme - black -->
+    <!-- monocles theme - black -->
     <style name="ConversationsTheme.Blabber.Black" parent="ConversationsTheme.Black">
-        <item name="colorAccent">@color/accent_blabber</item>
-        <item name="colorAccentLight">@color/accent_light_blabber</item>
-        <item name="colorAccentLightDisabled">@color/accent_light_disabled_blabber</item>
-        <item name="colorControlNormal">@color/accent_blabber</item>
-        <item name="colorControlActivated">@color/accent_blabber</item>
-        <item name="android:actionModeBackground">@color/accent_blabber</item>
+        <item name="colorAccent">@color/accent_monocles</item>
+        <item name="colorAccentLight">@color/accent_light_monocles</item>
+        <item name="colorAccentLightDisabled">@color/accent_light_disabled_monocles</item>
+        <item name="colorControlNormal">@color/accent_monocles</item>
+        <item name="colorControlActivated">@color/accent_monocles</item>
+        <item name="android:actionModeBackground">@color/accent_monocles</item>
     </style>
 
-    <!-- blabber dialog -->
+    <!-- monocles dialog -->
     <style name="ConversationsTheme.Blabber.Dialog" parent="ConversationsTheme.Dialog">
-        <item name="colorPrimary">@color/primary_blabber</item>
-        <item name="colorPrimaryDark">@color/primary_dark_blabber</item>
-        <item name="colorAccent">@color/accent_blabber</item>
-        <item name="colorAccentLight">@color/accent_light_blabber</item>
-        <item name="colorAccentLightDisabled">@color/accent_light_disabled_blabber</item>
+        <item name="colorPrimary">@color/primary_monocles</item>
+        <item name="colorPrimaryDark">@color/primary_dark_monocles</item>
+        <item name="colorAccent">@color/accent_monocles</item>
+        <item name="colorAccentLight">@color/accent_light_monocles</item>
+        <item name="colorAccentLightDisabled">@color/accent_light_disabled_monocles</item>
     </style>
 
-    <!-- blabber dialog - dark -->
+    <!-- monocles dialog - dark -->
     <style name="ConversationsTheme.Blabber.Dark.Dialog" parent="ConversationsTheme.Dark.Dialog">
-        <item name="colorPrimary">@color/primary_blabber</item>
-        <item name="colorPrimaryDark">@color/primary_dark_blabber</item>
-        <item name="colorAccent">@color/accent_blabber</item>
-        <item name="colorAccentLight">@color/accent_light_blabber</item>
-        <item name="colorAccentLightDisabled">@color/accent_light_disabled_blabber</item>
+        <item name="colorPrimary">@color/primary_monocles</item>
+        <item name="colorPrimaryDark">@color/primary_dark_monocles</item>
+        <item name="colorAccent">@color/accent_monocles</item>
+        <item name="colorAccentLight">@color/accent_light_monocles</item>
+        <item name="colorAccentLightDisabled">@color/accent_light_disabled_monocles</item>
     </style>
 
-    <!-- blabber dialog - black -->
+    <!-- monocles dialog - black -->
     <style name="ConversationsTheme.Blabber.Black.Dialog" parent="ConversationsTheme.Black.Dialog">
-        <item name="colorAccent">@color/accent_blabber</item>
-        <item name="colorAccentLight">@color/accent_light_blabber</item>
-        <item name="colorAccentLightDisabled">@color/accent_light_disabled_blabber</item>
+        <item name="colorAccent">@color/accent_monocles</item>
+        <item name="colorAccentLight">@color/accent_light_monocles</item>
+        <item name="colorAccentLightDisabled">@color/accent_light_disabled_monocles</item>
     </style>
 
-    <!-- blabber dialog medium font -->
+    <!-- monocles dialog medium font -->
     <style name="ConversationsTheme.Blabber.Dialog.Medium" parent="ConversationsTheme.Blabber.Dialog">
         <item name="TextSizeBody2">16sp</item>
         <item name="TextSizeDisplay2">51sp</item>
     </style>
 
-    <!-- blabber dialog medium font - dark -->
+    <!-- monocles dialog medium font - dark -->
     <style name="ConversationsTheme.Blabber.Dark.Dialog.Medium" parent="ConversationsTheme.Blabber.Dark.Dialog">
         <item name="TextSizeBody2">16sp</item>
         <item name="TextSizeDisplay2">51sp</item>
     </style>
 
-    <!-- blabber dialog medium font - black -->
+    <!-- monocles dialog medium font - black -->
     <style name="ConversationsTheme.Blabber.Black.Dialog.Medium" parent="ConversationsTheme.Blabber.Black.Dialog">
         <item name="TextSizeBody2">16sp</item>
         <item name="TextSizeDisplay2">51sp</item>
     </style>
 
-    <!-- blabber dialog large font -->
+    <!-- monocles dialog large font -->
     <style name="ConversationsTheme.Blabber.Dialog.Large" parent="ConversationsTheme.Blabber.Dialog">
         <item name="TextSizeBody2">18sp</item>
         <item name="TextSizeDisplay2">56sp</item>
     </style>
 
-    <!-- blabber dialog large font - dark -->
+    <!-- monocles dialog large font - dark -->
     <style name="ConversationsTheme.Blabber.Dark.Dialog.Large" parent="ConversationsTheme.Blabber.Dark.Dialog">
         <item name="TextSizeBody2">18sp</item>
         <item name="TextSizeTitle">56sp</item>
     </style>
 
-    <!-- blabber dialog large font - black -->
+    <!-- monocles dialog large font - black -->
     <style name="ConversationsTheme.Blabber.Black.Dialog.Large" parent="ConversationsTheme.Blabber.Black.Dialog">
         <item name="TextSizeBody2">18sp</item>
         <item name="TextSizeTitle">56sp</item>
     </style>
 
-    <!-- blabber medium font -->
+    <!-- monocles medium font -->
     <style name="ConversationsTheme.Blabber.Medium" parent="ConversationsTheme.Blabber">
         <item name="TextSizeCaption">14sp</item>
         <item name="TextSizeBody1">16sp</item>
@@ -653,7 +653,7 @@
         <item name="TextSizeHeadline">20sp</item>
     </style>
 
-    <!-- blabber medium font - dark -->
+    <!-- monocles medium font - dark -->
     <style name="ConversationsTheme.Blabber.Dark.Medium" parent="ConversationsTheme.Blabber.Dark">
         <item name="TextSizeCaption">14sp</item>
         <item name="TextSizeBody1">16sp</item>
@@ -668,7 +668,7 @@
         <item name="TextSizeHeadline">20sp</item>
     </style>
 
-    <!-- blabber medium font - black -->
+    <!-- monocles medium font - black -->
     <style name="ConversationsTheme.Blabber.Black.Medium" parent="ConversationsTheme.Blabber.Black">
         <item name="TextSizeCaption">14sp</item>
         <item name="TextSizeBody1">16sp</item>
@@ -683,7 +683,7 @@
         <item name="TextSizeHeadline">20sp</item>
     </style>
 
-    <!-- blabber large font -->
+    <!-- monocles large font -->
     <style name="ConversationsTheme.Blabber.Large" parent="ConversationsTheme.Blabber">
         <item name="TextSizeCaption">16sp</item>
         <item name="TextSizeBody1">18sp</item>
@@ -698,7 +698,7 @@
         <item name="TextSizeHeadline">22sp</item>
     </style>
 
-    <!-- blabber large font - dark -->
+    <!-- monocles large font - dark -->
     <style name="ConversationsTheme.Blabber.Dark.Large" parent="ConversationsTheme.Blabber.Dark">
         <item name="TextSizeCaption">16sp</item>
         <item name="TextSizeBody1">18sp</item>
@@ -713,7 +713,7 @@
         <item name="TextSizeHeadline">22sp</item>
     </style>
 
-    <!-- blabber large font - black -->
+    <!-- monocles large font - black -->
     <style name="ConversationsTheme.Blabber.Black.Large" parent="ConversationsTheme.Blabber.Black">
         <item name="TextSizeCaption">16sp</item>
         <item name="TextSizeBody1">18sp</item>

@@ -56,7 +56,7 @@
     <string name="unblock">Odblokuj</string>
     <string name="save">Zapisz</string>
     <string name="ok">Ok</string>
-    <string name="crash_report_title">blabber.im uległo awarii</string>
+    <string name="crash_report_title">monocles_messenger uległo awarii</string>
     <string name="send_now">Wyślij teraz</string>
     <string name="send_never">Nie pytaj ponownie</string>
     <string name="problem_connecting_to_account">Nie można połączyć się z kontem</string>
@@ -151,7 +151,7 @@ Nie spowoduje to usunięcia kopii wiadomości przechowywanych na innych urządze
     <string name="mgmt_account_delete_confirm_message">W przypadku usunięcia konta z urządzenia zostanie usunięta tylko lokalna historia rozmów.\n\nUsunięcie konta z serwera będzie skutkowało brakiem możliwości zalogowania do niego.</string>
     <string name="attach_record_voice">Nagraj głos</string>
     <string name="account_settings_jabber_id">Jabber ID</string>
-    <string name="account_settings_example_jabber_id">nazwaużytkownika@blabber.im</string>
+    <string name="account_settings_example_jabber_id">nazwaużytkownika@monocles_messenger</string>
     <string name="password">Hasło</string>
     <string name="invalid_jid">Wprowadzono niepoprawny Jabber ID</string>
     <string name="error_out_of_memory">Brak pamięci, obraz jest za duży</string>
@@ -425,11 +425,11 @@ Nie spowoduje to usunięcia kopii wiadomości przechowywanych na innych urządze
     <string name="server_info_broken">Zepsute</string>
     <string name="pref_presence_settings">Dostępność</string>
     <string name="pref_dnd_on_silent_mode">\"Nie przeszkadzać\" w trybie cichym</string>
-    <string name="update_info">blabber.im automatycznie pobiera i instaluje nową wersję. \n\nPotrwa to chwilkę…</string>
+    <string name="update_info">monocles_messenger automatycznie pobiera i instaluje nową wersję. \n\nPotrwa to chwilkę…</string>
     <string name="pref_dnd_on_silent_mode_summary">Oznacza Twój zasób jako \"Nie przeszkadzać\", gdy urządzenie jest w trybie cichym</string>
     <string name="pref_treat_vibrate_as_silent">Traktuj tryb wibracji jak tryb cichy</string>
     <string name="pref_treat_vibrate_as_dnd_summary">Oznacza Twój zasób jako \"Nie przeszkadzać\", gdy urządzenie jest w trybie wibracji</string>
-    <string name="hostname_example">blabber.im</string>
+    <string name="hostname_example">monocles_messenger</string>
     <string name="action_add_account_with_certificate">Dodaj konto za pomocą certyfikatu</string>
     <string name="unable_to_parse_certificate">Nie mogę odczytać certyfikatu</string>
     <string name="authenticate_with_certificate">Pozostaw puste by autoryzować za pomocą certyfikatu</string>
@@ -459,7 +459,7 @@ Nie spowoduje to usunięcia kopii wiadomości przechowywanych na innych urządze
         <item quantity="other">%d wiadomości</item>
     </plurals>
     <string name="load_more_messages">Załaduj wiecej wiadomości</string>
-    <string name="no_storage_permission">blabber.im potrzebuje dostępu do pamięci</string>
+    <string name="no_storage_permission">monocles_messenger potrzebuje dostępu do pamięci</string>
     <string name="sync_with_contacts">Synchronizuj z kontaktami</string>
     <string name="notify_on_all_messages">Powiadom o wszystkich wiadomościach</string>
     <string name="notify_only_when_highlighted">Powiadamiaj tylko w przypadku wzmianki o mnie</string>
@@ -477,7 +477,7 @@ Nie spowoduje to usunięcia kopii wiadomości przechowywanych na innych urządze
     <string name="always">Zawsze</string>
     <string name="always_off">Zawsze wył.</string>
     <string name="battery_optimizations_enabled">Optymalizacje zużycia baterii włączone</string>
-    <string name="battery_optimizations_enabled_explained">Twoje urządzenie wykonuje poważne optymalizacje zużycia baterii przez blabber.im, co może prowadzić do opóźnień w otrzymywaniu wiadomości lub ich utraty.\nZaleca się ich wyłączenie.</string>
+    <string name="battery_optimizations_enabled_explained">Twoje urządzenie wykonuje poważne optymalizacje zużycia baterii przez monocles_messenger, co może prowadzić do opóźnień w otrzymywaniu wiadomości lub ich utraty.\nZaleca się ich wyłączenie.</string>
     <string name="install_from_unknown_sources_disabled">Instalowanie z nieznanych źródeł wyłączone</string>
     <string name="install_from_unknown_sources_disabled_dialog">Twoje urządzenie jest skonfigurowane tak aby nie zezwalać na instalowanie aplikacji z nieznanych źródeł poza Google Play Store. Może to spowodować problemy z aktualizacją aplikacji.\n\nZa chwwilę zostaniesz poproszony na instalację aplikacji z nieznanych źródeł.</string>
     <string name="disable">Wyłącz</string>
@@ -525,7 +525,7 @@ Nie spowoduje to usunięcia kopii wiadomości przechowywanych na innych urządze
     <string name="invite_again">Zaproś ponownie</string>
     <string name="inviteUser_Subject">zaprosił/a Cie poprzez</string>
     <string name="pref_broadcast_last_activity">Dziel się ostatnią interakcją.</string>
-    <string name="pref_broadcast_last_activity_summary">Powiadamiaj kontakty, że używasz blabber.im</string>
+    <string name="pref_broadcast_last_activity_summary">Powiadamiaj kontakty, że używasz monocles_messenger</string>
     <string name="unable_to_connect_to_keychain">Nie można połączyć się z OpenKeychain</string>
     <string name="this_device_is_no_longer_in_use">Urządzenie to nie jest już używane</string>
     <string name="please_wait">Proszę czekać…</string>
@@ -553,7 +553,7 @@ Nie spowoduje to usunięcia kopii wiadomości przechowywanych na innych urządze
     <string name="show_error_message">Pokaż komunikaty błędów</string>
     <string name="error_message">Komunikat o błędzie</string>
     <string name="data_saver_enabled">Oszczędzanie danych jest włączone</string>
-    <string name="device_does_not_support_data_saver">Twoje urządzenie nie wspiera wyłączania oszczędzania danych dla blabber.im.</string>
+    <string name="device_does_not_support_data_saver">Twoje urządzenie nie wspiera wyłączania oszczędzania danych dla monocles_messenger.</string>
     <string name="add_to_contact_list">Dodaj do listy kontaktów</string>
     <string name="contact">Kontakt</string>
     <string name="unable_to_start_recording">Nie można rozpocząć nagrywania</string>
@@ -667,7 +667,7 @@ Nie spowoduje to usunięcia kopii wiadomości przechowywanych na innych urządze
     <string name="server_info_partial">częściowo</string>
     <string name="pref_show_foreground_service_summary">Niektóre z urządzeń działających pod kontrolą systemu Android zamykają aplikacje po upływie pewnego okresu czasu i nie będziesz wtedy w stanie odbierać nowych wiadomości, jeśli dotyka Cię podobny problem spróbuj aktywować usługę działania aplikacji na pierwszym planie. Weź jednak pod uwagę, że spowoduje to trwałe wyświetlanie powiadomienia w pasku powiadomień.</string>
     <string name="pref_show_foreground_service">Usługa na pierwszym planie</string>
-    <string name="update_service">blabber.im usługa aktualizacji</string>
+    <string name="update_service">monocles_messenger usługa aktualizacji</string>
     <string name="install_update">Zainstalować aktualizację?</string>
     <string name="highlight_in_muc">wymień użytkownika</string>
     <string name="no_application_found_to_open_link">Nie odnaleziono aplikacji do otworzenia linku</string>
@@ -701,7 +701,7 @@ Nie spowoduje to usunięcia kopii wiadomości przechowywanych na innych urządze
     <string name="qr_code_scanner_needs_access_to_camera">Skaner kodów QR potrzebuje dostępu do kamery urządzenia</string>
     <string name="pref_scroll_to_bottom_summary">Przewiń w dół po wysłaniu wiadomości</string>
     <string name="pref_scroll_to_bottom">Przewiń do dołu</string>
-    <string name="no_camera_permission">blabber.im potrzebuje dostęp do kamery</string>
+    <string name="no_camera_permission">monocles_messenger potrzebuje dostęp do kamery</string>
     <string name="edit_status_message_title">Edytuj info o statusie</string>
     <string name="pref_automatically_delete_messages_description">Automatycznie usuń wiadomości z tego urządzenia, które są starsze niż ustawiona wartość.</string>
     <string name="pref_automatically_delete_messages">Automatyczne usuwanie wiadomości</string>
@@ -732,7 +732,7 @@ Nie spowoduje to usunięcia kopii wiadomości przechowywanych na innych urządze
     <string name="large">Duży</string>
     <string name="create_shortcut">Utwórz skrót</string>
     <string name="not_encrypted_for_this_device">Wiadomość nie została zaszyfrowana dla tego urządzenia.</string>
-    <string name="no_microphone_permission">blabber.im potrzebuje dostępu do mikrofonu</string>
+    <string name="no_microphone_permission">monocles_messenger potrzebuje dostępu do mikrofonu</string>
     <string name="search_messages">Znajdź Wiadomość</string>
     <string name="view_conversation">Wyświetl komunikację</string>
     <string name="web_address">adres internetowy</string>
@@ -760,8 +760,8 @@ Nie spowoduje to usunięcia kopii wiadomości przechowywanych na innych urządze
     <string name="delete_message">Usuń wiadomość</string>
     <string name="conference_destroyed">Ten czat grupowy został usunięty</string>
     <string name="no_application_found_to_view_contact">Nie odnaleziono aplikacji do wyświetlenia kontaktu</string>
-    <string name="welcome_server_info">Zalecamy korzystanie z blabber.im jako serwera.</string>
-    <string name="no_location_permission">blabber.im potrzebuje dostępu do lokalizacji</string>
+    <string name="welcome_server_info">Zalecamy korzystanie z monocles_messenger jako serwera.</string>
+    <string name="no_location_permission">monocles_messenger potrzebuje dostępu do lokalizacji</string>
     <string name="pref_show_record_voice_btn_summary">Pokaż przycisk nagrywania głosu w czatach, jako szybką akcję</string>
     <string name="pref_show_record_voice_btn">Pokaż przycisk nagrywania głosu</string>
     <string name="pref_use_quick_share_attachment_choice_summary">Zastąp przycisk wysyłania wyborem załącznika, jeśli nie zostanie wpisana żadna wiadomość. W przeciwnym razie pokaż szybkie akcje, które można skonfigurować poniżej.</string>
@@ -817,7 +817,7 @@ Nie spowoduje to usunięcia kopii wiadomości przechowywanych na innych urządze
     <string name="open_with">Otwórz za pomocą…</string>
     <string name="server_info_adhoc_invite">XEP-0050: Ad-Hoc Commands: zapraszanie użytkowników</string>
     <string name="choose_account">Wybierz konto</string>
-    <string name="set_profile_picture">zdjęcie profilowe blabber.im</string>
+    <string name="set_profile_picture">zdjęcie profilowe monocles_messenger</string>
     <string name="restore_backup">Przywróć kopię zapasową</string>
     <string name="restore">Przywróć</string>
     <string name="enter_password_to_restore">Wprowadź hasło konta %s, aby przywrócić kopię zapasową.</string>
@@ -923,13 +923,13 @@ Nie spowoduje to usunięcia kopii wiadomości przechowywanych na innych urządze
     <string name="pref_use_invidious_summary">Invidious to szanująca twoją prywatność strona wyświetlająca filmy z YouTube\'a</string>
     <string name="this_device">To urządzenie</string>
     <string name="intro_desc_main">Dowiedz się więcej…</string>
-    <string name="welcome_header">Witamy w \nblabber.im</string>
+    <string name="welcome_header">Witamy w \nmonocles_messenger</string>
     <string name="intro_required_permissions">Wymagane uprawnienia</string>
     <string name="intro_desc_required_permissions">Pod koniec tego wprowadzenia zostaniesz poproszony o udzielenie tej aplikacji kilku (wymaganych) uprawnień, jeśli już ich nie udzieliłeś. Podczas korzystania z aplikacji możesz zostać poproszony o udzielenie dodatkowych uprawnień, które nie są jednak wymagane.</string>
     <string name="intro_account">Twoje konto</string>
     <string name="intro_desc_account">Jeśli już posiadasz konto, możesz się zalogować używając swojego Jabber-ID i hasła</string>
     <string name="intro_start_chatting">Rozpocznij Czat</string>
-    <string name="intro_desc_start_chatting">Jeśli upoważniłeś blabber.im do czytania listy Twoich kontaktów telefonicznych, już istniejące konta XMPP (Jabber) zostały automatycznie dodane do listy kontaktów w blabber.im, jeśli tego nie zrobiłeś po prostu dodaj nowe kontakty używając ich Jabber-ID</string>
+    <string name="intro_desc_start_chatting">Jeśli upoważniłeś monocles_messenger do czytania listy Twoich kontaktów telefonicznych, już istniejące konta XMPP (Jabber) zostały automatycznie dodane do listy kontaktów w monocles_messenger, jeśli tego nie zrobiłeś po prostu dodaj nowe kontakty używając ich Jabber-ID</string>
     <string name="intro_desc_open_chat">Od teraz możesz czatować, udostępniać lokalizację, pliki, filmy i zdjęcia, a także wysyłać wiadomości głosowe.</string>
     <string name="intro_chat_details">Szczegóły czatu</string>
     <string name="intro_desc_chat_details">Chcesz otworzyć szczegóły dotyczące czatu? Po prostu dotknij nazwy czatu w pasku menu na górze.</string>
@@ -941,19 +941,19 @@ Nie spowoduje to usunięcia kopii wiadomości przechowywanych na innych urządze
     <string name="show_intro_again">Ekran powitalny zostanie wyświetlony ponownie</string>
     <string name="show_intro_again_failed">Ponownie wyświetlenie ekranu powitalnego nie powiodło się. Spróbuj ponownie…</string>
     <string name="intro_desc_whats_xmpp">XMPP, nazywane również Jabberem, jest zdecentralizowaną platformą komunikacyjną działającą podobnie do poczty elektronicznej. Aby korzystać z XMPP potrzebujesz adresu zwanego Jabber-ID, hasła i komunikatora. Więcej o tym za chwilę.</string>
-    <string name="intro_whats_xmpp">Czym jest XMPP / Jabber / blabber.im?</string>
-    <string name="intro_desc_optional_permissions">Uprawnienie do czytania Twojej listy kontaktów jest wymagane dla dopasowywania ich do istnięjących adresów XMPP (Jabber ID). blabber.im nie dziel się nikim Twoimi kontaktami.</string>
-    <string name="intro_desc_account2">Możesz stworzyć nowy profil na blabber.im, wpisując pseudonim.</string>
+    <string name="intro_whats_xmpp">Czym jest XMPP / Jabber / monocles_messenger?</string>
+    <string name="intro_desc_optional_permissions">Uprawnienie do czytania Twojej listy kontaktów jest wymagane dla dopasowywania ich do istnięjących adresów XMPP (Jabber ID). monocles_messenger nie dziel się nikim Twoimi kontaktami.</string>
+    <string name="intro_desc_account2">Możesz stworzyć nowy profil na monocles_messenger, wpisując pseudonim.</string>
     <string name="open_join_dialog">Dołącz do kanału publicznego…</string>
     <string name="intro_optional_permissions">Uprawnienia opcjonalne</string>
-    <string name="intro_desc_optional_permissions2">blabber.im potrzebuje uprawnień do uzyskania Twojej lokalizacji w celu udostępniania przez Ciebie lokalizacji.\nW celu wysyłania wiadomości głosowych blabber.im potrzebuje uprawnień do korzystania z mikrofonu.</string>
+    <string name="intro_desc_optional_permissions2">monocles_messenger potrzebuje uprawnień do uzyskania Twojej lokalizacji w celu udostępniania przez Ciebie lokalizacji.\nW celu wysyłania wiadomości głosowych monocles_messenger potrzebuje uprawnień do korzystania z mikrofonu.</string>
     <string name="intro_desc_account3">Możesz zaimportować aktualnie istniejące konto.\nJeśli jakaś kopia zapasowa jest dostępna, zostanie ona wyświetlona.</string>
     <string name="intro_desc_start_chatting2">Możesz także utworzyć lub dołączyć do czatów grupowych - zwanych MUCs (multi user chats). Czaty grupowe dzielą się na prywatne czaty grupowe i publiczne czaty grupowe - tak zwane kanały.</string>
     <string name="intro_desc_start_chatting3">Gratulacje!\nMiłej zabawy…</string>
     <string name="intro_privacy">Twoja prywatność\nTwoja niezależność</string>
     <string name="no_results">Brak rezultatów</string>
     <string name="file_transmission_cancelled">transfer plików anulowany</string>
-    <string name="sharing_application_not_grant_permission">Aplikacja do udostępniania nie upoważniła blabber.im do dostępu do tego pliku.</string>
+    <string name="sharing_application_not_grant_permission">Aplikacja do udostępniania nie upoważniła monocles_messenger do dostępu do tego pliku.</string>
     <string name="jabber_network">jabber.network</string>
     <string name="local_server">Serwer lokalny</string>
     <string name="pref_channel_discovery_summary">Większość użytkowników powinna wybrać \'jabber.network\' dla lepszych sugestii spośród wszystkich publicznych kanałów XMPP.</string>

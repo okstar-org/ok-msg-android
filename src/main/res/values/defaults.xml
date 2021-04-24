@@ -56,7 +56,7 @@
     <bool name="prefer_xmpp_avatar">true</bool>
     <bool name="show_links_inside">true</bool>
     <bool name="show_maps_inside">true</bool>
-    <string name="mappreview_url">https://blabber.im/staticmap/staticmap.php</string>
+    <string name="mappreview_url">https://monocles_messenger/staticmap/staticmap.php</string>
     <bool name="use_internal_updater">true</bool>
     <bool name="show_own_accounts">true</bool>
     <bool name="vibrate_in_chat">true</bool>
@@ -73,7 +73,7 @@
     <string name="quick_action">recent</string>
     <string name="omemo_setting_default">default_on</string>
     <string name="theme">auto</string>
-    <string name="theme_color">blabber</string>
+    <string name="theme_color">monocles</string>
     <string name="default_font_size">small</string>
     <string name="default_channel_discovery">JABBER_NETWORK</string>
     <bool name="use_unicolored_chatbg">false</bool>
@@ -212,14 +212,14 @@
         <item>chat.hipchat.com</item>
         <item>googlemail.com</item>
         <item>nsa.li</item>
-        <item>blabber.im</item>
+        <item>monocles_messenger</item>
         <item>buzon.uy</item>
         <item>chapril.org</item>
     </string-array>
 
     <string-array name="support_domains">
         <item>pix-art.de</item>
-        <item>blabber.im</item>
+        <item>monocles_messenger</item>
         <item>jabber.de</item>
         <item>dismail.de</item>
         <item>draugr.de</item>
@@ -232,7 +232,7 @@
 
     <string-array name="support_site">
         <item>https://jabber.pix-art.de/impressum/</item>
-        <item>https://blabber.im/en/kontakt/</item>
+        <item>https://monocles_messenger/en/kontakt/</item>
         <item>https://www.jabber.de/support/</item>
         <item>https://dismail.de/contact.html</item>
         <item>https://www.draugr.de/kontakt/</item>

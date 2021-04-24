@@ -42,7 +42,7 @@ import eu.siacs.conversations.ui.util.CustomTab;
 import eu.siacs.conversations.utils.WakeLockHelper;
 import me.drakeet.support.toast.ToastCompat;
 
-import static eu.siacs.conversations.Config.blabber;
+import static eu.siacs.conversations.Config.monocles;
 import static eu.siacs.conversations.http.HttpConnectionManager.getProxy;
 import static eu.siacs.conversations.services.XmppConnectionService.FDroid;
 import static eu.siacs.conversations.services.XmppConnectionService.PlayStore;
@@ -146,7 +146,7 @@ public class UpdaterActivity extends XmppActivity {
                                     overridePendingTransition(R.animator.fade_in, R.animator.fade_out);
                                 } else {
                                     try {
-                                        uri = Uri.parse("https://" + blabber());
+                                        uri = Uri.parse("https://" + monocles());
                                         CustomTab.openTab(this, uri, isDarkTheme());
                                     } catch (Exception e) {
                                         ToastCompat.makeText(this, R.string.no_application_found_to_open_link, ToastCompat.LENGTH_SHORT).show();
@@ -161,7 +161,7 @@ public class UpdaterActivity extends XmppActivity {
                                     startActivity(marketIntent);
                                     overridePendingTransition(R.animator.fade_in, R.animator.fade_out);
                                 } else {
-                                    uri = Uri.parse("https://" + blabber());
+                                    uri = Uri.parse("https://" + monocles());
                                     try {
                                         CustomTab.openTab(this, uri, isDarkTheme());
                                     } catch (Exception e) {

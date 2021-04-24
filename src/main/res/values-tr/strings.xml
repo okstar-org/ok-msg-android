@@ -59,8 +59,8 @@
     <string name="unblock">Engeli kaldır</string>
     <string name="save">Kaydet</string>
     <string name="ok">Tamam</string>
-    <string name="crash_report_title">blabber.im hata verdi</string>
-    <string name="crash_report_message">Hata raporlarını göndererek blabber.im\'in devam eden geliştirmesine yardımcı oluyorsunuz.\n<b>Uyarı:</b> Geliştiriciye hata raporlarını göndermek için XMPP hesabınız kullanılacak.</string>
+    <string name="crash_report_title">monocles_messenger hata verdi</string>
+    <string name="crash_report_message">Hata raporlarını göndererek monocles_messenger\'in devam eden geliştirmesine yardımcı oluyorsunuz.\n<b>Uyarı:</b> Geliştiriciye hata raporlarını göndermek için XMPP hesabınız kullanılacak.</string>
     <string name="send_now">Şimdi Gönder</string>
     <string name="send_never">Bir daha sorma</string>
     <string name="problem_connecting_to_account">Sunucuya bağlanılamıyor</string>
@@ -90,7 +90,7 @@
     <string name="offering">teklif yapılıyor…</string>
     <string name="waiting">Bekleniyor…</string>
     <string name="no_pgp_key">Hiç OpenPGP anahtarı bulunamadı</string>
-    <string name="contact_has_no_pgp_key">blabber.im mesajlarınızı şifreleyemiyor çünkü kişi sizin veya kendisinin açık anahtarını paylaşmıyor.\n\n<small>Lütfen kişiden OpenPGP\'yi kurmasını isteyin.</small></string>
+    <string name="contact_has_no_pgp_key">monocles_messenger mesajlarınızı şifreleyemiyor çünkü kişi sizin veya kendisinin açık anahtarını paylaşmıyor.\n\n<small>Lütfen kişiden OpenPGP\'yi kurmasını isteyin.</small></string>
     <string name="no_pgp_keys">OpenPGP anahtarları bulunamadı</string>
     <string name="pref_general">Genel</string>
     <string name="pref_accept_files_wifi">WiFi bağlantılarındaki dosyaları kabul et</string>
@@ -108,7 +108,7 @@
     <string name="pref_sound">Zil sesi</string>
     <string name="pref_sound_summary">Yeni bir mesaj geldiği zaman ses çıkar</string>
     <string name="pref_send_crash">Kilitlenme raporlarını gönderin</string>
-    <string name="pref_send_crash_summary">Hata raporları göndererek blabber.im\'in devam etmekte olan gelişimine yardım ediyorsunuz</string>
+    <string name="pref_send_crash_summary">Hata raporları göndererek monocles_messenger\'in devam etmekte olan gelişimine yardım ediyorsunuz</string>
     <string name="pref_confirm_messages">Mesajları Onayla</string>
     <string name="pref_confirm_messages_summary">Kişilerinize mesajlarınızı ne zaman aldığınızı ve okuduğunuzu bilmelerini sağlayın</string>
     <string name="pref_ui_options">Arayüz</string>
@@ -157,7 +157,7 @@
     <string name="mgmt_account_delete_confirm_message">Eğer hesabınızı silerseniz bütün lokal sohbet geçmişiniz kaybolacak.\n\nEğer hesabınızı bu sunucudan silerseniz, tüm hesabımınız sunucudan da kaldırılacaktır ve Yeni bir hesap açana kadar oturum açamayacaksınız.</string>
     <string name="attach_record_voice">Kayıt sesi</string>
     <string name="account_settings_jabber_id">Jabber Kimliği</string>
-    <string name="account_settings_example_jabber_id">kullanıcıadı@blabber.im</string>
+    <string name="account_settings_example_jabber_id">kullanıcıadı@monocles_messenger</string>
     <string name="password">Parola</string>
     <string name="invalid_jid">Bu geçerli bir Jabber-ID değil</string>
     <string name="error_out_of_memory">Bellek yetersiz. Görüntü çok büyük</string>
@@ -414,7 +414,7 @@
     <string name="pref_dnd_on_silent_mode_summary">Cihaz sessiz moddayken kaynağınızı \"Rahatsız etmeyin\" olarak işaretler</string>
     <string name="pref_treat_vibrate_as_silent">Titreşimsiz mod olarak işlem yap</string>
     <string name="pref_treat_vibrate_as_dnd_summary">Cihaz titrediğinde kaynağı \"Rahatsız etmeyin\" olarak işaretler</string>
-    <string name="hostname_example">blabber.im</string>
+    <string name="hostname_example">monocles_messenger</string>
     <string name="action_add_account_with_certificate">Sertifika ile hesap ekle</string>
     <string name="unable_to_parse_certificate">Sertifika çözümlenemedi</string>
     <string name="authenticate_with_certificate">Sertifikanın kimliğini doğrulamak için boş bırakın</string>
@@ -458,8 +458,8 @@
     <string name="always">Her zaman</string>
     <string name="always_off">Her zaman kapalı</string>
     <string name="battery_optimizations_enabled">Pil optimizasyonları etkin</string>
-    <string name="battery_optimizations_enabled_explained">Cihazınız blabber\'da bildirimleri gecikmeli bildirime hatta mesaj kaybına yol açabilecek bazı ağır pil optimizasyonları yapıyor. \nBunları devre dışı bırakmanız önerilir.</string>
-    <string name="battery_optimizations_enabled_dialog">Cihazınız blabber\'da bildirimleri gecikmeli bildirime hatta mesaj kaybına yol açabilecek bazı ağır pil optimizasyonları yapıyor.\n\nŞimdi bunları kapatmanız istenecek.</string>
+    <string name="battery_optimizations_enabled_explained">Cihazınız monocles\'da bildirimleri gecikmeli bildirime hatta mesaj kaybına yol açabilecek bazı ağır pil optimizasyonları yapıyor. \nBunları devre dışı bırakmanız önerilir.</string>
+    <string name="battery_optimizations_enabled_dialog">Cihazınız monocles\'da bildirimleri gecikmeli bildirime hatta mesaj kaybına yol açabilecek bazı ağır pil optimizasyonları yapıyor.\n\nŞimdi bunları kapatmanız istenecek.</string>
     <string name="install_from_unknown_sources_disabled">Bilinmeyen açık kaynaklardan yüklemeleri devre dışı bırak</string>
     <string name="install_from_unknown_sources_disabled_dialog">Cihazınız, Google PlayStore dışında bilinmeyen kaynaklardan uygulama yüklemelerine izin vermeyecek şekilde yapılandırıldı. Bu, uygulama güncelleyicisinde sorunlara neden olur. \n\n Bundan sonra bilinmeyen kaynaklardan uygulama yüklemelerine izin vermeniz istenecektir.</string>
     <string name="disable">Devre dışı</string>

@@ -95,7 +95,7 @@
         <receiver android:name=".services.AlarmReceiver"></receiver>
 
         <activity
-            android:name="de.pixart.messenger.ui.StartUI"
+            android:name="de.monocles.messenger.ui.StartUI"
             android:configChanges="orientation|screenSize"
             android:label="@string/app_name"
             android:launchMode="singleTask"
@@ -136,7 +136,7 @@
                 <category android:name="android.intent.category.BROWSABLE" />
 
                 <data android:scheme="https" />
-                <data android:host="blabber.im" />
+                <data android:host="monocles.de" />
                 <data android:pathPrefix="/i/" />
                 <data android:pathPrefix="/j/" />
             </intent-filter>

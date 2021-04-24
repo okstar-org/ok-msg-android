@@ -72,7 +72,7 @@ public class GeoHelper {
         try {
             return URLUtil.isValidUrl(urlstring) && Patterns.WEB_URL.matcher(urlstring).matches();
         } catch (Exception e) {
-            Log.d(Config.LOGTAG, "Could not use custom mappreview host and using blabber.im for mappreview " + e);
+            Log.d(Config.LOGTAG, "Could not use custom mappreview host and using monocles_messenger for mappreview " + e);
         }
         return false;
     }

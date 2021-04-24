@@ -7,12 +7,12 @@
     <color name="accent_light">#1a0091ea</color> <!-- light blue accent -->
     <color name="accent_light_disabled">#1a000000</color> <!-- light blue accent for disabled accounts-->
 
-    <!-- blabber theme -->
-    <color name="primary_blabber">#ff363839</color>
-    <color name="primary_dark_blabber">#ffff9843</color>
-    <color name="accent_blabber">#ffff9843</color>
-    <color name="accent_light_blabber">#1aff9843</color>
-    <color name="accent_light_disabled_blabber">#1a000000</color>
+    <!-- monocles theme -->
+    <color name="primary_monocles">#ff363839</color>
+    <color name="primary_dark_monocles">#ff3e5ea2</color>
+    <color name="accent_monocles">#ff7189c5</color>
+    <color name="accent_light_monocles">#1aff9843</color>
+    <color name="accent_light_disabled_monocles">#1a000000</color>
 
     <!-- orange theme -->
     <color name="primary_orange">#ffce8500</color>
@@ -35,7 +35,7 @@
     <!-- black theme -->
     <color name="primary_black">#ff000000</color>
     <color name="primary_dark_black">#ff000000</color>
-    <color name="accent_black">#ffff9843</color>
+    <color name="accent_black">#ff7189c5</color>
     <color name="accent_light_black">#1aff9843</color>
     <color name="accent_light_black_disabled">#1a000000</color>
 
@@ -63,11 +63,11 @@
     <color name="darkwhite">#ff424242</color> <!-- dark theme other -->
     <color name="darkblue">#ff37474f</color> <!-- dark theme me -->
 
-    <!-- blabber theme -->
-    <color name="lightblabber">#fffff4ec</color> <!-- light theme other -->
-    <color name="lightblabber2">#ffe9eaee</color> <!-- light theme me -->
-    <color name="middleblabber">#ffb26a2e</color> <!-- dark theme other -->
-    <color name="darkblabber">#ff363839</color> <!-- dark theme me -->
+    <!-- monocles theme -->
+    <color name="lightmonocles">#fffff4ec</color> <!-- light theme other -->
+    <color name="lightmonocles2">#ffe9eaee</color> <!-- light theme me -->
+    <color name="middlemonocles">#ff2d5092</color> <!-- dark theme other -->
+    <color name="darkmonocles">#ff363839</color> <!-- dark theme me -->
 
     <!-- orange theme -->
     <color name="lightorange">#fffff3de</color> <!-- light theme other -->

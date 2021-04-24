@@ -82,7 +82,7 @@ public class MagicCreateActivity extends XmppActivity implements TextWatcher, Ad
         final List<String> domains = Arrays.asList(getResources().getStringArray(R.array.domains));
         Collections.sort(domains, String::compareToIgnoreCase);
         final ArrayAdapter<String> adapter = new ArrayAdapter<>(this, android.R.layout.simple_selectable_list_item, domains);
-        int defaultServer = adapter.getPosition("blabber.im");
+        int defaultServer = adapter.getPosition("monocles_messenger");
         if (registerFromUri && !useOwnProvider && (this.preAuth != null || domain != null)) {
             binding.server.setEnabled(false);
             binding.server.setVisibility(View.GONE);

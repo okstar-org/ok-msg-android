@@ -31,9 +31,9 @@ public class IntroActivity extends AppIntro2 {
         super.onCreate(savedInstanceState);
 
         final int backgroundColor = getResources().getColor(R.color.header_background);
-        final int barColor = getResources().getColor(R.color.accent_blabber);
-        final int indicatorColorActive = getResources().getColor(R.color.darkblabber);
-        final int indicatorColorUsed = getResources().getColor(R.color.darkblabber);
+        final int barColor = getResources().getColor(R.color.accent_monocles);
+        final int indicatorColorActive = getResources().getColor(R.color.darkmonocles);
+        final int indicatorColorUsed = getResources().getColor(R.color.darkmonocles);
 
         setBarColor(barColor);
         setIndicatorColor(indicatorColorActive, indicatorColorUsed);

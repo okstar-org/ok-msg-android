@@ -1,27 +1,27 @@
 # Announcement:
 
-## Pix-Art Messenger becomes blabber.im
+## Pix-Art Messenger becomes monocles_messenger
 
-The cooperation of the two projects blabber.im and Pix-Art Messenger will be further expanded in November 2020.
+The cooperation of the two projects monocles_messenger and Pix-Art Messenger will be further expanded in November 2020.
 
-Until now, blabber.im was only the default server in Pix-Art Messenger.
-In the future, the Android app Pix-Art Messenger will be continued under the name blabber.im.
+Until now, monocles_messenger was only the default server in Pix-Art Messenger.
+In the future, the Android app Pix-Art Messenger will be continued under the name monocles_messenger.
 
 What you can expect:
 - Range of functions remains the same
 - Support chat rooms are merged
-- Colors and logos are adapted to blabber.im
+- Colors and logos are adapted to monocles_messenger
 - App is still available for free in Google Play Store and F-Droid Store
 
-Your blabber.im Team
+Your monocles_messenger Team
 
 -----
 
-# <img src="art/logo_android.png" width="24"> blabber.im
+# <img src="art/logo_android.png" width="24"> monocles_messenger
 
 🇩🇪… [Deutsche Version der Readme hier verfügbar.](README.md)
 
-blabber.im is a fork of [Conversations](https://github.com/siacs/Conversations).
+monocles_messenger is a fork of [Conversations](https://github.com/siacs/Conversations).
 The changes aim to improve usability and ease transition from pre-installed and other widespread messengers. Here are some screenshots:
 
 <img src="metadata/en-US/phoneScreenshots/00.png" width="200" /> <img src="metadata/en-US/phoneScreenshots/01.png" width="200" /> <img src="metadata/en-US/phoneScreenshots/02.png" width="200" /> <img src="metadata/en-US/phoneScreenshots/03.png" width="200" /> <img src="metadata/en-US/phoneScreenshots/04.png" width="200" /> <img src="metadata/en-US/phoneScreenshots/05.png" width="200" /> <img src="metadata/en-US/phoneScreenshots/06.png" width="200" />
@@ -29,12 +29,12 @@ The changes aim to improve usability and ease transition from pre-installed and 
 (Images used were taken from http://freestockgallery.de)
 
 ## Download
-blabber.im is available for install in the F-Droid and Google-Play stores.
-Alternatively release and beta-release APKs are available via github: [Releases](https://codeberg.org/kriztan/blabber.im/releases/latest) 
+monocles_messenger is available for install in the F-Droid and Google-Play stores.
+Alternatively release and beta-release APKs are available via github: [Releases](https://codeberg.org/kriztan/monocles_messenger/releases/latest) 
 
-<a href='https://play.google.com/store/apps/details?id=im.blabber.messenger'><img alt='Get it on Google Play' src='https://play.google.com/intl/en_us/badges/images/generic/en_badge_web_generic.png' height="100"/></a> <a href="https://f-droid.org/app/de.pixart.messenger"><img src="https://f-droid.org/badge/get-it-on.png" alt="Get it on F-Droid" height="100"></a>
+<a href='https://play.google.com/store/apps/details?id=im.monocles.messenger'><img alt='Get it on Google Play' src='https://play.google.com/intl/en_us/badges/images/generic/en_badge_web_generic.png' height="100"/></a> <a href="https://f-droid.org/app/de.monocles.messenger"><img src="https://f-droid.org/badge/get-it-on.png" alt="Get it on F-Droid" height="100"></a>
 
-#### blabber.im nightly and beta
+#### monocles_messenger nightly and beta
 
 ##### F-Droid
 Scan the QR-Code below and add it to your F-Droid repositories.
@@ -43,18 +43,18 @@ Scan the QR-Code below and add it to your F-Droid repositories.
 
 #### Google Play
 Google-Users can join the Google-Play beta program:
-[blabber.im beta](https://play.google.com/apps/testing/im.blabber.messenger)
+[monocles_messenger beta](https://play.google.com/apps/testing/im.monocles.messenger)
 
 
 ## Social Media
-<a rel="me" href="https://kanoa.de/@blabber">blabber.im on Mastodon (German)</a>
+<a rel="me" href="https://kanoa.de/@monocles">monocles_messenger on Mastodon (German)</a>
 
-There are also English and German speaking XMPP-MUCs focusing on support and development of the blabber.im.
+There are also English and German speaking XMPP-MUCs focusing on support and development of the monocles_messenger.
 
 If you are interested in the development of the messenger, here is a MUC for you (English and German speaking):
 
-Development-Chat:  [blabber-dev@conference.blabber.im](https://blabber.im/j/blabber-dev@conference.blabber.im?join)     
-[![Users in muc](https://inverse.chat/badge.svg?blabber-dev@conference.blabber.im)](https://blabber.im/j/blabber-dev@conference.blabber.im?join)
+Development-Chat:  [monocles-dev@conference.monocles_messenger](https://monocles_messenger/j/monocles-dev@conference.monocles_messenger?join)     
+[![Users in muc](https://inverse.chat/badge.svg?monocles-dev@conference.monocles_messenger)](https://monocles_messenger/j/monocles-dev@conference.monocles_messenger?join)
 
 
 There also is an Support-MUC where you can ask questions and get help with issues you may encounter, see further below for details.
@@ -70,10 +70,10 @@ Translation of in-app text is organised via [crowdin.com](https://crowdin.com/pr
 ## Help! I've encountered issues!
 The easiest way to get some help is to join our support-MUC (both English and German).  
 
-Support-Chat invite link: [blabber@conference.blabber.im](https://blabber.im/j/blabber@conference.blabber.im?join)     
-[![Users in muc](https://inverse.chat/badge.svg?room=blabber@conference.blabber.im)](https://blabber.im/j/blabber@conference.blabber.im?join)
+Support-Chat invite link: [monocles@conference.monocles_messenger](https://monocles_messenger/j/monocles@conference.monocles_messenger?join)     
+[![Users in muc](https://inverse.chat/badge.svg?room=monocles@conference.monocles_messenger)](https://monocles_messenger/j/monocles@conference.monocles_messenger?join)
 
-If we can't fix your problem there, you can open an issue [here](https://codeberg.org/kriztan/blabber.im/issues), detailing your problem, how to reproduce it and provide logs. See instructions below on how to create log files.
+If we can't fix your problem there, you can open an issue [here](https://codeberg.org/kriztan/monocles_messenger/issues), detailing your problem, how to reproduce it and provide logs. See instructions below on how to create log files.
 
 
 
@@ -109,7 +109,7 @@ If we can't fix your problem there, you can open an issue [here](https://codeber
 
 4. Start outputting your log to a file on your computer. We will be using `logcat.txt`. Enter:
     ```
-    $ adb -d logcat -v time | grep -i blabber.im > logcat.txt
+    $ adb -d logcat -v time | grep -i monocles_messenger > logcat.txt
     ```
 
 5. Follow the remaining steps [12] and [13] of the Windows instructions.
@@ -149,7 +149,7 @@ If we can't fix your problem there, you can open an issue [here](https://codeber
     ```   
 11. Start outputting your log to a file on your computer. We will be using `logcat.txt` in `C:\ADB\`. Just enter the following (without `> ` into the command line):
     ```
-    > adb -d logcat -v time | FINDSTR blabber.im > logcat.txt
+    > adb -d logcat -v time | FINDSTR monocles_messenger > logcat.txt
     ``` 
 12. Now reproduce the issue encountered.
 

@@ -1,4 +1,4 @@
-package de.pixart.messenger.ui;
+package de.monocles.messenger.ui;
 
 import android.Manifest;
 import android.content.Context;

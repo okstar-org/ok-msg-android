@@ -1,6 +1,6 @@
 * improve compatibility with non libwebrtc WebRTC implementations
-* improve memory management (blabber.im)
-* ui improvements (blabber.im)
+* improve memory management (monocles_messenger)
+* ui improvements (monocles_messenger)
 * fix HTTP up/download for users that don’t trust system CAs
 * various bug fixes around Tor support
 * improve call compatibility with Dino

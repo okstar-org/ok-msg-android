@@ -92,7 +92,7 @@ public class FileBackend {
     private static final SimpleDateFormat fileDateFormat = new SimpleDateFormat("yyyyMMdd_HHmmssSSS", Locale.US);
 
     private static final String FILE_PROVIDER = ".files";
-    private static final String APP_DIRECTORY = "blabber.im";
+    private static final String APP_DIRECTORY = "monocles_messenger";
     public static final String FILES = "Files";
     public static final String SENT_FILES = "Files/Sent";
     public static final String AUDIOS = "Audios";
@@ -1911,23 +1911,23 @@ public class FileBackend {
 
 
     public static String getGlobalPicturesPath() {
-        return Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_PICTURES) + "/blabber.im/";
+        return Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_PICTURES) + "/monocles_messenger/";
     }
 
     public static String getGlobalVideosPath() {
-        return Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_MOVIES) + "/blabber.im/";
+        return Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_MOVIES) + "/monocles_messenger/";
     }
 
     public static String getGlobalDocumentsPath() {
         if (Compatibility.runsNineTeen()) {
-            return Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOCUMENTS) + "/blabber.im/";
+            return Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOCUMENTS) + "/monocles_messenger/";
         } else {
             return Environment.getExternalStorageDirectory().getAbsolutePath() + File.separator + "Documents";
         }
     }
 
     public static String getGlobalAudiosPath() {
-        return Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_MUSIC) + "/blabber.im/";
+        return Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_MUSIC) + "/monocles_messenger/";
     }
 
     public void saveFile(final Message message, final Activity activity) {
