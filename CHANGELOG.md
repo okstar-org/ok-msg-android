@@ -51,7 +51,7 @@
 
 #### Version 3.0.1
 #### Version 3.0.0
-* Pix-Art Messenger is now monocles chat
+* Monocles Messenger is now monocles chat
 * rework missed call notifications (monocles chat)
 * a lot UI improvements (monocles chat)
 * show backups from other chats (monocles chat)
@@ -728,7 +728,7 @@
 * bug fixes
 
 #### Versrion 1.7.3
-* changed app name from Conversations to Pix-Art Messenger (monocles_chat)
+* changed app name from Conversations to Monocles Messenger (monocles chat)
 * changed chat background to light yellow
 * added own name for sent locations (monocles_chat)
 

@@ -137,4 +137,4 @@ If we can't fix your problem there, you can open an issue [here](https://codeber
     ``` 
 12. Now reproduce the issue encountered.
 
-13. Stop logging (`Ctrl+C`). Now take a close look at your log file and remove any personal and private information you may find before sending it together with a detailed description of your issue, instructions on how to reproduce to me. You can use GitHub's issue tracker: [Issues](https://github.com/kriztan/Pix-Art-Messenger/issues)
+13. Stop logging (`Ctrl+C`). Now take a close look at your log file and remove any personal and private information you may find before sending it together with a detailed description of your issue, instructions on how to reproduce to me. You can use GitHub's issue tracker: [Issues](https://github.com/kriztan/Monocles-Messenger/issues)

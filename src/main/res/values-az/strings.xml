@@ -472,7 +472,7 @@
     <string name="load_more_messages">Daha çox mesaj yükləyin</string>
     <string name="no_storage_permission">monocles chat xarici yaddaşa izn tələb edir</string>
     <string name="sync_with_contacts">Kontaktlarla sinxronizasiya edin</string>
-    <string name="sync_with_contacts_long">monocles chat adlarınızı və avatarlarınızı göstərmək üçün XMPP siyahısınızı kontaktlarınızla uyğunlaşdırmaq istəyir.\n\nPix-Art Messenger serverlərinizə yükləmədən yalnız kontaktlarınızı oxuyacaq və yerli uyğunlaşacaq.\n\nİndi edəcəksiniz əlaqələrinizə daxil olmaq üçün icazə verilməsini istənir.</string>
+    <string name="sync_with_contacts_long">monocles chat adlarınızı və avatarlarınızı göstərmək üçün XMPP siyahısınızı kontaktlarınızla uyğunlaşdırmaq istəyir.\n\nMonocles Messenger serverlərinizə yükləmədən yalnız kontaktlarınızı oxuyacaq və yerli uyğunlaşacaq.\n\nİndi edəcəksiniz əlaqələrinizə daxil olmaq üçün icazə verilməsini istənir.</string>
     <string name="notify_on_all_messages">Bütün mesajlarda bildirin</string>
     <string name="notify_only_when_highlighted">Yalnız qeyd edildikdə bildirin</string>
     <string name="notify_never">Bildirişlər deaktiv edilmişdir</string>
@@ -1079,8 +1079,8 @@
     <string name="n_missed_calls_from_m_contacts">%2$d kontaktdan %1$d cavabsız zəng</string>
     <string name="pref_invidious_host_summary">Əlavə invidious hostun istifadəsi</string>
     <string name="pref_invidious_host">Invidious hostu</string>
-    <string name="updated_to_monocles">Biz uğurla Pix-Art Messenger-dən monocles_chat-ə keçdik\n\nİki layihənin əməkdaşlığı monocles_chat- i düzəltdik. Pıx-Art Messenger isə 2020-ci ilin noyabrında genişləndirilib. Gələcəkdə Pıx-Art Messenger Android tətbiqi monocles adı altında davam edəcək.\n\nNə gözləmək olar:\n- Həmin funksiyalar qalır\n- Çat otağların köçürmə imkanı\n- Rənglər və loqotiplər monocles_chat-ə uyğunlaşdırılmışdır\n- Tətbiq Google Play Store və F-Droid Store-da pulsuz olaraq mövcuddur\n\nSizin monocles_chat Team</string>
-    <string name="updated_to_monocles_google">Birbaşa monocles_chat-ə yeniləyə bilmədiyimiz üçün üzr istəməliyik. Aşağıdakı keçid altında bütün profillərinizi Pix-Art Messenger-dən monocles_chat-ə köçürmək barədə təlimat alacaqsınız. Hərəkət məlumatlarına tıklayaraq göndərilən və alınan bütün sənədləri Pix-Art Messenger-dən monocles_chat-ə köçürməyə çalışırıq. Uğurlu bir köçdən sonra Pix-Art Messenger\'i cihazınızdan silməyi unutmayın.</string>
+    <string name="updated_to_monocles">Biz uğurla Monocles Messenger-dən monocles chat-ə keçdik\n\nİki layihənin əməkdaşlığı monocles_chat- i düzəltdik. Pıx-Art Messenger isə 2020-ci ilin noyabrında genişləndirilib. Gələcəkdə Pıx-Art Messenger Android tətbiqi monocles adı altında davam edəcək.\n\nNə gözləmək olar:\n- Həmin funksiyalar qalır\n- Çat otağların köçürmə imkanı\n- Rənglər və loqotiplər monocles_chat-ə uyğunlaşdırılmışdır\n- Tətbiq Google Play Store və F-Droid Store-da pulsuz olaraq mövcuddur\n\nSizin monocles_chat Team</string>
+    <string name="updated_to_monocles_google">Birbaşa monocles_chat-ə yeniləyə bilmədiyimiz üçün üzr istəməliyik. Aşağıdakı keçid altında bütün profillərinizi Monocles Messenger-dən monocles_chat-ə köçürmək barədə təlimat alacaqsınız. Hərəkət məlumatlarına tıklayaraq göndərilən və alınan bütün sənədləri Monocles Messenger-dən monocles_chat-ə köçürməyə çalışırıq. Uğurlu bir köçdən sonra Monocles Messenger\'i cihazınızdan silməyi unutmayın.</string>
     <string name="link">Link</string>
     <string name="no_application_found">Heç bir tətbiq tapılmadı</string>
     <string name="move_data">Məlumatı köçürün</string>

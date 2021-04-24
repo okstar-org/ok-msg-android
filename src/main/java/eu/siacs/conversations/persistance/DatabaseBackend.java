@@ -466,13 +466,13 @@ public class DatabaseBackend extends SQLiteOpenHelper {
         }
         if (oldVersion < 36 && newVersion >= 36) {
             // only rename videos, images, audios and other files directories
-            final File oldPicturesDirectory = new File(Environment.getExternalStorageDirectory().getAbsolutePath() + "/Pix-Art Messenger/Images/");
-            final File oldFilesDirectory = new File(Environment.getExternalStorageDirectory().getAbsolutePath() + "/Pix-Art Messenger/Files/");
-            final File oldAudiosDirectory = new File(Environment.getExternalStorageDirectory().getAbsolutePath() + "/Pix-Art Messenger/Audios/");
-            final File oldVideosDirectory = new File(Environment.getExternalStorageDirectory().getAbsolutePath() + "/Pix-Art Messenger/Videos/");
+            final File oldPicturesDirectory = new File(Environment.getExternalStorageDirectory().getAbsolutePath() + "/Monocles Messenger/Images/");
+            final File oldFilesDirectory = new File(Environment.getExternalStorageDirectory().getAbsolutePath() + "/Monocles Messenger/Files/");
+            final File oldAudiosDirectory = new File(Environment.getExternalStorageDirectory().getAbsolutePath() + "/Monocles Messenger/Audios/");
+            final File oldVideosDirectory = new File(Environment.getExternalStorageDirectory().getAbsolutePath() + "/Monocles Messenger/Videos/");
 
             if (oldPicturesDirectory.exists() && oldPicturesDirectory.isDirectory()) {
-                final File newPicturesDirectory = new File(Environment.getExternalStorageDirectory() + "/Pix-Art Messenger/Media/Pix-Art Messenger Images/");
+                final File newPicturesDirectory = new File(Environment.getExternalStorageDirectory() + "/Monocles Messenger/Media/Monocles Messenger Images/");
                 newPicturesDirectory.getParentFile().mkdirs();
                 final File[] files = oldPicturesDirectory.listFiles();
                 if (files == null) {
@@ -483,7 +483,7 @@ public class DatabaseBackend extends SQLiteOpenHelper {
                 }
             }
             if (oldFilesDirectory.exists() && oldFilesDirectory.isDirectory()) {
-                final File newFilesDirectory = new File(Environment.getExternalStorageDirectory() + "/Pix-Art Messenger/Media/Pix-Art Messenger Files/");
+                final File newFilesDirectory = new File(Environment.getExternalStorageDirectory() + "/Monocles Messenger/Media/Monocles Messenger Files/");
                 newFilesDirectory.mkdirs();
                 final File[] files = oldFilesDirectory.listFiles();
                 if (files == null) {
@@ -494,7 +494,7 @@ public class DatabaseBackend extends SQLiteOpenHelper {
                 }
             }
             if (oldAudiosDirectory.exists() && oldAudiosDirectory.isDirectory()) {
-                final File newAudiosDirectory = new File(Environment.getExternalStorageDirectory() + "/Pix-Art Messenger/Media/Pix-Art Messenger Audios/");
+                final File newAudiosDirectory = new File(Environment.getExternalStorageDirectory() + "/Monocles Messenger/Media/Monocles Messenger Audios/");
                 newAudiosDirectory.mkdirs();
                 final File[] files = oldAudiosDirectory.listFiles();
                 if (files == null) {
@@ -505,7 +505,7 @@ public class DatabaseBackend extends SQLiteOpenHelper {
                 }
             }
             if (oldVideosDirectory.exists() && oldVideosDirectory.isDirectory()) {
-                final File newVideosDirectory = new File(Environment.getExternalStorageDirectory() + "/Pix-Art Messenger/Media/Pix-Art Messenger Videos/");
+                final File newVideosDirectory = new File(Environment.getExternalStorageDirectory() + "/Monocles Messenger/Media/Monocles Messenger Videos/");
                 newVideosDirectory.mkdirs();
                 final File[] files = oldVideosDirectory.listFiles();
                 if (files == null) {

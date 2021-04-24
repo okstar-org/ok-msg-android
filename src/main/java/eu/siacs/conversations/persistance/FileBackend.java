@@ -472,7 +472,7 @@ public class FileBackend {
     public static String getBackupDirectory(@Nullable String app) {
         if (app != null && (app.equalsIgnoreCase("conversations") || app.equalsIgnoreCase("Quicksy"))) {
             return Environment.getExternalStorageDirectory().getAbsolutePath() + "/" + app + "/Backup/";
-        } else if (app != null && (app.equalsIgnoreCase("Pix-Art Messenger"))) {
+        } else if (app != null && (app.equalsIgnoreCase("Monocles Messenger"))) {
             return Environment.getExternalStorageDirectory().getAbsolutePath() + File.separator + app + File.separator + "Database" + File.separator;
         } else {
             return Environment.getExternalStorageDirectory().getAbsolutePath() + File.separator + APP_DIRECTORY + File.separator + "Database" + File.separator;
