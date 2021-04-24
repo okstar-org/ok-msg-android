@@ -929,7 +929,7 @@
     <string name="pref_vibrate_in_chat_summary">Açıq çatda yeni bir mesaj gələndə vibrasiya ilə bildiriş</string>
     <string name="pref_vibrate_in_chat">Açıq çatda vibrasiya</string>
     <string name="open_backup">Ehtiyat nüsxəsini açmaq</string>
-    <string name="not_a_backup_file">Seçdiyiniz fayl monocles_chat-in ehtiyat nüsxə faylı deyil</string>
+    <string name="not_a_backup_file">Seçdiyiniz fayl monocles chat-in ehtiyat nüsxə faylı deyil</string>
     <string name="account_already_setup">Bu hesab artıq qurulmuşdur</string>
     <string name="please_enter_password">Zəhmət olmasa bu hesab üçün parol daxil edin</string>
     <string name="unable_to_perform_this_action">Bu hərəkəti yerinə yetirmək olmur</string>

@@ -98,9 +98,9 @@
 * play dial and busy tones on speaker during video calls
 * move channel discovery choice to ChannelDiscoveryActivity menu (monocles chat)
 * colorize accept/dismiss actions in call notification (monocles chat)
-* don't end call on pressing back key (monocles_chat)
-* show used account for calls (monocles_chat)
-* notify on missed calls (monocles_chat)
+* don't end call on pressing back key (monocles chat)
+* show used account for calls (monocles chat)
+* notify on missed calls (monocles chat)
 * bug fixes
 
 #### Version 2.4.0

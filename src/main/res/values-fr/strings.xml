@@ -93,7 +93,7 @@
     <string name="offering">Proposition…</string>
     <string name="waiting">Patientez…</string>
     <string name="no_pgp_key">Aucune clef OpenPGP trouvée.</string>
-    <string name="contact_has_no_pgp_key">monocles_chat ne peut pas chiffrer vos messages car votre contact n’a pas communiqué sa clef publique.\n\n<small>Demandez-lui de configurer OpenPGP.</small></string>
+    <string name="contact_has_no_pgp_key">monocles chat ne peut pas chiffrer vos messages car votre contact n’a pas communiqué sa clef publique.\n\n<small>Demandez-lui de configurer OpenPGP.</small></string>
     <string name="no_pgp_keys">Aucune clef OpenPGP n\'a été trouvée.</string>
     <string name="pref_general">Général</string>
     <string name="pref_accept_files_wifi">Accepter les fichiers en Wi-Fi</string>
@@ -111,7 +111,7 @@
     <string name="pref_sound">Sonnerie</string>
     <string name="pref_sound_summary">Jouer un son à la réception d’un nouveau message.</string>
     <string name="pref_send_crash">Envoyer les rapports de plantage</string>
-    <string name="pref_send_crash_summary">En envoyant des informations de débogage, vous contribuez au développement en cours de monocles_chat</string>
+    <string name="pref_send_crash_summary">En envoyant des informations de débogage, vous contribuez au développement en cours de monocles chat</string>
     <string name="pref_confirm_messages">Confirmation de lecture</string>
     <string name="pref_confirm_messages_summary">Informe vos contacts quand vous avez reçu et lu leurs messages.</string>
     <string name="pref_ui_options">Interface</string>
@@ -436,7 +436,7 @@
     <string name="pref_away_when_screen_off">Absent lorsque l\'appareil est verrouillé</string>
     <string name="pref_away_when_screen_off_summary">Votre statut est « Absent » lorsque votre appareil est verrouillé.</string>
     <string name="pref_dnd_on_silent_mode">Indisponible en mode silencieux</string>
-    <string name="update_info">monocles_chat est entrain de télécharger et d’installer la nouvelle version automatiquement.\n\nVeuillez patienter …</string>
+    <string name="update_info">monocles chat est entrain de télécharger et d’installer la nouvelle version automatiquement.\n\nVeuillez patienter …</string>
     <string name="pref_dnd_on_silent_mode_summary">Votre statut est « Ne pas déranger » lorsque votre appareil est en mode silencieux.</string>
     <string name="pref_treat_vibrate_as_silent">Mode vibreur idem silencieux</string>
     <string name="pref_treat_vibrate_as_dnd_summary">Votre statut est « Ne pas déranger » lorsque votre appareil est en mode vibreur.</string>
@@ -468,9 +468,9 @@
         <item quantity="other">%d messages</item>
     </plurals>
     <string name="load_more_messages">Charger plus de messages</string>
-    <string name="no_storage_permission">monocles_chat a besoin d\'accéder au stockage externe</string>
+    <string name="no_storage_permission">monocles chat a besoin d\'accéder au stockage externe</string>
     <string name="sync_with_contacts">Synchroniser avec les contacts</string>
-    <string name="sync_with_contacts_long">monocles_chat souhaite associer vos contacts XMPP avec les contacts de votre appareil, pour utiliser leur nom complet et leur avatar.\n\nmonocles_chat va uniquement lire vos contacts et les associer localement, sans les envoyer au serveur XMPP.\n\nVotre appareil va maintenant vous demander la permission d’accéder à vos contacts.</string>
+    <string name="sync_with_contacts_long">monocles chat souhaite associer vos contacts XMPP avec les contacts de votre appareil, pour utiliser leur nom complet et leur avatar.\n\nmonocles chat va uniquement lire vos contacts et les associer localement, sans les envoyer au serveur XMPP.\n\nVotre appareil va maintenant vous demander la permission d’accéder à vos contacts.</string>
     <string name="notify_on_all_messages">Notifier pour tous les messages</string>
     <string name="notify_only_when_highlighted">Notifier seulement en cas de mention</string>
     <string name="notify_never">Ne jamais notifier</string>
@@ -487,10 +487,10 @@
     <string name="always">Toujours</string>
     <string name="always_off">Toujours désactivé</string>
     <string name="battery_optimizations_enabled">Optimisations de batterie activées</string>
-    <string name="battery_optimizations_enabled_explained">Votre appareil procède à l\'optimisation de la consommation d’énergie de monocles_chat ce qui pourrait retarder les notifications ou mener à la perte de messages.\n\nIl est recommandé de la désactiver.</string>
-    <string name="battery_optimizations_enabled_dialog">Votre appareil procède à l\'optimisation de la consommation d’énergie de monocles_chat, ce qui pourrait retarder les notifications ou mener à la perte de messages.\n\nVous allez maintenant être invité à désactiver cette optimisation.</string>
+    <string name="battery_optimizations_enabled_explained">Votre appareil procède à l\'optimisation de la consommation d’énergie de monocles chat ce qui pourrait retarder les notifications ou mener à la perte de messages.\n\nIl est recommandé de la désactiver.</string>
+    <string name="battery_optimizations_enabled_dialog">Votre appareil procède à l\'optimisation de la consommation d’énergie de monocles chat, ce qui pourrait retarder les notifications ou mener à la perte de messages.\n\nVous allez maintenant être invité à désactiver cette optimisation.</string>
     <string name="install_from_unknown_sources_disabled">L’installation à partir de sources inconnues a été désactivée</string>
-    <string name="install_from_unknown_sources_disabled_dialog">Votre appareil est configuré pour autoriser uniquement l\'installation d\'applications de Google Play Store, ce qui bloque la mise à jour automatique de monocles_chat.\n\nAussi, il va vous être demandé maintenant d\'autoriser l\'installation d\'applications de \"sources inconnues\".</string>
+    <string name="install_from_unknown_sources_disabled_dialog">Votre appareil est configuré pour autoriser uniquement l\'installation d\'applications de Google Play Store, ce qui bloque la mise à jour automatique de monocles chat.\n\nAussi, il va vous être demandé maintenant d\'autoriser l\'installation d\'applications de \"sources inconnues\".</string>
     <string name="disable">Désactiver</string>
     <string name="cancel_update">Annuler la mise à jour ?</string>
     <string name="yes">Oui</string>
@@ -500,7 +500,7 @@
     <string name="correct_message">Corriger le message</string>
     <string name="send_corrected_message">Envoyer le message corrigé</string>
     <string name="no_keys_just_confirm">Vous faites déjà confiance à ce contact. En sélectionnant « Terminé » vous confirmerez seulement que %s est membre de cette conférence.</string>
-    <string name="contacts_have_no_pgp_keys">monocles_chat ne peut pas chiffrer vos messages car vos contacts ne communiquent pas leurs clefs publiques.\n\n</string>
+    <string name="contacts_have_no_pgp_keys">monocles chat ne peut pas chiffrer vos messages car vos contacts ne communiquent pas leurs clefs publiques.\n\n</string>
     <string name="this_account_is_disabled">Vous avez désactivé ce compte</string>
     <string name="no_application_to_share_uri">Aucune application trouvée pour partager l’URI</string>
     <string name="share_uri_with">Partager l’URI avec …</string>
@@ -536,11 +536,11 @@
     <string name="import_database">Importer une sauvegarde</string>
     <string name="invite_again">Inviter à nouveau</string>
     <string name="inviteUser_Subject">vous a invité via</string>
-    <string name="InviteText">Bonjour,\n\nl\'utilisateur/trice %s vous invite sur monocles_chat Cliquer simplement sur le lien suivant…</string>
+    <string name="InviteText">Bonjour,\n\nl\'utilisateur/trice %s vous invite sur monocles chat Cliquer simplement sur le lien suivant…</string>
     <string name="pref_broadcast_last_activity">Diffuser la dernière action utilisateur/trice</string>
-    <string name="pref_broadcast_last_activity_summary">Informer vos contacts quand vous utilisez monocles_chat</string>
-    <string name="request_permissions_message">monocles_chat vous demandera quelques permissions. Il est important que vous autorisiez toutes ces permissions afin de pouvoir utiliser toutes les fonctionnalités. Si vous refusez l\'une de ces permissions, l\'application se fermera d\'elle-même.</string>
-    <string name="request_permissions_message_again">Vous avez refusé tout ou une partie des permissions requises pour monocles_chat. Souhaitez-vous passer aux paramètres et autoriser ces permissions ? Si vous refusez l\'une de ces permissions, l\'application se fermera d\'elle-même.</string>
+    <string name="pref_broadcast_last_activity_summary">Informer vos contacts quand vous utilisez monocles chat</string>
+    <string name="request_permissions_message">monocles chat vous demandera quelques permissions. Il est important que vous autorisiez toutes ces permissions afin de pouvoir utiliser toutes les fonctionnalités. Si vous refusez l\'une de ces permissions, l\'application se fermera d\'elle-même.</string>
+    <string name="request_permissions_message_again">Vous avez refusé tout ou une partie des permissions requises pour monocles chat. Souhaitez-vous passer aux paramètres et autoriser ces permissions ? Si vous refusez l\'une de ces permissions, l\'application se fermera d\'elle-même.</string>
     <string name="unable_to_connect_to_keychain">Connexion à OpenKeychain impossible</string>
     <string name="this_device_is_no_longer_in_use">Cet appareil n\'est plus utilisé</string>
     <string name="please_wait">Veuillez patienter…</string>
@@ -568,8 +568,8 @@
     <string name="show_error_message">Afficher le message d’erreur</string>
     <string name="error_message">Message d\'erreur</string>
     <string name="data_saver_enabled">Économiseur de données activé</string>
-    <string name="data_saver_enabled_explained">Votre système d’exploitation empêche monocles_chat d’accéder à Internet lorsque l’application est en arrière-plan. Pour recevoir les notifications des nouveaux messages, vous devez autoriser monocles_chat à accéder au réseau sans restriction quand l’Économiseur de données est activé.\n\nmonocles_chat tentera de consommer le moins de données possible.</string>
-    <string name="device_does_not_support_data_saver">Votre appareil ne prend pas en charge la désactivation de l’Économiseur de données pour monocles_chat.</string>
+    <string name="data_saver_enabled_explained">Votre système d’exploitation empêche monocles chat d’accéder à Internet lorsque l’application est en arrière-plan. Pour recevoir les notifications des nouveaux messages, vous devez autoriser monocles chat à accéder au réseau sans restriction quand l’Économiseur de données est activé.\n\nmonocles chat tentera de consommer le moins de données possible.</string>
+    <string name="device_does_not_support_data_saver">Votre appareil ne prend pas en charge la désactivation de l’Économiseur de données pour monocles chat.</string>
     <string name="add_to_contact_list">Ajouter aux contacts</string>
     <string name="contact">Contact</string>
     <string name="unable_to_start_recording">Impossible de démarrer l’enregistrement</string>
@@ -673,9 +673,9 @@
     <string name="error_no_keys_to_trust_presence">Il n’y a aucune clef disponible pour ce contact.\nAssurez-vous d’avoir un abonnement de présence mutuelle.</string>
     <string name="mark_as_read">Marquer comme lu</string>
     <string name="server_info_partial">partiel</string>
-    <string name="pref_show_foreground_service_summary">Certains appareils Android ferment des applications (comme monocles_chat) après un certain temps et ainsi vous ne recevrez plus de nouveaux messages. Si vous rencontrez de tels problèmes, essayez d\'activer le service au premier plan. Mais gardez à l\'esprit que vous aurez une notification permanente avec cette option activée.</string>
+    <string name="pref_show_foreground_service_summary">Certains appareils Android ferment des applications (comme monocles chat) après un certain temps et ainsi vous ne recevrez plus de nouveaux messages. Si vous rencontrez de tels problèmes, essayez d\'activer le service au premier plan. Mais gardez à l\'esprit que vous aurez une notification permanente avec cette option activée.</string>
     <string name="pref_show_foreground_service">Utiliser le service au premier plan</string>
-    <string name="update_service">service de mise à jour de monocles_chat</string>
+    <string name="update_service">service de mise à jour de monocles chat</string>
     <string name="install_update">Installer la mise à jour ?</string>
     <string name="highlight_in_muc">Mettre en évidence l’utilisateur/trice</string>
     <string name="no_application_found_to_open_link">Aucune application disponible pour ouvrir le lien</string>
@@ -697,7 +697,7 @@
     <string name="no_write_access_in_public_muc">Vous ne participez pas à ce groupe de discussion et ne pouvez pas y écrire pour le moment.\nAllez SVP dans les détails du groupe en appuyant sur <b>OK</b> et envoyez un message privé au modérateur, administrateur ou propriétaire du groupe en appuyant longtemps sur son nom en haut de la liste pour lui demander l\'autorisation d\'écrire.</string>
     <string name="snooze">Silencer</string>
     <string name="huawei_protected_apps">Applications protégées</string>
-    <string name="huawei_protected_apps_summary">Pour continuer à recevoir des notifications, même lorsque l\'écran est éteint, vous devez ajouter monocles_chat à la liste des applications protégées.</string>
+    <string name="huawei_protected_apps_summary">Pour continuer à recevoir des notifications, même lorsque l\'écran est éteint, vous devez ajouter monocles chat à la liste des applications protégées.</string>
     <string name="pref_enable_multi_accounts_title">Activer les comptes multiples</string>
     <string name="pref_enable_multi_accounts_summary">Permet l\'utilisation de plusieurs comptes.</string>
     <string name="mtm_accept_cert">Accepter un certificat inconnu ?</string>
@@ -710,14 +710,14 @@
     <string name="qr_code_scanner_needs_access_to_camera">Le lecteur de QR code a besoin d’accéder à votre appareil photo</string>
     <string name="pref_scroll_to_bottom_summary">Aller en bas de la discussion une fois le message envoyé.</string>
     <string name="pref_scroll_to_bottom">Défiler vers le bas</string>
-    <string name="no_camera_permission">monocles_chat a besoin d’accéder à l\'appareil photo</string>
+    <string name="no_camera_permission">monocles chat a besoin d’accéder à l\'appareil photo</string>
     <string name="edit_status_message_title">Modifier votre message de statut</string>
     <string name="pref_automatically_delete_messages_description">Définir la durée de conservation des messages au-delà de laquelle ils seront automatiquement supprimés.</string>
     <string name="pref_automatically_delete_messages">Suppression automatique de messages</string>
     <string name="pref_automatically_delete_attachments_description">Supprimer automatiquement de cet appareil les pièces jointes plus anciennes que la durée de conservation des messages.</string>
     <string name="pref_automatically_delete_files">Suppression automatique des pièces jointes</string>
     <string name="disable_encryption">Désactiver le chiffrement</string>
-    <string name="error_trustkey_general">monocles_chat ne peut envoyer de messages chiffrés à %1$s. Il se peut que votre contact utilise soit un serveur ou un client ancien ne prenant pas en charge le chiffrement avec OMEMO.</string>
+    <string name="error_trustkey_general">monocles chat ne peut envoyer de messages chiffrés à %1$s. Il se peut que votre contact utilise soit un serveur ou un client ancien ne prenant pas en charge le chiffrement avec OMEMO.</string>
     <string name="error_trustkey_device_list">Impossible d’obtenir la liste des appareils</string>
     <string name="error_trustkey_bundle">Impossible d’obtenir la liste des appareils</string>
     <string name="error_trustkey_hint_mutual">Astuce : Dans certains cas ceci peut être résolu en s\'ajoutant mutuellement dans les listes de contacts.</string>
