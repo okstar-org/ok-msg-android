@@ -21,14 +21,13 @@ The changes aim to improve usability and ease transition from pre-installed and 
 
 <img src="metadata/en-US/phoneScreenshots/00.png" width="200" /> <img src="metadata/en-US/phoneScreenshots/01.png" width="200" /> <img src="metadata/en-US/phoneScreenshots/02.png" width="200" /> <img src="metadata/en-US/phoneScreenshots/03.png" width="200" /> <img src="metadata/en-US/phoneScreenshots/04.png" width="200" /> <img src="metadata/en-US/phoneScreenshots/05.png" width="200" /> <img src="metadata/en-US/phoneScreenshots/06.png" width="200" />
 
-(Images used were taken from http://freestockgallery.de)
-
 ## Download
 monocles chat is available for install in the F-Droid
 Alternatively release and beta-release APKs are available via codeberg: [Releases](https://codeberg.org/Arne/monocles_chat/releases/latest) 
 
 #### monocles chat nightly and beta
 
+nightly or beta-release APKs are available via codeberg: [Releases](https://codeberg.org/Arne/monocles_chat/releases/nightly) 
 
 ## Social Media
 <a rel="me" href="https://monocles.social/@monocles">monocles on Mastodon</a>

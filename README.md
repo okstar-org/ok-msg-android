@@ -21,8 +21,6 @@ monocles chat ist eine Kopie der Android Anwendung blabber.im und der offizielle
 
 <img src="metadata/en-US/phoneScreenshots/00.png" width="200" /> <img src="metadata/en-US/phoneScreenshots/01.png" width="200" /> <img src="metadata/en-US/phoneScreenshots/02.png" width="200" /> <img src="metadata/en-US/phoneScreenshots/03.png" width="200" /> <img src="metadata/en-US/phoneScreenshots/04.png" width="200" /> <img src="metadata/en-US/phoneScreenshots/05.png" width="200" /> <img src="metadata/en-US/phoneScreenshots/06.png" width="200" />
 
-(Bilder wurden über http://freestockgallery.de bezogen)
-
 Download ist hier möglich:
 <a href="https://f-droid.org/app/de.monocles.chat"><img src="https://f-droid.org/badge/get-it-on-de.png" alt="Jetzt bei F-Droid" height="100"></a>
 
@@ -32,7 +30,7 @@ Alternativ kannst du den Messenger auch direkt hier von Codeberg unter [Releases
 
 #### monocles chat nightly bzw. beta
 
-
+nightly oder beta Versionen kann man direkt hier von Codeberg unter [Releases](https://codeberg.org/Arne/monocles_chat/releases/latest) herunterladen.
 
 #### Wie kann ich bei der Übersetzung helfen?
 [![Crowdin](https://d322cqt584bo4o.cloudfront.net/pix-art-chat/localized.svg)](https://crowdin.com/project/pix-art-chat)
