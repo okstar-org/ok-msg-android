@@ -165,7 +165,7 @@ android {
         playstore {
             dimension "distribution"
             versionNameSuffix "-playstore"
-            applicationId "im.monocles.chat"
+            applicationId "de.monocles.chat"
             buildConfigField("boolean", "SHOW_MIGRATION_INFO", 'false')
             resValue "string", "applicationId", applicationId
         }
