@@ -509,7 +509,7 @@
     <string name="registration_password_too_weak">Реєстрація не відбулася: пароль занадто слабкий.</string>
     <string name="choose_participants">Вибрати учасників</string>
     <string name="creating_conference">Створення групи…</string>
-    <string name="import_text">Для відновлення з резервної копії натисніть на цю кнопку.</string>
+    <string name="import_text">Для відновлення з резервної копії натисніть на цю кнопку.(Monocles Messenger, Conversations, blabber.im)</string>
     <string name="import_database">Імпортувати резервну копію</string>
     <string name="invite_again">Запросити знову</string>
     <string name="inviteUser_Subject">запросив вас через</string>

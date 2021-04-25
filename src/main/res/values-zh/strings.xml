@@ -503,7 +503,7 @@
     <string name="registration_password_too_weak">注册失败：密码太简单</string>
     <string name="choose_participants">选择参与者</string>
     <string name="creating_conference">正在创建群聊…</string>
-    <string name="import_text">您可以按下面的按钮来恢复备份。</string>
+    <string name="import_text">您可以按下面的按钮来恢复备份。(Monocles Messenger, Conversations, blabber.im)</string>
     <string name="import_database">恢复备份</string>
     <string name="invite_again">再次邀请</string>
     <string name="inviteUser_Subject">已邀请您，通过</string>

@@ -520,7 +520,7 @@ Nie spowoduje to usunięcia kopii wiadomości przechowywanych na innych urządze
     <string name="registration_password_too_weak">Rejestracja nie powiodła się: hasło zbyt słabe</string>
     <string name="choose_participants">Wybierz uczestnika</string>
     <string name="creating_conference">Utwórz czat grupowy…</string>
-    <string name="import_text">Jeśli dostępna jest kopia zapasowa, możesz ją zaimportować używając przycisku poniżej.</string>
+    <string name="import_text">Jeśli dostępna jest kopia zapasowa, możesz ją zaimportować używając przycisku poniżej.(Monocles Messenger, Conversations, blabber.im)</string>
     <string name="import_database">Importować backup</string>
     <string name="invite_again">Zaproś ponownie</string>
     <string name="inviteUser_Subject">zaprosił/a Cie poprzez</string>
@@ -943,7 +943,7 @@ Nie spowoduje to usunięcia kopii wiadomości przechowywanych na innych urządze
     <string name="intro_desc_whats_xmpp">XMPP, nazywane również Jabberem, jest zdecentralizowaną platformą komunikacyjną działającą podobnie do poczty elektronicznej. Aby korzystać z XMPP potrzebujesz adresu zwanego Jabber-ID, hasła i komunikatora. Więcej o tym za chwilę.</string>
     <string name="intro_whats_xmpp">Czym jest XMPP / Jabber / monocles chat?</string>
     <string name="intro_desc_optional_permissions">Uprawnienie do czytania Twojej listy kontaktów jest wymagane dla dopasowywania ich do istnięjących adresów XMPP (Jabber ID). monocles chat nie dziel się nikim Twoimi kontaktami.</string>
-    <string name="intro_desc_account2">Możesz stworzyć nowy profil na monocles chat, wpisując pseudonim.</string>
+    <string name="intro_desc_account2">Możesz stworzyć nowy profil na monocles, wpisując pseudonim.</string>
     <string name="open_join_dialog">Dołącz do kanału publicznego…</string>
     <string name="intro_optional_permissions">Uprawnienia opcjonalne</string>
     <string name="intro_desc_optional_permissions2">monocles chat potrzebuje uprawnień do uzyskania Twojej lokalizacji w celu udostępniania przez Ciebie lokalizacji.\nW celu wysyłania wiadomości głosowych monocles chat potrzebuje uprawnień do korzystania z mikrofonu.</string>

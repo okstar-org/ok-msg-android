@@ -534,7 +534,7 @@
     <string name="registration_password_too_weak">Qeydiyyat alınmadı: parol çox zəifdir</string>
     <string name="choose_participants">İştirakçıları seçin</string>
     <string name="creating_conference">Qrup söhbəti yaradılır…</string>
-    <string name="import_text">Mövcud bir nüsxə varsa, aşağıdakı düyməni basaraq idxal edə bilərsiniz.</string>
+    <string name="import_text">Mövcud bir nüsxə varsa, aşağıdakı düyməni basaraq idxal edə bilərsiniz.(Monocles Messenger, Conversations, blabber.im)</string>
     <string name="import_database">Nüsxəni idxal et</string>
     <string name="invite_again">Yenidən dəvət et</string>
     <string name="inviteUser_Subject">vasitəsilə sizi dəvət etdi</string>
@@ -961,7 +961,7 @@
     <string name="intro_desc_whats_xmpp">XMPP, həmçinin jabber adlanır, mərkəzləşdirilmiş kommunikasiya şəbəkəsidir və e-poçt kimi işləyir. Siz Jabber-ID, parol və chat adlı bir ünvan lazımdır. Bu barədə daha ətraflı bir qədər sonra.</string>
     <string name="intro_whats_xmpp">XMPP / Jabber / monocles_chat nədir?</string>
     <string name="intro_desc_optional_permissions">Ünvan kitabınızı oxumaq üçün icazələr kontaktlarınızdan Jabber-ID (əgər varsa) oxumaq üçün tələb olunur. Kontaktlar heç vaxt paylaşılmır, yüklənmir və kopyalanmır.</string>
-    <string name="intro_desc_account2">Siz yalnız ləqəb yazaraq yeni bir monocles_chat profil yarada bilərsiniz.</string>
+    <string name="intro_desc_account2">Siz yalnız ləqəb yazaraq yeni bir monocles profil yarada bilərsiniz.</string>
     <string name="open_join_dialog">İctimai kanala qoşulun…</string>
     <string name="intro_optional_permissions">Könüllü icazələr</string>
     <string name="intro_desc_optional_permissions2">Məkanınızı bölüşmək istəsəniz, yeriniz üçün icazələr lazımdır. \nSəsli mesajları paylaşmaq üçün mikrofonunuza giriş əldə etmək tələb olunur.</string>

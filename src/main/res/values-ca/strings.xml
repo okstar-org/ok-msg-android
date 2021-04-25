@@ -532,7 +532,7 @@
     <string name="registration_password_too_weak">Error en el registre: La contrasenya és massa dèbil</string>
     <string name="choose_participants">Escolleix als participants</string>
     <string name="creating_conference">Crear xat de grup…</string>
-    <string name="import_text">Si hi ha una còpia de seguretat disponible, pot importar-la prement el botó de baix.</string>
+    <string name="import_text">Si hi ha una còpia de seguretat disponible, pot importar-la prement el botó de baix.(Monocles Messenger, Conversations, blabber.im)</string>
     <string name="import_database">Importar còpia de seguretat</string>
     <string name="invite_again">Convidar de nou</string>
     <string name="inviteUser_Subject">t\'ha convidat a través de</string>
@@ -960,7 +960,7 @@
     <string name="intro_desc_whats_xmpp">XMPP, també anomenat Jabber, és una xarxa de comunicació descentralitzada i funciona com el correu electrònic. Es necessita una direcció anomenada Jabber-ANEU, una contrasenya i un missatger. Més endavant es parlarà d\'això.</string>
     <string name="intro_whats_xmpp">Què és XMPP / Jabber / monocles chat?</string>
     <string name="intro_desc_optional_permissions">Els permisos per a llegir la seva llibreta d\'adreces són necessaris per a llegir els Jabber-IDs (si n\'hi ha) dels seus contactes. Els contactes mai es comparteixen, carreguen o copien.</string>
-    <string name="intro_desc_account2">Pot crear un nou perfil en monocles chat simplement introduint un sobrenom.</string>
+    <string name="intro_desc_account2">Pot crear un nou perfil en monocles simplement introduint un sobrenom.</string>
     <string name="open_join_dialog">Unir-se al canal públic…</string>
     <string name="intro_optional_permissions">Permisos opcionals</string>
     <string name="intro_desc_optional_permissions2">Es necessiten permisos per a la seva ubicació si desitja compartir la seva ubicació.\nPer a compartir missatges de veu és necessari obtenir accés al seu micròfon.</string>

@@ -532,7 +532,7 @@
     <string name="registration_password_too_weak">Error en el registro: La contraseña es demasiado débil</string>
     <string name="choose_participants">Elige a los participantes</string>
     <string name="creating_conference">Crear chat de grupo…</string>
-    <string name="import_text">Si hay una copia de seguridad disponible, puedes importarla pulsando el botón de debajo.</string>
+    <string name="import_text">Si hay una copia de seguridad disponible, puedes importarla pulsando el botón de debajo.(Monocles Messenger, Conversations, blabber.im)</string>
     <string name="import_database">Importar copia de seguridad</string>
     <string name="invite_again">Invitar de nuevo</string>
     <string name="inviteUser_Subject">te ha invitado a través de</string>
@@ -960,7 +960,7 @@
     <string name="intro_desc_whats_xmpp">XMPP, también conocido como Jabber, es una red de comunicación descentralizada y funciona parecido al correo electrónico. Necesitar una dirección llamada Jabber-ID, una contraseña y un cliente. Más información más adelante.</string>
     <string name="intro_whats_xmpp">¿Qué es XMPP / Jabber / monocles chat?</string>
     <string name="intro_desc_optional_permissions">El permiso para leer tu libreta de direcciones es necesario para leer los Jabber-IDs (si hay alguno) desde tus contactos. Los contactos nunca se comparten, se suben o se copian.</string>
-    <string name="intro_desc_account2">Puedes crear un nuevo perfil en monocles chat solo entrando un alias.</string>
+    <string name="intro_desc_account2">Puedes crear un nuevo perfil en monocles solo entrando un alias.</string>
     <string name="open_join_dialog">Unirse a un canal público…</string>
     <string name="intro_optional_permissions">Permisos opcionales</string>
     <string name="intro_desc_optional_permissions2">El permiso para tu ubicación es necesario si quieres compartir tu ubicación.\nPara usar mensajes de voz se requiere tener acceso a tu micrófono.</string>

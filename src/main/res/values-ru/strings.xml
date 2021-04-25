@@ -538,7 +538,7 @@
     <string name="registration_password_too_weak">Ошибка регистрации: Пароль слишком простой</string>
     <string name="choose_participants">Выберите участников</string>
     <string name="creating_conference">Создание группового чата...</string>
-    <string name="import_text">Если существует резервная копия, Вы можете импортировать ее, нажав кнопку ниже.</string>
+    <string name="import_text">Если существует резервная копия, Вы можете импортировать ее, нажав кнопку ниже.(Monocles Messenger, Conversations, blabber.im)</string>
     <string name="import_database">Импортировать резервную копию</string>
     <string name="invite_again">Пригласить снова</string>
     <string name="inviteUser_Subject">приглашает вас присоединиться через</string>
@@ -982,7 +982,7 @@
     <string name="intro_desc_whats_xmpp">XMPP, также известный как jabber, является децентрализованной коммуникационной сетью и работает подобно электронной почте. Вам понадобится адрес под названием Jabber-ID, пароль и мессенджер. Подробнее об этом позже.</string>
     <string name="intro_whats_xmpp">Что такое XMPP / Jabber / monocles chat?</string>
     <string name="intro_desc_optional_permissions">Разрешение на чтение Вашей адресной книги необходимо для получения Jabber-ID (если есть) Ваших контактов. Контакты никогда не передаются, не загружаются и не копируются.</string>
-    <string name="intro_desc_account2">Вы можете создать новый профиль на monocles chat, просто введя ник.</string>
+    <string name="intro_desc_account2">Вы можете создать новый профиль на monocles, просто введя ник.</string>
     <string name="open_join_dialog">Присоединиться к публичному каналу…</string>
     <string name="intro_optional_permissions">Дополнительные разрешения</string>
     <string name="intro_desc_optional_permissions2">Разрешение на доступ к Вашему местоположению необходимо, если Вы хотите поделиться своим местоположением.\nДля обмена голосовыми сообщениями требуется доступ к Вашему микрофону.</string>

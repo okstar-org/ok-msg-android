@@ -532,7 +532,7 @@
     <string name="registration_password_too_weak">Échec de l’enregistrement : le mot de passe n’est pas assez fort</string>
     <string name="choose_participants">Choisir les participant⸱e⸱s</string>
     <string name="creating_conference">Création du groupe de discussion…</string>
-    <string name="import_text">Si une sauvegarde est disponible, vous pouvez la restaurer en appuyant sur le bouton ci-dessous.</string>
+    <string name="import_text">Si une sauvegarde est disponible, vous pouvez la restaurer en appuyant sur le bouton ci-dessous.(Monocles Messenger, Conversations, blabber.im)</string>
     <string name="import_database">Importer une sauvegarde</string>
     <string name="invite_again">Inviter à nouveau</string>
     <string name="inviteUser_Subject">vous a invité via</string>
@@ -960,7 +960,7 @@
     <string name="intro_desc_whats_xmpp">XMPP, également appelé Jabber, est un réseau de communication décentralisé et fonctionne comme le courrier électronique. Vous avez besoin d\'une adresse appelée identifiant Jabber, d\'un mot de passe et d\'un messager. Nous reviendrons plus tard sur ce sujet.</string>
     <string name="intro_whats_xmpp">Qu\'est-ce que XMPP / Jabber / monocles_chat ?</string>
     <string name="intro_desc_optional_permissions">Vous devez autoriser la lecture de votre carnet d\'adresses pour lire les identifiants Jabber de vos contacts (s\'ils en possèdent). Les contacts ne sont jamais partagés, téléchargés ou copiés.</string>
-    <string name="intro_desc_account2">Vous pouvez créer un nouveau profile sur monocles_chat en tapant votre surnom.</string>
+    <string name="intro_desc_account2">Vous pouvez créer un nouveau profile sur monocles en tapant votre surnom.</string>
     <string name="open_join_dialog">Rejoindre un canal public…</string>
     <string name="intro_optional_permissions">Permissions optionnelles</string>
     <string name="intro_desc_optional_permissions2">L\'accès à votre position est nécessaire si vous souhaitez la partager.\nPour envoyer des messages audio il est nécessaire d\'avoir accès à votre micro.</string>
