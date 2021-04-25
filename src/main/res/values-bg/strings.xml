@@ -449,7 +449,7 @@
     <string name="always">Винаги</string>
     <string name="battery_optimizations_enabled">Оптимизациите на батерията са активирани</string>
     <string name="install_from_unknown_sources_disabled">Инсталиране от неизвестни източници е деактивирано</string>
-    <string name="install_from_unknown_sources_disabled_dialog">Устройството ви е конфигурирано да не позволява инсталирането на приложения от неизвестни източници, освен от Google PlayStore. Това ще доведе до проблеми с програмата за актуализиране на приложения.\n\nСега ще бъдете помолени да разрешите инсталирането на приложения от неизвестни източници.</string>
+    <string name="install_from_unknown_sources_disabled_dialog">Устройството ви е конфигурирано да не позволява инсталирането на приложения от неизвестни източници, освен от codeberg. Това ще доведе до проблеми с програмата за актуализиране на приложения.\n\nСега ще бъдете помолени да разрешите инсталирането на приложения от неизвестни източници.</string>
     <string name="disable">Изключен</string>
     <string name="cancel_update">Анулиране на подновеването?</string>
     <string name="yes">Да</string>

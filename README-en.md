@@ -6,7 +6,7 @@ What you can expect:
 - Range of functions remains the same
 - Support chat rooms are merged
 - Colors and logos are adapted to monocles chat
-- App is still available for free in Google Play Store and F-Droid Store
+- App is still available for free on codeberg and F-Droid Store
 
 Your monocles Team
 

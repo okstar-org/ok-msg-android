@@ -7,7 +7,7 @@ Was euch erwartet:
 - Funktionsumfang bleibt erhalten
 - Support Chaträume werden zusammengelegt
 - Farben und Logos werden an monocles chat angepasst
-- App ist weiterhin kostenlos im Google Play Store und F-Droid Store verfügbar
+- App ist weiterhin kostenlos auf codeberg und F-Droid Store verfügbar
 
 Euer monocles Team
 
@@ -24,8 +24,7 @@ monocles chat ist eine Kopie der Android Anwendung blabber.im und der offizielle
 (Bilder wurden über http://freestockgallery.de bezogen)
 
 Download ist hier möglich:
-
-<a href='https://play.google.com/store/apps/details?id=im.monocles.chat'><img alt='Jeztz bei Google Play' src='https://play.google.com/intl/en_us/badges/images/generic/de_badge_web_generic.png' height="100"/></a> <a href="https://f-droid.org/app/de.monocles.chat"><img src="https://f-droid.org/badge/get-it-on-de.png" alt="Jetzt bei F-Droid" height="100"></a>
+<a href="https://f-droid.org/app/de.monocles.chat"><img src="https://f-droid.org/badge/get-it-on-de.png" alt="Jetzt bei F-Droid" height="100"></a>
 
 Alternativ kannst du den Messenger auch direkt hier von Codeberg unter [Releases](https://codeberg.org/Arne/monocles_chat/releases/latest) herunterladen.
 
