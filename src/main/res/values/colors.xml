@@ -93,7 +93,7 @@
 
     <!-- main colors -->
     <color name="realgreen">#ff388e3c</color>  <!-- green 700 -->
-    <color name="header_background">#ff363839</color>
+    <color name="header_background">#663e5ea2</color>
     <color name="black">#ff000000</color>
     <color name="black87">#de000309</color>
     <color name="black54">#8a000309</color>
