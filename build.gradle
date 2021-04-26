@@ -100,6 +100,14 @@ ext {
 
 android {
 
+    signingConfigs {
+        'monocles chat' {
+            storeFile file('/home/arne/StudioProjects/vogelsang.jks')
+            storePassword 'OcHJ0bq-Ud73'
+            keyAlias 'KeyC'
+            keyPassword 'erKC-aeVN012P7'
+        }
+    }
     compileSdkVersion 29
 
     defaultConfig {
