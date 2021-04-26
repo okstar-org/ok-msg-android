@@ -168,10 +168,13 @@ android {
             applicationId "de.monocles.chat"
             buildConfigField("boolean", "SHOW_MIGRATION_INFO", 'false')
             resValue "string", "applicationId", applicationId
+            signingConfig signingConfigs.'monocles chat'
         }
         git {
             dimension "distribution"
             buildConfigField("boolean", "SHOW_MIGRATION_INFO", 'true')
+            applicationId 'de.monocles.chat'
+            signingConfig signingConfigs.'monocles chat'
         }
     }
     if (project.hasProperty('mStoreFile') &&

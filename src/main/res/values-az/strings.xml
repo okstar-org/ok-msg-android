@@ -959,7 +959,7 @@
     <string name="show_intro_again">Intro ekranları yenidən göstəriləcək</string>
     <string name="show_intro_again_failed">Intro ekranlarını sıfırlamaq alınmadı. Yenidən cəhd elə…</string>
     <string name="intro_desc_whats_xmpp">XMPP, həmçinin jabber adlanır, mərkəzləşdirilmiş kommunikasiya şəbəkəsidir və e-poçt kimi işləyir. Siz Jabber-ID, parol və chat adlı bir ünvan lazımdır. Bu barədə daha ətraflı bir qədər sonra.</string>
-    <string name="intro_whats_xmpp">XMPP / Jabber / monocles_chat nədir?</string>
+    <string name="intro_whats_xmpp">XMPP / Jabber / monocles chat nədir?</string>
     <string name="intro_desc_optional_permissions">Ünvan kitabınızı oxumaq üçün icazələr kontaktlarınızdan Jabber-ID (əgər varsa) oxumaq üçün tələb olunur. Kontaktlar heç vaxt paylaşılmır, yüklənmir və kopyalanmır.</string>
     <string name="intro_desc_account2">Siz yalnız ləqəb yazaraq yeni bir monocles profil yarada bilərsiniz.</string>
     <string name="open_join_dialog">İctimai kanala qoşulun…</string>
@@ -986,7 +986,7 @@
     <string name="ask_for_writeaccess">Zəhmət olmasa yazmaq üçün müraciət edin</string>
     <string name="pref_theme_blue">Mavi</string>
     <string name="pref_theme_orange">Narıncı</string>
-    <string name="pref_theme_monocles">monocles_chat</string>
+    <string name="pref_theme_monocles">monocles</string>
     <string name="pref_theme_grey">Boz</string>
     <string name="pref_theme_pink">Çəhrayı</string>
     <string name="pref_theme_black">Qara (AMOLED)</string>
@@ -1079,8 +1079,8 @@
     <string name="n_missed_calls_from_m_contacts">%2$d kontaktdan %1$d cavabsız zəng</string>
     <string name="pref_invidious_host_summary">Əlavə invidious hostun istifadəsi</string>
     <string name="pref_invidious_host">Invidious hostu</string>
-    <string name="updated_to_monocles">Biz uğurla Monocles Messenger-dən monocles chat-ə keçdik\n\nİki layihənin əməkdaşlığı monocles_chat- i düzəltdik. Pıx-Art Messenger isə 2020-ci ilin noyabrında genişləndirilib. Gələcəkdə Pıx-Art Messenger Android tətbiqi monocles adı altında davam edəcək.\n\nNə gözləmək olar:\n- Həmin funksiyalar qalır\n- Çat otağların köçürmə imkanı\n- Rənglər və loqotiplər monocles_chat-ə uyğunlaşdırılmışdır\n- Tətbiq Google Play Store və F-Droid Store-da pulsuz olaraq mövcuddur\n\nSizin monocles_chat Team</string>
-    <string name="updated_to_monocles_google">Birbaşa monocles_chat-ə yeniləyə bilmədiyimiz üçün üzr istəməliyik. Aşağıdakı keçid altında bütün profillərinizi Monocles Messenger-dən monocles_chat-ə köçürmək barədə təlimat alacaqsınız. Hərəkət məlumatlarına tıklayaraq göndərilən və alınan bütün sənədləri Monocles Messenger-dən monocles_chat-ə köçürməyə çalışırıq. Uğurlu bir köçdən sonra Monocles Messenger\'i cihazınızdan silməyi unutmayın.</string>
+    <string name="updated_to_monocles">Biz uğurla Monocles Messenger-dən monocles chat-ə keçdik\n\nİki layihənin əməkdaşlığı monocles chat- i düzəltdik. Pıx-Art Messenger isə 2020-ci ilin noyabrında genişləndirilib. Gələcəkdə Pıx-Art Messenger Android tətbiqi monocles adı altında davam edəcək.\n\nNə gözləmək olar:\n- Həmin funksiyalar qalır\n- Çat otağların köçürmə imkanı\n- Rənglər və loqotiplər monocles chat-ə uyğunlaşdırılmışdır\n- Tətbiq Google Play Store və F-Droid Store-da pulsuz olaraq mövcuddur\n\nSizin monocles chat Team</string>
+    <string name="updated_to_monocles_google">Birbaşa monocles chat-ə yeniləyə bilmədiyimiz üçün üzr istəməliyik. Aşağıdakı keçid altında bütün profillərinizi Monocles Messenger-dən monocles chat-ə köçürmək barədə təlimat alacaqsınız. Hərəkət məlumatlarına tıklayaraq göndərilən və alınan bütün sənədləri Monocles Messenger-dən monocles chat-ə köçürməyə çalışırıq. Uğurlu bir köçdən sonra Monocles Messenger\'i cihazınızdan silməyi unutmayın.</string>
     <string name="link">Link</string>
     <string name="no_application_found">Heç bir tətbiq tapılmadı</string>
     <string name="move_data">Məlumatı köçürün</string>
