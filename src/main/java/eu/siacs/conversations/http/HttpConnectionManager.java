@@ -19,7 +19,6 @@ import java.util.concurrent.Executor;
 import java.util.concurrent.Executors;
 import java.util.concurrent.TimeUnit;
 
-import javax.net.ssl.HostnameVerifier;
 import javax.net.ssl.SSLSocketFactory;
 import javax.net.ssl.X509TrustManager;
 
@@ -124,7 +123,6 @@ public class HttpConnectionManager extends AbstractConnectionManager {
 
     private void setupTrustManager(final OkHttpClient.Builder builder, final boolean interactive) {
         final X509TrustManager trustManager;
-        final HostnameVerifier hostnameVerifier = mXmppConnectionService.getMemorizingTrustManager().wrapHostnameVerifier(new StrictHostnameVerifier(), interactive);
         if (interactive) {
             trustManager = mXmppConnectionService.getMemorizingTrustManager().getInteractive();
         } else {
@@ -133,7 +131,7 @@ public class HttpConnectionManager extends AbstractConnectionManager {
         try {
             final SSLSocketFactory sf = new TLSSocketFactory(new X509TrustManager[]{trustManager}, mXmppConnectionService.getRNG());
             builder.sslSocketFactory(sf, trustManager);
-            builder.hostnameVerifier(hostnameVerifier);
+            builder.hostnameVerifier(new StrictHostnameVerifier());
         } catch (final KeyManagementException ignored) {
         } catch (final NoSuchAlgorithmException ignored) {
         }

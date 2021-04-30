@@ -55,7 +55,6 @@ import javax.net.ssl.X509TrustManager;
 import eu.siacs.conversations.BuildConfig;
 import eu.siacs.conversations.Config;
 import eu.siacs.conversations.R;
-import eu.siacs.conversations.crypto.DomainHostnameVerifier;
 import eu.siacs.conversations.crypto.XmppDomainVerifier;
 import eu.siacs.conversations.crypto.axolotl.AxolotlService;
 import eu.siacs.conversations.crypto.sasl.Anonymous;
@@ -454,7 +453,7 @@ public class XmppConnection implements Runnable {
         return tag != null && tag.isStart("stream");
     }
 
-    private TlsFactoryVerifier getTlsFactoryVerifier() throws NoSuchAlgorithmException, KeyManagementException, IOException {
+    private SSLSocketFactory getSSLSocketFactory() throws NoSuchAlgorithmException, KeyManagementException {
         final SSLContext sc = SSLSocketHelper.getSSLContext();
         final MemorizingTrustManager trustManager = this.mXmppConnectionService.getMemorizingTrustManager();
         final KeyManager[] keyManager;
@@ -465,9 +464,7 @@ public class XmppConnection implements Runnable {
         }
         final String domain = account.getServer();
         sc.init(keyManager, new X509TrustManager[]{mInteractive ? trustManager.getInteractive(domain) : trustManager.getNonInteractive(domain)}, mXmppConnectionService.getRNG());
-        final SSLSocketFactory factory = sc.getSocketFactory();
-        final DomainHostnameVerifier verifier = trustManager.wrapHostnameVerifier(new XmppDomainVerifier(), mInteractive);
-        return new TlsFactoryVerifier(factory, verifier);
+        return sc.getSocketFactory();
     }
 
     @Override
@@ -848,26 +845,27 @@ public class XmppConnection implements Runnable {
     }
 
     private SSLSocket upgradeSocketToTls(final Socket socket) throws IOException {
-        final TlsFactoryVerifier tlsFactoryVerifier;
+        final SSLSocketFactory sslSocketFactory;
         try {
-            tlsFactoryVerifier = getTlsFactoryVerifier();
+            sslSocketFactory = getSSLSocketFactory();
         } catch (final NoSuchAlgorithmException | KeyManagementException e) {
             throw new StateChangingException(Account.State.TLS_ERROR);
         }
         final InetAddress address = socket.getInetAddress();
         final SSLSocket sslSocket;
         try {
-          sslSocket = (SSLSocket) tlsFactoryVerifier.factory.createSocket(socket, address.getHostAddress(), socket.getPort(), true);
+          sslSocket = (SSLSocket) sslSocketFactory.createSocket(socket, address.getHostAddress(), socket.getPort(), true);
         } catch (Exception e) {
             throw new StateChangingException(Account.State.TLS_ERROR);
         }
         SSLSocketHelper.setSecurity(sslSocket);
         SSLSocketHelper.setHostname(sslSocket, IDN.toASCII(account.getServer()));
         SSLSocketHelper.setApplicationProtocol(sslSocket, "xmpp-client");
-        if (!tlsFactoryVerifier.verifier.verify(account.getServer(), this.verifiedHostname, sslSocket.getSession())) {
-            Log.d(Config.LOGTAG, account.getJid().asBareJid() + ": TLS certificate verification failed");
+        final XmppDomainVerifier xmppDomainVerifier = new XmppDomainVerifier();
+        if (!xmppDomainVerifier.verify(account.getServer(), this.verifiedHostname, sslSocket.getSession())) {
+            Log.d(Config.LOGTAG, account.getJid().asBareJid() + ": TLS certificate domain verification failed");
             FileBackend.close(sslSocket);
-            throw new StateChangingException(Account.State.TLS_ERROR);
+            throw new StateChangingException(Account.State.TLS_ERROR_DOMAIN);
         }
         return sslSocket;
     }
@@ -1855,19 +1853,6 @@ public class XmppConnection implements Runnable {
         PROSODY,
         NIMBUZZ,
         UNKNOWN
-    }
-
-    private static class TlsFactoryVerifier {
-        private final SSLSocketFactory factory;
-        private final DomainHostnameVerifier verifier;
-
-        TlsFactoryVerifier(final SSLSocketFactory factory, final DomainHostnameVerifier verifier) throws IOException {
-            this.factory = factory;
-            this.verifier = verifier;
-            if (factory == null || verifier == null) {
-                throw new IOException("could not setup ssl");
-            }
-        }
     }
 
     private class MyKeyManager implements X509KeyManager {
