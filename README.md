@@ -33,11 +33,11 @@ Alternativ kannst du den Messenger auch direkt hier von Codeberg unter [Releases
 nightly oder beta Versionen kann man direkt hier von Codeberg unter [Releases](https://codeberg.org/Arne/monocles_chat/releases/latest) herunterladen.
 
 #### Wie kann ich bei der Übersetzung helfen?
-[![Crowdin](https://d322cqt584bo4o.cloudfront.net/pix-art-chat/localized.svg)](https://crowdin.com/project/pix-art-chat)
+[![Crowdin](https://d322cqt584bo4o.cloudfront.net/pix-art-messenger/localized.svg)](https://crowdin.com/project/pix-art-messenger)
 
-Übersetzungen werden bei [crowdin.com](https://crowdin.com/project/pix-art-chat) geführt. Dort können Übersetzungen erstellt, geändert und ergänzt werden.
+Übersetzungen werden bei [crowdin.com](https://crowdin.com/project/pix-art-messenger) geführt. Dort können Übersetzungen erstellt, geändert und ergänzt werden.
 
-[Hier geht's zur Projektseite bei crowdin.com](https://crowdin.com/project/pix-art-chat/invite?d=75l6j4k6k6k523f4j4m4e473u663d3m4p4t4q4)
+[Hier geht's zur Projektseite bei crowdin.com](https://crowdin.com/project/pix-art-messenger/invite?d=75l6j4k6k6k523f4j4m4e473u663d3m4p4t4q4)
 
 #### Ich habe Probleme, was soll ich tun?
 Am einfachsten ist es, wenn du unserer Support-Gruppe beitrittst, dort werden deine Probleme mit Sicherheit schnell gelöst. 
