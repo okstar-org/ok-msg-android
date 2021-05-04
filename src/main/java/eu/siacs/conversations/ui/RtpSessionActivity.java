@@ -1,5 +1,8 @@
 package eu.siacs.conversations.ui;
 
+import static java.util.Arrays.asList;
+import static eu.siacs.conversations.utils.PermissionUtils.getFirstDenied;
+
 import android.Manifest;
 import android.annotation.SuppressLint;
 import android.app.PictureInPictureParams;
@@ -63,9 +66,6 @@ import eu.siacs.conversations.xmpp.jingle.Media;
 import eu.siacs.conversations.xmpp.jingle.RtpEndUserState;
 import me.drakeet.support.toast.ToastCompat;
 
-import static eu.siacs.conversations.utils.PermissionUtils.getFirstDenied;
-import static java.util.Arrays.asList;
-
 public class RtpSessionActivity extends XmppActivity implements XmppConnectionService.OnJingleRtpConnectionUpdate {
 
     public static final String EXTRA_WITH = "with";
@@ -82,6 +82,7 @@ public class RtpSessionActivity extends XmppActivity implements XmppConnectionSe
 
     private static final List<RtpEndUserState> END_CARD = Arrays.asList(
             RtpEndUserState.APPLICATION_ERROR,
+            RtpEndUserState.SECURITY_ERROR,
             RtpEndUserState.DECLINED_OR_BUSY,
             RtpEndUserState.CONNECTIVITY_ERROR,
             RtpEndUserState.CONNECTIVITY_LOST_ERROR,
@@ -89,7 +90,8 @@ public class RtpSessionActivity extends XmppActivity implements XmppConnectionSe
     );
     private static final List<RtpEndUserState> STATES_SHOWING_HELP_BUTTON = Arrays.asList(
             RtpEndUserState.APPLICATION_ERROR,
-            RtpEndUserState.CONNECTIVITY_ERROR
+            RtpEndUserState.CONNECTIVITY_ERROR,
+            RtpEndUserState.SECURITY_ERROR
     );
     private static final List<RtpEndUserState> STATES_SHOWING_SWITCH_TO_CHAT = Arrays.asList(
             RtpEndUserState.CONNECTING,
@@ -681,6 +683,9 @@ public class RtpSessionActivity extends XmppActivity implements XmppConnectionSe
                 shouldAllowBack = true;
                 setTitle(R.string.rtp_state_application_failure);
                 break;
+            case SECURITY_ERROR:
+                setTitle(R.string.rtp_state_security_error);
+                break;
             case ENDED:
                 shouldAllowBack = true;
                 throw new IllegalStateException("Activity should have called finishAndReleaseWakeLock();");
@@ -757,7 +762,8 @@ public class RtpSessionActivity extends XmppActivity implements XmppConnectionSe
                 RtpEndUserState.CONNECTIVITY_ERROR,
                 RtpEndUserState.CONNECTIVITY_LOST_ERROR,
                 RtpEndUserState.APPLICATION_ERROR,
-                RtpEndUserState.RETRACTED
+                RtpEndUserState.RETRACTED,
+                RtpEndUserState.SECURITY_ERROR
         ).contains(state)) {
             this.binding.rejectCall.setContentDescription(getString(R.string.exit));
             this.binding.rejectCall.setOnClickListener(this::exit);
@@ -942,7 +948,11 @@ public class RtpSessionActivity extends XmppActivity implements XmppConnectionSe
             if (isPictureInPicture()) {
                 binding.appBarLayout.setVisibility(View.GONE);
                 binding.pipPlaceholder.setVisibility(View.VISIBLE);
-                if (state == RtpEndUserState.APPLICATION_ERROR || state == RtpEndUserState.CONNECTIVITY_ERROR) {
+                if (Arrays.asList(
+                        RtpEndUserState.APPLICATION_ERROR,
+                        RtpEndUserState.CONNECTIVITY_ERROR,
+                        RtpEndUserState.SECURITY_ERROR)
+                        .contains(state)) {
                     binding.pipWarning.setVisibility(View.VISIBLE);
                     binding.pipWaiting.setVisibility(View.GONE);
                 } else {
