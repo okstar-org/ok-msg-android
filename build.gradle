@@ -38,7 +38,7 @@ configurations {
 
 dependencies {
     implementation project(':libs:android-transcoder')
-    playstoreImplementation('com.google.firebase:firebase-messaging:22.0.0') {
+    playstoreImplementation('com.google.firebase:firebase-messaging:21.1.0') {
         exclude group: 'com.google.firebase', module: 'firebase-core'
         exclude group: 'com.google.firebase', module: 'firebase-analytics'
         exclude group: 'com.google.firebase', module: 'firebase-measurement-connector'
