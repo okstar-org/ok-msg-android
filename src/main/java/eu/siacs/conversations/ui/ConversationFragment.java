@@ -135,6 +135,7 @@ import eu.siacs.conversations.utils.Compatibility;
 import eu.siacs.conversations.utils.GeoHelper;
 import eu.siacs.conversations.utils.MenuDoubleTabUtil;
 import eu.siacs.conversations.utils.MessageUtils;
+import eu.siacs.conversations.utils.Namespace;
 import eu.siacs.conversations.utils.NickValidityChecker;
 import eu.siacs.conversations.utils.Patterns;
 import eu.siacs.conversations.utils.QuickLoader;
@@ -835,7 +836,7 @@ public class ConversationFragment extends XmppFragment implements EditMessage.Ke
         if (body.length() == 0 || conversation == null) {
             return;
         }
-        if (conversation.getNextEncryption() == Message.ENCRYPTION_AXOLOTL && trustKeysIfNeeded(REQUEST_TRUST_KEYS_TEXT)) {
+        if (trustKeysIfNeeded(conversation, REQUEST_TRUST_KEYS_TEXT)) {
             return;
         }
         final Message message;
@@ -856,6 +857,10 @@ public class ConversationFragment extends XmppFragment implements EditMessage.Ke
             default:
                 sendMessage(message);
         }
+    }
+
+    private boolean trustKeysIfNeeded(final Conversation conversation, final int requestCode) {
+        return conversation.getNextEncryption() == Message.ENCRYPTION_AXOLOTL && trustKeysIfNeeded(requestCode);
     }
 
     protected boolean trustKeysIfNeeded(int requestCode) {
@@ -931,6 +936,12 @@ public class ConversationFragment extends XmppFragment implements EditMessage.Ke
             case REQUEST_TRUST_KEYS_ATTACHMENTS:
                 commitAttachments();
                 break;
+            case REQUEST_START_AUDIO_CALL:
+                triggerRtpSession(RtpSessionActivity.ACTION_MAKE_VOICE_CALL);
+                break;
+            case REQUEST_START_VIDEO_CALL:
+                triggerRtpSession(RtpSessionActivity.ACTION_MAKE_VIDEO_CALL);
+                break;
             case ATTACHMENT_CHOICE_CHOOSE_IMAGE:
                 final List<Attachment> imageUris = Attachment.extractAttachments(getActivity(), data, Attachment.Type.IMAGE);
                 mediaPreviewAdapter.addMediaPreviews(imageUris);
@@ -979,7 +990,7 @@ public class ConversationFragment extends XmppFragment implements EditMessage.Ke
         if (anyNeedsExternalStoragePermission(attachments) && !hasPermissions(REQUEST_COMMIT_ATTACHMENTS, Manifest.permission.WRITE_EXTERNAL_STORAGE)) {
             return;
         }
-        if (conversation.getNextEncryption() == Message.ENCRYPTION_AXOLOTL && trustKeysIfNeeded(REQUEST_TRUST_KEYS_ATTACHMENTS)) {
+        if (trustKeysIfNeeded(conversation, REQUEST_TRUST_KEYS_ATTACHMENTS)) {
             return;
         }
         final PresenceSelector.OnPresenceSelected callback = () -> {
@@ -1536,6 +1547,64 @@ public class ConversationFragment extends XmppFragment implements EditMessage.Ke
         conversation.setAttribute(Conversation.ATTRIBUTE_PINNED_ON_TOP, !pinned);
         activity.xmppConnectionService.updateConversation(conversation);
         activity.invalidateOptionsMenu();
+    }
+
+    private void checkPermissionAndTriggerAudioCall() {
+        if (activity.mUseTor || conversation.getAccount().isOnion()) {
+            Toast.makeText(activity, R.string.disable_tor_to_make_call, Toast.LENGTH_SHORT).show();
+            return;
+        }
+        if (hasPermissions(REQUEST_START_AUDIO_CALL, Manifest.permission.RECORD_AUDIO)) {
+            if (Config.REQUIRE_RTP_VERIFICATION && trustKeysIfNeeded(conversation, REQUEST_START_AUDIO_CALL)) {
+                return;
+            }
+            triggerRtpSession(RtpSessionActivity.ACTION_MAKE_VOICE_CALL);
+        }
+    }
+
+    private void checkPermissionAndTriggerVideoCall() {
+        if (activity.mUseTor || conversation.getAccount().isOnion()) {
+            Toast.makeText(activity, R.string.disable_tor_to_make_call, Toast.LENGTH_SHORT).show();
+            return;
+        }
+        if (hasPermissions(REQUEST_START_VIDEO_CALL, Manifest.permission.RECORD_AUDIO, Manifest.permission.CAMERA)) {
+            if (Config.REQUIRE_RTP_VERIFICATION && trustKeysIfNeeded(conversation, REQUEST_START_VIDEO_CALL)) {
+                return;
+            }
+            triggerRtpSession(RtpSessionActivity.ACTION_MAKE_VIDEO_CALL);
+        }
+    }
+
+
+    private void triggerRtpSession(final String action) {
+        if (activity.xmppConnectionService.getJingleConnectionManager().isBusy()) {
+            Toast.makeText(getActivity(), R.string.only_one_call_at_a_time, Toast.LENGTH_LONG).show();
+            return;
+        }
+        final Contact contact = conversation.getContact();
+        if (contact.getPresences().anySupport(Namespace.JINGLE_MESSAGE)) {
+            triggerRtpSession(contact.getAccount(), contact.getJid().asBareJid(), action);
+        } else {
+            final RtpCapability.Capability capability;
+            if (action.equals(RtpSessionActivity.ACTION_MAKE_VIDEO_CALL)) {
+                capability = RtpCapability.Capability.VIDEO;
+            } else {
+                capability = RtpCapability.Capability.AUDIO;
+            }
+            PresenceSelector.selectFullJidForDirectRtpConnection(activity, contact, capability, fullJid -> {
+                triggerRtpSession(contact.getAccount(), fullJid, action);
+            });
+        }
+    }
+
+    private void triggerRtpSession(final Account account, final Jid with, final String action) {
+        final Intent intent = new Intent(activity, RtpSessionActivity.class);
+        intent.setAction(action);
+        intent.putExtra(RtpSessionActivity.EXTRA_ACCOUNT, account.getJid().toEscapedString());
+        intent.putExtra(RtpSessionActivity.EXTRA_WITH, with.toEscapedString());
+        intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+        intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK);
+        startActivity(intent);
     }
 
     private void handleAttachmentSelection(MenuItem item) {
