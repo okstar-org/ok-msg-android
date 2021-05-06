@@ -53,8 +53,8 @@ public enum Reason {
         }
     }
 
-    public static Reason ofException(final Exception e) {
-        final Throwable root = Throwables.getRootCause(e);
+    public static Reason ofThrowable(final Throwable throwable) {
+        final Throwable root = Throwables.getRootCause(throwable);
         if (root instanceof RuntimeException) {
             return of((RuntimeException) root);
         }
