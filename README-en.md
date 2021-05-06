@@ -30,7 +30,7 @@ Alternatively release and beta-release APKs are available via codeberg: [Release
 nightly or beta-release APKs are available via codeberg: [Releases](https://codeberg.org/Arne/monocles_chat/releases/nightly) 
 
 ## Social Media
-<a rel="me" href="https://monocles.social/@monocles">monocles on Mastodon</a>
+<a rel="me" href="https://mas.monocles.de/@monocles">monocles on Mastodon</a>
 
 There are also English and German speaking XMPP-MUCs focusing on support and development of the monocles chat.
 
