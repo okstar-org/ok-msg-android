@@ -5,7 +5,7 @@
     "kind": "Directory"
   },
   "applicationId": "de.monocles.chat",
-  "variantName": "processGitReleaseResources",
+  "variantName": "gitRelease",
   "elements": [
     {
       "type": "SINGLE",
