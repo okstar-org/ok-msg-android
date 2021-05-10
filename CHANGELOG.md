@@ -513,7 +513,7 @@
 #### Version 1.14.3
 * set different auto-download-sizes for mobile, roaming and WiFi connections (monocles chat)
 * add ability to report errors and bugs directly from menu (monocles chat)
-* XEP-0377: Smonocles.im Reporting
+* XEP-0377: Smonocles.de Reporting
 * fix rare start up crashes
 * bug fixes
 

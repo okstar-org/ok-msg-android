@@ -409,6 +409,7 @@
     <string name="magic_create_text">conversations.im-en kontu bat sortzeko prozesuan zehar gidatuko zaitugu.\nconversations.im¹ hornitzaile bezala aukeratzerakoan beste hornitzaileen erabiltzaileekin komunikatzeko gai izango zara haiei zure Jabber ID osoa emanez.</string>
     <string name="your_full_jid_will_be">Zure Jabber ID osoa %s izango da</string>
     <string name="create_account">Kontua sortu</string>
+    <string name="register_monocles">Get a monocles account</string>
     <string name="pick_your_username">Aukeratu zure erabiltzaile izena</string>
     <string name="status_message">Egoera mezua</string>
     <string name="presence_chat">Hitzegiteko aske</string>

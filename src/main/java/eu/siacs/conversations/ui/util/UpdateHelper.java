@@ -33,7 +33,7 @@ public class UpdateHelper {
     private static boolean dataMoved = false;
 
     private static final File PAM_MainDirectory = new File(Environment.getExternalStorageDirectory().getAbsolutePath() + "/Monocles Messenger/");
-    private static final File Blabber_MainDirectory = new File(Environment.getExternalStorageDirectory() + "/monocles chat/");
+    private static final File Monocles_MainDirectory = new File(Environment.getExternalStorageDirectory() + "/monocles chat/");
     private static final File PAM_PicturesDirectory = new File(Environment.getExternalStorageDirectory().getAbsolutePath() + "/Monocles Messenger/Media/Monocles Messenger Images/");
     private static final File PAM_FilesDirectory = new File(Environment.getExternalStorageDirectory().getAbsolutePath() + "/Monocles Messenger/Media/Monocles Messenger Files/");
     private static final File PAM_AudiosDirectory = new File(Environment.getExternalStorageDirectory().getAbsolutePath() + "/Monocles Messenger/Media/Monocles Messenger Audios/");
@@ -115,7 +115,7 @@ public class UpdateHelper {
 
     private static void checkOldData() {
         if (PAM_MainDirectory.exists() && PAM_MainDirectory.isDirectory()) {
-            if (Blabber_MainDirectory.exists() && Blabber_MainDirectory.isDirectory()) {
+            if (Monocles_MainDirectory.exists() && Monocles_MainDirectory.isDirectory()) {
                 moveData = false;
             } else {
                 moveData = true;
@@ -180,16 +180,16 @@ public class UpdateHelper {
             }
         }
         if (PAM_MainDirectory.exists() && PAM_MainDirectory.isDirectory()) {
-            Blabber_MainDirectory.mkdirs();
+            Monocles_MainDirectory.mkdirs();
             final File[] files = PAM_MainDirectory.listFiles();
             if (files == null) {
                 return;
             }
-            if (PAM_MainDirectory.renameTo(Blabber_MainDirectory)) {
+            if (PAM_MainDirectory.renameTo(Monocles_MainDirectory)) {
                 dataMoved = true;
-                Log.d(Config.LOGTAG, "moved " + PAM_MainDirectory.getAbsolutePath() + " to " + Blabber_MainDirectory.getAbsolutePath());
+                Log.d(Config.LOGTAG, "moved " + PAM_MainDirectory.getAbsolutePath() + " to " + Monocles_MainDirectory.getAbsolutePath());
             } else {
-                Log.d(Config.LOGTAG, "could not move " + PAM_MainDirectory.getAbsolutePath() + " to " + Blabber_MainDirectory.getAbsolutePath());
+                Log.d(Config.LOGTAG, "could not move " + PAM_MainDirectory.getAbsolutePath() + " to " + Monocles_MainDirectory.getAbsolutePath());
             }
         }
     }

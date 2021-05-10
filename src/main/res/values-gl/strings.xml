@@ -509,6 +509,7 @@
     <string name="magic_create_text">Guiarémola a través do proceso de crear unha conta en conversations.im.\nCando escolla conversations.im como proveedor poderá comunicarse con outras usuarias de outros proveedores que lle proporcionen un ID Jabber completo.</string>
     <string name="your_full_jid_will_be">O seu ID Jabber será: %s</string>
     <string name="create_account">Crear conta</string>
+    <string name="register_monocles">Get a monocles account</string>
     <string name="welcome_existing_account">Teño unha conta</string>
     <string name="pick_your_username">Escolla un identificador</string>
     <string name="pref_manually_change_presence">Xestionar a dispoñibilidade manualmente</string>

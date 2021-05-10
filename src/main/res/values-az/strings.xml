@@ -489,7 +489,7 @@
     <string name="always">Həmişə</string>
     <string name="always_off">Hәmişә deaktiv</string>
     <string name="battery_optimizations_enabled">Batareya optimallaşdırılması aktivdir</string>
-    <string name="battery_optimizations_enabled_explained">Cihazınız, monocles.imda gecikmiş bildirişlərə və hətta mesaj kaybına səbəb ola biləcək bəzi ağır batareya optimallaşdırır. Onları buraxmaq tövsiyə olunur.</string>
+    <string name="battery_optimizations_enabled_explained">Cihazınız, monocles chatda gecikmiş bildirişlərə və hətta mesaj kaybına səbəb ola biləcək bəzi ağır batareya optimallaşdırır. Onları buraxmaq tövsiyə olunur.</string>
     <string name="battery_optimizations_enabled_dialog">Cihazınız, monocles chat-da gecikmiş bildirişlərə və hətta mesaj kaybına səbəb ola biləcək bəzi ağır batareya optimallaşdırır. İndi bunları aradan qaldırmaq istəniləcək.</string>
     <string name="install_from_unknown_sources_disabled">Naməlum mənbələrdən quraşdırılma deaktiv olunub</string>
     <string name="install_from_unknown_sources_disabled_dialog">Cihazınız, Google PlayStore-dan başqa tətbiqlərin naməlum mənbələrdən quraşdırılmasına icazə verməmək üçün qurulmuşdur. Bu tətbiq yeniləyicisindəki problemlərə səbəb olacaq.\n\nİndi naməlum mənbələrdən tətbiq yükləmələrinə icazə verilməsini istəyəcək.</string>
@@ -511,6 +511,7 @@
     <string name="magic_create_text">Növbəti səhifədə istifadə edə və ya öz şifrənizi dəyişə biləcəyiniz təsadüfi bir şifrə ilə bir hesab yaratma prosesində sizə rəhbərlik edəcəyik. \nSonra, tam Jabber-İD verərək bu və digər provayderlərin istifadəçiləri ilə əlaqə qura biləcəksiniz.</string>
     <string name="your_full_jid_will_be">Sizin Jabber-İD: %s</string>
     <string name="create_account">Yeni hesab yarat</string>
+    <string name="register_monocles">Get a monocles account</string>
     <string name="welcome_existing_account">Mənim hesabım var</string>
     <string name="pick_your_username">Öz istifadəçi adını seç</string>
     <string name="pref_manually_change_presence">Mövcudluğu əl ilə idarə edin</string>
@@ -539,9 +540,9 @@
     <string name="invite_again">Yenidən dəvət et</string>
     <string name="inviteUser_Subject">vasitəsilə sizi dəvət etdi</string>
     <string name="pref_broadcast_last_activity">Son istifadəçinin qarşılıqlı əlaqəsi</string>
-    <string name="pref_broadcast_last_activity_summary">Blabber.im-i istifadə etdiyiniz zaman bütün kontaktlarınızı bildirin</string>
-    <string name="request_permissions_message">monocles.imr bir neçə icazə verməyinizi xahiş edəcəkdir. Bütün bu icazələrin bu mesenjerin bütün xüsusiyyətlərindən istifadə etməsinə icazə verməyiniz vacibdir. Bu icazələrin hər hansı birini inkar etsəniz, tətbiq özünü bağlayacaqdır.</string>
-    <string name="request_permissions_message_again">Blabber.im üçün lazım olan bəzi və ya bütün icazələri rədd etmisiniz. Parametrlərə tullanmaq və bu icazələrə icazə vermək istərdinizmi? Bu icazələrin hər hansı birini inkar etsəniz, tətbiq özünü bağlayacaqdır.</string>
+    <string name="pref_broadcast_last_activity_summary">monocles chat-i istifadə etdiyiniz zaman bütün kontaktlarınızı bildirin</string>
+    <string name="request_permissions_message">monocles chatr bir neçə icazə verməyinizi xahiş edəcəkdir. Bütün bu icazələrin bu mesenjerin bütün xüsusiyyətlərindən istifadə etməsinə icazə verməyiniz vacibdir. Bu icazələrin hər hansı birini inkar etsəniz, tətbiq özünü bağlayacaqdır.</string>
+    <string name="request_permissions_message_again">monocles chat üçün lazım olan bəzi və ya bütün icazələri rədd etmisiniz. Parametrlərə tullanmaq və bu icazələrə icazə vermək istərdinizmi? Bu icazələrin hər hansı birini inkar etsəniz, tətbiq özünü bağlayacaqdır.</string>
     <string name="unable_to_connect_to_keychain">OpenKeychain-ə qoşulmaq olmur</string>
     <string name="this_device_is_no_longer_in_use">Bu cihaz artıq istifadə edilmir</string>
     <string name="please_wait">Zəhmət olmasa gözləyin…</string>
@@ -698,7 +699,7 @@
     <string name="no_write_access_in_public_muc">Bu qrup söhbətində iştirak etmirsiniz və hazırda yazmaq imkanı yoxdur.\nXahiş edirəm &lt;b&gt;OK&lt;b&gt; düyməsini basın və yazma girişini istəmək üçün siyahının yuxarı/ön hissəsindəki üzvlərdən birini tıklayaraq moderator, idarəçi və ya sahibinə şəxsi mesaj göndərin.</string>
     <string name="snooze">Mürgülü</string>
     <string name="huawei_protected_apps">Qorunan Tətbiqlər</string>
-    <string name="huawei_protected_apps_summary">Ekran söndürüldükdə belə bildirişləri qəbul etmək üçün monocles.imr-i qorunan tətbiqlər siyahısına əlavə etməlisiniz.</string>
+    <string name="huawei_protected_apps_summary">Ekran söndürüldükdə belə bildirişləri qəbul etmək üçün monocles chatr-i qorunan tətbiqlər siyahısına əlavə etməlisiniz.</string>
     <string name="pref_enable_multi_accounts_title">Birdən çox hesabı aktivləşdirin</string>
     <string name="pref_enable_multi_accounts_summary">Birdən çox hesab istifadə etmək istəyirsiniz?</string>
     <string name="mtm_accept_cert">Naməlum Sertifikatı qəbul edirsiniz?</string>
@@ -774,7 +775,7 @@
     <string name="delete_message">Mesaji sil</string>
     <string name="conference_destroyed">Bu qrup söhbət məhv edilmişdir</string>
     <string name="no_application_found_to_view_contact">Kontaktı görmək üçün heç bir tətbiq tapılmadı</string>
-    <string name="welcome_server_info">Blabber.im-in provayderiniz kimi istifadəsini tövsiyə edirik.</string>
+    <string name="welcome_server_info">monocles chat-in provayderiniz kimi istifadəsini tövsiyə edirik.</string>
     <string name="no_location_permission">monocles chat yerləşmə yerinizə izn tələb edir</string>
     <string name="pref_show_record_voice_btn_summary">Səsli səs düyməsini sürətli hərəkət kimi göstərin</string>
     <string name="pref_show_record_voice_btn">Qeyd səs düyməsini göstər</string>
@@ -941,7 +942,7 @@
     <string name="pref_use_invidious_summary">Invidious-bu YouTube-un şəxsi və dostsayağı alternativ servisdir</string>
     <string name="this_device">Bu cihaz</string>
     <string name="intro_desc_main">Daha ətraflı…</string>
-    <string name="welcome_header">Blabber.im-ə xoş gəlmisən</string>
+    <string name="welcome_header">monocles chat-ə xoş gəlmisən</string>
     <string name="intro_required_permissions">Tələb olunan icazələr</string>
     <string name="intro_desc_required_permissions">Girişin sonunda saxlama icazələrini verməyiniz xahiş olunur (məcburi). İcazələrin verilməsi tələb olduqca istənilir.</string>
     <string name="intro_account">Sənin hesabın</string>
@@ -969,7 +970,7 @@
     <string name="intro_desc_start_chatting2">Mucs adlanan-siz də əlavə edə, yarada və ya çatlara qoşula bilərsiniz. Onlar xüsusi qrup çatlar və ictimai qrup çatları arasında fərqləndirirlər - başqa sözdə kanallar.</string>
     <string name="intro_desc_start_chatting3">Təbrik edirik! \nƏylənmək vaxtı çatdı…</string>
     <string name="intro_privacy">Məxfiliyiniz\nSuvereniteniz</string>
-    <string name="intro_desc_privacy">monocles.imməlumatlarınızı nə satacaq, nə də təhlil etmir və hansı icazələrin veriləcəyinə siz qərar verirsiniz.</string>
+    <string name="intro_desc_privacy">monocles chatməlumatlarınızı nə satacaq, nə də təhlil etmir və hansı icazələrin veriləcəyinə siz qərar verirsiniz.</string>
     <string name="no_results">Nəticə yoxdur</string>
     <string name="file_transmission_cancelled">fayl ötürülməsi ləğv edildi</string>
     <string name="sharing_application_not_grant_permission">Paylaşma tətbiqi bu faylı əldə etməyə icazə vermədi.</string>
@@ -1122,7 +1123,7 @@
     <string name="memory_warning_force">Mesenceriniz %1$s (%2$s) daxili yaddaşdan istifadə edir.\n\nSiz avtomatik qoşmanın silinməsi ilə əlaqədar avtomatik mesaj silinməsini təmin etməli və ya saxlanan medianı əl ilə silməlisiniz!</string>
     <string name="open_settings">Ayarları açın</string>
     <string name="oldAndroidVersion">Köhnə Android versiyası</string>
-    <string name="oldAndroidVersionMessage">Gələcək yeniləmələrdə artıq dəstəklənməyəcək köhnə bir Android versiyasından istifadə edirsiniz. Blabber.im versiyası 3.1.0-dan yalnız Android 5 və ya daha yüksək olan cihazlara dəstək verilir. Zəhmət olmasa cihazınızın proqram təminatını yeniləyin.</string>
+    <string name="oldAndroidVersionMessage">Gələcək yeniləmələrdə artıq dəstəklənməyəcək köhnə bir Android versiyasından istifadə edirsiniz. monocles chat1.0-dan yalnız Android 5 və ya daha yüksək olan cihazlara dəstək verilir. Zəhmət olmasa cihazınızın proqram təminatını yeniləyin.</string>
     <string name="save_x_file">Saxla %s</string>
     <string name="file_copied_to">Faylı %s saxla</string>
     <string name="use_individual_notifications">Fərdi bildirişlərdən istifadə edin</string>

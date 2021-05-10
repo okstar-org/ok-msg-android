@@ -95,27 +95,27 @@ public class ThemeHelper {
                 switch (fontSize) {
                     case "medium":
                         if (black) {
-                            return R.style.ConversationsTheme_Blabber_Black_Medium;
+                            return R.style.ConversationsTheme_Monocles_Black_Medium;
                         } else if (dark) {
-                            return R.style.ConversationsTheme_Blabber_Dark_Medium;
+                            return R.style.ConversationsTheme_Monocles_Dark_Medium;
                         } else {
-                            return R.style.ConversationsTheme_Blabber_Medium;
+                            return R.style.ConversationsTheme_Monocles_Medium;
                         }
                     case "large":
                         if (black) {
-                            return R.style.ConversationsTheme_Blabber_Black_Large;
+                            return R.style.ConversationsTheme_Monocles_Black_Large;
                         } else if (dark) {
-                            return R.style.ConversationsTheme_Blabber_Dark_Large;
+                            return R.style.ConversationsTheme_Monocles_Dark_Large;
                         } else {
-                            return R.style.ConversationsTheme_Blabber_Large;
+                            return R.style.ConversationsTheme_Monocles_Large;
                         }
                     default:
                         if (black) {
-                            return R.style.ConversationsTheme_Blabber_Black;
+                            return R.style.ConversationsTheme_Monocles_Black;
                         } else if (dark) {
-                            return R.style.ConversationsTheme_Blabber_Dark;
+                            return R.style.ConversationsTheme_Monocles_Dark;
                         } else {
-                            return R.style.ConversationsTheme_Blabber;
+                            return R.style.ConversationsTheme_Monocles;
                         }
                 }
             case "orange":
@@ -201,11 +201,11 @@ public class ThemeHelper {
                 }
             default:
                 if (black) {
-                    return R.style.ConversationsTheme_Blabber_Black;
+                    return R.style.ConversationsTheme_Monocles_Black;
                 } else if (dark) {
-                    return R.style.ConversationsTheme_Blabber_Dark;
+                    return R.style.ConversationsTheme_Monocles_Dark;
                 } else {
-                    return R.style.ConversationsTheme_Blabber;
+                    return R.style.ConversationsTheme_Monocles;
                 }
         }
     }
@@ -269,27 +269,27 @@ public class ThemeHelper {
                 switch (fontSize) {
                     case "medium":
                         if (black) {
-                            return R.style.ConversationsTheme_Blabber_Black_Dialog_Medium;
+                            return R.style.ConversationsTheme_Monocles_Black_Dialog_Medium;
                         } else if (dark) {
-                            return R.style.ConversationsTheme_Blabber_Dark_Dialog_Medium;
+                            return R.style.ConversationsTheme_Monocles_Dark_Dialog_Medium;
                         } else {
-                            return R.style.ConversationsTheme_Blabber_Dialog_Medium;
+                            return R.style.ConversationsTheme_Monocles_Dialog_Medium;
                         }
                     case "large":
                         if (black) {
-                            return R.style.ConversationsTheme_Blabber_Black_Dialog_Large;
+                            return R.style.ConversationsTheme_Monocles_Black_Dialog_Large;
                         } else if (dark) {
-                            return R.style.ConversationsTheme_Blabber_Dark_Dialog_Large;
+                            return R.style.ConversationsTheme_Monocles_Dark_Dialog_Large;
                         } else {
-                            return R.style.ConversationsTheme_Blabber_Dialog_Large;
+                            return R.style.ConversationsTheme_Monocles_Dialog_Large;
                         }
                     default:
                         if (black) {
-                            return R.style.ConversationsTheme_Blabber_Black_Dialog;
+                            return R.style.ConversationsTheme_Monocles_Black_Dialog;
                         } else if (dark) {
-                            return R.style.ConversationsTheme_Blabber_Dark_Dialog;
+                            return R.style.ConversationsTheme_Monocles_Dark_Dialog;
                         } else {
-                            return R.style.ConversationsTheme_Blabber_Dialog;
+                            return R.style.ConversationsTheme_Monocles_Dialog;
                         }
                 }
             case "orange":
@@ -375,11 +375,11 @@ public class ThemeHelper {
                 }
             default:
                 if (black) {
-                    return R.style.ConversationsTheme_Blabber_Black_Dialog;
+                    return R.style.ConversationsTheme_Monocles_Black_Dialog;
                 } else if (dark) {
-                    return R.style.ConversationsTheme_Blabber_Dark_Dialog;
+                    return R.style.ConversationsTheme_Monocles_Dark_Dialog;
                 } else {
-                    return R.style.ConversationsTheme_Blabber_Dialog;
+                    return R.style.ConversationsTheme_Monocles_Dialog;
                 }
         }
     }
@@ -394,12 +394,12 @@ public class ThemeHelper {
             case R.style.ConversationsTheme_Black_Large:
             case R.style.ConversationsTheme_Black_Medium:
                 //monocles
-            case R.style.ConversationsTheme_Blabber_Dark:
-            case R.style.ConversationsTheme_Blabber_Dark_Large:
-            case R.style.ConversationsTheme_Blabber_Dark_Medium:
-            case R.style.ConversationsTheme_Blabber_Black:
-            case R.style.ConversationsTheme_Blabber_Black_Large:
-            case R.style.ConversationsTheme_Blabber_Black_Medium:
+            case R.style.ConversationsTheme_Monocles_Dark:
+            case R.style.ConversationsTheme_Monocles_Dark_Large:
+            case R.style.ConversationsTheme_Monocles_Dark_Medium:
+            case R.style.ConversationsTheme_Monocles_Black:
+            case R.style.ConversationsTheme_Monocles_Black_Large:
+            case R.style.ConversationsTheme_Monocles_Black_Medium:
                 //orange
             case R.style.ConversationsTheme_Orange_Dark:
             case R.style.ConversationsTheme_Orange_Dark_Large:

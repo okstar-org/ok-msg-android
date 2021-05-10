@@ -536,7 +536,7 @@
 
     <!-- 2. monocles -->
     <!-- monocles theme -->
-    <style name="ConversationsTheme.Blabber" parent="ConversationsTheme">
+    <style name="ConversationsTheme.Monocles" parent="ConversationsTheme">
         <item name="colorPrimary">@color/primary_monocles</item>
         <item name="colorPrimaryDark">@color/primary_dark_monocles</item>
         <item name="colorAccent">@color/accent_monocles</item>
@@ -553,7 +553,7 @@
     </style>
 
     <!-- monocles theme - dark -->
-    <style name="ConversationsTheme.Blabber.Dark" parent="ConversationsTheme.Dark">
+    <style name="ConversationsTheme.Monocles.Dark" parent="ConversationsTheme.Dark">
         <item name="colorPrimary">@color/primary_monocles</item>
         <item name="colorPrimaryDark">@color/primary_dark_monocles</item>
         <item name="colorAccent">@color/accent_monocles</item>
@@ -568,7 +568,7 @@
     </style>
 
     <!-- monocles theme - black -->
-    <style name="ConversationsTheme.Blabber.Black" parent="ConversationsTheme.Black">
+    <style name="ConversationsTheme.Monocles.Black" parent="ConversationsTheme.Black">
         <item name="colorAccent">@color/accent_monocles</item>
         <item name="colorAccentLight">@color/accent_light_monocles</item>
         <item name="colorAccentLightDisabled">@color/accent_light_disabled_monocles</item>
@@ -578,7 +578,7 @@
     </style>
 
     <!-- monocles dialog -->
-    <style name="ConversationsTheme.Blabber.Dialog" parent="ConversationsTheme.Dialog">
+    <style name="ConversationsTheme.Monocles.Dialog" parent="ConversationsTheme.Dialog">
         <item name="colorPrimary">@color/primary_monocles</item>
         <item name="colorPrimaryDark">@color/primary_dark_monocles</item>
         <item name="colorAccent">@color/accent_monocles</item>
@@ -587,7 +587,7 @@
     </style>
 
     <!-- monocles dialog - dark -->
-    <style name="ConversationsTheme.Blabber.Dark.Dialog" parent="ConversationsTheme.Dark.Dialog">
+    <style name="ConversationsTheme.Monocles.Dark.Dialog" parent="ConversationsTheme.Dark.Dialog">
         <item name="colorPrimary">@color/primary_monocles</item>
         <item name="colorPrimaryDark">@color/primary_dark_monocles</item>
         <item name="colorAccent">@color/accent_monocles</item>
@@ -596,50 +596,50 @@
     </style>
 
     <!-- monocles dialog - black -->
-    <style name="ConversationsTheme.Blabber.Black.Dialog" parent="ConversationsTheme.Black.Dialog">
+    <style name="ConversationsTheme.Monocles.Black.Dialog" parent="ConversationsTheme.Black.Dialog">
         <item name="colorAccent">@color/accent_monocles</item>
         <item name="colorAccentLight">@color/accent_light_monocles</item>
         <item name="colorAccentLightDisabled">@color/accent_light_disabled_monocles</item>
     </style>
 
     <!-- monocles dialog medium font -->
-    <style name="ConversationsTheme.Blabber.Dialog.Medium" parent="ConversationsTheme.Blabber.Dialog">
+    <style name="ConversationsTheme.Monocles.Dialog.Medium" parent="ConversationsTheme.Monocles.Dialog">
         <item name="TextSizeBody2">16sp</item>
         <item name="TextSizeDisplay2">51sp</item>
     </style>
 
     <!-- monocles dialog medium font - dark -->
-    <style name="ConversationsTheme.Blabber.Dark.Dialog.Medium" parent="ConversationsTheme.Blabber.Dark.Dialog">
+    <style name="ConversationsTheme.Monocles.Dark.Dialog.Medium" parent="ConversationsTheme.Monocles.Dark.Dialog">
         <item name="TextSizeBody2">16sp</item>
         <item name="TextSizeDisplay2">51sp</item>
     </style>
 
     <!-- monocles dialog medium font - black -->
-    <style name="ConversationsTheme.Blabber.Black.Dialog.Medium" parent="ConversationsTheme.Blabber.Black.Dialog">
+    <style name="ConversationsTheme.Monocles.Black.Dialog.Medium" parent="ConversationsTheme.Monocles.Black.Dialog">
         <item name="TextSizeBody2">16sp</item>
         <item name="TextSizeDisplay2">51sp</item>
     </style>
 
     <!-- monocles dialog large font -->
-    <style name="ConversationsTheme.Blabber.Dialog.Large" parent="ConversationsTheme.Blabber.Dialog">
+    <style name="ConversationsTheme.Monocles.Dialog.Large" parent="ConversationsTheme.Monocles.Dialog">
         <item name="TextSizeBody2">18sp</item>
         <item name="TextSizeDisplay2">56sp</item>
     </style>
 
     <!-- monocles dialog large font - dark -->
-    <style name="ConversationsTheme.Blabber.Dark.Dialog.Large" parent="ConversationsTheme.Blabber.Dark.Dialog">
+    <style name="ConversationsTheme.Monocles.Dark.Dialog.Large" parent="ConversationsTheme.Monocles.Dark.Dialog">
         <item name="TextSizeBody2">18sp</item>
         <item name="TextSizeTitle">56sp</item>
     </style>
 
     <!-- monocles dialog large font - black -->
-    <style name="ConversationsTheme.Blabber.Black.Dialog.Large" parent="ConversationsTheme.Blabber.Black.Dialog">
+    <style name="ConversationsTheme.Monocles.Black.Dialog.Large" parent="ConversationsTheme.Monocles.Black.Dialog">
         <item name="TextSizeBody2">18sp</item>
         <item name="TextSizeTitle">56sp</item>
     </style>
 
     <!-- monocles medium font -->
-    <style name="ConversationsTheme.Blabber.Medium" parent="ConversationsTheme.Blabber">
+    <style name="ConversationsTheme.Monocles.Medium" parent="ConversationsTheme.Monocles">
         <item name="TextSizeCaption">14sp</item>
         <item name="TextSizeBody1">16sp</item>
         <item name="TextSizeBody2">16sp</item>
@@ -654,7 +654,7 @@
     </style>
 
     <!-- monocles medium font - dark -->
-    <style name="ConversationsTheme.Blabber.Dark.Medium" parent="ConversationsTheme.Blabber.Dark">
+    <style name="ConversationsTheme.Monocles.Dark.Medium" parent="ConversationsTheme.Monocles.Dark">
         <item name="TextSizeCaption">14sp</item>
         <item name="TextSizeBody1">16sp</item>
         <item name="TextSizeBody2">16sp</item>
@@ -669,7 +669,7 @@
     </style>
 
     <!-- monocles medium font - black -->
-    <style name="ConversationsTheme.Blabber.Black.Medium" parent="ConversationsTheme.Blabber.Black">
+    <style name="ConversationsTheme.Monocles.Black.Medium" parent="ConversationsTheme.Monocles.Black">
         <item name="TextSizeCaption">14sp</item>
         <item name="TextSizeBody1">16sp</item>
         <item name="TextSizeBody2">16sp</item>
@@ -684,7 +684,7 @@
     </style>
 
     <!-- monocles large font -->
-    <style name="ConversationsTheme.Blabber.Large" parent="ConversationsTheme.Blabber">
+    <style name="ConversationsTheme.Monocles.Large" parent="ConversationsTheme.Monocles">
         <item name="TextSizeCaption">16sp</item>
         <item name="TextSizeBody1">18sp</item>
         <item name="TextSizeBody2">18sp</item>
@@ -699,7 +699,7 @@
     </style>
 
     <!-- monocles large font - dark -->
-    <style name="ConversationsTheme.Blabber.Dark.Large" parent="ConversationsTheme.Blabber.Dark">
+    <style name="ConversationsTheme.Monocles.Dark.Large" parent="ConversationsTheme.Monocles.Dark">
         <item name="TextSizeCaption">16sp</item>
         <item name="TextSizeBody1">18sp</item>
         <item name="TextSizeBody2">18sp</item>
@@ -714,7 +714,7 @@
     </style>
 
     <!-- monocles large font - black -->
-    <style name="ConversationsTheme.Blabber.Black.Large" parent="ConversationsTheme.Blabber.Black">
+    <style name="ConversationsTheme.Monocles.Black.Large" parent="ConversationsTheme.Monocles.Black">
         <item name="TextSizeCaption">16sp</item>
         <item name="TextSizeBody1">18sp</item>
         <item name="TextSizeBody2">18sp</item>

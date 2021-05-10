@@ -364,6 +364,7 @@
     <string name="share_uri_with">Dela URI med...</string>
     <string name="your_full_jid_will_be">Ditt jabber ID blir: %s</string>
     <string name="create_account">Skapa konto</string>
+    <string name="register_monocles">Get a monocles account</string>
     <string name="pick_your_username">Välj användarnamn</string>
     <string name="status_message">Statusmeddelande</string>
     <string name="presence_chat">Tillgänglig</string>

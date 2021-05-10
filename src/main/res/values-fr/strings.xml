@@ -509,6 +509,7 @@
     <string name="magic_create_text">Nous vous guiderons pendant toute la procédure de création d’un compte utilisateur/trice avec un mot de passe aléatoire que vous pourrez utiliser ou modifier, au choix, durant la prochaine étape. \nEnsuite vous pourrez communiquer avec les utilisateurs/trices des autres fournisseurs en leur transmettant votre identifiant Jabber complet.</string>
     <string name="your_full_jid_will_be">Votre identifiant Jabber complet sera : %s</string>
     <string name="create_account">Création d’un nouveau compte</string>
+    <string name="register_monocles">Get a monocles account</string>
     <string name="welcome_existing_account">J’ai déjà un compte</string>
     <string name="pick_your_username">Choisissez votre nom d’utilisateur/trice</string>
     <string name="pref_manually_change_presence">Gérer votre statut de présence manuellement</string>

@@ -515,6 +515,7 @@
     <string name="magic_create_text">Мы поможем Вам создать учетную запись со случайным паролем, который Вы сможете использовать или изменить на свой собственный пароль на следующей странице. \nВы сможете общаться с пользователями этого и других серверов, сообщив им свой полный Jabber-ID.</string>
     <string name="your_full_jid_will_be">Ваш Jabber-ID был: %s</string>
     <string name="create_account">Создание нового учетной записи</string>
+    <string name="register_monocles">Get a monocles account</string>
     <string name="welcome_existing_account">У меня есть аккаунт</string>
     <string name="pick_your_username">Выберите имя пользователя</string>
     <string name="pref_manually_change_presence">Управлять доступностью вручную</string>

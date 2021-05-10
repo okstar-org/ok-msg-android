@@ -352,6 +352,7 @@
     <string name="share_uri_with">Sdílet URI s...</string>
     <string name="your_full_jid_will_be">Vaše celé Jabber ID bude: %s</string>
     <string name="create_account">Vytvořit účet</string>
+    <string name="register_monocles">Get a monocles account</string>
     <string name="pick_your_username">Zadejte své uživatelské jméno</string>
     <string name="status_message">Stavová zpráva</string>
     <string name="presence_chat">Volný pro chat</string>

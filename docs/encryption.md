@@ -15,4 +15,4 @@ Some limitations of OTR: [wikipedia.org/wiki/Off-the-Record](https://en.wikipedi
 
 Please inform your contacts who may also use it.
 
-Mastodon: https://social.tchncs.de/@pixart
+Mastodon: https://monocles.social/@monocles
