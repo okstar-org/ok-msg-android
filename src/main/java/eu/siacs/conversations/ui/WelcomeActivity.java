@@ -8,10 +8,12 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.security.KeyChain;
 import android.security.KeyChainAliasCallback;
+import android.text.method.LinkMovementMethod;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.ActionBar;
@@ -40,6 +42,11 @@ import static eu.siacs.conversations.utils.PermissionUtils.allGranted;
 import static eu.siacs.conversations.utils.PermissionUtils.readGranted;
 
 public class WelcomeActivity extends XmppActivity implements XmppConnectionService.OnAccountCreated, KeyChainAliasCallback {
+
+    private void setupHyperlink() {
+        TextView linkTextView = findViewById(R.id.activity_main_link);
+        linkTextView.setMovementMethod(LinkMovementMethod.getInstance());
+    }
 
     private static final int REQUEST_IMPORT_BACKUP = 0x63fb;
     private static final int REQUEST_READ_EXTERNAL_STORAGE = 0XD737;
@@ -104,6 +111,7 @@ public class WelcomeActivity extends XmppActivity implements XmppConnectionServi
 
     @Override
     public void onNewIntent(Intent intent) {
+        super.onNewIntent(intent);
         if (intent != null) {
             setIntent(intent);
         }
@@ -129,15 +137,15 @@ public class WelcomeActivity extends XmppActivity implements XmppConnectionServi
             binding.importText.setVisibility(View.VISIBLE);
         }
         binding.importDatabase.setOnClickListener(v -> startActivity(new Intent(this, ImportBackupActivity.class)));
-        binding.createAccount.setOnClickListener(v -> {
-            final Intent intent = new Intent(WelcomeActivity.this, MagicCreateActivity.class);
-            intent.addFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION);
-            addInviteUri(intent);
-            startActivity(intent);
-        });
-        if (DISALLOW_REGISTRATION_IN_UI) {
-            binding.createAccount.setVisibility(View.GONE);
-        }
+   //     binding.createAccount.setOnClickListener(v -> {
+    //        final Intent intent = new Intent(WelcomeActivity.this, MagicCreateActivity.class);
+    //        intent.addFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION);
+    //        addInviteUri(intent);
+    //        startActivity(intent);
+     //   });
+    //    if (DISALLOW_REGISTRATION_IN_UI) {
+      //      binding.createAccount.setVisibility(View.GONE);
+      //  }
         binding.useExistingAccount.setOnClickListener(v -> {
             final List<Account> accounts = xmppConnectionService.getAccounts();
             Intent intent = new Intent(WelcomeActivity.this, EditAccountActivity.class);
@@ -154,6 +162,7 @@ public class WelcomeActivity extends XmppActivity implements XmppConnectionServi
             finish();
             overridePendingTransition(R.animator.fade_in, R.animator.fade_out);
         });
+        setupHyperlink();
     }
 
     public void addInviteUri(Intent to) {

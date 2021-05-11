@@ -457,8 +457,8 @@
     <string name="welcome_text">…este un client XMPP/Jabber gratis și securizat.</string>
     <string name="magic_create_text">Vă vom ghida prin procesul de creare al unui cont cu o parolă aleatoare, pe care o puteți păstra sau schimba pe pagina următoare.\nApoi veți putea comunica cu utilizatorii acestui furnizor sau ai altor furnizori oferindu-le ID-ul dumneavoastră Jabber.</string>
     <string name="your_full_jid_will_be">Adresa dumneavoastră XMPP completă va fi: %s</string>
-    <string name="create_account">Creează cont</string>
-    <string name="register_monocles">Get a monocles account</string>
+    <string name="create_account"><a href="https://ocean.monocles.de/apps/registration/">Creează cont</a></string>
+
     <string name="welcome_existing_account">Am un cont</string>
     <string name="pick_your_username">Alegeți un nume de utilizator</string>
     <string name="pref_manually_change_presence">Setează disponibilitate manual</string>

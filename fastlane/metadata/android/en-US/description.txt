@@ -1,4 +1,4 @@
-monocles chat is a fork of balbber.im and <a href="https://f-droid.org/packages/eu.siacs.conversations/">Conversations</a> with some changes,
+monocles chat is a fork of blabber.im and <a href="https://f-droid.org/packages/eu.siacs.conversations/">Conversations</a> with some changes,
 to improve usability.
 
 Connection security and the protection of personal data are very important for
