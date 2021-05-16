@@ -89,13 +89,6 @@
                         android:text="@string/create_account"
                         android:textColor="?attr/colorAccent" />
 
-                    <TextView
-                        android:id="@+id/activity_main_link"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_gravity="end"
-                        android:text="@string/create_monocles_account"
-                        android:textSize="16sp" />
 
                 </LinearLayout>
 

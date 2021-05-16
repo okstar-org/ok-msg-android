@@ -761,7 +761,7 @@ Nie spowoduje to usunięcia kopii wiadomości przechowywanych na innych urządze
     <string name="delete_message">Usuń wiadomość</string>
     <string name="conference_destroyed">Ten czat grupowy został usunięty</string>
     <string name="no_application_found_to_view_contact">Nie odnaleziono aplikacji do wyświetlenia kontaktu</string>
-    <string name="welcome_server_info">Zalecamy korzystanie z monocles chat jako serwera.</string>
+    <string name="welcome_server_info">Zalecamy korzystanie z monocles jako serwera.</string>
     <string name="no_location_permission">monocles chat potrzebuje dostępu do lokalizacji</string>
     <string name="pref_show_record_voice_btn_summary">Pokaż przycisk nagrywania głosu w czatach, jako szybką akcję</string>
     <string name="pref_show_record_voice_btn">Pokaż przycisk nagrywania głosu</string>

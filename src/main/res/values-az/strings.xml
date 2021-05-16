@@ -775,7 +775,7 @@
     <string name="delete_message">Mesaji sil</string>
     <string name="conference_destroyed">Bu qrup söhbət məhv edilmişdir</string>
     <string name="no_application_found_to_view_contact">Kontaktı görmək üçün heç bir tətbiq tapılmadı</string>
-    <string name="welcome_server_info">monocles chat-in provayderiniz kimi istifadəsini tövsiyə edirik.</string>
+    <string name="welcome_server_info">monocles-in provayderiniz kimi istifadəsini tövsiyə edirik.</string>
     <string name="no_location_permission">monocles chat yerləşmə yerinizə izn tələb edir</string>
     <string name="pref_show_record_voice_btn_summary">Səsli səs düyməsini sürətli hərəkət kimi göstərin</string>
     <string name="pref_show_record_voice_btn">Qeyd səs düyməsini göstər</string>

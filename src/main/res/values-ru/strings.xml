@@ -794,7 +794,7 @@
     <string name="delete_message">Удалить сообщение</string>
     <string name="conference_destroyed">Данная группа была закрыта</string>
     <string name="no_application_found_to_view_contact">Не найдено приложений для просмотра контакта</string>
-    <string name="welcome_server_info">Мы рекомендуем использовать сервер monocles chat.</string>
+    <string name="welcome_server_info">Мы рекомендуем использовать сервер monocles.</string>
     <string name="no_location_permission">monocles chat требуется доступ к службам определения местоположения</string>
     <string name="pref_show_record_voice_btn_summary">Показывать кнопку записи голоса в качестве кнопки быстрого действия</string>
     <string name="pref_show_record_voice_btn">Показывать кнопку записи голоса</string>

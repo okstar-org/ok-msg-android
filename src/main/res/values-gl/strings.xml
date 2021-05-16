@@ -774,7 +774,7 @@
     <string name="delete_message">Borrar mensaxe</string>
     <string name="conference_destroyed">Este chat de grupo foi destruído</string>
     <string name="no_application_found_to_view_contact">Non se atopou ningunha aplicación para ver este contacto</string>
-    <string name="welcome_server_info">Recomendamos o uso de monocles chat como provedor.</string>
+    <string name="welcome_server_info">Recomendamos o uso de monocles como provedor.</string>
     <string name="no_location_permission">monocles chat necesita acceso a los servicios de localización</string>
     <string name="pref_show_record_voice_btn_summary">Mostrar o botón de gravación de voz nos chats como acción rápida</string>
     <string name="pref_show_record_voice_btn">Mostrar o botón de gravación de voz</string>

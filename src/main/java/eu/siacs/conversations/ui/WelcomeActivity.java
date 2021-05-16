@@ -43,10 +43,6 @@ import static eu.siacs.conversations.utils.PermissionUtils.readGranted;
 
 public class WelcomeActivity extends XmppActivity implements XmppConnectionService.OnAccountCreated, KeyChainAliasCallback {
 
-    private void setupHyperlink() {
-        TextView linkTextView = findViewById(R.id.activity_main_link);
-        linkTextView.setMovementMethod(LinkMovementMethod.getInstance());
-    }
 
     private static final int REQUEST_IMPORT_BACKUP = 0x63fb;
     private static final int REQUEST_READ_EXTERNAL_STORAGE = 0XD737;
@@ -162,7 +158,6 @@ public class WelcomeActivity extends XmppActivity implements XmppConnectionServi
             finish();
             overridePendingTransition(R.animator.fade_in, R.animator.fade_out);
         });
-        setupHyperlink();
     }
 
     public void addInviteUri(Intent to) {

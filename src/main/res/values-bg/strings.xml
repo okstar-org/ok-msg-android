@@ -703,7 +703,7 @@
     <string name="delete_message">Изтриване на съобщение</string>
     <string name="conference_destroyed">Този групов чат е унищожен</string>
     <string name="no_application_found_to_view_contact">Не е намерена програма за преглед на контакта</string>
-    <string name="welcome_server_info">Препоръчваме използването на monocles chat като доставчик.</string>
+    <string name="welcome_server_info">Препоръчваме използването на monocles като доставчик.</string>
     <string name="pref_show_record_voice_btn_summary">Покажи гласов бутон за запис в разговорите като бързо действие</string>
     <string name="pref_show_record_voice_btn">Покажи гласов бутон</string>
     <string name="pref_use_quick_share_attachment_choice_summary">Замени бутона за изпращане с избор на прикачен файл, ако няма въведено съобщение. В противен случай покажи бързи действия, които могат да бъдат конфигурирани в следната настройка.</string>

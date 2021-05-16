@@ -118,6 +118,14 @@
                         android:text="@string/welcome_server_info"
                         android:textAppearance="@style/TextAppearance.Conversations.Caption" />
 
+                    <TextView
+                        android:id="@+id/activity_main_link"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="start"
+                        android:text="@string/create_monocles_account"
+                        android:textSize="18sp" />
+
                     <Button
                         android:id="@+id/create_account"
                         style="@style/Widget.Conversations.Button.Borderless"
@@ -126,7 +134,6 @@
                         android:layout_gravity="end"
                         android:text="@string/next"
                         android:textColor="?attr/colorAccent" />
-
                 </LinearLayout>
 
                 <RelativeLayout
@@ -142,7 +149,7 @@
                         android:layout_centerHorizontal="true"
                         android:layout_centerVertical="true"
                         android:padding="8dp"
-                        android:src="@mipmap/ic_launcher_foreground" />
+                        android:src="@drawable/logo_800" />
                 </RelativeLayout>
             </RelativeLayout>
         </ScrollView>
