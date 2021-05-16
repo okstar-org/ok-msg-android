@@ -1,5 +1,7 @@
 package eu.siacs.conversations.http;
 
+import static eu.siacs.conversations.http.HttpConnectionManager.FileTransferExecutor;
+
 import android.util.Log;
 
 import androidx.annotation.Nullable;
@@ -34,8 +36,6 @@ import okhttp3.HttpUrl;
 import okhttp3.OkHttpClient;
 import okhttp3.Request;
 import okhttp3.Response;
-
-import static eu.siacs.conversations.http.HttpConnectionManager.FileTransferExecutor;
 
 public class HttpDownloadConnection implements Transferable {
 
@@ -87,7 +87,7 @@ public class HttpDownloadConnection implements Transferable {
             final Message.FileParams fileParams = message.getFileParams();
             if (message.hasFileOnRemoteHost()) {
                 mUrl = AesGcmURL.of(fileParams.url);
-            } else if (message.isOOb() && fileParams.url != null && fileParams.size > 0) {
+            } else if (message.isOOb() && fileParams.url != null && fileParams.size != null) {
                 mUrl = AesGcmURL.of(fileParams.url);
             } else {
                 mUrl = AesGcmURL.of(message.getBody().split("\n")[0]);
@@ -118,8 +118,8 @@ public class HttpDownloadConnection implements Transferable {
                 this.message.setEncryption(Message.ENCRYPTION_NONE);
             }
             //TODO add auth tag size to knownFileSize
-            final long knownFileSize = message.getFileParams().size;
-            if (knownFileSize > 0 && interactive) {
+            final Long knownFileSize = message.getFileParams().size;
+            if (knownFileSize != null && interactive) {
                 this.file.setExpectedSize(knownFileSize);
                 download(true);
             } else {

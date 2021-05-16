@@ -936,12 +936,6 @@ public class ConversationFragment extends XmppFragment implements EditMessage.Ke
             case REQUEST_TRUST_KEYS_ATTACHMENTS:
                 commitAttachments();
                 break;
-            case REQUEST_START_AUDIO_CALL:
-                triggerRtpSession(RtpSessionActivity.ACTION_MAKE_VOICE_CALL);
-                break;
-            case REQUEST_START_VIDEO_CALL:
-                triggerRtpSession(RtpSessionActivity.ACTION_MAKE_VIDEO_CALL);
-                break;
             case ATTACHMENT_CHOICE_CHOOSE_IMAGE:
                 final List<Attachment> imageUris = Attachment.extractAttachments(getActivity(), data, Attachment.Type.IMAGE);
                 mediaPreviewAdapter.addMediaPreviews(imageUris);
@@ -2105,7 +2099,7 @@ public class ConversationFragment extends XmppFragment implements EditMessage.Ke
                 if (!message.hasFileOnRemoteHost()
                         && xmppConnection != null
                         && conversation.getMode() == Conversational.MODE_SINGLE
-                        && !xmppConnection.getFeatures().httpUpload(message.getFileParams().size)) {
+                        && !xmppConnection.getFeatures().httpUpload(message.getFileParams().getSize())) {
                     activity.selectPresence(conversation, () -> {
                         message.setCounterpart(conversation.getNextCounterpart());
                         activity.xmppConnectionService.resendFailedMessages(message);

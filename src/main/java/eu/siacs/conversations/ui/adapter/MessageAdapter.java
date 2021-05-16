@@ -1,5 +1,17 @@
 package eu.siacs.conversations.ui.adapter;
 
+import static android.view.ViewGroup.LayoutParams.WRAP_CONTENT;
+import static eu.siacs.conversations.entities.Message.DELETED_MESSAGE_BODY;
+import static eu.siacs.conversations.entities.Message.DELETED_MESSAGE_BODY_OLD;
+import static eu.siacs.conversations.persistance.FileBackend.formatTime;
+import static eu.siacs.conversations.persistance.FileBackend.safeLongToInt;
+import static eu.siacs.conversations.ui.SettingsActivity.PLAY_GIF_INSIDE;
+import static eu.siacs.conversations.ui.SettingsActivity.SHOW_LINKS_INSIDE;
+import static eu.siacs.conversations.ui.SettingsActivity.SHOW_MAPS_INSIDE;
+import static eu.siacs.conversations.ui.util.MyLinkify.removeTrackingParameter;
+import static eu.siacs.conversations.ui.util.MyLinkify.removeTrailingBracket;
+import static eu.siacs.conversations.ui.util.MyLinkify.replaceYoutube;
+
 import android.Manifest;
 import android.annotation.SuppressLint;
 import android.app.Activity;
@@ -88,18 +100,6 @@ import eu.siacs.conversations.xmpp.Jid;
 import eu.siacs.conversations.xmpp.mam.MamReference;
 import me.drakeet.support.toast.ToastCompat;
 import pl.droidsonroids.gif.GifImageView;
-
-import static android.view.ViewGroup.LayoutParams.WRAP_CONTENT;
-import static eu.siacs.conversations.entities.Message.DELETED_MESSAGE_BODY;
-import static eu.siacs.conversations.entities.Message.DELETED_MESSAGE_BODY_OLD;
-import static eu.siacs.conversations.persistance.FileBackend.formatTime;
-import static eu.siacs.conversations.persistance.FileBackend.safeLongToInt;
-import static eu.siacs.conversations.ui.SettingsActivity.PLAY_GIF_INSIDE;
-import static eu.siacs.conversations.ui.SettingsActivity.SHOW_LINKS_INSIDE;
-import static eu.siacs.conversations.ui.SettingsActivity.SHOW_MAPS_INSIDE;
-import static eu.siacs.conversations.ui.util.MyLinkify.removeTrackingParameter;
-import static eu.siacs.conversations.ui.util.MyLinkify.removeTrailingBracket;
-import static eu.siacs.conversations.ui.util.MyLinkify.replaceYoutube;
 
 public class MessageAdapter extends ArrayAdapter<Message> {
 
@@ -223,7 +223,7 @@ public class MessageAdapter extends ArrayAdapter<Message> {
                 && message.getMergedStatus() <= Message.STATUS_RECEIVED;
         if (message.isFileOrImage() || transferable != null || MessageUtils.unInitiatedButKnownSize(message)) {
             FileParams params = message.getFileParams();
-            filesize = params.size > 0 ? UIHelper.filesizeToString(params.size) : null;
+            filesize = params.size != null ? UIHelper.filesizeToString(params.size) : null;
             if (transferable != null && (transferable.getStatus() == Transferable.STATUS_FAILED || transferable.getStatus() == Transferable.STATUS_CANCELLED)) {
                 error = true;
             }
