@@ -35,6 +35,24 @@
                     android:paddingRight="16dp"
                     android:paddingBottom="8dp">
 
+
+                    <TextView
+                        android:id="@+id/server_info"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="8dp"
+                        android:textAlignment="center"
+                        android:text="@string/welcome_server_info"
+                        android:textAppearance="@style/TextAppearance.Conversations.Caption" />
+
+                    <TextView
+                        android:id="@+id/activity_main_link"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:textAlignment="center"
+                        android:text="@string/create_monocles_account"
+                        android:textSize="17sp" />
+
                     <Space
                         android:layout_width="match_parent"
                         android:layout_height="0dp"
@@ -110,21 +128,6 @@
                         android:textAppearance="@style/TextAppearance.Conversations.Caption"
                         android:visibility="invisible" />
 
-                    <TextView
-                        android:id="@+id/server_info"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_marginTop="8dp"
-                        android:text="@string/welcome_server_info"
-                        android:textAppearance="@style/TextAppearance.Conversations.Caption" />
-
-                    <TextView
-                        android:id="@+id/activity_main_link"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_gravity="start"
-                        android:text="@string/create_monocles_account"
-                        android:textSize="18sp" />
 
                     <Button
                         android:id="@+id/create_account"
