@@ -510,8 +510,8 @@
     <string name="welcome_text">... azad və təhlükəsiz XMPP / Jabber müştərisidir.</string>
     <string name="magic_create_text">Növbəti səhifədə istifadə edə və ya öz şifrənizi dəyişə biləcəyiniz təsadüfi bir şifrə ilə bir hesab yaratma prosesində sizə rəhbərlik edəcəyik. \nSonra, tam Jabber-İD verərək bu və digər provayderlərin istifadəçiləri ilə əlaqə qura biləcəksiniz.</string>
     <string name="your_full_jid_will_be">Sizin Jabber-İD: %s</string>
-    <string name="create_account"><a href="https://ocean.monocles.de/apps/registration/">Yeni hesab yarat</a></string>
-
+    <string name="create_account">Yeni hesab yarat</string>
+    <string name="create_monocles_account"><a href="https://ocean.monocles.de/apps/registration/">Get a monocles account!</a></string>
     <string name="welcome_existing_account">Mənim hesabım var</string>
     <string name="pick_your_username">Öz istifadəçi adını seç</string>
     <string name="pref_manually_change_presence">Mövcudluğu əl ilə idarə edin</string>

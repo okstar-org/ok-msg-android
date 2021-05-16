@@ -382,8 +382,8 @@
     <string name="welcome_text">…usa ka libre ug luwas nga kliyente sa XMPP / Jabber.</string>
     <string name="magic_create_text">Giyahan ka namo sa pag proseso sa pagmugna og usa ka account gamit ang random nga password, nga mahimo nimong gamiton o usbon sa imong kaugalingong password sa sunod nga pahina. \nLabaw kay makahimo ka sa pagpakig-estorya sa mga tiggamit niini ug sa ubang mga tighatag pinaagi sa paghatag kanila sa imong full Jabber-ID.</string>
     <string name="your_full_jid_will_be">Ang imong Jabber-ID mahimong: %s</string>
-    <string name="create_account"><a href="https://ocean.monocles.de/apps/registration/">Buhat ug bag-o nga account</a></string>
-
+    <string name="create_account">Buhat ug bag-o nga account</string>
+    <string name="create_monocles_account"><a href="https://ocean.monocles.de/apps/registration/">Get a monocles account!</a></string>
     <string name="pick_your_username">Pili ug imung username</string>
     <string name="status_message">Status ang mensahe</string>
     <string name="presence_chat">Libre alang sa Chat</string>

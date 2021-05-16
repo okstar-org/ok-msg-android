@@ -508,8 +508,8 @@
     <string name="welcome_text">…è un client XMPP/Jabber libero e sicuro.</string>
     <string name="magic_create_text">Ti guideremo nel processo di creazione di un account con una password casuale, che potrai utilizzare o cambiare con una tua nella prossima pagina. \nSuccessivamente potrai comunicare con altri utenti di questo e altri server dando loro il tuo ID-Jabber completo.</string>
     <string name="your_full_jid_will_be">Il tuo ID Jabber completo sarà: %s</string>
-    <string name="create_account"><a href="https://ocean.monocles.de/apps/registration/">Crea account</a></string>
-
+    <string name="create_account">Crea account</string>
+    <string name="create_monocles_account"><a href="https://ocean.monocles.de/apps/registration/">Get a monocles account!</a></string>
     <string name="welcome_existing_account">Ho un account</string>
     <string name="pick_your_username">Scegli il tuo nome utente</string>
     <string name="pref_manually_change_presence">Gestisci disponibilità manualmente</string>

@@ -80,12 +80,21 @@
                         android:textColor="?attr/colorAccent"
                         android:visibility="gone" />
 
+                    <Button
+                        android:id="@+id/create_account"
+                        style="@style/Widget.Conversations.Button.Borderless"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="end"
+                        android:text="@string/create_account"
+                        android:textColor="?attr/colorAccent" />
+
                     <TextView
                         android:id="@+id/activity_main_link"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_gravity="end"
-                        android:text="@string/create_account"
+                        android:text="@string/create_monocles_account"
                         android:textSize="16sp" />
 
                 </LinearLayout>

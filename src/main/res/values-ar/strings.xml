@@ -400,8 +400,8 @@
     <string name="mgmt_account_reconnect">إعادة الاتصال</string>
     <string name="welcome_text">… هو تطبيق محادثة حر و آمن لجابر و XMPP.</string>
     <string name="your_full_jid_will_be">سيكون مُعرّف جابر الخاص بك كالتالي: %s</string>
-    <string name="create_account"><a href="https://ocean.monocles.de/apps/registration/">إنشاء حساب جديد</a></string>
-
+    <string name="create_account">إنشاء حساب جديد</string>
+    <string name="create_monocles_account"><a href="https://ocean.monocles.de/apps/registration/">Get a monocles account!</a></string>
     <string name="welcome_existing_account">لدي حساب</string>
     <string name="pick_your_username">قم باختيار اسم مستخدم خاص بك</string>
     <string name="pref_manually_change_presence">إدارة حالة الحضور يدويا</string>

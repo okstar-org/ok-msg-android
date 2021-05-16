@@ -351,8 +351,8 @@
     <string name="this_account_is_disabled">Desativou esta conta</string>
     <string name="no_application_to_share_uri">Não foi encontrada nenhuma aplicação para partilhar o URI</string>
     <string name="share_uri_with">Partilhar URI com...</string>
-    <string name="create_account"><a href="https://ocean.monocles.de/apps/registration/">Criar conta</a></string>
-
+    <string name="create_account">Criar conta</string>
+    <string name="create_monocles_account"><a href="https://ocean.monocles.de/apps/registration/">Get a monocles account!</a></string>
     <string name="contact_is_typing">%s está a escrever...</string>
     <string name="pref_use_tor">Conectar via TOR</string>
     <string name="pref_use_tor_summary">Usar a rede Tor para todas as conexões. Requer a aplicação Orbot</string>

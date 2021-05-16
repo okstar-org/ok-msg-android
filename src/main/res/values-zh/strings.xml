@@ -479,8 +479,8 @@
     <string name="welcome_text">…是一个免费且安全的XMPP/Jabber客户端。</string>
     <string name="magic_create_text">此向导将为您创建一个账户。账户的初始密码是随机的，但您可以在下一个界面上修改密码。\n完成向导后，您就可以把您的 Jabber-ID 告诉别人，和别人聊天了。</string>
     <string name="your_full_jid_will_be">您的Jabber用户名为：%s</string>
-    <string name="create_account"><a href="https://ocean.monocles.de/apps/registration/">创建新帐号</a></string>
-
+    <string name="create_account">创建新帐号</string>
+    <string name="create_monocles_account"><a href="https://ocean.monocles.de/apps/registration/">Get a monocles account!</a></string>
     <string name="welcome_existing_account">我已有账号</string>
     <string name="pick_your_username">选择您的用户名</string>
     <string name="pref_manually_change_presence">手动管理状态</string>

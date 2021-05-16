@@ -485,8 +485,8 @@
     <string name="welcome_text">…вільний та безпечний клієнт XMPP/Jabber.</string>
     <string name="magic_create_text">Ми допоможемо вам створити обліковий запис. На наступній сторінці ви зможете змінити автоматично зґенерований пароль.\nПодалі ви зможете спілкуватися з користувачами вашого чи будь-якого іншого, для цього потрібно буде надати користувачеві вашу повну адресу XMPP.</string>
     <string name="your_full_jid_will_be">Ваша повна адреса XMPP буде такою: %s</string>
-    <string name="create_account"><a href="https://ocean.monocles.de/apps/registration/">Створити обліковий запис</a></string>
-
+    <string name="create_account">Створити обліковий запис</string>
+    <string name="create_monocles_account"><a href="https://ocean.monocles.de/apps/registration/">Get a monocles account!</a></string>
     <string name="welcome_existing_account">Я маю обліковий запис</string>
     <string name="pick_your_username">Оберіть Ваше ім\'я користувача</string>
     <string name="pref_manually_change_presence">Керувати станом вручну</string>

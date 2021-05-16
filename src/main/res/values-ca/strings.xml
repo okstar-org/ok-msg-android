@@ -508,8 +508,8 @@
     <string name="welcome_text">... és una aplicació XMPP/Jabber gratuÏta i segura.</string>
     <string name="magic_create_text">A continuació crearem un perfil amb una contrasenya generada aleatoriàment que podràs utilitzar o canviar a la pàgina següent\i posteriorment podràs posar-t\'he en contacte amb els teus contactes d\'aquest i altres servidors donan-los el teu Jabber-ID.</string>
     <string name="your_full_jid_will_be">El teu identificador Jabber serà: %s</string>
-    <string name="create_account"><a href="https://ocean.monocles.de/apps/registration/">Crear compte</a></string>
-
+    <string name="create_account">Crear compte</string>
+    <string name="create_monocles_account"><a href="https://ocean.monocles.de/apps/registration/">Get a monocles account!</a></string>
     <string name="welcome_existing_account">Tinc un compte</string>
     <string name="pick_your_username">Selecciona el teu nom d\'usuari</string>
     <string name="pref_manually_change_presence">Canviar disponibilitat manualment</string>
