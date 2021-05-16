@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <string name="pref_about_message" translatable="false"><b>monocles chat</b>
-			\n\nCopyright © 2014-%s Arne-Brün Vogelsang
+			\n\nCopyright © 2018-%s Arne-Brün Vogelsang
 			\n\nhttps://monocles.de
 			\n\nThis program is free software: you can redistribute it and/or modify
 			it under the terms of the GNU General Public License as published by
