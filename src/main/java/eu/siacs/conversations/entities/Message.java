@@ -924,7 +924,7 @@ public class Message extends AbstractEntity implements AvatarService.Avatarable 
                     break;
                 case 6:
                     fileParams.url = URL.tryParse(parts[0]);
-                    fileParams.size = parseLong(parts[1]);
+                    fileParams.size = Longs.tryParse(parts[1]);
                     fileParams.runtime = parseInt(parts[4]);
                     fileParams.subject = parseString(parts[5]);
                     break;

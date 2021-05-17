@@ -1,5 +1,7 @@
 package eu.siacs.conversations.http;
 
+import static eu.siacs.conversations.http.HttpConnectionManager.FileTransferExecutor;
+
 import android.util.Log;
 
 import com.google.common.util.concurrent.FutureCallback;
@@ -29,8 +31,6 @@ import okhttp3.OkHttpClient;
 import okhttp3.Request;
 import okhttp3.RequestBody;
 import okhttp3.Response;
-
-import static eu.siacs.conversations.http.HttpConnectionManager.FileTransferExecutor;
 
 public class HttpUploadConnection implements Transferable, AbstractConnectionManager.ProgressListener {
 
@@ -72,8 +72,8 @@ public class HttpUploadConnection implements Transferable, AbstractConnectionMan
     }
 
     @Override
-    public long getFileSize() {
-        return file == null ? 0 : file.getExpectedSize();
+    public Long getFileSize() {
+        return file == null ? null : file.getExpectedSize();
     }
 
     @Override

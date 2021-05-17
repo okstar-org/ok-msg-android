@@ -1258,11 +1258,11 @@ public class JingleFileTransferConnection extends AbstractJingleConnection imple
     }
 
     @Override
-    public long getFileSize() {
+    public Long getFileSize() {
         if (this.file != null) {
             return this.file.getExpectedSize();
         } else {
-            return 0;
+            return null;
         }
     }
 
