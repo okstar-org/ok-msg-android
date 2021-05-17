@@ -1,5 +1,8 @@
 package eu.siacs.conversations.utils;
 
+import static eu.siacs.conversations.entities.Message.DELETED_MESSAGE_BODY;
+import static eu.siacs.conversations.entities.Message.DELETED_MESSAGE_BODY_OLD;
+
 import android.content.Context;
 import android.graphics.Typeface;
 import android.text.Spannable;
@@ -40,9 +43,6 @@ import eu.siacs.conversations.services.ExportBackupService;
 import eu.siacs.conversations.services.XmppConnectionService;
 import eu.siacs.conversations.ui.util.MyLinkify;
 import eu.siacs.conversations.xmpp.Jid;
-
-import static eu.siacs.conversations.entities.Message.DELETED_MESSAGE_BODY;
-import static eu.siacs.conversations.entities.Message.DELETED_MESSAGE_BODY_OLD;
 
 public class UIHelper {
 
@@ -515,6 +515,8 @@ public class UIHelper {
             return context.getString(R.string.ebook);
         } else if (mime.equals("application/gpx+xml")) {
             return context.getString(R.string.gpx_track);
+        } else if (mime.equals("text/plain")) {
+            return context.getString(R.string.plain_text_document);
         } else {
             return mime;
         }
