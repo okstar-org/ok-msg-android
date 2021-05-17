@@ -936,6 +936,12 @@ public class ConversationFragment extends XmppFragment implements EditMessage.Ke
             case REQUEST_TRUST_KEYS_ATTACHMENTS:
                 commitAttachments();
                 break;
+            case REQUEST_START_AUDIO_CALL:
+                triggerRtpSession(RtpSessionActivity.ACTION_MAKE_VOICE_CALL);
+                break;
+            case REQUEST_START_VIDEO_CALL:
+                triggerRtpSession(RtpSessionActivity.ACTION_MAKE_VIDEO_CALL);
+                break;
             case ATTACHMENT_CHOICE_CHOOSE_IMAGE:
                 final List<Attachment> imageUris = Attachment.extractAttachments(getActivity(), data, Attachment.Type.IMAGE);
                 mediaPreviewAdapter.addMediaPreviews(imageUris);
@@ -1562,7 +1568,6 @@ public class ConversationFragment extends XmppFragment implements EditMessage.Ke
             triggerRtpSession(RtpSessionActivity.ACTION_MAKE_VIDEO_CALL);
         }
     }
-
 
     private void triggerRtpSession(final String action) {
         if (activity.xmppConnectionService.getJingleConnectionManager().isBusy()) {
