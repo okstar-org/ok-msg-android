@@ -2,7 +2,7 @@
 <resources>
     <string name="pref_about_message" translatable="false"><b>monocles chat</b>
 			\n\nCopyright © 2018-%s Arne-Brün Vogelsang
-			\n\nhttps://monocles.de
+			\n\nhttps://monocles.de/more
 			\n\nThis program is free software: you can redistribute it and/or modify
 			it under the terms of the GNU General Public License as published by
 			the Free Software Foundation, either version 3 of the License, or
@@ -16,8 +16,7 @@
 			along with this program. If not, see https://www.gnu.org/licenses
 			\n\nDownload the full original source code at https://github.com/siacs/Conversations (Copyright © Daniel Gultsch)
 			\n\nDownload the modified source code at https://codeberg.org/Arne/monocles_chat
-            \n\nYou can support Arne-Brün Vogelsang by making a donation in form of a gift in sense of § 516 ff BGB i.e. a gratuitous donation
-			\n\nYou can support the monocles project by making a donation or buy a secure account. More information on https://monocles.de/more/#donation-section
+			\n\nYou can support the monocles project by making a donation or buy a secure account. More information on https://monocles.de/more
 	</string>
     <string name="pref_about_libraries" translatable="false"><b>Libraries</b>
 			\n\nhttps://www.bouncycastle.org\n(The MIT License (MIT))
