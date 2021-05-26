@@ -1,3 +1,0 @@
-* show message in chat, during video transcoding (monocles chat)
-* Fixed 'No Connectivity' issues on Android 7.1
-* bug fixes

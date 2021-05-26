@@ -1,7 +1,0 @@
-* improve compatibility with non libwebrtc WebRTC implementations
-* improve memory management (monocles chat)
-* ui improvements (monocles chat)
-* fix HTTP up/download for users that don’t trust system CAs
-* various bug fixes around Tor support
-* improve call compatibility with Dino
-* bug fixes

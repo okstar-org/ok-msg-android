@@ -1123,7 +1123,7 @@
     <string name="memory_warning_force">Dein Messenger nutzt %1$s (%2$s) des internen Speichers.\n\nDu solltest das automatische Löschen von Anhängen aktivieren oder gespeicherte Medien manuell löschen. Dein Gerät wird bald keinen freien Speicher mehr haben!</string>
     <string name="open_settings">Einstellungen öffnen</string>
     <string name="oldAndroidVersion">Alte Android-Version</string>
-    <string name="oldAndroidVersionMessage">Du verwendest eine alte Android-Version, die in zukünftigen Updates nicht mehr unterstützt wird. Ab monocles chat Version 3.1.0 werden nur noch Geräte mit Android 5 oder höher unterstützt. Bitte aktualisiere deine Geräte-Firmware.</string>
+    <string name="oldAndroidVersionMessage">Du verwendest eine alte Android-Version, die in zukünftigen Updates nicht mehr unterstützt wird. Ab monocles chat version 1.0 werden nur noch Geräte mit Android 5 oder höher unterstützt. Bitte aktualisiere deine Geräte-Firmware.</string>
     <string name="save_x_file">%s speichern</string>
     <string name="file_copied_to">Datei nach %s kopiert</string>
     <string name="use_individual_notifications">Nutze individuelle Benachrichtigen</string>

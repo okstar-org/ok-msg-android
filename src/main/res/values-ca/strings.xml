@@ -1121,7 +1121,7 @@
     <string name="all_media_files">archivos multimedia</string>
     <string name="open_settings">Obrir la configuració</string>
     <string name="oldAndroidVersion">Versió antiga d\'Android</string>
-    <string name="oldAndroidVersionMessage">Està utilitzant una versió antiga d\'Android que ja no serà suportada en futures actualitzacions. A partir de la versió 3.1.0 de monocles chat només s\'admeten dispositius amb Android 5 o superior. Si us plau, actualitzi el microprogramari del teu dispositiu.</string>
+    <string name="oldAndroidVersionMessage">Està utilitzant una versió antiga d\'Android que ja no serà suportada en futures actualitzacions. A partir de la versió 1.0 de monocles chat només s\'admeten dispositius amb Android 5 o superior. Si us plau, actualitzi el microprogramari del teu dispositiu.</string>
     <string name="save_x_file">Desa %s</string>
     <string name="file_copied_to">Arxiu copiat en %s</string>
     <string name="use_individual_notifications">Utilitzar les notificacions individuals</string>
