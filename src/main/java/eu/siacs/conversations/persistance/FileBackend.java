@@ -60,6 +60,9 @@ import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.Date;
 import java.util.LinkedList;
 import java.util.List;
@@ -69,6 +72,7 @@ import java.util.UUID;
 
 import eu.siacs.conversations.Config;
 import eu.siacs.conversations.R;
+import eu.siacs.conversations.entities.Account;
 import eu.siacs.conversations.entities.DownloadableFile;
 import eu.siacs.conversations.entities.Message;
 import eu.siacs.conversations.services.AttachFileToConversationRunnable;
@@ -283,6 +287,77 @@ public class FileBackend {
         } catch (Exception e) {
             e.printStackTrace();
         }
+    }
+
+    public static void deleteOldBackups(File dir, List<Account> mAccounts) {
+        try {
+            long start = SystemClock.elapsedRealtime();
+            int num = 0;
+            if (dir == null) {
+                return;
+            }
+            Stack<File> dirlist = new Stack<File>();
+            dirlist.clear();
+            dirlist.push(dir);
+            File dirCurrent = dirlist.pop();
+            File[] fileList = dirCurrent.listFiles();
+            while (!dirlist.isEmpty()) {
+                if (fileList != null) {
+                    for (File file : fileList) {
+                        if (file.isDirectory()) {
+                            dirlist.push(file);
+                        }
+                    }
+                }
+            }
+            if (fileList != null) {
+                ArrayList<File> fileListByAccount = new ArrayList<File>();
+                ArrayList<File> simpleFileList = new ArrayList<File>(Arrays.asList(fileList));
+                for (Account account : mAccounts) {
+                    String jid = account.getJid().asBareJid().toString();
+                    for (int i = 0; i < simpleFileList.size(); i++) {
+                        File currentFile = simpleFileList.get(i);
+                        String fileName = currentFile.getName();
+                        if (fileName.startsWith(jid) && fileName.endsWith(".ceb")) {
+                            fileListByAccount.add(currentFile);
+                            simpleFileList.remove(currentFile);
+                            i--;
+                        }
+                    }
+                    if (fileListByAccount.size() > 2) {
+                        num += expireOldBackups(fileListByAccount);
+                    }
+                    fileListByAccount.clear();
+                }
+            } else {
+                return;
+            }
+            Log.d(Config.LOGTAG, "deleted " + num + " old backup files in " + (SystemClock.elapsedRealtime() - start) + "ms");
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
+    private static int expireOldBackups(ArrayList<File> fileListByAccount) {
+        int num = 0;
+        try {
+            Collections.sort(fileListByAccount, new Comparator<File>() {
+                @Override
+                public int compare(File f1, File f2) {
+                    return Long.compare(f2.lastModified(), f1.lastModified());
+                }
+            });
+            fileListByAccount.subList(0, 2).clear();
+            for (File currentFile : fileListByAccount) {
+                if (currentFile.delete()) {
+                    num++;
+                }
+            }
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return num;
     }
 
     public void deleteFilesInDir(File dir) {
