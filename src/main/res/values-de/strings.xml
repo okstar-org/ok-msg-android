@@ -842,7 +842,7 @@
     <string name="unable_to_restore_backup">Sicherung kann nicht wiederhergestellt werden.</string>
     <string name="unable_to_decrypt_backup">Sicherung kann nicht entschlüsselt werden. Stimmt das Kennwort?</string>
     <string name="pref_prefer_xmpp_avatar_summary">Bevorzuge den vom Benutzer gesetzten Avatar anstatt des Profilbildes in deinem Adressbuch</string>
-    <string name="pref_prefer_xmpp_avatar">XMPP-Avatar bevorzugen</string>
+    <string name="pref_prefer_xmpp_avatar">Chat-Profilbild bevorzugen</string>
     <plurals name="view_users">
         <item quantity="one">%1$d Teilnehmer anzeigen</item>
         <item quantity="other">%1$d Teilnehmer anzeigen</item>
@@ -1100,7 +1100,7 @@
     <string name="pref_mappreview_host_summary">Nutze benutzerdefinierten Kartenvorschau Server</string>
     <string name="pref_mappreview_host">Kartenvorschau Server</string>
     <string name="webview_not_available">WebView ist auf dem Gerät nicht verfügbar.</string>
-    <string name="pref_easy_downloader_summary">Lade alle Anhänge in öffentlichen Channels und von Unbekannten automatisch herunter, anstatt eine Schaltfläche für einen manuellen Download anzuzeigen.</string>
+    <string name="pref_easy_downloader_summary">Lade alle Anhänge in öffentlichen Chaträumen und von Unbekannten automatisch herunter, anstatt eine Schaltfläche für einen manuellen Download anzuzeigen.</string>
     <string name="pref_easy_downloader">Lade alle Anhänge automatisch herunter</string>
     <string name="got_invitation_from">Du wurdest von %s in den Chatraum %s eingeladen.</string>
     <string name="a_user">ein Benutzer</string>
