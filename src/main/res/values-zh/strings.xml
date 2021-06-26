@@ -119,6 +119,7 @@
     <string name="error_file_not_found">文件未找到</string>
     <string name="error_io_exception">一般I/O错误。可能存储空间不足？</string>
     <string name="error_security_exception_during_image_copy">您选择图像时使用的应用没有足够的权限来读取文件。\n\n<small>使用不同的文件管理器选择图像</small></string>
+    <string name="error_security_exception">你用来共享此文件的应用程序没有提供足够的权限。</string>
     <string name="account_status_unknown">未知</string>
     <string name="account_status_disabled">暂时禁用</string>
     <string name="account_status_online">在线</string>
@@ -132,6 +133,7 @@
     <string name="account_status_regis_success">注册完成</string>
     <string name="account_status_regis_not_sup">服务器不支持注册账户</string>
     <string name="account_status_tls_error">TLS握手失败</string>
+    <string name="account_status_tls_error_domain">域名不可验证</string>
     <string name="account_status_policy_violation">对政策的违反</string>
     <string name="account_status_incompatible_server">不兼容的服务器</string>
     <string name="account_status_stream_error">传输错误</string>
@@ -910,4 +912,5 @@
     <string name="pref_theme_orange">橙色</string>
     <string name="pref_theme_color_options_summary">选择主题调色板</string>
     <string name="pref_theme_color_options">主题颜色</string>
+    <string name="unable_to_enable_video">无法启用视频</string>
 </resources>

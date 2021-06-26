@@ -129,6 +129,7 @@
     <string name="error_file_not_found">Arquivo non atopado</string>
     <string name="error_io_exception">Erro xeral de I/O. ¿Quedaches sen espazo no disco?</string>
     <string name="error_security_exception_during_image_copy">A aplicación que usas para seleccionar imaxes non proporciona suficientes permisos para leer o arquivo.\n\n<small>Utiliza un explorador de arquivos diferente para seleccionar a imaxe</small></string>
+    <string name="error_security_exception">A app que usaches para compartir este ficheiro non concedeu os permisos suficientes.</string>
     <string name="account_status_unknown">Descoñecido</string>
     <string name="account_status_disabled">Deshabilitado temporalmente</string>
     <string name="account_status_online">Conectado</string>
@@ -142,6 +143,7 @@
     <string name="account_status_regis_success">Rexistro completado</string>
     <string name="account_status_regis_not_sup">O servidor non soporta rexistros</string>
     <string name="account_status_tls_error">Fallo a negociación TLS</string>
+    <string name="account_status_tls_error_domain">Dominio non verificable</string>
     <string name="account_status_policy_violation">Violación da política</string>
     <string name="account_status_incompatible_server">Servidor incompatible</string>
     <string name="account_status_stream_error">Erro de fluxo</string>
@@ -1132,4 +1134,5 @@
     <string name="remove_all_individual_notifications_message">Realmente quere eliminar todas as notificacións individuais establecidas para os contactos e grupos?</string>
     <string name="exit">Saír</string>
     <string name="record_voice_mail">Gravar unha mensaxe de voz</string>
+    <string name="unable_to_enable_video">Non se puido activar o vídeo.</string>
 </resources>

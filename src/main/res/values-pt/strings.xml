@@ -98,6 +98,7 @@
     <string name="error_file_not_found">Ficheiro não encontrado</string>
     <string name="error_io_exception">Erro de I/O genérico. Talvez tenha ficado sem espaço de armazenamento?</string>
     <string name="error_security_exception_during_image_copy">A aplicação que usou para selecionar esta imagem não nos forneceu permissões suficientes para ler o ficheiro.\n\n<small>Utilize um gestor de ficheiros diferente para escolher uma imagem</small></string>
+    <string name="error_security_exception">O app que você usou para compartilhar esse arquivo não forneceu permissões suficientes.</string>
     <string name="account_status_unknown">Desconhecido</string>
     <string name="account_status_disabled">Temporariamente desativado</string>
     <string name="account_status_connecting">Conectando\u2026</string>
@@ -360,4 +361,7 @@
     <string name="pref_show_connection_options_summary">Mostrar as definições do hostname e do porto ao configurar uma conta</string>
     <string name="pref_show_connection_options">Definições de conexão</string>
     <string name="contact_has_read_up_to_this_point">%s leu até este ponto</string>
+    <string name="account_status_tls_error">Não foi possível efetuar a negociação TLS</string>
+    <string name="account_status_tls_error_domain">Domínio não verificável</string>
+    <string name="unable_to_enable_video">Não foi possível habilitar o vídeo.</string>
 </resources>
