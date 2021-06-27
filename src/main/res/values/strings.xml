@@ -1044,6 +1044,7 @@
     <string name="rtp_state_connectivity_lost_error">Connection lost</string>
     <string name="rtp_state_retracted">Retracted call</string>
     <string name="rtp_state_application_failure">Application failure</string>
+    <string name="rtp_state_security_error">Verification problem</string>
     <string name="incoming_call_duration">%s · Incoming call · %s</string>
     <string name="incoming_call_time">%s · Incoming call</string>
     <string name="incoming_call">Incoming call</string>
