@@ -1145,4 +1145,5 @@
     <string name="delete_recording_dialog_message">Do you really want to cancel and delete your recording?</string>
     <string name="pref_pause_voice_on_move_from_ear">Pause voice message automatically</string>
     <string name="pref_pause_voice_on_move_from_ear_summary">Pause the current voice message when you move your device away from your ear.</string>
+    <string name="plain_text_document">Plain text document</string>
 </resources>
