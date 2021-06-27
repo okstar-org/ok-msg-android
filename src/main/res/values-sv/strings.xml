@@ -15,6 +15,7 @@
     <string name="title_activity_settings">Inställningar</string>
     <string name="title_activity_block_list">Blockeringslista</string>
     <string name="just_now">just nu</string>
+    <string name="title_activity_about_x">Om %s</string>
     <string name="minute_ago">1 min sedan</string>
     <string name="minutes_ago">%d min sedan</string>
     <string name="sending">skickar…</string>

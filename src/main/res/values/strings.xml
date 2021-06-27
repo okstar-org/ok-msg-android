@@ -144,6 +144,7 @@
     <string name="account_status_regis_not_sup">Server does not support registration</string>
     <string name="account_status_tls_error">TLS negotiation failed</string>
     <string name="account_status_tls_error_domain">Domain not verifiable</string>
+    <string name="title_activity_about_x">About %s</string>
     <string name="account_status_policy_violation">Policy violation</string>
     <string name="account_status_incompatible_server">Incompatible server</string>
     <string name="account_status_stream_error">Stream error</string>

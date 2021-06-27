@@ -13,6 +13,7 @@
     <string name="action_unblock_contact">Odblokuj kontakt</string>
     <string name="action_block_domain">Zablokuj domenę</string>
     <string name="action_unblock_domain">Odblokuj domenę</string>
+    <string name="title_activity_about_x">O %s</string>
     <string name="title_activity_manage_accounts">Zarządzaj kontami</string>
     <string name="title_activity_settings">Ustawienia</string>
     <string name="conference_details">Szczegóły czatu grupowego</string>

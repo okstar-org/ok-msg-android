@@ -15,6 +15,7 @@
     <string name="action_unblock_domain">Domeinua desblokeatu</string>
     <string name="title_activity_manage_accounts">Kudeatu kontuak</string>
     <string name="title_activity_settings">Ezarpenak</string>
+    <string name="title_activity_about_x">%s buruz</string>
     <string name="conference_details">Taldeko txataren xehetasunak</string>
     <string name="contact_details">Kontaktuaren xehetasunak</string>
     <string name="title_activity_sharewith">Elkarrizketarekin partekatu</string>

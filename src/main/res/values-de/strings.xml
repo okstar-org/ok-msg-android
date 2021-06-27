@@ -10,6 +10,7 @@
     <string name="action_add_phone_book">Zu Adressbuch hinzufügen</string>
     <string name="action_delete_contact">Aus Kontaktliste entfernen</string>
     <string name="action_block_contact">Kontakt sperren</string>
+    <string name="title_activity_about_x">Über %s</string>
     <string name="action_unblock_contact">Kontakt entsperren</string>
     <string name="action_block_domain">Domain sperren</string>
     <string name="action_unblock_domain">Domain entsperren</string>

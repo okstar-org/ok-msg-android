@@ -908,6 +908,7 @@
     <string name="gp_short">短</string>
     <string name="gp_medium">中</string>
     <string name="gp_long">长</string>
+    <string name="title_activity_about_x">关于%s</string>
     <string name="pref_theme_blue">蓝色</string>
     <string name="pref_theme_orange">橙色</string>
     <string name="pref_theme_color_options_summary">选择主题调色板</string>

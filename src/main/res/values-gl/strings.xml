@@ -1120,6 +1120,7 @@
     <string name="images">imaxes</string>
     <string name="videos">vídeos</string>
     <string name="files">arquivos</string>
+    <string name="title_activity_about_x">Acerca de %s</string>
     <string name="all_media_files">ficheiros multimedia</string>
     <string name="open_settings">Abrir axustes</string>
     <string name="oldAndroidVersion">Versión antiga de Android</string>

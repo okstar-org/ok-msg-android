@@ -11,6 +11,7 @@
     <string name="action_block_contact">Zablokovat kontakt</string>
     <string name="action_unblock_contact">Odblokovat kontakt</string>
     <string name="action_block_domain">Zablokovat doménu</string>
+    <string name="title_activity_about_x">O %s</string>
     <string name="action_unblock_domain">Odblokovat doménu</string>
     <string name="title_activity_settings">Nastavení</string>
     <string name="title_activity_block_list">Seznam blokovaných</string>

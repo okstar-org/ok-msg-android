@@ -12,6 +12,7 @@
     <string name="action_block_contact">Kişiyi engelle</string>
     <string name="action_unblock_contact">Kişinin engelini kaldır</string>
     <string name="action_block_domain">Domaini engelle</string>
+    <string name="title_activity_about_x">%sHakkında</string>
     <string name="action_unblock_domain">Domainin engelini kaldır</string>
     <string name="title_activity_manage_accounts">Hesapları yönet</string>
     <string name="title_activity_settings">Ayarlar</string>

@@ -124,14 +124,15 @@ android {
         applicationId "de.monocles.chat"
         multiDexEnabled true
 
-        buildConfigField("String", "LOGTAG", '"monocles_chat"')
         buildConfigField("String", "DOMAIN_LOCK", 'null')
         buildConfigField("String", "MAGIC_CREATE_DOMAIN", '"monocles.de"')
         buildConfigField("boolean", "SHOW_INTRO", 'true')
         buildConfigField("String", "UPDATE_URL", '"https://monocles.de/chat/update/"')
         resValue "string", "applicationId", applicationId
-        resValue "string", "app_name", "monocles chat"
         signingConfig signingConfigs.'monocles chat'
+        def appName = "monocles chat"
+        resValue "string", "app_name", appName
+        buildConfigField "String", "APP_NAME", "\"$appName\"";
     }
 
     dataBinding {

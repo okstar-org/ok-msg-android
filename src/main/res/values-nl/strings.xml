@@ -13,6 +13,7 @@
     <string name="action_unblock_contact">Contact deblokkeren</string>
     <string name="action_block_domain">Domein blokkeren</string>
     <string name="action_unblock_domain">Domein deblokkeren</string>
+    <string name="title_activity_about_x">Over %s</string>
     <string name="title_activity_manage_accounts">Accounts beheren</string>
     <string name="title_activity_settings">Instellingen</string>
     <string name="conference_details">Gespreksgegevens</string>

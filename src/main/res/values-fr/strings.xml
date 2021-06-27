@@ -12,6 +12,7 @@
     <string name="action_block_contact">Bloquer le contact</string>
     <string name="action_unblock_contact">Débloquer le contact</string>
     <string name="action_block_domain">Bloquer le domaine</string>
+    <string name="title_activity_about_x">À propos de %s</string>
     <string name="action_unblock_domain">Débloquer le domaine</string>
     <string name="title_activity_manage_accounts">Gestion des comptes</string>
     <string name="title_activity_settings">Paramètres</string>

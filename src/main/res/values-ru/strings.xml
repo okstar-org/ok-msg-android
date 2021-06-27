@@ -17,6 +17,7 @@
     <string name="title_activity_settings">Настройки</string>
     <string name="conference_details">Детали группового чата</string>
     <string name="contact_details">Детали контакта</string>
+    <string name="title_activity_about_x">О %s</string>
     <string name="title_activity_sharewith">Поделиться с разговором</string>
     <string name="title_activity_start_conversation">Начать беседу</string>
     <string name="title_activity_choose_contact">Выбрать контакт</string>

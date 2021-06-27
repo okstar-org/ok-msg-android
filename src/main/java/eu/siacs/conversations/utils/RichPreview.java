@@ -23,6 +23,7 @@ import java.net.URISyntaxException;
 import java.net.URLEncoder;
 import java.util.regex.Pattern;
 
+import eu.siacs.conversations.http.HttpConnectionManager;
 import eu.siacs.conversations.Config;
 import eu.siacs.conversations.services.XmppConnectionService;
 
@@ -183,7 +184,7 @@ public class RichPreview {
         try {
             doc = Jsoup.connect(url)
                     .timeout(Config.CONNECT_TIMEOUT * 1000)
-                    .userAgent(xmppConnectionService.getIqGenerator().getUserAgent())
+                    .userAgent(HttpConnectionManager.getUserAgent())
                     .get();
         } catch (Exception e) {
             e.printStackTrace();

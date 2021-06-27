@@ -51,7 +51,7 @@ public final class Config {
         }
     }
 
-    public static final String LOGTAG = BuildConfig.LOGTAG;
+    public static final String LOGTAG = BuildConfig.APP_NAME.toLowerCase(Locale.US);
 
     public static final Jid BUG_REPORTS = Jid.of("support@monocles.de");
     public static final Uri HELP = Uri.parse("https://help.conversations.im");

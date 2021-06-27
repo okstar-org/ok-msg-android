@@ -12,6 +12,7 @@ import java.util.List;
 import java.util.Locale;
 import java.util.TimeZone;
 
+import eu.siacs.conversations.BuildConfig;
 import eu.siacs.conversations.Config;
 import eu.siacs.conversations.R;
 import eu.siacs.conversations.crypto.axolotl.AxolotlService;
@@ -66,7 +67,6 @@ public abstract class AbstractGenerator {
     };
 
     protected XmppConnectionService mXmppConnectionService;
-    private String mVersion = null;
 
     AbstractGenerator(XmppConnectionService service) {
         this.mXmppConnectionService = service;
@@ -78,18 +78,11 @@ public abstract class AbstractGenerator {
     }
 
     String getIdentityVersion() {
-        if (mVersion == null) {
-            this.mVersion = PhoneHelper.getVersionName(mXmppConnectionService);
-        }
-        return this.mVersion;
+        return BuildConfig.VERSION_NAME;
     }
 
     public String getIdentityName() {
-        return mXmppConnectionService.getString(R.string.app_name) + ' ' + getIdentityVersion();
-    }
-
-    public String getUserAgent() {
-        return System.getProperty("http.agent");
+        return BuildConfig.APP_NAME;
     }
 
     String getIdentityType() {

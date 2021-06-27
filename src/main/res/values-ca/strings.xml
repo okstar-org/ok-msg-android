@@ -8,6 +8,7 @@
     <string name="action_secure">Conversa segura</string>
     <string name="action_add_new_account">Afegir nou compte</string>
     <string name="action_add_phone_book">Afegir a contactes</string>
+    <string name="title_activity_about_x">Sobre 1%s</string>
     <string name="action_delete_contact">Eliminar de la llista de contactes</string>
     <string name="action_block_contact">Bloquejar contacte</string>
     <string name="action_unblock_contact">Desbloquejar contacte</string>

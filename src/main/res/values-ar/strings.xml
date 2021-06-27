@@ -6,6 +6,7 @@
     <string name="action_end_conversation">إنهاء هذه المحادثة</string>
     <string name="action_contact_details">بيانات المُراسِل</string>
     <string name="action_secure">محادثة آمنة</string>
+    <string name="title_activity_about_x">عن %s</string>
     <string name="action_add_new_account">إضافة حساب جديد</string>
     <string name="action_add_phone_book">إضافة إلى دفتر العناوين</string>
     <string name="action_delete_contact">حذف من القائمة</string>

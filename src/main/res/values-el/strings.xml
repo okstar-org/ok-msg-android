@@ -12,6 +12,7 @@
     <string name="action_block_domain">Αποκλεισμός τομέα</string>
     <string name="action_unblock_domain">Άρση αποκλεισμού τομέα</string>
     <string name="title_activity_settings">Ρυθμίσεις</string>
+    <string name="title_activity_about_x">Περί %s</string>
     <string name="title_activity_block_list">Αποκλεισμός λίστας</string>
     <string name="just_now">μόλις τώρα</string>
     <string name="minute_ago">πριν από 1 λεπτό</string>
