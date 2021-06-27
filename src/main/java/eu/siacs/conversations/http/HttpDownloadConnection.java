@@ -143,6 +143,7 @@ public class HttpDownloadConnection implements Transferable {
 
     private void download(final boolean interactive) {
         changeStatus(STATUS_WAITING);
+        Log.d(Config.LOGTAG,"download()",new Exception());
         FileTransferExecutor.execute(new FileDownloader(interactive));
     }
 
@@ -249,11 +250,11 @@ public class HttpDownloadConnection implements Transferable {
     }
 
     @Override
-    public long getFileSize() {
+    public Long getFileSize() {
         if (this.file != null) {
             return this.file.getExpectedSize();
         } else {
-            return 0;
+            return null;
         }
     }
 

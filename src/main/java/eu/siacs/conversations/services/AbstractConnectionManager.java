@@ -5,6 +5,8 @@ import android.os.PowerManager;
 import android.os.SystemClock;
 import android.util.Log;
 
+import androidx.core.content.ContextCompat;
+
 import org.bouncycastle.crypto.engines.AESEngine;
 import org.bouncycastle.crypto.io.CipherInputStream;
 import org.bouncycastle.crypto.io.CipherOutputStream;
@@ -152,12 +154,9 @@ public class AbstractConnectionManager {
         }
     }
 
-    public PowerManager.WakeLock createWakeLock(final Thread thread) {
-        return createWakeLock("conversations:" + thread.getName());
-    }
 
     public PowerManager.WakeLock createWakeLock(final String name) {
-        final PowerManager powerManager = (PowerManager) mXmppConnectionService.getSystemService(Context.POWER_SERVICE);
+        final PowerManager powerManager = ContextCompat.getSystemService(mXmppConnectionService, PowerManager.class);
         return powerManager.newWakeLock(PowerManager.PARTIAL_WAKE_LOCK, name);
     }
 
