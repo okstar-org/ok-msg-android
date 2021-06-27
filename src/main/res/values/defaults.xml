@@ -54,9 +54,9 @@
     <bool name="screen_security">false</bool>
     <bool name="play_gif_inside">false</bool>
     <bool name="prefer_xmpp_avatar">true</bool>
-    <bool name="show_links_inside">true</bool>
-    <bool name="show_maps_inside">true</bool>
-    <string name="mappreview_url">https://blabber.im/staticmap/staticmap.php</string>
+    <bool name="show_links_inside">false</bool>
+    <bool name="show_maps_inside">false</bool>
+    <string name="mappreview_url"></string>
     <bool name="use_internal_updater">true</bool>
     <bool name="show_own_accounts">true</bool>
     <bool name="vibrate_in_chat">true</bool>
