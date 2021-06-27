@@ -55,6 +55,7 @@
 
     <attr name="conversations_overview_background" format="reference|color" />
 
+    <attr name="media_preview_image" format="reference" />
     <attr name="media_preview_document" format="reference" />
     <attr name="media_preview_recording" format="reference" />
     <attr name="media_preview_audio" format="reference" />
