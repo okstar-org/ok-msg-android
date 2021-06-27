@@ -114,7 +114,7 @@ public class MessageUtils {
     }
 
     public static boolean unInitiatedButKnownSize(Message message) {
-        return message.getType() == Message.TYPE_TEXT && message.getTransferable() == null && message.isOOb() && message.getFileParams().size > 0 && message.getFileParams().url != null;
+        return message.getType() == Message.TYPE_TEXT && message.getTransferable() == null && message.isOOb() && message.getFileParams().size != null && message.getFileParams().url != null;
     }
 
     public static boolean fileWithKnownSize(Message message) {
