@@ -1,6 +1,7 @@
 ### Changelog
 
 #### Version 3.0.8
+* pause the current voice message when you move your device away from your ear
 * remove blabber.im XMPP service
 
 #### Version 3.0.7

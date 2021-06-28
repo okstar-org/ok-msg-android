@@ -1,0 +1,2 @@
+* pause the current voice message when you move your device away from your ear
+* remove blabber.im XMPP service
