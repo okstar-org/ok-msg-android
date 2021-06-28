@@ -3,7 +3,7 @@
 * **Version:** 3.0.0
 * **Device:** Xiaomi Mi A1
 * **Android Version:**  Android 10 (stock)
-* **Server name:** monocles.de, blabber.im, conversations.im, jabber.de or self hosted
+* **Server name:** monocles.de, conversations.im, jabber.de or self hosted
 * **Server software:** ejabberd 19.09.1 or prosody 0.11.3 (if known)
 * **Installed server modules:** Stream Managment, CSI, MAM
 * **Monocles Messenger source:** PlayStore, PlayStore Beta Channel, F-Droid, Github, Codeberg, self build (latest HEAD)
