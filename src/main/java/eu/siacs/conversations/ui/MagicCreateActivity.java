@@ -15,7 +15,6 @@ import androidx.appcompat.widget.Toolbar;
 import androidx.databinding.DataBindingUtil;
 
 import java.security.SecureRandom;
-import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 
@@ -79,10 +78,10 @@ public class MagicCreateActivity extends XmppActivity implements TextWatcher, Ad
         }
         super.onCreate(savedInstanceState);
         this.binding = DataBindingUtil.setContentView(this, R.layout.activity_magic_create);
-        final List<String> domains = Arrays.asList(getResources().getStringArray(R.array.domains));
+        final List<String> domains = Config.DOMAIN.DOMAINS;
         Collections.sort(domains, String::compareToIgnoreCase);
         final ArrayAdapter<String> adapter = new ArrayAdapter<>(this, android.R.layout.simple_selectable_list_item, domains);
-        int defaultServer = adapter.getPosition("blabber.im");
+        int defaultServer = adapter.getPosition(Config.DOMAIN.getRandomServer());
         if (registerFromUri && !useOwnProvider && (this.preAuth != null || domain != null)) {
             binding.server.setEnabled(false);
             binding.server.setVisibility(View.GONE);

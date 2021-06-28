@@ -2,11 +2,13 @@ package eu.siacs.conversations;
 
 import android.graphics.Bitmap;
 import android.net.Uri;
+import android.util.Log;
 
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 import java.util.Locale;
+import java.util.Random;
 
 import eu.siacs.conversations.crypto.XmppDomainVerifier;
 import eu.siacs.conversations.xmpp.Jid;
@@ -44,24 +46,24 @@ public final class Config {
     }
 
     public static String blabber() {
-        if (Locale.getDefault().getLanguage().equalsIgnoreCase("de")) {
+        //if (Locale.getDefault().getLanguage().equalsIgnoreCase("de")) {
             return "blabber.im";
-        } else {
-            return "blabber.im/en";
-        }
+        /*} else {
+            return "blabber.im/en.html";
+        }*/
     }
 
     public static final String LOGTAG = BuildConfig.LOGTAG;
 
-    public static final Jid BUG_REPORTS = Jid.of("bugs@blabber.im");
+    public static final Jid BUG_REPORTS = Jid.of("bugs@pix-art.de");
     public static final Uri HELP = Uri.parse("https://help.conversations.im");
 
     public static final String inviteUserURL = "https://" + blabber() + "/i/";
     public static final String inviteMUCURL = "https://" + blabber() + "/j/";
     public static final String inviteHostURL = blabber(); // without http(s)
-    public static final String termsOfUseURL = "https://" + blabber() + "/nutzungsbedingungen/";
-    public static final String privacyURL = "https://" + blabber() + "/datenschutz/";
-    public static final String migrationURL = "https://" + blabber() + "/quick-start/migration-pixart-blabber/";
+    public static final String termsOfUseURL = "https://kriztan.codeberg.page/termsofuse/";
+    public static final String privacyURL = "https://kriztan.codeberg.page/privacy/";
+    public static final String migrationURL = Locale.getDefault().getLanguage().equalsIgnoreCase("de") ? "https://blabber.im/anleitungen/Migration%20vom%20Pix-Art%20Messenger%20zu%20blabber.im%20(Android)%20_%20blabber.im.html" : "https://blabber.im/tutorials/Migration%20from%20Pix-Art%20Messenger%20to%20blabber.im%20(Android)%20_%20blabber.im.html";
 
     public static final String CHANGELOG_URL = "https://codeberg.org/kriztan/blabber.im/src/branch/master/CHANGELOG.md";
     public static final String GIT_URL = "https://codeberg.org/kriztan/blabber.im/";
@@ -69,7 +71,8 @@ public final class Config {
     public static final String XMPP_IP = null; //BuildConfig.XMPP_IP; // set to null means disable
     public static final Integer[] XMPP_Ports = null; //BuildConfig.XMPP_Ports; // set to null means disable
     public static final String DOMAIN_LOCK = BuildConfig.DOMAIN_LOCK; //only allow account creation for this domain
-    public static final String MAGIC_CREATE_DOMAIN = BuildConfig.MAGIC_CREATE_DOMAIN; //"blabber.im";
+    public static final String MAGIC_CREATE_DOMAIN = DOMAIN.getRandomServer();
+
     public static final String QUICKSY_DOMAIN = "quicksy.im";
     public static final String CHANNEL_DISCOVERY = "https://search.jabber.network";
     public static final boolean DISALLOW_REGISTRATION_IN_UI = false; //hide the register checkbox
@@ -170,7 +173,7 @@ public final class Config {
     public static final String UPDATE_URL = BuildConfig.UPDATE_URL;
     public static final long UPDATE_CHECK_TIMER = 24 * 60 * 60; // 24 h in seconds
 
-    public static final String ISSUE_URL = "xmpp://blabber@conference.blabber.im?join";
+    public static final String ISSUE_URL = "xmpp://support@room.pix-art.de?join";
 
     public static final String[] ENABLED_CIPHERS = {
             "TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256",
@@ -222,6 +225,62 @@ public final class Config {
 
         public static boolean matchesContactDomain(final String domain) {
             return XmppDomainVerifier.matchDomain(domain, CONTACT_DOMAINS);
+        }
+    }
+
+    public static class DOMAIN {
+        public static final List<String> DOMAINS = Arrays.asList(
+                "conversations.im",
+                "jabber.cat",
+                "im.koderoot.net",
+                "magicbroccoli.de",
+                "wiuwiu.de",
+                "5222.de",
+                "chat.sum7.eu",
+                "xmpp.zone",
+                "laborversuch.de",
+                "creep.im",
+                "jabber.systemausfall.org",
+                "jabber.hot-chilli.net",
+                "jabber.fr",
+                "jabber.de",
+                "elaon.de",
+                "high-way.me",
+                "deshalbfrei.org",
+                "im.hot-chilli.net",
+                "jabberpl.org",
+                "chinwag.im",
+                "zsim.de",
+                "im.apinc.org",
+                "chatme.im",
+                "yax.im",
+                "neko.im",
+                "jabberzac.org",
+                "jabber.ccc.de",
+                "jwchat.org",
+                "jabber.cz",
+                "xabber.de",
+                "jabber.ru",
+                "darknet.nz",
+                "404.city",
+                "tigase.im",
+                "member.fsf.org",
+                "twattle.net",
+                "jabber.calyxinstitute.org",
+                "linuxlovers.at",
+                "openjabber.org",
+                "jabber.no",
+                "jabber.otr.im",
+                "chapril.org",
+                "zp1.net",
+                "zsim.de",
+                "xmpp.social"
+        );
+
+        public static String getRandomServer() {
+            final String domain = DOMAINS.get(new Random().nextInt(DOMAINS.size()));
+            Log.d(LOGTAG, "Magic Create domain: " + domain);
+            return domain;
         }
     }
 

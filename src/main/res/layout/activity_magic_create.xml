@@ -110,14 +110,6 @@
                         android:textAppearance="@style/TextAppearance.Conversations.Caption"
                         android:visibility="invisible" />
 
-                    <TextView
-                        android:id="@+id/server_info"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_marginTop="8dp"
-                        android:text="@string/welcome_server_info"
-                        android:textAppearance="@style/TextAppearance.Conversations.Caption" />
-
                     <Button
                         android:id="@+id/create_account"
                         style="@style/Widget.Conversations.Button.Borderless"
