@@ -1,5 +1,8 @@
 ### Changelog
 
+#### Version 3.0.8
+* remove blabber.im XMPP service
+
 #### Version 3.0.7
 * bug fixes for PlayStore version
 
