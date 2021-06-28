@@ -1137,4 +1137,6 @@
     <string name="error_security_exception">La aplicación que has usado para compartir este fichero no proporciona suficientes permisos.</string>
     <string name="unable_to_enable_video">Incapaz de activar vídeo.</string>
     <string name="delete_recording_dialog_message">¿Realmente quieres cancelar y borrar tu grabación?</string>
+    <string name="pref_pause_voice_on_move_from_ear">Pausar mensaje de voz automáticamente</string>
+    <string name="pref_pause_voice_on_move_from_ear_summary">Pausar el mensaje de voz actual cuando separes tu dispositivo de tu oreja.</string>
 </resources>

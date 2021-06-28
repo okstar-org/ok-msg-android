@@ -1118,6 +1118,8 @@
     <string name="videos">vídeos</string>
     <string name="files">arquivos</string>
     <string name="all_media_files">ficheiros multimedia</string>
+    <string name="memory_warning">O seu mensaxeiro está a utilizar %1$s (%2$s) da memoria interna.\n\nPode activar o borrado automático dos arquivos adxuntos ou borrar manualmente os medios almacenados.</string>
+    <string name="memory_warning_force">O seu mensaxeiro está a utilizar %1$s (%2$s) da memoria interna.\n\nDebería activar o borrado automático dos arquivos adxuntos ou borrar manualmente os medios almacenados. ¡O seu dispositivo quedará sen memoria!</string>
     <string name="open_settings">Abrir axustes</string>
     <string name="oldAndroidVersion">Versión antiga de Android</string>
     <string name="oldAndroidVersionMessage">Está a utilizar unha versión antiga de Android que xa non será soportada en futuras actualizacións. A partir da versión 3.1.0 de blabber.im só admítense dispositivos con Android 5 ou superior. Por favor, actualice o firmware do teu dispositivo.</string>
@@ -1131,4 +1133,10 @@
     <string name="remove_all_individual_notifications_message">Realmente quere eliminar todas as notificacións individuais establecidas para os contactos e grupos?</string>
     <string name="exit">Saír</string>
     <string name="record_voice_mail">Gravar unha mensaxe de voz</string>
+    <string name="backup_started_message">A copia de seguridade iniciouse. Recibirá unha notificación unha vez que se completou.</string>
+    <string name="error_security_exception">A aplicación que se utilizou para compartir este arquivo non proporcionou suficientes permisos.</string>
+    <string name="unable_to_enable_video">Non se pode activar o vídeo.</string>
+    <string name="delete_recording_dialog_message">Realmente quere cancelar e borrar ou gravación?</string>
+    <string name="pref_pause_voice_on_move_from_ear">Pór en pausa a mensaxe de voz automaticamente</string>
+    <string name="pref_pause_voice_on_move_from_ear_summary">Pór en pausa a mensaxe de voz actual cando afaste o dispositivo do seu oído.</string>
 </resources>

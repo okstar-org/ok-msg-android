@@ -1161,4 +1161,6 @@
     <string name="error_security_exception">Приложение, которое вы использовали для совместного использования этого файла, не предоставило достаточных разрешений.</string>
     <string name="unable_to_enable_video">Не удается включить видео.</string>
     <string name="delete_recording_dialog_message">Вы действительно хотите отменить и удалить свою запись?</string>
+    <string name="pref_pause_voice_on_move_from_ear">Автоматическая приостановка голосового сообщения</string>
+    <string name="pref_pause_voice_on_move_from_ear_summary">Приостановить воспроизведение голосового сообщения, при удалении устройство от уха.</string>
 </resources>

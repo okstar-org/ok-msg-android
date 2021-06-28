@@ -1118,6 +1118,8 @@
     <string name="videos">vídeos</string>
     <string name="files">arxius</string>
     <string name="all_media_files">archivos multimedia</string>
+    <string name="memory_warning">El seu missatger està utilitzant %1$s (%2$s) de la memòria interna.\n\nPot activar l\'esborrat automàtic dels arxius adjunts o esborrar manualment els mitjans emmagatzemats.</string>
+    <string name="memory_warning_force">El seu missatger està utilitzant %1$s (%2$s) de la memòria interna.\n\nHauria d\'activar l\'esborrat automàtic dels arxius adjunts o esborrar manualment els mitjans emmagatzemats. El seu dispositiu es quedarà sense memòria!</string>
     <string name="open_settings">Obrir la configuració</string>
     <string name="oldAndroidVersion">Versió antiga d\'Android</string>
     <string name="oldAndroidVersionMessage">Està utilitzant una versió antiga d\'Android que ja no serà suportada en futures actualitzacions. A partir de la versió 3.1.0 de blabber.im només s\'admeten dispositius amb Android 5 o superior. Si us plau, actualitzi el microprogramari del teu dispositiu.</string>
@@ -1131,4 +1133,10 @@
     <string name="remove_all_individual_notifications_message">Realment vol eliminar totes les notificacions individuals establertes per als contactes i grups?</string>
     <string name="exit">Sortir</string>
     <string name="record_voice_mail">Gravar un missatge de veu</string>
+    <string name="backup_started_message">La còpia de seguretat s\'ha iniciat. Rebrà una notificació una vegada que s\'hagi completat.</string>
+    <string name="error_security_exception">L\'aplicació que es va usar per a compartir aquest arxiu no va proporcionar suficients permisos.</string>
+    <string name="unable_to_enable_video">No es pot activar el vídeo.</string>
+    <string name="delete_recording_dialog_message">Realment vol cancel·lar i esborrar el seu enregistrament?</string>
+    <string name="pref_pause_voice_on_move_from_ear">Posar en pausa el missatge de veu automàticament</string>
+    <string name="pref_pause_voice_on_move_from_ear_summary">Posar en pausa el missatge de veu actual quan allunyi el dispositiu de la seva oïda.</string>
 </resources>

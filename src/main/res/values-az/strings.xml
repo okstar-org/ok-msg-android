@@ -538,6 +538,7 @@
     <string name="import_database">Nüsxəni idxal et</string>
     <string name="invite_again">Yenidən dəvət et</string>
     <string name="inviteUser_Subject">vasitəsilə sizi dəvət etdi</string>
+    <string name="InviteText">Salam,\n\n %s istifadəçisi sizi blabber.im - a dəvət etdi. Yalnız aşağıdakı linki vurun…</string>
     <string name="pref_broadcast_last_activity">Son istifadəçinin qarşılıqlı əlaqəsi</string>
     <string name="pref_broadcast_last_activity_summary">Blabber.im-i istifadə etdiyiniz zaman bütün kontaktlarınızı bildirin</string>
     <string name="request_permissions_message">blabber.imr bir neçə icazə verməyinizi xahiş edəcəkdir. Bütün bu icazələrin bu mesenjerin bütün xüsusiyyətlərindən istifadə etməsinə icazə verməyiniz vacibdir. Bu icazələrin hər hansı birini inkar etsəniz, tətbiq özünü bağlayacaqdır.</string>
@@ -1090,6 +1091,7 @@
     <string name="unable_to_parse_invite">Dəvəti açmaq olmur</string>
     <string name="server_does_not_support_easy_onboarding_invites">Server dəvət generasiyasını dəstəkləmir</string>
     <string name="your_server">Sizin provayder</string>
+    <string name="tap_share_button_send_invite">%1$s-a dəvət göndərmək üçün paylaş düyməsinə vurun.</string>
     <string name="invite">Dəvət</string>
     <string name="if_contact_is_nearby_use_qr">Kontaktınız yaxınlıqdakı olduqda, dəvətinizi qəbul etmək üçün aşağıdakı kodu də tarayabilir.</string>
     <string name="easy_invite_share_text">%1$s-ə qoşulun və mənimlə əlaqə saxlayın: %2$s</string>
@@ -1137,4 +1139,6 @@
     <string name="error_security_exception">Bu faylı paylaşdığınız tətbiq kifayət qədər icazələrə malik deyil.</string>
     <string name="unable_to_enable_video">Videonu aktiv etmək olmur.</string>
     <string name="delete_recording_dialog_message">Həqiqətən yazını ləğv etmək və silmək istəyirsiniz?</string>
+    <string name="pref_pause_voice_on_move_from_ear">Səs mesajını avtomatik dayandırın</string>
+    <string name="pref_pause_voice_on_move_from_ear_summary">Cihazınızı qulağınızdan uzaqlaşdırdığınız zaman səs mesajını dayandırın.</string>
 </resources>
