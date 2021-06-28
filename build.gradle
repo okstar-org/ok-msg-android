@@ -114,7 +114,7 @@ android {
         minSdkVersion 21
         targetSdkVersion 29
 
-        //versionNameSuffix " beta_(2021-04-10)" // " beta_(XXXX-XX-XX)" // activate for beta versions
+        //versionNameSuffix " beta_(2021-06-28)" // " beta_(XXXX-XX-XX)" // activate for beta versions
         versionCode 102
         versionName "1.2"
         //resConfigs "en"
