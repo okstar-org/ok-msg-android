@@ -2,7 +2,7 @@
 
 ##Version 1.2
 * Changed missed call, notification and connection icons
-* upgrade to libwebrtc m90
+* upgrade to libwebrtc m86
 * enable extmap-allow-mixed 
 * changed version tag
 * added old icons
@@ -38,14 +38,4 @@ independently at a later stage." (Daniel Gultsch)
 * log exception when file is not a ceb
 * ring during device discovery 
 * make search case-insensitive not only for ASCII 
-
-
-##Version 1.1
-* Voreinstellungen geändert, um Verbindungsprobleme zu vermeiden
-* einige Textkorrekturen
-* optionalen monocles Registrierungslink hinzugefügt
-* geändertes Appicon
-
-## Version 1.0
-* Erste Veröffentlichung
 

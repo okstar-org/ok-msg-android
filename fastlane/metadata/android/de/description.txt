@@ -21,7 +21,7 @@ Features:
 * Synchronisiere Nachrichtenverlauf mit anderen Clients
 * Konferenzen bzw. Gruppenchats
 * Adressbuchintegration (ein Austausch deines Adressbuches mit dem Server findet nicht statt)
-* Audio/Video Telefonie seit Version 2.4.0
+* Audio/Video Telefonie
 * sehr geringe Akku-Belastung
 * Status Nachrichten
 * tägliches Backup der Datenbank auf den lokalen Speicher

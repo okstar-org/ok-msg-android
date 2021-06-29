@@ -37,7 +37,7 @@ configurations {
 }
 
 dependencies {
-    implementation 'org.webrtc:google-webrtc:1.0.+'
+    implementation 'org.webrtc:google-webrtc:1.0.32006'
     implementation project(':libs:android-transcoder')
     playstoreImplementation('com.google.firebase:firebase-messaging:22.0.0') { ///higher versions are causing crashes due to missing project IDs
         exclude group: 'com.google.firebase', module: 'firebase-core'

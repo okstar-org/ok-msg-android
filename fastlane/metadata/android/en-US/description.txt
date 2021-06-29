@@ -18,7 +18,7 @@ Features:
 * Synchronize message history with other clients
 * Conferences or group chats
 * Address book integration (there is no exchange of your address book with the server)
-* Audio/Video calls since version 2.4.0
+* Audio/Video calls
 * Very low battery consumption
 * Status messages
 * Daily backup of database to local storage
