@@ -5,7 +5,8 @@ um den Umstieg von oftmals vorinstallierten Messengern zu erleichtern.
 Verbindungssicherheit und der Schutz persönlicher Daten ist uns sehr wichtig,
 deshalb erzwingen wir verschlüsselte Verbindungen zwischen Messenger und Server,
 was es nahezu unmöglich macht, deine Nachrichten durch Fremde abzufangen und zu
-lesen.
+lesen. Dazu verzichten wir im Vergleich zu ähnlichen xmpp Clienten auf ältere Verschlüsselungs Ketten. Diese sind optimal an den monocles Chat Server angepasst, aber auch mit anderen Chat Servern kompatibel, welche heutige Standards nutzen.
+
 Wem das nicht genug ist, kann auf die integrierte Nachrichtenverschlüsselung von
 Ende-zu-Ende, wie OMEMO oder OpenPGP, zurückgreifen.
 Damit lassen sich Nachrichten auf dem Sendegerät verschlüsseln und nur durch das
