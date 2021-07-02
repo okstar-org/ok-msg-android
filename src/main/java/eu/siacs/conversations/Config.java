@@ -11,6 +11,7 @@ import java.util.Locale;
 import java.util.Random;
 
 import eu.siacs.conversations.crypto.XmppDomainVerifier;
+import eu.siacs.conversations.services.ProviderService;
 import eu.siacs.conversations.xmpp.Jid;
 import eu.siacs.conversations.xmpp.chatstate.ChatState;
 
@@ -67,6 +68,8 @@ public final class Config {
 
     public static final String CHANGELOG_URL = "https://codeberg.org/kriztan/blabber.im/src/branch/master/CHANGELOG.md";
     public static final String GIT_URL = "https://codeberg.org/kriztan/blabber.im/";
+
+    public static final String PROVIDER_URL = "https://invent.kde.org/melvo/xmpp-providers/-/raw/master/providers.json"; // https://invent.kde.org/melvo/xmpp-providers
 
     public static final String XMPP_IP = null; //BuildConfig.XMPP_IP; // set to null means disable
     public static final Integer[] XMPP_Ports = null; //BuildConfig.XMPP_Ports; // set to null means disable
@@ -277,9 +280,13 @@ public final class Config {
                 "xmpp.social"
         );
 
+        public static final List<String> BLACKLISTED_DOMAINS = Arrays.asList(
+                "blabber.im"
+        );
+
         public static String getRandomServer() {
-            final String domain = DOMAINS.get(new Random().nextInt(DOMAINS.size()));
-            Log.d(LOGTAG, "Magic Create domain: " + domain);
+            final String domain = ProviderService.getProviders().get(new Random().nextInt(DOMAINS.size()));
+            Log.d(LOGTAG, "MagicCreate account on domain: " + domain);
             return domain;
         }
     }
