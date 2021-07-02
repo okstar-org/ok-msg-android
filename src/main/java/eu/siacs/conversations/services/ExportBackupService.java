@@ -352,7 +352,7 @@ public class ExportBackupService extends Service {
             secureRandom.nextBytes(salt);
             final BackupFileHeader backupFileHeader = new BackupFileHeader(getString(R.string.app_name), account.getJid(), System.currentTimeMillis(), IV, salt);
             final Progress progress = new Progress(mBuilder, max, count);
-            final File file = new File(FileBackend.getBackupDirectory(null) + account.getJid().asBareJid().toEscapedString() + ".ceb");
+            final File file = new File(FileBackend.getBackupDirectory(null) + account.getJid().asBareJid().toEscapedString() + "_" + ((new SimpleDateFormat("yyyy-MM-dd")).format(new Date())) +".ceb");
             files.add(file);
             final File directory = file.getParentFile();
             if (directory != null && directory.mkdirs()) {
@@ -402,6 +402,7 @@ public class ExportBackupService extends Service {
         if (!notify) {
             return;
         }
+        FileBackend.deleteOldBackups(new File(FileBackend.getBackupDirectory(null)), this.mAccounts);
         final String path = FileBackend.getBackupDirectory(null);
         PendingIntent openFolderIntent = null;
         for (Intent intent : getPossibleFileOpenIntents(this, path)) {
