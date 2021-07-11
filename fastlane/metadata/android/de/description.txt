@@ -25,4 +25,4 @@ Features:
 * Status Nachrichten
 * tägliches Backup der Datenbank auf den lokalen Speicher
 
-Benötigst du Hilfe? Bitte tritt doch einfach dem Support Gruppenchat <a href="https://blabber.im/j/support/room.pix-art.de">blabber@conference.blabber.im</a> bei.
+Benötigst du Hilfe? Bitte tritt doch einfach dem Support Gruppenchat <a href="https://blabber.im/j/support/room.pix-art.de">support@room.pix-art.de</a> bei.
