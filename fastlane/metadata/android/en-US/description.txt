@@ -22,4 +22,4 @@ Features:
 * Status messages
 * Daily backup of database to local storage
 
-You need help? Please join our support group chat <a href="https://blabber.im/en/j/blabber/conference.blabber.im">blabber@conference.blabber.im</a>.
+You need help? Please join our support group chat <a href="https://blabber.im/j/support/room.pix-art.de">support@room.pix-art.de</a>.
