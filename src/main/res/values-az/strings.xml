@@ -164,7 +164,7 @@
     <string name="account_settings_jabber_id">Jabber-ID</string>
     <string name="account_settings_example_jabber_id">istifadəçininadı@monocles.de</string>
     <string name="password">Şifrə</string>
-    <string name="invalid_jid">Bu etibarlı Jabber-ID deyil</string>
+    <string name="invalid_jid">Bu etibarlı chat address deyil</string>
     <string name="error_out_of_memory">Yaddaş dolub. Şəkil çox böyükdür</string>
     <string name="add_phone_book_text">Ünvan kitabınıza %s əlavə etmək istəyirsiniz?</string>
     <string name="server_info_show_more">Server məlumatı </string>
@@ -453,7 +453,7 @@
     <string name="captcha_required">Captcha tələb olunur</string>
     <string name="captcha_hint">Yuxarıdakı şəkildən mətni daxil edin</string>
     <string name="certificate_chain_is_not_trusted">Sertifikat zənciri etibarlı deyil</string>
-    <string name="jid_does_not_match_certificate">Jabber-ID sertifikatla uyğun gəlmir</string>
+    <string name="jid_does_not_match_certificate">chat address sertifikatla uyğun gəlmir</string>
     <string name="action_renew_certificate">Sertifikatı yeniləyin</string>
     <string name="error_fetching_omemo_key">OMEMO açarını almaq xətası!</string>
     <string name="verified_omemo_key_with_certificate">Sertifikatla təsdiqlənmiş OMEMO açarı!</string>

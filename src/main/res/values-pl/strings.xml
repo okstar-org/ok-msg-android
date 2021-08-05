@@ -154,7 +154,7 @@ Nie spowoduje to usunięcia kopii wiadomości przechowywanych na innych urządze
     <string name="account_settings_jabber_id">Jabber ID</string>
     <string name="account_settings_example_jabber_id">nazwaużytkownika@monocles.de</string>
     <string name="password">Hasło</string>
-    <string name="invalid_jid">Wprowadzono niepoprawny Jabber ID</string>
+    <string name="invalid_jid">Wprowadzono niepoprawny chat address</string>
     <string name="error_out_of_memory">Brak pamięci, obraz jest za duży</string>
     <string name="add_phone_book_text">Czy chcesz dodać %s do listy kontaktów?</string>
     <string name="server_info_show_more">Informacje o serwerze</string>
@@ -441,7 +441,7 @@ Nie spowoduje to usunięcia kopii wiadomości przechowywanych na innych urządze
     <string name="captcha_required">Captcha wymagana</string>
     <string name="captcha_hint">Wprowadź tekst z powyższego obrazka</string>
     <string name="certificate_chain_is_not_trusted">Łańcuch certyfikatu nie jest zaufany</string>
-    <string name="jid_does_not_match_certificate">Jabber ID nie odpowiada certyfikatowi</string>
+    <string name="jid_does_not_match_certificate">chat address nie odpowiada certyfikatowi</string>
     <string name="action_renew_certificate">Odnów certyfikat</string>
     <string name="error_fetching_omemo_key">Błąd pobierania klucza OMEMO!</string>
     <string name="verified_omemo_key_with_certificate">Zweryfikowano klucz OMEMO z certyfikatem</string>
@@ -496,7 +496,7 @@ Nie spowoduje to usunięcia kopii wiadomości przechowywanych na innych urządze
     <string name="mgmt_account_reconnect">Połącz ponownie</string>
     <string name="welcome_text">... jest darmowym i otwartym klientem sieci XMPP.</string>
     <string name="magic_create_text">Zostaniesz poprowadzony przez proces tworzenia konta z wygenerowanym losowo hasłem, które później możesz zmienić na następnym ekranie.</string>
-    <string name="your_full_jid_will_be">Twój pełen Jabber ID będzie następujący: %s</string>
+    <string name="your_full_jid_will_be">Twój pełen chat address będzie następujący: %s</string>
     <string name="create_account">Utwórz Konto</string>
     <string name="create_monocles_account"><a href="https://ocean.monocles.de/apps/registration/">Get a monocles account!</a></string>
     <string name="welcome_existing_account">Posiadam już konto</string>
@@ -542,7 +542,7 @@ Nie spowoduje to usunięcia kopii wiadomości przechowywanych na innych urządze
     <string name="remote_server_not_found">Nie znaleziono serwera</string>
     <string name="error_file_corrupt">Plik wygląda na uszkodzony.</string>
     <string name="unable_to_update_account">Nie można zaktualizować konta</string>
-    <string name="report_jid_as_spammer">Raportuj ten JID jako rozsyłający spam</string>
+    <string name="report_jid_as_spammer">Raportuj ten chat address jako rozsyłający spam</string>
     <string name="create_issue">Zgłoś problem</string>
     <string name="pref_delete_omemo_identities">Usuń tożsamości OMEMO</string>
     <string name="pref_delete_omemo_identities_summary">Wygeneruj jeszcze raz klucze OMEMO. Wszystkie Twoje kontakty będą musiały zweryfikować Twoje nowe klucze. Użyj tego tylko w ostateczności.</string>
@@ -663,7 +663,7 @@ Nie spowoduje to usunięcia kopii wiadomości przechowywanych na innych urządze
     <string name="yesterday">Wczoraj</string>
     <string name="pref_validate_hostname">Potwierdź nazwę hosta za pomocą DNSSEC</string>
     <string name="pref_validate_hostname_summary">Certyfikaty serwera posiadające prawidłową nazwę hosta są uznawane za zweryfikowane</string>
-    <string name="certificate_does_not_contain_jid">Certyfikat nie zawiera Jabber ID</string>
+    <string name="certificate_does_not_contain_jid">Certyfikat nie zawiera chat address</string>
     <string name="error_no_keys_to_trust_presence">Brak dostępnych kluczy dla tego kontaktu.\nUpewnij się, że wzajemnie powiadamiacie się o obecności.</string>
     <string name="mark_as_read">Przeczytane</string>
     <string name="server_info_partial">częściowo</string>
@@ -738,8 +738,8 @@ Nie spowoduje to usunięcia kopii wiadomości przechowywanych na innych urządze
     <string name="search_messages">Znajdź Wiadomość</string>
     <string name="view_conversation">Wyświetl komunikację</string>
     <string name="web_address">adres internetowy</string>
-    <string name="jabber_id_copied_to_clipboard">Skopiowano JID do schowka</string>
-    <string name="copy_jabber_id">Skopiuj JID</string>
+    <string name="jabber_id_copied_to_clipboard">Skopiowano chat address do schowka</string>
+    <string name="copy_jabber_id">Skopiuj chat address</string>
     <string name="copy_link">Skopiuj adres interenetowy</string>
     <string name="server_hint">Wybierz dostawce</string>
     <string name="choose_your_server">Wybierz dostawcę Jabber</string>

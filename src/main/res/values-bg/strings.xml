@@ -148,7 +148,7 @@
     <string name="mgmt_account_delete_confirm_message">Ако изтриете профила си, цялата история на локалните ви разговори ще бъде загубена.\n\nАко изтриете акаунта си от сървъра, целият ви акаунт ще бъде изтрит и от сървъра, няма да можете да влизате повече, докато не регистрирате нов профил. ,</string>
     <string name="attach_record_voice">Запис на глас</string>
     <string name="password">Парола</string>
-    <string name="invalid_jid">Това не е валиден Jabber-ID</string>
+    <string name="invalid_jid">Това не е валиден chat address</string>
     <string name="error_out_of_memory">Недостиг на памет. Снимката е твърде голема</string>
     <string name="add_phone_book_text">Искате ли да добавите%s към адресната си книга?</string>
     <string name="server_info_show_more">Информация за сървъра</string>
@@ -421,7 +421,7 @@
     <string name="unable_to_fetch_mam_prefs">Предпочитанията за архивиране не могат да бъдът извлечени</string>
     <string name="captcha_hint">Въведете текста от снимката по-горе</string>
     <string name="certificate_chain_is_not_trusted">Веригата на сертификата не е надеждна</string>
-    <string name="jid_does_not_match_certificate">Jabber-ID не съответства на сертификата</string>
+    <string name="jid_does_not_match_certificate">chat address не съответства на сертификата</string>
     <string name="action_renew_certificate">Подновяване на сертификата</string>
     <string name="error_fetching_omemo_key">Грешка при извличането на ключа OMEMO!</string>
     <string name="verified_omemo_key_with_certificate">Проверен OMEMO ключ със сертификат!</string>
@@ -466,7 +466,7 @@
     <string name="mgmt_account_reconnect">Повторно Свързване</string>
     <string name="welcome_text">...е безплатен и сигурен XMPP / Jabber клиент.</string>
     <string name="magic_create_text">Ще ви преведем през процеса на създаване на акаунт със случайна парола, която можете да използвате или да промените на собствената си парола на следващата страница. \nСлед това ще можете да общувате с потребителите на този и други доставчици, като им дадете пълния си Jabber-ID.</string>
-    <string name="your_full_jid_will_be">Вашият Jabber-ID ще бъде: %s</string>
+    <string name="your_full_jid_will_be">Вашият chat address ще бъде: %s</string>
     <string name="create_account">Създаване на нов акаунт</string>
     <string name="create_monocles_account"><a href="https://ocean.monocles.de/apps/registration/">Get a monocles account!</a></string>
     <string name="welcome_existing_account">Имам профил</string>
@@ -510,7 +510,7 @@
     <string name="remote_server_not_found">Отдалеченият сървър не е намерен</string>
     <string name="error_file_corrupt">Изглежда, че този файл е повреден.</string>
     <string name="unable_to_update_account">Профилът не може да се поднови</string>
-    <string name="report_jid_as_spammer">Подай сигнал за този JID като изпраща нежелани съобщения.</string>
+    <string name="report_jid_as_spammer">Подай сигнал за този chat address като изпраща нежелани съобщения.</string>
     <string name="create_issue">Подайте сигнал за проблем</string>
     <string name="pref_delete_omemo_identities">Изтрийте самоличността на OMEMO</string>
     <string name="pref_delete_omemo_identities_summary">Регенерирайте вашите OMEMO ключове. Всичките ви контакти ще трябва да ви потвърдят отново. Използвайте това само в краен случай.</string>
@@ -615,7 +615,7 @@
     <string name="yesterday">Вчера</string>
     <string name="pref_validate_hostname">Потвърди името на интернет адреса \"хост\" с DNSSEC</string>
     <string name="pref_validate_hostname_summary">Сървърните сертификати, които съдържат потвърденото име на хост, се считат за проверени</string>
-    <string name="certificate_does_not_contain_jid">Сертификатът не съдържа идентификатор Jabber</string>
+    <string name="certificate_does_not_contain_jid">Сертификатът не съдържа идентификатор chat address</string>
     <string name="error_no_keys_to_trust_presence">Нема налични ключове за този контакт.\nУвери се, че имаш абонамент за взаимно присъствие.</string>
     <string name="mark_as_read">Маркирай като прочетено</string>
     <string name="server_info_partial">частично</string>
@@ -680,8 +680,8 @@
     <string name="search_messages">Търсене на съобщения</string>
     <string name="view_conversation">Преглед на разговора</string>
     <string name="web_address">интернет адрес \"web address\"</string>
-    <string name="jabber_id_copied_to_clipboard">Копирай JID в бележника</string>
-    <string name="copy_jabber_id">Копирай JID</string>
+    <string name="jabber_id_copied_to_clipboard">Копирай chat address в бележника</string>
+    <string name="copy_jabber_id">Копирай chat address</string>
     <string name="copy_link">Копирай интернет адрес \"web address\"</string>
     <string name="server_hint">Избери доставчик</string>
     <string name="choose_your_server">Избери вашия доставчик на jabber</string>

@@ -163,7 +163,7 @@
     <string name="account_settings_jabber_id">Identificador Jabber</string>
     <string name="account_settings_example_jabber_id">nom_d\'usuari@monocles.de</string>
     <string name="password">Contrasenya</string>
-    <string name="invalid_jid">L\'identificador jabber- ID no és vàlid</string>
+    <string name="invalid_jid">L\'identificador chat address no és vàlid</string>
     <string name="error_out_of_memory">Sense memòria. La imatge és massa gran</string>
     <string name="add_phone_book_text">Vols afegir a %s als teus contactes?</string>
     <string name="server_info_show_more">Informació de servidor</string>
@@ -452,7 +452,7 @@
     <string name="captcha_required">Captcha requerit</string>
     <string name="captcha_hint">Introdueix el text de l\'imatge de dalt</string>
     <string name="certificate_chain_is_not_trusted">La cadena de certificats no és de confiança</string>
-    <string name="jid_does_not_match_certificate">L\'identificador Jabber no coincideix amb el del certificat</string>
+    <string name="jid_does_not_match_certificate">L\'identificador Chat no coincideix amb el del certificat</string>
     <string name="action_renew_certificate">Renovar certificat</string>
     <string name="error_fetching_omemo_key">Error buscant clau OMEMO!</string>
     <string name="verified_omemo_key_with_certificate">Clau OMEMO amb certificat verificada!</string>
@@ -508,7 +508,7 @@
     <string name="mgmt_account_reconnect">Reconnectar</string>
     <string name="welcome_text">... és una aplicació XMPP/Jabber gratuÏta i segura.</string>
     <string name="magic_create_text">A continuació crearem un perfil amb una contrasenya generada aleatoriàment que podràs utilitzar o canviar a la pàgina següent\i posteriorment podràs posar-t\'he en contacte amb els teus contactes d\'aquest i altres servidors donan-los el teu Jabber-ID.</string>
-    <string name="your_full_jid_will_be">El teu identificador Jabber serà: %s</string>
+    <string name="your_full_jid_will_be">El teu identificador chat serà: %s</string>
     <string name="create_account">Crear compte</string>
     <string name="create_monocles_account"><a href="https://ocean.monocles.de/apps/registration/">Get a monocles account!</a></string>
     <string name="welcome_existing_account">Tinc un compte</string>
@@ -557,7 +557,7 @@
     <string name="remote_server_not_found">Servidor no trobat</string>
     <string name="error_file_corrupt">Aquest arxiu sembla està espatllat</string>
     <string name="unable_to_update_account">No s\'ha pogut actualitzar la compte</string>
-    <string name="report_jid_as_spammer">Reportar a aquest Id Jabber per enviar missatges no desitjats</string>
+    <string name="report_jid_as_spammer">Reportar a aquest chat address per enviar missatges no desitjats</string>
     <string name="create_issue">Notificar una incidència</string>
     <string name="pref_delete_omemo_identities">Eliminar identitats OMEMO</string>
     <string name="pref_delete_omemo_identities_summary">Regenerar les teves claus OMEMO. Tots els seus contactes hauran de verificar-t\'he de nou. Utilitza aquesta opció com últim recurs.</string>
@@ -671,7 +671,7 @@
     <string name="yesterday">Ahir</string>
     <string name="pref_validate_hostname">Validar hostname amb DNSSEC</string>
     <string name="pref_validate_hostname_summary">Els certificats del servidor que contenen el hostname validat són considerats verificats</string>
-    <string name="certificate_does_not_contain_jid">El certificat no conté un identificador Jabber</string>
+    <string name="certificate_does_not_contain_jid">El certificat no conté un identificador chat address</string>
     <string name="error_no_keys_to_trust_presence">No hi ha claus disponibles per a aquest contacte.\n Assegura\'t que teniu subscripció de presència mútua.</string>
     <string name="mark_as_read">Marcar como a llegit</string>
     <string name="server_info_partial">Parcial</string>
@@ -751,8 +751,8 @@
     <string name="gif">GIF</string>
     <string name="view_conversation">Veure conversa</string>
     <string name="web_address">direcció web</string>
-    <string name="jabber_id_copied_to_clipboard">Copiat JID en el portapapers</string>
-    <string name="copy_jabber_id">Copiar JID</string>
+    <string name="jabber_id_copied_to_clipboard">Copiat chat address en el portapapers</string>
+    <string name="copy_jabber_id">Copiar chat address</string>
     <string name="copy_link">Copiar direcció web</string>
     <string name="server_hint">Escollir proveïdor</string>
     <string name="choose_your_server">Escollir el seu servidor jabber</string>

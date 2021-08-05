@@ -118,7 +118,7 @@
     <string name="attach_record_voice">Gravar voz</string>
     <string name="account_settings_jabber_id">ID Jabber</string>
     <string name="password">Palavra-passe</string>
-    <string name="invalid_jid">Esse não é um ID Jabber válido</string>
+    <string name="invalid_jid">Esse não é um chat address válido</string>
     <string name="error_out_of_memory">Memória insuficiente. A imagem é muito grande</string>
     <string name="add_phone_book_text">Deseja adicionar %s aos seus contactos?</string>
     <string name="server_info_show_more">Informações do servidor</string>
@@ -324,7 +324,7 @@
     <string name="unable_to_fetch_mam_prefs">Não foi possível obter as preferências de arquivamento</string>
     <string name="captcha_required">Captcha obrigatório</string>
     <string name="certificate_chain_is_not_trusted">A cadeia de certificados não é confiável</string>
-    <string name="jid_does_not_match_certificate">O ID Jabber não coincide com o certificado</string>
+    <string name="jid_does_not_match_certificate">O chat address não coincide com o certificado</string>
     <string name="action_renew_certificate">Renovar certificado</string>
     <string name="error_fetching_omemo_key">Erro ao obter a chave OMEMO!</string>
     <string name="verified_omemo_key_with_certificate">A chave OMEMO foi verificada com o certificado!</string>

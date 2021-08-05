@@ -163,7 +163,7 @@
     <string name="account_settings_jabber_id">Identifiant</string>
     <string name="account_settings_example_jabber_id">nomutilisateur@monocles.de</string>
     <string name="password">Mot de passe</string>
-    <string name="invalid_jid">Cet identifiant n\'est pas valide</string>
+    <string name="invalid_jid">Cet chat address n\'est pas valide</string>
     <string name="error_out_of_memory">Plus de mémoire disponible. L’image est trop grande</string>
     <string name="add_phone_book_text">Voulez-vous ajouter %s à votre carnet d’adresses ?</string>
     <string name="server_info_show_more">Infos du serveur</string>
@@ -452,7 +452,7 @@
     <string name="captcha_required">Captcha obligatoire</string>
     <string name="captcha_hint">Entrez le texte à partir de l’image ci-dessus</string>
     <string name="certificate_chain_is_not_trusted">La chaîne de certificats n\'est pas digne de confiance</string>
-    <string name="jid_does_not_match_certificate">L’identifiant Jabber ne correspond pas au certificat</string>
+    <string name="jid_does_not_match_certificate">Le chat address ne correspond pas au certificat</string>
     <string name="action_renew_certificate">Renouveler le certificat</string>
     <string name="error_fetching_omemo_key">Erreur lors de la récupération de la clef OMEMO !</string>
     <string name="verified_omemo_key_with_certificate">Clef OMEMO vérifiée avec un certificat !</string>
@@ -508,7 +508,7 @@
     <string name="mgmt_account_reconnect">Se reconnecter</string>
     <string name="welcome_text">… est un client XMPP/Jabber libre et sécurisé.</string>
     <string name="magic_create_text">Nous vous guiderons pendant toute la procédure de création d’un compte utilisateur/trice avec un mot de passe aléatoire que vous pourrez utiliser ou modifier, au choix, durant la prochaine étape. \nEnsuite vous pourrez communiquer avec les utilisateurs/trices des autres fournisseurs en leur transmettant votre identifiant Jabber complet.</string>
-    <string name="your_full_jid_will_be">Votre identifiant Jabber complet sera : %s</string>
+    <string name="your_full_jid_will_be">Votre identifiant chat address complet sera : %s</string>
     <string name="create_account">Création d’un nouveau compte</string>
     <string name="create_monocles_account"><a href="https://ocean.monocles.de/apps/registration/">Get a monocles account!</a></string>
     <string name="welcome_existing_account">J’ai déjà un compte</string>
@@ -671,7 +671,7 @@
     <string name="yesterday">Hier</string>
     <string name="pref_validate_hostname">Valider le nom de domaine avec DNSSEC</string>
     <string name="pref_validate_hostname_summary">Les certificats serveur qui comportent le nom de domaine validé sont considérés comme vérifiés.</string>
-    <string name="certificate_does_not_contain_jid">Le certificat ne contient pas d’ID Jabber</string>
+    <string name="certificate_does_not_contain_jid">Le certificat ne contient pas de chat address</string>
     <string name="error_no_keys_to_trust_presence">Il n’y a aucune clef disponible pour ce contact.\nAssurez-vous d’avoir un abonnement de présence mutuelle.</string>
     <string name="mark_as_read">Marquer comme lu</string>
     <string name="server_info_partial">partiel</string>
@@ -751,8 +751,8 @@
     <string name="gif">GIF</string>
     <string name="view_conversation">Afficher la conversation</string>
     <string name="web_address">adresse Web</string>
-    <string name="jabber_id_copied_to_clipboard">JID copié dans le presse-papiers</string>
-    <string name="copy_jabber_id">Copier le JID</string>
+    <string name="jabber_id_copied_to_clipboard">Chat adress copié dans le presse-papiers</string>
+    <string name="copy_jabber_id">Copier le chat address</string>
     <string name="copy_link">Copier l’adresse Web</string>
     <string name="server_hint">Sélectionnez un service</string>
     <string name="choose_your_server">Choisissez votre fournisseur jabber</string>

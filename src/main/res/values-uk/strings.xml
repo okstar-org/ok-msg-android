@@ -147,9 +147,9 @@
     <string name="mgmt_account_are_you_sure">Ви впевнені?</string>
     <string name="mgmt_account_delete_confirm_message">Якщо ви вилучите ваш обліковий запис, ви втратите усю історію спілкування на пристрої.\n\nЯкщо ви вилучите ваш обліковий запис з сервера, то його буде вилучено також на сервері й ви не матимете змоги виходити, луки не зареєструєте новий обліковий запис.</string>
     <string name="attach_record_voice">Записати голос</string>
-    <string name="account_settings_jabber_id">Адреса XMPP</string>
+    <string name="account_settings_jabber_id">Адреса chat address</string>
     <string name="password">Пароль</string>
-    <string name="invalid_jid">Це неправильна адреса XMPP</string>
+    <string name="invalid_jid">Це неправильна адреса chat address</string>
     <string name="error_out_of_memory">Пам\'ять вичерпано. Завелике зображення.</string>
     <string name="add_phone_book_text">Бажаєте додати %s до своєї книги контактів?</string>
     <string name="server_info_show_more">Інформація про сервер</string>
@@ -432,7 +432,7 @@
     <string name="captcha_required">Потрібно вирішити головоломку</string>
     <string name="captcha_hint">Уведіть текст із зображення вище</string>
     <string name="certificate_chain_is_not_trusted">Ланцюжок сертифікатів не довірений</string>
-    <string name="jid_does_not_match_certificate">XMPP адрес не відповідає сертифікату</string>
+    <string name="jid_does_not_match_certificate">chat address адрес не відповідає сертифікату</string>
     <string name="action_renew_certificate">Оновити сертифікат</string>
     <string name="error_fetching_omemo_key">Помилка отримання ключа OMEMO!</string>
     <string name="verified_omemo_key_with_certificate">Ключ OMEMO звірено з сертифікатом!</string>
@@ -485,7 +485,7 @@
     <string name="mgmt_account_reconnect">Перез’єднатися</string>
     <string name="welcome_text">…вільний та безпечний клієнт XMPP/Jabber.</string>
     <string name="magic_create_text">Ми допоможемо вам створити обліковий запис. На наступній сторінці ви зможете змінити автоматично зґенерований пароль.\nПодалі ви зможете спілкуватися з користувачами вашого чи будь-якого іншого, для цього потрібно буде надати користувачеві вашу повну адресу XMPP.</string>
-    <string name="your_full_jid_will_be">Ваша повна адреса XMPP буде такою: %s</string>
+    <string name="your_full_jid_will_be">Ваша повна адреса chat address буде такою: %s</string>
     <string name="create_account">Створити обліковий запис</string>
     <string name="create_monocles_account"><a href="https://ocean.monocles.de/apps/registration/">Get a monocles account!</a></string>
     <string name="welcome_existing_account">Я маю обліковий запис</string>
@@ -530,7 +530,7 @@
     <string name="remote_server_not_found">Віддалений сервер не знайдено</string>
     <string name="error_file_corrupt">Схоже, що файл було пошкоджено.</string>
     <string name="unable_to_update_account">Неможливо оновити обліковий запис</string>
-    <string name="report_jid_as_spammer">Надіслати скаргу про те, що контакт з цим ID розсилає спам.</string>
+    <string name="report_jid_as_spammer">Надіслати скаргу про те, що контакт з цим chat address розсилає спам.</string>
     <string name="create_issue">Повідомити про помилку</string>
     <string name="pref_delete_omemo_identities">Вилучити ідентифікаційні дані OMEMO</string>
     <string name="pref_delete_omemo_identities_summary">Створити наново ваші ключі OMEMO. Усі ваші контакти будуть змушені підтвердити вас знову. Використовуйте це, лише якщо немає іншого вибору.</string>
@@ -650,7 +650,7 @@
     <string name="yesterday">Учора</string>
     <string name="pref_validate_hostname">Перевіряти адресу за допомогою DNSSEC</string>
     <string name="pref_validate_hostname_summary">Сертифікати, які містять підтверджену адресу хосту, вважаються перевіреними</string>
-    <string name="certificate_does_not_contain_jid">Сертифікат не містить адресу XMPP</string>
+    <string name="certificate_does_not_contain_jid">Сертифікат не містить адресу chat address</string>
     <string name="error_no_keys_to_trust_presence">Для цього контакту відсутні потрібні ключі.\nПеревірте, що ви обмінялися інформацією про доступність.</string>
     <string name="mark_as_read">Позначити як прочитане</string>
     <string name="server_info_partial">частково</string>

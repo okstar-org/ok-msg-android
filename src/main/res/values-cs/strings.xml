@@ -118,9 +118,9 @@
     <string name="openpgp_has_been_published">Veřejný OpenPGP klíč byl zveřejněn.</string>
     <string name="mgmt_account_are_you_sure">Jste si jisti?</string>
     <string name="attach_record_voice">Nahrát hlas</string>
-    <string name="account_settings_jabber_id">Jabber ID</string>
+    <string name="account_settings_jabber_id">chat address</string>
     <string name="password">Heslo</string>
-    <string name="invalid_jid">Toto není platné Jabber ID</string>
+    <string name="invalid_jid">Toto není platné chat address</string>
     <string name="error_out_of_memory">Nedostatek paměti. Obrázek je příliš velký</string>
     <string name="add_phone_book_text">Chcete přidat %s do svého adresáře?</string>
     <string name="server_info_show_more">Údaje serveru</string>
@@ -328,7 +328,7 @@
     <string name="captcha_required">Captcha vyžadována</string>
     <string name="captcha_hint">Zadejte text z obrázku výše</string>
     <string name="certificate_chain_is_not_trusted">Řetězec certifikátů není důvěryhodný</string>
-    <string name="jid_does_not_match_certificate">Jabber ID neodpovídá certifikátu</string>
+    <string name="jid_does_not_match_certificate">chat address neodpovídá certifikátu</string>
     <string name="action_renew_certificate">Obnovit certifikát</string>
     <string name="error_fetching_omemo_key">Chyba získání OMEMO klíče!</string>
     <string name="verified_omemo_key_with_certificate">OMEMO klíč ověřen certifikátem!</string>
@@ -351,7 +351,7 @@
     <string name="this_account_is_disabled">Tento účet byl vypnut</string>
     <string name="no_application_to_share_uri">Nebyla nalezena aplikace pro sdílení URI</string>
     <string name="share_uri_with">Sdílet URI s...</string>
-    <string name="your_full_jid_will_be">Vaše celé Jabber ID bude: %s</string>
+    <string name="your_full_jid_will_be">Vaše celé chat address bude: %s</string>
     <string name="create_account">Vytvořit účet</string>
     <string name="create_monocles_account"><a href="https://ocean.monocles.de/apps/registration/">Get a monocles account!</a></string>
     <string name="pick_your_username">Zadejte své uživatelské jméno</string>
@@ -378,7 +378,7 @@
     <string name="no_permission_to_access_x">Chybí oprávnění přistupovat k %s</string>
     <string name="remote_server_not_found">Vzdálený server nebyl nalezen</string>
     <string name="unable_to_update_account">Nelze aktualizovat účet</string>
-    <string name="report_jid_as_spammer">Nahlásit toto JID jako odesilatele nevyžádaného obsahu.</string>
+    <string name="report_jid_as_spammer">Nahlásit toto chat address jako odesilatele nevyžádaného obsahu.</string>
     <string name="pref_delete_omemo_identities">Smazat OMEMO identity</string>
     <string name="pref_delete_omemo_identities_summary">Znovu vygenerovat OMEMO klíče. Vyžaduje potvrzení od všech vašich kontaktů. POužijte pouze jako poslední řešení.</string>
     <string name="delete_selected_keys">Smazat vybrané klíče</string>

@@ -164,7 +164,7 @@
     <string name="account_settings_jabber_id">ID Jabber</string>
     <string name="account_settings_example_jabber_id">nome_de_usuario@monocles.de</string>
     <string name="password">Contrasinal</string>
-    <string name="invalid_jid">O identificador non é un identificador de Jabber válido</string>
+    <string name="invalid_jid">O identificador non é un identificador de chat válido</string>
     <string name="error_out_of_memory">Exceso de memoria. A imaxe é demasiado grande</string>
     <string name="add_phone_book_text">Quere engadir a 1%s a súa libreta de enderezos?</string>
     <string name="server_info_show_more">Info do servidor</string>
@@ -453,7 +453,7 @@
     <string name="captcha_required">Requírese Captcha</string>
     <string name="captcha_hint">Introduza o texto da imaxe superior</string>
     <string name="certificate_chain_is_not_trusted">A cadea de certificados non é de confianza</string>
-    <string name="jid_does_not_match_certificate">O ID Jabber non coincide co certificado</string>
+    <string name="jid_does_not_match_certificate">O chat address non coincide co certificado</string>
     <string name="action_renew_certificate">Anvoar certificado</string>
     <string name="error_fetching_omemo_key">Fallo obtendo a chave OMEMO!</string>
     <string name="verified_omemo_key_with_certificate">Verificouse a chave OMEMO co certificado!</string>
@@ -509,7 +509,7 @@
     <string name="mgmt_account_reconnect">Volverse a conectar</string>
     <string name="welcome_text">XMPP é un protocolo independente do proveedor. Pode utilizar este cliente con calquer servidor XMPP que escolla.\nPara a súa conveniencia facilitamos a creación de unha conta en conversations.im; un proveedor especialmente adaptado ao uso con Conversations.</string>
     <string name="magic_create_text">Guiarémola a través do proceso de crear unha conta en conversations.im.\nCando escolla conversations.im como proveedor poderá comunicarse con outras usuarias de outros proveedores que lle proporcionen un ID Jabber completo.</string>
-    <string name="your_full_jid_will_be">O seu ID Jabber será: %s</string>
+    <string name="your_full_jid_will_be">O seu chat address será: %s</string>
     <string name="create_account"><a href="https://ocean.monocles.de/apps/registration/">Crear conta</a></string>
     <string name="create_monocles_account"><a href="https://ocean.monocles.de/apps/registration/">Get a monocles account!</a></string>
     <string name="welcome_existing_account">Teño unha conta</string>
@@ -558,7 +558,7 @@
     <string name="remote_server_not_found">Non se atopa o servidor remoto</string>
     <string name="error_file_corrupt">Este arquivo parece estar corrupto.</string>
     <string name="unable_to_update_account">Non se puido actualizar a conta</string>
-    <string name="report_jid_as_spammer">Informe de este JID como emisor de mensaxes non desexadas.</string>
+    <string name="report_jid_as_spammer">Informe de este chat adress como emisor de mensaxes non desexadas.</string>
     <string name="create_issue">Informar dun problema</string>
     <string name="pref_delete_omemo_identities">Borrar identidades OMEMO</string>
     <string name="pref_delete_omemo_identities_summary">Rexenerar as súas chaves OMEMO. Todos os seus contactos deberán verificalo de novo. Utilice esto como último recurso.</string>
@@ -672,7 +672,7 @@
     <string name="yesterday">Onte</string>
     <string name="pref_validate_hostname">Validar servidor con DNSSEC</string>
     <string name="pref_validate_hostname_summary">Certificados de servidor que conteñen o servidor validado son considerados de verificados</string>
-    <string name="certificate_does_not_contain_jid">O certificado non contén un ID Jabber</string>
+    <string name="certificate_does_not_contain_jid">O certificado non contén un chat address</string>
     <string name="error_no_keys_to_trust_presence">Non hai chaves utilizables dispoñibles para este contacto.\nAsegúrese de que ambos teñen mutua suscrición de presenza.</string>
     <string name="mark_as_read">Marcar como lido</string>
     <string name="server_info_partial">parcial</string>
@@ -752,8 +752,8 @@
     <string name="gif">GIF</string>
     <string name="view_conversation">Ver conversa</string>
     <string name="web_address">enderezo Web</string>
-    <string name="jabber_id_copied_to_clipboard">Copiar o JID ao portapapeis</string>
-    <string name="copy_jabber_id">Copiar JID</string>
+    <string name="jabber_id_copied_to_clipboard">Copiar o chat adress ao portapapeis</string>
+    <string name="copy_jabber_id">Copiar chat address</string>
     <string name="copy_link">Copiar enderezo web</string>
     <string name="server_hint">Elixir provedor</string>
     <string name="choose_your_server">Elixir o provedor jabber</string>

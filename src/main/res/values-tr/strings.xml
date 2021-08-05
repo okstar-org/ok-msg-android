@@ -160,7 +160,7 @@
     <string name="account_settings_jabber_id">Jabber Kimliği</string>
     <string name="account_settings_example_jabber_id">kullanıcıadı@monocles.de</string>
     <string name="password">Parola</string>
-    <string name="invalid_jid">Bu geçerli bir Jabber-ID değil</string>
+    <string name="invalid_jid">Bu geçerli bir chat address değil</string>
     <string name="error_out_of_memory">Bellek yetersiz. Görüntü çok büyük</string>
     <string name="add_phone_book_text">Adres defterinize %s\'i eklemek istiyor musunuz?</string>
     <string name="server_info_show_more">Sunucu bilgisi</string>
@@ -426,7 +426,7 @@
     <string name="captcha_required">Captcha gerekiyor</string>
     <string name="captcha_hint">Yukarıdaki resimde bulunan metni giriniz</string>
     <string name="certificate_chain_is_not_trusted">Sertifika güvenilir değil</string>
-    <string name="jid_does_not_match_certificate">Jabber-ID sertifika ile eşleşmiyor</string>
+    <string name="jid_does_not_match_certificate">chat address sertifika ile eşleşmiyor</string>
     <string name="action_renew_certificate">Sertifikayı yenile</string>
     <string name="error_fetching_omemo_key">OMEMO anahtarı getirilirken hata oluştu!</string>
     <string name="verified_omemo_key_with_certificate">Sertifikalı onaylanmış OMEMO anahtarı!</string>
@@ -478,7 +478,7 @@
     <string name="mgmt_account_reconnect">Yeniden bağlan</string>
     <string name="welcome_text">... ücretsiz ve güvenli bir XMPP/Jabber istemcisidir.</string>
     <string name="magic_create_text">Bir sonraki sayfada kendi şifrenizi değiştirebileceğiniz veya kullanabileceğiniz rastgele bir şifreyle bir hesap oluşturma sürecinde size yol göstereceğiz.\n Bu kişilere ve diğer sağlayıcıların kullanıcılarına tam Jabber Kimliği vererek iletişime geçebileceksiniz.</string>
-    <string name="your_full_jid_will_be">Jabber-ID\'niz şu şekilde olacaktır: %s</string>
+    <string name="your_full_jid_will_be">chat address\'niz şu şekilde olacaktır: %s</string>
     <string name="create_account">Yeni hesap oluştur</string>
     <string name="create_monocles_account"><a href="https://ocean.monocles.de/apps/registration/">Get a monocles account!</a></string>
     <string name="welcome_existing_account">Bir hesabım var</string>
@@ -520,7 +520,7 @@
     <string name="remote_server_not_found">Uzak sunucu bulunamadı</string>
     <string name="error_file_corrupt">Dosya bozuk gibi görünüyor.</string>
     <string name="unable_to_update_account">Hesap güncellenemiyor</string>
-    <string name="report_jid_as_spammer">Bu JID\'i istenmeyen mesajlar gönderdiğini bildirin.</string>
+    <string name="report_jid_as_spammer">Bu chat address\'i istenmeyen mesajlar gönderdiğini bildirin.</string>
     <string name="create_issue">Bir sorun bildir</string>
     <string name="pref_delete_omemo_identities">OMEMO kimliklerini sil</string>
     <string name="pref_delete_omemo_identities_summary">OMEMO anahtarlarınızı yeniden oluşturun. Tüm kişilerin seni tekrar doğrulaması gerekecek. Bunu son çözüm olarak kullanın.</string>
@@ -619,7 +619,7 @@
     <string name="yesterday">Dün</string>
     <string name="pref_validate_hostname">DNSSEC ile sunucu adını doğrula</string>
     <string name="pref_validate_hostname_summary">Onaylanmış ana makine adını içeren sunucu sertifikaları doğrulanmış olarak kabul edilir</string>
-    <string name="certificate_does_not_contain_jid">Sertifika bir Jabber ID içermiyor</string>
+    <string name="certificate_does_not_contain_jid">Sertifika bir chat address içermiyor</string>
     <string name="error_no_keys_to_trust_presence">Bu kişinin kullanabileceği kullanılabilir bir anahtar yok.\n Karşılıklı abone olduğunuzdan emin olun.</string>
     <string name="mark_as_read">Okundu olarak işaretle</string>
     <string name="server_info_partial">kısmi</string>

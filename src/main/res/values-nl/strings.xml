@@ -135,7 +135,7 @@
     <string name="attach_record_voice">Stem opnemen</string>
     <string name="account_settings_jabber_id">Jabber-ID:</string>
     <string name="password">Wachtwoord</string>
-    <string name="invalid_jid">Dit is geen geldige Jabber-ID</string>
+    <string name="invalid_jid">Dit is geen geldige chat address</string>
     <string name="error_out_of_memory">Geen geheugen beschikbaar. Afbeelding is te groot</string>
     <string name="add_phone_book_text">Wil je %s toevoegen aan je adresboek?</string>
     <string name="server_info_show_more">Server-info</string>
@@ -379,7 +379,7 @@
     <string name="captcha_required">Captcha vereist</string>
     <string name="captcha_hint">Voer de tekst van de afbeelding hierboven in</string>
     <string name="certificate_chain_is_not_trusted">Certificaatsketen is niet vertrouwd</string>
-    <string name="jid_does_not_match_certificate">Jabber-ID komt niet overeen met certificaat</string>
+    <string name="jid_does_not_match_certificate">chat address komt niet overeen met certificaat</string>
     <string name="action_renew_certificate">Certificaat vernieuwen</string>
     <string name="error_fetching_omemo_key">Fout bij ophalen van OMEMO-sleutel!</string>
     <string name="verified_omemo_key_with_certificate">OMEMO-sleutel geverifieerd met certificaat!</string>
@@ -418,7 +418,7 @@
     <string name="no_application_to_share_uri">Geen applicatie om URI te delen</string>
     <string name="share_uri_with">URI delen met…</string>
     <string name="mgmt_account_reconnect">Opnieuw verbinden</string>
-    <string name="your_full_jid_will_be">Je volledige Jabber-ID zal %s zijn</string>
+    <string name="your_full_jid_will_be">Je volledige chat address zal %s zijn</string>
     <string name="create_account">Account aanmaken</string>
     <string name="create_monocles_account"><a href="https://ocean.monocles.de/apps/registration/">Get a monocles account!</a></string>
     <string name="welcome_existing_account">Ik heb een account</string>
@@ -453,7 +453,7 @@
     <string name="no_permission_to_access_x">Geen toestemming om toegang te krijgen tot %s</string>
     <string name="remote_server_not_found">Externe server niet gevonden</string>
     <string name="unable_to_update_account">Kan account niet bijwerken</string>
-    <string name="report_jid_as_spammer">Rapporteer deze JID voor het sturen van ongewenste berichten</string>
+    <string name="report_jid_as_spammer">Rapporteer deze chat address voor het sturen van ongewenste berichten</string>
     <string name="create_issue">Een probleem melden</string>
     <string name="pref_delete_omemo_identities">OMEMO-identiteiten verwijderen</string>
     <string name="pref_delete_omemo_identities_summary">Maak je OMEMO-sleutels opnieuw aan. Al je contacten zullen je opnieuw moeten verifiëren. Gebruik dit enkel als een laatste reddingsmiddel.</string>
@@ -546,7 +546,7 @@
     <string name="yesterday">Gisteren</string>
     <string name="pref_validate_hostname">Valideer hostnaam met DNSSEC</string>
     <string name="pref_validate_hostname_summary">Servercertificaten die de gevalideerde hostnaam bevatten worden beschouwd als geverifieerd</string>
-    <string name="certificate_does_not_contain_jid">Certificaat bevat geen Jabber-ID</string>
+    <string name="certificate_does_not_contain_jid">Certificaat bevat geen chat address</string>
     <string name="error_no_keys_to_trust_presence">Er zijn geen bruikbare sleutels beschikbaar voor dit contact.\nZorg dat je allebei op elkaars aanwezigheidsupdates bent geabonneerd.</string>
     <string name="mark_as_read">Als gelezen markeren</string>
     <string name="server_info_partial">gedeeltelijk</string>

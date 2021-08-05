@@ -138,9 +138,9 @@
     <string name="openpgp_has_been_published">Cheia publică OpenPGP a fost publicată.</string>
     <string name="mgmt_account_are_you_sure">Sigur doriți asta?</string>
     <string name="attach_record_voice">Înregistrare voce</string>
-    <string name="account_settings_jabber_id">Adresă XMPP</string>
+    <string name="account_settings_jabber_id">Adresă chat</string>
     <string name="password">Parolă</string>
-    <string name="invalid_jid">Aceasta nu este o adresă XMPP valabilă</string>
+    <string name="invalid_jid">Aceasta nu este o adresă chat valabilă</string>
     <string name="error_out_of_memory">Memorie epuizată. Imaginea este prea mare.</string>
     <string name="add_phone_book_text">Vreți să adăugați pe %s în lista de contacte?</string>
     <string name="server_info_show_more">Informații server</string>
@@ -409,7 +409,7 @@
     <string name="captcha_required">Text captcha de verificare necesar</string>
     <string name="captcha_hint">Introduceți textul din imaginea de mai sus</string>
     <string name="certificate_chain_is_not_trusted">Seria de certificate nu este de încredere</string>
-    <string name="jid_does_not_match_certificate">Adresa XMPP nu corespunde cu certificatul</string>
+    <string name="jid_does_not_match_certificate">Adresa chat nu corespunde cu certificatul</string>
     <string name="action_renew_certificate">Înnoiește certificatul</string>
     <string name="error_fetching_omemo_key">Eroare la preluarea cheii OMEMO!</string>
     <string name="verified_omemo_key_with_certificate">Verifica cheia OMEMO cu un certificat</string>
@@ -457,7 +457,7 @@
     <string name="mgmt_account_reconnect">Reconectare</string>
     <string name="welcome_text">…este un client XMPP/Jabber gratis și securizat.</string>
     <string name="magic_create_text">Vă vom ghida prin procesul de creare al unui cont cu o parolă aleatoare, pe care o puteți păstra sau schimba pe pagina următoare.\nApoi veți putea comunica cu utilizatorii acestui furnizor sau ai altor furnizori oferindu-le ID-ul dumneavoastră Jabber.</string>
-    <string name="your_full_jid_will_be">Adresa dumneavoastră XMPP completă va fi: %s</string>
+    <string name="your_full_jid_will_be">Adresa dumneavoastră chat completă va fi: %s</string>
     <string name="create_account">Creează cont</string>
     <string name="create_monocles_account"><a href="https://ocean.monocles.de/apps/registration/">Get a monocles account!</a></string>
     <string name="welcome_existing_account">Am un cont</string>
@@ -593,7 +593,7 @@
     <string name="yesterday">Ieri</string>
     <string name="pref_validate_hostname">Validează numele domeniului cu ajutorul DNSSEC</string>
     <string name="pref_validate_hostname_summary">Certificatele serverelor care conțin nume de domenii validate sunt considerate verificate</string>
-    <string name="certificate_does_not_contain_jid">Certificatul nu conține o adresă XMPP</string>
+    <string name="certificate_does_not_contain_jid">Certificatul nu conține o adresă chat</string>
     <string name="error_no_keys_to_trust_presence">Nu există chei disponibile ce pot fi folosite pentru acest contact.\nAsigurați-vă că ați activat trimiterea de actualizări de prezență reciproce.</string>
     <string name="mark_as_read">Marchează ca citit</string>
     <string name="server_info_partial">parțial</string>

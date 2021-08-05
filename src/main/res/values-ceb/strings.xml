@@ -129,7 +129,7 @@
     <string name="openpgp_has_been_published">Gilunsad ang publikong yawe sa OpenPGP.</string>
     <string name="mgmt_account_are_you_sure">Sure jud ka?</string>
     <string name="attach_record_voice">Irekord ang tingog</string>
-    <string name="invalid_jid">Dili kini balido nga Jabber-ID</string>
+    <string name="invalid_jid">Dili kini balido nga chat address</string>
     <string name="error_out_of_memory">Wala nay memorya. Ang hulagway dako kaayo</string>
     <string name="add_phone_book_text">Gusto nimu i-dagdag %s sa imung address nga libro?</string>
     <string name="server_info_show_more">Serber nga impormasyon</string>
@@ -339,7 +339,7 @@
     <string name="captcha_required">Nanginahanglan ang Captcha</string>
     <string name="captcha_hint">Pagsulod sa teksto gikan sa hulagway sa ibabaw</string>
     <string name="certificate_chain_is_not_trusted">Ang chain nga certificate kay dili kasaligan</string>
-    <string name="jid_does_not_match_certificate">Ang Jabber-ID kay dili mopareha sa sertipiko</string>
+    <string name="jid_does_not_match_certificate">Ang chat address kay dili mopareha sa sertipiko</string>
     <string name="action_renew_certificate">Pag-usab sa sertipiko</string>
     <string name="error_fetching_omemo_key">Sayop nga gikuha ang yawe sa OMEMO!</string>
     <string name="verified_omemo_key_with_certificate">Tino-a ang OMEMO nga yawe uban sa sertipiko!</string>
@@ -381,7 +381,7 @@
     <string name="mgmt_account_reconnect">Konek ug balik</string>
     <string name="welcome_text">…usa ka libre ug luwas nga kliyente sa XMPP / Jabber.</string>
     <string name="magic_create_text">Giyahan ka namo sa pag proseso sa pagmugna og usa ka account gamit ang random nga password, nga mahimo nimong gamiton o usbon sa imong kaugalingong password sa sunod nga pahina. \nLabaw kay makahimo ka sa pagpakig-estorya sa mga tiggamit niini ug sa ubang mga tighatag pinaagi sa paghatag kanila sa imong full Jabber-ID.</string>
-    <string name="your_full_jid_will_be">Ang imong Jabber-ID mahimong: %s</string>
+    <string name="your_full_jid_will_be">Ang imong chat address mahimong: %s</string>
     <string name="create_account">Buhat ug bag-o nga account</string>
     <string name="create_monocles_account"><a href="https://ocean.monocles.de/apps/registration/">Get a monocles account!</a></string>
     <string name="pick_your_username">Pili ug imung username</string>
@@ -421,7 +421,7 @@
     <string name="remote_server_not_found">Ang layo nga server wala makita</string>
     <string name="error_file_corrupt">Ang kini nga file kay basin na korakot.</string>
     <string name="unable_to_update_account">Dili mabag-o ang account</string>
-    <string name="report_jid_as_spammer">I-report kini nga JID isip pagpadala sa mga mensahe nga dili kinahanglan.</string>
+    <string name="report_jid_as_spammer">I-report kini nga chat address isip pagpadala sa mga mensahe nga dili kinahanglan.</string>
     <string name="create_issue">I-report ang usa ka isyu</string>
     <string name="pref_delete_omemo_identities">Pagtangtang sa OMEMO nga mga pakaila sa ilaha</string>
     <string name="pref_delete_omemo_identities_summary">Usaba ang imong mga yawe sa OMEMO. Ang tanan nimong mga contact kinahanglan nga motino kanimo pag-usab. Gamita kini ingon nga usa ka katapusan nga pamaagi.</string>
@@ -486,7 +486,7 @@
     <string name="yesterday">Kagahapon</string>
     <string name="pref_validate_hostname">I-balido ang hostname kauban sa DNSSEC</string>
     <string name="pref_validate_hostname_summary">Ang mga sertipiko sa mga server nga naglangkob sa balido nga hostname giisip nga napamatud-an</string>
-    <string name="certificate_does_not_contain_jid">Ang sertipiko wala maglangkob sa Jabber ID</string>
+    <string name="certificate_does_not_contain_jid">Ang sertipiko wala maglangkob sa chat address</string>
     <string name="error_no_keys_to_trust_presence">Walay mga yawe nga magamit alang niining kontak.\nSiguraduha nga ikaw adunay subskripsyon sa presensya sa usag usa.</string>
     <string name="mark_as_read">Markahi ug nabasa na</string>
     <string name="server_info_partial">parsyal</string>

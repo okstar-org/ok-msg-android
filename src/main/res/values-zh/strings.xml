@@ -150,7 +150,7 @@
     <string name="attach_record_voice">语音录制</string>
     <string name="account_settings_jabber_id">Jabber用户名</string>
     <string name="password">密码</string>
-    <string name="invalid_jid">Jabber用户名无效</string>
+    <string name="invalid_jid">chat address用户名无效</string>
     <string name="error_out_of_memory">内存不足。图像太大了</string>
     <string name="add_phone_book_text">您想将%s添加到地址簿吗？</string>
     <string name="server_info_show_more">服务器信息</string>
@@ -431,7 +431,7 @@
     <string name="captcha_required">需要验证码</string>
     <string name="captcha_hint">输入图中的文字</string>
     <string name="certificate_chain_is_not_trusted">证书链不受信任</string>
-    <string name="jid_does_not_match_certificate">Jabber用户名与证书不匹配</string>
+    <string name="jid_does_not_match_certificate">chat address用户名与证书不匹配</string>
     <string name="action_renew_certificate">续签证书</string>
     <string name="error_fetching_omemo_key">获取OMEMO密钥时出错！</string>
     <string name="verified_omemo_key_with_certificate">已通过证书验证OMEMO密钥！</string>
@@ -480,7 +480,7 @@
     <string name="mgmt_account_reconnect">重新连接</string>
     <string name="welcome_text">…是一个免费且安全的XMPP/Jabber客户端。</string>
     <string name="magic_create_text">此向导将为您创建一个账户。账户的初始密码是随机的，但您可以在下一个界面上修改密码。\n完成向导后，您就可以把您的 Jabber-ID 告诉别人，和别人聊天了。</string>
-    <string name="your_full_jid_will_be">您的Jabber用户名为：%s</string>
+    <string name="your_full_jid_will_be">您的chat address用户名为：%s</string>
     <string name="create_account">创建新帐号</string>
     <string name="create_monocles_account"><a href="https://ocean.monocles.de/apps/registration/">Get a monocles account!</a></string>
     <string name="welcome_existing_account">我已有账号</string>
@@ -624,7 +624,7 @@
     <string name="yesterday">昨天</string>
     <string name="pref_validate_hostname">使用DNSSEC验证主机名</string>
     <string name="pref_validate_hostname_summary">包含经过验证的主机名的服务器证书将被视为已验证</string>
-    <string name="certificate_does_not_contain_jid">证书不包含Jabber用户名</string>
+    <string name="certificate_does_not_contain_jid">证书不包含chat address用户名</string>
     <string name="error_no_keys_to_trust_presence">此联系人没有可用的密钥。\n确保你们有共同的在线订阅。</string>
     <string name="mark_as_read">标记为已读</string>
     <string name="server_info_partial">部分</string>

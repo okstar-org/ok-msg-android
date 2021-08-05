@@ -136,7 +136,7 @@
     <string name="attach_record_voice">Rekam suara</string>
     <string name="account_settings_jabber_id">Obrolan-Data diri</string>
     <string name="password">Kata sandi</string>
-    <string name="invalid_jid">Ini bukan ID Jabber yang sah</string>
+    <string name="invalid_jid">Ini bukan chat address yang sah</string>
     <string name="error_out_of_memory">Kehabisan ruang penyimpanan. Gambar terlalu besar</string>
     <string name="add_phone_book_text">Apakah anda ingin menambahkannya%s ke buku alamat anda?</string>
     <string name="server_info_show_more">Informasi server</string>
@@ -379,7 +379,7 @@
     <string name="captcha_required">Captcha dibutuhkan</string>
     <string name="captcha_hint">Masukkan teks dari gambar di atas</string>
     <string name="certificate_chain_is_not_trusted">Rantai sertifikat tidak dipercaya</string>
-    <string name="jid_does_not_match_certificate">Jabber-ID tidak cocok dengan sertifikat</string>
+    <string name="jid_does_not_match_certificate">chat address tidak cocok dengan sertifikat</string>
     <string name="action_renew_certificate">Perpanjang sertifikat</string>
     <string name="error_fetching_omemo_key">Kesalahan mengambil kunci OMEMO!</string>
     <string name="verified_omemo_key_with_certificate">Kunci OMEMO yang diverifikasi dengan sertifikat!</string>
@@ -418,7 +418,7 @@
     <string name="mgmt_account_reconnect">Sambung kembali</string>
     <string name="welcome_text">... adalah klien XMPP/Jabber yang bebas dan aman.</string>
     <string name="magic_create_text">Kami akan memandu anda dalam proses pembuatan akun dengan kata kunci acak, yang dapat anda gunakan atau ubah ke kata sandi anda sendiri di halaman berikutnya.\nAnda akan dapat berkomunikasi dengan pengguna dan penyedia layanan lainnya dengan memberi mereka Jabber-ID anda.</string>
-    <string name="your_full_jid_will_be">Jabber-ID anda adalah: %s</string>
+    <string name="your_full_jid_will_be">chat address anda adalah: %s</string>
     <string name="create_account">Buat akun baru</string>
     <string name="create_monocles_account"><a href="https://ocean.monocles.de/apps/registration/">Get a monocles account!</a></string>
     <string name="pick_your_username">Pilih nama pengguna Anda</string>
@@ -458,7 +458,7 @@
     <string name="remote_server_not_found">Server jarak jauh tidak ditemukan</string>
     <string name="error_file_corrupt">Berkas ini sepertinya rusak.</string>
     <string name="unable_to_update_account">Tidak dapat memperbarui akun</string>
-    <string name="report_jid_as_spammer">Laporkan JID ini sebagai pengiriman pesan yang tidak diinginkan.</string>
+    <string name="report_jid_as_spammer">Laporkan chat address ini sebagai pengiriman pesan yang tidak diinginkan.</string>
     <string name="create_issue">Laporkan masalah</string>
     <string name="pref_delete_omemo_identities">Hapus identitas OMEMO</string>
     <string name="pref_delete_omemo_identities_summary">Regenerasi kunci OMEMO Anda. Semua kontak Anda harus memverifikasi Anda lagi. Gunakan ini hanya sebagai upaya terakhir.</string>
@@ -530,7 +530,7 @@
     <string name="yesterday">Kemarin</string>
     <string name="pref_validate_hostname">Pengesahan nama perangkat dengan DNSSEC</string>
     <string name="pref_validate_hostname_summary">Sertifikat server yang berisi nama perangkat yang divalidasi dianggap telah diverifikasi</string>
-    <string name="certificate_does_not_contain_jid">Sertifikat tidak mengandung ID Jabber</string>
+    <string name="certificate_does_not_contain_jid">Sertifikat tidak mengandung chat address</string>
     <string name="error_no_keys_to_trust_presence">Tidak ada kunci yang bisa digunakan untuk kontak ini.\nPastikan Anda memiliki langganan kehadiran bersama.</string>
     <string name="mark_as_read">Tandai sudah dibaca</string>
     <string name="server_info_partial">sebagian</string>

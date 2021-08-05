@@ -26,7 +26,7 @@ Download ist hier möglich:
 
 Alternativ kannst du den Messenger auch direkt hier von Codeberg unter [Releases](https://codeberg.org/Arne/monocles_chat/releases/latest) herunterladen.
 
-<a rel="me" href="https://monocles.social/@monocles">monocles bei Mastodon</a> 
+<a rel="me" href="https://monocles.social/?node/pubsub.monocles.de/monocles-news">monocles social</a> 
 
 #### monocles chat nightly bzw. beta
 
@@ -42,8 +42,8 @@ nightly oder beta Versionen kann man direkt hier von Codeberg unter [Releases](h
 #### Ich habe Probleme, was soll ich tun?
 Am einfachsten ist es, wenn du unserer Support-Gruppe beitrittst, dort werden deine Probleme mit Sicherheit schnell gelöst. 
 
-Support-Chat: [support@conference.monocles.de](https://interact.monocles.de)     
-[![Users in muc](https://inverse.chat/badge.svg?room=support@conference.monocles.de)](https://interact.monocles.de/)
+Support-Chat: [support@conference.monocles.de](https://monocles.social)     
+[![Users in muc](https://inverse.chat/badge.svg?room=support@conference.monocles.de)](https://monocles.social/)
 
 Development-Chat:  [development@conference.monocles.de](https://interact.monocles.de)     
 [![Users in muc](https://inverse.chat/badge.svg?room=development@conference.monocles.de)](https://interact.monocles.de/)

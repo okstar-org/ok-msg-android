@@ -12,14 +12,7 @@ dependencies {
 }
 
 android {
-    signingConfigs {
-        'monocles chat libs' {
-            storeFile file('/home/arne/StudioProjects/vogelsang.jks')
-            storePassword 'OcHJ0bq-Ud73'
-            keyAlias 'keyC'
-            keyPassword 'erKC-aeVN012P7'
-        }
-    }
+
     compileSdkVersion 30
     buildToolsVersion '30.0.3'
 
