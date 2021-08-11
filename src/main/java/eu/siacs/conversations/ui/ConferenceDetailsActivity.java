@@ -1,5 +1,9 @@
 package eu.siacs.conversations.ui;
 
+import static eu.siacs.conversations.entities.Bookmark.printableValue;
+import static eu.siacs.conversations.ui.util.IntroHelper.showIntro;
+import static eu.siacs.conversations.utils.StringUtils.changed;
+
 import android.app.PendingIntent;
 import android.content.Context;
 import android.content.Intent;
@@ -9,6 +13,7 @@ import android.provider.Settings;
 import android.text.Editable;
 import android.text.SpannableStringBuilder;
 import android.text.TextWatcher;
+import android.text.method.LinkMovementMethod;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -55,10 +60,6 @@ import eu.siacs.conversations.utils.TimeFrameUtils;
 import eu.siacs.conversations.utils.XmppUri;
 import eu.siacs.conversations.xmpp.Jid;
 import me.drakeet.support.toast.ToastCompat;
-
-import static eu.siacs.conversations.entities.Bookmark.printableValue;
-import static eu.siacs.conversations.ui.util.IntroHelper.showIntro;
-import static eu.siacs.conversations.utils.StringUtils.changed;
 
 public class ConferenceDetailsActivity extends XmppActivity implements OnConversationUpdate, OnMucRosterUpdate, XmppConnectionService.OnAffiliationChanged, XmppConnectionService.OnConfigurationPushed, TextWatcher, OnMediaLoaded {
     public static final String ACTION_VIEW_MUC = "view_muc";
@@ -603,6 +604,7 @@ public class ConferenceDetailsActivity extends XmppActivity implements OnConvers
             this.binding.mucSubject.setTextAppearance(this, subject.length() > (hasTitle ? 128 : 196) ? R.style.TextAppearance_Conversations_Body1_Linkified : R.style.TextAppearance_Conversations_Subhead);
             this.binding.mucSubject.setAutoLinkMask(0);
             this.binding.mucSubject.setVisibility(View.VISIBLE);
+            this.binding.mucSubject.setMovementMethod(LinkMovementMethod.getInstance());
         } else {
             this.binding.mucSubject.setVisibility(View.GONE);
         }
