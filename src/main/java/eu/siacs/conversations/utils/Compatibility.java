@@ -1,5 +1,7 @@
 package eu.siacs.conversations.utils;
 
+import static eu.siacs.conversations.services.EventReceiver.EXTRA_NEEDS_FOREGROUND_SERVICE;
+
 import android.Manifest;
 import android.annotation.SuppressLint;
 import android.content.Context;
@@ -24,8 +26,6 @@ import eu.siacs.conversations.Config;
 import eu.siacs.conversations.R;
 import eu.siacs.conversations.ui.SettingsActivity;
 import eu.siacs.conversations.ui.SettingsFragment;
-
-import static eu.siacs.conversations.services.EventReceiver.EXTRA_NEEDS_FOREGROUND_SERVICE;
 
 public class Compatibility {
     private static final List<String> UNUSED_SETTINGS_POST_TWENTYSIX = Arrays.asList(
@@ -157,7 +157,6 @@ public class Compatibility {
             Log.d(Config.LOGTAG, context.getClass().getSimpleName() + " was unable to start service");
         }
     }
-
 
     @SuppressLint("UnsupportedChromeOsCameraSystemFeature")
     public static boolean hasFeatureCamera(final Context context) {

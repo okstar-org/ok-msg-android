@@ -1,5 +1,14 @@
 package eu.siacs.conversations.services;
 
+import static eu.siacs.conversations.ui.SettingsActivity.ALLOW_MESSAGE_CORRECTION;
+import static eu.siacs.conversations.ui.SettingsActivity.AUTOMATIC_ATTACHMENT_DELETION;
+import static eu.siacs.conversations.ui.SettingsActivity.CHAT_STATES;
+import static eu.siacs.conversations.ui.SettingsActivity.CONFIRM_MESSAGES;
+import static eu.siacs.conversations.ui.SettingsActivity.ENABLE_MULTI_ACCOUNTS;
+import static eu.siacs.conversations.ui.SettingsActivity.INDICATE_RECEIVED;
+import static eu.siacs.conversations.ui.SettingsActivity.SHOW_OWN_ACCOUNTS;
+import static eu.siacs.conversations.utils.RichPreview.RICH_LINK_METADATA;
+
 import android.Manifest;
 import android.annotation.SuppressLint;
 import android.annotation.TargetApi;
@@ -172,15 +181,6 @@ import eu.siacs.conversations.xmpp.stanzas.IqPacket;
 import eu.siacs.conversations.xmpp.stanzas.MessagePacket;
 import eu.siacs.conversations.xmpp.stanzas.PresencePacket;
 import me.leolin.shortcutbadger.ShortcutBadger;
-
-import static eu.siacs.conversations.ui.SettingsActivity.ALLOW_MESSAGE_CORRECTION;
-import static eu.siacs.conversations.ui.SettingsActivity.AUTOMATIC_ATTACHMENT_DELETION;
-import static eu.siacs.conversations.ui.SettingsActivity.CHAT_STATES;
-import static eu.siacs.conversations.ui.SettingsActivity.CONFIRM_MESSAGES;
-import static eu.siacs.conversations.ui.SettingsActivity.ENABLE_MULTI_ACCOUNTS;
-import static eu.siacs.conversations.ui.SettingsActivity.INDICATE_RECEIVED;
-import static eu.siacs.conversations.ui.SettingsActivity.SHOW_OWN_ACCOUNTS;
-import static eu.siacs.conversations.utils.RichPreview.RICH_LINK_METADATA;
 
 public class XmppConnectionService extends Service {
 
@@ -4432,7 +4432,6 @@ public class XmppConnectionService extends Service {
     public boolean warnUnecryptedChat() {
         return getBooleanPreference(SettingsActivity.WARN_UNENCRYPTED_CHAT, R.bool.warn_unencrypted_chat);
     }
-
 
     public boolean hideYouAreNotParticipating() {
         return getBooleanPreference(SettingsActivity.HIDE_YOU_ARE_NOT_PARTICIPATING, R.bool.hide_you_are_not_participating);

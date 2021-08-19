@@ -1,5 +1,18 @@
 package eu.siacs.conversations.ui;
 
+import static eu.siacs.conversations.entities.Message.DELETED_MESSAGE_BODY;
+import static eu.siacs.conversations.ui.SettingsActivity.HIDE_YOU_ARE_NOT_PARTICIPATING;
+import static eu.siacs.conversations.ui.SettingsActivity.WARN_UNENCRYPTED_CHAT;
+import static eu.siacs.conversations.ui.XmppActivity.EXTRA_ACCOUNT;
+import static eu.siacs.conversations.ui.XmppActivity.REQUEST_INVITE_TO_CONVERSATION;
+import static eu.siacs.conversations.ui.util.SoftKeyboardUtils.hideSoftKeyboard;
+import static eu.siacs.conversations.utils.Compatibility.runsTwentyOne;
+import static eu.siacs.conversations.utils.MessageUtils.fileWithKnownSize;
+import static eu.siacs.conversations.utils.PermissionUtils.allGranted;
+import static eu.siacs.conversations.utils.PermissionUtils.getFirstDenied;
+import static eu.siacs.conversations.utils.PermissionUtils.readGranted;
+import static eu.siacs.conversations.xmpp.Patches.ENCRYPTION_EXCEPTIONS;
+
 import android.Manifest;
 import android.animation.Animator;
 import android.animation.AnimatorInflater;
@@ -134,19 +147,6 @@ import eu.siacs.conversations.xmpp.jingle.JingleFileTransferConnection;
 import eu.siacs.conversations.xmpp.jingle.OngoingRtpSession;
 import eu.siacs.conversations.xmpp.jingle.RtpCapability;
 import me.drakeet.support.toast.ToastCompat;
-
-import static eu.siacs.conversations.entities.Message.DELETED_MESSAGE_BODY;
-import static eu.siacs.conversations.ui.SettingsActivity.HIDE_YOU_ARE_NOT_PARTICIPATING;
-import static eu.siacs.conversations.ui.SettingsActivity.WARN_UNENCRYPTED_CHAT;
-import static eu.siacs.conversations.ui.XmppActivity.EXTRA_ACCOUNT;
-import static eu.siacs.conversations.ui.XmppActivity.REQUEST_INVITE_TO_CONVERSATION;
-import static eu.siacs.conversations.ui.util.SoftKeyboardUtils.hideSoftKeyboard;
-import static eu.siacs.conversations.utils.Compatibility.runsTwentyOne;
-import static eu.siacs.conversations.utils.MessageUtils.fileWithKnownSize;
-import static eu.siacs.conversations.utils.PermissionUtils.allGranted;
-import static eu.siacs.conversations.utils.PermissionUtils.getFirstDenied;
-import static eu.siacs.conversations.utils.PermissionUtils.readGranted;
-import static eu.siacs.conversations.xmpp.Patches.ENCRYPTION_EXCEPTIONS;
 
 public class ConversationFragment extends XmppFragment implements EditMessage.KeyboardListener, MessageAdapter.OnContactPictureLongClicked, MessageAdapter.OnContactPictureClicked {
 
@@ -1023,7 +1023,7 @@ public class ConversationFragment extends XmppFragment implements EditMessage.Ke
         binding.textinput.setVisibility(hasAttachments ? View.GONE : View.VISIBLE);
         binding.mediaPreview.setVisibility(hasAttachments ? View.VISIBLE : View.GONE);
         if (mOptionsMenu != null) {
-            ConversationMenuConfigurator.configureAttachmentMenu(conversation, mOptionsMenu, activity.xmppConnectionService.getAttachmentChoicePreference(), hasAttachments);
+            ConversationMenuConfigurator.configureAttachmentMenu(conversation, mOptionsMenu, activity.getAttachmentChoicePreference(), hasAttachments);
         }
         updateSendButton();
     }
@@ -1140,7 +1140,7 @@ public class ConversationFragment extends XmppFragment implements EditMessage.Ke
             }
             menuMediaBrowser.setVisible(true);
             menuNeedHelp.setVisible(false);
-            ConversationMenuConfigurator.configureAttachmentMenu(conversation, menu, activity.xmppConnectionService.getAttachmentChoicePreference(), hasAttachments);
+            ConversationMenuConfigurator.configureAttachmentMenu(conversation, menu, activity.getAttachmentChoicePreference(), hasAttachments);
             ConversationMenuConfigurator.configureEncryptionMenu(conversation, menu, activity);
             if (conversation.getBooleanAttribute(Conversation.ATTRIBUTE_PINNED_ON_TOP, false)) {
                 menuTogglePinned.setTitle(R.string.remove_from_favorites);
@@ -2601,7 +2601,7 @@ public class ConversationFragment extends XmppFragment implements EditMessage.Ke
             }
         } else if (account.hasPendingPgpIntent(conversation)) {
             showSnackbar(R.string.openpgp_messages_found, R.string.decrypt, clickToDecryptListener);
-        } else if (activity.xmppConnectionService.warnUnecryptedChat()) {
+        } else if (activity.warnUnecryptedChat()) {
             if (conversation.getNextEncryption() == Message.ENCRYPTION_NONE && conversation.isSingleOrPrivateAndNonAnonymous() && ((Config.supportOmemo() && Conversation.suitableForOmemoByDefault(conversation)) ||
                     (Config.supportOpenPgp() && account.isPgpDecryptionServiceConnected()))) {
                 if (ENCRYPTION_EXCEPTIONS.contains(conversation.getJid().toString()) || conversation.getJid().toString().equals(account.getJid().getDomain())) {

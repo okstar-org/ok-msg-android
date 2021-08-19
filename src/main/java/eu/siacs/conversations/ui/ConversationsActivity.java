@@ -29,6 +29,10 @@
 
 package eu.siacs.conversations.ui;
 
+import static eu.siacs.conversations.ui.ConversationFragment.REQUEST_DECRYPT_PGP;
+import static eu.siacs.conversations.ui.SettingsActivity.HIDE_MEMORY_WARNING;
+import static eu.siacs.conversations.ui.SettingsActivity.MIN_ANDROID_SDK21_SHOWN;
+
 import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.app.Fragment;
@@ -102,10 +106,6 @@ import eu.siacs.conversations.xmpp.Jid;
 import eu.siacs.conversations.xmpp.OnUpdateBlocklist;
 import eu.siacs.conversations.xmpp.chatstate.ChatState;
 import me.drakeet.support.toast.ToastCompat;
-
-import static eu.siacs.conversations.ui.ConversationFragment.REQUEST_DECRYPT_PGP;
-import static eu.siacs.conversations.ui.SettingsActivity.HIDE_MEMORY_WARNING;
-import static eu.siacs.conversations.ui.SettingsActivity.MIN_ANDROID_SDK21_SHOWN;
 
 public class ConversationsActivity extends XmppActivity implements OnConversationSelected, OnConversationArchived, OnConversationsListItemUpdated, OnConversationRead, XmppConnectionService.OnAccountUpdate, XmppConnectionService.OnConversationUpdate, XmppConnectionService.OnRosterUpdate, OnUpdateBlocklist, XmppConnectionService.OnShowErrorToast, XmppConnectionService.OnAffiliationChanged, XmppConnectionService.OnRoomDestroy {
 
@@ -309,6 +309,14 @@ public class ConversationsActivity extends XmppActivity implements OnConversatio
         getPreferences().edit().putBoolean(getBatteryOptimizationPreferenceKey(), false).apply();
     }
 
+    public boolean getAttachmentChoicePreference() {
+        return getBooleanPreference(SettingsActivity.QUICK_SHARE_ATTACHMENT_CHOICE, R.bool.quick_share_attachment_choice);
+    }
+
+    public boolean warnUnecryptedChat() {
+        return getBooleanPreference(SettingsActivity.WARN_UNENCRYPTED_CHAT, R.bool.warn_unencrypted_chat);
+    }
+
     private void openBatteryOptimizationDialogIfNeeded() {
         if (hasAccountWithoutPush()
                 && isOptimizingBattery()
@@ -356,12 +364,12 @@ public class ConversationsActivity extends XmppActivity implements OnConversatio
 
         @Override
         protected Void doInBackground(Void... params) {
-            totalMemory = FileBackend.getDiskSize();
-            mediaUsage = FileBackend.getDirectorySize(new File(FileBackend.getAppMediaDirectory()));
             try {
+                totalMemory = FileBackend.getDiskSize();
+                mediaUsage = FileBackend.getDirectorySize(new File(FileBackend.getAppMediaDirectory()));
                 relativeUsage = ((double) mediaUsage / (double) totalMemory);
                 try {
-                    percentUsage = String.format("%.2f", relativeUsage * 100) + " %";
+                    percentUsage = String.format(Locale.getDefault(),"%.2f", relativeUsage * 100) + " %";
                 } catch (Exception e) {
                     e.printStackTrace();
                     percentUsage = String.format(Locale.ENGLISH,"%.2f", relativeUsage * 100) + " %";
