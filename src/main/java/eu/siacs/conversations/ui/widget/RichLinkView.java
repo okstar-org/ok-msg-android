@@ -14,6 +14,9 @@ import androidx.annotation.RequiresApi;
 
 import com.squareup.picasso.Picasso;
 
+import java.util.HashMap;
+import java.util.Map;
+
 import eu.siacs.conversations.R;
 import eu.siacs.conversations.services.XmppConnectionService;
 import eu.siacs.conversations.ui.util.CustomTab;
@@ -170,23 +173,34 @@ public class RichLinkView extends RelativeLayout {
         return meta;
     }
 
-    public void setLink(final String url, final String filename, final boolean dataSaverDisabled, final XmppConnectionService mXmppConnectionService, final int color, final RichPreview.ViewListener viewListener) {
-        main_url = url;
-        RichPreview richPreview = new RichPreview(new RichPreview.ResponseListener() {
-            @Override
-            public void onData(MetaData metaData) {
-                meta = metaData;
-                if (!meta.getTitle().isEmpty() || !meta.getTitle().equals("")) {
-                    viewListener.onSuccess(true);
-                }
-                initView(dataSaverDisabled, color);
-            }
+    private static Map<String, MetaData> linkMap = new HashMap<>();
 
-            @Override
-            public void onError(Exception e) {
-                viewListener.onError(e);
-            }
-        });
-        richPreview.getPreview(url, filename, context, mXmppConnectionService);
+    public void setLink(final String url, final String filename, final boolean dataSaverDisabled, final XmppConnectionService mXmppConnectionService, final int color, final RichPreview.ViewListener viewListener) {
+        MetaData data = linkMap.get(url);
+        if (data == null) {
+            main_url = url;
+            RichPreview richPreview = new RichPreview(new RichPreview.ResponseListener() {
+                @Override
+                public void onData(MetaData metaData) {
+                    meta = metaData;
+                    if (!meta.getTitle().isEmpty() || !meta.getTitle().equals("")) {
+                        viewListener.onSuccess(true);
+                        linkMap.put(url, metaData);
+                    }
+                    initView(dataSaverDisabled, color);
+                }
+
+                @Override
+                public void onError(Exception e) {
+                    viewListener.onError(e);
+                }
+            });
+            richPreview.getPreview(url, filename, context, mXmppConnectionService);
+        } else {
+            main_url = url;
+            meta = data;
+            viewListener.onSuccess(true);
+            initView(dataSaverDisabled, color);
+        }
     }
 }
