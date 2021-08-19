@@ -5,9 +5,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.util.Log;
 
-import com.google.firebase.iid.FirebaseInstanceId;
-
-import java.io.IOException;
+import com.google.firebase.installations.FirebaseInstallations;
 
 import eu.siacs.conversations.BuildConfig;
 import eu.siacs.conversations.Config;
@@ -24,16 +22,10 @@ public class MaintenanceReceiver extends BroadcastReceiver {
     }
 
     private void renewInstanceToken(final Context context) {
-        new Thread(() -> {
-            try {
-                FirebaseInstanceId.getInstance().deleteInstanceId();
-                final Intent intent = new Intent(context, XmppConnectionService.class);
-                intent.setAction(XmppConnectionService.ACTION_FCM_TOKEN_REFRESH);
-                Compatibility.startService(context, intent);
-            } catch (IOException e) {
-                Log.d(Config.LOGTAG, "unable to renew instance token", e);
-            }
-        }).start();
-
+        FirebaseInstallations.getInstance().delete().addOnSuccessListener(unused -> {
+            final Intent intent = new Intent(context, XmppConnectionService.class);
+            intent.setAction(XmppConnectionService.ACTION_FCM_TOKEN_REFRESH);
+            Compatibility.startService(context, intent);
+        });
     }
 }
