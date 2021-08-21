@@ -42,6 +42,7 @@ import eu.siacs.conversations.entities.Transferable;
 import eu.siacs.conversations.services.ExportBackupService;
 import eu.siacs.conversations.services.XmppConnectionService;
 import eu.siacs.conversations.ui.util.MyLinkify;
+import eu.siacs.conversations.ui.util.QuoteHelper;
 import eu.siacs.conversations.xmpp.Jid;
 
 public class UIHelper {
@@ -340,7 +341,7 @@ public class UIHelper {
                             continue;
                         }
                         char first = l.charAt(0);
-                        if ((first != '>' || !isPositionFollowedByQuoteableCharacter(l, 0)) && first != '\u00bb') {
+                        if ((!QuoteHelper.isPositionQuoteStart(l, 0)) && first != '\u00bb') {
                             CharSequence line = CharSequenceUtils.trim(l);
                             if (line.length() == 0) {
                                 continue;
