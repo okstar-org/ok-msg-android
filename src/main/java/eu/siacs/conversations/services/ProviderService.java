@@ -7,20 +7,14 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.io.BufferedReader;
+import java.io.InputStream;
 import java.io.InputStreamReader;
-import java.net.URL;
-import java.security.KeyManagementException;
-import java.security.NoSuchAlgorithmException;
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
 
-import javax.net.ssl.HttpsURLConnection;
-import javax.net.ssl.SSLContext;
-import javax.net.ssl.SSLSocketFactory;
-
 import eu.siacs.conversations.Config;
-import eu.siacs.conversations.http.NoSSLv3SocketFactory;
+import eu.siacs.conversations.http.HttpConnectionManager;
 
 public class ProviderService extends AsyncTask<String, Object, Boolean> {
     public static List<String> providers = new ArrayList<>();
@@ -46,39 +40,19 @@ public class ProviderService extends AsyncTask<String, Object, Boolean> {
     protected Boolean doInBackground(String... params) {
         StringBuilder jsonString = new StringBuilder();
         boolean isError = false;
-
-        SSLContext sslcontext = null;
-        SSLSocketFactory NoSSLv3Factory = null;
         try {
-            sslcontext = SSLContext.getInstance("TLSv1");
-            if (sslcontext != null) {
-                sslcontext.init(null, null, null);
-                NoSSLv3Factory = new NoSSLv3SocketFactory(sslcontext.getSocketFactory());
-            }
-        } catch (NoSuchAlgorithmException | KeyManagementException e) {
-            e.printStackTrace();
-        }
-        HttpsURLConnection.setDefaultSSLSocketFactory(NoSSLv3Factory);
-        HttpsURLConnection connection = null;
-        try {
-            URL url = new URL(Config.PROVIDER_URL);
             Log.d(Config.LOGTAG, "ProviderService: Updating provider list from " + Config.PROVIDER_URL);
-            connection = (HttpsURLConnection) url.openConnection();
-            connection.setConnectTimeout(Config.SOCKET_TIMEOUT * 1000);
-            connection.setReadTimeout(Config.SOCKET_TIMEOUT * 1000);
-            connection.setRequestProperty("User-agent", System.getProperty("http.agent"));
-            BufferedReader reader = new BufferedReader(new InputStreamReader(connection.getInputStream()));
+            final InputStream is = HttpConnectionManager.open(Config.PROVIDER_URL, false);
+            BufferedReader reader = new BufferedReader(new InputStreamReader(is));
             String line;
             while ((line = reader.readLine()) != null) {
                 jsonString.append(line);
             }
+            is.close();
+            reader.close();
         } catch (Exception e) {
             e.printStackTrace();
             isError = true;
-        } finally {
-            if (connection != null) {
-                connection.disconnect();
-            }
         }
 
         try {
