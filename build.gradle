@@ -3,10 +3,10 @@
 buildscript {
     repositories {
         google()
-        jcenter()
+        mavenCentral()
     }
     dependencies {
-        classpath 'com.android.tools.build:gradle:4.2.1'
+        classpath 'com.android.tools.build:gradle:7.0.1'
     }
 }
 
@@ -24,15 +24,15 @@ allprojects {
 repositories {
     google()
     mavenCentral()
-    jcenter()
     maven { url "https://jitpack.io" }
     maven { url "https://raw.github.com/abdularis/libwebrtc-android/repo/" }
+    jcenter()
 }
 
 configurations {
     playstoreImplementation
     gitImplementation
-    compile.exclude group: 'org.jetbrains' , module:'annotations'
+    implementation.exclude group: 'org.jetbrains' , module:'annotations'
 }
 
 dependencies {
@@ -76,7 +76,7 @@ dependencies {
     implementation 'com.googlecode.ez-vcard:ez-vcard:0.10.5'
     implementation 'org.jxmpp:jxmpp-jid:1.0.1'
     implementation 'org.hsluv:hsluv:0.2'
-    implementation 'org.conscrypt:conscrypt-android:2.5.1'
+    implementation 'org.conscrypt:conscrypt-android:2.5.2'
     implementation 'pl.droidsonroids.gif:android-gif-drawable:1.2.15' // 1.2.15 is last working version for minSDK 16
     implementation 'me.drakeet.support:toastcompat:1.1.0'
     implementation 'org.osmdroid:osmdroid-android:6.1.5'
@@ -215,7 +215,6 @@ android {
 
         }
     }
-    buildToolsVersion '29.0.2'
 
     packagingOptions {
         exclude 'META-INF/BCKEY.DSA'
