@@ -69,7 +69,7 @@ public class ChannelSearchResultAdapter extends ListAdapter<Room, ChannelSearchR
         }
         final Jid room = searchResult.getRoom();
         viewHolder.binding.room.setText(room != null ? room.asBareJid().toString() : "");
-        AvatarWorkerTask.loadAvatar(searchResult, viewHolder.binding.avatar, R.dimen.avatar);
+        AvatarWorkerTask.loadAvatar(room != null ? room.toString() : null, searchResult, viewHolder.binding.avatar, R.dimen.avatar);
         final View root = viewHolder.binding.getRoot();
         root.setTag(searchResult);
         root.setOnClickListener(v -> listener.onChannelSearchResult(searchResult));
