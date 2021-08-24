@@ -340,51 +340,54 @@ public class ExportBackupService extends Service {
         final List<File> files = new ArrayList<>();
         Log.d(Config.LOGTAG, "starting backup for " + max + " accounts");
         for (final Account account : this.mAccounts) {
-            final String password = account.getPassword();
-            if (Strings.nullToEmpty(password).trim().isEmpty()) {
-                Log.d(Config.LOGTAG, String.format("skipping backup for %s because password is empty. unable to encrypt", account.getJid().asBareJid()));
-                continue;
-            }
-            Log.d(Config.LOGTAG, String.format("exporting data for account %s (%s)", account.getJid().asBareJid(), account.getUuid()));
-            final byte[] IV = new byte[12];
-            final byte[] salt = new byte[16];
-            secureRandom.nextBytes(IV);
-            secureRandom.nextBytes(salt);
-            final BackupFileHeader backupFileHeader = new BackupFileHeader(getString(R.string.app_name), account.getJid(), System.currentTimeMillis(), IV, salt);
-            final Progress progress = new Progress(mBuilder, max, count);
-            final File file = new File(FileBackend.getBackupDirectory(null) + account.getJid().asBareJid().toEscapedString() + "_" + ((new SimpleDateFormat("yyyy-MM-dd")).format(new Date())) +".ceb");
-            files.add(file);
-            final File directory = file.getParentFile();
-            if (directory != null && directory.mkdirs()) {
-                Log.d(Config.LOGTAG, "created backup directory " + directory.getAbsolutePath());
-            }
-            final FileOutputStream fileOutputStream = new FileOutputStream(file);
-            final DataOutputStream dataOutputStream = new DataOutputStream(fileOutputStream);
-            backupFileHeader.write(dataOutputStream);
-            dataOutputStream.flush();
+            try {
+                final String password = account.getPassword();
+                if (Strings.nullToEmpty(password).trim().isEmpty()) {
+                    Log.d(Config.LOGTAG, String.format("skipping backup for %s because password is empty. unable to encrypt", account.getJid().asBareJid()));
+                    continue;
+                }
+                Log.d(Config.LOGTAG, String.format("exporting data for account %s (%s)", account.getJid().asBareJid(), account.getUuid()));
+                final byte[] IV = new byte[12];
+                final byte[] salt = new byte[16];
+                secureRandom.nextBytes(IV);
+                secureRandom.nextBytes(salt);
+                final BackupFileHeader backupFileHeader = new BackupFileHeader(getString(R.string.app_name), account.getJid(), System.currentTimeMillis(), IV, salt);
+                final Progress progress = new Progress(mBuilder, max, count);
+                final File file = new File(FileBackend.getBackupDirectory(null) + account.getJid().asBareJid().toEscapedString() + "_" + ((new SimpleDateFormat("yyyy-MM-dd")).format(new Date())) + ".ceb");
+                files.add(file);
+                final File directory = file.getParentFile();
+                if (directory != null && directory.mkdirs()) {
+                    Log.d(Config.LOGTAG, "created backup directory " + directory.getAbsolutePath());
+                }
+                final FileOutputStream fileOutputStream = new FileOutputStream(file);
+                final DataOutputStream dataOutputStream = new DataOutputStream(fileOutputStream);
+                backupFileHeader.write(dataOutputStream);
+                dataOutputStream.flush();
 
-            final Cipher cipher = Compatibility.twentyEight() ? Cipher.getInstance(CIPHERMODE) : Cipher.getInstance(CIPHERMODE, PROVIDER);
-            final byte[] key = getKey(password, salt);
-            Log.d(Config.LOGTAG, backupFileHeader.toString());
-            SecretKeySpec keySpec = new SecretKeySpec(key, KEYTYPE);
-            IvParameterSpec ivSpec = new IvParameterSpec(IV);
-            cipher.init(Cipher.ENCRYPT_MODE, keySpec, ivSpec);
-            CipherOutputStream cipherOutputStream = new CipherOutputStream(fileOutputStream, cipher);
-
-            GZIPOutputStream gzipOutputStream = new GZIPOutputStream(cipherOutputStream);
-            PrintWriter writer = new PrintWriter(gzipOutputStream);
-            SQLiteDatabase db = this.mDatabaseBackend.getReadableDatabase();
-            final String uuid = account.getUuid();
-            accountExport(db, uuid, writer);
-            simpleExport(db, Conversation.TABLENAME, Conversation.ACCOUNT, uuid, writer);
-            messageExport(db, uuid, writer, progress);
-            for (String table : Arrays.asList(SQLiteAxolotlStore.PREKEY_TABLENAME, SQLiteAxolotlStore.SIGNED_PREKEY_TABLENAME, SQLiteAxolotlStore.SESSION_TABLENAME, SQLiteAxolotlStore.IDENTITIES_TABLENAME)) {
-                simpleExport(db, table, SQLiteAxolotlStore.ACCOUNT, uuid, writer);
+                final Cipher cipher = Compatibility.twentyEight() ? Cipher.getInstance(CIPHERMODE) : Cipher.getInstance(CIPHERMODE, PROVIDER);
+                final byte[] key = getKey(password, salt);
+                Log.d(Config.LOGTAG, backupFileHeader.toString());
+                SecretKeySpec keySpec = new SecretKeySpec(key, KEYTYPE);
+                IvParameterSpec ivSpec = new IvParameterSpec(IV);
+                cipher.init(Cipher.ENCRYPT_MODE, keySpec, ivSpec);
+                CipherOutputStream cipherOutputStream = new CipherOutputStream(fileOutputStream, cipher);
+                GZIPOutputStream gzipOutputStream = new GZIPOutputStream(cipherOutputStream);
+                PrintWriter writer = new PrintWriter(gzipOutputStream);
+                SQLiteDatabase db = this.mDatabaseBackend.getReadableDatabase();
+                final String uuid = account.getUuid();
+                accountExport(db, uuid, writer);
+                simpleExport(db, Conversation.TABLENAME, Conversation.ACCOUNT, uuid, writer);
+                messageExport(db, uuid, writer, progress);
+                for (String table : Arrays.asList(SQLiteAxolotlStore.PREKEY_TABLENAME, SQLiteAxolotlStore.SIGNED_PREKEY_TABLENAME, SQLiteAxolotlStore.SESSION_TABLENAME, SQLiteAxolotlStore.IDENTITIES_TABLENAME)) {
+                    simpleExport(db, table, SQLiteAxolotlStore.ACCOUNT, uuid, writer);
+                }
+                writer.flush();
+                writer.close();
+                mediaScannerScanFile(file);
+                Log.d(Config.LOGTAG, "written backup to " + file.getAbsoluteFile());
+            } catch (Exception e) {
+                Log.d(Config.LOGTAG, "backup for " + account.getJid() + " failed with " + e);
             }
-            writer.flush();
-            writer.close();
-            mediaScannerScanFile(file);
-            Log.d(Config.LOGTAG, "written backup to " + file.getAbsoluteFile());
             count++;
         }
         stopForeground(true);
