@@ -56,6 +56,7 @@ import eu.siacs.conversations.services.AppRTCAudioManager;
 import eu.siacs.conversations.services.XmppConnectionService;
 import eu.siacs.conversations.ui.util.AvatarWorkerTask;
 import eu.siacs.conversations.ui.util.MainThreadExecutor;
+import eu.siacs.conversations.ui.util.Rationals;
 import eu.siacs.conversations.utils.Namespace;
 import eu.siacs.conversations.utils.PermissionUtils;
 import eu.siacs.conversations.utils.TimeFrameUtils;
@@ -67,7 +68,7 @@ import eu.siacs.conversations.xmpp.jingle.Media;
 import eu.siacs.conversations.xmpp.jingle.RtpEndUserState;
 import me.drakeet.support.toast.ToastCompat;
 
-public class RtpSessionActivity extends XmppActivity implements XmppConnectionService.OnJingleRtpConnectionUpdate {
+public class RtpSessionActivity extends XmppActivity implements XmppConnectionService.OnJingleRtpConnectionUpdate, eu.siacs.conversations.ui.widget.SurfaceViewRenderer.OnAspectRatioChanged {
 
     public static final String EXTRA_WITH = "with";
     public static final String EXTRA_SESSION_ID = "session_id";
@@ -447,12 +448,14 @@ public class RtpSessionActivity extends XmppActivity implements XmppConnectionSe
     public void onStart() {
         super.onStart();
         mHandler.postDelayed(mTickExecutor, CALL_DURATION_UPDATE_INTERVAL);
+        this.binding.remoteVideo.setOnAspectRatioChanged(this);
     }
 
     @Override
     public void onStop() {
         mHandler.removeCallbacks(mTickExecutor);
         binding.remoteVideo.release();
+        binding.remoteVideo.setOnAspectRatioChanged(null);
         binding.localVideo.release();
         final WeakReference<JingleRtpConnection> weakReference = this.rtpConnectionReference;
         final JingleRtpConnection jingleRtpConnection = weakReference == null ? null : weakReference.get();
@@ -517,14 +520,28 @@ public class RtpSessionActivity extends XmppActivity implements XmppConnectionSe
     @RequiresApi(api = Build.VERSION_CODES.O)
     private void startPictureInPicture() {
         try {
+            final Rational rational = this.binding.remoteVideo.getAspectRatio();
+            final Rational clippedRational = Rationals.clip(rational);
+            Log.d(Config.LOGTAG, "suggested rational " + rational + ". clipped to " + clippedRational);
             enterPictureInPictureMode(
                     new PictureInPictureParams.Builder()
-                            .setAspectRatio(new Rational(10, 16))
+                            .setAspectRatio(clippedRational)
                             .build()
             );
         } catch (final IllegalStateException e) {
             //this sometimes happens on Samsung phones (possibly when Knox is enabled)
             Log.w(Config.LOGTAG, "unable to enter picture in picture mode", e);
+        }
+    }
+
+    @Override
+    public void onAspectRatioChanged(final Rational rational) {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O && isPictureInPicture()) {
+            final Rational clippedRational = Rationals.clip(rational);
+            Log.d(Config.LOGTAG, "suggested rational after aspect ratio change " + rational + ". clipped to " + clippedRational);
+            setPictureInPictureParams(new PictureInPictureParams.Builder()
+                    .setAspectRatio(clippedRational)
+                    .build());
         }
     }
 
