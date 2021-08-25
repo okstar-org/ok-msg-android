@@ -4,6 +4,7 @@ import static eu.siacs.conversations.entities.Bookmark.printableValue;
 import static eu.siacs.conversations.ui.util.IntroHelper.showIntro;
 import static eu.siacs.conversations.utils.StringUtils.changed;
 
+import android.app.Activity;
 import android.app.PendingIntent;
 import android.content.Context;
 import android.content.Intent;
@@ -113,6 +114,14 @@ public class ConferenceDetailsActivity extends XmppActivity implements OnConvers
 
         }
     };
+
+    public static void open(final Activity activity, final Conversation conversation) {
+        Intent intent = new Intent(activity, ConferenceDetailsActivity.class);
+        intent.setAction(ConferenceDetailsActivity.ACTION_VIEW_MUC);
+        intent.putExtra("uuid", conversation.getUuid());
+        activity.startActivity(intent);
+        activity.overridePendingTransition(R.animator.fade_in, R.animator.fade_out);
+    }
 
     private OnClickListener mNotifyStatusClickListener = new OnClickListener() {
         @Override

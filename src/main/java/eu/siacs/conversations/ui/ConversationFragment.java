@@ -204,11 +204,7 @@ public class ConversationFragment extends XmppFragment implements EditMessage.Ke
 
         @Override
         public void onClick(View v) {
-            Intent intent = new Intent(getActivity(), ConferenceDetailsActivity.class);
-            intent.setAction(ConferenceDetailsActivity.ACTION_VIEW_MUC);
-            intent.putExtra("uuid", conversation.getUuid());
-            startActivity(intent);
-            activity.overridePendingTransition(R.animator.fade_in, R.animator.fade_out);
+            ConferenceDetailsActivity.open(getActivity(), conversation);
         }
     };
     private final OnClickListener leaveMuc = new OnClickListener() {

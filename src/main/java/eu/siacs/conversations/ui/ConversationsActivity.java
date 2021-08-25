@@ -78,6 +78,7 @@ import eu.siacs.conversations.R;
 import eu.siacs.conversations.crypto.OmemoSetting;
 import eu.siacs.conversations.databinding.ActivityConversationsBinding;
 import eu.siacs.conversations.entities.Account;
+import eu.siacs.conversations.entities.Contact;
 import eu.siacs.conversations.entities.Conversation;
 import eu.siacs.conversations.entities.Conversational;
 import eu.siacs.conversations.entities.MucOptions;
@@ -88,6 +89,7 @@ import eu.siacs.conversations.ui.interfaces.OnConversationArchived;
 import eu.siacs.conversations.ui.interfaces.OnConversationRead;
 import eu.siacs.conversations.ui.interfaces.OnConversationSelected;
 import eu.siacs.conversations.ui.interfaces.OnConversationsListItemUpdated;
+import eu.siacs.conversations.ui.util.ActionBarUtil;
 import eu.siacs.conversations.ui.util.ActivityResult;
 import eu.siacs.conversations.ui.util.ConversationMenuConfigurator;
 import eu.siacs.conversations.ui.util.IntroHelper;
@@ -849,131 +851,112 @@ public class ConversationsActivity extends XmppActivity implements OnConversatio
 
     private void invalidateActionBarTitle() {
         final ActionBar actionBar = getSupportActionBar();
-        if (actionBar != null) {
-            Fragment mainFragment = getFragmentManager().findFragmentById(R.id.main_fragment);
-            if (mainFragment instanceof ConversationFragment) {
-                final Conversation conversation = ((ConversationFragment) mainFragment).getConversation();
-                if (conversation != null) {
-                    actionBar.setDisplayHomeAsUpEnabled(true);
-                    final View view = getLayoutInflater().inflate(R.layout.ab_title, null);
-                    getSupportActionBar().setCustomView(view);
-                    actionBar.setIcon(null);
-                    actionBar.setBackgroundDrawable(new ColorDrawable(StyledAttributes.getColor(this, R.attr.colorPrimary)));
-                    actionBar.setDisplayShowTitleEnabled(false);
-                    actionBar.setDisplayShowCustomEnabled(true);
-                    TextView abtitle = findViewById(android.R.id.text1);
-                    TextView absubtitle = findViewById(android.R.id.text2);
-                    abtitle.setText(EmojiWrapper.transform(conversation.getName()));
-                    abtitle.setOnClickListener(view1 -> {
-                        if (conversation.getMode() == Conversation.MODE_SINGLE) {
-                            switchToContactDetails(conversation.getContact());
-                        } else if (conversation.getMode() == Conversation.MODE_MULTI) {
-                            Intent intent = new Intent(ConversationsActivity.this, ConferenceDetailsActivity.class);
-                            intent.setAction(ConferenceDetailsActivity.ACTION_VIEW_MUC);
-                            intent.putExtra("uuid", conversation.getUuid());
-                            startActivity(intent);
-                            overridePendingTransition(R.animator.fade_in, R.animator.fade_out);
-                        }
-                    });
-                    abtitle.setSelected(true);
-                    if (conversation.getMode() == Conversation.MODE_SINGLE && !conversation.withSelf()) {
+        if (actionBar == null) {
+            return;
+        }
+        final FragmentManager fragmentManager = getFragmentManager();
+        final Fragment mainFragment = fragmentManager.findFragmentById(R.id.main_fragment);
+        if (mainFragment instanceof ConversationFragment) {
+            final Conversation conversation = ((ConversationFragment) mainFragment).getConversation();
+            if (conversation != null) {
+                actionBar.setDisplayHomeAsUpEnabled(true);
+                final View view = getLayoutInflater().inflate(R.layout.ab_title, null);
+                getSupportActionBar().setCustomView(view);
+                actionBar.setIcon(null);
+                actionBar.setBackgroundDrawable(new ColorDrawable(StyledAttributes.getColor(this, R.attr.colorPrimary)));
+                actionBar.setDisplayShowTitleEnabled(false);
+                actionBar.setDisplayShowCustomEnabled(true);
+                TextView abtitle = findViewById(android.R.id.text1);
+                TextView absubtitle = findViewById(android.R.id.text2);
+                abtitle.setText(EmojiWrapper.transform(conversation.getName()));
+                abtitle.setSelected(true);
+                if (conversation.getMode() == Conversation.MODE_SINGLE) {
+                    if (!conversation.withSelf()) {
                         ChatState state = conversation.getIncomingChatState();
-                            if (state == ChatState.COMPOSING) {
-                                absubtitle.setText(getString(R.string.is_typing));
-                                absubtitle.setVisibility(View.VISIBLE);
-                                absubtitle.setTypeface(null, Typeface.BOLD_ITALIC);
-                                absubtitle.setSelected(true);
-                                absubtitle.setOnClickListener(view13 -> {
-                                    if (conversation.getMode() == Conversation.MODE_SINGLE) {
-                                        switchToContactDetails(conversation.getContact());
-                                    } else if (conversation.getMode() == Conversation.MODE_MULTI) {
-                                        Intent intent = new Intent(ConversationsActivity.this, ConferenceDetailsActivity.class);
-                                        intent.setAction(ConferenceDetailsActivity.ACTION_VIEW_MUC);
-                                        intent.putExtra("uuid", conversation.getUuid());
-                                        startActivity(intent);
-                                        overridePendingTransition(R.animator.fade_in, R.animator.fade_out);
-                                    }
-                                });
-                            } else {
-                                if (showLastSeen && conversation.getContact().getLastseen() > 0 && conversation.getContact().getPresences().allOrNonSupport(Namespace.IDLE)) {
-                                    absubtitle.setText(UIHelper.lastseen(getApplicationContext(), conversation.getContact().isActive(), conversation.getContact().getLastseen()));
-                                    absubtitle.setVisibility(View.VISIBLE);
-                                } else {
-                                    absubtitle.setText(null);
-                                    absubtitle.setVisibility(View.GONE);
-                                }
-                                absubtitle.setSelected(true);
-                                absubtitle.setOnClickListener(view14 -> {
-                                    if (conversation.getMode() == Conversation.MODE_SINGLE) {
-                                        switchToContactDetails(conversation.getContact());
-                                    } else if (conversation.getMode() == Conversation.MODE_MULTI) {
-                                        Intent intent = new Intent(ConversationsActivity.this, ConferenceDetailsActivity.class);
-                                        intent.setAction(ConferenceDetailsActivity.ACTION_VIEW_MUC);
-                                        intent.putExtra("uuid", conversation.getUuid());
-                                        startActivity(intent);
-                                        overridePendingTransition(R.animator.fade_in, R.animator.fade_out);
-                                    }
-                                });
-                            }
-                    } else {
-                        ChatState state = ChatState.COMPOSING;
-                        List<MucOptions.User> userWithChatStates = conversation.getMucOptions().getUsersWithChatState(state, 5);
-                        if (userWithChatStates.size() == 0) {
-                            state = ChatState.PAUSED;
-                            userWithChatStates = conversation.getMucOptions().getUsersWithChatState(state, 5);
-                        }
-                        List<MucOptions.User> users = conversation.getMucOptions().getUsers(true);
                         if (state == ChatState.COMPOSING) {
-                            if (userWithChatStates.size() > 0) {
-                                if (userWithChatStates.size() == 1) {
-                                    MucOptions.User user = userWithChatStates.get(0);
-                                    absubtitle.setText(EmojiWrapper.transform(getString(R.string.contact_is_typing, UIHelper.getDisplayName(user))));
-                                    absubtitle.setVisibility(View.VISIBLE);
-                                } else {
-                                    StringBuilder builder = new StringBuilder();
-                                    for (MucOptions.User user : userWithChatStates) {
-                                        if (builder.length() != 0) {
-                                            builder.append(", ");
-                                        }
-                                        builder.append(UIHelper.getDisplayName(user));
-                                    }
-                                    absubtitle.setText(EmojiWrapper.transform(getString(R.string.contacts_are_typing, builder.toString())));
-                                    absubtitle.setVisibility(View.VISIBLE);
-                                }
-                            }
+                            absubtitle.setText(getString(R.string.is_typing));
+                            absubtitle.setVisibility(View.VISIBLE);
+                            absubtitle.setTypeface(null, Typeface.BOLD_ITALIC);
+                            absubtitle.setSelected(true);
                         } else {
-                            if (users.size() == 0) {
-                                absubtitle.setText(getString(R.string.one_participant));
+                            if (showLastSeen && conversation.getContact().getLastseen() > 0 && conversation.getContact().getPresences().allOrNonSupport(Namespace.IDLE)) {
+                                absubtitle.setText(UIHelper.lastseen(getApplicationContext(), conversation.getContact().isActive(), conversation.getContact().getLastseen()));
                                 absubtitle.setVisibility(View.VISIBLE);
                             } else {
-                                int size = users.size() + 1;
-                                absubtitle.setText(getString(R.string.more_participants, size));
+                                absubtitle.setText(null);
+                                absubtitle.setVisibility(View.GONE);
+                            }
+                            absubtitle.setSelected(true);
+                        }
+                    } else {
+                        absubtitle.setText(null);
+                        absubtitle.setVisibility(View.GONE);
+                    }
+                } else {
+                    ChatState state = ChatState.COMPOSING;
+                    List<MucOptions.User> userWithChatStates = conversation.getMucOptions().getUsersWithChatState(state, 5);
+                    if (userWithChatStates.size() == 0) {
+                        state = ChatState.PAUSED;
+                        userWithChatStates = conversation.getMucOptions().getUsersWithChatState(state, 5);
+                    }
+                    List<MucOptions.User> users = conversation.getMucOptions().getUsers(true);
+                    if (state == ChatState.COMPOSING) {
+                        if (userWithChatStates.size() > 0) {
+                            if (userWithChatStates.size() == 1) {
+                                MucOptions.User user = userWithChatStates.get(0);
+                                absubtitle.setText(EmojiWrapper.transform(getString(R.string.contact_is_typing, UIHelper.getDisplayName(user))));
+                                absubtitle.setVisibility(View.VISIBLE);
+                            } else {
+                                StringBuilder builder = new StringBuilder();
+                                for (MucOptions.User user : userWithChatStates) {
+                                    if (builder.length() != 0) {
+                                        builder.append(", ");
+                                    }
+                                    builder.append(UIHelper.getDisplayName(user));
+                                }
+                                absubtitle.setText(EmojiWrapper.transform(getString(R.string.contacts_are_typing, builder.toString())));
                                 absubtitle.setVisibility(View.VISIBLE);
                             }
                         }
-                        absubtitle.setSelected(true);
-                        absubtitle.setOnClickListener(view15 -> {
-                            if (conversation.getMode() == Conversation.MODE_SINGLE) {
-                                switchToContactDetails(conversation.getContact());
-                            } else if (conversation.getMode() == Conversation.MODE_MULTI) {
-                                Intent intent = new Intent(ConversationsActivity.this, ConferenceDetailsActivity.class);
-                                intent.setAction(ConferenceDetailsActivity.ACTION_VIEW_MUC);
-                                intent.putExtra("uuid", conversation.getUuid());
-                                startActivity(intent);
-                                overridePendingTransition(R.animator.fade_in, R.animator.fade_out);
-                            }
-                        });
+                    } else {
+                        if (users.size() == 0) {
+                            absubtitle.setText(getString(R.string.one_participant));
+                            absubtitle.setVisibility(View.VISIBLE);
+                        } else {
+                            int size = users.size() + 1;
+                            absubtitle.setText(getString(R.string.more_participants, size));
+                            absubtitle.setVisibility(View.VISIBLE);
+                        }
                     }
-                    return;
+                    absubtitle.setSelected(true);
                 }
+                ActionBarUtil.setCustomActionBarOnClickListener(
+                        binding.toolbar,
+                        (v) -> openConversationDetails(conversation)
+                );
+                return;
             }
-            actionBar.setDisplayShowTitleEnabled(true);
-            actionBar.setDisplayShowCustomEnabled(false);
-            actionBar.setTitle(null);
-            actionBar.setIcon(R.drawable.logo_actionbar);
-            actionBar.setBackgroundDrawable(new ColorDrawable(getResources().getColor(R.color.header_background)));
-            actionBar.setSubtitle(null);
-            actionBar.setDisplayHomeAsUpEnabled(false);
+        }
+        actionBar.setDisplayShowTitleEnabled(true);
+        actionBar.setDisplayShowCustomEnabled(false);
+        actionBar.setTitle(null);
+        actionBar.setIcon(R.drawable.logo_actionbar);
+        actionBar.setBackgroundDrawable(new ColorDrawable(getResources().getColor(R.color.header_background)));
+        actionBar.setSubtitle(null);
+        actionBar.setDisplayHomeAsUpEnabled(false);
+        ActionBarUtil.resetCustomActionBarOnClickListeners(binding.toolbar);
+    }
+
+    private void openConversationDetails(final Conversation conversation) {
+        if (conversation.getMode() == Conversational.MODE_MULTI) {
+            ConferenceDetailsActivity.open(this, conversation);
+        } else {
+            final Contact contact = conversation.getContact();
+            if (contact.isSelf()) {
+                switchToAccount(conversation.getAccount());
+            } else {
+                switchToContactDetails(contact);
+            }
         }
     }
 
@@ -982,17 +965,18 @@ public class ConversationsActivity extends XmppActivity implements OnConversatio
         if (performRedirectIfNecessary(conversation, false)) {
             return;
         }
-        Fragment mainFragment = getFragmentManager().findFragmentById(R.id.main_fragment);
+        final FragmentManager fragmentManager = getFragmentManager();
+        final Fragment mainFragment = fragmentManager.findFragmentById(R.id.main_fragment);
         if (mainFragment instanceof ConversationFragment) {
             try {
-                getFragmentManager().popBackStack();
-            } catch (IllegalStateException e) {
+                fragmentManager.popBackStack();
+            } catch (final IllegalStateException e) {
                 Log.w(Config.LOGTAG, "state loss while popping back state after archiving conversation", e);
                 //this usually means activity is no longer active; meaning on the next open we will run through this again
             }
             return;
         }
-        Fragment secondaryFragment = getFragmentManager().findFragmentById(R.id.secondary_fragment);
+        final Fragment secondaryFragment = fragmentManager.findFragmentById(R.id.secondary_fragment);
         if (secondaryFragment instanceof ConversationFragment) {
             if (((ConversationFragment) secondaryFragment).getConversation() == conversation) {
                 Conversation suggestion = ConversationsOverviewFragment.getSuggestion(this, conversation);
