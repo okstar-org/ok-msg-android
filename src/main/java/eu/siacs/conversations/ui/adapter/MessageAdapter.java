@@ -791,9 +791,10 @@ public class MessageAdapter extends ArrayAdapter<Message> {
             } else {
                 scaledH = (int) (100 / ((double) 100 / target));
             }
-            LinearLayout.LayoutParams layoutParams = new LinearLayout.LayoutParams(WRAP_CONTENT, scaledH);
+            LinearLayout.LayoutParams layoutParams = new LinearLayout.LayoutParams(WRAP_CONTENT, WRAP_CONTENT);
             layoutParams.setMargins(0, (int) (metrics.density * 4), 0, (int) (metrics.density * 4));
             viewHolder.richlinkview.setLayoutParams(layoutParams);
+            viewHolder.richlinkview.setMinimumHeight(scaledH);
             final String weburl;
             if (link.startsWith("http://") || link.startsWith("https://")) {
                 weburl = removeTrailingBracket(link);
