@@ -367,12 +367,11 @@ public class FileBackend {
             return;
         }
         Stack<File> dirlist = new Stack<>();
-        dirlist.clear();
         dirlist.push(dir);
         while (!dirlist.isEmpty()) {
             File dirCurrent = dirlist.pop();
             File[] fileList = dirCurrent.listFiles();
-            if (fileList.length > 0) {
+            if (fileList != null && fileList.length > 0) {
                 for (File file : fileList) {
                     if (file.isDirectory()) {
                         dirlist.push(file);
