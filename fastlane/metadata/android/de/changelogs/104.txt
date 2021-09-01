@@ -1,1 +1,1 @@
-Change back app name to "monocles chat"
+* Change back app name to "monocles chat"
