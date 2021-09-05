@@ -38,7 +38,6 @@ import com.google.android.exoplayer2.upstream.DefaultDataSourceFactory;
 import com.leinardi.android.speeddial.SpeedDialActionItem;
 
 import java.io.File;
-import java.io.FileNotFoundException;
 import java.io.InputStream;
 import java.util.List;
 
@@ -46,11 +45,8 @@ import eu.siacs.conversations.Config;
 import eu.siacs.conversations.R;
 import eu.siacs.conversations.databinding.ActivityMediaViewerBinding;
 import eu.siacs.conversations.persistance.FileBackend;
-import eu.siacs.conversations.utils.ExifHelper;
 import eu.siacs.conversations.utils.MimeUtils;
 import me.drakeet.support.toast.ToastCompat;
-
-import static eu.siacs.conversations.persistance.FileBackend.close;
 
 public class MediaViewerActivity extends XmppActivity implements AudioManager.OnAudioFocusChangeListener {
 
@@ -352,14 +348,10 @@ public class MediaViewerActivity extends XmppActivity implements AudioManager.On
     }
 
     private int getRotation(Uri image) {
-        InputStream is = null;
-        try {
-            is = this.getContentResolver().openInputStream(image);
-            return ExifHelper.getOrientation(is);
-        } catch (FileNotFoundException e) {
+        try (final InputStream is = this.getContentResolver().openInputStream(image)) {
+            return is == null ? 0 : FileBackend.getRotation(is);
+        } catch (final Exception e) {
             return 0;
-        } finally {
-            close(is);
         }
     }
 
