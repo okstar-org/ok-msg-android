@@ -13,6 +13,8 @@ import android.os.SystemClock;
 import android.util.Base64;
 import android.util.Log;
 
+import com.google.common.base.Stopwatch;
+
 import org.json.JSONException;
 import org.json.JSONObject;
 import org.whispersystems.libsignal.IdentityKey;
@@ -63,7 +65,8 @@ import eu.siacs.conversations.xmpp.mam.MamReference;
 public class DatabaseBackend extends SQLiteOpenHelper {
 
     public static final String DATABASE_NAME = "history";
-    public static final int DATABASE_VERSION = 54; // = Conversations DATABASE_VERSION + 6
+    public static final int DATABASE_VERSION = 55; // = Conversations DATABASE_VERSION + 6
+    private static boolean requiresMessageIndexRebuild = false;
     private static DatabaseBackend instance = null;
 
     private static final String CREATE_CONTATCS_STATEMENT = "create table "
@@ -189,6 +192,17 @@ public class DatabaseBackend extends SQLiteOpenHelper {
         values.put(SQLiteAxolotlStore.TRUST, trust.toString());
         values.put(SQLiteAxolotlStore.ACTIVE, active ? 1 : 0);
         return values;
+    }
+
+    public static boolean requiresMessageIndexRebuild() {
+        return requiresMessageIndexRebuild;
+    }
+
+    public void rebuildMessagesIndex() {
+        final SQLiteDatabase db = getWritableDatabase();
+        final Stopwatch stopwatch = Stopwatch.createStarted();
+        db.execSQL(COPY_PREEXISTING_ENTRIES);
+        Log.d(Config.LOGTAG,"rebuilt message index in "+ stopwatch.stop().toString());
     }
 
     public static synchronized DatabaseBackend getInstance(Context context) {
@@ -537,14 +551,6 @@ public class DatabaseBackend extends SQLiteOpenHelper {
             db.execSQL("ALTER TABLE " + Message.TABLENAME + " ADD COLUMN " + Message.MARKABLE + " NUMBER DEFAULT 0");
         }
 
-        if (oldVersion < 42 && newVersion >= 42) {
-            db.execSQL(CREATE_MESSAGE_INDEX_TABLE);
-            db.execSQL(CREATE_MESSAGE_INSERT_TRIGGER);
-            db.execSQL(CREATE_MESSAGE_UPDATE_TRIGGER);
-            db.execSQL(CREATE_MESSAGE_DELETE_TRIGGER);
-            db.execSQL(COPY_PREEXISTING_ENTRIES);
-        }
-
         if (oldVersion < 43 && newVersion >= 43) {
             db.execSQL("DROP TRIGGER IF EXISTS after_message_delete");
         }
@@ -596,6 +602,19 @@ public class DatabaseBackend extends SQLiteOpenHelper {
 
         if (oldVersion < 54 && newVersion >= 54) {
             db.execSQL("ALTER TABLE " + Contact.TABLENAME + " ADD COLUMN " + Contact.RTP_CAPABILITY + " TEXT");
+        }
+        if (oldVersion < 55 && newVersion >= 55) {
+            db.beginTransaction();
+            db.execSQL("DROP TRIGGER IF EXISTS after_message_insert;");
+            db.execSQL("DROP TRIGGER IF EXISTS after_message_update;");
+            db.execSQL("DROP TABLE IF EXISTS messages_index;");
+            db.execSQL(CREATE_MESSAGE_INDEX_TABLE);
+            db.execSQL(CREATE_MESSAGE_INSERT_TRIGGER);
+            db.execSQL(CREATE_MESSAGE_UPDATE_TRIGGER);
+            db.execSQL(CREATE_MESSAGE_DELETE_TRIGGER);
+            requiresMessageIndexRebuild = true;
+            db.setTransactionSuccessful();
+            db.endTransaction();
         }
     }
 
@@ -835,14 +854,12 @@ public class DatabaseBackend extends SQLiteOpenHelper {
         final SQLiteDatabase db = this.getReadableDatabase();
         final StringBuilder SQL = new StringBuilder();
         final String[] selectionArgs;
-        // TODO: change "ON messages_index.uuid=messages.uuid" to
-        // "ON messages_index.rowid=messages.rowid" when everyone's migrated.
-        SQL.append("SELECT " + Message.TABLENAME + ".*," + Conversation.TABLENAME + "." + Conversation.CONTACTJID + "," + Conversation.TABLENAME + "." + Conversation.ACCOUNT + "," + Conversation.TABLENAME + "." + Conversation.MODE + " FROM " + Message.TABLENAME + " JOIN " + Conversation.TABLENAME + " ON " + Message.TABLENAME + "." + Message.CONVERSATION + "=" + Conversation.TABLENAME + "." + Conversation.UUID + " JOIN messages_index ON messages_index.uuid=messages.uuid WHERE " + Message.ENCRYPTION + " NOT IN(" + Message.ENCRYPTION_AXOLOTL_NOT_FOR_THIS_DEVICE + "," + Message.ENCRYPTION_PGP + "," + Message.ENCRYPTION_DECRYPTION_FAILED + "," + Message.ENCRYPTION_AXOLOTL_FAILED + ") AND " + Message.TYPE + " IN(" + Message.TYPE_TEXT + "," + Message.TYPE_PRIVATE + ") AND messages_index.body MATCH ?");
+        SQL.append("SELECT " + Message.TABLENAME + ".*," + Conversation.TABLENAME + "." + Conversation.CONTACTJID + "," + Conversation.TABLENAME + "." + Conversation.ACCOUNT + "," + Conversation.TABLENAME + "." + Conversation.MODE + " FROM " + Message.TABLENAME + " JOIN " + Conversation.TABLENAME + " ON " + Message.TABLENAME + "." + Message.CONVERSATION + "=" + Conversation.TABLENAME + "." + Conversation.UUID + " JOIN messages_index ON messages_index.rowid=messages.rowid WHERE " + Message.ENCRYPTION + " NOT IN(" + Message.ENCRYPTION_AXOLOTL_NOT_FOR_THIS_DEVICE + "," + Message.ENCRYPTION_PGP + "," + Message.ENCRYPTION_DECRYPTION_FAILED + "," + Message.ENCRYPTION_AXOLOTL_FAILED + ") AND " + Message.TYPE + " IN(" + Message.TYPE_TEXT + "," + Message.TYPE_PRIVATE + ") AND messages_index.body MATCH ?");
         if (uuid == null) {
             selectionArgs = new String[]{FtsUtils.toMatchString(term)};
         } else {
             selectionArgs = new String[]{FtsUtils.toMatchString(term), uuid};
-            SQL.append(" AND "+Conversation.TABLENAME+'.'+Conversation.UUID+"=?");
+            SQL.append(" AND " + Conversation.TABLENAME + '.' + Conversation.UUID + "=?");
         }
         SQL.append(" ORDER BY " + Message.TIME_SENT + " DESC limit " + Config.MAX_SEARCH_RESULTS);
         Log.d(Config.LOGTAG, "search term: " + FtsUtils.toMatchString(term));
@@ -1138,9 +1155,7 @@ public class DatabaseBackend extends SQLiteOpenHelper {
         long start = SystemClock.elapsedRealtime();
         final SQLiteDatabase db = this.getWritableDatabase();
         db.beginTransaction();
-        String[] args = {conversation.getUuid()};
-        // TODO: remove once everyone has the after_message_delete trigger
-        db.delete("messages_index", "uuid in (select uuid from messages where conversationUuid=?)", args);
+        final String[] args = {conversation.getUuid()};
         int num = db.delete(Message.TABLENAME, Message.CONVERSATION + "=?", args);
         db.setTransactionSuccessful();
         db.endTransaction();
@@ -1188,10 +1203,8 @@ public class DatabaseBackend extends SQLiteOpenHelper {
         if (countExpireOldMessages(timestamp) >= 1) {
             final String[] args = {String.valueOf(timestamp)};
             SQLiteDatabase db = this.getReadableDatabase();
-        // TODO: remove once everyone has the after_message_delete trigger
             db.beginTransaction();
-            db.delete("messages_index", "uuid in (select uuid from messages where timeSent<?)", args);
-            num = db.delete(Message.TABLENAME, "timeSent<?", args);
+            db.delete(Message.TABLENAME, "timeSent<?", args);
             db.setTransactionSuccessful();
             db.endTransaction();
         }
