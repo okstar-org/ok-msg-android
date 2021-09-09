@@ -1139,4 +1139,5 @@
     <string name="error_security_exception">Die App, die zum Freigeben dieser Datei verwendet wurde, hat nicht genügend Berechtigungen erteilt.</string>
     <string name="unable_to_enable_video">Video kann nicht aktiviert werden.</string>
     <string name="delete_recording_dialog_message">Soll die Aufnahme wirklich beendet und gelöscht werden?</string>
+    <string name="pref_pause_voice_on_move_from_ear">Sprachnachricht automatisch pausieren</string>
 </resources>
