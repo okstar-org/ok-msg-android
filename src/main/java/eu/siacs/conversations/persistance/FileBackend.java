@@ -1114,6 +1114,14 @@ public class FileBackend {
         return getUriForFile(mXmppConnectionService, file);
     }
 
+    public static Uri getUriForUri(Context context, Uri uri) {
+        if ("file".equals(uri.getScheme())) {
+            return getUriForFile(context, new File(uri.getPath()));
+        } else {
+            return uri;
+        }
+    }
+
     public static Uri getUriForFile(Context context, File file) {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
             try {

@@ -1,14 +1,18 @@
 package eu.siacs.conversations.ui.adapter;
 
+import android.content.ActivityNotFoundException;
 import android.content.Context;
+import android.content.Intent;
 import android.content.res.Resources;
 import android.graphics.Bitmap;
 import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.Drawable;
+import android.net.Uri;
 import android.os.AsyncTask;
 import android.view.LayoutInflater;
 import android.view.ViewGroup;
 import android.widget.ImageView;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.databinding.DataBindingUtil;
@@ -21,6 +25,7 @@ import java.util.concurrent.RejectedExecutionException;
 
 import eu.siacs.conversations.R;
 import eu.siacs.conversations.databinding.MediaPreviewBinding;
+import eu.siacs.conversations.persistance.FileBackend;
 import eu.siacs.conversations.ui.ConversationFragment;
 import eu.siacs.conversations.ui.XmppActivity;
 import eu.siacs.conversations.ui.util.Attachment;
@@ -89,6 +94,21 @@ public class MediaPreviewAdapter extends RecyclerView.Adapter<MediaPreviewAdapte
             notifyItemRemoved(pos);
             conversationFragment.toggleInputMethod();
         });
+        holder.binding.mediaPreview.setOnClickListener(v -> view(context, attachment));
+    }
+
+    private static void view(final Context context, Attachment attachment) {
+        final Intent view = new Intent(Intent.ACTION_VIEW);
+        final Uri uri = FileBackend.getUriForUri(context, attachment.getUri());
+        view.setDataAndType(uri, attachment.getMime());
+        view.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION);
+        try {
+            context.startActivity(view);
+        } catch (ActivityNotFoundException e) {
+            Toast.makeText(context, R.string.no_application_found_to_open_file, Toast.LENGTH_SHORT).show();
+        } catch (final SecurityException e) {
+            Toast.makeText(context, R.string.sharing_application_not_grant_permission, Toast.LENGTH_SHORT).show();
+        }
     }
 
     public void addMediaPreviews(List<Attachment> attachments) {
