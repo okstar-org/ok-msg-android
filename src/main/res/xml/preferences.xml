@@ -419,6 +419,12 @@
                 android:summary="@string/pref_export_plain_text_logs_summary"
                 android:title="@string/pref_export_plain_text_logs" />
         </PreferenceCategory>
+        <PreferenceCategory android:title="@string/pref_import_settings">
+            <Preference
+                android:key="import_settings"
+                android:summary="@string/pref_import_settings_summary"
+                android:title="@string/pref_import_settings" />
+        </PreferenceCategory>
     </PreferenceScreen>
     <!--Expert-->
     <PreferenceScreen

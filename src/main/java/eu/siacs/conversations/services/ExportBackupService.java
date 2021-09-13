@@ -26,9 +26,11 @@ import com.google.common.base.Strings;
 import java.io.BufferedWriter;
 import java.io.DataOutputStream;
 import java.io.File;
+import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.FileWriter;
 import java.io.IOException;
+import java.io.ObjectOutputStream;
 import java.io.PrintWriter;
 import java.security.NoSuchAlgorithmException;
 import java.security.SecureRandom;
@@ -336,6 +338,7 @@ public class ExportBackupService extends Service {
                     writeToFile(conversation);
                 }
             }
+            exportSettings();
         }
         final List<File> files = new ArrayList<>();
         Log.d(Config.LOGTAG, "starting backup for " + max + " accounts");
@@ -393,6 +396,32 @@ public class ExportBackupService extends Service {
         stopForeground(true);
         notificationManager.cancel(NOTIFICATION_ID);
         return files;
+    }
+
+    private boolean exportSettings() {
+        boolean success = false;
+        ObjectOutputStream output = null;
+        try {
+            final File file = new File(FileBackend.getBackupDirectory(null) + "settings.dat");
+            output = new ObjectOutputStream(new FileOutputStream(file));
+            SharedPreferences pref = PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
+            output.writeObject(pref.getAll());
+            success = true;
+        } catch (FileNotFoundException e) {
+            e.printStackTrace();
+        } catch (IOException e) {
+            e.printStackTrace();
+        } finally {
+            try {
+                if (output != null) {
+                    output.flush();
+                    output.close();
+                }
+            } catch (IOException ex) {
+                ex.printStackTrace();
+            }
+        }
+        return success;
     }
 
     private void mediaScannerScanFile(final File file) {
