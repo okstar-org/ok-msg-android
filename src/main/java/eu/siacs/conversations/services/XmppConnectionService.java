@@ -60,6 +60,7 @@ import androidx.core.content.ContextCompat;
 
 import com.google.common.base.Objects;
 import com.google.common.base.Strings;
+import com.otaliastudios.transcoder.strategy.DefaultAudioStrategy;
 
 import org.conscrypt.Conscrypt;
 import org.openintents.openpgp.IOpenPgpService2;
@@ -153,6 +154,7 @@ import eu.siacs.conversations.utils.Resolver;
 import eu.siacs.conversations.utils.SerialSingleThreadExecutor;
 import eu.siacs.conversations.utils.StringUtils;
 import eu.siacs.conversations.utils.TorServiceUtils;
+import eu.siacs.conversations.utils.TranscoderStrategies;
 import eu.siacs.conversations.utils.WakeLockHelper;
 import eu.siacs.conversations.utils.XmppUri;
 import eu.siacs.conversations.xml.Element;
@@ -1147,6 +1149,23 @@ public class XmppConnectionService extends Service {
                 return 0;
             default:
                 return getResources().getInteger(R.integer.mid_video_bitrate);
+        }
+    }
+
+    public DefaultAudioStrategy getCompressAudioPreference() {
+        switch (getPreferences().getString("video_compression", getResources().getString(R.string.video_compression))) {
+            case "verylow":
+                return TranscoderStrategies.AUDIO_LQ;
+            case "low":
+                return TranscoderStrategies.AUDIO_LQ;
+            case "mid":
+                return TranscoderStrategies.AUDIO_MQ;
+            case "high":
+                return TranscoderStrategies.AUDIO_HQ;
+            case "uncompressed":
+                return TranscoderStrategies.AUDIO_HQ;
+            default:
+                return TranscoderStrategies.AUDIO_MQ;
         }
     }
 

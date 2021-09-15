@@ -108,8 +108,6 @@ public final class Config {
 
     public static final boolean XEP_0392 = true; //enables XEP-0392 v0.6.0
 
-    public static final int FILE_SIZE = 1048576; // 1 MiB
-
     public static final int AVATAR_SIZE = 480;
     public static final Bitmap.CompressFormat AVATAR_FORMAT = Bitmap.CompressFormat.JPEG;
     public static final int AVATAR_CHAR_LIMIT = 9400;
