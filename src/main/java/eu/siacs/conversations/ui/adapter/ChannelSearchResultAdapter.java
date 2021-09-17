@@ -13,6 +13,7 @@ import androidx.recyclerview.widget.DiffUtil;
 import androidx.recyclerview.widget.ListAdapter;
 import androidx.recyclerview.widget.RecyclerView;
 
+import java.text.MessageFormat;
 import java.util.Locale;
 
 import eu.siacs.conversations.R;
@@ -52,7 +53,8 @@ public class ChannelSearchResultAdapter extends ListAdapter<Room, ChannelSearchR
     @Override
     public void onBindViewHolder(@NonNull ViewHolder viewHolder, int position) {
         final Room searchResult = getItem(position);
-        viewHolder.binding.name.setText(searchResult.getName());
+        final String user = '[' + String.valueOf(searchResult.nusers) + ']';
+        viewHolder.binding.name.setText(MessageFormat.format("{0} {1}", searchResult.getName(), user));
         final String description = searchResult.getDescription();
         final String language = searchResult.getLanguage();
         if (TextUtils.isEmpty(description)) {
