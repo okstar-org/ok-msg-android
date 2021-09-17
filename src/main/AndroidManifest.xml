@@ -358,12 +358,7 @@
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value=".ui.SettingsActivity" />
         </activity>
-        <activity
-            android:name=".ui.UpdaterActivity"
-            android:configChanges="orientation|screenSize"
-            android:label="@string/title_activity_updater"
-            android:launchMode="singleTask"
-            android:theme="@style/ConversationsTheme" />
+
         <activity
             android:name=".ui.ShortcutActivity"
             android:label="@string/contact"

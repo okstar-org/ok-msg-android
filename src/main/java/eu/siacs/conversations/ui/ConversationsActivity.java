@@ -460,6 +460,7 @@ public class ConversationsActivity extends XmppActivity implements OnConversatio
 
     @Override
     public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults);
         UriHandlerActivity.onRequestPermissionResult(this, requestCode, grantResults);
         if (grantResults.length > 0) {
             if (grantResults[0] == PackageManager.PERMISSION_GRANTED) {
@@ -987,8 +988,14 @@ public class ConversationsActivity extends XmppActivity implements OnConversatio
             intent.putExtra("contact", conversation.getContact().getJid().asBareJid().toString());
             intent.putExtra(EXTRA_ACCOUNT, conversation.getAccount().getJid().asBareJid().toString());
             switch (menuItem.getItemId()) {
+                case R.id.scan_fingerprint:
+                    intent.putExtra("mode", VerifyOTRActivity.MODE_SCAN_FINGERPRINT);
+                    break;
                 case R.id.ask_question:
                     intent.putExtra("mode", VerifyOTRActivity.MODE_ASK_QUESTION);
+                    break;
+                case R.id.manual_verification:
+                    intent.putExtra("mode", VerifyOTRActivity.MODE_MANUAL_VERIFICATION);
                     break;
             }
             startActivity(intent);
@@ -1080,7 +1087,7 @@ public class ConversationsActivity extends XmppActivity implements OnConversatio
         SharedPreferences UpdateTimeStamp = getApplicationContext().getSharedPreferences(PREFS_NAME, Context.MODE_PRIVATE);
         long lastUpdateTime = UpdateTimeStamp.getLong("lastUpdateTime", 0);
         Log.d(Config.LOGTAG, "AppUpdater: LastUpdateTime: " + lastUpdateTime);
-        if ((lastUpdateTime + (Config.UPDATE_CHECK_TIMER * 1000)) < System.currentTimeMillis()) {
+   //     if ((lastUpdateTime + (Config.UPDATE_CHECK_TIMER * 1000)) < System.currentTimeMillis()) {
             lastUpdateTime = System.currentTimeMillis();
             SharedPreferences.Editor editor = UpdateTimeStamp.edit();
             editor.putLong("lastUpdateTime", lastUpdateTime);
@@ -1090,10 +1097,10 @@ public class ConversationsActivity extends XmppActivity implements OnConversatio
                 Log.d(Config.LOGTAG, "AppUpdater started");
                 openInstallFromUnknownSourcesDialogIfNeeded(false);
             }
-        } else {
+  //      } else {
             Log.d(Config.LOGTAG, "AppUpdater stopped");
         }
-    }
+   // }
 
     @Override
     public void onRoomDestroySucceeded() {

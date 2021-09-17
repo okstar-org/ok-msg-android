@@ -70,11 +70,11 @@ public class UpdateService extends AsyncTask<String, Object, UpdateService.Wrapp
         HttpsURLConnection.setDefaultSSLSocketFactory(NoSSLv3Factory);
         HttpsURLConnection connection = null;
         try {
-            URL url = new URL(Config.UPDATE_URL);
+        //    URL url = new URL(Config.UPDATE_URL);
             if (mUseTor) {
-                connection = (HttpsURLConnection) url.openConnection(getProxy());
+        //        connection = (HttpsURLConnection) url.openConnection(getProxy());
             } else {
-                connection = (HttpsURLConnection) url.openConnection();
+        //        connection = (HttpsURLConnection) url.openConnection();
             }
             connection.setConnectTimeout(Config.SOCKET_TIMEOUT * 1000);
             connection.setReadTimeout(Config.SOCKET_TIMEOUT * 1000);

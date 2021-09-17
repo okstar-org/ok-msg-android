@@ -125,7 +125,7 @@ android {
         buildConfigField("String", "DOMAIN_LOCK", 'null')
         buildConfigField("String", "MAGIC_CREATE_DOMAIN", '"monocles.de"')
         buildConfigField("boolean", "SHOW_INTRO", 'true')
-        buildConfigField("String", "UPDATE_URL", '"https://monocles.de/chat/update/"')
+        //buildConfigField("String", "UPDATE_URL", '"https://monocles.de/chat/update/"')
         resValue "string", "applicationId", applicationId
         signingConfig signingConfigs.'monocles chat'
         def appName = "monocles chat"
