@@ -44,7 +44,7 @@ public class ChannelDiscoveryActivity extends XmppActivity implements MenuItem.O
 
     private static final String CHANNEL_DISCOVERY_OPT_IN = "channel_discovery_opt_in";
 
-    private final ChannelSearchResultAdapter adapter = new ChannelSearchResultAdapter();
+    private final ChannelSearchResultAdapter adapter = new ChannelSearchResultAdapter(this);
     private final PendingItem<String> mInitialSearchValue = new PendingItem<>();
     private ActivityChannelDiscoveryBinding binding;
     private MenuItem mJabberNetwork;
@@ -93,7 +93,7 @@ public class ChannelDiscoveryActivity extends XmppActivity implements MenuItem.O
         }
     }
 
-    private static ChannelDiscoveryService.Method getMethod(final Context c) {
+    public static ChannelDiscoveryService.Method getMethod(final Context c) {
         final SharedPreferences p = PreferenceManager.getDefaultSharedPreferences(c);
         final String m = p.getString("channel_discovery_method", c.getString(R.string.default_channel_discovery));
         try {
