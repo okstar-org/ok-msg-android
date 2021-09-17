@@ -1,5 +1,7 @@
 package eu.siacs.conversations.ui.adapter;
 
+import static eu.siacs.conversations.services.ChannelDiscoveryService.Method.JABBER_NETWORK;
+
 import android.app.Activity;
 import android.text.TextUtils;
 import android.view.ContextMenu;
@@ -19,12 +21,15 @@ import java.util.Locale;
 import eu.siacs.conversations.R;
 import eu.siacs.conversations.databinding.SearchResultItemBinding;
 import eu.siacs.conversations.entities.Room;
+import eu.siacs.conversations.ui.ChannelDiscoveryActivity;
 import eu.siacs.conversations.ui.XmppActivity;
 import eu.siacs.conversations.ui.util.AvatarWorkerTask;
 import eu.siacs.conversations.xmpp.Jid;
 
 
 public class ChannelSearchResultAdapter extends ListAdapter<Room, ChannelSearchResultAdapter.ViewHolder> implements View.OnCreateContextMenuListener {
+
+    private XmppActivity activity;
 
     private static final DiffUtil.ItemCallback<Room> DIFF = new DiffUtil.ItemCallback<Room>() {
         @Override
@@ -40,8 +45,9 @@ public class ChannelSearchResultAdapter extends ListAdapter<Room, ChannelSearchR
     private OnChannelSearchResultSelected listener;
     private Room current;
 
-    public ChannelSearchResultAdapter() {
+    public ChannelSearchResultAdapter(XmppActivity activity) {
         super(DIFF);
+        this.activity = activity;
     }
 
     @NonNull
@@ -71,7 +77,13 @@ public class ChannelSearchResultAdapter extends ListAdapter<Room, ChannelSearchR
         }
         final Jid room = searchResult.getRoom();
         viewHolder.binding.room.setText(room != null ? room.asBareJid().toString() : "");
-        AvatarWorkerTask.loadAvatar(room != null ? room.toString() : null, searchResult, viewHolder.binding.avatar, R.dimen.avatar);
+        String roomJID;
+        if (room != null) {
+            roomJID = ChannelDiscoveryActivity.getMethod(activity.xmppConnectionService) == JABBER_NETWORK ? room.toString() : null;
+        } else {
+            roomJID = null;
+        }
+        AvatarWorkerTask.loadAvatar(roomJID, searchResult, viewHolder.binding.avatar, R.dimen.avatar);
         final View root = viewHolder.binding.getRoot();
         root.setTag(searchResult);
         root.setOnClickListener(v -> listener.onChannelSearchResult(searchResult));
