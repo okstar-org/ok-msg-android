@@ -795,7 +795,6 @@ public class JingleRtpConnection extends AbstractJingleConnection implements Web
             final State target = this.state == State.PROCEED ? State.RETRACTED_RACED : State.RETRACTED;
             if (transition(target)) {
                 xmppConnectionService.getNotificationService().cancelIncomingCallNotification();
-                xmppConnectionService.getNotificationService().pushMissedCallNow(message);
                 Log.d(Config.LOGTAG, id.account.getJid().asBareJid() + ": session with " + id.with + " has been retracted (serverMsgId=" + serverMsgId + ")");
                 if (serverMsgId != null) {
                     this.message.setServerMsgId(serverMsgId);
@@ -805,6 +804,7 @@ public class JingleRtpConnection extends AbstractJingleConnection implements Web
                     this.message.markUnread();
                 }
                 writeLogMessageMissed();
+                xmppConnectionService.getNotificationService().pushMissedCallNow(message);
                 finish();
             } else {
                 Log.d(Config.LOGTAG, "ignoring retract because already in " + this.state);
@@ -1529,6 +1529,7 @@ public class JingleRtpConnection extends AbstractJingleConnection implements Web
             ((Conversation) conversational).add(this.message);
             xmppConnectionService.createMessageAsync(message);
             xmppConnectionService.updateConversationUi();
+
         } else {
             throw new IllegalStateException("Somehow the conversation in a message was a stub");
         }
