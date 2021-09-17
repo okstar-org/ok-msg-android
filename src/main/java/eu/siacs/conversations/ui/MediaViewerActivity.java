@@ -28,7 +28,7 @@ import androidx.databinding.DataBindingUtil;
 
 import com.davemorrissey.labs.subscaleview.ImageSource;
 import com.davemorrissey.labs.subscaleview.SubsamplingScaleImageView;
-import com.google.android.exoplayer2.ExoPlaybackException;
+import com.google.android.exoplayer2.PlaybackException;
 import com.google.android.exoplayer2.Player;
 import com.google.android.exoplayer2.SimpleExoPlayer;
 import com.google.android.exoplayer2.source.MediaSource;
@@ -311,9 +311,9 @@ public class MediaViewerActivity extends XmppActivity implements AudioManager.On
             binding.messageVideoView.setVisibility(View.VISIBLE);
             player = new SimpleExoPlayer.Builder(this).build();
             player.setPlayWhenReady(true);
-            player.addListener(new SimpleExoPlayer.EventListener() {
+            player.addListener(new Player.Listener() {
                 @Override
-                public void onPlayerError(ExoPlaybackException error) {
+                public void onPlayerError(PlaybackException error) {
                     open();
                 }
             });
