@@ -16,13 +16,13 @@ public final class TranscoderStrategies {
 
     public static final DefaultAudioStrategy AUDIO_HQ = DefaultAudioStrategy.builder()
             .bitRate(192 * 1000)
-            .channels(2)
+            .channels(DefaultAudioStrategy.CHANNELS_AS_INPUT)
             .sampleRate(DefaultAudioStrategy.SAMPLE_RATE_AS_INPUT)
             .build();
 
     public static final DefaultAudioStrategy AUDIO_MQ = DefaultAudioStrategy.builder()
             .bitRate(128 * 1000)
-            .channels(2)
+            .channels(DefaultAudioStrategy.CHANNELS_AS_INPUT)
             .sampleRate(DefaultAudioStrategy.SAMPLE_RATE_AS_INPUT)
             .build();
 

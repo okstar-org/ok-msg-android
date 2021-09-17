@@ -60,12 +60,12 @@ public class AttachFileToConversationRunnable implements Runnable, TranscoderLis
         this.callback = callback;
         this.maxUploadSize = maxUploadSize;
         final String mimeType = MimeUtils.guessMimeTypeFromUriAndMime(mXmppConnectionService, uri, type);
-        final long autoAcceptFileSize = mXmppConnectionService.mHttpConnectionManager.getAutoAcceptFileSize();
+        final long autoAcceptFileSize = mXmppConnectionService.getResources().getInteger(R.integer.auto_accept_filesize_mobile);
         this.originalFileSize = FileBackend.getFileSize(mXmppConnectionService, uri);
         this.isVideoMessage = !getFileBackend().useFileAsIs(uri)
-                && (mimeType != null && mimeType.startsWith("video/")
-                && (mXmppConnectionService.getCompressVideoBitratePreference() != 0 && mXmppConnectionService.getCompressVideoResolutionPreference() != 0))
-                && originalFileSize > autoAcceptFileSize;
+                && (mimeType != null && mimeType.startsWith("video/"))
+                && originalFileSize > autoAcceptFileSize
+                && !"uncompressed".equals(getVideoCompression());
     }
 
     boolean isVideoMessage() {
@@ -132,7 +132,7 @@ public class AttachFileToConversationRunnable implements Runnable, TranscoderLis
                 isCompressingVideo = null;
                 processAsFile();
             } else {
-                Log.d(Config.LOGTAG, "ignoring execution exception. Should get handled by onTranscodeFiled() instead", e);
+                Log.d(Config.LOGTAG, "ignoring execution exception. Should get handled by onTranscodeFailed() instead", e);
             }
         }
     }
