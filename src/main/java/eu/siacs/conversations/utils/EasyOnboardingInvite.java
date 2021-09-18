@@ -16,9 +16,9 @@ import eu.siacs.conversations.xmpp.XmppConnection;
 
 public class EasyOnboardingInvite implements Parcelable {
 
-    private String domain;
-    private String uri;
-    private String landingUrl;
+    private final String domain;
+    private final String uri;
+    private final String landingUrl;
 
     protected EasyOnboardingInvite(Parcel in) {
         domain = in.readString();
@@ -61,7 +61,6 @@ public class EasyOnboardingInvite implements Parcelable {
             return false;
         }
         return getSupportingAccounts(service).size() > 0;
-
     }
 
     public static List<Account> getSupportingAccounts(final XmppConnectionService service) {
@@ -88,6 +87,9 @@ public class EasyOnboardingInvite implements Parcelable {
         return Strings.isNullOrEmpty(landingUrl) ? uri : landingUrl;
     }
 
+    public String getShareableUri() {
+        return uri;
+    }
 
     public String getDomain() {
         return domain;

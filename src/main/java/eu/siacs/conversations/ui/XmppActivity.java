@@ -1,5 +1,8 @@
 package eu.siacs.conversations.ui;
 
+import static eu.siacs.conversations.ui.SettingsActivity.USE_BUNDLED_EMOJIS;
+import static eu.siacs.conversations.ui.SettingsActivity.USE_INTERNAL_UPDATER;
+
 import android.Manifest;
 import android.annotation.SuppressLint;
 import android.annotation.TargetApi;
@@ -102,9 +105,6 @@ import eu.siacs.conversations.xmpp.OnUpdateBlocklist;
 import eu.siacs.conversations.xmpp.XmppConnection;
 import me.drakeet.support.toast.ToastCompat;
 import pl.droidsonroids.gif.GifDrawable;
-
-import static eu.siacs.conversations.ui.SettingsActivity.USE_BUNDLED_EMOJIS;
-import static eu.siacs.conversations.ui.SettingsActivity.USE_INTERNAL_UPDATER;
 
 public abstract class XmppActivity extends ActionBarActivity {
 
@@ -965,14 +965,11 @@ public abstract class XmppActivity extends ActionBarActivity {
             ToastCompat.makeText(this, R.string.no_accounts, ToastCompat.LENGTH_SHORT).show();
             return;
         }
-
-        if (!xmppConnectionService.multipleAccounts()) {
-            Account mAccount = xmppConnectionService.getAccounts().get(0);
-            if (EasyOnboardingInvite.hasAccountSupport(mAccount)) {
-                selectAccountToStartEasyInvite();
-            } else {
-                String user = Jid.ofEscaped(mAccount.getJid()).getLocal();
-                String domain = Jid.ofEscaped(mAccount.getJid()).getDomain().toEscapedString();
+        if (!selectAccountToStartEasyInvite()) {
+            if (!xmppConnectionService.multipleAccounts()) {
+                final Account mAccount = xmppConnectionService.getAccounts().get(0);
+                final String user = Jid.ofEscaped(mAccount.getJid()).getLocal();
+                final String domain = Jid.ofEscaped(mAccount.getJid()).getDomain().toEscapedString();
                 String inviteURL;
                 try {
                     inviteURL = new getAdHocInviteUri(mAccount.getXmppConnection(), mAccount).execute().get();
@@ -987,40 +984,36 @@ public abstract class XmppActivity extends ActionBarActivity {
                     inviteURL = Config.inviteUserURL + user + "/" + domain;
                 }
                 Log.d(Config.LOGTAG, "Invite uri = " + inviteURL);
-                String inviteText = getString(R.string.InviteText, user);
-                Intent intent = new Intent(android.content.Intent.ACTION_SEND);
+                final String inviteText = getString(R.string.InviteText, user);
+                final Intent intent = new Intent(android.content.Intent.ACTION_SEND);
                 intent.setType("text/plain");
                 intent.putExtra(Intent.EXTRA_SUBJECT, user + " " + getString(R.string.inviteUser_Subject) + " " + getString(R.string.app_name));
                 intent.putExtra(Intent.EXTRA_TEXT, inviteText + "\n\n" + inviteURL);
                 startActivity(Intent.createChooser(intent, getString(R.string.invite_contact)));
                 overridePendingTransition(R.animator.fade_in, R.animator.fade_out);
-            }
-        } else {
-            final AlertDialog.Builder builder = new AlertDialog.Builder(this);
-            builder.setTitle(R.string.chooce_account);
-            final View dialogView = this.getLayoutInflater().inflate(R.layout.choose_account_dialog, null);
-            final Spinner spinner = dialogView.findViewById(R.id.account);
-            builder.setView(dialogView);
-            List<String> mActivatedAccounts = new ArrayList<>();
-            for (Account account : xmppConnectionService.getAccounts()) {
-                if (account.getStatus() != Account.State.DISABLED) {
-                    if (Config.DOMAIN_LOCK != null) {
-                        mActivatedAccounts.add(account.getJid().getLocal());
-                    } else {
-                        mActivatedAccounts.add(account.getJid().asBareJid().toString());
+            } else {
+                final AlertDialog.Builder builder = new AlertDialog.Builder(this);
+                builder.setTitle(R.string.chooce_account);
+                final View dialogView = this.getLayoutInflater().inflate(R.layout.choose_account_dialog, null);
+                final Spinner spinner = dialogView.findViewById(R.id.account);
+                builder.setView(dialogView);
+                List<String> mActivatedAccounts = new ArrayList<>();
+                for (Account account : xmppConnectionService.getAccounts()) {
+                    if (account.getStatus() != Account.State.DISABLED) {
+                        if (Config.DOMAIN_LOCK != null) {
+                            mActivatedAccounts.add(account.getJid().getLocal());
+                        } else {
+                            mActivatedAccounts.add(account.getJid().asBareJid().toString());
+                        }
                     }
                 }
-            }
-            StartConversationActivity.populateAccountSpinner(this, mActivatedAccounts, spinner);
-            builder.setPositiveButton(R.string.ok,
-                    (dialog, id) -> {
-                        String selection = spinner.getSelectedItem().toString();
-                        Account mAccount = xmppConnectionService.findAccountByJid(Jid.of(selection).asBareJid());
-                        if (EasyOnboardingInvite.hasAccountSupport(mAccount)) {
-                            selectAccountToStartEasyInvite();
-                        } else {
-                            String user = Jid.of(mAccount.getJid()).getLocal();
-                            String domain = Jid.of(mAccount.getJid()).getDomain().toEscapedString();
+                StartConversationActivity.populateAccountSpinner(this, mActivatedAccounts, spinner);
+                builder.setPositiveButton(R.string.ok,
+                        (dialog, id) -> {
+                            final String selection = spinner.getSelectedItem().toString();
+                            final Account mAccount = xmppConnectionService.findAccountByJid(Jid.of(selection).asBareJid());
+                            final String user = Jid.of(mAccount.getJid()).getLocal();
+                            final String domain = Jid.of(mAccount.getJid()).getDomain().toEscapedString();
                             String inviteURL;
                             try {
                                 inviteURL = new getAdHocInviteUri(mAccount.getXmppConnection(), mAccount).execute().get();
@@ -1035,25 +1028,26 @@ public abstract class XmppActivity extends ActionBarActivity {
                                 inviteURL = Config.inviteUserURL + user + "/" + domain;
                             }
                             Log.d(Config.LOGTAG, "Invite uri = " + inviteURL);
-                            String inviteText = getString(R.string.InviteText, user);
-                            Intent intent = new Intent(Intent.ACTION_SEND);
+                            final String inviteText = getString(R.string.InviteText, user);
+                            final Intent intent = new Intent(Intent.ACTION_SEND);
                             intent.setType("text/plain");
                             intent.putExtra(Intent.EXTRA_SUBJECT, user + " " + getString(R.string.inviteUser_Subject) + " " + getString(R.string.app_name));
                             intent.putExtra(Intent.EXTRA_TEXT, inviteText + "\n\n" + inviteURL);
                             startActivity(Intent.createChooser(intent, getString(R.string.invite_contact)));
                             overridePendingTransition(R.animator.fade_in, R.animator.fade_out);
-                        }
-                    });
-            builder.setNegativeButton(R.string.cancel, null);
-            builder.create().show();
+                        });
+                builder.setNegativeButton(R.string.cancel, null);
+                builder.create().show();
+            }
         }
     }
 
-    private void selectAccountToStartEasyInvite() {
+    private boolean selectAccountToStartEasyInvite() {
         final List<Account> accounts = EasyOnboardingInvite.getSupportingAccounts(this.xmppConnectionService);
         if (accounts.size() == 0) {
             //This can technically happen if opening the menu item races with accounts reconnecting or something
             ToastCompat.makeText(this, R.string.no_active_accounts_support_this, ToastCompat.LENGTH_LONG).show();
+            return false;
         } else if (accounts.size() == 1) {
             openEasyInviteScreen(accounts.get(0));
         } else {
@@ -1066,6 +1060,7 @@ public abstract class XmppActivity extends ActionBarActivity {
             alertDialogBuilder.setPositiveButton(R.string.ok, (dialog, which) -> openEasyInviteScreen(selectedAccount.get()));
             alertDialogBuilder.create().show();
         }
+        return true;
     }
 
     private void openEasyInviteScreen(final Account account) {
