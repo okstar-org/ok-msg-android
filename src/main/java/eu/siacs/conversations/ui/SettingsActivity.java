@@ -653,6 +653,11 @@ public class SettingsActivity extends XmppActivity implements
                 ex.printStackTrace();
             }
         }
+        if (success) {
+            ToastCompat.makeText(this, R.string.success_import_settings, ToastCompat.LENGTH_SHORT).show();
+        } else {
+            ToastCompat.makeText(this, R.string.error_import_settings, ToastCompat.LENGTH_SHORT).show();
+        }
         return success;
     }
 

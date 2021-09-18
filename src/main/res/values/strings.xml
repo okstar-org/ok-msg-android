@@ -1146,4 +1146,6 @@
     <string name="pref_pause_voice_on_move_from_ear_summary">Pause the current voice message when you move your device away from your ear.</string>
     <string name="pref_import_settings_summary">Import app settings from settings.dat file within the blabber.im backup directory.</string>
     <string name="pref_import_settings">Import app settings</string>
+    <string name="success_import_settings">Settings successfully imported.</string>
+    <string name="error_import_settings">Error while importing the settings.</string>
 </resources>
