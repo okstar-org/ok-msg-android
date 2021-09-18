@@ -283,9 +283,15 @@ public final class Config {
         );
 
         public static String getRandomServer() {
-            final String domain = ProviderService.getProviders().get(new Random().nextInt(DOMAINS.size()));
-            Log.d(LOGTAG, "MagicCreate account on domain: " + domain);
-            return domain;
+            try {
+                new ProviderService().execute();
+                final String domain = ProviderService.getProviders().get(new Random().nextInt(ProviderService.getProviders().size()));
+                Log.d(LOGTAG, "MagicCreate account on domain: " + domain);
+                return domain;
+            } catch (Exception e) {
+                Log.d(LOGTAG, "Error getting random server ", e);
+            }
+            return null;
         }
     }
 
