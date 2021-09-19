@@ -30,14 +30,14 @@ Alternatively release and beta-release APKs are available via codeberg: [Release
 nightly or beta-release APKs are available via codeberg: [Releases](https://codeberg.org/Arne/monocles_chat/releases/nightly) 
 
 ## Social Media
-<a rel="me" href="https://monocles.social/@monocles">monocles on Mastodon</a>
+<a rel="me" href="https://monocles.social/?community/news.monocles.de/monocles-news">monocles social</a>
 
 There are also English and German speaking XMPP-MUCs focusing on support and development of the monocles chat.
 
 If you are interested in the development of the chat, here is a MUC for you (English and German speaking):
 
-Development-Chat:  [development@conference.monocles.de](https://interact.monocles.de/)     
-[![Users in muc](https://inverse.chat/badge.svg?development@conference.monocles.de)](https://interact.monocles.de/)
+Development-Chat:  [development@conference.monocles.de](https://monocles.social/)     
+[![Users in muc](https://inverse.chat/badge.svg?development@conference.monocles.de)]https://monocles.social/)
 
 
 There also is an Support-MUC where you can ask questions and get help with issues you may encounter, see further below for details.
@@ -53,8 +53,8 @@ Translation of in-app text is organised via [crowdin.com](https://crowdin.com/pr
 ## Help! I've encountered issues!
 The easiest way to get some help is to join our support-MUC (both English and German).  
 
-Support-Chat invite link: [support@conference.monocles.de](https://interact.monocles.de/)     
-[![Users in muc](https://inverse.chat/badge.svg?room=support@conference.monocles.de)](https://interact.monocles.de)
+Support-Chat invite link: [support@conference.monocles.de](https://monocles.social/)     
+[![Users in muc](https://inverse.chat/badge.svg?room=support@conference.monocles.de)](https://monocles.social/)
 
 If we can't fix your problem there, you can open an issue [here](https://codeberg.org/Arne/monocles_chat/issues), detailing your problem, how to reproduce it and provide logs. See instructions below on how to create log files.
 
