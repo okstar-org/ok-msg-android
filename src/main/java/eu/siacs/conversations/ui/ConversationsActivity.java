@@ -628,8 +628,10 @@ public class ConversationsActivity extends XmppActivity implements OnConversatio
     }
 
     private void openConversation(Conversation conversation, Bundle extras) {
+        final FragmentManager fragmentManager = getFragmentManager();
+        executePendingTransactions(fragmentManager);
+        ConversationFragment conversationFragment = (ConversationFragment) fragmentManager.findFragmentById(R.id.secondary_fragment);
         xmppConnectionService.updateNotificationChannels();
-        ConversationFragment conversationFragment = (ConversationFragment) getFragmentManager().findFragmentById(R.id.secondary_fragment);
         final boolean mainNeedsRefresh;
         if (conversationFragment == null) {
             mainNeedsRefresh = false;
@@ -663,6 +665,14 @@ public class ConversationsActivity extends XmppActivity implements OnConversatio
             invalidateActionBarTitle();
         }
         IntroHelper.showIntro(this, conversation.getMode() == Conversational.MODE_MULTI);
+    }
+
+    private static void executePendingTransactions(final FragmentManager fragmentManager) {
+        try {
+            fragmentManager.executePendingTransactions();
+        } catch (final Exception e) {
+            Log.e(Config.LOGTAG,"unable to execute pending fragment transactions");
+        }
     }
 
     public boolean onXmppUriClicked(Uri uri) {
