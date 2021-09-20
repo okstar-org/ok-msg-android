@@ -1,5 +1,7 @@
 package eu.siacs.conversations.ui;
 
+import static eu.siacs.conversations.ui.util.IntroHelper.showIntro;
+
 import android.Manifest;
 import android.content.ActivityNotFoundException;
 import android.content.Context;
@@ -82,8 +84,6 @@ import eu.siacs.conversations.xmpp.jingle.OngoingRtpSession;
 import eu.siacs.conversations.xmpp.jingle.RtpCapability;
 import me.drakeet.support.toast.ToastCompat;
 
-import static eu.siacs.conversations.ui.util.IntroHelper.showIntro;
-
 public class ContactDetailsActivity extends OmemoActivity implements OnAccountUpdate, OnRosterUpdate, OnUpdateBlocklist, OnKeyStatusUpdated, OnMediaLoaded {
     public static final String ACTION_VIEW_CONTACT = "view_contact";
     private final int REQUEST_SYNC_CONTACTS = 0x28cf;
@@ -159,6 +159,8 @@ public class ContactDetailsActivity extends OmemoActivity implements OnAccountUp
     }
 
     private void showAddToPhoneBookDialog() {
+        //TODO check if isQuicksy and contact is on quicksy.im domain
+        // store in final boolean. show different message. use phone number for add
         final AlertDialog.Builder builder = new AlertDialog.Builder(this);
         builder.setTitle(getString(R.string.action_add_phone_book));
         builder.setMessage(getString(R.string.add_phone_book_text, contact.getJid().toEscapedString()));
