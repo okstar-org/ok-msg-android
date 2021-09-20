@@ -1798,6 +1798,7 @@ public class ConversationFragment extends XmppFragment implements EditMessage.Ke
         }
         if (readGranted(grantResults, permissions)) {
             if (activity != null && activity.xmppConnectionService != null) {
+                activity.xmppConnectionService.getBitmapCache().evictAll();
                 activity.xmppConnectionService.restartFileObserver();
             }
             refresh();
@@ -1847,9 +1848,9 @@ public class ConversationFragment extends XmppFragment implements EditMessage.Ke
 
     @SuppressLint("InflateParams")
     protected void clearHistoryDialog(final Conversation conversation) {
-        final AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
+        final AlertDialog.Builder builder = new AlertDialog.Builder(requireActivity());
         builder.setTitle(getString(R.string.clear_conversation_history));
-        final View dialogView = getActivity().getLayoutInflater().inflate(R.layout.dialog_clear_history, null);
+        final View dialogView = requireActivity().getLayoutInflater().inflate(R.layout.dialog_clear_history, null);
         final CheckBox endConversationCheckBox = dialogView.findViewById(R.id.end_conversation_checkbox);
         if (conversation.getMode() == Conversation.MODE_SINGLE) {
             endConversationCheckBox.setVisibility(View.VISIBLE);

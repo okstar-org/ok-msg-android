@@ -1,5 +1,9 @@
 package eu.siacs.conversations.ui;
 
+import static eu.siacs.conversations.Config.DISALLOW_REGISTRATION_IN_UI;
+import static eu.siacs.conversations.utils.PermissionUtils.allGranted;
+import static eu.siacs.conversations.utils.PermissionUtils.readGranted;
+
 import android.Manifest;
 import android.content.ActivityNotFoundException;
 import android.content.Intent;
@@ -34,10 +38,6 @@ import eu.siacs.conversations.utils.SignupUtils;
 import eu.siacs.conversations.utils.XmppUri;
 import eu.siacs.conversations.xmpp.Jid;
 import me.drakeet.support.toast.ToastCompat;
-
-import static eu.siacs.conversations.Config.DISALLOW_REGISTRATION_IN_UI;
-import static eu.siacs.conversations.utils.PermissionUtils.allGranted;
-import static eu.siacs.conversations.utils.PermissionUtils.readGranted;
 
 public class WelcomeActivity extends XmppActivity implements XmppConnectionService.OnAccountCreated, KeyChainAliasCallback {
 
@@ -228,6 +228,7 @@ public class WelcomeActivity extends XmppActivity implements XmppConnectionServi
 
     @Override
     public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults);
         UriHandlerActivity.onRequestPermissionResult(this, requestCode, grantResults);
         if (grantResults.length > 0) {
             if (allGranted(grantResults)) {
