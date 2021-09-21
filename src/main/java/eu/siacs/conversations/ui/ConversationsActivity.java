@@ -753,6 +753,7 @@ public class ConversationsActivity extends XmppActivity implements OnConversatio
 
     @Override
     protected void onStart() {
+        super.onStart();
         final int theme = findTheme();
         if (this.mTheme != theme) {
             this.mSkipBackgroundBinding = true;
