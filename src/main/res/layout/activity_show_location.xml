@@ -1,12 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
 <layout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools">
 
-
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        tools:context=".ui.ShareLocationActivity">
+        tools:context=".ui.ShowLocationActivity">
 
         <include
             android:id="@+id/toolbar"
@@ -17,13 +17,13 @@
             android:id="@+id/snackbar_coordinator"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:layout_above="@+id/button_bar"
             android:layout_below="@id/toolbar">
 
             <org.osmdroid.views.MapView
                 android:id="@+id/map"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent" />
+                android:layout_width="fill_parent"
+                android:layout_height="fill_parent"
+                android:layout_below="@id/toolbar" />
 
             <TextView
                 android:id="@+id/address"
@@ -48,50 +48,14 @@
                 android:id="@+id/fab"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_above="@+id/button_bar"
                 android:layout_alignParentEnd="true"
                 android:layout_alignParentRight="true"
+                android:layout_alignParentBottom="true"
                 android:layout_gravity="end|bottom"
                 android:layout_margin="16dp"
                 android:contentDescription="@string/action_unfix_from_location"
-                android:src="?attr/icon_gps_fixed"
-                app:backgroundTint="?attr/colorAccent"
-                app:elevation="4dp" />
+                android:src="?attr/icon_navigate"
+                app:backgroundTint="?attr/colorAccent" />
         </androidx.coordinatorlayout.widget.CoordinatorLayout>
-
-        <LinearLayout
-            android:id="@+id/button_bar"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_alignParentLeft="true"
-            android:layout_alignParentRight="true"
-            android:layout_alignParentBottom="true"
-            tools:ignore="RtlHardcoded">
-
-
-            <Button
-                android:id="@+id/cancel_button"
-                style="@style/Widget.Conversations.Button.Borderless"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:text="@string/cancel" />
-
-            <View
-                android:layout_width="1dp"
-                android:layout_height="fill_parent"
-                android:layout_marginTop="7dp"
-                android:layout_marginBottom="7dp"
-                android:background="?attr/divider" />
-
-            <Button
-                android:id="@+id/share_button"
-                style="@style/Widget.Conversations.Button.Borderless"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:text="@string/share" />
-        </LinearLayout>
-
     </RelativeLayout>
 </layout>

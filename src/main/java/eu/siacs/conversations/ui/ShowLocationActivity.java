@@ -1,24 +1,28 @@
 package eu.siacs.conversations.ui;
 
 import android.content.ActivityNotFoundException;
+import android.content.ClipData;
+import android.content.ClipboardManager;
+import android.content.ComponentName;
 import android.content.Context;
 import android.content.Intent;
-import android.content.SharedPreferences;
 import android.location.Address;
 import android.location.Geocoder;
 import android.location.Location;
+import android.location.LocationListener;
 import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Bundle;
-import android.preference.PreferenceManager;
-import android.text.TextUtils;
-import android.util.Log;
+import android.text.Html;
 import android.view.Menu;
-import android.view.MenuInflater;
 import android.view.MenuItem;
-import android.webkit.WebView;
+import android.view.View;
 
-import com.google.android.material.floatingactionbutton.FloatingActionButton;
+import androidx.annotation.NonNull;
+import androidx.appcompat.widget.Toolbar;
+import androidx.databinding.DataBindingUtil;
+
+import org.osmdroid.util.GeoPoint;
 
 import java.lang.ref.WeakReference;
 import java.util.List;
@@ -26,79 +30,107 @@ import java.util.Locale;
 
 import eu.siacs.conversations.Config;
 import eu.siacs.conversations.R;
-import eu.siacs.conversations.utils.MenuDoubleTabUtil;
+import eu.siacs.conversations.databinding.ActivityShowLocationBinding;
+import eu.siacs.conversations.ui.util.LocationHelper;
+import eu.siacs.conversations.ui.widget.Marker;
+import eu.siacs.conversations.ui.widget.MyLocation;
+import eu.siacs.conversations.utils.LocationProvider;
 import me.drakeet.support.toast.ToastCompat;
 
-public class ShowLocationActivity extends XmppActivity {
-    FloatingActionButton fab;
-    private Location location;
-    private String mLocationName;
 
-    private static String getAddress(Context context, Location location) {
-        double longitude = location.getLongitude();
-        double latitude = location.getLatitude();
-        String address = "";
-        if (latitude != 0 && longitude != 0) {
-            try {
-                Geocoder geoCoder = new Geocoder(context, Locale.getDefault());
-                List<Address> addresses = geoCoder.getFromLocation(latitude, longitude, 1);
-                if (addresses != null && addresses.size() > 0) {
-                    Address Address = addresses.get(0);
-                    StringBuilder strAddress = new StringBuilder("");
+public class ShowLocationActivity extends LocationActivity implements LocationListener {
 
-                    if (Address.getAddressLine(0).length() > 0) {
-                        strAddress.append(Address.getAddressLine(0));
-                    }
-                    address = strAddress.toString().replace(", ", "<br>");
-                }
-            } catch (Exception e) {
-                e.printStackTrace();
-            }
-        }
-        return address;
+    private GeoPoint loc = LocationProvider.FALLBACK;
+    private ActivityShowLocationBinding binding;
+    private String name;
+
+
+    private Uri createGeoUri() {
+        return Uri.parse("geo:" + this.loc.getLatitude() + "," + this.loc.getLongitude());
     }
 
     @Override
-    protected void onCreate(Bundle savedInstanceState) {
+    protected void onCreate(final Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_show_locaction);
-        setTitle(getString(R.string.show_location));
-        setSupportActionBar(findViewById(R.id.toolbar));
+
+        this.binding = DataBindingUtil.setContentView(this, R.layout.activity_show_location);
+        setSupportActionBar((Toolbar) binding.toolbar);
+
         configureActionBar(getSupportActionBar());
-        showLocation(null, "");
-        Intent intent = getIntent();
+        setupMapView(this.binding.map, this.loc);
 
-        this.mLocationName = intent != null ? intent.getStringExtra("name") : null;
+        this.binding.fab.setOnClickListener(view -> startNavigation());
 
-        if (intent != null && intent.hasExtra("longitude") && intent.hasExtra("latitude")) {
-            double longitude = intent.getDoubleExtra("longitude", 0);
-            double latitude = intent.getDoubleExtra("latitude", 0);
-            this.location = new Location("");
-            this.location.setLatitude(latitude);
-            this.location.setLongitude(longitude);
-            Log.d(Config.LOGTAG, "Location: lat: " + latitude + " long: " + longitude);
-            markAndCenterOnLocation(this.location);
-            fab = findViewById(R.id.fab);
-            fab.setOnClickListener(v -> {
-                navigate(this.location);
-            });
+        final Intent intent = getIntent();
+        if (intent != null) {
+            this.name = intent.hasExtra("name") ? intent.getStringExtra("name") : null;
+            if (intent.hasExtra("longitude") && intent.hasExtra("latitude")) {
+                final double longitude = intent.getDoubleExtra("longitude", 0);
+                final double latitude = intent.getDoubleExtra("latitude", 0);
+                this.loc = new GeoPoint(latitude, longitude);
+            }
+
+        }
+        updateLocationMarkers();
+    }
+
+    @Override
+    protected void gotoLoc(final boolean setZoomLevel) {
+        if (this.loc != null && mapController != null) {
+            if (setZoomLevel) {
+                mapController.setZoom(Config.Map.FINAL_ZOOM_LEVEL);
+            }
+            mapController.animateTo(new GeoPoint(this.loc));
         }
     }
 
-    private void markAndCenterOnLocation(final Location location) {
-        if (location == null) {
-            Log.d(Config.LOGTAG, "No location given");
-            return;
+    @Override
+    public void onRequestPermissionsResult(final int requestCode,
+                                           @NonNull final String[] permissions,
+                                           @NonNull final int[] grantResults) {
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults);
+        updateUi();
+    }
+
+    @Override
+    protected void setMyLoc(final Location location) {
+        this.myLoc = location;
+    }
+
+    @Override
+    public boolean onCreateOptionsMenu(final Menu menu) {
+        // Inflate the menu; this adds items to the action bar if it is present.
+        getMenuInflater().inflate(R.menu.menu_show_location, menu);
+        updateUi();
+        return true;
+    }
+
+    @Override
+    protected void updateLocationMarkers() {
+        super.updateLocationMarkers();
+        if (this.myLoc != null) {
+            this.binding.map.getOverlays().add(new MyLocation(this, null, this.myLoc));
         }
-        double longitude = location.getLongitude();
-        double latitude = location.getLatitude();
-        if (latitude != 0 && longitude != 0) {
-            new getAddressAsync(this).execute();
+        this.binding.map.getOverlays().add(new Marker(this.marker_icon, this.loc));
+        new getAddressAsync(this, this.loc, this.name).execute();
+    }
+
+    private void showAddress(final GeoPoint loc, final String name) {
+        this.binding.address.setText(Html.fromHtml(getAddress(this, loc, name)));
+        if (Html.fromHtml(getAddress(this, loc, name)).length() > 0) {
+            this.binding.address.setVisibility(View.VISIBLE);
+        } else {
+            hideAddress();
         }
     }
 
-    public SharedPreferences getPreferences() {
-        return PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
+    private void hideAddress() {
+        this.binding.address.setVisibility(View.GONE);
+    }
+
+    @Override
+    public void onPause() {
+        super.onPause();
     }
 
     @Override
@@ -112,89 +144,140 @@ public class ShowLocationActivity extends XmppActivity {
     }
 
     @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        if (MenuDoubleTabUtil.shouldIgnoreTap()) {
-            return false;
-        }
+    public boolean onOptionsItemSelected(final MenuItem item) {
         switch (item.getItemId()) {
-            case android.R.id.home:
-                finish();
+            case R.id.action_copy_location:
+                final ClipboardManager clipboard = (ClipboardManager) getSystemService(CLIPBOARD_SERVICE);
+                if (clipboard != null) {
+                    final ClipData clip = ClipData.newPlainText("location", createGeoUri().toString());
+                    clipboard.setPrimaryClip(clip);
+                    ToastCompat.makeText(this, R.string.url_copied_to_clipboard, ToastCompat.LENGTH_SHORT).show();
+                }
+                return true;
+            case R.id.action_share_location:
+                final Intent shareIntent = new Intent();
+                shareIntent.setAction(Intent.ACTION_SEND);
+                shareIntent.putExtra(Intent.EXTRA_TEXT, createGeoUri().toString());
+                shareIntent.setType("text/plain");
+                try {
+                    startActivity(Intent.createChooser(shareIntent, getText(R.string.share_with)));
+                } catch (final ActivityNotFoundException e) {
+                    //This should happen only on faulty androids because normally chooser is always available
+                    ToastCompat.makeText(this, R.string.no_application_found_to_open_file, ToastCompat.LENGTH_SHORT).show();
+                }
                 return true;
         }
         return super.onOptionsItemSelected(item);
     }
 
-    @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        MenuInflater inflater = getMenuInflater();
-        return true;
+    private void startNavigation() {
+        startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse(
+                "google.navigation:q=" +
+                        this.loc.getLatitude() + "," + this.loc.getLongitude()
+        )));
     }
 
     @Override
-    protected void onSaveInstanceState(Bundle outState) {
-        super.onSaveInstanceState(outState);
+    protected void updateUi() {
+        final Intent i = new Intent(Intent.ACTION_VIEW, Uri.parse("google.navigation:q=0,0"));
+        final ComponentName component = i.resolveActivity(getPackageManager());
+        this.binding.fab.setVisibility(component == null ? View.GONE : View.VISIBLE);
     }
 
-    private void showLocation(Location location, String address) {
-        try {
-            if (location != null && TextUtils.isEmpty(address)) { // location but no address available
-                String LocationName = "<b>" + mLocationName + "</b>";
-                final WebView webView = findViewById(R.id.webView);
-                webView.getSettings().setJavaScriptEnabled(true);
-                webView.loadUrl("file:///android_asset/map.html?lat=" + location.getLatitude() + "&lon=" + location.getLongitude() + "&name=" + LocationName);
-            } else if (location != null && !TextUtils.isEmpty(address)) { // location and address available
-                String LocationName = "<b>" + mLocationName + "</b><br>" + address;
-                final WebView webView = findViewById(R.id.webView);
-                webView.getSettings().setJavaScriptEnabled(true);
-                webView.loadUrl("javascript:toCoordinates(" + location.getLatitude() + "," + location.getLongitude() + "," + "'" + LocationName + "'" + ");");
+    @Override
+    public void onLocationChanged(final Location location) {
+        if (LocationHelper.isBetterLocation(location, this.myLoc)) {
+            this.myLoc = location;
+            updateLocationMarkers();
+        }
+    }
+
+    @Override
+    public void onStatusChanged(final String provider, final int status, final Bundle extras) {
+
+    }
+
+    @Override
+    public void onProviderEnabled(final String provider) {
+
+    }
+
+    @Override
+    public void onProviderDisabled(final String provider) {
+
+    }
+
+    private static String getAddress(final Context context, final GeoPoint location, final String name) {
+        final double longitude = location.getLongitude();
+        final double latitude = location.getLatitude();
+        String address = "";
+        if (latitude != 0 && longitude != 0) {
+            try {
+                final Geocoder geoCoder = new Geocoder(context, Locale.getDefault());
+                final List<Address> addresses = geoCoder.getFromLocation(latitude, longitude, 1);
+                if (addresses != null && addresses.size() > 0) {
+                    final Address Address = addresses.get(0);
+                    StringBuilder strAddress = new StringBuilder("");
+                    if (name != null && name.length() > 0) {
+                        strAddress.append("<b>");
+                        strAddress.append(name);
+                        strAddress.append(":</b><br>");
+                    }
+                    if (Address.getAddressLine(0).length() > 0) {
+                        strAddress.append(Address.getAddressLine(0));
+                    }
+                    address = strAddress.toString().replace(", ", "<br>");
+                } else {
+                    StringBuilder strAddress = new StringBuilder("");
+                    if (name != null && name.length() > 0) {
+                        strAddress.append("<b>");
+                        strAddress.append(name);
+                        strAddress.append("</b>");
+                    }
+                    address = strAddress.toString();
+                }
+            } catch (Exception e) {
+                e.printStackTrace();
+                StringBuilder strAddress = new StringBuilder("");
+                if (name != null && name.length() > 0) {
+                    strAddress.append("<b>");
+                    strAddress.append(name);
+                    strAddress.append("</b>");
+                }
+                address = strAddress.toString();
             }
-        } catch (Exception e) {
-            e.printStackTrace();
-            ToastCompat.makeText(this, R.string.error, ToastCompat.LENGTH_LONG);
         }
-    }
-
-    private void navigate(Location location) {
-        if (location == null) {
-            Log.d(Config.LOGTAG, "No location given");
-            return;
-        }
-        double longitude = location.getLongitude();
-        double latitude = location.getLatitude();
-        try {
-            Intent intent = new Intent(android.content.Intent.ACTION_VIEW, Uri.parse("google.navigation:q=" + String.valueOf(latitude) + "," + String.valueOf(longitude)));
-            startActivity(intent);
-            overridePendingTransition(R.animator.fade_in, R.animator.fade_out);
-        } catch (ActivityNotFoundException e) {
-            ToastCompat.makeText(this, R.string.no_application_found_to_display_location, ToastCompat.LENGTH_SHORT).show();
-        }
+        return address;
     }
 
     private class getAddressAsync extends AsyncTask<Void, Void, Void> {
         String address = null;
+        String name = null;
+        GeoPoint location;
 
         private WeakReference<ShowLocationActivity> activityReference;
 
-        getAddressAsync(ShowLocationActivity context) {
+        getAddressAsync(final ShowLocationActivity context, final GeoPoint location, final String name) {
             activityReference = new WeakReference<>(context);
+            this.location = location;
+            this.name = name;
         }
 
         @Override
         protected void onPreExecute() {
             super.onPreExecute();
-            showLocation(location, "");
         }
 
         @Override
         protected Void doInBackground(Void... params) {
-            address = getAddress(ShowLocationActivity.this, location);
+            address = getAddress(ShowLocationActivity.this, this.location, this.name);
             return null;
         }
 
         @Override
         protected void onPostExecute(Void result) {
             super.onPostExecute(result);
-            showLocation(location, address);
+            showAddress(this.location, this.name);
         }
     }
 }

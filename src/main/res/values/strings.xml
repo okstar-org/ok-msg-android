@@ -1148,4 +1148,7 @@
     <string name="pref_import_settings">Import app settings</string>
     <string name="success_import_settings">Settings successfully imported.</string>
     <string name="error_import_settings">Error while importing the settings.</string>
+    <string name="action_unfix_from_location">Unfix position</string>
+    <string name="action_fix_to_location">Fix position</string>
+    <string name="action_copy_location">Copy location</string>
 </resources>

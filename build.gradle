@@ -78,7 +78,7 @@ dependencies {
     implementation 'org.conscrypt:conscrypt-android:2.5.2'
     implementation 'pl.droidsonroids.gif:android-gif-drawable:1.2.15' // 1.2.15 is last working version for minSDK 16
     implementation 'me.drakeet.support:toastcompat:1.1.0'
-    implementation 'org.osmdroid:osmdroid-android:6.1.5'
+    implementation 'org.osmdroid:osmdroid-android:6.1.11'
     implementation 'com.leinardi.android:speed-dial:3.1.1'
     implementation 'com.squareup.picasso:picasso:2.71828'
     implementation 'com.squareup.okhttp3:okhttp:3.14.9' // versions > 3.12.x don't support API level < 21 anymore

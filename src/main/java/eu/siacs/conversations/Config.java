@@ -115,11 +115,6 @@ public final class Config {
     public static final Bitmap.CompressFormat IMAGE_FORMAT = Bitmap.CompressFormat.JPEG;
     public static final int IMAGE_QUALITY = 65;
 
-    public static final int DEFAULT_ZOOM = 15; //for locations
-    public final static long LOCATION_FIX_TIME_DELTA = 1000 * 10; // ms
-    public final static float LOCATION_FIX_SPACE_DELTA = 10; // m
-    public final static int LOCATION_FIX_SIGNIFICANT_TIME_DELTA = 1000 * 60 * 2; // ms
-
     public static final int MESSAGE_MERGE_WINDOW = 20;
 
     public static final int PAGE_SIZE = 50;
@@ -296,6 +291,17 @@ public final class Config {
     }
 
     private Config() {
+    }
+
+
+    public static final class Map {
+        public final static double INITIAL_ZOOM_LEVEL = 4;
+        public final static double FINAL_ZOOM_LEVEL = 15;
+        public final static int MY_LOCATION_INDICATOR_SIZE = 15;
+        public final static int MY_LOCATION_INDICATOR_OUTLINE_SIZE = 5;
+        public final static long LOCATION_FIX_TIME_DELTA = 1000 * 10; // ms
+        public final static float LOCATION_FIX_SPACE_DELTA = 10; // m
+        public final static int LOCATION_FIX_SIGNIFICANT_TIME_DELTA = 1000 * 60 * 2; // ms
     }
 
     // How deep nested quotes should be displayed. '2' means one quote nested in another.
