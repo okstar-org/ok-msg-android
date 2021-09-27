@@ -1,5 +1,17 @@
 package eu.siacs.conversations.ui.adapter;
 
+import static android.view.ViewGroup.LayoutParams.WRAP_CONTENT;
+import static eu.siacs.conversations.entities.Message.DELETED_MESSAGE_BODY;
+import static eu.siacs.conversations.entities.Message.DELETED_MESSAGE_BODY_OLD;
+import static eu.siacs.conversations.persistance.FileBackend.formatTime;
+import static eu.siacs.conversations.persistance.FileBackend.safeLongToInt;
+import static eu.siacs.conversations.ui.SettingsActivity.PLAY_GIF_INSIDE;
+import static eu.siacs.conversations.ui.SettingsActivity.SHOW_LINKS_INSIDE;
+import static eu.siacs.conversations.ui.SettingsActivity.SHOW_MAPS_INSIDE;
+import static eu.siacs.conversations.ui.util.MyLinkify.removeTrackingParameter;
+import static eu.siacs.conversations.ui.util.MyLinkify.removeTrailingBracket;
+import static eu.siacs.conversations.ui.util.MyLinkify.replaceYoutube;
+
 import android.Manifest;
 import android.annotation.SuppressLint;
 import android.app.Activity;
@@ -70,6 +82,7 @@ import eu.siacs.conversations.ui.text.DividerSpan;
 import eu.siacs.conversations.ui.text.QuoteSpan;
 import eu.siacs.conversations.ui.util.AvatarWorkerTask;
 import eu.siacs.conversations.ui.util.MyLinkify;
+import eu.siacs.conversations.ui.util.QuoteHelper;
 import eu.siacs.conversations.ui.util.StyledAttributes;
 import eu.siacs.conversations.ui.util.ViewUtil;
 import eu.siacs.conversations.ui.widget.ClickableMovementMethod;
@@ -88,18 +101,6 @@ import eu.siacs.conversations.xmpp.Jid;
 import eu.siacs.conversations.xmpp.mam.MamReference;
 import me.drakeet.support.toast.ToastCompat;
 import pl.droidsonroids.gif.GifImageView;
-
-import static android.view.ViewGroup.LayoutParams.WRAP_CONTENT;
-import static eu.siacs.conversations.entities.Message.DELETED_MESSAGE_BODY;
-import static eu.siacs.conversations.entities.Message.DELETED_MESSAGE_BODY_OLD;
-import static eu.siacs.conversations.persistance.FileBackend.formatTime;
-import static eu.siacs.conversations.persistance.FileBackend.safeLongToInt;
-import static eu.siacs.conversations.ui.SettingsActivity.PLAY_GIF_INSIDE;
-import static eu.siacs.conversations.ui.SettingsActivity.SHOW_LINKS_INSIDE;
-import static eu.siacs.conversations.ui.SettingsActivity.SHOW_MAPS_INSIDE;
-import static eu.siacs.conversations.ui.util.MyLinkify.removeTrackingParameter;
-import static eu.siacs.conversations.ui.util.MyLinkify.removeTrailingBracket;
-import static eu.siacs.conversations.ui.util.MyLinkify.replaceYoutube;
 
 public class MessageAdapter extends ArrayAdapter<Message> {
 
@@ -510,48 +511,53 @@ public class MessageAdapter extends ArrayAdapter<Message> {
      */
     private boolean handleTextQuotes(SpannableStringBuilder body, boolean darkBackground) {
         boolean startsWithQuote = false;
-        char previous = '\n';
-        int lineStart = -1;
-        int lineTextStart = -1;
-        int quoteStart = -1;
-        for (int i = 0; i <= body.length(); i++) {
-            char current = body.length() > i ? body.charAt(i) : '\n';
-            if (lineStart == -1) {
-                if (previous == '\n') {
-                    if ((current == '>' && UIHelper.isPositionFollowedByQuoteableCharacter(body, i))
-                            || current == '\u00bb' && !UIHelper.isPositionFollowedByQuote(body, i)) {
-                        // Line start with quote
-                        lineStart = i;
-                        if (quoteStart == -1) quoteStart = i;
-                        if (i == 0) startsWithQuote = true;
-                    } else if (quoteStart >= 0) {
-                        // Line start without quote, apply spans there
-                        applyQuoteSpan(body, quoteStart, i - 1, darkBackground);
-                        quoteStart = -1;
+        int quoteDepth = 1;
+        while (QuoteHelper.bodyContainsQuoteStart(body) && quoteDepth <= Config.QUOTE_MAX_DEPTH) {
+            char previous = '\n';
+            int lineStart = -1;
+            int lineTextStart = -1;
+            int quoteStart = -1;
+            for (int i = 0; i <= body.length(); i++) {
+                char current = body.length() > i ? body.charAt(i) : '\n';
+                if (lineStart == -1) {
+                    if (previous == '\n') {
+                        if (
+                                QuoteHelper.isPositionQuoteStart(body, i)
+                        ) {
+                            // Line start with quote
+                            lineStart = i;
+                            if (quoteStart == -1) quoteStart = i;
+                            if (i == 0) startsWithQuote = true;
+                        } else if (quoteStart >= 0) {
+                            // Line start without quote, apply spans there
+                            applyQuoteSpan(body, quoteStart, i - 1, darkBackground);
+                            quoteStart = -1;
+                        }
+                    }
+                } else {
+                    // Remove extra spaces between > and first character in the line
+                    // > character will be removed too
+                    if (current != ' ' && lineTextStart == -1) {
+                        lineTextStart = i;
+                    }
+                    if (current == '\n') {
+                        body.delete(lineStart, lineTextStart);
+                        i -= lineTextStart - lineStart;
+                        if (i == lineStart) {
+                            // Avoid empty lines because span over empty line can be hidden
+                            body.insert(i++, " ");
+                        }
+                        lineStart = -1;
+                        lineTextStart = -1;
                     }
                 }
-            } else {
-                // Remove extra spaces between > and first character in the line
-                // > character will be removed too
-                if (current != ' ' && lineTextStart == -1) {
-                    lineTextStart = i;
-                }
-                if (current == '\n') {
-                    body.delete(lineStart, lineTextStart);
-                    i -= lineTextStart - lineStart;
-                    if (i == lineStart) {
-                        // Avoid empty lines because span over empty line can be hidden
-                        body.insert(i++, " ");
-                    }
-                    lineStart = -1;
-                    lineTextStart = -1;
-                }
+                previous = current;
             }
-            previous = current;
-        }
-        if (quoteStart >= 0) {
-            // Apply spans to finishing open quote
-            applyQuoteSpan(body, quoteStart, body.length(), darkBackground);
+            if (quoteStart >= 0) {
+                // Apply spans to finishing open quote
+                applyQuoteSpan(body, quoteStart, body.length(), darkBackground);
+            }
+            quoteDepth++;
         }
         return startsWithQuote;
     }
@@ -785,9 +791,10 @@ public class MessageAdapter extends ArrayAdapter<Message> {
             } else {
                 scaledH = (int) (100 / ((double) 100 / target));
             }
-            LinearLayout.LayoutParams layoutParams = new LinearLayout.LayoutParams(WRAP_CONTENT, scaledH);
+            LinearLayout.LayoutParams layoutParams = new LinearLayout.LayoutParams(WRAP_CONTENT, WRAP_CONTENT);
             layoutParams.setMargins(0, (int) (metrics.density * 4), 0, (int) (metrics.density * 4));
             viewHolder.richlinkview.setLayoutParams(layoutParams);
+            viewHolder.richlinkview.setMinimumHeight(scaledH);
             final String weburl;
             if (link.startsWith("http://") || link.startsWith("https://")) {
                 weburl = removeTrailingBracket(link);
@@ -1152,6 +1159,7 @@ public class MessageAdapter extends ArrayAdapter<Message> {
                 viewHolder.status_message.setText(DateUtils.formatDateTime(activity, message.getTimeSent(), DateUtils.FORMAT_SHOW_DATE | DateUtils.FORMAT_SHOW_YEAR));
             }
             viewHolder.message_box.setBackgroundResource(darkBackground ? R.drawable.date_bubble_dark : R.drawable.date_bubble);
+            activity.setBubbleColor(viewHolder.message_box, StyledAttributes.getColor(activity, R.attr.colorAccent), -1);
             return view;
         } else if (type == RTP_SESSION) {
             final boolean isDarkTheme = activity.isDarkTheme();
@@ -1175,6 +1183,7 @@ public class MessageAdapter extends ArrayAdapter<Message> {
             viewHolder.indicatorReceived.setImageResource(RtpSessionStatus.getDrawable(received, rtpSessionStatus.successful, isDarkTheme));
             viewHolder.indicatorReceived.setAlpha(isDarkTheme ? 0.7f : 0.57f);
             viewHolder.message_box.setBackgroundResource(darkBackground ? R.drawable.date_bubble_dark : R.drawable.date_bubble);
+            activity.setBubbleColor(viewHolder.message_box, StyledAttributes.getColor(activity, R.attr.colorAccent), -1);
             return view;
         } else if (type == STATUS) {
             if ("LOAD_MORE".equals(message.getBody())) {
