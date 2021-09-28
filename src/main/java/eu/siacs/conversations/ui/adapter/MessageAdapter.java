@@ -1152,7 +1152,7 @@ public class MessageAdapter extends ArrayAdapter<Message> {
                 viewHolder.status_message.setText(DateUtils.formatDateTime(activity, message.getTimeSent(), DateUtils.FORMAT_SHOW_DATE | DateUtils.FORMAT_SHOW_YEAR));
             }
             viewHolder.message_box.setBackgroundResource(darkBackground ? R.drawable.date_bubble_dark : R.drawable.date_bubble);
-            activity.setBubbleColor(viewHolder.message_box, StyledAttributes.getColor(activity, R.attr.colorAccentLight), -1);
+            activity.setBubbleColor(viewHolder.message_box, StyledAttributes.getColor(activity, R.attr.colorAccent), -1);
             return view;
         } else if (type == RTP_SESSION) {
             final boolean isDarkTheme = activity.isDarkTheme();
@@ -1176,7 +1176,7 @@ public class MessageAdapter extends ArrayAdapter<Message> {
             viewHolder.indicatorReceived.setImageResource(RtpSessionStatus.getDrawable(received, rtpSessionStatus.successful, isDarkTheme));
             viewHolder.indicatorReceived.setAlpha(isDarkTheme ? 0.7f : 0.57f);
             viewHolder.message_box.setBackgroundResource(darkBackground ? R.drawable.date_bubble_dark : R.drawable.date_bubble);
-            activity.setBubbleColor(viewHolder.message_box, StyledAttributes.getColor(activity, R.attr.colorAccentLight), -1);
+            activity.setBubbleColor(viewHolder.message_box, StyledAttributes.getColor(activity, R.attr.colorAccent), -1);
             return view;
         } else if (type == STATUS) {
             if ("LOAD_MORE".equals(message.getBody())) {

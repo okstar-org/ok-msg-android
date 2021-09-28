@@ -7,8 +7,8 @@
         android:bottomLeftRadius="5dp" />
     <padding
         android:bottom="6dp"
-        android:left="48dp"
-        android:right="48dp"
+        android:left="6dp"
+        android:right="6dp"
         android:top="6dp" />
     <solid android:color="@color/lightgreen" />
 </shape>
