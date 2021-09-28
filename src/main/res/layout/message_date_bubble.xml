@@ -26,6 +26,8 @@
             android:text="01.01.2017"
             android:textAppearance="@style/TextAppearance.Conversations.Body1"
             android:textStyle="italic" />
+            android:textAppearance="@style/TextAppearance.Conversations.Body1.Secondary"
+            android:textStyle="bold" />
     </LinearLayout>
 
 </RelativeLayout>
