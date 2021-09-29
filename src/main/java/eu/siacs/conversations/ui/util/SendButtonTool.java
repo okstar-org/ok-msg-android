@@ -109,7 +109,7 @@ public class SendButtonTool {
                         Drawable unwrappedDrawable = AppCompatResources.getDrawable(activity.getBaseContext(), R.drawable.ic_send_text_offline_white);
                         Drawable wrappedDrawable = DrawableCompat.wrap(unwrappedDrawable);
                         DrawableCompat.setTint(wrappedDrawable, StyledAttributes.getColor(activity, R.attr.colorAccent));
-                        return R.drawable.ic_send_text_offline_white;
+                        return R.drawable.ic_send_text_online;
                     case AWAY:
                         return R.drawable.ic_send_text_away;
                     case XA:
@@ -128,7 +128,7 @@ public class SendButtonTool {
                         Drawable unwrappedDrawable = AppCompatResources.getDrawable(activity.getBaseContext(), R.drawable.ic_send_videocam_offline_white);
                         Drawable wrappedDrawable = DrawableCompat.wrap(unwrappedDrawable);
                         DrawableCompat.setTint(wrappedDrawable, StyledAttributes.getColor(activity, R.attr.colorAccent));
-                        return R.drawable.ic_send_videocam_offline_white;
+                        return R.drawable.ic_send_videocam_online;
                     case AWAY:
                         return R.drawable.ic_send_videocam_away;
                     case XA:
@@ -146,7 +146,7 @@ public class SendButtonTool {
                         Drawable unwrappedDrawable = AppCompatResources.getDrawable(activity.getBaseContext(), R.drawable.ic_send_photo_offline_white);
                         Drawable wrappedDrawable = DrawableCompat.wrap(unwrappedDrawable);
                         DrawableCompat.setTint(wrappedDrawable, StyledAttributes.getColor(activity, R.attr.colorAccent));
-                        return R.drawable.ic_send_photo_offline_white;
+                        return R.drawable.ic_send_photo_online;
                     case AWAY:
                         return R.drawable.ic_send_photo_away;
                     case XA:
@@ -164,7 +164,7 @@ public class SendButtonTool {
                         Drawable unwrappedDrawable = AppCompatResources.getDrawable(activity.getBaseContext(), R.drawable.ic_send_voice_offline_white);
                         Drawable wrappedDrawable = DrawableCompat.wrap(unwrappedDrawable);
                         DrawableCompat.setTint(wrappedDrawable, StyledAttributes.getColor(activity, R.attr.colorAccent));
-                        return R.drawable.ic_send_voice_offline_white;
+                        return R.drawable.ic_send_voice_online;
                     case AWAY:
                         return R.drawable.ic_send_voice_away;
                     case XA:
@@ -182,7 +182,7 @@ public class SendButtonTool {
                         Drawable unwrappedDrawable = AppCompatResources.getDrawable(activity.getBaseContext(), R.drawable.ic_send_location_offline_white);
                         Drawable wrappedDrawable = DrawableCompat.wrap(unwrappedDrawable);
                         DrawableCompat.setTint(wrappedDrawable, StyledAttributes.getColor(activity, R.attr.colorAccent));
-                        return R.drawable.ic_send_location_offline_white;
+                        return R.drawable.ic_send_location_online;
                     case AWAY:
                         return R.drawable.ic_send_location_away;
                     case XA:
@@ -200,7 +200,7 @@ public class SendButtonTool {
                         Drawable unwrappedDrawable = AppCompatResources.getDrawable(activity.getBaseContext(), R.drawable.ic_send_cancel_offline_white);
                         Drawable wrappedDrawable = DrawableCompat.wrap(unwrappedDrawable);
                         DrawableCompat.setTint(wrappedDrawable, StyledAttributes.getColor(activity, R.attr.colorAccent));
-                        return R.drawable.ic_send_cancel_offline_white;
+                        return R.drawable.ic_send_cancel_online;
                     case AWAY:
                         return R.drawable.ic_send_cancel_away;
                     case XA:
@@ -218,7 +218,7 @@ public class SendButtonTool {
                         Drawable unwrappedDrawable = AppCompatResources.getDrawable(activity.getBaseContext(), R.drawable.ic_send_picture_offline_white);
                         Drawable wrappedDrawable = DrawableCompat.wrap(unwrappedDrawable);
                         DrawableCompat.setTint(wrappedDrawable, StyledAttributes.getColor(activity, R.attr.colorAccent));
-                        return R.drawable.ic_send_picture_offline_white;
+                        return R.drawable.ic_send_picture_online;
                     case AWAY:
                         return R.drawable.ic_send_picture_away;
                     case XA:
@@ -237,7 +237,7 @@ public class SendButtonTool {
                         Drawable unwrappedDrawable = AppCompatResources.getDrawable(activity.getBaseContext(), R.drawable.ic_send_attachment_offline_white);
                         Drawable wrappedDrawable = DrawableCompat.wrap(unwrappedDrawable);
                         DrawableCompat.setTint(wrappedDrawable, StyledAttributes.getColor(activity, R.attr.colorAccent));
-                        return R.drawable.ic_send_attachment_offline_white;
+                        return R.drawable.ic_send_attachment_online;
                     case AWAY:
                         return R.drawable.ic_send_attachment_away;
                     case XA:
