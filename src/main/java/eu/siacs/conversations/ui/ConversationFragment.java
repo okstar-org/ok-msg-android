@@ -15,6 +15,7 @@ import android.content.IntentSender.SendIntentException;
 import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
 import android.graphics.Typeface;
+import android.graphics.drawable.Drawable;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
@@ -55,10 +56,12 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.annotation.StringRes;
 import androidx.appcompat.app.AlertDialog;
+import androidx.appcompat.content.res.AppCompatResources;
 import androidx.appcompat.view.menu.MenuBuilder;
 import androidx.appcompat.view.menu.MenuPopupHelper;
 import androidx.appcompat.widget.PopupMenu;
 import androidx.core.content.ContextCompat;
+import androidx.core.graphics.drawable.DrawableCompat;
 import androidx.core.view.inputmethod.InputConnectionCompat;
 import androidx.core.view.inputmethod.InputContentInfoCompat;
 import androidx.databinding.DataBindingUtil;
@@ -1233,7 +1236,10 @@ public class ConversationFragment extends XmppFragment implements EditMessage.Ke
         } else {
             binding.recordVoiceButton.setVisibility(View.GONE);
         }
-        binding.recordVoiceButton.setImageResource(activity.getThemeResource(R.attr.ic_send_voice_offline, R.drawable.ic_send_voice_offline));
+        Drawable unwrappedDrawable = AppCompatResources.getDrawable(activity.getBaseContext(), R.drawable.ic_send_voice_offline_white);
+        Drawable wrappedDrawable = DrawableCompat.wrap(unwrappedDrawable);
+        DrawableCompat.setTint(wrappedDrawable, StyledAttributes.getColor(activity, R.attr.colorAccent));
+        binding.recordVoiceButton.setImageResource(R.drawable.ic_send_voice_offline_white);
     }
 
     private void quoteMessage(Message message, @Nullable String user) {

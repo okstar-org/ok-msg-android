@@ -548,7 +548,7 @@
         <item name="color_bubble_dark">@color/lightmonocles2</item>
         <item name="color_bubble_date">@color/lightgreen</item>
         <item name="color_bubble_warning">@color/lightred</item>
-        <item name="chat_bg">@drawable/bg_light_orange</item>
+        <item name="chat_bg">@drawable/bg_light_blue</item>
         <item name="android:actionModeBackground">@color/accent_monocles</item>
     </style>
 
@@ -563,7 +563,7 @@
         <item name="colorControlActivated">@color/accent_monocles</item>
         <item name="color_bubble_light">@color/middlemonocles</item>
         <item name="color_bubble_dark">@color/darkmonocles</item>
-        <item name="chat_bg">@drawable/bg_dark_orange</item>
+        <item name="chat_bg">@drawable/bg_dark_blue</item>
         <item name="android:actionModeBackground">@color/accent_monocles</item>
     </style>
 
