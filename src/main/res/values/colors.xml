@@ -71,7 +71,7 @@
 
     <!-- orange theme -->
     <color name="lightorange">#fffff3de</color> <!-- light theme other -->
-    <color name="lightorange2">#ffb89f6f</color> <!-- light theme me -->
+    <color name="lightorange2">#FFE0B2</color> <!-- light theme me -->
     <color name="middleorange">#ff996300</color> <!-- dark theme other -->
     <color name="darkorange">#ff4c3100</color> <!-- dark theme me -->
 
