@@ -170,6 +170,8 @@ public class ContactDetailsActivity extends OmemoActivity implements OnAccountUp
             intent.setType(Contacts.CONTENT_ITEM_TYPE);
             intent.putExtra(Intents.Insert.IM_HANDLE, contact.getJid().toEscapedString());
             intent.putExtra(Intents.Insert.IM_PROTOCOL, CommonDataKinds.Im.PROTOCOL_JABBER);
+            //TODO for modern use we want PROTOCOL_CUSTOM and an extra field with a value of 'XMPP'
+            // however we don’t have such a field and thus have to use the legacy PROTOCOL_JABBER
             intent.putExtra("finishActivityOnSaveCompleted", true);
             try {
                 startActivityForResult(intent, 0);
@@ -319,6 +321,7 @@ public class ContactDetailsActivity extends OmemoActivity implements OnAccountUp
 
     @Override
     public void onRequestPermissionsResult(int requestCode, @NonNull String permissions[], @NonNull int[] grantResults) {
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults);
         if (grantResults.length > 0)
             if (grantResults[0] == PackageManager.PERMISSION_GRANTED) {
                 if (requestCode == REQUEST_SYNC_CONTACTS && xmppConnectionServiceBound) {
