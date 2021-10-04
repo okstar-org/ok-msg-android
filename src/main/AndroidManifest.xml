@@ -28,8 +28,6 @@
     <uses-permission android:name="android.permission.USE_FULL_SCREEN_INTENT" />
     <uses-permission android:name="android.permission.SYSTEM_ALERT_WINDOW" />
 
-    <uses-sdk tools:overrideLibrary="net.ypresto.androidtranscoder" />
-
     <uses-feature
         android:name="android.hardware.camera"
         android:required="false" />
@@ -51,7 +49,8 @@
 
     <application
         android:name="androidx.multidex.MultiDexApplication"
-        android:allowBackup="false"
+        android:allowBackup="true"
+        android:fullBackupContent="@xml/backup_content"
         android:appCategory="social"
         android:hardwareAccelerated="true"
         android:icon="@mipmap/ic_launcher"
