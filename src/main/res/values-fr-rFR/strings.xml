@@ -1142,4 +1142,8 @@
     <string name="delete_recording_dialog_message">Voulez-vous vraiment annuler et effacer votre enregistrement ?</string>
     <string name="pref_pause_voice_on_move_from_ear">Pause automatique du message vocal</string>
     <string name="pref_pause_voice_on_move_from_ear_summary">Mettre en pause le message vocal en cours lorsque vous éloignez votre appareil de votre oreille.</string>
+    <string name="pref_import_settings_summary">Importez les paramètres de l\'application depuis le fichier settings.dat situé dans le répertoire de sauvegarde de blabber.im.</string>
+    <string name="pref_import_settings">Importer les réglages</string>
+    <string name="success_import_settings">Paramètres importés avec succès.</string>
+    <string name="error_import_settings">Erreur lors de l\'importation des paramètres.</string>
 </resources>

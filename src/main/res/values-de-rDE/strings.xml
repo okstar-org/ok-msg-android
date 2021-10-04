@@ -1091,7 +1091,7 @@
     <string name="unable_to_parse_invite">Einladung kann nicht gelesen werden</string>
     <string name="server_does_not_support_easy_onboarding_invites">Server unterstützt keine Generierung von Einladungen</string>
     <string name="your_server">Dein Provider</string>
-    <string name="tap_share_button_send_invite">Tippe auf die Schaltfläche \"Teilen\", um deinem Kontakt %1$s eine Einladung zu senden.</string>
+    <string name="tap_share_button_send_invite">Tippe auf die Schaltfläche \"Teilen\", um deinem Kontakt eine Einladung zu %1$s zu senden.</string>
     <string name="invite">Einladen</string>
     <string name="if_contact_is_nearby_use_qr">Wenn dein Kontakt in der Nähe ist, kann auch der unten stehende Code gescannt werden, um deine Einladung anzunehmen.</string>
     <string name="easy_invite_share_text">Trete %1$s bei und chatte mit mir: %2$s</string>
@@ -1144,4 +1144,6 @@
     <string name="pref_pause_voice_on_move_from_ear_summary">Hält die Wiedergabe von Sprachnachrichten an, sobald du dein Gerät vom Ohr entfernst.</string>
     <string name="pref_import_settings_summary">Importiere Einstellungen aus der settings.dat Datei aus dem blabber.im Sicherungs-Verzeichnis.</string>
     <string name="pref_import_settings">Einstellungen importieren</string>
+    <string name="success_import_settings">Einstellungen erfolgreich importiert.</string>
+    <string name="error_import_settings">Fehler beim Importieren der Einstellungen.</string>
 </resources>

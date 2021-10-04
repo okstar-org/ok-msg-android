@@ -1144,4 +1144,6 @@
     <string name="pref_pause_voice_on_move_from_ear_summary">Pauzeer het huidige spraakbericht wanneer je het toestel van je oor af beweegt.</string>
     <string name="pref_import_settings_summary">Importeer instellingen uit het bestand settings.dat in de backupmap.</string>
     <string name="pref_import_settings">Instellingen importeren</string>
+    <string name="success_import_settings">De instellingen zijn geïmporteerd.</string>
+    <string name="error_import_settings">Fout bij het importeren van de instellingen.</string>
 </resources>

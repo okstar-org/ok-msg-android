@@ -3,7 +3,7 @@
     <string name="action_settings">Ajustes</string>
     <string name="action_add">Nueva conversación</string>
     <string name="action_accounts">Gestionar cuentas</string>
-    <string name="action_end_conversation">Terminar conversación</string>
+    <string name="action_end_conversation">Terminar esta conversación</string>
     <string name="action_contact_details">Detalles del contacto</string>
     <string name="action_secure">Conversación segura</string>
     <string name="action_add_new_account">Añadir nueva cuenta</string>
@@ -1144,4 +1144,6 @@
     <string name="pref_pause_voice_on_move_from_ear_summary">Pausar el mensaje de voz actual cuando separes tu dispositivo de tu oreja.</string>
     <string name="pref_import_settings_summary">Importar configuraciones desde el fichero settings.dat que hay dentro del directorio de backup de blabber.im.</string>
     <string name="pref_import_settings">Importar configuraciones</string>
+    <string name="success_import_settings">Ajustes importados satisfactoriamente.</string>
+    <string name="error_import_settings">Error al importar configuraciones.</string>
 </resources>

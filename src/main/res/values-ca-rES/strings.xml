@@ -142,6 +142,7 @@
     <string name="account_status_regis_success">Registre completat</string>
     <string name="account_status_regis_not_sup">El servidor no suporta registres</string>
     <string name="account_status_tls_error">Error de negociació TLS</string>
+    <string name="account_status_tls_error_domain">Domini no verificable</string>
     <string name="account_status_policy_violation">Violació de polítíca</string>
     <string name="account_status_incompatible_server">Servidor incompatible</string>
     <string name="account_status_stream_error">Error de flux</string>
@@ -259,6 +260,7 @@
     <string name="pref_use_send_button_to_indicate_status">Botó enviar indica estat</string>
     <string name="pref_use_colored_names_to_indicate_status">Els noms pintats indiquen l\'estat</string>
     <string name="pref_use_indicate_received">Sol·licitar entrega del missatge</string>
+    <string name="pref_use_indicate_received_summary">Els missatges rebuts apareixeran marcats si són compatibles</string>
     <string name="pref_use_send_button_to_indicate_status_summary">El color del botó enviar indica l\'estat del contacte</string>
     <string name="pref_use_colored_names_to_indicate_status_summary">Pintar el nom del contacte per a mostrar el seu estat en línea</string>
     <string name="pref_expert_options_other">Altres</string>
@@ -1038,6 +1040,7 @@
     <string name="rtp_state_connectivity_lost_error">Connexió perduda</string>
     <string name="rtp_state_retracted">Trucada rebutjada</string>
     <string name="rtp_state_application_failure">Fallada de l\'aplicació</string>
+    <string name="rtp_state_security_error">Problema de verificació</string>
     <string name="incoming_call_duration">%s · Trucada entrant · %s</string>
     <string name="incoming_call_time">%s · Trucada entrant</string>
     <string name="incoming_call">Trucada entrant</string>
@@ -1135,7 +1138,12 @@
     <string name="backup_started_message">La còpia de seguretat s\'ha iniciat. Rebrà una notificació una vegada que s\'hagi completat.</string>
     <string name="error_security_exception">L\'aplicació que es va usar per a compartir aquest arxiu no va proporcionar suficients permisos.</string>
     <string name="unable_to_enable_video">No es pot activar el vídeo.</string>
+    <string name="plain_text_document">Document de text pla</string>
     <string name="delete_recording_dialog_message">Realment vol cancel·lar i esborrar el seu enregistrament?</string>
     <string name="pref_pause_voice_on_move_from_ear">Posar en pausa el missatge de veu automàticament</string>
     <string name="pref_pause_voice_on_move_from_ear_summary">Posar en pausa el missatge de veu actual quan allunyi el dispositiu de la seva oïda.</string>
+    <string name="pref_import_settings_summary">Importi la configuració de l\'aplicació des de l\'arxiu settings.dat dins del directori de còpia de seguretat de blabber.im.</string>
+    <string name="pref_import_settings">Importar la configuració de l\'aplicació</string>
+    <string name="success_import_settings">Configuració importada amb èxit.</string>
+    <string name="error_import_settings">Error en importar la configuració.</string>
 </resources>

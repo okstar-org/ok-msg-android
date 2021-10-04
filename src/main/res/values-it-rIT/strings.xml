@@ -1144,4 +1144,6 @@
     <string name="pref_pause_voice_on_move_from_ear_summary">Metti in pausa il messaggio vocale quando allontani il tuo dispositivo dall\'orecchio.</string>
     <string name="pref_import_settings_summary">Importa le impostazioni dell\'applicazione dal file settings.dat contenuto all\'interno della cartella di backup di blabber.im.</string>
     <string name="pref_import_settings">Importa impostazioni app</string>
+    <string name="success_import_settings">Impostazioni importate con successo.</string>
+    <string name="error_import_settings">Errore durante l\'importazione delle impostazioni.</string>
 </resources>

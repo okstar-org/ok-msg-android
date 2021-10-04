@@ -142,6 +142,7 @@
     <string name="account_status_regis_success">Rexistro completado</string>
     <string name="account_status_regis_not_sup">O servidor non soporta rexistros</string>
     <string name="account_status_tls_error">Fallo a negociación TLS</string>
+    <string name="account_status_tls_error_domain">Dominio non verificable</string>
     <string name="account_status_policy_violation">Violación da política</string>
     <string name="account_status_incompatible_server">Servidor incompatible</string>
     <string name="account_status_stream_error">Erro de fluxo</string>
@@ -259,6 +260,7 @@
     <string name="pref_use_send_button_to_indicate_status">O botón Enviar indica o estado</string>
     <string name="pref_use_colored_names_to_indicate_status">Os nomes coloreados indican o estado</string>
     <string name="pref_use_indicate_received">Solicitar avisos de recepción</string>
+    <string name="pref_use_indicate_received_summary">As mensaxes recibidas aparecerán marcadas si son compatibles</string>
     <string name="pref_use_send_button_to_indicate_status_summary">Boton de enviar de cor para indicar o estado do contacto</string>
     <string name="pref_use_colored_names_to_indicate_status_summary">Boton de enviar de cor para indicar o estado do contacto</string>
     <string name="pref_expert_options_other">Outro</string>
@@ -1038,6 +1040,7 @@
     <string name="rtp_state_connectivity_lost_error">Conexión perdida</string>
     <string name="rtp_state_retracted">Chamada rechazada</string>
     <string name="rtp_state_application_failure">Fallo da aplicación</string>
+    <string name="rtp_state_security_error">Problema de verificación</string>
     <string name="incoming_call_duration">%s · Chamada entrante · %s</string>
     <string name="incoming_call_time">%s · Chamada entrante</string>
     <string name="incoming_call">Chamada entrante</string>
@@ -1135,7 +1138,12 @@
     <string name="backup_started_message">A copia de seguridade iniciouse. Recibirá unha notificación unha vez que se completou.</string>
     <string name="error_security_exception">A aplicación que se utilizou para compartir este arquivo non proporcionou suficientes permisos.</string>
     <string name="unable_to_enable_video">Non se pode activar o vídeo.</string>
+    <string name="plain_text_document">Documento de texto plano</string>
     <string name="delete_recording_dialog_message">Realmente quere cancelar e borrar ou gravación?</string>
     <string name="pref_pause_voice_on_move_from_ear">Pór en pausa a mensaxe de voz automaticamente</string>
     <string name="pref_pause_voice_on_move_from_ear_summary">Pór en pausa a mensaxe de voz actual cando afaste o dispositivo do seu oído.</string>
+    <string name="pref_import_settings_summary">Importe a configuración da aplicación desde o arquivo settings.dat dentro do directorio de copia de seguridade de blabber.im.</string>
+    <string name="pref_import_settings">Importar a configuración da aplicación</string>
+    <string name="success_import_settings">Configuración importada con éxito.</string>
+    <string name="error_import_settings">Erro ao importar a configuración.</string>
 </resources>
