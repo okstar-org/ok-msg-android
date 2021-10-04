@@ -835,7 +835,7 @@
     <string name="open_with">Ouvrir avec…</string>
     <string name="server_info_adhoc_invite">XEP-0050 : Commandes ad-hoc : invitation utilisateur/trice</string>
     <string name="choose_account">Sélectionnez un compte</string>
-    <string name="set_profile_picture">photo de profil monocles chat</string>
+    <string name="set_profile_picture">photo de compte monocles chat</string>
     <string name="restore_backup">Restaurer une sauvegarde</string>
     <string name="restore">Restaurer</string>
     <string name="enter_password_to_restore">Entrez votre mot de passe pour le compte %s afin de procéder à la restauration de la sauvegarde.</string>
