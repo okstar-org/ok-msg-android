@@ -141,12 +141,7 @@ public class UriHandlerActivity extends AppCompatActivity {
             final Jid jid = xmppUri.getJid();
             final String body = xmppUri.getBody();
             if (jid != null) {
-                Class clazz;
-                try {
-                    clazz = Class.forName("eu.siacs.conversations.ui.ShareViaAccountActivity");
-                } catch (ClassNotFoundException e) {
-                    clazz = null;
-                }
+                final Class<?> clazz = findShareViaAccountClass();
                 if (clazz != null) {
                     intent = new Intent(this, clazz);
                     intent.putExtra("contact", jid.toEscapedString());
@@ -180,6 +175,14 @@ public class UriHandlerActivity extends AppCompatActivity {
             return;
         }
         startActivity(intent);
+    }
+
+    private static Class<?> findShareViaAccountClass() {
+        try {
+            return Class.forName("eu.siacs.conversations.ui.ShareViaAccountActivity");
+        } catch (final ClassNotFoundException e) {
+            return null;
+        }
     }
 
     private void handleIntent(Intent data) {
@@ -236,7 +239,7 @@ public class UriHandlerActivity extends AppCompatActivity {
     }
 
     private static boolean looksLikeJsonObject(final String input) {
-        final String trimmed = Strings.emptyToNull(input).trim();
+        final String trimmed = Strings.nullToEmpty(input).trim();
         return trimmed.charAt(0) == '{' && trimmed.charAt(trimmed.length() - 1) == '}';
     }
 }
