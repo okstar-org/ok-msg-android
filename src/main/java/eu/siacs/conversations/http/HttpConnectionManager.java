@@ -40,7 +40,23 @@ public class HttpConnectionManager extends AbstractConnectionManager {
 
     public static final Executor FileTransferExecutor = Executors.newFixedThreadPool(4);
 
-    private static final OkHttpClient OK_HTTP_CLIENT = new OkHttpClient();
+    public static final OkHttpClient OK_HTTP_CLIENT;
+
+    static {
+        OK_HTTP_CLIENT = new OkHttpClient.Builder()
+                .addInterceptor(chain -> {
+                    final Request original = chain.request();
+                    final Request modified = original.newBuilder()
+                            .header("User-Agent", getUserAgent())
+                            .build();
+                    return chain.proceed(modified);
+                })
+                .build();
+    }
+
+    public static String getUserAgent() {
+        return System.getProperty("http.agent");
+    }
 
     public HttpConnectionManager(XmppConnectionService service) {
         super(service);

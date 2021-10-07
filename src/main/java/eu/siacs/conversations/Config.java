@@ -62,6 +62,7 @@ public final class Config {
     public static final String inviteUserURL = "https://" + blabber() + "/i/";
     public static final String inviteMUCURL = "https://" + blabber() + "/j/";
     public static final String inviteHostURL = blabber(); // without http(s)
+    public static final String INVITE_DOMAIN = "conversations.im";
     public static final String termsOfUseURL = "https://kriztan.codeberg.page/termsofuse/";
     public static final String privacyURL = "https://kriztan.codeberg.page/privacy/";
     public static final String migrationURL = Locale.getDefault().getLanguage().equalsIgnoreCase("de") ? "https://blabber.im/anleitungen/Migration%20vom%20Pix-Art%20Messenger%20zu%20blabber.im%20(Android)%20_%20blabber.im.html" : "https://blabber.im/tutorials/Migration%20from%20Pix-Art%20Messenger%20to%20blabber.im%20(Android)%20_%20blabber.im.html";

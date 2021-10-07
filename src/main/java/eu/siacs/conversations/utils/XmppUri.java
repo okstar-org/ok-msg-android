@@ -19,6 +19,7 @@ import java.util.Locale;
 import java.util.Map;
 import java.util.regex.Pattern;
 
+import eu.siacs.conversations.Config;
 import eu.siacs.conversations.xmpp.Jid;
 
 public class XmppUri {
@@ -141,10 +142,10 @@ public class XmppUri {
             return;
         }
         this.uri = uri;
-        String scheme = uri.getScheme();
-        String host = uri.getHost();
+        final String scheme = uri.getScheme();
+        final String host = uri.getHost();
         List<String> segments = uri.getPathSegments();
-        if ("https".equalsIgnoreCase(scheme) && "blabber.im".equalsIgnoreCase(host)) {
+        if ("https".equalsIgnoreCase(scheme) && Config.INVITE_DOMAIN.equalsIgnoreCase(host)) {
             if (segments.size() >= 2 && segments.get(1).contains("@")) {
                 // sample : https://conversations.im/i/foo@bar.com
                 try {
