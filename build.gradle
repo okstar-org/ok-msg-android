@@ -18,7 +18,7 @@ allprojects {
         jcenter()
         mavenCentral()
         maven { url "https://jitpack.io" }
-        maven { url "https://github.com/robjperez/libwebrtc_maven/blob/master/libwebrtc.aar" }
+        maven { url "https://github.com/robjperez/libwebrtc_maven/raw/master/libwebrtc.aar" }
     }
 }
 
@@ -27,7 +27,7 @@ repositories {
     mavenCentral()
     jcenter()
     maven { url "https://jitpack.io" }
-    maven { url "https://github.com/robjperez/libwebrtc_maven/blob/master/libwebrtc.aar" }
+    maven { url "https://github.com/robjperez/libwebrtc_maven/raw/master/libwebrtc.aar" }
 }
 
 configurations {
