@@ -43,7 +43,6 @@ import android.util.Log;
 import android.webkit.URLUtil;
 
 import java.util.Locale;
-import java.util.Objects;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -58,7 +57,28 @@ import eu.siacs.conversations.utils.XmppUri;
 
 public class MyLinkify {
 
-    private static final Pattern youtubePattern = Pattern.compile("(www\\.|m\\.)?(youtube\\.com|youtu\\.be|youtube-nocookie\\.com)\\/(((?!(\"|'|<)).)*)");
+    private final static Pattern youtubePattern = Pattern.compile("(www\\.|m\\.)?(youtube\\.com|youtu\\.be|youtube-nocookie\\.com)/(((?!([\"'<])).)*)");
+    private final static String youtubeURLPattern = "(?:youtube(?:-nocookie)?\\.com\\/(?:[^\\/\\n\\s]+\\/\\S+\\/|(?:v|e(?:mbed)?)\\/|\\S*?[?&]v=)|youtu\\.be\\/)([a-zA-Z0-9_-]{11})";
+
+    public static boolean isYoutubeUrl(String url) {
+        return !url.isEmpty() && url.matches("(?i:http|https)://" + youtubePattern);
+    }
+
+    public static String getYoutubeVideoId(String url) {
+        if (url == null || url.trim().length() <= 0) {
+            return null;
+        }
+        final Pattern pattern = Pattern.compile(youtubeURLPattern, Pattern.CASE_INSENSITIVE);
+        final Matcher matcher = pattern.matcher(url);
+        if (matcher.find()) {
+            return matcher.group(1);
+        }
+        return null;
+    }
+
+    public static String getYoutubeImageUrl(String url) {
+        return "https://img.youtube.com/vi/" + getYoutubeVideoId(url) + "/0.jpg";
+    }
 
     public static String replaceYoutube(Context context, String content) {
         return replaceYoutube(context, new SpannableStringBuilder(content)).toString();
@@ -69,22 +89,10 @@ public class MyLinkify {
         if (useInvidious(context)) {
             while (matcher.find()) {
                 final String youtubeId = matcher.group(3);
-                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
-                    if (matcher.group(2) != null && Objects.equals(matcher.group(2), "youtu.be")) {
-                        content = new SpannableStringBuilder(content.toString().replaceAll("(?i)https://" + Pattern.quote(matcher.group()), Matcher.quoteReplacement("https://" + invidiousHost(context) + "/watch?v=" + youtubeId + "&local=true")));
-                        content = new SpannableStringBuilder(content.toString().replaceAll(">" + Pattern.quote(matcher.group()), Matcher.quoteReplacement(">" + invidiousHost(context) + "/watch?v=" + youtubeId + "&local=true")));
-                    } else {
-                        content = new SpannableStringBuilder(content.toString().replaceAll("(?i)https://" + Pattern.quote(matcher.group()), Matcher.quoteReplacement("https://" + invidiousHost(context) + "/" + youtubeId + "&local=true")));
-                        content = new SpannableStringBuilder(content.toString().replaceAll(">" + Pattern.quote(matcher.group()), Matcher.quoteReplacement(">" + invidiousHost(context) + "/" + youtubeId + "&local=true")));
-                    }
+                if (matcher.group(2) != null && matcher.group(2).equals("youtu.be")) {
+                    content = new SpannableStringBuilder(content.toString().replaceAll("https://" + Pattern.quote(matcher.group()), Matcher.quoteReplacement("https://" + invidiousHost(context) + "/watch?v=" + youtubeId + "&local=true")));
                 } else {
-                    if (matcher.group(2) != null && matcher.group(2) == "youtu.be") {
-                        content = new SpannableStringBuilder(content.toString().replaceAll("(?i)https://" + Pattern.quote(matcher.group()), Matcher.quoteReplacement("https://" + invidiousHost(context) + "/watch?v=" + youtubeId + "&local=true")));
-                        content = new SpannableStringBuilder(content.toString().replaceAll(">" + Pattern.quote(matcher.group()), Matcher.quoteReplacement(">" + invidiousHost(context) + "/watch?v=" + youtubeId + "&local=true")));
-                    } else {
-                        content = new SpannableStringBuilder(content.toString().replaceAll("(?i)https://" + Pattern.quote(matcher.group()), Matcher.quoteReplacement("https://" + invidiousHost(context) + "/" + youtubeId + "&local=true")));
-                        content = new SpannableStringBuilder(content.toString().replaceAll(">" + Pattern.quote(matcher.group()), Matcher.quoteReplacement(">" + invidiousHost(context) + "/" + youtubeId + "&local=true")));
-                    }
+                    content = new SpannableStringBuilder(content.toString().replaceAll("https://" + Pattern.quote(matcher.group()), Matcher.quoteReplacement("https://" + invidiousHost(context) + "/" + youtubeId + "&local=true")));
                 }
             }
         }

@@ -1,5 +1,8 @@
 package eu.siacs.conversations.utils;
 
+import static eu.siacs.conversations.ui.util.MyLinkify.getYoutubeImageUrl;
+import static eu.siacs.conversations.ui.util.MyLinkify.isYoutubeUrl;
+
 import android.content.Context;
 import android.os.AsyncTask;
 import android.view.View;
@@ -81,7 +84,11 @@ public class RichPreview {
                         metaData.setUrl(json.getString("url"));
                     }
                     if (json.has("imageurl")) {
-                        metaData.setImageurl(json.getString("imageurl"));
+                        if (isYoutubeUrl(metaData.getUrl())) {
+                            metaData.setImageurl(getYoutubeImageUrl(metaData.getUrl()));
+                        } else {
+                            metaData.setImageurl(json.getString("imageurl"));
+                        }
                     }
                     if (json.has("title")) {
                         metaData.setTitle(json.getString("title"));
