@@ -5,7 +5,7 @@
 blabber.im is a fork of [Conversations](https://github.com/siacs/Conversations).
 The changes aim to improve usability and ease transition from pre-installed and other widespread messengers. Here are some screenshots:
 
-<img src="metadata/en-US/phoneScreenshots/00.png" width="200" /> <img src="metadata/en-US/phoneScreenshots/01.png" width="200" /> <img src="metadata/en-US/phoneScreenshots/02.png" width="200" /> <img src="metadata/en-US/phoneScreenshots/03.png" width="200" /> <img src="metadata/en-US/phoneScreenshots/04.png" width="200" /> <img src="metadata/en-US/phoneScreenshots/05.png" width="200" /> <img src="metadata/en-US/phoneScreenshots/06.png" width="200" />
+<img src="fastlane/metadata/android/en-US/phoneScreenshots/00.png" width="200" /> <img src="fastlane/metadata/android/en-US/phoneScreenshots/01.png" width="200" /> <img src="fastlane/metadata/android/en-US/phoneScreenshots/02.png" width="200" /> <img src="fastlane/metadata/android/en-US/phoneScreenshots/03.png" width="200" /> <img src="fastlane/metadata/android/en-US/phoneScreenshots/04.png" width="200" /> <img src="fastlane/metadata/android/en-US/phoneScreenshots/05.png" width="200" /> <img src="fastlane/metadata/android/en-US/phoneScreenshots/06.png" width="200" />
 
 (Images used were taken from http://freestockgallery.de)
 

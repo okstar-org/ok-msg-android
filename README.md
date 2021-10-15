@@ -6,7 +6,7 @@
 
 blabber.im ist ein Fork der offiziellen Android-App [Conversations](https://github.com/siacs/Conversations) mit einigen Änderungen, insbesondere zur Verbesserung der Benutzerfreundlichkeit, um den Umstieg von oftmals vorinstallierten Messengern zu erleichtern. Die folgenden Bilder geben erste Eindrücke der App:
 
-<img src="metadata/en-US/phoneScreenshots/00.png" width="200" /> <img src="metadata/en-US/phoneScreenshots/01.png" width="200" /> <img src="metadata/en-US/phoneScreenshots/02.png" width="200" /> <img src="metadata/en-US/phoneScreenshots/03.png" width="200" /> <img src="metadata/en-US/phoneScreenshots/04.png" width="200" /> <img src="metadata/en-US/phoneScreenshots/05.png" width="200" /> <img src="metadata/en-US/phoneScreenshots/06.png" width="200" />
+<img src="fastlane/metadata/android/en-US/phoneScreenshots/00.png" width="200" /> <img src="fastlane/metadata/android/en-US/phoneScreenshots/01.png" width="200" /> <img src="fastlane/metadata/android/en-US/phoneScreenshots/02.png" width="200" /> <img src="fastlane/metadata/android/en-US/phoneScreenshots/03.png" width="200" /> <img src="fastlane/metadata/android/en-US/phoneScreenshots/04.png" width="200" /> <img src="fastlane/metadata/android/en-US/phoneScreenshots/05.png" width="200" /> <img src="fastlane/metadata/android/en-US/phoneScreenshots/06.png" width="200" />
 
 (Bilder wurden über http://freestockgallery.de bezogen)
 
