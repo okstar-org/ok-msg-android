@@ -1,5 +1,6 @@
 package eu.siacs.conversations.services;
 
+import static eu.siacs.conversations.services.NotificationService.EXPORT_BACKUP_NOTIFICATION_ID;
 import static eu.siacs.conversations.utils.Compatibility.runsTwentySix;
 
 import android.app.Notification;
@@ -80,7 +81,6 @@ public class ExportBackupService extends Service {
     private static final String DIRECTORY_STRING_FORMAT = FileBackend.getAppLogsDirectory() + "%s";
     private static final String MESSAGE_STRING_FORMAT = "(%s) %s: %s\n";
 
-    private static final int NOTIFICATION_ID = 19;
     private static final int PAGE_SIZE = 20;
     private static final AtomicBoolean RUNNING = new AtomicBoolean(false);
     private DatabaseBackend mDatabaseBackend;
@@ -312,7 +312,7 @@ public class ExportBackupService extends Service {
             final int percentage = i * 100 / size;
             if (p < percentage) {
                 p = percentage;
-                notificationManager.notify(NOTIFICATION_ID, progress.build(p));
+                notificationManager.notify(EXPORT_BACKUP_NOTIFICATION_ID, progress.build(p));
             }
         }
         if (cursor != null) {
@@ -326,7 +326,7 @@ public class ExportBackupService extends Service {
         mBuilder.setContentTitle(getString(R.string.notification_create_backup_title))
                 .setSmallIcon(R.drawable.ic_archive_white_24dp)
                 .setProgress(1, 0, false);
-        startForeground(NOTIFICATION_ID, mBuilder.build());
+        startForeground(EXPORT_BACKUP_NOTIFICATION_ID, mBuilder.build());
         int count = 0;
         final int max = this.mAccounts.size();
         final SecureRandom secureRandom = new SecureRandom();
@@ -394,7 +394,7 @@ public class ExportBackupService extends Service {
             count++;
         }
         stopForeground(true);
-        notificationManager.cancel(NOTIFICATION_ID);
+        notificationManager.cancel(EXPORT_BACKUP_NOTIFICATION_ID);
         return files;
     }
 
@@ -468,7 +468,7 @@ public class ExportBackupService extends Service {
         if (shareFilesIntent != null) {
             mBuilder.addAction(R.drawable.ic_share_white_24dp, getString(R.string.share_backup_files), shareFilesIntent);
         }
-        notificationManager.notify(NOTIFICATION_ID, mBuilder.build());
+        notificationManager.notify(EXPORT_BACKUP_NOTIFICATION_ID, mBuilder.build());
     }
 
     private void notifyError() {
@@ -480,7 +480,7 @@ public class ExportBackupService extends Service {
                 .setStyle(new NotificationCompat.BigTextStyle().bigText(getString(R.string.notification_backup_failed_subtitle, FileBackend.getBackupDirectory(null))))
                 .setAutoCancel(true)
                 .setSmallIcon(R.drawable.ic_warning_white_24dp);
-        notificationManager.notify(NOTIFICATION_ID, mBuilder.build());
+        notificationManager.notify(EXPORT_BACKUP_NOTIFICATION_ID, mBuilder.build());
     }
 
     private void writeToFile(Conversation conversation) {

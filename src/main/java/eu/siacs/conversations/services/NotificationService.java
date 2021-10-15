@@ -108,6 +108,8 @@ public class NotificationService {
     public static final int ONGOING_CALL_NOTIFICATION_ID = NOTIFICATION_ID_MULTIPLIER * 10;
     private static final int DELIVERY_FAILED_NOTIFICATION_ID = NOTIFICATION_ID_MULTIPLIER * 12;
     public static final int MISSED_CALL_NOTIFICATION_ID = NOTIFICATION_ID_MULTIPLIER * 14;
+    public static final int IMPORT_BACKUP_NOTIFICATION_ID = NOTIFICATION_ID_MULTIPLIER * 16;
+    public static final int EXPORT_BACKUP_NOTIFICATION_ID = NOTIFICATION_ID_MULTIPLIER * 18;
     private final XmppConnectionService mXmppConnectionService;
     private final LinkedHashMap<String, ArrayList<Message>> notifications = new LinkedHashMap<>();
     private final LinkedHashMap<Conversational, MissedCallsInfo> mMissedCalls = new LinkedHashMap<>();
