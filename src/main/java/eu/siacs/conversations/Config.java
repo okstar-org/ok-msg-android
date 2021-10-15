@@ -62,7 +62,7 @@ public final class Config {
     public static final String inviteUserURL = "https://" + blabber() + "/i/";
     public static final String inviteMUCURL = "https://" + blabber() + "/j/";
     public static final String inviteHostURL = blabber(); // without http(s)
-    public static final String INVITE_DOMAIN = "conversations.im";
+    public static final String INVITE_DOMAIN = blabber();
     public static final String termsOfUseURL = "https://kriztan.codeberg.page/termsofuse/";
     public static final String privacyURL = "https://kriztan.codeberg.page/privacy/";
     public static final String migrationURL = Locale.getDefault().getLanguage().equalsIgnoreCase("de") ? "https://blabber.im/anleitungen/Migration%20vom%20Pix-Art%20Messenger%20zu%20blabber.im%20(Android)%20_%20blabber.im.html" : "https://blabber.im/tutorials/Migration%20from%20Pix-Art%20Messenger%20to%20blabber.im%20(Android)%20_%20blabber.im.html";
@@ -228,50 +228,7 @@ public final class Config {
     public static class DOMAIN {
         public static final List<String> DOMAINS = Arrays.asList(
                 "conversations.im",
-                "jabber.cat",
-                "im.koderoot.net",
-                "magicbroccoli.de",
-                "wiuwiu.de",
-                "5222.de",
-                "chat.sum7.eu",
-                "xmpp.zone",
-                "laborversuch.de",
-                "creep.im",
-                "jabber.systemausfall.org",
-                "jabber.hot-chilli.net",
-                "jabber.fr",
-                "jabber.de",
-                "elaon.de",
-                "high-way.me",
-                "deshalbfrei.org",
-                "im.hot-chilli.net",
-                "jabberpl.org",
-                "chinwag.im",
-                "zsim.de",
-                "im.apinc.org",
-                "chatme.im",
-                "yax.im",
-                "neko.im",
-                "jabberzac.org",
-                "jabber.ccc.de",
-                "jwchat.org",
-                "jabber.cz",
-                "xabber.de",
-                "jabber.ru",
-                "darknet.nz",
-                "404.city",
-                "tigase.im",
-                "member.fsf.org",
-                "twattle.net",
-                "jabber.calyxinstitute.org",
-                "linuxlovers.at",
-                "openjabber.org",
-                "jabber.no",
-                "jabber.otr.im",
-                "chapril.org",
-                "zp1.net",
-                "zsim.de",
-                "xmpp.social"
+                "zp1.net"
         );
 
         public static final List<String> BLACKLISTED_DOMAINS = Arrays.asList(
@@ -287,7 +244,7 @@ public final class Config {
             } catch (Exception e) {
                 Log.d(LOGTAG, "Error getting random server ", e);
             }
-            return null;
+            return "zp1.net";
         }
     }
 
