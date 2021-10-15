@@ -1,27 +1,10 @@
-# Ankündigung:
-
-## Aus Pix-Art Messenger wird blabber.im
-
-Die Zusammenarbeit der beiden Projekte blabber.im und Pix-Art Messenger wird im November 2020 weiter ausgebaut.
-
-Bisher war blabber.im nur der Standardserver im Pix-Art Messenger.
-Zukünftig wird die Android App Pix-Art Messenger unter dem Namen blabber.im weitergeführt.
-
-Was euch erwartet:
-- Funktionsumfang bleibt erhalten
-- Support Chaträume werden zusammengelegt
-- Farben und Logos werden an blabber.im angepasst
-- App ist weiterhin kostenlos im Google Play Store und F-Droid Store verfügbar
-
-Euer blabber.im Team
-
------
+## blabber.im
 
 # <img src="art/logo_android.png" width="24"> blabber.im
 
 🇬🇧🇺🇸… [English Readme version available here](README-en.md)
 
-blabber.im ist eine Kopie der offiziellen Android-App [Conversations](https://github.com/siacs/Conversations) mit einigen Änderungen, insbesondere zur Verbesserung der Benutzerfreundlichkeit, um den Umstieg von oftmals vorinstallierten Messengern zu erleichtern. Die folgenden Bilder geben erste Eindrücke der App:
+blabber.im ist ein Fork der offiziellen Android-App [Conversations](https://github.com/siacs/Conversations) mit einigen Änderungen, insbesondere zur Verbesserung der Benutzerfreundlichkeit, um den Umstieg von oftmals vorinstallierten Messengern zu erleichtern. Die folgenden Bilder geben erste Eindrücke der App:
 
 <img src="metadata/en-US/phoneScreenshots/00.png" width="200" /> <img src="metadata/en-US/phoneScreenshots/01.png" width="200" /> <img src="metadata/en-US/phoneScreenshots/02.png" width="200" /> <img src="metadata/en-US/phoneScreenshots/03.png" width="200" /> <img src="metadata/en-US/phoneScreenshots/04.png" width="200" /> <img src="metadata/en-US/phoneScreenshots/05.png" width="200" /> <img src="metadata/en-US/phoneScreenshots/06.png" width="200" />
 
@@ -35,14 +18,12 @@ Alternativ kannst du den Messenger auch direkt hier von Codeberg unter [Releases
 
 <a rel="me" href="https://kanoa.de/@blabber">blabber.im bei Mastodon</a> 
 
-#### blabber.im nightly bzw. beta
-
-Scanne den QR-Code und füge es zu deinen F-Droid Quellen hinzu: 
-
-<img src="https://raw.githubusercontent.com/kriztan/Pix-Art-Messenger-nightly/master/icon.png" width="220">
+#### blabber.im Beta-Versionen
 
 Google-Nutzer können dem Betaprogramm beitreten:
 [blabber.im beta](https://play.google.com/apps/testing/im.blabber.messenger)
+
+Alternativ kannst du die Beta-Versionen auch direkt hier von Codeberg unter [Releases](https://codeberg.org/kriztan/blabber.im/releases/latest) herunterladen. Sie sind entsprechend gekennzeichnet.
 
 #### Wie kann ich bei der Übersetzung helfen?
 [![Crowdin](https://d322cqt584bo4o.cloudfront.net/pix-art-messenger/localized.svg)](https://crowdin.com/project/pix-art-messenger)
@@ -54,11 +35,11 @@ Google-Nutzer können dem Betaprogramm beitreten:
 #### Ich habe Probleme, was soll ich tun?
 Am einfachsten ist es, wenn du unserer Support-Gruppe beitrittst, dort werden deine Probleme mit Sicherheit schnell gelöst. 
 
-Support-Chat: [blabber@conference.blabber.im](https://blabber.im/j/blabber@conference.blabber.im?join)     
-[![Users in muc](https://inverse.chat/badge.svg?room=blabber@conference.blabber.im)](https://blabber.im/j/blabber@conference.blabber.im?join)
+Support-Chat: [support@room.pix-art.de](https://blabber.im/j/support@room.pix-art.de?join)     
+[![Users in muc](https://inverse.chat/badge.svg?room=support@room.pix-art.de)](https://blabber.im/j/support@room.pix-art.de?join)
 
-Development-Chat:  [blabber-dev@conference.blabber.im](https://blabber.im/j/blabber-dev@conference.blabber.im?join)     
-[![Users in muc](https://inverse.chat/badge.svg?room=blabber-dev@conference.blabber.im)](https://blabber.im/j/blabber-dev@conference.blabber.im?join)
+Development-Chat:  [developement@room.pix-art.de](https://blabber.im/j/developement@room.pix-art.de?join)     
+[![Users in muc](https://inverse.chat/badge.svg?room=developement@room.pix-art.de)](https://blabber.im/j/developement@room.pix-art.de?join)
 
 
 Solltest du dort nicht weiter kommen kannst du [hier](https://codeberg.org/kriztan/blabber.im/issues) ein Issue erstellen, in welchem du dein Problem genau beschreibst und welche Schritte erforderlich sind, um zu dem Problem zu gelangen. 

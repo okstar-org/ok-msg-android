@@ -1,22 +1,3 @@
-# Announcement:
-
-## Pix-Art Messenger becomes blabber.im
-
-The cooperation of the two projects blabber.im and Pix-Art Messenger will be further expanded in November 2020.
-
-Until now, blabber.im was only the default server in Pix-Art Messenger.
-In the future, the Android app Pix-Art Messenger will be continued under the name blabber.im.
-
-What you can expect:
-- Range of functions remains the same
-- Support chat rooms are merged
-- Colors and logos are adapted to blabber.im
-- App is still available for free in Google Play Store and F-Droid Store
-
-Your blabber.im Team
-
------
-
 # <img src="art/logo_android.png" width="24"> blabber.im
 
 🇩🇪… [Deutsche Version der Readme hier verfügbar.](README.md)
@@ -30,21 +11,18 @@ The changes aim to improve usability and ease transition from pre-installed and 
 
 ## Download
 blabber.im is available for install in the F-Droid and Google-Play stores.
-Alternatively release and beta-release APKs are available via github: [Releases](https://codeberg.org/kriztan/blabber.im/releases/latest) 
+
+Alternatively release APKs are available via Codeberg: [Releases](https://codeberg.org/kriztan/blabber.im/releases/latest) 
 
 <a href='https://play.google.com/store/apps/details?id=im.blabber.messenger'><img alt='Get it on Google Play' src='https://play.google.com/intl/en_us/badges/images/generic/en_badge_web_generic.png' height="100"/></a> <a href="https://f-droid.org/app/de.pixart.messenger"><img src="https://f-droid.org/badge/get-it-on.png" alt="Get it on F-Droid" height="100"></a>
 
-#### blabber.im nightly and beta
-
-##### F-Droid
-Scan the QR-Code below and add it to your F-Droid repositories.
-
-<img src="https://raw.githubusercontent.com/kriztan/Pix-Art-Messenger-nightly/master/icon.png" width="220">
+#### blabber.im beta
 
 #### Google Play
 Google-Users can join the Google-Play beta program:
 [blabber.im beta](https://play.google.com/apps/testing/im.blabber.messenger)
 
+Alternatively beta-release APKs are available via Codeberg: [Releases](https://codeberg.org/kriztan/blabber.im/releases/latest)
 
 ## Social Media
 <a rel="me" href="https://kanoa.de/@blabber">blabber.im on Mastodon (German)</a>
@@ -53,8 +31,8 @@ There are also English and German speaking XMPP-MUCs focusing on support and dev
 
 If you are interested in the development of the messenger, here is a MUC for you (English and German speaking):
 
-Development-Chat:  [blabber-dev@conference.blabber.im](https://blabber.im/j/blabber-dev@conference.blabber.im?join)     
-[![Users in muc](https://inverse.chat/badge.svg?blabber-dev@conference.blabber.im)](https://blabber.im/j/blabber-dev@conference.blabber.im?join)
+Development-Chat:  [development@room.pix-art.de](https://blabber.im/j/development@room.pix-art.de?join)     
+[![Users in muc](https://inverse.chat/badge.svg?development@room.pix-art.de)](https://blabber.im/j/development@room.pix-art.de?join)
 
 
 There also is an Support-MUC where you can ask questions and get help with issues you may encounter, see further below for details.
@@ -70,8 +48,8 @@ Translation of in-app text is organised via [crowdin.com](https://crowdin.com/pr
 ## Help! I've encountered issues!
 The easiest way to get some help is to join our support-MUC (both English and German).  
 
-Support-Chat invite link: [blabber@conference.blabber.im](https://blabber.im/j/blabber@conference.blabber.im?join)     
-[![Users in muc](https://inverse.chat/badge.svg?room=blabber@conference.blabber.im)](https://blabber.im/j/blabber@conference.blabber.im?join)
+Support-Chat invite link: [support@room.pix-art.de](https://blabber.im/j/support@room.pix-art.de?join)     
+[![Users in muc](https://inverse.chat/badge.svg?room=support@room.pix-art.de)](https://blabber.im/j/support@room.pix-art.de?join)
 
 If we can't fix your problem there, you can open an issue [here](https://codeberg.org/kriztan/blabber.im/issues), detailing your problem, how to reproduce it and provide logs. See instructions below on how to create log files.
 
@@ -153,4 +131,4 @@ If we can't fix your problem there, you can open an issue [here](https://codeber
     ``` 
 12. Now reproduce the issue encountered.
 
-13. Stop logging (`Ctrl+C`). Now take a close look at your log file and remove any personal and private information you may find before sending it together with a detailed description of your issue, instructions on how to reproduce to me. You can use GitHub's issue tracker: [Issues](https://github.com/kriztan/Pix-Art-Messenger/issues)
+13. Stop logging (`Ctrl+C`). Now take a close look at your log file and remove any personal and private information you may find before sending it together with a detailed description of your issue, instructions on how to reproduce to me. You can use Codebergs issue tracker: [Issues](https://codeberg.org/kriztan/blabber.im/issues)
