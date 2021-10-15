@@ -3,6 +3,7 @@ package eu.siacs.conversations.ui.util;
 import android.content.Context;
 import android.content.res.Resources;
 import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.Drawable;
 import android.os.AsyncTask;
@@ -10,12 +11,15 @@ import android.widget.ImageView;
 
 import androidx.annotation.DimenRes;
 
+import java.io.InputStream;
 import java.lang.ref.WeakReference;
 import java.util.concurrent.RejectedExecutionException;
 
+import eu.siacs.conversations.Config;
 import eu.siacs.conversations.R;
 import eu.siacs.conversations.entities.Account;
 import eu.siacs.conversations.services.AvatarService;
+import eu.siacs.conversations.services.XmppConnectionService;
 import eu.siacs.conversations.ui.XmppActivity;
 
 public class AvatarWorkerTask extends AsyncTask<AvatarService.Avatarable, Void, Bitmap> {
@@ -76,10 +80,18 @@ public class AvatarWorkerTask extends AsyncTask<AvatarService.Avatarable, Void, 
     }
 
     public static void loadAvatar(final AvatarService.Avatarable avatarable, final ImageView imageView, final @DimenRes int size) {
-        loadAvatar(avatarable, imageView, size, false);
+        loadAvatar(avatarable, imageView, size, false,null);
+    }
+
+    public static void loadAvatar(final String JidFromJabberNetwork, final AvatarService.Avatarable avatarable, final ImageView imageView, final @DimenRes int size) {
+        loadAvatar(avatarable, imageView, size, false, JidFromJabberNetwork);
     }
 
     public static void loadAvatar(final AvatarService.Avatarable avatarable, final ImageView imageView, final @DimenRes int size, final boolean overlay) {
+        loadAvatar(avatarable, imageView, size, overlay, null);
+    }
+
+    public static void loadAvatar(final AvatarService.Avatarable avatarable, final ImageView imageView, final @DimenRes int size, final boolean overlay, final String JidFromJabberNetwork) {
         if (cancelPotentialWork(avatarable, imageView)) {
             final XmppActivity activity = XmppActivity.find(imageView);
             if (activity == null) {
@@ -87,7 +99,7 @@ public class AvatarWorkerTask extends AsyncTask<AvatarService.Avatarable, Void, 
             }
             final Bitmap bm = activity.avatarService().get(avatarable, (int) activity.getResources().getDimension(size), false);
             setContentDescription(avatarable, imageView);
-            if (bm != null) {
+            if (bm != null && JidFromJabberNetwork == null) {
                 cancelPotentialWork(avatarable, imageView);
                 if (overlay) {
                     activity.xmppConnectionService.fileBackend.drawOverlay(bm, R.drawable.pencil_overlay, 0.35f, true);
@@ -96,6 +108,13 @@ public class AvatarWorkerTask extends AsyncTask<AvatarService.Avatarable, Void, 
                     imageView.setImageBitmap(bm);
                 }
                 imageView.setBackgroundColor(0x00000000);
+            } else if (JidFromJabberNetwork != null) {
+                try {
+                    new GetAvatarFromJabberNetwork(activity.xmppConnectionService, avatarable, imageView, size, overlay).execute(Config.CHANNEL_DISCOVERY + "/avatar/v1/" + JidFromJabberNetwork);
+                } catch (Exception e) {
+                    e.printStackTrace();
+                    loadAvatar(avatarable, imageView, size, overlay, null);
+                }
             } else {
                 imageView.setBackgroundColor(avatarable.getAvatarBackgroundColor());
                 imageView.setImageDrawable(null);
@@ -134,6 +153,44 @@ public class AvatarWorkerTask extends AsyncTask<AvatarService.Avatarable, Void, 
 
         AvatarWorkerTask getAvatarWorkerTask() {
             return avatarWorkerTaskReference.get();
+        }
+    }
+
+    public static class GetAvatarFromJabberNetwork extends AsyncTask<String, Void, Bitmap> {
+        Bitmap bitmap = null;
+        AvatarService.Avatarable avatarable;
+        ImageView imageView;
+        int size;
+        boolean overlay;
+        XmppConnectionService xmppConnectionService;
+
+        public GetAvatarFromJabberNetwork(final XmppConnectionService xmppConnectionService, final AvatarService.Avatarable avatarable, final ImageView imageView, final @DimenRes int size, final boolean overlay) {
+            this.avatarable = avatarable;
+            this.imageView = imageView;
+            this.size = size;
+            this.overlay = overlay;
+            this.xmppConnectionService = xmppConnectionService;
+        }
+
+        @Override
+        protected Bitmap doInBackground(String... url) {
+            String stringUrl = url[0];
+            try (InputStream inputStream = new java.net.URL(stringUrl).openStream()) {
+                bitmap = BitmapFactory.decodeStream(inputStream);
+            } catch (Exception e) {
+                //igrnore
+            }
+            return bitmap;
+        }
+
+        @Override
+        protected void onPostExecute(Bitmap bitmap) {
+            super.onPostExecute(bitmap);
+            if (bitmap != null) {
+                imageView.setImageBitmap(bitmap);
+            } else {
+                loadAvatar(avatarable, imageView, size, overlay, null);
+            }
         }
     }
 }
