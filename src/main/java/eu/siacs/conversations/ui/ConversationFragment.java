@@ -1219,9 +1219,9 @@ public class ConversationFragment extends XmppFragment implements EditMessage.Ke
             String username = "";
             if (user != null && user.length() > 0) {
                 if (user.equals(getString(R.string.me))) {
-                    username = getString(R.string.i_have_written) + System.getProperty("line.separator");
+                    username = getString(R.string.me_quote) + System.getProperty("line.separator");
                 } else {
-                    username = getString(R.string.x_has_written, user) + System.getProperty("line.separator");
+                    username = getString(R.string.x_user_quote, user) + System.getProperty("line.separator");
                 }
             }
             binding.textinput.insertAsQuote(username + text);
