@@ -43,6 +43,8 @@ import android.util.DisplayMetrics;
 import android.util.Log;
 import android.util.LruCache;
 import android.util.Pair;
+import java.util.concurrent.Executor;
+import java.util.concurrent.Executors;
 
 import androidx.annotation.BoolRes;
 import androidx.annotation.IntegerRes;
@@ -203,8 +205,9 @@ public class XmppConnectionService extends Service {
     private static final String SETTING_LAST_ACTIVITY_TS = "last_activity_timestamp";
 
     public final CountDownLatch restoredFromDatabaseLatch = new CountDownLatch(1);
-    private final SerialSingleThreadExecutor mFileAddingExecutor = new SerialSingleThreadExecutor("FileAdding");
-    private final SerialSingleThreadExecutor mVideoCompressionExecutor = new SerialSingleThreadExecutor("VideoCompression");
+    private final static Executor FILE_OBSERVER_EXECUTOR = Executors.newSingleThreadExecutor();
+    private final static Executor FILE_ATTACHMENT_EXECUTOR = Executors.newSingleThreadExecutor();
+    private final static SerialSingleThreadExecutor VIDEO_COMPRESSION_EXECUTOR = new SerialSingleThreadExecutor("VideoCompression");
     private final SerialSingleThreadExecutor mDatabaseWriterExecutor = new SerialSingleThreadExecutor("DatabaseWriter");
     private final SerialSingleThreadExecutor mDatabaseReaderExecutor = new SerialSingleThreadExecutor("DatabaseReader");
     private final SerialSingleThreadExecutor mNotificationExecutor = new SerialSingleThreadExecutor("NotificationExecutor");
@@ -576,9 +579,9 @@ public class XmppConnectionService extends Service {
         Log.d(Config.LOGTAG, "counterpart=" + message.getCounterpart());
         final AttachFileToConversationRunnable runnable = new AttachFileToConversationRunnable(this, uri, type, message, conversation, callback, getMaxHttpUploadSize(conversation));
         if (runnable.isVideoMessage()) {
-            mVideoCompressionExecutor.execute(runnable);
+            VIDEO_COMPRESSION_EXECUTOR.execute(runnable);
         } else {
-            mFileAddingExecutor.execute(runnable);
+            FILE_ATTACHMENT_EXECUTOR.execute(runnable);
         }
     }
 
@@ -609,7 +612,7 @@ public class XmppConnectionService extends Service {
             message.setType(Message.TYPE_IMAGE);
         }
         Log.d(Config.LOGTAG, "attachImage: type=" + message.getType());
-        mFileAddingExecutor.execute(() -> {
+        FILE_ATTACHMENT_EXECUTOR.execute(() -> {
             try {
                 getFileBackend().copyImageToPrivateStorage(message, uri);
             } catch (FileBackend.ImageCompressionException e) {
@@ -1390,11 +1393,11 @@ public class XmppConnectionService extends Service {
         if (Build.VERSION.SDK_INT < Build.VERSION_CODES.M || ContextCompat.checkSelfPermission(this, Manifest.permission.READ_CONTACTS) == PackageManager.PERMISSION_GRANTED) {
             startContactObserver();
         }
-        mFileAddingExecutor.execute(fileBackend::deleteHistoricAvatarPath);
+        FILE_OBSERVER_EXECUTOR.execute(fileBackend::deleteHistoricAvatarPath);
         if (Compatibility.hasStoragePermission(this)) {
             Log.d(Config.LOGTAG, "starting file observer");
-            mFileAddingExecutor.execute(this.fileObserver::startWatching);
-            mFileAddingExecutor.execute(this::checkForDeletedFiles);
+            FILE_OBSERVER_EXECUTOR.execute(this.fileObserver::startWatching);
+            FILE_OBSERVER_EXECUTOR.execute(this::checkForDeletedFiles);
         }
         if (Config.supportOpenPgp()) {
             this.pgpServiceConnection = new OpenPgpServiceConnection(this, "org.sufficientlysecure.keychain", new OpenPgpServiceConnection.OnBound() {
@@ -1528,8 +1531,8 @@ public class XmppConnectionService extends Service {
 
     public void restartFileObserver() {
         Log.d(Config.LOGTAG, "restarting file observer");
-        mFileAddingExecutor.execute(this.fileObserver::restartWatching);
-        mFileAddingExecutor.execute(this::checkForDeletedFiles);
+        FILE_OBSERVER_EXECUTOR.execute(this.fileObserver::restartWatching);
+        FILE_OBSERVER_EXECUTOR.execute(this::checkForDeletedFiles);
     }
 
     public void toggleScreenEventReceiver() {
@@ -2203,7 +2206,7 @@ public class XmppConnectionService extends Service {
     private void restoreMessages(Conversation conversation) {
         conversation.addAll(0, databaseBackend.getMessages(conversation, Config.PAGE_SIZE));
         conversation.findUnsentTextMessages(message -> markMessage(message, Message.STATUS_WAITING));
-        conversation.findUnreadMessagesAndCalls(message -> mNotificationService.pushFromBacklog(message));
+        conversation.findUnreadMessagesAndCalls(mNotificationService::pushFromBacklog);
     }
 
     public void loadPhoneContacts() {
