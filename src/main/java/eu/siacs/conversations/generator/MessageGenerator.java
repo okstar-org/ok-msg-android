@@ -47,7 +47,7 @@ public class MessageGenerator extends AbstractGenerator {
             packet.setType(MessagePacket.TYPE_CHAT);
             packet.addChild("x", "http://jabber.org/protocol/muc#user");
             if (this.mXmppConnectionService.indicateReceived()) {
-                packet.addChild("request", "urn:xmpp:receipts");
+            packet.addChild("request", "urn:xmpp:receipts");
             }
         } else {
             packet.setTo(message.getCounterpart().asBareJid());
@@ -58,7 +58,9 @@ public class MessageGenerator extends AbstractGenerator {
         }
         packet.setFrom(account.getJid());
         packet.setId(message.getUuid());
-        packet.addChild("origin-id", Namespace.STANZA_IDS).setAttribute("id", message.getUuid());
+        if (conversation.getMode() == Conversational.MODE_SINGLE || message.isPrivateMessage() || !conversation.getMucOptions().stableId()) {
+            packet.addChild("origin-id", Namespace.STANZA_IDS).setAttribute("id", message.getUuid());
+        }
         if (message.edited()) {
             packet.addChild("replace", "urn:xmpp:message-correct:0").setAttribute("id", message.getEditedIdWireFormat());
         }
