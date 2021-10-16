@@ -61,7 +61,7 @@ public class MyLinkify {
     private final static String youtubeURLPattern = "(?:youtube(?:-nocookie)?\\.com\\/(?:[^\\/\\n\\s]+\\/\\S+\\/|(?:v|e(?:mbed)?)\\/|\\S*?[?&]v=)|youtu\\.be\\/)([a-zA-Z0-9_-]{11})";
 
     public static boolean isYoutubeUrl(String url) {
-        return !url.isEmpty() && url.matches("(?i:http|https)://" + youtubePattern);
+        return !url.isEmpty() && url.matches("(?i:http|https):\\/\\/" + youtubePattern);
     }
 
     public static String getYoutubeVideoId(String url) {
