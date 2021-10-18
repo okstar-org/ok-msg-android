@@ -4,10 +4,11 @@
 * remove Android 4 support
 * update WebRTC
 * show channel avatars for channel discovery (blabber.im)
-* show black bars when remote video does not match aspect ratio of screen
-* improve search performance
 * add ability to ex-/import app settings (blabber.im)
 * show number of users in channel discovery (blabber.im)
+* show black bars when remote video does not match aspect ratio of screen
+* improve search performance
+
 * bug fixes
 
 #### Version 3.0.8

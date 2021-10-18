@@ -19,7 +19,7 @@
             android:orientation="vertical">
 
             <androidx.cardview.widget.CardView
-                android:layout_width="fill_parent"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="@dimen/activity_horizontal_margin"
                 android:layout_marginLeft="@dimen/activity_horizontal_margin"
@@ -54,7 +54,7 @@
                         android:stretchColumns="1">
 
                         <TableRow
-                            android:layout_width="fill_parent"
+                            android:layout_width="match_parent"
                             android:layout_height="match_parent">
 
                             <TextView
@@ -78,13 +78,13 @@
 
                         <View
                             android:layout_width="1dp"
-                            android:layout_height="fill_parent"
+                            android:layout_height="match_parent"
                             android:layout_marginTop="7dp"
                             android:layout_marginBottom="7dp"
                             android:background="?attr/divider" />
 
                         <TableRow
-                            android:layout_width="fill_parent"
+                            android:layout_width="match_parent"
                             android:layout_height="match_parent">
 
                             <TextView
@@ -117,7 +117,7 @@
                         </TableRow>
 
                         <TableRow
-                            android:layout_width="fill_parent"
+                            android:layout_width="match_parent"
                             android:layout_height="match_parent">
 
                             <TextView
@@ -150,7 +150,7 @@
                         </TableRow>
 
                         <TableRow
-                            android:layout_width="fill_parent"
+                            android:layout_width="match_parent"
                             android:layout_height="match_parent">
 
                             <TextView
@@ -183,7 +183,7 @@
                         </TableRow>
 
                         <TableRow
-                            android:layout_width="fill_parent"
+                            android:layout_width="match_parent"
                             android:layout_height="match_parent">
 
                             <TextView
@@ -216,7 +216,7 @@
                         </TableRow>
 
                         <TableRow
-                            android:layout_width="fill_parent"
+                            android:layout_width="match_parent"
                             android:layout_height="match_parent">
 
                             <TextView

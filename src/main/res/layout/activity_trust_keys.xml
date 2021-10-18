@@ -12,7 +12,7 @@
             layout="@layout/toolbar" />
 
         <ScrollView
-            android:layout_width="fill_parent"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_above="@+id/button_bar"
             android:layout_below="@id/toolbar">
@@ -24,7 +24,7 @@
 
                 <androidx.cardview.widget.CardView
                     android:id="@+id/key_error_message_card"
-                    android:layout_width="fill_parent"
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginStart="@dimen/activity_horizontal_margin"
                     android:layout_marginLeft="@dimen/activity_horizontal_margin"
@@ -126,7 +126,7 @@
 
                         <LinearLayout
                             android:id="@+id/own_keys_details"
-                            android:layout_width="fill_parent"
+                            android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:orientation="vertical" />
                     </LinearLayout>
@@ -135,7 +135,7 @@
 
                 <LinearLayout
                     android:id="@+id/foreign_keys"
-                    android:layout_width="fill_parent"
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:orientation="vertical"
                     android:visibility="gone">
@@ -165,7 +165,7 @@
 
             <View
                 android:layout_width="1dp"
-                android:layout_height="fill_parent"
+                android:layout_height="match_parent"
                 android:layout_marginTop="7dp"
                 android:layout_marginBottom="7dp"
                 android:background="?attr/divider" />

@@ -14,7 +14,7 @@
             layout="@layout/toolbar" />
 
         <ScrollView
-            android:layout_width="fill_parent"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_above="@+id/button_bar"
             android:layout_below="@id/toolbar">
@@ -27,7 +27,7 @@
 
                 <androidx.cardview.widget.CardView
                     android:id="@+id/editor"
-                    android:layout_width="fill_parent"
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginStart="@dimen/activity_horizontal_margin"
                     android:layout_marginLeft="@dimen/activity_horizontal_margin"
@@ -46,14 +46,14 @@
 
                         <LinearLayout
                             android:id="@+id/jid_password_box"
-                            android:layout_width="fill_parent"
+                            android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:layout_below="@+id/status_avatar_box"
                             android:orientation="vertical">
 
                             <LinearLayout
                                 android:id="@+id/name_port"
-                                android:layout_width="fill_parent"
+                                android:layout_width="match_parent"
                                 android:layout_height="wrap_content"
                                 android:layout_marginTop="8dp"
                                 android:orientation="horizontal"
@@ -76,7 +76,7 @@
                                         <EditText
                                             android:id="@+id/hostname"
                                             style="@style/Widget.Conversations.EditText"
-                                            android:layout_width="fill_parent"
+                                            android:layout_width="match_parent"
                                             android:layout_height="wrap_content"
                                             android:inputType="textWebEmailAddress" />
                                     </com.google.android.material.textfield.TextInputLayout>
@@ -311,7 +311,7 @@
 
                 <androidx.cardview.widget.CardView
                     android:id="@+id/os_optimization"
-                    android:layout_width="fill_parent"
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginStart="@dimen/activity_horizontal_margin"
                     android:layout_marginLeft="@dimen/activity_horizontal_margin"
@@ -373,8 +373,8 @@
 
                 <androidx.cardview.widget.CardView
                     android:id="@+id/stats"
-                    android:layout_width="fill_parent"
-                    android:layout_height="fill_parent"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
                     android:layout_marginLeft="@dimen/activity_horizontal_margin"
                     android:layout_marginTop="@dimen/activity_vertical_margin"
                     android:layout_marginRight="@dimen/activity_horizontal_margin"
@@ -403,7 +403,7 @@
                             android:stretchColumns="1">
 
                             <TableRow
-                                android:layout_width="fill_parent"
+                                android:layout_width="match_parent"
                                 android:layout_height="wrap_content"
                                 tools:ignore="UselessParent">
 
@@ -436,7 +436,7 @@
                             android:visibility="gone">
 
                             <TableRow
-                                android:layout_width="fill_parent"
+                                android:layout_width="match_parent"
                                 android:layout_height="wrap_content">
 
                                 <TextView
@@ -458,7 +458,7 @@
                             </TableRow>
 
                             <TableRow
-                                android:layout_width="fill_parent"
+                                android:layout_width="match_parent"
                                 android:layout_height="wrap_content">
 
                                 <TextView
@@ -480,7 +480,7 @@
                             </TableRow>
 
                             <TableRow
-                                android:layout_width="fill_parent"
+                                android:layout_width="match_parent"
                                 android:layout_height="wrap_content">
 
                                 <TextView
@@ -502,7 +502,7 @@
                             </TableRow>
 
                             <TableRow
-                                android:layout_width="fill_parent"
+                                android:layout_width="match_parent"
                                 android:layout_height="wrap_content">
 
                                 <TextView
@@ -524,7 +524,7 @@
                             </TableRow>
 
                             <TableRow
-                                android:layout_width="fill_parent"
+                                android:layout_width="match_parent"
                                 android:layout_height="wrap_content">
 
                                 <TextView
@@ -546,7 +546,7 @@
                             </TableRow>
 
                             <TableRow
-                                android:layout_width="fill_parent"
+                                android:layout_width="match_parent"
                                 android:layout_height="wrap_content">
 
                                 <TextView
@@ -568,7 +568,7 @@
                             </TableRow>
 
                             <TableRow
-                                android:layout_width="fill_parent"
+                                android:layout_width="match_parent"
                                 android:layout_height="wrap_content">
 
                                 <TextView
@@ -590,7 +590,7 @@
                             </TableRow>
 
                             <TableRow
-                                android:layout_width="fill_parent"
+                                android:layout_width="match_parent"
                                 android:layout_height="wrap_content">
 
                                 <TextView
@@ -612,7 +612,7 @@
                             </TableRow>
 
                             <TableRow
-                                android:layout_width="fill_parent"
+                                android:layout_width="match_parent"
                                 android:layout_height="wrap_content">
 
                                 <TextView
@@ -634,7 +634,7 @@
                             </TableRow>
 
                             <TableRow
-                                android:layout_width="fill_parent"
+                                android:layout_width="match_parent"
                                 android:layout_height="wrap_content">
 
                                 <TextView
@@ -657,7 +657,7 @@
 
                             <TableRow
                                 android:id="@+id/push_row"
-                                android:layout_width="fill_parent"
+                                android:layout_width="match_parent"
                                 android:layout_height="wrap_content">
 
                                 <TextView
@@ -679,7 +679,7 @@
                             </TableRow>
 
                             <TableRow
-                                android:layout_width="fill_parent"
+                                android:layout_width="match_parent"
                                 android:layout_height="wrap_content">
 
                                 <TextView
@@ -815,7 +815,7 @@
 
                 <androidx.cardview.widget.CardView
                     android:id="@+id/other_device_keys_card"
-                    android:layout_width="fill_parent"
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginStart="@dimen/activity_horizontal_margin"
                     android:layout_marginLeft="@dimen/activity_horizontal_margin"
@@ -842,7 +842,7 @@
 
                         <LinearLayout
                             android:id="@+id/other_device_keys"
-                            android:layout_width="fill_parent"
+                            android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:orientation="vertical" />
 
@@ -878,7 +878,7 @@
 
             <View
                 android:layout_width="1dp"
-                android:layout_height="fill_parent"
+                android:layout_height="match_parent"
                 android:layout_marginTop="7dp"
                 android:layout_marginBottom="7dp" />
 

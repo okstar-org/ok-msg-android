@@ -70,7 +70,7 @@
                         </TableRow>
 
                         <TableRow
-                            android:layout_width="fill_parent"
+                            android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:paddingBottom="@dimen/card_padding_regular">
 
@@ -100,7 +100,7 @@
                         </TableRow>
 
                         <TableRow
-                            android:layout_width="fill_parent"
+                            android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:paddingBottom="@dimen/card_padding_regular">
 
@@ -130,7 +130,7 @@
                         </TableRow>
 
                         <TableRow
-                            android:layout_width="fill_parent"
+                            android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:paddingBottom="@dimen/card_padding_regular">
 
@@ -160,7 +160,7 @@
                         </TableRow>
 
                         <TableRow
-                            android:layout_width="fill_parent"
+                            android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:paddingBottom="@dimen/card_padding_regular">
 
@@ -190,7 +190,7 @@
                         </TableRow>
 
                         <TableRow
-                            android:layout_width="fill_parent"
+                            android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:paddingBottom="@dimen/card_padding_regular">
 
@@ -220,7 +220,7 @@
                         </TableRow>
 
                         <TableRow
-                            android:layout_width="fill_parent"
+                            android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:paddingBottom="@dimen/card_padding_regular">
 
