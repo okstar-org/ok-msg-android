@@ -339,8 +339,6 @@ public class ConferenceDetailsActivity extends XmppActivity implements OnConvers
                 this.mAdvancedMode = !menuItem.isChecked();
                 menuItem.setChecked(this.mAdvancedMode);
                 getPreferences().edit().putBoolean("advanced_muc_mode", mAdvancedMode).apply();
-                final boolean online = mConversation != null && mConversation.getMucOptions().online();
-                this.binding.mucInfoMore.setVisibility(this.mAdvancedMode && online ? View.VISIBLE : View.GONE);
                 invalidateOptionsMenu();
                 updateView();
                 break;
@@ -492,7 +490,7 @@ public class ConferenceDetailsActivity extends XmppActivity implements OnConvers
         final MenuItem share = menu.findItem(R.id.action_share);
         share.setVisible(!groupChat);
         final MenuItem menuMessageNotification = menu.findItem(R.id.action_message_notifications);
-        if (Compatibility.runsTwentySix()) {
+        if (Compatibility.runsTwentySix() && xmppConnectionServiceBound) {
             menuMessageNotification.setVisible(xmppConnectionService.hasIndividualNotification(mConversation));
         } else {
             menuMessageNotification.setVisible(false);

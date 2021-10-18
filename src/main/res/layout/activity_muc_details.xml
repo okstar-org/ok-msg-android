@@ -15,12 +15,12 @@
             layout="@layout/toolbar" />
 
         <ScrollView
-            android:layout_width="fill_parent"
-            android:layout_height="fill_parent">
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
 
             <LinearLayout
                 android:id="@+id/muc_main_layout"
-                android:layout_width="fill_parent"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:orientation="vertical">
 
@@ -164,7 +164,7 @@
 
                             <RelativeLayout
                                 android:id="@+id/muc_settings"
-                                android:layout_width="fill_parent"
+                                android:layout_width="match_parent"
                                 android:layout_height="wrap_content">
 
                                 <TextView
@@ -194,7 +194,7 @@
                             </RelativeLayout>
 
                             <RelativeLayout
-                                android:layout_width="fill_parent"
+                                android:layout_width="match_parent"
                                 android:layout_height="wrap_content">
 
                                 <TextView
@@ -334,62 +334,56 @@
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:gravity="center_horizontal"
-                            android:orientation="vertical"
+                            android:orientation="horizontal"
                             android:padding="@dimen/card_padding_regular">
 
-                            <RelativeLayout
+                            <com.makeramen.roundedimageview.RoundedImageView
+                                android:id="@+id/your_photo"
+                                android:layout_width="@dimen/avatar_on_details_screen_size"
+                                android:layout_height="@dimen/avatar_on_details_screen_size"
+                                android:layout_alignParentStart="true"
+                                android:layout_alignParentLeft="true"
+                                android:layout_alignParentEnd="false"
+                                android:layout_alignParentRight="false"
+                                android:padding="1dp"
+                                app:riv_corner_radius="@dimen/rounded_image_border" />
+
+                            <LinearLayout
                                 android:layout_width="match_parent"
-                                android:layout_height="match_parent"
-                                android:layout_marginTop="2dp">
+                                android:layout_height="wrap_content"
+                                android:layout_centerVertical="true"
+                                android:layout_toEndOf="@+id/your_photo"
+                                android:layout_toRightOf="@+id/your_photo"
+                                android:orientation="vertical"
+                                android:paddingStart="@dimen/avatar_item_distance"
+                                android:paddingLeft="@dimen/avatar_item_distance">
 
-                                <com.makeramen.roundedimageview.RoundedImageView
-                                    android:id="@+id/your_photo"
-                                    android:layout_width="@dimen/avatar_on_details_screen_size"
-                                    android:layout_height="@dimen/avatar_on_details_screen_size"
-                                    android:layout_alignParentStart="true"
-                                    android:layout_alignParentLeft="true"
-                                    android:layout_alignParentEnd="false"
-                                    android:layout_alignParentRight="false"
-                                    android:padding="1dp"
-                                    app:riv_corner_radius="@dimen/rounded_image_border" />
-
-                                <LinearLayout
-                                    android:layout_width="fill_parent"
-                                    android:layout_height="wrap_content"
-                                    android:layout_centerVertical="true"
-                                    android:layout_toEndOf="@+id/your_photo"
-                                    android:layout_toRightOf="@+id/your_photo"
-                                    android:orientation="vertical"
-                                    android:paddingStart="@dimen/avatar_item_distance"
-                                    android:paddingLeft="@dimen/avatar_item_distance">
-
-                                    <TextView
-                                        android:id="@+id/muc_your_nick"
-                                        android:layout_width="wrap_content"
-                                        android:layout_height="wrap_content"
-                                        android:singleLine="true"
-                                        android:textAppearance="@style/TextAppearance.Conversations.Subhead" />
-
-                                    <TextView
-                                        android:id="@+id/muc_role"
-                                        android:layout_width="wrap_content"
-                                        android:layout_height="wrap_content"
-                                        android:singleLine="true"
-                                        android:textAppearance="@style/TextAppearance.Conversations.Body1.Secondary" />
-                                </LinearLayout>
-
-                                <ImageButton
-                                    android:id="@+id/edit_nick_button"
+                                <TextView
+                                    android:id="@+id/muc_your_nick"
                                     android:layout_width="wrap_content"
                                     android:layout_height="wrap_content"
-                                    android:layout_alignParentEnd="true"
-                                    android:layout_alignParentRight="true"
-                                    android:layout_centerVertical="true"
-                                    android:alpha="?attr/icon_alpha"
-                                    android:background="?attr/selectableItemBackgroundBorderless"
-                                    android:padding="@dimen/image_button_padding"
-                                    android:src="?attr/icon_edit_body" />
-                            </RelativeLayout>
+                                    android:singleLine="true"
+                                    android:textAppearance="@style/TextAppearance.Conversations.Subhead" />
+
+                                <TextView
+                                    android:id="@+id/muc_role"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:singleLine="true"
+                                    android:textAppearance="@style/TextAppearance.Conversations.Body1.Secondary" />
+                            </LinearLayout>
+
+                            <ImageButton
+                                android:id="@+id/edit_nick_button"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_alignParentEnd="true"
+                                android:layout_alignParentRight="true"
+                                android:layout_centerVertical="true"
+                                android:alpha="?attr/icon_alpha"
+                                android:background="?attr/selectableItemBackgroundBorderless"
+                                android:padding="@dimen/image_button_padding"
+                                android:src="?attr/icon_edit_body" />
                         </LinearLayout>
 
                         <LinearLayout
@@ -439,12 +433,11 @@
 
                         <androidx.recyclerview.widget.RecyclerView
                             android:id="@+id/users"
-                            android:layout_width="fill_parent"
-                            android:layout_height="0dp"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:minHeight="88dp"
                             android:layout_marginStart="-2dp"
                             android:layout_marginEnd="-2dp"
-                            android:layout_weight="1"
-                            android:divider="?android:dividerHorizontal"
                             android:orientation="horizontal"
                             android:paddingStart="@dimen/card_padding_regular"
                             android:paddingTop="@dimen/card_padding_regular"
@@ -452,8 +445,8 @@
                             android:paddingBottom="@dimen/card_padding_list" />
 
                         <LinearLayout
-                            android:layout_width="wrap_content"
-                            android:layout_height="match_parent"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
                             android:layout_gravity="end"
                             android:orientation="horizontal">
 
@@ -505,12 +498,10 @@
 
                         <androidx.recyclerview.widget.RecyclerView
                             android:id="@+id/media"
-                            android:layout_width="fill_parent"
-                            android:layout_height="0dp"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
                             android:layout_marginStart="-2dp"
                             android:layout_marginEnd="-2dp"
-                            android:layout_weight="1"
-                            android:divider="?android:dividerHorizontal"
                             android:orientation="horizontal"
                             android:paddingStart="@dimen/card_padding_regular"
                             android:paddingTop="@dimen/card_padding_regular"

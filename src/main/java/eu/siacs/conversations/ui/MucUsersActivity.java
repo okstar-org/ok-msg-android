@@ -114,7 +114,7 @@ public class MucUsersActivity extends XmppActivity implements XmppConnectionServ
 
     @Override
     public void onAffiliationChangeFailed(Jid jid, int resId) {
-        displayToast(getString(resId, jid.asBareJid().toEscapedString()));
+        displayToast(getString(resId, jid.asBareJid().toString()));
     }
 
     @Override

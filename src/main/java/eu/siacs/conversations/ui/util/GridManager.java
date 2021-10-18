@@ -50,10 +50,7 @@ public class GridManager {
 
     private static ColumnInfo calculateColumnCount(Context context, int availableWidth, @DimenRes int desiredSize) {
         final float desiredWidth = context.getResources().getDimension(desiredSize);
-        int columns = Math.round(availableWidth / desiredWidth);
-        if (columns < 1) {
-            columns = 1;
-        }
+        final int columns = Math.round(availableWidth / desiredWidth);
         final int realWidth = availableWidth / columns;
         Log.d(Config.LOGTAG, "desired=" + desiredWidth + " real=" + realWidth);
         return new ColumnInfo(columns, realWidth);

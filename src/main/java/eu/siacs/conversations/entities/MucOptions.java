@@ -1,6 +1,5 @@
 package eu.siacs.conversations.entities;
 
-import android.annotation.SuppressLint;
 import android.text.TextUtils;
 
 import androidx.annotation.NonNull;
@@ -25,7 +24,6 @@ import eu.siacs.conversations.xmpp.forms.Data;
 import eu.siacs.conversations.xmpp.forms.Field;
 import eu.siacs.conversations.xmpp.pep.Avatar;
 
-@SuppressLint("DefaultLocale")
 public class MucOptions {
 
     public static final String STATUS_CODE_SELF_PRESENCE = "110";

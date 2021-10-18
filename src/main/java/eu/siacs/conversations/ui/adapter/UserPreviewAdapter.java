@@ -58,7 +58,6 @@ public class UserPreviewAdapter extends ListAdapter<MucOptions.User, UserPreview
         return selectedUser;
     }
 
-
     class ViewHolder extends RecyclerView.ViewHolder {
 
         private final UserPreviewBinding binding;
