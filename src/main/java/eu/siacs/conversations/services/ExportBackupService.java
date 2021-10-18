@@ -270,6 +270,7 @@ public class ExportBackupService extends Service {
                 RUNNING.set(false);
                 if (success) {
                     notifySuccess(files, notify);
+                    FileBackend.deleteOldBackups(new File(FileBackend.getBackupDirectory(null)), this.mAccounts);
                 } else {
                     notifyError();
                 }
@@ -434,7 +435,6 @@ public class ExportBackupService extends Service {
         if (!notify) {
             return;
         }
-        FileBackend.deleteOldBackups(new File(FileBackend.getBackupDirectory(null)), this.mAccounts);
         final String path = FileBackend.getBackupDirectory(null);
         PendingIntent openFolderIntent = null;
         for (Intent intent : getPossibleFileOpenIntents(this, path)) {
