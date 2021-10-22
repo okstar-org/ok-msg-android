@@ -332,6 +332,11 @@
             android:summary="@string/pref_allow_message_correction_summary"
             android:title="@string/pref_allow_message_correction" />
         <CheckBoxPreference
+            android:defaultValue="@bool/allow_message_retraction"
+            android:key="allow_message_retraction"
+            android:summary="@string/pref_allow_message_retraction_summary"
+            android:title="@string/pref_allow_message_retraction" />
+        <CheckBoxPreference
             android:defaultValue="@bool/indicate_received"
             android:key="indicate_received"
             android:summary="@string/pref_use_indicate_received_summary"

@@ -21,6 +21,7 @@
     <bool name="confirm_messages">true</bool>
     <bool name="allowmergemessages">true</bool>
     <bool name="allow_message_correction">true</bool>
+    <bool name="allow_message_retraction">true</bool>
     <bool name="chat_states">true</bool>
     <bool name="autojoin">true</bool>
     <bool name="indicate_received">true</bool>

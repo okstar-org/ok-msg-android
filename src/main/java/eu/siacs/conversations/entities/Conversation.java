@@ -417,12 +417,23 @@ public class Conversation extends AbstractEntity implements Blockable, Comparabl
     }
 
     public Message findSentMessageWithUuidOrRemoteId(String id) {
+        return findSentMessageWithUuidOrRemoteId(id, false, false);
+    }
+
+    public Message findSentMessageWithUuidOrRemoteId(String id, boolean ignorestatus, boolean withedits) {
         synchronized (this.messages) {
             for (Message message : this.messages) {
-                if (id.equals(message.getUuid())
-                        || (message.getStatus() >= Message.STATUS_SEND
-                        && id.equals(message.getRemoteMsgId()))) {
+
+                if (id.equals(message.getUuid()) || ((message.getStatus() >= Message.STATUS_SEND || ignorestatus) && id.equals(message.getRemoteMsgId()))) {
                     return message;
+                }
+
+                if (withedits) {
+                    for (Edit itm : message.edits) {
+                        if (id.equals(itm.getEditedId())) {
+                            return message;
+                        }
+                    }
                 }
             }
         }
@@ -442,8 +453,6 @@ public class Conversation extends AbstractEntity implements Blockable, Comparabl
                     final boolean idMatch = id.equals(message.getRemoteMsgId()) || message.remoteMsgIdMatchInEdit(id);
                     if (idMatch && !message.isFileOrImage() && !message.treatAsDownloadable()) {
                         return message;
-                    } else {
-                        return null;
                     }
                 }
             }

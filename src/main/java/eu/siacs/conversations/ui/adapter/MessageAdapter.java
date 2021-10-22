@@ -209,12 +209,21 @@ public class MessageAdapter extends ArrayAdapter<Message> {
             viewHolder.indicatorReceived.setVisibility(View.GONE);
         }
         if (viewHolder.edit_indicator != null) {
-            if (message.edited()) {
+            if (message.edited() && !message.isMessageDeleted()) {
                 viewHolder.edit_indicator.setVisibility(View.VISIBLE);
                 viewHolder.edit_indicator.setImageResource(darkBackground ? R.drawable.ic_mode_edit_white_18dp : R.drawable.ic_mode_edit_black_18dp);
                 viewHolder.edit_indicator.setAlpha(darkBackground ? 0.7f : 0.57f);
             } else {
                 viewHolder.edit_indicator.setVisibility(View.GONE);
+            }
+        }
+        if (viewHolder.retract_indicator != null) {
+            if (message.isMessageDeleted()) {
+                viewHolder.retract_indicator.setVisibility(View.VISIBLE);
+                viewHolder.retract_indicator.setImageResource(darkBackground ? R.drawable.ic_delete_white_18dp : R.drawable.ic_delete_black_18dp);
+                viewHolder.retract_indicator.setAlpha(darkBackground ? 0.7f : 0.57f);
+            } else {
+                viewHolder.retract_indicator.setVisibility(View.GONE);
             }
         }
         final Transferable transferable = message.getTransferable();
@@ -1098,6 +1107,7 @@ public class MessageAdapter extends ArrayAdapter<Message> {
                     viewHolder.resend_button = view.findViewById(R.id.resend_button);
                     viewHolder.indicator = view.findViewById(R.id.security_indicator);
                     viewHolder.edit_indicator = view.findViewById(R.id.edit_indicator);
+                    viewHolder.retract_indicator = view.findViewById(R.id.retract_indicator);
                     viewHolder.images = view.findViewById(R.id.images);
                     viewHolder.mediaduration = view.findViewById(R.id.media_duration);
                     viewHolder.image = view.findViewById(R.id.message_image);
@@ -1119,6 +1129,7 @@ public class MessageAdapter extends ArrayAdapter<Message> {
                     viewHolder.answer_button = view.findViewById(R.id.answer);
                     viewHolder.indicator = view.findViewById(R.id.security_indicator);
                     viewHolder.edit_indicator = view.findViewById(R.id.edit_indicator);
+                    viewHolder.retract_indicator = view.findViewById(R.id.retract_indicator);
                     viewHolder.images = view.findViewById(R.id.images);
                     viewHolder.mediaduration = view.findViewById(R.id.media_duration);
                     viewHolder.image = view.findViewById(R.id.message_image);
@@ -1436,6 +1447,7 @@ public class MessageAdapter extends ArrayAdapter<Message> {
 
         public Button load_more_messages;
         public ImageView edit_indicator;
+        public ImageView retract_indicator;
         public RelativeLayout audioPlayer;
         public RelativeLayout images;
         protected LinearLayout message_box;

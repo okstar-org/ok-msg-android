@@ -1,6 +1,7 @@
 package eu.siacs.conversations.services;
 
 import static eu.siacs.conversations.ui.SettingsActivity.ALLOW_MESSAGE_CORRECTION;
+import static eu.siacs.conversations.ui.SettingsActivity.ALLOW_MESSAGE_RETRACTION;
 import static eu.siacs.conversations.ui.SettingsActivity.AUTOMATIC_ATTACHMENT_DELETION;
 import static eu.siacs.conversations.ui.SettingsActivity.CHAT_STATES;
 import static eu.siacs.conversations.ui.SettingsActivity.CONFIRM_MESSAGES;
@@ -4425,6 +4426,10 @@ public class XmppConnectionService extends Service {
 
     public boolean allowMessageCorrection() {
         return getBooleanPreference(ALLOW_MESSAGE_CORRECTION, R.bool.allow_message_correction);
+    }
+
+    public boolean allowMessageRetraction() {
+        return getBooleanPreference(ALLOW_MESSAGE_RETRACTION, R.bool.allow_message_retraction);
     }
 
     public boolean sendChatStates() {

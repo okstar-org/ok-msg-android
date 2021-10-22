@@ -92,6 +92,7 @@ public class Message extends AbstractEntity implements AvatarService.Avatarable 
     public static final String ERROR_MESSAGE_CANCELLED = "eu.siacs.conversations.cancelled";
     public static final String DELETED_MESSAGE_BODY = "eu.siacs.conversations.message_deleted";
     public static final String DELETED_MESSAGE_BODY_OLD = "de.pixart.messenger.message_deleted";
+    public static final String RETRACT_ID = "retractId";
 
     public boolean markable = false;
     protected String conversationUuid;
@@ -120,6 +121,7 @@ public class Message extends AbstractEntity implements AvatarService.Avatarable 
     private String axolotlFingerprint = null;
     private String errorMessage = null;
     private Set<ReadByMarker> readByMarkers = new CopyOnWriteArraySet<>();
+    private String retractId = null;
 
     private Boolean isGeoUri = null;
     private Boolean isXmppUri = null;
@@ -162,6 +164,7 @@ public class Message extends AbstractEntity implements AvatarService.Avatarable 
                 null,
                 false,
                 false,
+                null,
                 null);
     }
 
@@ -188,6 +191,7 @@ public class Message extends AbstractEntity implements AvatarService.Avatarable 
                 null,
                 false,
                 false,
+                null,
                 null);
     }
 
@@ -197,7 +201,7 @@ public class Message extends AbstractEntity implements AvatarService.Avatarable 
                       final String remoteMsgId, final String relativeFilePath,
                       final String serverMsgId, final String fingerprint, final boolean read, final boolean deleted,
                       final String edited, final boolean oob, final String errorMessage, final Set<ReadByMarker> readByMarkers,
-                      final boolean markable, final boolean file_deleted, final String bodyLanguage) {
+                      final boolean markable, final boolean file_deleted, final String bodyLanguage, final String retractId) {
         this.conversation = conversation;
         this.uuid = uuid;
         this.conversationUuid = conversationUUid;
@@ -222,6 +226,7 @@ public class Message extends AbstractEntity implements AvatarService.Avatarable 
         this.markable = markable;
         this.file_deleted = file_deleted;
         this.bodyLanguage = bodyLanguage;
+        this.retractId = retractId;
     }
 
     public static Message fromCursor(Cursor cursor, Conversation conversation) {
@@ -248,7 +253,8 @@ public class Message extends AbstractEntity implements AvatarService.Avatarable 
                 ReadByMarker.fromJsonString(cursor.getString(cursor.getColumnIndex(READ_BY_MARKERS))),
                 cursor.getInt(cursor.getColumnIndex(MARKABLE)) > 0,
                 cursor.getInt(cursor.getColumnIndex(FILE_DELETED)) > 0,
-                cursor.getString(cursor.getColumnIndex(BODY_LANGUAGE))
+                cursor.getString(cursor.getColumnIndex(BODY_LANGUAGE)),
+                cursor.getString(cursor.getColumnIndex(RETRACT_ID))
         );
     }
 
@@ -306,7 +312,7 @@ public class Message extends AbstractEntity implements AvatarService.Avatarable 
         values.put(READ, read ? 1 : 0);
         values.put(DELETED, deleted ? 1 : 0);
         try {
-            values.put(EDITED, Edit.toJson(edits));
+            values.put(EDITED, Edit.toJson(edits, retractId != null || deleted));
         } catch (JSONException e) {
             Log.e(Config.LOGTAG, "error persisting json for edits", e);
         }
@@ -316,6 +322,7 @@ public class Message extends AbstractEntity implements AvatarService.Avatarable 
         values.put(MARKABLE, markable ? 1 : 0);
         values.put(FILE_DELETED, file_deleted ? 1 : 0);
         values.put(BODY_LANGUAGE, bodyLanguage);
+        values.put(RETRACT_ID, retractId);
         return values;
     }
 
@@ -486,8 +493,8 @@ public class Message extends AbstractEntity implements AvatarService.Avatarable 
         this.carbon = carbon;
     }
 
-    public void putEdited(String edited, String serverMsgId) {
-        final Edit edit = new Edit(edited, serverMsgId);
+    public void putEdited(String edited, String serverMsgId, String body, long timeSent) {
+        final Edit edit = new Edit(edited, serverMsgId, body, timeSent);
         if (this.edits.size() < 128 && !this.edits.contains(edit)) {
             this.edits.add(edit);
         }
@@ -524,6 +531,14 @@ public class Message extends AbstractEntity implements AvatarService.Avatarable 
 
     public Transferable getTransferable() {
         return this.transferable;
+    }
+
+    public String getRetractId() {
+        return this.retractId;
+    }
+
+    public void setRetractId(String id) {
+        this.retractId = id;
     }
 
     public synchronized void setTransferable(Transferable transferable) {
@@ -807,6 +822,10 @@ public class Message extends AbstractEntity implements AvatarService.Avatarable 
         } else {
             throw new IllegalStateException("Attempting to store unedited message");
         }
+    }
+
+    public List<Edit> getEditedList() {
+        return edits;
     }
 
     public String getEditedIdWireFormat() {

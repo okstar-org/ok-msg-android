@@ -41,8 +41,8 @@ public class IndividualMessage extends Message {
         super(conversation);
     }
 
-    private IndividualMessage(Conversational conversation, String uuid, String conversationUUid, Jid counterpart, Jid trueCounterpart, String body, long timeSent, int encryption, int status, int type, boolean carbon, String remoteMsgId, String relativeFilePath, String serverMsgId, String fingerprint, boolean read, boolean deleted, String edited, boolean oob, String errorMessage, Set<ReadByMarker> readByMarkers, boolean markable, boolean file_deleted, String bodyLanguage) {
-        super(conversation, uuid, conversationUUid, counterpart, trueCounterpart, body, timeSent, encryption, status, type, carbon, remoteMsgId, relativeFilePath, serverMsgId, fingerprint, read, deleted, edited, oob, errorMessage, readByMarkers, markable, file_deleted, bodyLanguage);
+    private IndividualMessage(Conversational conversation, String uuid, String conversationUUid, Jid counterpart, Jid trueCounterpart, String body, long timeSent, int encryption, int status, int type, boolean carbon, String remoteMsgId, String relativeFilePath, String serverMsgId, String fingerprint, boolean read, boolean deleted, String edited, boolean oob, String errorMessage, Set<ReadByMarker> readByMarkers, boolean markable, boolean file_deleted, String bodyLanguage, String retractId) {
+        super(conversation, uuid, conversationUUid, counterpart, trueCounterpart, body, timeSent, encryption, status, type, carbon, remoteMsgId, relativeFilePath, serverMsgId, fingerprint, read, deleted, edited, oob, errorMessage, readByMarkers, markable, file_deleted, bodyLanguage,retractId);
     }
 
     public static Message createDateSeparator(Message message) {
@@ -101,7 +101,8 @@ public class IndividualMessage extends Message {
                 ReadByMarker.fromJsonString(cursor.getString(cursor.getColumnIndex(READ_BY_MARKERS))),
                 cursor.getInt(cursor.getColumnIndex(MARKABLE)) > 0,
                 cursor.getInt(cursor.getColumnIndex(FILE_DELETED)) > 0,
-                cursor.getString(cursor.getColumnIndex(BODY_LANGUAGE))
+                cursor.getString(cursor.getColumnIndex(BODY_LANGUAGE)),
+                cursor.getString(cursor.getColumnIndex(RETRACT_ID))
         );
     }
 

@@ -1,6 +1,7 @@
 package eu.siacs.conversations.ui;
 
-import static eu.siacs.conversations.entities.Message.DELETED_MESSAGE_BODY;
+import static android.view.ViewGroup.LayoutParams.MATCH_PARENT;
+import static android.view.ViewGroup.LayoutParams.WRAP_CONTENT;
 import static eu.siacs.conversations.ui.SettingsActivity.HIDE_YOU_ARE_NOT_PARTICIPATING;
 import static eu.siacs.conversations.ui.SettingsActivity.WARN_UNENCRYPTED_CHAT;
 import static eu.siacs.conversations.ui.XmppActivity.EXTRA_ACCOUNT;
@@ -59,6 +60,7 @@ import android.widget.AbsListView.OnScrollListener;
 import android.widget.AdapterView;
 import android.widget.AdapterView.AdapterContextMenuInfo;
 import android.widget.CheckBox;
+import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.TextView.OnEditorActionListener;
 import android.widget.Toast;
@@ -102,6 +104,7 @@ import eu.siacs.conversations.entities.Contact;
 import eu.siacs.conversations.entities.Conversation;
 import eu.siacs.conversations.entities.Conversational;
 import eu.siacs.conversations.entities.DownloadableFile;
+import eu.siacs.conversations.entities.Edit;
 import eu.siacs.conversations.entities.Message;
 import eu.siacs.conversations.entities.MucOptions;
 import eu.siacs.conversations.entities.MucOptions.User;
@@ -116,6 +119,8 @@ import eu.siacs.conversations.services.MessageArchiveService;
 import eu.siacs.conversations.services.XmppConnectionService;
 import eu.siacs.conversations.ui.adapter.MediaPreviewAdapter;
 import eu.siacs.conversations.ui.adapter.MessageAdapter;
+import eu.siacs.conversations.ui.adapter.MessageLogAdapter;
+import eu.siacs.conversations.ui.adapter.model.MessageLogModel;
 import eu.siacs.conversations.ui.util.ActivityResult;
 import eu.siacs.conversations.ui.util.Attachment;
 import eu.siacs.conversations.ui.util.CallManager;
@@ -843,8 +848,8 @@ public class ConversationFragment extends XmppFragment implements EditMessage.Ke
             Message.configurePrivateMessage(message);
         } else {
             message = conversation.getCorrectingMessage();
+            message.putEdited(message.getUuid(), message.getServerMsgId(), message.getBody(), message.getTimeSent());
             message.setBody(body);
-            message.putEdited(message.getUuid(), message.getServerMsgId());
             message.setServerMsgId(null);
             message.setUuid(UUID.randomUUID().toString());
         }
@@ -1276,7 +1281,7 @@ public class ConversationFragment extends XmppFragment implements EditMessage.Ke
             if (m.getStatus() == Message.STATUS_RECEIVED && t != null && (t.getStatus() == Transferable.STATUS_CANCELLED || t.getStatus() == Transferable.STATUS_FAILED)) {
                 return;
             }
-            final boolean deleted = m.isFileDeleted();
+            final boolean fileDeleted = m.isFileDeleted();
             final boolean encrypted = m.getEncryption() == Message.ENCRYPTION_DECRYPTION_FAILED
                     || m.getEncryption() == Message.ENCRYPTION_PGP;
             final boolean receiving = m.getStatus() == Message.STATUS_RECEIVED && (t instanceof JingleFileTransferConnection || t instanceof HttpDownloadConnection);
@@ -1295,12 +1300,14 @@ public class ConversationFragment extends XmppFragment implements EditMessage.Ke
             MenuItem cancelTransmission = menu.findItem(R.id.cancel_transmission);
             MenuItem downloadFile = menu.findItem(R.id.download_file);
             MenuItem deleteFile = menu.findItem(R.id.delete_file);
+            MenuItem showLog = menu.findItem(R.id.show_edit_log);
             MenuItem showErrorMessage = menu.findItem(R.id.show_error_message);
             MenuItem saveFile = menu.findItem(R.id.save_file);
             final boolean unInitiatedButKnownSize = MessageUtils.unInitiatedButKnownSize(m);
             final boolean showError = m.getStatus() == Message.STATUS_SEND_FAILED && m.getErrorMessage() != null && !Message.ERROR_MESSAGE_CANCELLED.equals(m.getErrorMessage());
+            final boolean messageDeleted = m.isMessageDeleted();
             deleteMessage.setVisible(true);
-            if (!m.isFileOrImage() && !encrypted && !m.isGeoUri() && !m.treatAsDownloadable() && !unInitiatedButKnownSize && t == null) {
+            if (!m.isFileOrImage() && !encrypted && !m.isGeoUri() && !m.treatAsDownloadable() && !unInitiatedButKnownSize && t == null && !m.isMessageDeleted()) {
                 copyMessage.setVisible(true);
                 quoteMessage.setVisible(!showError && MessageUtils.prepareQuote(m).length() > 0);
                 String body = m.getMergedBody().toString();
@@ -1311,7 +1318,7 @@ public class ConversationFragment extends XmppFragment implements EditMessage.Ke
                     copyLink.setVisible(true);
                 }
             }
-            if (m.getEncryption() == Message.ENCRYPTION_DECRYPTION_FAILED && !deleted) {
+            if (m.getEncryption() == Message.ENCRYPTION_DECRYPTION_FAILED && !fileDeleted) {
                 retryDecryption.setVisible(true);
             }
             if (!showError
@@ -1321,7 +1328,7 @@ public class ConversationFragment extends XmppFragment implements EditMessage.Ke
                     && m.getConversation() instanceof Conversation) {
                 correctMessage.setVisible(true);
             }
-            if ((m.isFileOrImage() && !deleted && !receiving) || (m.getType() == Message.TYPE_TEXT && !m.treatAsDownloadable()) && !unInitiatedButKnownSize && t == null) {
+            if ((m.isFileOrImage() && !fileDeleted && !receiving) || (m.getType() == Message.TYPE_TEXT && !m.treatAsDownloadable()) && !unInitiatedButKnownSize && t == null && !messageDeleted) {
                 shareWith.setVisible(true);
 
             }
@@ -1336,21 +1343,21 @@ public class ConversationFragment extends XmppFragment implements EditMessage.Ke
                     || t instanceof HttpDownloadConnection) {
                 copyUrl.setVisible(true);
             }
-            if (m.isFileOrImage() && deleted && m.hasFileOnRemoteHost()) {
+            if (m.isFileOrImage() && fileDeleted && m.hasFileOnRemoteHost()) {
                 downloadFile.setVisible(true);
                 downloadFile.setTitle(activity.getString(R.string.download_x_file, UIHelper.getFileDescriptionString(activity, m)));
             }
             final boolean waitingOfferedSending = m.getStatus() == Message.STATUS_WAITING
                     || m.getStatus() == Message.STATUS_UNSEND
                     || m.getStatus() == Message.STATUS_OFFERED;
-            final boolean cancelable = (t != null && !deleted) || waitingOfferedSending && m.needsUploading();
+            final boolean cancelable = (t != null && !fileDeleted) || waitingOfferedSending && m.needsUploading();
             if (cancelable) {
                 cancelTransmission.setVisible(true);
             }
             if (fileWithKnownSize(m)) {
                 cancelTransmission.setVisible(false);
             }
-            if (m.isFileOrImage() && !deleted && !cancelable) {
+            if (m.isFileOrImage() && !fileDeleted && !cancelable) {
                 String path = m.getRelativeFilePath();
                 Log.d(Config.LOGTAG, "Path = " + path);
                 if (path == null || !path.startsWith("/") || path.contains(FileBackend.getConversationsDirectory("null"))) {
@@ -1364,6 +1371,9 @@ public class ConversationFragment extends XmppFragment implements EditMessage.Ke
             final String mime = m.isFileOrImage() ? m.getMimeType() : null;
             if ((m.isGeoUri() && GeoHelper.openInOsmAnd(getActivity(), m)) || (mime != null && mime.startsWith("audio/"))) {
                 openWith.setVisible(true);
+            }
+            if (m.edited() && !messageDeleted) {
+                showLog.setVisible(true);
             }
         }
     }
@@ -1438,9 +1448,44 @@ public class ConversationFragment extends XmppFragment implements EditMessage.Ke
             case R.id.save_file:
                 activity.xmppConnectionService.getFileBackend().saveFile(selectedMessage, activity);
                 return true;
+            case R.id.show_edit_log:
+                openLog(selectedMessage);
+                return true;
             default:
                 return super.onContextItemSelected(item);
         }
+    }
+
+    private void openLog(Message logMsg) {
+        final AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
+        builder.setTitle(R.string.show_edit_log);
+        ArrayList dataModels = new ArrayList<>();
+        for (Edit itm : logMsg.getEditedList()) {
+            dataModels.add(new MessageLogModel(itm.getBody(), itm.getTimeSent()));
+        }
+        dataModels.add(new MessageLogModel(logMsg.getBody(), logMsg.getTimeSent()));
+
+        MessageLogAdapter adapter = new MessageLogAdapter(dataModels, getActivity());
+
+        LinearLayout layout = new LinearLayout(getActivity());
+        LinearLayout.LayoutParams layoutParams = new LinearLayout.LayoutParams(MATCH_PARENT, WRAP_CONTENT);
+        layout.setOrientation(LinearLayout.VERTICAL);
+        layout.setLayoutParams(layoutParams);
+
+        ListView listView = new ListView(getActivity());
+        listView.setLayoutParams(layoutParams);
+        layout.addView(listView);
+
+        builder.setView(layout);
+
+        listView.setAdapter(adapter);
+
+        builder.setPositiveButton(R.string.ok, (dialog, which) -> {
+            dialog.dismiss();
+        });
+        final AlertDialog dialog = builder.create();
+        dialog.setCanceledOnTouchOutside(false);
+        dialog.show();
     }
 
     @Override
@@ -2035,32 +2080,29 @@ public class ConversationFragment extends XmppFragment implements EditMessage.Ke
     }
 
     private void deleteMessage(Message message) {
-        Message relevantForCorrection = message;
-        while (message.mergeable(message.next())) {
-            message = message.next();
-        }
-        while (relevantForCorrection.mergeable(relevantForCorrection.next())) {
-            relevantForCorrection = relevantForCorrection.next();
-        }
+
         final AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
         builder.setNegativeButton(R.string.cancel, null);
         builder.setTitle(R.string.delete_message_dialog);
         builder.setMessage(R.string.delete_message_dialog_msg);
-        final Message finalRelevantForCorrection = relevantForCorrection;
+
         final Message finalMessage = message;
+
         builder.setPositiveButton(R.string.confirm, (dialog, which) -> {
-            if (finalRelevantForCorrection.getType() == Message.TYPE_TEXT
+            if (finalMessage.getType() == Message.TYPE_TEXT
                     && !finalMessage.isGeoUri()
-                    && finalRelevantForCorrection.isLastCorrectableMessage()
-                    && finalMessage.getConversation() instanceof Conversation
-                    && (((Conversation) finalMessage.getConversation()).getMucOptions().nonanonymous() || finalMessage.getConversation().getMode() == Conversation.MODE_SINGLE)) {
+                    && finalMessage.getConversation() instanceof Conversation) {
                 this.conversation.setCorrectingMessage(finalMessage);
                 Message deletedmessage = conversation.getCorrectingMessage();
-                deletedmessage.setBody(DELETED_MESSAGE_BODY);
-                deletedmessage.putEdited(deletedmessage.getUuid(), deletedmessage.getServerMsgId());
+                deletedmessage.setMessageDeleted(true);
+                deletedmessage.putEdited(deletedmessage.getUuid(), deletedmessage.getServerMsgId(), deletedmessage.getBody(), deletedmessage.getTimeSent());
+                deletedmessage.setBody(Message.DELETED_MESSAGE_BODY);
                 deletedmessage.setServerMsgId(null);
+                deletedmessage.setRetractId(message.getRemoteMsgId());
+                deletedmessage.setRemoteMsgId(message.getRemoteMsgId());
                 deletedmessage.setUuid(UUID.randomUUID().toString());
-                sendMessage(deletedmessage);
+                if (message.getStatus() >= Message.STATUS_SEND)
+                    sendMessage(deletedmessage);
                 activity.xmppConnectionService.deleteMessage(conversation, deletedmessage);
             }
             activity.xmppConnectionService.deleteMessage(conversation, finalMessage);

@@ -50,6 +50,7 @@ import eu.siacs.conversations.xmpp.jingle.JingleRtpConnection;
 import eu.siacs.conversations.xmpp.pep.Avatar;
 import eu.siacs.conversations.xmpp.stanzas.MessagePacket;
 
+
 public class MessageParser extends AbstractParser implements OnMessagePacketReceived {
 
     private static final SimpleDateFormat TIME_FORMAT = new SimpleDateFormat("HH:mm:ss", Locale.ENGLISH);
@@ -416,6 +417,10 @@ public class MessageParser extends AbstractParser implements OnMessagePacketRece
         final Element oob = packet.findChild("x", Namespace.OOB);
         final String oobUrl = oob != null ? oob.findChildContent("url") : null;
         final String replacementId = replaceElement == null ? null : replaceElement.getAttribute("id");
+
+        final Element applyToElement = packet.findChild("apply-to", "urn:xmpp:fasten:0");
+        final String retractId = applyToElement != null && applyToElement.findChild("retract", "urn:xmpp:message-retract:0") != null ? applyToElement.getAttribute("id") : null;
+
         final Element axolotlEncrypted = packet.findChildEnsureSingle(XmppAxolotlMessage.CONTAINERTAG, AxolotlService.PEP_PREFIX);
         int status;
         final Jid counterpart;
@@ -632,10 +637,11 @@ public class MessageParser extends AbstractParser implements OnMessagePacketRece
                         Log.d(Config.LOGTAG, "replaced message '" + replacedMessage.getBody() + "' with '" + message.getBody() + "'");
                         synchronized (replacedMessage) {
                             final String uuid = replacedMessage.getUuid();
+                            replacedMessage.putEdited(replacedMessage.getRemoteMsgId(), replacedMessage.getServerMsgId(), replacedMessage.getBody(), replacedMessage.getTimeSent());
                             replacedMessage.setUuid(UUID.randomUUID().toString());
                             replacedMessage.setBody(message.getBody());
-                            replacedMessage.putEdited(replacedMessage.getRemoteMsgId(), replacedMessage.getServerMsgId());
                             replacedMessage.setRemoteMsgId(remoteMsgId);
+                            replacedMessage.setTime(message.getTimeSent());
                             if (replacedMessage.getServerMsgId() == null || message.getServerMsgId() != null) {
                                 replacedMessage.setServerMsgId(message.getServerMsgId());
                             }
@@ -667,6 +673,57 @@ public class MessageParser extends AbstractParser implements OnMessagePacketRece
             } else if (replacementId != null && !mXmppConnectionService.allowMessageCorrection() && (message.getBody().equals(DELETED_MESSAGE_BODY) || message.getBody().equals(DELETED_MESSAGE_BODY_OLD))) {
                 Log.d(Config.LOGTAG, account.getJid().asBareJid() + ": received deleted message but LMC is deactivated");
                 return;
+            }
+
+            if (retractId != null && mXmppConnectionService.allowMessageRetraction()) {
+                final Message retractedMessage = conversation.findSentMessageWithUuidOrRemoteId(retractId, true, true);
+
+                if (retractedMessage != null) {
+                    final boolean fingerprintsMatch = retractedMessage.getFingerprint() == null
+                            || retractedMessage.getFingerprint().equals(message.getFingerprint());
+                    final boolean trueCountersMatch = retractedMessage.getTrueCounterpart() != null
+                            && message.getTrueCounterpart() != null
+                            && retractedMessage.getTrueCounterpart().asBareJid().equals(message.getTrueCounterpart().asBareJid());
+                    final boolean mucUserMatches = query == null && retractedMessage.sameMucUser(message); //can not be checked when using mam
+                    final boolean duplicate = conversation.hasDuplicateMessage(message);
+                    if (fingerprintsMatch && (trueCountersMatch || !conversationMultiMode || mucUserMatches) && !duplicate) {
+                        Log.d(Config.LOGTAG, "retracted message '" + retractedMessage.getBody() + "' with '" + message.getBody() + "'");
+                        synchronized (retractedMessage) {
+                            final String uuid = retractedMessage.getUuid();
+                            retractedMessage.setMessageDeleted(true);
+                            retractedMessage.putEdited(retractedMessage.getRemoteMsgId(), retractedMessage.getServerMsgId(), retractedMessage.getBody(), retractedMessage.getTimeSent());
+                            retractedMessage.setUuid(UUID.randomUUID().toString());
+                            retractedMessage.setBody(mXmppConnectionService.getString(R.string.message_deleted));
+                            retractedMessage.setRemoteMsgId(remoteMsgId);
+                            retractedMessage.setTime(message.getTimeSent());
+                            if (retractedMessage.getServerMsgId() == null || message.getServerMsgId() != null) {
+                                retractedMessage.setServerMsgId(message.getServerMsgId());
+                            }
+                            retractedMessage.setEncryption(message.getEncryption());
+                            if (retractedMessage.getStatus() == Message.STATUS_RECEIVED) {
+                                retractedMessage.markUnread();
+                            }
+                            extractChatState(mXmppConnectionService.find(account, counterpart.asBareJid()), isTypeGroupChat, packet);
+                            mXmppConnectionService.updateMessage(retractedMessage, uuid);
+                            if (mXmppConnectionService.confirmMessages()
+                                    && retractedMessage.getStatus() == Message.STATUS_RECEIVED
+                                    && (retractedMessage.trusted() || retractedMessage.isPrivateMessage()) //TODO do we really want to send receipts for all PMs?
+                                    && remoteMsgId != null
+                                    && !selfAddressed
+                                    && !isTypeGroupChat) {
+                                processMessageReceipts(account, packet, remoteMsgId, query);
+                            }
+                            if (retractedMessage.getEncryption() == Message.ENCRYPTION_PGP) {
+                                conversation.getAccount().getPgpDecryptionService().discard(retractedMessage);
+                                conversation.getAccount().getPgpDecryptionService().decrypt(retractedMessage, false);
+                            }
+                        }
+                        mXmppConnectionService.getNotificationService().updateNotification();
+                        return;
+                    } else {
+                        Log.d(Config.LOGTAG, account.getJid().asBareJid() + ": received message correction but verification didn't check out");
+                    }
+                }
             }
 
             long deletionDate = mXmppConnectionService.getAutomaticMessageDeletionDate();

@@ -107,6 +107,16 @@
                     android:src="@drawable/ic_mode_edit_black_18dp" />
 
                 <ImageView
+                    android:id="@+id/retract_indicator"
+                    android:layout_width="?attr/TextSizeCaption"
+                    android:layout_height="?attr/TextSizeCaption"
+                    android:layout_gravity="center_vertical"
+                    android:padding="1dp"
+                    android:alpha="?attr/icon_alpha"
+                    android:gravity="center_vertical"
+                    android:src="@drawable/ic_delete_black_24dp" />
+
+                <ImageView
                     android:id="@+id/indicator_received"
                     android:layout_width="?attr/IconSize"
                     android:layout_height="?attr/IconSize"

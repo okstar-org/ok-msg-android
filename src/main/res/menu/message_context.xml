@@ -61,4 +61,8 @@
         android:id="@+id/delete_file"
         android:title="@string/delete_x_file"
         android:visible="false" />
+    <item
+        android:id="@+id/show_edit_log"
+        android:title="@string/show_edit_log"
+        android:visible="false" />
 </menu>

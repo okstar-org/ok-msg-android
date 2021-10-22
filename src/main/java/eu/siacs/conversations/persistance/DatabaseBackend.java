@@ -65,7 +65,7 @@ import eu.siacs.conversations.xmpp.mam.MamReference;
 public class DatabaseBackend extends SQLiteOpenHelper {
 
     public static final String DATABASE_NAME = "history";
-    public static final int DATABASE_VERSION = 55; // = Conversations DATABASE_VERSION + 6
+    public static final int DATABASE_VERSION = 56; // = Conversations DATABASE_VERSION + 7
     private static boolean requiresMessageIndexRebuild = false;
     private static DatabaseBackend instance = null;
 
@@ -262,6 +262,7 @@ public class DatabaseBackend extends SQLiteOpenHelper {
                 + Message.MARKABLE + " NUMBER DEFAULT 0,"
                 + Message.FILE_DELETED + " NUMBER DEFAULT 0,"
                 + Message.BODY_LANGUAGE + " TEXT,"
+                + Message.RETRACT_ID + " TEXT,"
                 + Message.REMOTE_MSG_ID + " TEXT, FOREIGN KEY("
                 + Message.CONVERSATION + ") REFERENCES "
                 + Conversation.TABLENAME + "(" + Conversation.UUID
@@ -619,6 +620,13 @@ public class DatabaseBackend extends SQLiteOpenHelper {
             db.execSQL(CREATE_MESSAGE_INSERT_TRIGGER);
             db.execSQL(CREATE_MESSAGE_UPDATE_TRIGGER);
             db.execSQL(CREATE_MESSAGE_DELETE_TRIGGER);
+            db.setTransactionSuccessful();
+            db.endTransaction();
+            requiresMessageIndexRebuild = true;
+        }
+        if (oldVersion < 56 && newVersion >= 56) {
+            db.beginTransaction();
+            db.execSQL("ALTER TABLE " + Message.TABLENAME + " ADD COLUMN " + Message.RETRACT_ID + " TEXT;");
             db.setTransactionSuccessful();
             db.endTransaction();
             requiresMessageIndexRebuild = true;

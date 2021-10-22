@@ -249,6 +249,8 @@
     <string name="pref_security_settings">Sicherheit und Datenschutz</string>
     <string name="pref_allow_message_correction">Nachrichtenkorrektur erlauben</string>
     <string name="pref_allow_message_correction_summary">Erlaube deinen Kontakten, nachträglich ihre Nachrichten zu korrigieren</string>
+    <string name="pref_allow_message_retraction">Nachrichtenrückzug erlauben</string>
+    <string name="pref_allow_message_retraction_summary">Erlaube deinen Kontakten, nachträglich ihre Nachrichten zurückzuziehen</string>
     <string name="pref_expert_options">Experteneinstellungen</string>
     <string name="title_activity_about">Über</string>
     <string name="pref_about_conversations_summary">Versions- und Lizenzinformationen</string>
@@ -809,7 +811,7 @@
     <string name="already_drafting_message">Du bist bereits dabei, eine Nachricht zu entwerfen.</string>
     <string name="bad_key_for_encryption">Ungültiger Schlüssel für die Verschlüsselung.</string>
     <string name="delete_message_dialog">Nachricht löschen</string>
-    <string name="delete_message_dialog_msg">Bist du sicher, dass du diese Nachricht löschen möchtest?\n\n<b>Achtung:</b> Dies wird keine Kopien dieser Nachricht löschen, die auf anderen Geräten oder Servern gespeichert sind.</string>
+    <string name="delete_message_dialog_msg">Bist du sicher, dass du diese Nachricht löschen möchtest?\n\n<b>Achtung:</b> Es wird nicht garantiert, dass Kopien dieser Nachricht, die auf anderen Geräten oder Servern gespeichert sind gelöscht werden können.</string>
     <string name="feature_not_implemented">Funktion ist nicht implementiert</string>
     <string name="device_does_not_support_unknown_source_op">Dein Gerät bietet keine Einstellung an, um die Installation aus unbekannten Quellen zu erlauben.</string>
     <string name="reject_request">Anfrage ablehnen</string>
@@ -1146,4 +1148,5 @@
     <string name="pref_import_settings">Einstellungen importieren</string>
     <string name="success_import_settings">Einstellungen erfolgreich importiert.</string>
     <string name="error_import_settings">Fehler beim Importieren der Einstellungen.</string>
+    <string name="show_edit_log">Änderungshistorie</string>
 </resources>

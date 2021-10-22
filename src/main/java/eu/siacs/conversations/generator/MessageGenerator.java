@@ -61,8 +61,14 @@ public class MessageGenerator extends AbstractGenerator {
         if (conversation.getMode() == Conversational.MODE_SINGLE || message.isPrivateMessage() || !conversation.getMucOptions().stableId()) {
             packet.addChild("origin-id", Namespace.STANZA_IDS).setAttribute("id", message.getUuid());
         }
-        if (message.edited()) {
+        if (message.edited() && !message.isMessageDeleted()) {
             packet.addChild("replace", "urn:xmpp:message-correct:0").setAttribute("id", message.getEditedIdWireFormat());
+        } else if (message.isMessageDeleted()) {
+            Element apply = packet.addChild("apply-to", "urn:xmpp:fasten:0").setAttribute("id", (message.getRetractId() != null ? message.getRetractId() : (message.getRemoteMsgId() != null ? message.getRemoteMsgId() : (message.getEditedIdWireFormat() != null ? message.getEditedIdWireFormat() : message.getUuid()))));
+            apply.addChild("retract", "urn:xmpp:message-retract:0");
+            packet.addChild("fallback", "urn:xmpp:fallback:0");
+            packet.addChild("store", "urn:xmpp:hints");
+            packet.setBody("This person attempted to retract a previous message, but it's unsupported by your client.");
         }
         return packet;
     }
@@ -117,7 +123,8 @@ public class MessageGenerator extends AbstractGenerator {
         } else {
             content = message.getBody();
         }
-        packet.setBody(content);
+        if (!message.isMessageDeleted())
+            packet.setBody(content);
         return packet;
     }
 
