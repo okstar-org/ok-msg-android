@@ -7,6 +7,7 @@ import android.content.SharedPreferences;
 import android.content.pm.ActivityInfo;
 import android.content.pm.PackageManager;
 import android.content.pm.ResolveInfo;
+import android.content.res.ColorStateList;
 import android.content.res.Configuration;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
@@ -24,6 +25,7 @@ import android.webkit.MimeTypeMap;
 
 import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AlertDialog;
+import androidx.core.content.ContextCompat;
 import androidx.databinding.DataBindingUtil;
 
 import com.davemorrissey.labs.subscaleview.ImageSource;
@@ -205,15 +207,18 @@ public class MediaViewerActivity extends XmppActivity implements AudioManager.On
         if (isDeletableFile(mFile)) {
             binding.speedDial.addActionItem(new SpeedDialActionItem.Builder(R.id.action_delete, R.drawable.ic_delete_white_24dp)
                     .setLabel(R.string.action_delete)
+                    .setFabImageTintColor(ContextCompat.getColor(this, R.color.white))
                     .create()
             );
         }
         binding.speedDial.addActionItem(new SpeedDialActionItem.Builder(R.id.action_open, R.drawable.ic_open_in_new_white_24dp)
                 .setLabel(R.string.open_with)
+                .setFabImageTintColor(ContextCompat.getColor(this, R.color.white))
                 .create()
         );
         binding.speedDial.addActionItem(new SpeedDialActionItem.Builder(R.id.action_share, R.drawable.ic_share_white_24dp)
                 .setLabel(R.string.share)
+                .setFabImageTintColor(ContextCompat.getColor(this, R.color.white))
                 .create()
         );
 
@@ -249,6 +254,7 @@ public class MediaViewerActivity extends XmppActivity implements AudioManager.On
                 return false;
             });
         }
+        binding.speedDial.getMainFab().setSupportImageTintList(ColorStateList.valueOf(getResources().getColor(R.color.realwhite)));
         showFab();
     }
 

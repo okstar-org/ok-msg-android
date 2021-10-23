@@ -47,6 +47,7 @@
         <item name="color_background_tertiary">@color/grey300</item>
         <item name="color_background_overlay">@color/grey300_40</item>
         <item name="color_warning">@color/red700</item>
+        <item name="color_warning_button_text">@color/warning_button_dark</item>
         <item name="TextColorOnline">@color/green500</item>
         <item name="TextColorError">@color/red800</item>
         <item name="edit_text_color">@color/black87</item>
@@ -63,6 +64,9 @@
         <item name="android:actionModeBackground">@color/accent</item>
         <item name="android:homeAsUpIndicator" type="reference">@drawable/ic_arrow_back_white_24dp
         </item>
+        <item name="buttonBarPositiveButtonStyle">@style/Widget.Conversations.Button.Dialog</item>
+        <item name="buttonBarNeutralButtonStyle">@style/Widget.Conversations.Button.Dialog</item>
+        <item name="buttonBarNegativeButtonStyle">@style/Widget.Conversations.Button.Dialog</item>
 
         <item name="TextSizeCaption">12sp</item>
         <item name="TextSizeBody1">14sp</item>
@@ -218,6 +222,7 @@
         <item name="color_background_tertiary">@color/grey900</item>
         <item name="color_background_overlay">@color/grey900_40</item>
         <item name="color_warning">@color/red700</item>
+        <item name="color_warning_button_text">@color/warning_button</item>
         <item name="TextColorOnline">@color/green500</item>
         <item name="TextColorError">@color/red500</item>
         <item name="edit_text_color">@color/white</item>
@@ -234,6 +239,9 @@
         <item name="android:actionModeBackground">@color/accent</item>
         <item name="android:homeAsUpIndicator" type="reference">@drawable/ic_arrow_back_white_24dp
         </item>
+        <item name="buttonBarPositiveButtonStyle">@style/Widget.Conversations.Button.Dialog</item>
+        <item name="buttonBarNeutralButtonStyle">@style/Widget.Conversations.Button.Dialog</item>
+        <item name="buttonBarNegativeButtonStyle">@style/Widget.Conversations.Button.Dialog</item>
 
         <item name="TextSizeCaption">12sp</item>
         <item name="TextSizeBody1">14sp</item>

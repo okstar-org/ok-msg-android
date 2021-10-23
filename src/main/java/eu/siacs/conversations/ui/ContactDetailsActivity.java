@@ -9,7 +9,6 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
-import android.graphics.PorterDuff;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
@@ -556,7 +555,7 @@ public class ContactDetailsActivity extends OmemoActivity implements OnAccountUp
             binding.detailsReceivePresence.setOnCheckedChangeListener(null);
             binding.addContactButton.setVisibility(View.VISIBLE);
             binding.addContactButton.setText(getString(R.string.action_delete_contact));
-            binding.addContactButton.getBackground().setColorFilter(getWarningButtonColor(), PorterDuff.Mode.MULTIPLY);
+            binding.addContactButton.getBackground().setTint(getWarningButtonColor());
             binding.addContactButton.setTextColor(getWarningTextColor());
             binding.addContactButton.setOnClickListener(view -> {
                 final AlertDialog.Builder deleteFromRosterDialog = new AlertDialog.Builder(ContactDetailsActivity.this);

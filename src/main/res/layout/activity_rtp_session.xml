@@ -151,7 +151,7 @@
             android:alpha="0.7"
             android:src="@drawable/ic_mic_off_black_24dp"
             android:visibility="gone"
-            app:tint="@color/white"  />
+            app:tint="?attr/icon_tint" />
 
         <RelativeLayout
             android:id="@+id/button_row"
@@ -179,6 +179,7 @@
                     app:elevation="4dp"
                     app:fabCustomSize="72dp"
                     app:maxImageSize="36dp"
+                    app:tint="@color/realwhite"
                     tools:visibility="visible" />
 
                 <com.google.android.material.floatingactionbutton.FloatingActionButton
@@ -195,6 +196,7 @@
                     app:elevation="4dp"
                     app:fabCustomSize="72dp"
                     app:maxImageSize="36dp"
+                    app:tint="@color/realwhite"
                     tools:visibility="visible" />
 
             </RelativeLayout>
@@ -211,7 +213,7 @@
                 app:backgroundTint="?color_background_primary"
                 app:elevation="4dp"
                 app:fabSize="mini"
-                app:tint="?attr/icon_tint" />
+                app:tint="@color/realwhite" />
 
             <com.google.android.material.floatingactionbutton.FloatingActionButton
                 android:id="@+id/end_call"
@@ -224,7 +226,8 @@
                 app:backgroundTint="@color/red700"
                 app:elevation="4dp"
                 app:fabCustomSize="72dp"
-                app:maxImageSize="36dp" />
+                app:maxImageSize="36dp"
+                app:tint="@color/realwhite" />
 
             <com.google.android.material.floatingactionbutton.FloatingActionButton
                 android:id="@+id/in_call_action_right"
@@ -238,7 +241,7 @@
                 app:backgroundTint="?color_background_primary"
                 app:elevation="4dp"
                 app:fabSize="mini"
-                app:tint="?attr/icon_tint" />
+                app:tint="@color/realwhite" />
 
             <com.google.android.material.floatingactionbutton.FloatingActionButton
                 android:id="@+id/in_call_action_far_right"
@@ -252,7 +255,7 @@
                 app:backgroundTint="@color/green500"
                 app:elevation="4dp"
                 app:fabSize="mini"
-                app:tint="?attr/icon_tint" />
+                app:tint="@color/realwhite" />
         </RelativeLayout>
 
     </RelativeLayout>

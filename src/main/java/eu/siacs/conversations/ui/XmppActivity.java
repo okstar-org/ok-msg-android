@@ -1052,7 +1052,7 @@ public abstract class XmppActivity extends ActionBarActivity {
             openEasyInviteScreen(accounts.get(0));
         } else {
             final AtomicReference<Account> selectedAccount = new AtomicReference<>(accounts.get(0));
-            final android.app.AlertDialog.Builder alertDialogBuilder = new android.app.AlertDialog.Builder(this);
+            final androidx.appcompat.app.AlertDialog.Builder alertDialogBuilder = new androidx.appcompat.app.AlertDialog.Builder(this);
             alertDialogBuilder.setTitle(R.string.choose_account);
             final String[] asStrings = Collections2.transform(accounts, a -> a.getJid().asBareJid().toEscapedString()).toArray(new String[0]);
             alertDialogBuilder.setSingleChoiceItems(asStrings, 0, (dialog, which) -> selectedAccount.set(accounts.get(which)));

@@ -8,7 +8,6 @@ import android.app.Activity;
 import android.app.PendingIntent;
 import android.content.Context;
 import android.content.Intent;
-import android.graphics.PorterDuff;
 import android.os.Bundle;
 import android.provider.Settings;
 import android.text.Editable;
@@ -648,7 +647,7 @@ public class ConferenceDetailsActivity extends XmppActivity implements OnConvers
             }
             if (self.getAffiliation().ranks(MucOptions.Affiliation.OWNER)) {
                 if (mAdvancedMode) {
-                    this.binding.destroy.getBackground().setColorFilter(getWarningButtonColor(), PorterDuff.Mode.MULTIPLY);
+                    this.binding.destroy.getBackground().setTint(getWarningButtonColor());
                     this.binding.destroy.setTextColor(getWarningTextColor());
                     this.binding.destroy.setVisibility(View.VISIBLE);
                 } else {
@@ -674,12 +673,12 @@ public class ConferenceDetailsActivity extends XmppActivity implements OnConvers
                         });
                 LeaveMucDialog.create().show();
             });
-            this.binding.leaveMuc.getBackground().setColorFilter(getWarningButtonColor(), PorterDuff.Mode.MULTIPLY);
+            this.binding.leaveMuc.getBackground().setTint(getWarningButtonColor());
             this.binding.leaveMuc.setTextColor(getWarningTextColor());
             this.binding.addContactButton.setVisibility(View.VISIBLE);
             if (mConversation.getBookmark() != null) {
                 this.binding.addContactButton.setText(R.string.delete_bookmark);
-                this.binding.addContactButton.getBackground().setColorFilter(getWarningButtonColor(), PorterDuff.Mode.MULTIPLY);
+                this.binding.addContactButton.getBackground().setTint(getWarningButtonColor());
                 this.binding.addContactButton.setTextColor(getWarningTextColor());
                 this.binding.addContactButton.setOnClickListener(v2 -> {
                     final AlertDialog.Builder deleteFromRosterDialog = new AlertDialog.Builder(ConferenceDetailsActivity.this);

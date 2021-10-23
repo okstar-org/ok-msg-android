@@ -25,6 +25,7 @@
     <attr name="color_background_overlay" format="reference|color" />
     <attr name="edit_text_color" format="reference|color" />
     <attr name="color_warning" format="reference|color" />
+    <attr name="color_warning_button_text" format="reference|color" />
     <attr name="EmojiColor" format="reference|color" />
     <attr name="chat_bg" format="reference|color" />
     <attr name="colorAccent" format="reference|color" />

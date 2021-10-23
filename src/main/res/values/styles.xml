@@ -76,7 +76,12 @@
 
     <style name="Widget.Conversations.Button" parent="@style/Widget.MaterialComponents.Button">
         <item name="android:textSize">?TextSizeBody2</item>
-        <item name="android:textColor">@color/realwhite</item>
+        <item name="android:textColor">@color/button_state_color</item>
+    </style>
+
+    <style name="Widget.Conversations.Button.Dialog" parent="@style/Widget.MaterialComponents.Button.TextButton">
+        <item name="android:textSize">?TextSizeBody2</item>
+        <item name="android:textColor">@color/button_state_color</item>
     </style>
 
     <style name="TextAppearance.Conversations.Design.Hint" parent="TextAppearance.Design.Hint">
