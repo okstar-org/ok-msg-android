@@ -196,6 +196,10 @@ public class XmppConnection implements Runnable {
         this.mXmppConnectionService = service;
     }
 
+    public XmppConnectionService getXmppConnectionService() {
+        return mXmppConnectionService;
+    }
+
     private void fixResource(Context context, Account account) {
         String resource = account.getResource();
         if (resource != null && !resource.startsWith(context.getString(R.string.app_name) + '[' + BuildConfig.VERSION_NAME + ']')) {

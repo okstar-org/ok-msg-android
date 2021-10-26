@@ -1153,4 +1153,6 @@
     <string name="action_copy_location">Copy location</string>
     <string name="account_registrations_are_not_supported">Account registrations are not supported</string>
     <string name="no_xmpp_adddress_found">No XMPP address found</string>
+    <string name="pref_allowmergemessages">Merge messages</string>
+    <string name="pref_allowmergemessages_sum">Try to merge messages if they came from the same jid</string>
 </resources>

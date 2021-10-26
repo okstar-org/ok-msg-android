@@ -22,6 +22,7 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 import eu.siacs.conversations.Config;
+import eu.siacs.conversations.R;
 import eu.siacs.conversations.crypto.axolotl.FingerprintStatus;
 import eu.siacs.conversations.http.URL;
 import eu.siacs.conversations.services.AvatarService;
@@ -651,7 +652,18 @@ public class Message extends AbstractEntity implements AvatarService.Avatarable 
     }
 
     public boolean mergeable(final Message message) {
-        return message != null &&
+        boolean mergeAllowed =  conversation.
+                                getAccount().
+                                getXmppConnection().
+                                getXmppConnectionService().
+                                getPreferences().
+                                getBoolean("allowmergemessages",
+                                conversation.
+                                getAccount().
+                                getXmppConnection().
+                                getXmppConnectionService().getResources().getBoolean(R.bool.allowmergemessages));
+
+        return mergeAllowed&&message != null &&
                 (message.getType() == Message.TYPE_TEXT &&
                         this.getTransferable() == null &&
                         message.getTransferable() == null &&
