@@ -19,6 +19,7 @@
     <bool name="away_when_screen_off">false</bool>
     <string name="incoming_call_ringtone">content://settings/system/ringtone</string>
     <bool name="confirm_messages">true</bool>
+    <bool name="allowmergemessages">true</bool>
     <bool name="allow_message_correction">true</bool>
     <bool name="chat_states">true</bool>
     <bool name="autojoin">true</bool>
