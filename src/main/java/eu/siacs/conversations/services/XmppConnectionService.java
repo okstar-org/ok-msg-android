@@ -4471,6 +4471,10 @@ public class XmppConnectionService extends Service {
         return getBooleanPreference(SHOW_OWN_ACCOUNTS, R.bool.show_own_accounts);
     }
 
+    public boolean allowMergeMessages() {
+        return getBooleanPreference("allowmergemessages", R.bool.allowmergemessages);
+    }
+
     public int unreadCount() {
         int count = 0;
         for (Conversation conversation : getConversations()) {
