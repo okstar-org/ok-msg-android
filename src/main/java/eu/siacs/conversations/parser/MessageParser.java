@@ -1,5 +1,8 @@
 package eu.siacs.conversations.parser;
 
+import static eu.siacs.conversations.entities.Message.DELETED_MESSAGE_BODY;
+import static eu.siacs.conversations.entities.Message.DELETED_MESSAGE_BODY_OLD;
+
 import android.util.Log;
 import android.util.Pair;
 
@@ -46,9 +49,6 @@ import eu.siacs.conversations.xmpp.jingle.JingleConnectionManager;
 import eu.siacs.conversations.xmpp.jingle.JingleRtpConnection;
 import eu.siacs.conversations.xmpp.pep.Avatar;
 import eu.siacs.conversations.xmpp.stanzas.MessagePacket;
-
-import static eu.siacs.conversations.entities.Message.DELETED_MESSAGE_BODY;
-import static eu.siacs.conversations.entities.Message.DELETED_MESSAGE_BODY_OLD;
 
 
 public class MessageParser extends AbstractParser implements OnMessagePacketReceived {
@@ -765,16 +765,7 @@ public class MessageParser extends AbstractParser implements OnMessagePacketRece
             if (query != null && query.getPagingOrder() == MessageArchiveService.PagingOrder.REVERSE) {
                 conversation.prepend(query.getActualInThisQuery(), message);
             } else {
-                if (!message.isMessageDeleted())
-                {
-                    conversation.add(message);
-                }
-                else {
-                    if (!original.getFrom().asBareJid().equals(account.getJid().asBareJid()))
-                    {
-                        conversation.add(message);
-                    }
-                }
+                conversation.add(message);
             }
             if (query != null) {
                 query.incrementActualMessageCount();
