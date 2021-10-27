@@ -1,5 +1,7 @@
 package eu.siacs.conversations.ui.adapter;
 
+import static eu.siacs.conversations.ui.util.MyLinkify.replaceYoutube;
+
 import android.content.SharedPreferences;
 import android.graphics.Typeface;
 import android.preference.PreferenceManager;
@@ -36,10 +38,6 @@ import eu.siacs.conversations.utils.UIHelper;
 import eu.siacs.conversations.xmpp.Jid;
 import eu.siacs.conversations.xmpp.chatstate.ChatState;
 import eu.siacs.conversations.xmpp.jingle.OngoingRtpSession;
-
-import static eu.siacs.conversations.entities.Message.DELETED_MESSAGE_BODY;
-import static eu.siacs.conversations.entities.Message.DELETED_MESSAGE_BODY_OLD;
-import static eu.siacs.conversations.ui.util.MyLinkify.replaceYoutube;
 
 public class ConversationAdapter extends RecyclerView.Adapter<ConversationAdapter.ConversationViewHolder> {
 
@@ -162,9 +160,7 @@ public class ConversationAdapter extends RecyclerView.Adapter<ConversationAdapte
             }
             final Pair<CharSequence, Boolean> preview = UIHelper.getMessagePreview(activity, message, viewHolder.binding.conversationLastmsg.getCurrentTextColor());
             if (showPreviewText) {
-                if (message.getBody().equals(DELETED_MESSAGE_BODY)) {
-                    viewHolder.binding.conversationLastmsg.setText(EmojiWrapper.transform(UIHelper.shorten(activity.getString(R.string.message_deleted))));
-                } else if (message.getBody().equals(DELETED_MESSAGE_BODY_OLD)) {
+                if (message.hasDeletedBody()) {
                     viewHolder.binding.conversationLastmsg.setText(EmojiWrapper.transform(UIHelper.shorten(activity.getString(R.string.message_deleted))));
                 } else {
                     viewHolder.binding.conversationLastmsg.setText(EmojiWrapper.transform(UIHelper.shorten(replaceYoutube(activity.getApplicationContext(), preview.first.toString()))));

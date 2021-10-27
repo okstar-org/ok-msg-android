@@ -1,24 +1,23 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:orientation="horizontal"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:padding="5dp">
+    android:orientation="horizontal"
+    android:padding="@dimen/list_padding">
+
     <TextView
         android:id="@+id/nr"
-        android:layout_width="wrap_content"
+        android:layout_width="35dp"
         android:layout_height="match_parent"
-        android:gravity="center"
+        android:gravity="top|center_horizontal"
+        android:maxWidth="35dp"
         android:text="1"
-        android:padding="5dp"
-        android:textSize="16sp"
-        android:textStyle="bold"/>
+        android:textAppearance="@style/TextAppearance.Conversations.Body1" />
 
-    <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-        android:orientation="vertical"
+    <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        >
+        android:orientation="vertical">
 
         <TextView
             android:id="@+id/body"
@@ -26,20 +25,16 @@
             android:layout_height="wrap_content"
             android:gravity="left|center_vertical"
             android:text="This is an old Message"
-            android:textSize="16sp"
-            android:textStyle="bold">
-
-        </TextView>
+            android:textAppearance="@style/TextAppearance.Conversations.Body1" />
 
         <TextView
             android:id="@+id/timeSent"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:layout_marginTop="5dp"
             android:text="xx.xx.xxxx xx:xx"
             android:textAlignment="viewEnd"
-            android:textSize="10sp"
-            android:layout_marginTop="5dp"
-            android:textStyle="italic"></TextView>
+            android:textAppearance="@style/TextAppearance.Conversations.Status" />
 
     </LinearLayout>
 </LinearLayout>

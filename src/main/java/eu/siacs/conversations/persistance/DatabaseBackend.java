@@ -1155,15 +1155,16 @@ public class DatabaseBackend extends SQLiteOpenHelper {
 
     public void deleteMessageInConversation(Message message) {
         long start = SystemClock.elapsedRealtime();
+        final String uuid = message.getUuid();
         final SQLiteDatabase db = this.getWritableDatabase();
         db.beginTransaction();
         ContentValues values = new ContentValues();
         values.put(Message.DELETED, "1");
-        String[] args = {message.getUuid()};
+        String[] args = {uuid};
         int rows = db.update("messages", values, "uuid =?", args);
         db.setTransactionSuccessful();
         db.endTransaction();
-        Log.d(Config.LOGTAG, "deleted " + rows + " message in " + (SystemClock.elapsedRealtime() - start) + "ms");
+        Log.d(Config.LOGTAG, "deleted " + rows + " message (" + uuid + ") in " + (SystemClock.elapsedRealtime() - start) + "ms");
     }
 
     public void deleteMessagesInConversation(Conversation conversation) {

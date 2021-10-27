@@ -2079,20 +2079,18 @@ public class ConversationFragment extends XmppFragment implements EditMessage.Ke
         builder.create().show();
     }
 
-    private void deleteMessage(Message message) {
+    private void deleteMessage(final Message message) {
 
         final AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
         builder.setNegativeButton(R.string.cancel, null);
         builder.setTitle(R.string.delete_message_dialog);
         builder.setMessage(R.string.delete_message_dialog_msg);
 
-        final Message finalMessage = message;
-
         builder.setPositiveButton(R.string.confirm, (dialog, which) -> {
-            if (finalMessage.getType() == Message.TYPE_TEXT
-                    && !finalMessage.isGeoUri()
-                    && finalMessage.getConversation() instanceof Conversation) {
-                this.conversation.setCorrectingMessage(finalMessage);
+            if (message.getType() == Message.TYPE_TEXT
+                    && !message.isGeoUri()
+                    && message.getConversation() instanceof Conversation) {
+                this.conversation.setCorrectingMessage(message);
                 Message deletedmessage = conversation.getCorrectingMessage();
                 deletedmessage.setMessageDeleted(true);
                 deletedmessage.putEdited(deletedmessage.getUuid(), deletedmessage.getServerMsgId(), deletedmessage.getBody(), deletedmessage.getTimeSent());
@@ -2101,11 +2099,12 @@ public class ConversationFragment extends XmppFragment implements EditMessage.Ke
                 deletedmessage.setRetractId(message.getRemoteMsgId());
                 deletedmessage.setRemoteMsgId(message.getRemoteMsgId());
                 deletedmessage.setUuid(UUID.randomUUID().toString());
-                if (message.getStatus() >= Message.STATUS_SEND)
+                if (message.getStatus() == Message.STATUS_SEND || message.getStatus() == Message.STATUS_SEND_DISPLAYED || message.getStatus() == Message.STATUS_SEND_RECEIVED) {
                     sendMessage(deletedmessage);
+                }
                 activity.xmppConnectionService.deleteMessage(conversation, deletedmessage);
             }
-            activity.xmppConnectionService.deleteMessage(conversation, finalMessage);
+            activity.xmppConnectionService.deleteMessage(conversation, message);
             activity.onConversationsListItemUpdated();
             refresh();
         });

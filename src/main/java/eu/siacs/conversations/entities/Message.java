@@ -662,12 +662,11 @@ public class Message extends AbstractEntity implements AvatarService.Avatarable 
     }
 
     public boolean isEditable() {
-        return status != STATUS_RECEIVED && !isCarbon() && type != Message.TYPE_RTP_SESSION;
+        return status != STATUS_RECEIVED && type != Message.TYPE_RTP_SESSION;
     }
 
     public boolean mergeable(final Message message) {
         boolean mergeAllowed = conversation.getAccount().getXmppConnection().getXmppConnectionService().allowMergeMessages();
-
         return mergeAllowed && message != null &&
                 (message.getType() == Message.TYPE_TEXT &&
                         this.getTransferable() == null &&
@@ -698,6 +697,8 @@ public class Message extends AbstractEntity implements AvatarService.Avatarable 
                         !this.bodyIsOnlyEmojis() &&
                         !message.isXmppUri() &&
                         !this.isXmppUri() &&
+                        !message.hasDeletedBody() &&
+                        !this.hasDeletedBody() &&
                         ((this.axolotlFingerprint == null && message.axolotlFingerprint == null) || this.axolotlFingerprint.equals(message.getFingerprint())) &&
                         UIHelper.sameDay(message.getTimeSent(), this.getTimeSent()) &&
                         this.getReadByMarkers().equals(message.getReadByMarkers()) &&
@@ -761,6 +762,10 @@ public class Message extends AbstractEntity implements AvatarService.Avatarable 
 
     public boolean hasMeCommand() {
         return this.body.trim().startsWith(ME_COMMAND);
+    }
+
+    public boolean hasDeletedBody() {
+        return this.body.trim().equals(DELETED_MESSAGE_BODY) || this.body.trim().equals(DELETED_MESSAGE_BODY_OLD);
     }
 
     public int getMergedStatus() {

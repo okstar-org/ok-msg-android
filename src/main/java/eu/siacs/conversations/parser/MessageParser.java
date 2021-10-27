@@ -1,8 +1,5 @@
 package eu.siacs.conversations.parser;
 
-import static eu.siacs.conversations.entities.Message.DELETED_MESSAGE_BODY;
-import static eu.siacs.conversations.entities.Message.DELETED_MESSAGE_BODY_OLD;
-
 import android.util.Log;
 import android.util.Pair;
 
@@ -621,10 +618,13 @@ public class MessageParser extends AbstractParser implements OnMessagePacketRece
             }
 
             if (replacementId != null && mXmppConnectionService.allowMessageCorrection()) {
-                final Message replacedMessage = conversation.findMessageWithRemoteIdAndCounterpart(replacementId,
+                Message replacedMessage = conversation.findMessageWithRemoteIdAndCounterpart(replacementId,
                         counterpart,
                         message.getStatus() == Message.STATUS_RECEIVED,
                         message.isCarbon());
+                if (message.isCarbon() && replacedMessage == null) {
+                    replacedMessage = conversation.findSentMessageWithUuidOrRemoteId(replacementId, true, true);
+                }
                 if (replacedMessage != null) {
                     final boolean fingerprintsMatch = replacedMessage.getFingerprint() == null
                             || replacedMessage.getFingerprint().equals(message.getFingerprint());
@@ -633,11 +633,11 @@ public class MessageParser extends AbstractParser implements OnMessagePacketRece
                             && replacedMessage.getTrueCounterpart().asBareJid().equals(message.getTrueCounterpart().asBareJid());
                     final boolean mucUserMatches = query == null && replacedMessage.sameMucUser(message); //can not be checked when using mam
                     final boolean duplicate = conversation.hasDuplicateMessage(message);
-                    if (fingerprintsMatch && (trueCountersMatch || !conversationMultiMode || mucUserMatches) && !duplicate) {
+                    if (fingerprintsMatch && (trueCountersMatch || !conversationMultiMode || mucUserMatches) && !duplicate && !replacedMessage.hasDeletedBody()) {
                         Log.d(Config.LOGTAG, "replaced message '" + replacedMessage.getBody() + "' with '" + message.getBody() + "'");
                         synchronized (replacedMessage) {
                             final String uuid = replacedMessage.getUuid();
-                            replacedMessage.putEdited(replacedMessage.getRemoteMsgId(), replacedMessage.getServerMsgId(), replacedMessage.getBody(), replacedMessage.getTimeSent());
+                            replacedMessage.putEdited(replacedMessage.getRemoteMsgId() != null ? replacedMessage.getRemoteMsgId() : replacedMessage.getUuid(), replacedMessage.getServerMsgId(), replacedMessage.getBody(), replacedMessage.getTimeSent());
                             replacedMessage.setUuid(UUID.randomUUID().toString());
                             replacedMessage.setBody(message.getBody());
                             replacedMessage.setRemoteMsgId(remoteMsgId);
@@ -670,7 +670,7 @@ public class MessageParser extends AbstractParser implements OnMessagePacketRece
                         Log.d(Config.LOGTAG, account.getJid().asBareJid() + ": received message correction but verification didn't check out");
                     }
                 }
-            } else if (replacementId != null && !mXmppConnectionService.allowMessageCorrection() && (message.getBody().equals(DELETED_MESSAGE_BODY) || message.getBody().equals(DELETED_MESSAGE_BODY_OLD))) {
+            } else if (replacementId != null && !mXmppConnectionService.allowMessageCorrection() && (message.hasDeletedBody())) {
                 Log.d(Config.LOGTAG, account.getJid().asBareJid() + ": received deleted message but LMC is deactivated");
                 return;
             }

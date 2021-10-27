@@ -1,8 +1,5 @@
 package eu.siacs.conversations.utils;
 
-import static eu.siacs.conversations.entities.Message.DELETED_MESSAGE_BODY;
-import static eu.siacs.conversations.entities.Message.DELETED_MESSAGE_BODY_OLD;
-
 import android.content.Context;
 import android.graphics.Typeface;
 import android.text.Spannable;
@@ -318,7 +315,7 @@ public class UIHelper {
             }
         } else {
             final String body = MessageUtils.filterLtrRtl(message.getBody());
-            if (message.getBody().equals(DELETED_MESSAGE_BODY) || message.getBody().equals(DELETED_MESSAGE_BODY_OLD)) {
+            if (message.hasDeletedBody()) {
                 return new Pair<>(context.getString(R.string.message_deleted), false);
             } else if (body.startsWith(Message.ME_COMMAND)) {
                 return new Pair<>(body.replaceAll("^" + Message.ME_COMMAND, UIHelper.getMessageDisplayName(message)), false);
