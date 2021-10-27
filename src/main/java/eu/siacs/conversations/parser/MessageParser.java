@@ -621,10 +621,14 @@ public class MessageParser extends AbstractParser implements OnMessagePacketRece
             }
 
             if (replacementId != null && mXmppConnectionService.allowMessageCorrection()) {
-                final Message replacedMessage = conversation.findMessageWithRemoteIdAndCounterpart(replacementId,
+                Message replacedMessage = conversation.findMessageWithRemoteIdAndCounterpart(replacementId,
                         counterpart,
                         message.getStatus() == Message.STATUS_RECEIVED,
                         message.isCarbon());
+                if (message.isCarbon()&&replacedMessage==null)
+                {
+                    replacedMessage = conversation.findSentMessageWithUuidOrRemoteId(replacementId,true,true);
+                }
                 if (replacedMessage != null) {
                     final boolean fingerprintsMatch = replacedMessage.getFingerprint() == null
                             || replacedMessage.getFingerprint().equals(message.getFingerprint());
@@ -637,7 +641,7 @@ public class MessageParser extends AbstractParser implements OnMessagePacketRece
                         Log.d(Config.LOGTAG, "replaced message '" + replacedMessage.getBody() + "' with '" + message.getBody() + "'");
                         synchronized (replacedMessage) {
                             final String uuid = replacedMessage.getUuid();
-                            replacedMessage.putEdited(replacedMessage.getRemoteMsgId(), replacedMessage.getServerMsgId(), replacedMessage.getBody(), replacedMessage.getTimeSent());
+                            replacedMessage.putEdited(replacedMessage.getRemoteMsgId()!=null?replacedMessage.getRemoteMsgId():replacedMessage.getUuid(), replacedMessage.getServerMsgId(), replacedMessage.getBody(), replacedMessage.getTimeSent());
                             replacedMessage.setUuid(UUID.randomUUID().toString());
                             replacedMessage.setBody(message.getBody());
                             replacedMessage.setRemoteMsgId(remoteMsgId);
@@ -677,7 +681,6 @@ public class MessageParser extends AbstractParser implements OnMessagePacketRece
 
             if (retractId != null && mXmppConnectionService.allowMessageRetraction()) {
                 final Message retractedMessage = conversation.findSentMessageWithUuidOrRemoteId(retractId, true, true);
-
                 if (retractedMessage != null) {
                     final boolean fingerprintsMatch = retractedMessage.getFingerprint() == null
                             || retractedMessage.getFingerprint().equals(message.getFingerprint());

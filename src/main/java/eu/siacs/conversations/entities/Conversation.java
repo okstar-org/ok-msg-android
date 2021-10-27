@@ -508,6 +508,18 @@ public class Conversation extends AbstractEntity implements Blockable, Comparabl
     public void populateWithMessages(final List<Message> messages) {
         synchronized (this.messages) {
             messages.clear();
+            this.messages.removeIf(message ->
+                    (message.isMessageDeleted()&&(message.getStatus()==Message.STATUS_SEND
+                                               || message.getStatus()==Message.STATUS_SEND_FAILED
+                                               || message.getStatus()==Message.STATUS_SEND_DISPLAYED
+                                               || message.getStatus()==Message.STATUS_SEND_RECEIVED)));
+            for (Message itm : this.messages)
+            {
+                if (itm.isMessageDeleted())
+                {
+                    itm.setTime(itm.getEditedList().get(0).getTimeSent());
+                }
+            }
             messages.addAll(this.messages);
         }
         for (Iterator<Message> iterator = messages.iterator(); iterator.hasNext(); ) {
