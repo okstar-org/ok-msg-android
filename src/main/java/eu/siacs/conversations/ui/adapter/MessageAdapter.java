@@ -218,7 +218,8 @@ public class MessageAdapter extends ArrayAdapter<Message> {
             }
         }
         if (viewHolder.retract_indicator != null) {
-            if (message.getRetractId()!=null) {
+
+            if (message.getRetractId() != null) {
                 viewHolder.retract_indicator.setVisibility(View.VISIBLE);
                 viewHolder.retract_indicator.setImageResource(darkBackground ? R.drawable.ic_delete_white_18dp : R.drawable.ic_delete_black_18dp);
                 viewHolder.retract_indicator.setAlpha(darkBackground ? 0.7f : 0.57f);

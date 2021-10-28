@@ -2079,16 +2079,15 @@ public class ConversationFragment extends XmppFragment implements EditMessage.Ke
         builder.create().show();
     }
 
-    private void deleteMessage(Message message) {
+    private void deleteMessage(final Message message) {
 
         final AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
         builder.setNegativeButton(R.string.cancel, null);
         builder.setTitle(R.string.delete_message_dialog);
         builder.setMessage(R.string.delete_message_dialog_msg);
 
-        final Message finalMessage = message;
-
         builder.setPositiveButton(R.string.confirm, (dialog, which) -> {
+
             if (finalMessage.getType() == Message.TYPE_TEXT
                     && !finalMessage.isGeoUri()
                     && finalMessage.getConversation() instanceof Conversation) {
@@ -2117,7 +2116,6 @@ public class ConversationFragment extends XmppFragment implements EditMessage.Ke
                 }
                 retractmessage.setType(Message.TYPE_TEXT);
                 retractmessage.setCounterpart(message.getCounterpart());
-                //retractmessage.putEdited(retractedMessage.getRemoteMsgId(),retractedMessage.getServerMsgId(),retractmessage.getBody(),retractedMessage.getTimeSent());
                 retractmessage.setTrueCounterpart(message.getTrueCounterpart());
                 retractmessage.setTime(time);
                 retractmessage.setUuid(UUID.randomUUID().toString());
@@ -2126,7 +2124,7 @@ public class ConversationFragment extends XmppFragment implements EditMessage.Ke
                 retractmessage.setRemoteMsgId(retractmessage.getUuid());
                 retractmessage.setMessageDeleted(true);
 
-                retractedMessage.setTime(time);
+                retractedMessage.setTime(time); //set new time here to keep orginal timestamps
 
                 for (Edit itm : retractedMessage.getEditedList())
                 {
@@ -2142,8 +2140,9 @@ public class ConversationFragment extends XmppFragment implements EditMessage.Ke
 
                 activity.xmppConnectionService.deleteMessage(conversation, retractedMessage);
                 activity.xmppConnectionService.deleteMessage(conversation, retractmessage);
+
             }
-            activity.xmppConnectionService.deleteMessage(conversation, finalMessage);
+            activity.xmppConnectionService.deleteMessage(conversation, message);
             activity.onConversationsListItemUpdated();
             refresh();
         });
