@@ -2086,6 +2086,8 @@ public class ConversationFragment extends XmppFragment implements EditMessage.Ke
         builder.setTitle(R.string.delete_message_dialog);
         builder.setMessage(R.string.delete_message_dialog_msg);
 
+        final Message finalMessage = message;
+
         builder.setPositiveButton(R.string.confirm, (dialog, which) -> {
 
             if (finalMessage.getType() == Message.TYPE_TEXT
