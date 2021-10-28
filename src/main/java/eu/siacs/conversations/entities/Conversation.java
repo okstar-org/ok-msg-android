@@ -23,7 +23,6 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.ListIterator;
 import java.util.concurrent.atomic.AtomicBoolean;
-import java.util.function.Predicate;
 
 import eu.siacs.conversations.Config;
 import eu.siacs.conversations.crypto.OmemoSetting;
@@ -537,41 +536,25 @@ public class Conversation extends AbstractEntity implements Blockable, Comparabl
         synchronized (this.messages) {
             messages.clear();
             messages.addAll(filterDuplicates(this.messages));
-            messages.removeIf(new Predicate<Message>() {
-                                  @Override
-                                  public boolean test(Message message) {
 
-                                      if (message.isMessageDeleted())
-                                      {
-                                          return true;
-                                      }
+            for (int n=0;n<messages.size();n++)
+            {
+                if (messages.get(n).isMessageDeleted())
+                {
+                    messages.remove(n);
+                    n--;
+                    continue;
+                }
 
-                                      if (message.getRetractId()!=null)
-                                      {
-                                          if (message.getStatus()!=Message.STATUS_RECEIVED) {
-                                              return true;
-                                          }
-                                      }
-                                     /*if ((!message.isMessageDeleted()&&
-                                          (message.getEditedList()==null||message.getEditedList().size()==0))&&
-                                           message.getRetractId()==null)
-                                      {
-                                          if (message.getStatus()!=Message.STATUS_SEND&&
-                                              message.getStatus()!=Message.STATUS_SEND_FAILED&&
-                                              message.getStatus()!=Message.STATUS_SEND_DISPLAYED&&
-                                              message.getStatus()!=Message.STATUS_SEND_RECEIVED)
-                                          {
-                                              return false;
-                                          }
-                                          else
-                                          {
-                                              return true;
-                                          }
-                                      }*/
-
-                                      return false;
-                                  }
-                              });
+                if (messages.get(n).getRetractId()!=null)
+                {
+                    if (messages.get(n).getStatus()!=Message.STATUS_RECEIVED) {
+                        messages.remove(n);
+                        n--;
+                        continue;
+                    }
+                }
+            }
 
             for (Message itm : messages)
             {
