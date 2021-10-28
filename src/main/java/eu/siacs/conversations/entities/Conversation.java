@@ -1,9 +1,9 @@
 package eu.siacs.conversations.entities;
 
-import static eu.siacs.conversations.entities.Bookmark.printableValue;
-
 import android.content.ContentValues;
+import android.content.SharedPreferences;
 import android.database.Cursor;
+import android.preference.PreferenceManager;
 import android.text.TextUtils;
 
 import androidx.annotation.NonNull;
@@ -18,10 +18,12 @@ import org.json.JSONObject;
 
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
 import java.util.ListIterator;
 import java.util.concurrent.atomic.AtomicBoolean;
+import java.util.function.Predicate;
 
 import eu.siacs.conversations.Config;
 import eu.siacs.conversations.crypto.OmemoSetting;
@@ -35,6 +37,8 @@ import eu.siacs.conversations.utils.UIHelper;
 import eu.siacs.conversations.xmpp.Jid;
 import eu.siacs.conversations.xmpp.chatstate.ChatState;
 import eu.siacs.conversations.xmpp.mam.MamReference;
+
+import static eu.siacs.conversations.entities.Bookmark.printableValue;
 
 
 public class Conversation extends AbstractEntity implements Blockable, Comparable<Conversation>, Conversational, AvatarService.Avatarable {
@@ -389,7 +393,14 @@ public class Conversation extends AbstractEntity implements Blockable, Comparabl
     public void trim() {
         synchronized (this.messages) {
             final int size = messages.size();
-            final int maxsize = Config.PAGE_SIZE * Config.MAX_NUM_PAGES;
+            int maxsize = Config.PAGE_SIZE * Config.MAX_NUM_PAGES;
+            if (getAccount()!=null&&getAccount().getXmppConnection()!=null&&getAccount().getXmppConnection().getXmppConnectionService()!=null)
+            {
+               SharedPreferences pref = PreferenceManager.getDefaultSharedPreferences(getAccount().getXmppConnection().getXmppConnectionService());
+               int pagesize = Integer.parseInt(pref.getString("pagesize",String.valueOf(Config.PAGE_SIZE)));
+               int maxnumpages = Integer.parseInt(pref.getString("max_num_pages",String.valueOf(Config.MAX_NUM_PAGES)));
+               maxsize = pagesize * maxnumpages;
+            }
             if (size > maxsize) {
                 List<Message> discards = this.messages.subList(0, size - maxsize);
                 final PgpDecryptionService pgpDecryptionService = account.getPgpDecryptionService();
@@ -505,22 +516,72 @@ public class Conversation extends AbstractEntity implements Blockable, Comparabl
         return false;
     }
 
+    public List<Message> filterDuplicates(List<Message> list) {
+        HashMap<String,Message> items = new HashMap<String,Message>();
+        for (Message item : list) {
+            items.put(item.getUuid(),item);
+        }
+
+        ArrayList<Message> result = new ArrayList<Message>(items.values());
+        Collections.sort(result,(o1, o2) -> {
+            if (o1.getTimeSent()<o2.getTimeSent())
+                return -1;
+            if (o1.getTimeSent()>o2.getTimeSent())
+                return 1;
+            return 0;
+        });
+        return result;
+    }
+
     public void populateWithMessages(final List<Message> messages) {
         synchronized (this.messages) {
             messages.clear();
-            this.messages.removeIf(message ->
-                    (message.isMessageDeleted()&&(message.getStatus()==Message.STATUS_SEND
-                                               || message.getStatus()==Message.STATUS_SEND_FAILED
-                                               || message.getStatus()==Message.STATUS_SEND_DISPLAYED
-                                               || message.getStatus()==Message.STATUS_SEND_RECEIVED)));
-            for (Message itm : this.messages)
+            messages.addAll(filterDuplicates(this.messages));
+            messages.removeIf(new Predicate<Message>() {
+                                  @Override
+                                  public boolean test(Message message) {
+
+                                      if (message.isMessageDeleted())
+                                      {
+                                          return true;
+                                      }
+
+                                      if (message.getRetractId()!=null)
+                                      {
+                                          if (message.getStatus()!=Message.STATUS_RECEIVED) {
+                                              return true;
+                                          }
+                                      }
+                                     /*if ((!message.isMessageDeleted()&&
+                                          (message.getEditedList()==null||message.getEditedList().size()==0))&&
+                                           message.getRetractId()==null)
+                                      {
+                                          if (message.getStatus()!=Message.STATUS_SEND&&
+                                              message.getStatus()!=Message.STATUS_SEND_FAILED&&
+                                              message.getStatus()!=Message.STATUS_SEND_DISPLAYED&&
+                                              message.getStatus()!=Message.STATUS_SEND_RECEIVED)
+                                          {
+                                              return false;
+                                          }
+                                          else
+                                          {
+                                              return true;
+                                          }
+                                      }*/
+
+                                      return false;
+                                  }
+                              });
+
+            for (Message itm : messages)
             {
                 if (itm.isMessageDeleted())
                 {
-                    itm.setTime(itm.getEditedList().get(0).getTimeSent());
+                    if (itm.getEditedList().size()>0) {
+                        itm.setTime(itm.getEditedList().get(0).getTimeSent());
+                    }
                 }
             }
-            messages.addAll(this.messages);
         }
         for (Iterator<Message> iterator = messages.iterator(); iterator.hasNext(); ) {
             if (iterator.next().wasMergedIntoPrevious()) {
@@ -834,11 +895,18 @@ public class Conversation extends AbstractEntity implements Blockable, Comparabl
         return this.account.getBookmark(this.contactJid);
     }
 
-    public Message findDuplicateMessage(Message message) {
+    public Message findDuplicateMessage(Message message, boolean withremoteid) {
         synchronized (this.messages) {
             for (int i = this.messages.size() - 1; i >= 0; --i) {
                 if (this.messages.get(i).similar(message)) {
                     return this.messages.get(i);
+                }
+                if (withremoteid)
+                {
+                    if (this.messages.get(i).remoteMsgId!=null&&message.getRemoteMsgId()!=null&&this.messages.get(i).remoteMsgId.equals(message.getRemoteMsgId()))
+                    {
+                        return this.messages.get(i);
+                    }
                 }
             }
         }
@@ -1195,5 +1263,24 @@ public class Conversation extends AbstractEntity implements Blockable, Comparabl
         public String getMessage() {
             return message;
         }
+    }
+
+    public Message findDuplicateMessage(Message message) {
+        return findDuplicateMessage(message,false);
+    }
+
+    public boolean hasDuplicateMessage(Message message, boolean withremoteid) {
+        return findDuplicateMessage(message,withremoteid) != null;
+    }
+
+    public Message findMessageWithUuidOrRemoteId(final String id) {
+        synchronized (this.messages) {
+            for (final Message message : this.messages) {
+                if (message.getRemoteMsgId()!=null&&message.getRemoteMsgId().equals(id)||message.getUuid().equals(id)) {
+                    return message;
+                }
+            }
+        }
+        return null;
     }
 }

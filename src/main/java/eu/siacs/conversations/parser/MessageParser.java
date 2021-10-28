@@ -29,6 +29,7 @@ import eu.siacs.conversations.entities.Bookmark;
 import eu.siacs.conversations.entities.Contact;
 import eu.siacs.conversations.entities.Conversation;
 import eu.siacs.conversations.entities.Conversational;
+import eu.siacs.conversations.entities.Edit;
 import eu.siacs.conversations.entities.Message;
 import eu.siacs.conversations.entities.MucOptions;
 import eu.siacs.conversations.entities.ReadByMarker;
@@ -625,7 +626,7 @@ public class MessageParser extends AbstractParser implements OnMessagePacketRece
                         counterpart,
                         message.getStatus() == Message.STATUS_RECEIVED,
                         message.isCarbon());
-                if (message.isCarbon()&&replacedMessage==null)
+                if (replacedMessage==null)
                 {
                     replacedMessage = conversation.findSentMessageWithUuidOrRemoteId(replacementId,true,true);
                 }
@@ -692,22 +693,28 @@ public class MessageParser extends AbstractParser implements OnMessagePacketRece
                     if (fingerprintsMatch && (trueCountersMatch || !conversationMultiMode || mucUserMatches) && !duplicate) {
                         Log.d(Config.LOGTAG, "retracted message '" + retractedMessage.getBody() + "' with '" + message.getBody() + "'");
                         synchronized (retractedMessage) {
-                            final String uuid = retractedMessage.getUuid();
-                            retractedMessage.setMessageDeleted(true);
-                            retractedMessage.putEdited(retractedMessage.getRemoteMsgId(), retractedMessage.getServerMsgId(), retractedMessage.getBody(), retractedMessage.getTimeSent());
-                            retractedMessage.setUuid(UUID.randomUUID().toString());
+
                             retractedMessage.setBody(mXmppConnectionService.getString(R.string.message_deleted));
-                            retractedMessage.setRemoteMsgId(remoteMsgId);
                             retractedMessage.setTime(message.getTimeSent());
-                            if (retractedMessage.getServerMsgId() == null || message.getServerMsgId() != null) {
-                                retractedMessage.setServerMsgId(message.getServerMsgId());
-                            }
-                            retractedMessage.setEncryption(message.getEncryption());
-                            if (retractedMessage.getStatus() == Message.STATUS_RECEIVED) {
-                                retractedMessage.markUnread();
-                            }
+                            retractedMessage.setRetractId(retractId);
+
                             extractChatState(mXmppConnectionService.find(account, counterpart.asBareJid()), isTypeGroupChat, packet);
-                            mXmppConnectionService.updateMessage(retractedMessage, uuid);
+
+                            message.setMessageDeleted(true);
+                            message.setRetractId(retractId);
+
+                            for (Edit itm : retractedMessage.getEditedList())
+                            {
+                                Message tmpRetractedMessage = conversation.findMessageWithUuidOrRemoteId(itm.getEditedId());
+                                if (tmpRetractedMessage!=null) {
+                                    tmpRetractedMessage.setRetractId(retractId);
+                                    mXmppConnectionService.updateMessage(tmpRetractedMessage, tmpRetractedMessage.getUuid());
+                                }
+                            }
+                            mXmppConnectionService.updateMessage(retractedMessage, retractedMessage.getUuid());
+
+                            mXmppConnectionService.databaseBackend.createMessage(message);
+
                             if (mXmppConnectionService.confirmMessages()
                                     && retractedMessage.getStatus() == Message.STATUS_RECEIVED
                                     && (retractedMessage.trusted() || retractedMessage.isPrivateMessage()) //TODO do we really want to send receipts for all PMs?
@@ -715,10 +722,6 @@ public class MessageParser extends AbstractParser implements OnMessagePacketRece
                                     && !selfAddressed
                                     && !isTypeGroupChat) {
                                 processMessageReceipts(account, packet, remoteMsgId, query);
-                            }
-                            if (retractedMessage.getEncryption() == Message.ENCRYPTION_PGP) {
-                                conversation.getAccount().getPgpDecryptionService().discard(retractedMessage);
-                                conversation.getAccount().getPgpDecryptionService().decrypt(retractedMessage, false);
                             }
                         }
                         mXmppConnectionService.getNotificationService().updateNotification();
