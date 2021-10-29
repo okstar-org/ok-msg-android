@@ -185,8 +185,8 @@ public class RtpSessionActivity extends XmppActivity
     private boolean isSwitchToConversationVisible() {
         final JingleRtpConnection connection =
                 this.rtpConnectionReference != null ? this.rtpConnectionReference.get() : null;
-        return connection != null
-                && STATES_SHOWING_SWITCH_TO_CHAT.contains(connection.getEndUserState());
+
+        return connection != null && !connection.getMedia().contains(Media.VIDEO);
     }
 
     private void switchToConversation() {
