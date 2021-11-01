@@ -22,6 +22,7 @@ import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 import java.util.Locale;
+import java.util.TimeZone;
 
 import eu.siacs.conversations.Config;
 import eu.siacs.conversations.R;
@@ -141,19 +142,22 @@ public class UIHelper {
             | DateUtils.FORMAT_ABBREV_ALL | DateUtils.FORMAT_SHOW_DATE;
 
     public static String readableTimeDifference(Context context, long time) {
-        return readableTimeDifference(context, time, false);
+        return readableTimeDifference(context, time, false, false);
     }
 
     public static String readableTimeDifferenceFull(Context context, long time) {
-        return readableTimeDifference(context, time, true);
+        return readableTimeDifference(context, time, true, false);
     }
 
-    private static String readableTimeDifference(Context context, long time,
-                                                 boolean fullDate) {
+    public static String readableTimeDifference(Context context, long time,
+                                                 boolean fullDate, boolean printTz) {
         if (time == 0) {
             return context.getString(R.string.just_now);
         }
         Date date = new Date(time);
+        TimeZone tz = TimeZone.getDefault();
+        String tzString = "(" + tz.getDisplayName(tz.inDaylightTime(date),
+                TimeZone.SHORT, Locale.UK) + ")";
         long difference = (System.currentTimeMillis() - time) / 1000;
         if (difference < 60) {
             return context.getString(R.string.just_now);
@@ -163,15 +167,37 @@ public class UIHelper {
             return context.getString(R.string.minutes_ago, Math.round(difference / 60.0));
         } else if (today(date)) {
             java.text.DateFormat df = DateFormat.getTimeFormat(context);
-            return df.format(date);
+            return printTz ? df.format(date) + " " + tzString : df.format(date);
         } else {
             if (fullDate) {
-                return DateUtils.formatDateTime(context, date.getTime(),
+                return printTz ? DateUtils.formatDateTime(context, date.getTime(),
+                        FULL_DATE_FLAGS) + " " + tzString :  DateUtils.formatDateTime(context, date.getTime(),
                         FULL_DATE_FLAGS);
             } else {
-                return DateUtils.formatDateTime(context, date.getTime(),
+                return printTz ? DateUtils.formatDateTime(context, date.getTime(),
+                        SHORT_DATE_FLAGS) + " " + tzString : DateUtils.formatDateTime(context, date.getTime(),
                         SHORT_DATE_FLAGS);
             }
+        }
+    }
+
+    public static String readableDateTime(Context context, long time,
+                                          boolean fullDate, boolean printTz) {
+        if (time == 0) {
+            return context.getString(R.string.just_now);
+        }
+        Date date = new Date(time);
+        TimeZone tz = TimeZone.getDefault();
+        String tzString = "(" + tz.getDisplayName(tz.inDaylightTime(date),
+                TimeZone.SHORT, Locale.UK) + ")";
+        if (fullDate) {
+            return printTz ? DateUtils.formatDateTime(context, date.getTime(),
+                    FULL_DATE_FLAGS) + " " + tzString : DateUtils.formatDateTime(context, date.getTime(),
+                    FULL_DATE_FLAGS);
+        } else {
+            return printTz ? DateUtils.formatDateTime(context, date.getTime(),
+                    SHORT_DATE_FLAGS) + " " + tzString : DateUtils.formatDateTime(context, date.getTime(),
+                    SHORT_DATE_FLAGS);
         }
     }
 

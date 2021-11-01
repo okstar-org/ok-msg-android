@@ -130,6 +130,7 @@ import eu.siacs.conversations.ui.util.ListViewUtils;
 import eu.siacs.conversations.ui.util.MucDetailsContextMenuHelper;
 import eu.siacs.conversations.ui.util.PendingItem;
 import eu.siacs.conversations.ui.util.PresenceSelector;
+import eu.siacs.conversations.ui.util.QuoteHelper;
 import eu.siacs.conversations.ui.util.ScrollState;
 import eu.siacs.conversations.ui.util.SendButtonAction;
 import eu.siacs.conversations.ui.util.SendButtonTool;
@@ -141,6 +142,7 @@ import eu.siacs.conversations.utils.Compatibility;
 import eu.siacs.conversations.utils.GeoHelper;
 import eu.siacs.conversations.utils.MenuDoubleTabUtil;
 import eu.siacs.conversations.utils.MessageUtils;
+import eu.siacs.conversations.utils.MimeUtils;
 import eu.siacs.conversations.utils.Namespace;
 import eu.siacs.conversations.utils.NickValidityChecker;
 import eu.siacs.conversations.utils.Patterns;
@@ -1224,8 +1226,34 @@ public class ConversationFragment extends XmppFragment implements EditMessage.Ke
         binding.recordVoiceButton.setImageResource(activity.getThemeResource(R.attr.ic_send_voice_offline, R.drawable.ic_send_voice_offline));
     }
 
+    private void quoteMedia(Message message, @Nullable String user) {
+        Message.FileParams params = message.getFileParams();
+        String filesize = params.size != null ? UIHelper.filesizeToString(params.size) : null;
+        String text =
+                MimeUtils.getMimeTypeEmoji(getActivity(), message.getMimeType()) + " "
+                + UIHelper.readableDateTime(getActivity(), message.getTimeSent(), true, true) + " \u00B7 "
+                + filesize;
+        quoteText(text, user);
+    }
+
+    private void quoteGeoUri(Message message, @Nullable String user) {
+        String text =
+                "\uD83D\uDCCD" + " " // globe with meridians emoji
+                + UIHelper.readableDateTime(getActivity(), message.getTimeSent(), true, true);
+        quoteText(text, user);
+    }
+
     private void quoteMessage(Message message, @Nullable String user) {
-        quoteText(MessageUtils.prepareQuote(message), user);
+        if (message.isGeoUri()) {
+            quoteGeoUri(message, user);
+        } else if (message.isFileOrImage()) {
+            quoteMedia(message, user);
+        } else if (message.isTypeText()) {
+            final String text =
+                    UIHelper.readableDateTime(getActivity(), message.getTimeSent(), true, true) + System.getProperty("line.separator")
+                    + MessageUtils.prepareQuote(message);
+            quoteText(text, user);
+        }
     }
 
     @Override
@@ -1283,7 +1311,6 @@ public class ConversationFragment extends XmppFragment implements EditMessage.Ke
             deleteMessage.setVisible(true);
             if (!m.isFileOrImage() && !encrypted && !m.isGeoUri() && !m.treatAsDownloadable() && !unInitiatedButKnownSize && t == null && !m.isMessageDeleted()) {
                 copyMessage.setVisible(true);
-                quoteMessage.setVisible(!showError && MessageUtils.prepareQuote(m).length() > 0);
                 String body = m.getMergedBody().toString();
                 if (ShareUtil.containsXmppUri(body)) {
                     copyLink.setTitle(R.string.copy_jabber_id);
@@ -1291,6 +1318,9 @@ public class ConversationFragment extends XmppFragment implements EditMessage.Ke
                 } else if (Patterns.AUTOLINK_WEB_URL.matcher(body).find()) {
                     copyLink.setVisible(true);
                 }
+            }
+            if (!encrypted && !unInitiatedButKnownSize && t == null) {
+                quoteMessage.setVisible(!showError && QuoteHelper.isMessageQuoteable(m));
             }
             if (m.getEncryption() == Message.ENCRYPTION_DECRYPTION_FAILED && !fileDeleted) {
                 retryDecryption.setVisible(true);

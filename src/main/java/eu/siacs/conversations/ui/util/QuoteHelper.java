@@ -1,6 +1,8 @@
 package eu.siacs.conversations.ui.util;
 
 import eu.siacs.conversations.Config;
+import eu.siacs.conversations.entities.Message;
+import eu.siacs.conversations.utils.MessageUtils;
 import eu.siacs.conversations.utils.UIHelper;
 
 public class QuoteHelper {
@@ -98,5 +100,15 @@ public class QuoteHelper {
             }
         }
         return text;
+    }
+
+    public static boolean isMessageQuoteable(Message m){
+        if (m.isTypeText() && MessageUtils.prepareQuote(m).length() > 0) {
+            return true;
+        }
+        if (m.isFileOrImage()){
+            return true;
+        }
+        return false;
     }
 }
