@@ -209,7 +209,7 @@ public class MessageAdapter extends ArrayAdapter<Message> {
             viewHolder.indicatorReceived.setVisibility(View.GONE);
         }
         if (viewHolder.edit_indicator != null) {
-            if (message.edited() && !message.isMessageDeleted()) {
+            if (message.edited() && message.getRetractId()==null) {
                 viewHolder.edit_indicator.setVisibility(View.VISIBLE);
                 viewHolder.edit_indicator.setImageResource(darkBackground ? R.drawable.ic_mode_edit_white_18dp : R.drawable.ic_mode_edit_black_18dp);
                 viewHolder.edit_indicator.setAlpha(darkBackground ? 0.7f : 0.57f);
@@ -218,7 +218,8 @@ public class MessageAdapter extends ArrayAdapter<Message> {
             }
         }
         if (viewHolder.retract_indicator != null) {
-            if (message.isMessageDeleted() || message.hasDeletedBody()) {
+
+            if (message.getRetractId() != null) {
                 viewHolder.retract_indicator.setVisibility(View.VISIBLE);
                 viewHolder.retract_indicator.setImageResource(darkBackground ? R.drawable.ic_delete_white_18dp : R.drawable.ic_delete_black_18dp);
                 viewHolder.retract_indicator.setAlpha(darkBackground ? 0.7f : 0.57f);

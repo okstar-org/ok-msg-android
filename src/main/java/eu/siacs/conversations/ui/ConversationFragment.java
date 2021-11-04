@@ -1372,7 +1372,7 @@ public class ConversationFragment extends XmppFragment implements EditMessage.Ke
             if ((m.isGeoUri() && GeoHelper.openInOsmAnd(getActivity(), m)) || (mime != null && mime.startsWith("audio/"))) {
                 openWith.setVisible(true);
             }
-            if (m.edited() && !messageDeleted) {
+            if (m.edited() && m.getRetractId()==null) {
                 showLog.setVisible(true);
             }
         }
@@ -2086,23 +2086,63 @@ public class ConversationFragment extends XmppFragment implements EditMessage.Ke
         builder.setTitle(R.string.delete_message_dialog);
         builder.setMessage(R.string.delete_message_dialog_msg);
 
+        final Message finalMessage = message;
+
         builder.setPositiveButton(R.string.confirm, (dialog, which) -> {
-            if (message.getType() == Message.TYPE_TEXT
-                    && !message.isGeoUri()
-                    && message.getConversation() instanceof Conversation) {
-                this.conversation.setCorrectingMessage(message);
-                Message deletedmessage = conversation.getCorrectingMessage();
-                deletedmessage.setMessageDeleted(true);
-                deletedmessage.putEdited(deletedmessage.getUuid(), deletedmessage.getServerMsgId(), deletedmessage.getBody(), deletedmessage.getTimeSent());
-                deletedmessage.setBody(Message.DELETED_MESSAGE_BODY);
-                deletedmessage.setServerMsgId(null);
-                deletedmessage.setRetractId(message.getRemoteMsgId());
-                deletedmessage.setRemoteMsgId(message.getRemoteMsgId());
-                deletedmessage.setUuid(UUID.randomUUID().toString());
-                if (message.getStatus() == Message.STATUS_SEND || message.getStatus() == Message.STATUS_SEND_DISPLAYED || message.getStatus() == Message.STATUS_SEND_RECEIVED) {
-                    sendMessage(deletedmessage);
+
+            if (finalMessage.getType() == Message.TYPE_TEXT
+                    && !finalMessage.isGeoUri()
+                    && finalMessage.getConversation() instanceof Conversation) {
+
+                Message retractedMessage = finalMessage;
+                retractedMessage.setMessageDeleted(true);
+
+                long time = System.currentTimeMillis();
+
+                retractedMessage.putEdited(retractedMessage.getUuid(), retractedMessage.getServerMsgId(), retractedMessage.getBody(), retractedMessage.getTimeSent());
+                retractedMessage.setBody(Message.DELETED_MESSAGE_BODY);
+                retractedMessage.setServerMsgId(null);
+                retractedMessage.setRemoteMsgId(message.getRemoteMsgId());
+                retractedMessage.setMessageDeleted(true);
+
+                Message retractmessage = new Message(conversation,
+                                                     "This person attempted to retract a previous message, but it's unsupported by your client.",
+                                                     Message.ENCRYPTION_NONE,
+                                                     Message.STATUS_SEND);
+                if (retractedMessage.getEditedList().size()>0)
+                {
+                    retractmessage.setRetractId(retractedMessage.getEditedList().get(0).getEditedId());
                 }
-                activity.xmppConnectionService.deleteMessage(conversation, deletedmessage);
+                else {
+                    retractmessage.setRetractId(retractedMessage.getRemoteMsgId()!=null?retractedMessage.getRemoteMsgId():retractedMessage.getUuid());
+                }
+                retractmessage.setType(Message.TYPE_TEXT);
+                retractmessage.setCounterpart(message.getCounterpart());
+                retractmessage.setTrueCounterpart(message.getTrueCounterpart());
+                retractmessage.setTime(time);
+                retractmessage.setUuid(UUID.randomUUID().toString());
+                retractmessage.setCarbon(false);
+                retractmessage.setOob(false);
+                retractmessage.setRemoteMsgId(retractmessage.getUuid());
+                retractmessage.setMessageDeleted(true);
+
+                retractedMessage.setTime(time); //set new time here to keep orginal timestamps
+
+                for (Edit itm : retractedMessage.getEditedList())
+                {
+                    Message tmpRetractedMessage = conversation.findMessageWithUuidOrRemoteId(itm.getEditedId());
+                    if (tmpRetractedMessage!=null) {
+                        tmpRetractedMessage.setMessageDeleted(true);
+                        activity.xmppConnectionService.updateMessage(tmpRetractedMessage, tmpRetractedMessage.getUuid());
+                    }
+                }
+                activity.xmppConnectionService.updateMessage(retractedMessage, retractedMessage.getUuid());
+
+                sendMessage(retractmessage);
+
+                activity.xmppConnectionService.deleteMessage(conversation, retractedMessage);
+                activity.xmppConnectionService.deleteMessage(conversation, retractmessage);
+
             }
             activity.xmppConnectionService.deleteMessage(conversation, message);
             activity.onConversationsListItemUpdated();
