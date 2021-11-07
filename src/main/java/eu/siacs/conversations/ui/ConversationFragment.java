@@ -762,47 +762,19 @@ public class ConversationFragment extends XmppFragment implements EditMessage.Ke
         });
     }
 
-    private void attachPhotoToConversation(Conversation conversation, Uri uri) {
-        if (conversation == null) {
-            return;
-        }
-        final Toast prepareFileToast = ToastCompat.makeText(getActivity(), getText(R.string.preparing_image), ToastCompat.LENGTH_LONG);
-        prepareFileToast.show();
-        activity.delegateUriPermissionsToService(uri);
-        activity.xmppConnectionService.attachImageToConversation(conversation, uri,
-                new UiCallback<Message>() {
-
-                    @Override
-                    public void userInputRequired(PendingIntent pi, Message object) {
-                        hidePrepareFileToast(prepareFileToast);
-                    }
-
-                    @Override
-                    public void success(Message message) {
-                        hidePrepareFileToast(prepareFileToast);
-                    }
-
-                    @Override
-                    public void error(final int error, Message message) {
-                        hidePrepareFileToast(prepareFileToast);
-                        activity.runOnUiThread(() -> activity.replaceToast(getString(error)));
-                    }
-                });
-    }
-
     public void attachEditorContentToConversation(Uri uri) {
         mediaPreviewAdapter.addMediaPreviews(Attachment.of(getActivity(), uri, Attachment.Type.FILE));
         toggleInputMethod();
     }
 
-    private void attachImageToConversation(Conversation conversation, Uri uri) {
+    private void attachImageToConversation(Conversation conversation, Uri uri, String type) {
         if (conversation == null) {
             return;
         }
         final Toast prepareFileToast = ToastCompat.makeText(getActivity(), getText(R.string.preparing_image), ToastCompat.LENGTH_LONG);
         prepareFileToast.show();
         activity.delegateUriPermissionsToService(uri);
-        activity.xmppConnectionService.attachImageToConversation(conversation, uri,
+        activity.xmppConnectionService.attachImageToConversation(conversation, uri, type,
                 new UiCallback<Message>() {
                     @Override
                     public void userInputRequired(PendingIntent pi, Message object) {
@@ -1003,7 +975,7 @@ public class ConversationFragment extends XmppFragment implements EditMessage.Ke
                     attachLocationToConversation(conversation, attachment.getUri());
                 } else if (attachment.getType() == Attachment.Type.IMAGE) {
                     Log.d(Config.LOGTAG, "ConversationsActivity.commitAttachments() - attaching image to conversations. CHOOSE_IMAGE");
-                    attachImageToConversation(conversation, attachment.getUri());
+                    attachImageToConversation(conversation, attachment.getUri(), attachment.getMime());
                 } else {
                     Log.d(Config.LOGTAG, "ConversationsActivity.commitAttachments() - attaching file to conversations. CHOOSE_FILE/RECORD_VOICE/RECORD_VIDEO");
                     attachFileToConversation(conversation, attachment.getUri(), attachment.getMime());
@@ -2557,13 +2529,14 @@ public class ConversationFragment extends XmppFragment implements EditMessage.Ke
         final String user = extras.getString(ConversationsActivity.EXTRA_USER);
         final boolean pm = extras.getBoolean(ConversationsActivity.EXTRA_IS_PRIVATE_MESSAGE, false);
         final boolean doNotAppend = extras.getBoolean(ConversationsActivity.EXTRA_DO_NOT_APPEND, false);
+        final String type = extras.getString(ConversationsActivity.EXTRA_TYPE);
         final List<Uri> uris = extractUris(extras);
         if (uris != null && uris.size() > 0) {
             if (uris.size() == 1 && "geo".equals(uris.get(0).getScheme())) {
                 mediaPreviewAdapter.addMediaPreviews(Attachment.of(getActivity(), uris.get(0), Attachment.Type.LOCATION));
             } else {
                 final List<Uri> cleanedUris = cleanUris(new ArrayList<>(uris));
-                mediaPreviewAdapter.addMediaPreviews(Attachment.of(getActivity(), cleanedUris));
+                mediaPreviewAdapter.addMediaPreviews(Attachment.of(getActivity(), cleanedUris, type));
             }
             toggleInputMethod();
             return;

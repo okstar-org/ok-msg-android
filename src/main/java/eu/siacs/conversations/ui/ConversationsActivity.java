@@ -124,7 +124,9 @@ public class ConversationsActivity extends XmppActivity implements OnConversatio
     public static final String ACTION_DESTROY_MUC = "eu.siacs.conversations.DESTROY_MUC";
     public static final int REQUEST_OPEN_MESSAGE = 0x9876;
     public static final int REQUEST_PLAY_PAUSE = 0x5432;
-    private static List<String> VIEW_AND_SHARE_ACTIONS = Arrays.asList(
+    public static final String EXTRA_TYPE = "type";
+
+    private static final List<String> VIEW_AND_SHARE_ACTIONS = Arrays.asList(
             ACTION_VIEW_CONVERSATION,
             Intent.ACTION_SEND,
             Intent.ACTION_SEND_MULTIPLE
