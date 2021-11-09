@@ -666,44 +666,49 @@ public class Message extends AbstractEntity implements AvatarService.Avatarable 
     }
 
     public boolean mergeable(final Message message) {
-        boolean mergeAllowed = conversation.getAccount().getXmppConnection().getXmppConnectionService().allowMergeMessages();
-        return mergeAllowed && message != null &&
-                (message.getType() == Message.TYPE_TEXT &&
-                        this.getTransferable() == null &&
-                        message.getTransferable() == null &&
-                        message.getEncryption() != Message.ENCRYPTION_PGP &&
-                        message.getEncryption() != Message.ENCRYPTION_DECRYPTION_FAILED &&
-                        this.getType() == message.getType() &&
-                        //this.getStatus() == message.getStatus() &&
-                        isStatusMergeable(this.getStatus(), message.getStatus()) &&
-                        this.getEncryption() == message.getEncryption() &&
-                        this.getCounterpart() != null &&
-                        this.getCounterpart().equals(message.getCounterpart()) &&
-                        this.edited() == message.edited() &&
-                        !this.isMessageDeleted() == !message.isMessageDeleted() &&
-                        (message.getTimeSent() - this.getTimeSent()) <= (Config.MESSAGE_MERGE_WINDOW * 1000) &&
-                        this.getBody().length() + message.getBody().length() <= Config.MAX_DISPLAY_MESSAGE_CHARS &&
-                        !message.isGeoUri() &&
-                        !this.isGeoUri() &&
-                        !message.isWebUri() &&
-                        !this.isWebUri() &&
-                        !message.isOOb() &&
-                        !this.isOOb() &&
-                        !message.treatAsDownloadable() &&
-                        !this.treatAsDownloadable() &&
-                        !message.hasMeCommand() &&
-                        !this.hasMeCommand() &&
-                        !message.bodyIsOnlyEmojis() &&
-                        !this.bodyIsOnlyEmojis() &&
-                        !message.isXmppUri() &&
-                        !this.isXmppUri() &&
-                        !message.hasDeletedBody() &&
-                        !this.hasDeletedBody() &&
-                        ((this.axolotlFingerprint == null && message.axolotlFingerprint == null) || this.axolotlFingerprint.equals(message.getFingerprint())) &&
-                        UIHelper.sameDay(message.getTimeSent(), this.getTimeSent()) &&
-                        this.getReadByMarkers().equals(message.getReadByMarkers()) &&
-                        !this.conversation.getJid().asBareJid().equals(Config.BUG_REPORTS)
-                );
+        try {
+            boolean mergeAllowed = conversation.getAccount().getXmppConnection().getXmppConnectionService().allowMergeMessages();
+            return mergeAllowed && message != null &&
+                    (message.getType() == Message.TYPE_TEXT &&
+                            this.getTransferable() == null &&
+                            message.getTransferable() == null &&
+                            message.getEncryption() != Message.ENCRYPTION_PGP &&
+                            message.getEncryption() != Message.ENCRYPTION_DECRYPTION_FAILED &&
+                            this.getType() == message.getType() &&
+                            //this.getStatus() == message.getStatus() &&
+                            isStatusMergeable(this.getStatus(), message.getStatus()) &&
+                            this.getEncryption() == message.getEncryption() &&
+                            this.getCounterpart() != null &&
+                            this.getCounterpart().equals(message.getCounterpart()) &&
+                            this.edited() == message.edited() &&
+                            !this.isMessageDeleted() == !message.isMessageDeleted() &&
+                            (message.getTimeSent() - this.getTimeSent()) <= (Config.MESSAGE_MERGE_WINDOW * 1000) &&
+                            this.getBody().length() + message.getBody().length() <= Config.MAX_DISPLAY_MESSAGE_CHARS &&
+                            !message.isGeoUri() &&
+                            !this.isGeoUri() &&
+                            !message.isWebUri() &&
+                            !this.isWebUri() &&
+                            !message.isOOb() &&
+                            !this.isOOb() &&
+                            !message.treatAsDownloadable() &&
+                            !this.treatAsDownloadable() &&
+                            !message.hasMeCommand() &&
+                            !this.hasMeCommand() &&
+                            !message.bodyIsOnlyEmojis() &&
+                            !this.bodyIsOnlyEmojis() &&
+                            !message.isXmppUri() &&
+                            !this.isXmppUri() &&
+                            !message.hasDeletedBody() &&
+                            !this.hasDeletedBody() &&
+                            ((this.axolotlFingerprint == null && message.axolotlFingerprint == null) || this.axolotlFingerprint.equals(message.getFingerprint())) &&
+                            UIHelper.sameDay(message.getTimeSent(), this.getTimeSent()) &&
+                            this.getReadByMarkers().equals(message.getReadByMarkers()) &&
+                            !this.conversation.getJid().asBareJid().equals(Config.BUG_REPORTS)
+                    );
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return false;
     }
 
     private static boolean isStatusMergeable(int a, int b) {

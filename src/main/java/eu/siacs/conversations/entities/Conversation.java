@@ -1,5 +1,7 @@
 package eu.siacs.conversations.entities;
 
+import static eu.siacs.conversations.entities.Bookmark.printableValue;
+
 import android.content.ContentValues;
 import android.content.SharedPreferences;
 import android.database.Cursor;
@@ -36,8 +38,6 @@ import eu.siacs.conversations.utils.UIHelper;
 import eu.siacs.conversations.xmpp.Jid;
 import eu.siacs.conversations.xmpp.chatstate.ChatState;
 import eu.siacs.conversations.xmpp.mam.MamReference;
-
-import static eu.siacs.conversations.entities.Bookmark.printableValue;
 
 
 public class Conversation extends AbstractEntity implements Blockable, Comparable<Conversation>, Conversational, AvatarService.Avatarable {
@@ -393,12 +393,11 @@ public class Conversation extends AbstractEntity implements Blockable, Comparabl
         synchronized (this.messages) {
             final int size = messages.size();
             int maxsize = Config.PAGE_SIZE * Config.MAX_NUM_PAGES;
-            if (getAccount()!=null&&getAccount().getXmppConnection()!=null&&getAccount().getXmppConnection().getXmppConnectionService()!=null)
-            {
-               SharedPreferences pref = PreferenceManager.getDefaultSharedPreferences(getAccount().getXmppConnection().getXmppConnectionService());
-               int pagesize = Integer.parseInt(pref.getString("pagesize",String.valueOf(Config.PAGE_SIZE)));
-               int maxnumpages = Integer.parseInt(pref.getString("max_num_pages",String.valueOf(Config.MAX_NUM_PAGES)));
-               maxsize = pagesize * maxnumpages;
+            if (getAccount() != null && getAccount().getXmppConnection() != null && getAccount().getXmppConnection().getXmppConnectionService() != null) {
+                SharedPreferences pref = PreferenceManager.getDefaultSharedPreferences(getAccount().getXmppConnection().getXmppConnectionService());
+                int pagesize = Integer.parseInt(pref.getString("pagesize", String.valueOf(Config.PAGE_SIZE)));
+                int maxnumpages = Integer.parseInt(pref.getString("max_num_pages", String.valueOf(Config.MAX_NUM_PAGES)));
+                maxsize = pagesize * maxnumpages;
             }
             if (size > maxsize) {
                 List<Message> discards = this.messages.subList(0, size - maxsize);
@@ -516,16 +515,16 @@ public class Conversation extends AbstractEntity implements Blockable, Comparabl
     }
 
     public List<Message> filterDuplicates(List<Message> list) {
-        HashMap<String,Message> items = new HashMap<String,Message>();
+        HashMap<String, Message> items = new HashMap<String, Message>();
         for (Message item : list) {
-            items.put(item.getUuid(),item);
+            items.put(item.getUuid(), item);
         }
 
         ArrayList<Message> result = new ArrayList<Message>(items.values());
-        Collections.sort(result,(o1, o2) -> {
-            if (o1.getTimeSent()<o2.getTimeSent())
+        Collections.sort(result, (o1, o2) -> {
+            if (o1.getTimeSent() < o2.getTimeSent())
                 return -1;
-            if (o1.getTimeSent()>o2.getTimeSent())
+            if (o1.getTimeSent() > o2.getTimeSent())
                 return 1;
             return 0;
         });
@@ -537,18 +536,15 @@ public class Conversation extends AbstractEntity implements Blockable, Comparabl
             messages.clear();
             messages.addAll(filterDuplicates(this.messages));
 
-            for (int n=0;n<messages.size();n++)
-            {
-                if (messages.get(n).isMessageDeleted())
-                {
+            for (int n = 0; n < messages.size(); n++) {
+                if (messages.get(n).isMessageDeleted()) {
                     messages.remove(n);
                     n--;
                     continue;
                 }
 
-                if (messages.get(n).getRetractId()!=null)
-                {
-                    if (messages.get(n).getStatus()!=Message.STATUS_RECEIVED) {
+                if (messages.get(n).getRetractId() != null) {
+                    if (messages.get(n).getStatus() != Message.STATUS_RECEIVED) {
                         messages.remove(n);
                         n--;
                         continue;
@@ -556,11 +552,9 @@ public class Conversation extends AbstractEntity implements Blockable, Comparabl
                 }
             }
 
-            for (Message itm : messages)
-            {
-                if (itm.isMessageDeleted())
-                {
-                    if (itm.getEditedList().size()>0) {
+            for (Message itm : messages) {
+                if (itm.isMessageDeleted()) {
+                    if (itm.getEditedList().size() > 0) {
                         itm.setTime(itm.getEditedList().get(0).getTimeSent());
                     }
                 }
@@ -884,10 +878,8 @@ public class Conversation extends AbstractEntity implements Blockable, Comparabl
                 if (this.messages.get(i).similar(message)) {
                     return this.messages.get(i);
                 }
-                if (withremoteid)
-                {
-                    if (this.messages.get(i).remoteMsgId!=null&&message.getRemoteMsgId()!=null&&this.messages.get(i).remoteMsgId.equals(message.getRemoteMsgId()))
-                    {
+                if (withremoteid) {
+                    if (this.messages.get(i).remoteMsgId != null && message.getRemoteMsgId() != null && this.messages.get(i).remoteMsgId.equals(message.getRemoteMsgId())) {
                         return this.messages.get(i);
                     }
                 }
@@ -1249,17 +1241,17 @@ public class Conversation extends AbstractEntity implements Blockable, Comparabl
     }
 
     public Message findDuplicateMessage(Message message) {
-        return findDuplicateMessage(message,false);
+        return findDuplicateMessage(message, false);
     }
 
     public boolean hasDuplicateMessage(Message message, boolean withremoteid) {
-        return findDuplicateMessage(message,withremoteid) != null;
+        return findDuplicateMessage(message, withremoteid) != null;
     }
 
     public Message findMessageWithUuidOrRemoteId(final String id) {
         synchronized (this.messages) {
             for (final Message message : this.messages) {
-                if (message.getRemoteMsgId()!=null&&message.getRemoteMsgId().equals(id)||message.getUuid().equals(id)) {
+                if (message.getRemoteMsgId() != null && message.getRemoteMsgId().equals(id) || message.getUuid().equals(id)) {
                     return message;
                 }
             }

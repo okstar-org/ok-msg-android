@@ -1,5 +1,8 @@
 package eu.siacs.conversations.ui.adapter;
 
+import static eu.siacs.conversations.entities.Message.DELETED_MESSAGE_BODY;
+import static eu.siacs.conversations.entities.Message.DELETED_MESSAGE_BODY_OLD;
+
 import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -70,7 +73,7 @@ public class MessageLogAdapter extends ArrayAdapter<MessageLogModel> implements 
         result.startAnimation(animation);
         lastPosition = position;
         viewHolder.txtLineNr.setText(String.valueOf(position + 1));
-        viewHolder.txtBody.setText(dataModel.getBody());
+        viewHolder.txtBody.setText(preview(dataModel));
         viewHolder.txtTimeSent.setText(getTimeSentFormated(dataModel.getTimeSent()));
         // Return the completed view to render on screen
         return convertView;
@@ -78,5 +81,17 @@ public class MessageLogAdapter extends ArrayAdapter<MessageLogModel> implements 
 
     private String getTimeSentFormated(long timeSent) {
         return android.text.format.DateFormat.getDateFormat(getContext()).format(new Date(timeSent)) + " " + android.text.format.DateFormat.getTimeFormat(getContext()).format(new Date(timeSent));
+    }
+
+    private String preview(MessageLogModel dataModel) {
+        if (hasDeletedBody(dataModel.getBody())) {
+            return getContext().getString(R.string.message_deleted);
+        } else {
+            return dataModel.getBody();
+        }
+    }
+
+    public boolean hasDeletedBody(String message) {
+        return message.trim().equals(DELETED_MESSAGE_BODY) || message.trim().equals(DELETED_MESSAGE_BODY_OLD);
     }
 }

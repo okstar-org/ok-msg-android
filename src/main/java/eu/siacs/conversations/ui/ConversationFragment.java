@@ -1372,7 +1372,7 @@ public class ConversationFragment extends XmppFragment implements EditMessage.Ke
             if ((m.isGeoUri() && GeoHelper.openInOsmAnd(getActivity(), m)) || (mime != null && mime.startsWith("audio/"))) {
                 openWith.setVisible(true);
             }
-            if (m.edited() && m.getRetractId()==null) {
+            if (m.edited() && m.getRetractId() == null) {
                 showLog.setVisible(true);
             }
         }
@@ -2106,15 +2106,13 @@ public class ConversationFragment extends XmppFragment implements EditMessage.Ke
                 retractedMessage.setMessageDeleted(true);
 
                 Message retractmessage = new Message(conversation,
-                                                     "This person attempted to retract a previous message, but it's unsupported by your client.",
-                                                     Message.ENCRYPTION_NONE,
-                                                     Message.STATUS_SEND);
-                if (retractedMessage.getEditedList().size()>0)
-                {
+                        "This person attempted to retract a previous message, but it's unsupported by your client.",
+                        Message.ENCRYPTION_NONE,
+                        Message.STATUS_SEND);
+                if (retractedMessage.getEditedList().size() > 0) {
                     retractmessage.setRetractId(retractedMessage.getEditedList().get(0).getEditedId());
-                }
-                else {
-                    retractmessage.setRetractId(retractedMessage.getRemoteMsgId()!=null?retractedMessage.getRemoteMsgId():retractedMessage.getUuid());
+                } else {
+                    retractmessage.setRetractId(retractedMessage.getRemoteMsgId() != null ? retractedMessage.getRemoteMsgId() : retractedMessage.getUuid());
                 }
                 retractmessage.setType(Message.TYPE_TEXT);
                 retractmessage.setCounterpart(message.getCounterpart());
@@ -2125,24 +2123,18 @@ public class ConversationFragment extends XmppFragment implements EditMessage.Ke
                 retractmessage.setOob(false);
                 retractmessage.setRemoteMsgId(retractmessage.getUuid());
                 retractmessage.setMessageDeleted(true);
-
                 retractedMessage.setTime(time); //set new time here to keep orginal timestamps
-
-                for (Edit itm : retractedMessage.getEditedList())
-                {
+                for (Edit itm : retractedMessage.getEditedList()) {
                     Message tmpRetractedMessage = conversation.findMessageWithUuidOrRemoteId(itm.getEditedId());
-                    if (tmpRetractedMessage!=null) {
+                    if (tmpRetractedMessage != null) {
                         tmpRetractedMessage.setMessageDeleted(true);
                         activity.xmppConnectionService.updateMessage(tmpRetractedMessage, tmpRetractedMessage.getUuid());
                     }
                 }
                 activity.xmppConnectionService.updateMessage(retractedMessage, retractedMessage.getUuid());
-
                 sendMessage(retractmessage);
-
                 activity.xmppConnectionService.deleteMessage(conversation, retractedMessage);
                 activity.xmppConnectionService.deleteMessage(conversation, retractmessage);
-
             }
             activity.xmppConnectionService.deleteMessage(conversation, message);
             activity.onConversationsListItemUpdated();

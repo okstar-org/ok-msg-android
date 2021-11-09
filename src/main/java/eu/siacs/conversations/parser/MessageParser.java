@@ -702,18 +702,15 @@ public class MessageParser extends AbstractParser implements OnMessagePacketRece
                             message.setMessageDeleted(true);
                             message.setRetractId(retractId);
 
-                            for (Edit itm : retractedMessage.getEditedList())
-                            {
+                            for (Edit itm : retractedMessage.getEditedList()) {
                                 Message tmpRetractedMessage = conversation.findMessageWithUuidOrRemoteId(itm.getEditedId());
-                                if (tmpRetractedMessage!=null) {
+                                if (tmpRetractedMessage != null) {
                                     tmpRetractedMessage.setRetractId(retractId);
                                     mXmppConnectionService.updateMessage(tmpRetractedMessage, tmpRetractedMessage.getUuid());
                                 }
                             }
                             mXmppConnectionService.updateMessage(retractedMessage, retractedMessage.getUuid());
-
                             mXmppConnectionService.databaseBackend.createMessage(message);
-
                             if (mXmppConnectionService.confirmMessages()
                                     && retractedMessage.getStatus() == Message.STATUS_RECEIVED
                                     && (retractedMessage.trusted() || retractedMessage.isPrivateMessage()) //TODO do we really want to send receipts for all PMs?
