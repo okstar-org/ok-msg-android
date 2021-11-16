@@ -50,6 +50,7 @@ import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
 import androidx.core.graphics.drawable.DrawableCompat;
 
+import com.chibde.visualizer.CircleBarVisualizer;
 import com.google.common.base.Strings;
 import com.squareup.picasso.Picasso;
 
@@ -1118,6 +1119,7 @@ public class MessageAdapter extends ArrayAdapter<Message> {
                     viewHolder.time = view.findViewById(R.id.message_time);
                     viewHolder.indicatorReceived = view.findViewById(R.id.indicator_received);
                     viewHolder.progressBar = view.findViewById(R.id.progressBar);
+                    viewHolder.visualizer = view.findViewById(R.id.visualizer);
                     break;
                 case RECEIVED:
                     view = activity.getLayoutInflater().inflate(R.layout.message_received, parent, false);
@@ -1141,6 +1143,7 @@ public class MessageAdapter extends ArrayAdapter<Message> {
                     viewHolder.indicatorReceived = view.findViewById(R.id.indicator_received);
                     viewHolder.encryption = view.findViewById(R.id.message_encryption);
                     viewHolder.progressBar = view.findViewById(R.id.progressBar);
+                    viewHolder.visualizer = view.findViewById(R.id.visualizer);
                     break;
                 case STATUS:
                     view = activity.getLayoutInflater().inflate(R.layout.message_status, parent, false);
@@ -1468,6 +1471,7 @@ public class MessageAdapter extends ArrayAdapter<Message> {
         protected TextView status_message;
         protected TextView encryption;
         protected ProgressBar progressBar;
+        protected CircleBarVisualizer visualizer;
     }
 
     public void setBubbleBackgroundColor(final View viewHolder, final int type,

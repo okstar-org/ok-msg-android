@@ -22,6 +22,8 @@ import android.widget.TextView;
 import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
 
+import com.chibde.visualizer.CircleBarVisualizer;
+
 import java.lang.ref.WeakReference;
 import java.util.Locale;
 import java.util.concurrent.ExecutorService;
@@ -33,6 +35,7 @@ import eu.siacs.conversations.entities.Message;
 import eu.siacs.conversations.ui.ConversationsActivity;
 import eu.siacs.conversations.ui.adapter.MessageAdapter;
 import eu.siacs.conversations.ui.util.PendingItem;
+import eu.siacs.conversations.ui.util.StyledAttributes;
 import eu.siacs.conversations.utils.ThemeHelper;
 import eu.siacs.conversations.utils.WeakReferenceSet;
 
@@ -101,26 +104,22 @@ public class AudioPlayer implements View.OnClickListener, MediaPlayer.OnCompleti
 
     private boolean init(ViewHolder viewHolder, Message message) {
         messageAdapter.getActivity().setVolumeControlStream(AudioManager.STREAM_MUSIC);
-        if (viewHolder.darkBackground) {
-            viewHolder.runtime.setTextAppearance(this.messageAdapter.getContext(), R.style.TextAppearance_Conversations_Caption_OnDark);
-        } else {
-            viewHolder.runtime.setTextAppearance(this.messageAdapter.getContext(), R.style.TextAppearance_Conversations_Caption);
-        }
         viewHolder.progress.setOnSeekBarChangeListener(this);
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-            ColorStateList color = ThemeHelper.AudioPlayerColor(messageAdapter.getContext());
-            viewHolder.progress.setThumbTintList(color);
-            viewHolder.progress.setProgressTintList(color);
-        }
+        ColorStateList color = ThemeHelper.AudioPlayerColor(messageAdapter.getContext());
+        viewHolder.visualizer.setColor(StyledAttributes.getColor(messageAdapter.getContext(), R.attr.colorAccent));
+        viewHolder.progress.setThumbTintList(color);
+        viewHolder.progress.setProgressTintList(color);
         viewHolder.playPause.setAlpha(viewHolder.darkBackground ? 0.7f : 0.57f);
         viewHolder.playPause.setOnClickListener(this);
         if (message == currentlyPlayingMessage) {
             if (AudioPlayer.player != null && AudioPlayer.player.isPlaying()) {
                 viewHolder.playPause.setImageResource(viewHolder.darkBackground ? R.drawable.ic_pause_white_36dp : R.drawable.ic_pause_black_36dp);
                 viewHolder.progress.setEnabled(true);
+                viewHolder.visualizer.setVisibility(View.VISIBLE);
             } else {
                 viewHolder.playPause.setImageResource(viewHolder.darkBackground ? R.drawable.ic_play_arrow_white_36dp : R.drawable.ic_play_arrow_black_36dp);
                 viewHolder.progress.setEnabled(false);
+                viewHolder.visualizer.setVisibility(View.INVISIBLE);
             }
             return true;
         } else {
@@ -128,6 +127,7 @@ public class AudioPlayer implements View.OnClickListener, MediaPlayer.OnCompleti
             viewHolder.runtime.setText(formatTime(message.getFileParams().runtime));
             viewHolder.progress.setProgress(0);
             viewHolder.progress.setEnabled(false);
+            viewHolder.visualizer.setVisibility(View.INVISIBLE);
             return false;
         }
     }
@@ -162,6 +162,7 @@ public class AudioPlayer implements View.OnClickListener, MediaPlayer.OnCompleti
         viewHolder.playPause.setAlpha(viewHolder.darkBackground ? 0.7f : 0.57f);
         if (player.isPlaying()) {
             viewHolder.progress.setEnabled(false);
+            viewHolder.visualizer.setVisibility(View.INVISIBLE);
             player.pause();
             releaseAudioFocus();
             messageAdapter.flagScreenOff();
@@ -169,6 +170,7 @@ public class AudioPlayer implements View.OnClickListener, MediaPlayer.OnCompleti
             viewHolder.playPause.setImageResource(viewHolder.darkBackground ? R.drawable.ic_play_arrow_white_36dp : R.drawable.ic_play_arrow_black_36dp);
         } else {
             viewHolder.progress.setEnabled(true);
+            viewHolder.visualizer.setVisibility(View.VISIBLE);
             requestAudioFocus();
             player.start();
             messageAdapter.flagScreenOn();
@@ -199,9 +201,11 @@ public class AudioPlayer implements View.OnClickListener, MediaPlayer.OnCompleti
             AudioPlayer.player.prepare();
             requestAudioFocus();
             AudioPlayer.player.start();
+            viewHolder.visualizer.setPlayer(AudioPlayer.player.getAudioSessionId());
             messageAdapter.flagScreenOn();
             acquireProximityWakeLock();
             viewHolder.progress.setEnabled(true);
+            viewHolder.visualizer.setVisibility(View.VISIBLE);
             viewHolder.playPause.setImageResource(viewHolder.darkBackground ? R.drawable.ic_pause_white_36dp : R.drawable.ic_pause_black_36dp);
             sensorManager.registerListener(this, proximitySensor, SensorManager.SENSOR_DELAY_FASTEST);
             return true;
@@ -264,6 +268,7 @@ public class AudioPlayer implements View.OnClickListener, MediaPlayer.OnCompleti
         }
         viewHolder.progress.setProgress(0);
         viewHolder.progress.setEnabled(false);
+        viewHolder.visualizer.setVisibility(View.INVISIBLE);
     }
 
     @Override
@@ -439,9 +444,11 @@ public class AudioPlayer implements View.OnClickListener, MediaPlayer.OnCompleti
             Log.i(Config.LOGTAG, "Audio focus failed.");
         }
     }
+
     public static class ViewHolder {
         private TextView runtime;
         private SeekBar progress;
+        private CircleBarVisualizer visualizer;
         private ImageButton playPause;
         private boolean darkBackground = false;
 
@@ -451,6 +458,7 @@ public class AudioPlayer implements View.OnClickListener, MediaPlayer.OnCompleti
                 viewHolder = new ViewHolder();
                 viewHolder.runtime = audioPlayer.findViewById(R.id.runtime);
                 viewHolder.progress = audioPlayer.findViewById(R.id.progress);
+                viewHolder.visualizer = audioPlayer.findViewById(R.id.visualizer);
                 viewHolder.playPause = audioPlayer.findViewById(R.id.play_pause);
                 audioPlayer.setTag(R.id.TAG_AUDIO_PLAYER_VIEW_HOLDER, viewHolder);
             }
