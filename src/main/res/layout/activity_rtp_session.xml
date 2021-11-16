@@ -210,7 +210,7 @@
                 android:layout_toStartOf="@+id/end_call"
                 android:layout_toLeftOf="@+id/end_call"
                 android:visibility="gone"
-                app:backgroundTint="?color_background_primary"
+                app:backgroundTint="?attr/color_background_tertiary"
                 app:elevation="4dp"
                 app:fabSize="mini"
                 app:tint="@color/realwhite" />
@@ -238,7 +238,7 @@
                 android:layout_toEndOf="@+id/end_call"
                 android:layout_toRightOf="@+id/end_call"
                 android:visibility="gone"
-                app:backgroundTint="?color_background_primary"
+                app:backgroundTint="?attr/color_background_tertiary"
                 app:elevation="4dp"
                 app:fabSize="mini"
                 app:tint="@color/realwhite" />

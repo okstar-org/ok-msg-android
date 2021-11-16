@@ -67,7 +67,7 @@
 
                                     <com.google.android.material.textfield.TextInputLayout
                                         android:id="@+id/hostname_layout"
-                                        style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+                                        style="@style/Widget.Conversations.TextInputLayout.OutlinedBox"
                                         android:layout_width="match_parent"
                                         android:layout_height="wrap_content"
                                         android:hint="@string/account_settings_hostname"
@@ -91,7 +91,7 @@
 
                                     <com.google.android.material.textfield.TextInputLayout
                                         android:id="@+id/port_layout"
-                                        style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+                                        style="@style/Widget.Conversations.TextInputLayout.OutlinedBox"
                                         android:layout_width="match_parent"
                                         android:layout_height="match_parent"
                                         android:hint="@string/account_settings_port"
@@ -111,7 +111,7 @@
 
                             <com.google.android.material.textfield.TextInputLayout
                                 android:id="@+id/account_jid_layout"
-                                style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+                                style="@style/Widget.Conversations.TextInputLayout.OutlinedBox"
                                 android:layout_width="match_parent"
                                 android:layout_height="wrap_content"
                                 android:hint="@string/account_settings_jabber_id"
@@ -123,15 +123,15 @@
                                     style="@style/Widget.Conversations.EditText"
                                     android:layout_width="match_parent"
                                     android:layout_height="wrap_content"
-                                    android:padding="16dp"
                                     android:imeOptions="actionNext"
                                     android:inputType="textEmailAddress"
+                                    android:padding="16dp"
                                     android:textColor="?attr/edit_text_color" />
                             </com.google.android.material.textfield.TextInputLayout>
 
                             <com.google.android.material.textfield.TextInputLayout
                                 android:id="@+id/account_password_layout"
-                                style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+                                style="@style/Widget.Conversations.TextInputLayout.OutlinedBox"
                                 android:layout_width="match_parent"
                                 android:layout_height="wrap_content"
                                 app:errorTextAppearance="@style/TextAppearance.Conversations.Design.Error"
@@ -164,6 +164,7 @@
                                 android:layout_gravity="center_horizontal"
                                 android:layout_marginTop="4dp"
                                 android:layout_marginBottom="4dp"
+                                android:backgroundTint="?attr/colorAccent"
                                 android:text="@string/show_privacy"
                                 android:visibility="gone" />
 
@@ -174,6 +175,7 @@
                                 android:layout_gravity="center_horizontal"
                                 android:layout_marginTop="4dp"
                                 android:layout_marginBottom="4dp"
+                                android:backgroundTint="?attr/colorAccent"
                                 android:text="@string/show_termsofuse"
                                 android:visibility="gone" />
                         </LinearLayout>

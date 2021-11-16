@@ -45,6 +45,15 @@
 
     <style name="Widget.Conversations.EditText" parent="Widget.AppCompat.EditText">
         <item name="android:textSize">?TextSizeInput</item>
+        <item name="android:textCursorDrawable">@drawable/white_cursor</item>
+        <item name="colorControlActivated">?attr/colorAccent</item>
+        <item name="colorControlNormal">?attr/colorAccent</item>
+    </style>
+
+    <style name="Widget.Conversations.TextInputLayout.OutlinedBox" parent="Widget.MaterialComponents.TextInputLayout.OutlinedBox">
+        <item name="boxStrokeColor">@color/text_input_stroke_color</item>
+        <item name="android:textColorHint">@color/text_input_stroke_color</item>
+        <item name="hintTextColor">@color/text_input_stroke_color</item>
     </style>
 
     <style name="Widget.Conversations.SearchView" parent="Widget.Conversations.EditText">
@@ -85,6 +94,7 @@
     </style>
 
     <style name="TextAppearance.Conversations.Design.Hint" parent="TextAppearance.Design.Hint">
+        <item name="strokeColor">?colorSecondary</item>
         <item name="android:textSize">?TextSizeCaption</item>
     </style>
 
@@ -164,7 +174,7 @@
         <item name="android:textColor">@color/white70</item>
     </style>
 
-    <style name="Conversations.Dialog" parent="ThemeOverlay.MaterialComponents.Dialog.Alert" >
+    <style name="Conversations.Dialog" parent="ThemeOverlay.MaterialComponents.Dialog.Alert">
         <item name="android:buttonStyle">@style/Widget.Conversations.Button.Borderless</item>
     </style>
 
