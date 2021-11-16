@@ -152,6 +152,9 @@ public class MediaViewerActivity extends XmppActivity implements AudioManager.On
         if (info.size() == 0) {
             openIntent.setDataAndType(uri, "*/*");
         }
+        if (player != null && isVideo) {
+            openIntent.putExtra("position", player.getCurrentPosition());
+        }
         try {
             this.startActivity(openIntent);
             finish();
