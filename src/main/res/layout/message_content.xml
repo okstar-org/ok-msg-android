@@ -83,21 +83,12 @@
         android:layout_height="wrap_content"
         android:visibility="gone">
 
-        <com.chibde.visualizer.CircleBarVisualizer
-            android:id="@+id/visualizer"
-            android:layout_width="64dp"
-            android:layout_height="64dp"
-            android:layout_centerVertical="true"
-            android:visibility="invisible"
-            android:paddingTop="64dp" />
-
         <ImageButton
             android:id="@+id/play_pause"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_centerVertical="true"
             android:alpha="?attr/icon_alpha"
-            android:layout_marginStart="14dp"
             android:background="?android:selectableItemBackground" />
 
         <TextView
@@ -121,7 +112,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_below="@+id/runtime"
-            android:paddingTop="16dp"
+            android:paddingTop="4dp"
             android:layout_centerVertical="true"
             android:layout_toEndOf="@+id/play_pause"
             android:layout_toRightOf="@+id/play_pause"
