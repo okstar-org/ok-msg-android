@@ -19,11 +19,13 @@ import androidx.appcompat.widget.Toolbar;
 import androidx.databinding.DataBindingUtil;
 
 import com.google.android.material.snackbar.Snackbar;
+import com.google.common.math.DoubleMath;
 
 import org.osmdroid.api.IGeoPoint;
 import org.osmdroid.util.GeoPoint;
 
 import java.lang.ref.WeakReference;
+import java.math.RoundingMode;
 import java.util.List;
 import java.util.Locale;
 
@@ -94,23 +96,7 @@ public class ShareLocationActivity extends LocationActivity implements LocationL
         });
         ThemeHelper.fix(this.snackBar);
 
-        this.binding.shareButton.setOnClickListener(view -> {
-            final Intent result = new Intent();
-
-            if (marker_fixed_to_loc && myLoc != null) {
-                result.putExtra("latitude", myLoc.getLatitude());
-                result.putExtra("longitude", myLoc.getLongitude());
-                result.putExtra("altitude", myLoc.getAltitude());
-                result.putExtra("accuracy", (int) myLoc.getAccuracy());
-            } else {
-                final IGeoPoint markerPoint = this.binding.map.getMapCenter();
-                result.putExtra("latitude", markerPoint.getLatitude());
-                result.putExtra("longitude", markerPoint.getLongitude());
-            }
-
-            setResult(RESULT_OK, result);
-            finish();
-        });
+        this.binding.shareButton.setOnClickListener(this::shareLocation);
 
         this.marker_fixed_to_loc = isLocationEnabledAndAllowed();
 
@@ -124,6 +110,22 @@ public class ShareLocationActivity extends LocationActivity implements LocationL
             }
             toggleFixedLocation();
         });
+    }
+
+    private void shareLocation(final View view) {
+            final Intent result = new Intent();
+            if (marker_fixed_to_loc && myLoc != null) {
+                result.putExtra("latitude", myLoc.getLatitude());
+                result.putExtra("longitude", myLoc.getLongitude());
+                result.putExtra("altitude", myLoc.getAltitude());
+            result.putExtra("accuracy", DoubleMath.roundToInt(myLoc.getAccuracy(), RoundingMode.HALF_UP));
+            } else {
+                final IGeoPoint markerPoint = this.binding.map.getMapCenter();
+                result.putExtra("latitude", markerPoint.getLatitude());
+                result.putExtra("longitude", markerPoint.getLongitude());
+            }
+            setResult(RESULT_OK, result);
+            finish();
     }
 
     @Override
