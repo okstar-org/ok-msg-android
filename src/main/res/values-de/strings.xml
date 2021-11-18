@@ -2,7 +2,7 @@
 <resources>
     <string name="action_settings">Einstellungen</string>
     <string name="action_add">Neue Unterhaltung</string>
-    <string name="action_accounts">Profile verwalten</string>
+    <string name="action_accounts">Konten verwalten</string>
     <string name="action_end_conversation">Unterhaltung beenden</string>
     <string name="action_contact_details">Kontakt-Details</string>
     <string name="action_secure">Verschlüsselte Unterhaltung</string>
@@ -14,7 +14,7 @@
     <string name="action_unblock_contact">Kontakt entsperren</string>
     <string name="action_block_domain">Domain sperren</string>
     <string name="action_unblock_domain">Domain entsperren</string>
-    <string name="title_activity_manage_accounts">Profile verwalten</string>
+    <string name="title_activity_manage_accounts">Konten verwalten</string>
     <string name="title_activity_settings">Einstellungen</string>
     <string name="conference_details">Gruppenchat-Details</string>
     <string name="contact_details">Kontakt-Details</string>
@@ -67,8 +67,8 @@
     <string name="send_now">Jetzt abschicken</string>
     <string name="send_never">Nie mehr nachfragen</string>
     <string name="problem_connecting_to_account">Es gibt Probleme beim Verbindungsaufbau mit einem Konto</string>
-    <string name="problem_connecting_to_accounts">Es gibt Probleme beim Verbindungsaufbau mit mehreren Profilen</string>
-    <string name="touch_to_fix">Hier tippen, um deine Profile zu verwalten</string>
+    <string name="problem_connecting_to_accounts">Es gibt Probleme beim Verbindungsaufbau mit mehreren Konten</string>
+    <string name="touch_to_fix">Hier tippen, um deine Konten zu verwalten</string>
     <string name="attach_file">Datei anfügen</string>
     <string name="not_in_roster">Der Kontakt ist nicht in deiner Kontaktliste. Möchtest du ihn hinzufügen?</string>
     <string name="add_contact">Kontakt hinzufügen</string>
@@ -152,7 +152,7 @@
     <string name="encryption_choice_omemo">OMEMO</string>
     <string name="action_account">Konto bearbeiten</string>
     <string name="mgmt_account_delete">Löschen</string>
-    <string name="mgmt_account_publish_avatar">Profilbild veröffentlichen</string>
+    <string name="mgmt_account_publish_avatar">Kontobild veröffentlichen</string>
     <string name="mgmt_account_publish_pgp">Öffentlichen OpenPGP-Schlüssel veröffentlichen</string>
     <string name="unpublish_pgp">Öffentlichen OpenPGP-Schlüssel verwerfen</string>
     <string name="unpublish_pgp_message">Bist du sicher, dass du deinen öffentlichen OpenPGP-Schlüssel aus deiner Anwesenheitsmitteilung entfernen möchtest?\\nDeine Kontakte können dir dann keine OpenPGP-verschlüsselten Nachrichten senden.</string>
@@ -173,7 +173,7 @@
     <string name="server_info_blocking">XEP-0191: Blocking Command</string>
     <string name="server_info_roster_version">XEP-0237: Roster Versioning</string>
     <string name="server_info_stream_management">XEP-0198: Stream Management</string>
-    <string name="server_info_pep">XEP-0163: PEP (Profilbilder/OMEMO)</string>
+    <string name="server_info_pep">XEP-0163: PEP (Kontobilder/OMEMO)</string>
     <string name="server_info_http_upload">XEP-0363: HTTP File Upload</string>
     <string name="server_info_push">XEP-0357: Push</string>
     <string name="server_info_available">ja</string>
@@ -221,13 +221,13 @@
     <string name="contact_added_you">Der Kontakt hat dich zur Kontaktliste hinzugefügt</string>
     <string name="add_back">Auch hinzufügen</string>
     <string name="publish">Veröffentlichen</string>
-    <string name="touch_to_choose_picture">Profilbild antippen, um Bild aus Galerie auszuwählen</string>
+    <string name="touch_to_choose_picture">Kontobild antippen, um Bild aus Galerie auszuwählen</string>
     <string name="publishing">Veröffentliche…</string>
-    <string name="error_publish_avatar_server_reject">Der Server hat die Veröffentlichung des Profilbildes abgelehnt.</string>
-    <string name="error_publish_avatar_converting">Bei der Konvertierung des Profilbildes lief etwas schief.</string>
+    <string name="error_publish_avatar_server_reject">Der Server hat die Veröffentlichung des Kontobildes abgelehnt.</string>
+    <string name="error_publish_avatar_converting">Bei der Konvertierung des Kontobildes lief etwas schief.</string>
     <string name="error_saving_avatar">Avatar kann nicht gespeichert werden</string>
     <string name="or_long_press_for_default">(Oder klicke lange, um Standard wiederherzustellen)</string>
-    <string name="error_publish_avatar_no_server_support">Dein Server unterstützt die Veröffentlichung von Profilbildern nicht.</string>
+    <string name="error_publish_avatar_no_server_support">Dein Server unterstützt die Veröffentlichung von Kontobildern nicht.</string>
     <string name="private_message">private Nachricht:</string>
     <string name="private_message_to">privat an %s:</string>
     <string name="send_private_message_to">Private Nachricht an %s senden…</string>
@@ -321,7 +321,7 @@
     <string name="pref_show_dynamic_tags_summary">Schreibgeschütze Tags unterhalb der Kontakte anzeigen</string>
     <string name="no_conference_server_found">Es wurde kein Gruppenchat-Server gefunden</string>
     <string name="conference_creation_failed">Gruppenchat konnte nicht erstellt werden!</string>
-    <string name="account_image_description">Profilbild</string>
+    <string name="account_image_description">Kontobild</string>
     <string name="copy_omemo_clipboard_description">OMEMO-Fingerabdruck in Zwischenablage kopieren</string>
     <string name="regenerate_omemo_key">OMEMO-Fingerabdruck erneuern</string>
     <string name="clear_other_devices">Geräte entfernen</string>
@@ -383,7 +383,7 @@
     <string name="pdf_document">PDF-Dokument</string>
     <string name="apk">Android App</string>
     <string name="vcard">Kontakt</string>
-    <string name="avatar_has_been_published">Profilbild wurde gespeichert</string>
+    <string name="avatar_has_been_published">Kontobild wurde gespeichert</string>
     <string name="sending_x_file">%s wird gesendet</string>
     <string name="offering_x_file">%s wird angeboten</string>
     <string name="hide_offline">Offline verstecken</string>
@@ -463,7 +463,7 @@
     <string name="hostname_or_onion">Server- oder .onion-Adresse</string>
     <string name="not_a_valid_port">Dies ist keine gültige Port-Nummer</string>
     <string name="not_valid_hostname">Dies ist kein gültiger Hostname</string>
-    <string name="connected_accounts">%1$d von %2$d Profile verbunden</string>
+    <string name="connected_accounts">%1$d von %2$d Konten verbunden</string>
     <plurals name="x_messages">
         <item quantity="one">%d Nachricht</item>
         <item quantity="other">%d Nachrichten</item>
@@ -471,7 +471,7 @@
     <string name="load_more_messages">weitere Nachrichten laden</string>
     <string name="no_storage_permission">monocles chat benötigt Zugriff auf externen Speicher</string>
     <string name="sync_with_contacts">Mit Kontakten synchronisieren</string>
-    <string name="sync_with_contacts_long">monocles chat möchte deine XMPP-Kontaktliste mit deinen Kontakten abgleichen, um deren vollständige Namen und Profilbilder anzuzeigen.\n\nmonocles chat wird deine Kontakte nur lokal lesen und abgleichen und überträgt diese nicht auf den Server.\n\nDu wirst nun gefragt, ob du den Zugriff auf deine Kontakte erlauben möchtest.</string>
+    <string name="sync_with_contacts_long">monocles chat möchte deine XMPP-Kontaktliste mit deinen Kontakten abgleichen, um deren vollständige Namen und Kontobilder anzuzeigen.\n\nmonocles chat wird deine Kontakte nur lokal lesen und abgleichen und überträgt diese nicht auf den Server.\n\nDu wirst nun gefragt, ob du den Zugriff auf deine Kontakte erlauben möchtest.</string>
     <string name="notify_on_all_messages">Bei allen Nachrichten benachrichtigen</string>
     <string name="notify_only_when_highlighted">Nur benachrichtigen, wenn ich erwähnt werde</string>
     <string name="notify_never">Benachrichtigungen deaktiviert</string>
@@ -496,7 +496,7 @@
     <string name="cancel_update">Update abbrechen?</string>
     <string name="yes">Ja</string>
     <string name="no">Nein</string>
-    <string name="no_accounts">(Keine aktivierten Profile)</string>
+    <string name="no_accounts">(Keine aktivierten Konten)</string>
     <string name="this_field_is_required">Dieses Feld ist erforderlich</string>
     <string name="correct_message">Nachricht korrigieren</string>
     <string name="send_corrected_message">Korrigierte Nachricht senden</string>
@@ -562,7 +562,7 @@
     <string name="pref_delete_omemo_identities">OMEMO Identitäten zurücksetzen</string>
     <string name="pref_delete_omemo_identities_summary">Regeneriere deine OMEMO-Fingerabdrücke. Alle deine Kontakte müssen dich neu verifizieren. Nutze dies als letzten Ausweg.</string>
     <string name="delete_selected_keys">Ausgewählte Fingerabdrücke löschen</string>
-    <string name="error_publish_avatar_offline">Du musst verbunden sein, um dein Profilbild hochzuladen.</string>
+    <string name="error_publish_avatar_offline">Du musst verbunden sein, um dein Kontobild hochzuladen.</string>
     <string name="copy_to_clipboard">In Zwischenablage kopieren</string>
     <string name="message_copied_to_clipboard">Nachricht in Zwischenablage kopiert</string>
     <string name="message">Nachricht</string>
@@ -656,7 +656,7 @@
     <string name="last_seen_just_away">kürzlich</string>
     <string name="send_message">Nachricht senden</string>
     <string name="send_failed_resend">Zustellung fehlgeschlagen, sende erneut…</string>
-    <string name="pref_show_connection_options_summary">Hostname- und Port-Optionen bei Profileinrichtung anzeigen</string>
+    <string name="pref_show_connection_options_summary">Hostname- und Port-Optionen bei Kontoeinrichtung anzeigen</string>
     <string name="pref_show_connection_options">Erweiterte Verbindungsoptionen</string>
     <string name="retry_decryption">Entschlüsseln wiederholen</string>
     <string name="session_failure">Sitzungsfehler</string>
@@ -701,7 +701,7 @@
     <string name="huawei_protected_apps">Geschützte Apps</string>
     <string name="huawei_protected_apps_summary">Um Benachrichtigungen zu erhalten, selbst wenn der Bildschirm ausgeschaltet ist, füge monocles chat bitte der Liste geschützter Apps hinzu.</string>
     <string name="pref_enable_multi_accounts_title">Mehrprofil-Modus aktivieren</string>
-    <string name="pref_enable_multi_accounts_summary">Möchtest du mehrere Profile benutzen?</string>
+    <string name="pref_enable_multi_accounts_summary">Möchtest du mehrere Konten benutzen?</string>
     <string name="mtm_accept_cert">Unbekanntes Zertifikat akzeptieren?</string>
     <string name="mtm_trust_anchor">Das Serverzertifikat wurde nicht von einer bekannten Zertifizierungsstelle signiert.</string>
     <string name="mtm_accept_servername">Nicht übereinstimmenden Servernamen akzeptieren?</string>
@@ -835,15 +835,15 @@
     <string name="open_with">Öffnen mit…</string>
     <string name="server_info_adhoc_invite">XEP-0050: Ad-Hoc Commands: Benutzer einladen</string>
     <string name="choose_account">Konto wählen</string>
-    <string name="set_profile_picture">monocles chat Profilbild</string>
+    <string name="set_profile_picture">monocles chat Kontobild</string>
     <string name="restore_backup">Sicherung wiederherstellen</string>
     <string name="restore">Wiederherstellen</string>
     <string name="enter_password_to_restore">Um die Sicherung wiederherzustellen, gib für das Konto %s dein Kennwort ein.</string>
     <string name="restore_warning">Benutze die Wiederherstellungsfunktion unter keinen Umständen, außer im Falle einer Migration oder eines Verlustes deines Geräts.</string>
     <string name="unable_to_restore_backup">Sicherung kann nicht wiederhergestellt werden.</string>
     <string name="unable_to_decrypt_backup">Sicherung kann nicht entschlüsselt werden. Stimmt das Kennwort?</string>
-    <string name="pref_prefer_xmpp_avatar_summary">Bevorzuge den vom Benutzer gesetzten Avatar anstatt des Profilbildes in deinem Adressbuch</string>
-    <string name="pref_prefer_xmpp_avatar">Chat-Profilbild bevorzugen</string>
+    <string name="pref_prefer_xmpp_avatar_summary">Bevorzuge den vom Benutzer gesetzten Avatar anstatt des Kontobildes in deinem Adressbuch</string>
+    <string name="pref_prefer_xmpp_avatar">Chat-Kontobild bevorzugen</string>
     <plurals name="view_users">
         <item quantity="one">%1$d Teilnehmer anzeigen</item>
         <item quantity="other">%1$d Teilnehmer anzeigen</item>
@@ -916,7 +916,7 @@
     <string name="add_anyway">Trotzdem hinzufügen</string>
     <string name="this_looks_like_channel">Dies sieht aus wie eine Raum-Adresse</string>
     <string name="no_backup_available">Kein Backup vorhanden</string>
-    <string name="pref_show_own_accounts_summary">Zeige eigenes Konto in Chats und Kontakten, falls du mehrere Profile nutzt.</string>
+    <string name="pref_show_own_accounts_summary">Zeige eigenes Konto in Chats und Kontakten, falls du mehrere Konten nutzt.</string>
     <string name="pref_show_own_accounts">Zeige eigenes Konto</string>
     <string name="message_encryption">Nachrichtenverschlüsselung</string>
     <string name="enable_message_encryption">Dieser Chat ist unverschlüsselt. Aus Sicherheitsgründen solltest du Nachrichtenverschlüsselung aktivieren, vorzugsweise OMEMO. Falls irgendetwas nicht funktioniert, kannst du die Nachrichtenverschlüsselung über das Schloss Symbol wieder deaktivieren.</string>
@@ -1004,7 +1004,7 @@
     <string name="pref_use_colored_muc_names_summary">Namen in Gruppen-Chats oder Channels wie Standard-Avatar-Hintergründe einfärben.</string>
     <string name="pref_use_colored_muc_names">Farbige Namen</string>
     <string name="show_videos_images_only">Nur Bilder/Videos</string>
-    <string name="show_avatar">Profilbild anzeigen</string>
+    <string name="show_avatar">Kontobild anzeigen</string>
     <string name="action_delete">Löschen</string>
     <string name="attach_choose_video">Video auswählen</string>
     <string name="please_enable_an_account">Bitte ein Konto aktivieren</string>
@@ -1081,7 +1081,7 @@
     <string name="pref_invidious_host_summary">Nutze benutzerdefinierten Invidious Server</string>
     <string name="pref_invidious_host">Invidious Server</string>
     <string name="updated_to_monocles">Monocles Messenger wurde erfolgreich auf monocles chat aktualisiert\n\nDie Zusammenarbeit der beiden Projekte monocles chat und Monocles Messenger wurde im November 2020 weiter ausgebaut. Zukünftig wird die Android App Monocles Messenger unter dem Namen monocles chat weitergeführt.\n\nWas euch erwartet:\n- Funktionsumfang bleibt erhalten\n- Support Chaträume werden zusammengelegt\n- Farben und Logos werden an monocles chat angepasst\n- App ist weiterhin kostenlos im Google Play Store und F-Droid Store verfügbar\n\nEuer monocles chat Team</string>
-    <string name="updated_to_monocles_google">Wir müssen uns entschuldigen, dass wir nicht direkt auf monocles chat aktualisieren konnten. Unter dem folgenden Link erhältst su eine Anleitung, wie du alle deine Profile vom Monocles Messenger auf monocles chat übertragen kannst. Mit einem Klick auf Daten verschieben versuchen wir, alle gesendeten und empfangenen Dateien vom Monocles Messenger auf monocles chat zu verschieben. Nach einer erfolgreichen Migration solltest du daran denken, Monocles Messenger von deinem Gerät zu entfernen.</string>
+    <string name="updated_to_monocles_google">Wir müssen uns entschuldigen, dass wir nicht direkt auf monocles chat aktualisieren konnten. Unter dem folgenden Link erhältst su eine Anleitung, wie du alle deine Konten vom Monocles Messenger auf monocles chat übertragen kannst. Mit einem Klick auf Daten verschieben versuchen wir, alle gesendeten und empfangenen Dateien vom Monocles Messenger auf monocles chat zu verschieben. Nach einer erfolgreichen Migration solltest du daran denken, Monocles Messenger von deinem Gerät zu entfernen.</string>
     <string name="link">Link</string>
     <string name="no_application_found">Keine Anwendung gefunden</string>
     <string name="move_data">Daten verschieben</string>
@@ -1096,7 +1096,7 @@
     <string name="if_contact_is_nearby_use_qr">Wenn dein Kontakt in der Nähe ist, kann auch der unten stehende Code gescannt werden, um deine Einladung anzunehmen.</string>
     <string name="easy_invite_share_text">Trete %1$s bei und chatte mit mir: %2$s</string>
     <string name="share_invite_with">Teile Einladung mit…</string>
-    <string name="no_active_accounts_support_this">Keine aktiven Profile unterstützen diese Funktion</string>
+    <string name="no_active_accounts_support_this">Keine aktiven Konten unterstützen diese Funktion</string>
     <string name="server_info_easy_invite">XEP-0401: Easy User Onboarding</string>
     <string name="pref_mappreview_host_summary">Nutze benutzerdefinierten Kartenvorschau Server</string>
     <string name="pref_mappreview_host">Kartenvorschau Server</string>
