@@ -1486,8 +1486,10 @@ public class JingleRtpConnection extends AbstractJingleConnection implements Web
         this.stateHistory.add(newState);
         if (newState == PeerConnection.PeerConnectionState.CONNECTED) {
             this.sessionDuration.start();
+            updateOngoingCallNotification();
         } else if (this.sessionDuration.isRunning()) {
             this.sessionDuration.stop();
+            updateOngoingCallNotification();
         }
 
         final boolean neverConnected = !this.stateHistory.contains(PeerConnection.PeerConnectionState.CONNECTED);
@@ -1635,8 +1637,15 @@ public class JingleRtpConnection extends AbstractJingleConnection implements Web
     }
 
     private void updateOngoingCallNotification() {
-        if (STATES_SHOWING_ONGOING_CALL.contains(this.state)) {
-            xmppConnectionService.setOngoingCall(id, getMedia());
+        final State state = this.state;
+        if (STATES_SHOWING_ONGOING_CALL.contains(state)) {
+            final boolean reconnecting;
+            if (state == State.SESSION_ACCEPTED) {
+                reconnecting = getPeerConnectionStateAsEndUserState() == RtpEndUserState.RECONNECTING;
+            } else {
+                reconnecting = false;
+            }
+            xmppConnectionService.setOngoingCall(id, getMedia(), reconnecting);
         } else {
             xmppConnectionService.removeOngoingCall();
         }
@@ -1760,7 +1769,6 @@ public class JingleRtpConnection extends AbstractJingleConnection implements Web
     public Optional<VideoTrack> getRemoteVideoTrack() {
         return webRTCWrapper.getRemoteVideoTrack();
     }
-
 
     public EglBase.Context getEglBaseContext() {
         return webRTCWrapper.getEglBaseContext();
