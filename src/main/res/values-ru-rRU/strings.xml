@@ -956,8 +956,8 @@
     <string name="please_enter_password">Пожалуйста, введите пароль для этого аккаунта</string>
     <string name="unable_to_perform_this_action">Не удается выполнить это действие</string>
     <string name="waiting_for_transfer">Ожидание передачи</string>
-    <string name="x_has_written">%s написал:</string>
-    <string name="i_have_written">Я написал:</string>
+    <string name="x_user_quote">%s:</string>
+    <string name="me_quote">Я:</string>
     <string name="your_status">Ваш статус</string>
     <string name="pref_use_invidious">Замена ссылок YouTube на Invidious</string>
     <string name="pref_use_invidious_summary">Invidious - это приватный способ просмотра YouTube</string>
@@ -1170,4 +1170,9 @@
     <string name="pref_import_settings">Импорт настроек</string>
     <string name="success_import_settings">Настройки успешно импортированы.</string>
     <string name="error_import_settings">При импорте настроек возникла ошибка.</string>
+    <string name="action_unfix_from_location">Отменить фиксацию положения</string>
+    <string name="action_fix_to_location">Зафиксировать положение</string>
+    <string name="action_copy_location">Копировать местоположение</string>
+    <string name="account_registrations_are_not_supported">Регистрация учетной записи не поддерживается</string>
+    <string name="no_xmpp_adddress_found">XMPP-адрес не найден</string>
 </resources>

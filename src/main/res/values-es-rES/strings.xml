@@ -934,8 +934,8 @@
     <string name="please_enter_password">Por favor entrar la contraseña para esta cuenta</string>
     <string name="unable_to_perform_this_action">No se pudo realizar la acción</string>
     <string name="waiting_for_transfer">Esperando la transferencia</string>
-    <string name="x_has_written">%s escribió:</string>
-    <string name="i_have_written">Escribí:</string>
+    <string name="x_user_quote">%s:</string>
+    <string name="me_quote">Yo:</string>
     <string name="your_status">Tu estado</string>
     <string name="pref_use_invidious">Cambiar los enlaces de YouTube con Invidious</string>
     <string name="pref_use_invidious_summary">Invidious es una alternativa a YouTube respetuosa con la privacidad</string>
@@ -1146,4 +1146,9 @@
     <string name="pref_import_settings">Importar configuraciones</string>
     <string name="success_import_settings">Ajustes importados satisfactoriamente.</string>
     <string name="error_import_settings">Error al importar configuraciones.</string>
+    <string name="action_unfix_from_location">Liberar posición</string>
+    <string name="action_fix_to_location">Fijar posición</string>
+    <string name="action_copy_location">Copiar ubicación</string>
+    <string name="account_registrations_are_not_supported">El registro de cuentas no está soportado</string>
+    <string name="no_xmpp_adddress_found">Dirección XMPP no encontrada</string>
 </resources>

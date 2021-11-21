@@ -914,8 +914,6 @@
     <string name="please_enter_password">このアカウントのパスワードを入力してください</string>
     <string name="unable_to_perform_this_action">このアクションを実行できません</string>
     <string name="waiting_for_transfer">転送待機中</string>
-    <string name="x_has_written">%s の書き込み:</string>
-    <string name="i_have_written">私の書き込み:</string>
     <string name="your_status">あなたの状態</string>
     <string name="pref_use_invidious">YouTubeのリンクをInvidiousに置換</string>
     <string name="pref_use_invidious_summary">Invidiousはプライバシーに配慮された、YouTubeの代替です</string>
@@ -1120,4 +1118,9 @@
     <string name="pref_import_settings">アプリ設定をインポート</string>
     <string name="success_import_settings">設定は正常にインポートされました。</string>
     <string name="error_import_settings">設定のインポート中にエラーが発生しました。</string>
+    <string name="action_unfix_from_location">位置を固定しない</string>
+    <string name="action_fix_to_location">位置を固定</string>
+    <string name="action_copy_location">位置をコピー</string>
+    <string name="account_registrations_are_not_supported">アカウント登録はサポートされていません</string>
+    <string name="no_xmpp_adddress_found">XMPPアドレスが見つかりません</string>
 </resources>

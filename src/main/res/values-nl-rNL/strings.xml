@@ -934,8 +934,8 @@
     <string name="please_enter_password">Voer het wachtwoord van dit account in</string>
     <string name="unable_to_perform_this_action">Kan de gevraagde actie niet uitvoeren</string>
     <string name="waiting_for_transfer">Wachten op overdracht</string>
-    <string name="x_has_written">%s schreef:</string>
-    <string name="i_have_written">Ik schreef:</string>
+    <string name="x_user_quote">%s:</string>
+    <string name="me_quote">Ik:</string>
     <string name="your_status">Je status</string>
     <string name="pref_use_invidious">YouTube-links vervangen met Invidious</string>
     <string name="pref_use_invidious_summary">Invidious is een privacy-vriendelijk alternatief voor YouTube</string>
@@ -1146,4 +1146,9 @@
     <string name="pref_import_settings">Instellingen importeren</string>
     <string name="success_import_settings">De instellingen zijn geïmporteerd.</string>
     <string name="error_import_settings">Fout bij het importeren van de instellingen.</string>
+    <string name="action_unfix_from_location">Handmatige locatie</string>
+    <string name="action_fix_to_location">Huidige GPS-locatie</string>
+    <string name="action_copy_location">Locatie kopiëren</string>
+    <string name="account_registrations_are_not_supported">Het is niet mogelijk om een nieuwe account te registreren</string>
+    <string name="no_xmpp_adddress_found">Geen XMPP-adres gevonden</string>
 </resources>

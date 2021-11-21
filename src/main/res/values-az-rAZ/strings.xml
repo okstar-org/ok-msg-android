@@ -936,8 +936,6 @@
     <string name="please_enter_password">Zəhmət olmasa bu hesab üçün parol daxil edin</string>
     <string name="unable_to_perform_this_action">Bu hərəkəti yerinə yetirmək olmur</string>
     <string name="waiting_for_transfer">Transferi gözləyirəm</string>
-    <string name="x_has_written">%s yazdı:</string>
-    <string name="i_have_written">Mən yazdım:</string>
     <string name="your_status">Sənin statusun</string>
     <string name="pref_use_invidious">YouTube linkləri Invidious ilə əvəz edin</string>
     <string name="pref_use_invidious_summary">Invidious-bu YouTube-un şəxsi və dostsayağı alternativ servisdir</string>

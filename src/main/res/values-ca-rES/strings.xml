@@ -934,8 +934,6 @@
     <string name="please_enter_password">Si us plau, introdueixi la contrasenya d\'aquest compte</string>
     <string name="unable_to_perform_this_action">No es pot realitzar aquesta acció</string>
     <string name="waiting_for_transfer">A l\'espera d\'un enviament</string>
-    <string name="x_has_written">%s va escriure:</string>
-    <string name="i_have_written">Jo vaig escriure:</string>
     <string name="your_status">El teu estat</string>
     <string name="pref_use_invidious">Substituir els enllaços de YouTube per Invidious</string>
     <string name="pref_use_invidious_summary">Invidious és una alternativa a YouTube que respecta la privacitat</string>

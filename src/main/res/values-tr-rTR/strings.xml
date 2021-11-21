@@ -412,7 +412,7 @@
     <string name="search_bookmarks">Çoklu kullanıcı sohbetini ara</string>
     <string name="choose_quick_action">Hızlı işlemi seçin</string>
     <string name="send_private_message">Özel mesaj gönder</string>
-    <string name="user_has_left_conference">grup sohbetinden ayrıldı!</string>
+    <string name="user_has_left_conference">%1$s grup sohbetinden ayrıldı!</string>
     <string name="username">Kullanıcı Adı</string>
     <string name="username_hint">Kullanıcı Adı</string>
     <string name="invalid_username">Bu geçerli bir kullanıcı adı değil</string>
@@ -939,8 +939,6 @@ Bu özelliği kullandığınız zaman IP adresiniz ve arama tercihlerini bu hizm
     <string name="please_enter_password">Lütfen bu hesabınızın şifresini girin</string>
     <string name="unable_to_perform_this_action">Bu eylemi gerçekleştirilemiyor</string>
     <string name="waiting_for_transfer">Transfer için bekleniyor</string>
-    <string name="x_has_written">yazdı:</string>
-    <string name="i_have_written">Yazdım:</string>
     <string name="your_status">Durumunuz</string>
     <string name="pref_use_invidious">Youtube\'u Invidio.us ile değiştirin</string>
     <string name="pref_use_invidious_summary">Invidious, YouTube\'a gizlilik dostu bir alternatiftir</string>

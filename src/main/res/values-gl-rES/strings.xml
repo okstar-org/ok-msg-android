@@ -934,8 +934,6 @@
     <string name="please_enter_password">Por favor introduza a contrasinal para esta conta</string>
     <string name="unable_to_perform_this_action">Non se pode realizar esta acción</string>
     <string name="waiting_for_transfer">Esperando para a transferencia</string>
-    <string name="x_has_written">%s escribiu:</string>
-    <string name="i_have_written">Eu escribín:</string>
     <string name="your_status">O seu estado</string>
     <string name="pref_use_invidious">Substituír enlácelos de YouTube por Invidious</string>
     <string name="pref_use_invidious_summary">Invidious é unha alternativa a YouTube que respecta a privacidade</string>

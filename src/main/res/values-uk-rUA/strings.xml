@@ -899,8 +899,6 @@
     <string name="please_enter_password">Будь ласка, введіть пароль для цього облікового запису</string>
     <string name="unable_to_perform_this_action">Неможливо виконати цю дію</string>
     <string name="waiting_for_transfer">Очікуємо на передачу</string>
-    <string name="x_has_written">%s написав(ла):</string>
-    <string name="i_have_written">Я написав(ла):</string>
     <string name="your_status">Ваш стан</string>
     <string name="pref_use_invidious">Замінювати посилання Youtube посиланнями Invidious</string>
     <string name="pref_use_invidious_summary">Invidious є альтернативою YouTube, яка чутлива до питань конфіденційності</string>
