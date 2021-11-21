@@ -1,6 +1,5 @@
 package eu.siacs.conversations.persistance;
 
-import android.annotation.TargetApi;
 import android.app.Activity;
 import android.content.ContentResolver;
 import android.content.Context;
@@ -36,7 +35,6 @@ import android.util.Log;
 import android.util.LruCache;
 
 import androidx.annotation.Nullable;
-import androidx.annotation.RequiresApi;
 import androidx.annotation.StringRes;
 import androidx.core.content.FileProvider;
 import androidx.exifinterface.media.ExifInterface;
@@ -81,7 +79,6 @@ import eu.siacs.conversations.entities.Message;
 import eu.siacs.conversations.services.AttachFileToConversationRunnable;
 import eu.siacs.conversations.services.XmppConnectionService;
 import eu.siacs.conversations.ui.util.Attachment;
-import eu.siacs.conversations.utils.Compatibility;
 import eu.siacs.conversations.utils.CryptoHelper;
 import eu.siacs.conversations.utils.FileUtils;
 import eu.siacs.conversations.utils.FileWriterException;
@@ -938,7 +935,7 @@ public class FileBackend {
                 }
                 DownloadableFile file = getFile(message);
                 final String mime = file.getMimeType();
-                if ("application/pdf".equals(mime) && Compatibility.runsTwentyOne()) {
+                if ("application/pdf".equals(mime)) {
                     thumbnail = getPDFPreview(file, size);
                 } else if (mime.startsWith("video/")) {
                     thumbnail = getVideoPreview(file, size);
@@ -962,7 +959,6 @@ public class FileBackend {
         return thumbnail;
     }
 
-    @RequiresApi(api = Build.VERSION_CODES.LOLLIPOP)
     private Bitmap getPDFPreview(final File file, int size) {
         try {
             final ParcelFileDescriptor mFileDescriptor = ParcelFileDescriptor.open(file, ParcelFileDescriptor.MODE_READ_ONLY);
@@ -1529,12 +1525,12 @@ public class FileBackend {
             body.append(url);
         }
         body.append('|').append(file.getSize());
-        if (image || video || (pdf && Compatibility.runsTwentyOne())) {
+        if (image || video || pdf) {
             try {
                 final Dimensions dimensions;
                 if (video) {
                     dimensions = getVideoDimensions(file);
-                } else if (pdf && Compatibility.runsTwentyOne()) {
+                } else if (pdf) {
                     dimensions = getPDFDimensions(file);
                 } else {
                     dimensions = getImageDimensions(file);
@@ -1566,7 +1562,6 @@ public class FileBackend {
         message.setType(privateMessage ? Message.TYPE_PRIVATE_FILE : (image ? Message.TYPE_IMAGE : Message.TYPE_FILE));
     }
 
-    @RequiresApi(api = Build.VERSION_CODES.LOLLIPOP)
     private Dimensions getPDFDimensions(final File file) {
         final ParcelFileDescriptor fileDescriptor;
         try {
@@ -1744,7 +1739,7 @@ public class FileBackend {
             return bitmap;
         }
         DownloadableFile file = new DownloadableFile(attachment.getUri().getPath());
-        if ("application/pdf".equals(attachment.getMime()) && Compatibility.runsTwentyOne()) {
+        if ("application/pdf".equals(attachment.getMime())) {
             bitmap = cropCenterSquare(getPDFPreview(file, size), size);
         } else if (attachment.getMime() != null && attachment.getMime().startsWith("video/")) {
             bitmap = cropCenterSquareVideo(attachment.getUri(), size);
@@ -1802,11 +1797,7 @@ public class FileBackend {
             return dimensions;
         }
         final int rotation;
-        if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.JELLY_BEAN_MR1) {
-            rotation = extractRotationFromMediaRetriever(metadataRetriever);
-        } else {
-            rotation = 0;
-        }
+        rotation = extractRotationFromMediaRetriever(metadataRetriever);
         boolean rotated = rotation == 90 || rotation == 270;
         int height;
         try {
@@ -1827,7 +1818,6 @@ public class FileBackend {
         return rotated ? new Dimensions(width, height) : new Dimensions(height, width);
     }
 
-    @RequiresApi(api = Build.VERSION_CODES.JELLY_BEAN_MR1)
     private static int extractRotationFromMediaRetriever(MediaMetadataRetriever metadataRetriever) {
         String r = metadataRetriever.extractMetadata(MediaMetadataRetriever.METADATA_KEY_VIDEO_ROTATION);
         try {
@@ -1934,30 +1924,11 @@ public class FileBackend {
     public static boolean weOwnFile(Context context, Uri uri) {
         if (uri == null || !ContentResolver.SCHEME_FILE.equals(uri.getScheme())) {
             return false;
-        } else if (Build.VERSION.SDK_INT < Build.VERSION_CODES.LOLLIPOP) {
-            return fileIsInFilesDir(context, uri);
         } else {
             return weOwnFileLollipop(uri);
         }
     }
 
-
-    /**
-     * This is more than hacky but probably way better than doing nothing
-     * Further 'optimizations' might contain to get the parents of CacheDir and NoBackupDir
-     * and check against those as well
-     */
-    private static boolean fileIsInFilesDir(Context context, Uri uri) {
-        try {
-            final String haystack = context.getFilesDir().getParentFile().getCanonicalPath();
-            final String needle = new File(uri.getPath()).getCanonicalPath();
-            return needle.startsWith(haystack);
-        } catch (IOException e) {
-            return false;
-        }
-    }
-
-    @TargetApi(Build.VERSION_CODES.LOLLIPOP)
     private static boolean weOwnFileLollipop(Uri uri) {
         try {
             File file = new File(uri.getPath());
@@ -2027,11 +1998,7 @@ public class FileBackend {
     }
 
     public static String getGlobalDocumentsPath() {
-        if (Compatibility.runsNineTeen()) {
-            return Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOCUMENTS) + "/blabber.im/";
-        } else {
-            return Environment.getExternalStorageDirectory().getAbsolutePath() + File.separator + "Documents";
-        }
+        return Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOCUMENTS) + "/blabber.im/";
     }
 
     public static String getGlobalAudiosPath() {

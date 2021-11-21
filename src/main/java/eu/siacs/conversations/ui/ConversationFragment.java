@@ -7,7 +7,6 @@ import static eu.siacs.conversations.ui.SettingsActivity.WARN_UNENCRYPTED_CHAT;
 import static eu.siacs.conversations.ui.XmppActivity.EXTRA_ACCOUNT;
 import static eu.siacs.conversations.ui.XmppActivity.REQUEST_INVITE_TO_CONVERSATION;
 import static eu.siacs.conversations.ui.util.SoftKeyboardUtils.hideSoftKeyboard;
-import static eu.siacs.conversations.utils.Compatibility.runsTwentyOne;
 import static eu.siacs.conversations.utils.MessageUtils.fileWithKnownSize;
 import static eu.siacs.conversations.utils.PermissionUtils.allGranted;
 import static eu.siacs.conversations.utils.PermissionUtils.getFirstDenied;
@@ -1183,12 +1182,9 @@ public class ConversationFragment extends XmppFragment implements EditMessage.Ke
 
     @Override
     public Animator onCreateAnimator(int transit, boolean enter, int nextAnim) {
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-            int animator = enter ? R.animator.fade_right_in : R.animator.fade_right_out;
-            return AnimatorInflater.loadAnimator(getActivity(), animator);
-        } else {
-            return null;
-        }
+        int animator = enter ? R.animator.fade_right_in : R.animator.fade_right_out;
+        return AnimatorInflater.loadAnimator(this.activity, animator);
+
     }
 
     private void quoteText(String text, String user) {
@@ -1826,7 +1822,7 @@ public class ConversationFragment extends XmppFragment implements EditMessage.Ke
 
     private void updateChatBG() {
         if (activity != null) {
-            if (activity.unicoloredBG() || !runsTwentyOne()) {
+            if (activity.unicoloredBG()) {
                 binding.conversationsFragment.setBackgroundResource(0);
                 binding.conversationsFragment.setBackgroundColor(StyledAttributes.getColor(activity, R.attr.color_background_tertiary));
             } else {

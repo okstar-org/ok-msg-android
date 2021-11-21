@@ -47,14 +47,6 @@ public class Compatibility {
         return Build.VERSION.SDK_INT < Build.VERSION_CODES.M || (ContextCompat.checkSelfPermission(context, android.Manifest.permission.WRITE_EXTERNAL_STORAGE) == PackageManager.PERMISSION_GRANTED && ContextCompat.checkSelfPermission(context, Manifest.permission.READ_EXTERNAL_STORAGE) == PackageManager.PERMISSION_GRANTED);
     }
 
-    public static boolean runsTwentyOne() {
-        return Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP;
-    }
-
-    public static boolean runsNineTeen() {
-        return Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT;
-    }
-
     public static boolean runsTwentySix() {
         return Build.VERSION.SDK_INT >= Build.VERSION_CODES.O;
     }
@@ -161,10 +153,6 @@ public class Compatibility {
     @SuppressLint("UnsupportedChromeOsCameraSystemFeature")
     public static boolean hasFeatureCamera(final Context context) {
         final PackageManager packageManager = context.getPackageManager();
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN_MR1) {
-            return packageManager.hasSystemFeature(PackageManager.FEATURE_CAMERA_ANY);
-        } else {
-            return packageManager.hasSystemFeature(PackageManager.FEATURE_CAMERA);
-        }
+        return packageManager.hasSystemFeature(PackageManager.FEATURE_CAMERA_ANY);
     }
 }

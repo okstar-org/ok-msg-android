@@ -96,7 +96,6 @@ import eu.siacs.conversations.ui.util.IntroHelper;
 import eu.siacs.conversations.ui.util.PendingItem;
 import eu.siacs.conversations.ui.util.StyledAttributes;
 import eu.siacs.conversations.ui.util.UpdateHelper;
-import eu.siacs.conversations.utils.Compatibility;
 import eu.siacs.conversations.utils.EmojiWrapper;
 import eu.siacs.conversations.utils.ExceptionHelper;
 import eu.siacs.conversations.utils.MenuDoubleTabUtil;
@@ -287,7 +286,7 @@ public class ConversationsActivity extends XmppActivity implements OnConversatio
     }
 
     private void showOutdatedVersionWarning() {
-        if (Compatibility.runsTwentyOne() || getPreferences().getBoolean(MIN_ANDROID_SDK21_SHOWN, false)) {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP || getPreferences().getBoolean(MIN_ANDROID_SDK21_SHOWN, false)) {
             Log.d(Config.LOGTAG, "Device is running Android >= SDK 21");
             return;
         }
@@ -339,9 +338,7 @@ public class ConversationsActivity extends XmppActivity implements OnConversatio
                     ToastCompat.makeText(this, R.string.device_does_not_support_battery_op, ToastCompat.LENGTH_SHORT).show();
                 }
             });
-            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN_MR2) {
-                builder.setOnDismissListener(dialog -> setNeverAskForBatteryOptimizationsAgain());
-            }
+            builder.setOnDismissListener(dialog -> setNeverAskForBatteryOptimizationsAgain());
             final AlertDialog dialog = builder.create();
             dialog.setCanceledOnTouchOutside(false);
             dialog.show();
