@@ -1151,4 +1151,5 @@
     <string name="action_copy_location">Standort kopieren</string>
     <string name="account_registrations_are_not_supported">Profilregistrierungen werden nicht unterstützt</string>
     <string name="no_xmpp_adddress_found">Keine XMPP-Adresse gefunden</string>
+    <string name="show_edit_log">Änderungshistorie</string>
 </resources>
