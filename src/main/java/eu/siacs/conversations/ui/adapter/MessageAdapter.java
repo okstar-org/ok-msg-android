@@ -18,6 +18,7 @@ import android.app.Activity;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
+import android.content.res.Resources;
 import android.graphics.Rect;
 import android.graphics.Typeface;
 import android.graphics.drawable.Drawable;
@@ -871,6 +872,8 @@ public class MessageAdapter extends ArrayAdapter<Message> {
     }
 
     private void displayAudioMessage(ViewHolder viewHolder, Message message, boolean darkBackground) {
+        final Resources res = activity.getResources();
+        viewHolder.messageBody.setWidth((int) res.getDimension(R.dimen.audio_player_width));
         toggleWhisperInfo(viewHolder, message, showTitle(message), darkBackground);
         showImages(false, viewHolder);
         viewHolder.richlinkview.setVisibility(View.GONE);

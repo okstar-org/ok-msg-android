@@ -89,7 +89,8 @@
             android:layout_height="wrap_content"
             android:layout_centerVertical="true"
             android:alpha="?attr/icon_alpha"
-            android:background="?android:selectableItemBackground" />
+            android:background="?android:selectableItemBackground"
+            android:paddingTop="16dp" />
 
         <TextView
             android:id="@+id/runtime"
@@ -112,10 +113,10 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_below="@+id/runtime"
-            android:paddingTop="4dp"
             android:layout_centerVertical="true"
             android:layout_toEndOf="@+id/play_pause"
             android:layout_toRightOf="@+id/play_pause"
+            android:paddingTop="16dp"
             android:progress="100" />
     </RelativeLayout>
 

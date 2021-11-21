@@ -101,17 +101,10 @@ public class AudioPlayer implements View.OnClickListener, MediaPlayer.OnCompleti
 
     private boolean init(ViewHolder viewHolder, Message message) {
         messageAdapter.getActivity().setVolumeControlStream(AudioManager.STREAM_MUSIC);
-        if (viewHolder.darkBackground) {
-            viewHolder.runtime.setTextAppearance(this.messageAdapter.getContext(), R.style.TextAppearance_Conversations_Caption_OnDark);
-        } else {
-            viewHolder.runtime.setTextAppearance(this.messageAdapter.getContext(), R.style.TextAppearance_Conversations_Caption);
-        }
         viewHolder.progress.setOnSeekBarChangeListener(this);
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-            ColorStateList color = ThemeHelper.AudioPlayerColor(messageAdapter.getContext());
-            viewHolder.progress.setThumbTintList(color);
-            viewHolder.progress.setProgressTintList(color);
-        }
+        ColorStateList color = ThemeHelper.AudioPlayerColor(messageAdapter.getContext());
+        viewHolder.progress.setThumbTintList(color);
+        viewHolder.progress.setProgressTintList(color);
         viewHolder.playPause.setAlpha(viewHolder.darkBackground ? 0.7f : 0.57f);
         viewHolder.playPause.setOnClickListener(this);
         if (message == currentlyPlayingMessage) {
@@ -439,6 +432,7 @@ public class AudioPlayer implements View.OnClickListener, MediaPlayer.OnCompleti
             Log.i(Config.LOGTAG, "Audio focus failed.");
         }
     }
+
     public static class ViewHolder {
         private TextView runtime;
         private SeekBar progress;
