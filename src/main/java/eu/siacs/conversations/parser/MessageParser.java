@@ -703,7 +703,7 @@ public class MessageParser extends AbstractParser implements OnMessagePacketRece
                             }
                         }
                     }
-                    if (fingerprintsMatch && (trueCountersMatch || !conversationMultiMode || mucUserMatches || (isCarbon&&activeSelf)) && !duplicate) {
+                    if (fingerprintsMatch && ((trueCountersMatch || !conversationMultiMode || mucUserMatches || (isCarbon&&activeSelf) && !duplicate) || conversationMultiMode)) {
                         Log.d(Config.LOGTAG, "retracted message '" + retractedMessage.getBody() + "' with '" + message.getBody() + "'");
                         synchronized (retractedMessage) {
 
@@ -740,7 +740,7 @@ public class MessageParser extends AbstractParser implements OnMessagePacketRece
                         mXmppConnectionService.getNotificationService().updateNotification();
                         return;
                     } else {
-                        Log.d(Config.LOGTAG, account.getJid().asBareJid() + ": received message correction but verification didn't check out");
+                        Log.d(Config.LOGTAG, account.getJid().asBareJid() + ": received message retraction but checks are not valid");
                     }
                 }
                 else {
