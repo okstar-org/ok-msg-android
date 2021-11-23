@@ -16,6 +16,11 @@ import android.preference.PreferenceCategory;
 import android.preference.PreferenceManager;
 import android.preference.PreferenceScreen;
 import android.util.Log;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+import java.io.IOException;
+import java.io.ObjectInputStream;
+
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AlertDialog;
@@ -87,6 +92,7 @@ public class SettingsActivity extends XmppActivity implements
     public static final String PAUSE_VOICE = "pause_voice_on_move_from_ear";
 
     public static final int REQUEST_CREATE_BACKUP = 0xbf8701;
+    public static final int REQUEST_IMPORT_SETTINGS = 0xbf8702;
     Preference multiAccountPreference;
     Preference autoMessageExpiryPreference;
     Preference autoFileExpiryPreference;
@@ -295,6 +301,16 @@ public class SettingsActivity extends XmppActivity implements
             createBackupPreference.setOnPreferenceClickListener(preference -> {
                 if (hasStoragePermission(REQUEST_CREATE_BACKUP)) {
                     createBackup(true);
+                }
+                return true;
+            });
+        }
+        final Preference importSettingsPreference = mSettingsFragment.findPreference("import_settings");
+        if (importSettingsPreference != null) {
+            importSettingsPreference.setSummary(getString(R.string.pref_import_settings_summary));
+            importSettingsPreference.setOnPreferenceClickListener(preference -> {
+                if (hasStoragePermission(REQUEST_IMPORT_SETTINGS)) {
+                    importSettings();
                 }
                 return true;
             });
@@ -576,6 +592,9 @@ public class SettingsActivity extends XmppActivity implements
                 if (requestCode == REQUEST_CREATE_BACKUP) {
                     createBackup(true);
                 }
+                if (requestCode == REQUEST_IMPORT_SETTINGS) {
+                    importSettings();
+                }
             } else {
                 ToastCompat.makeText(this, R.string.no_storage_permission, ToastCompat.LENGTH_SHORT).show();
             }
@@ -590,6 +609,51 @@ public class SettingsActivity extends XmppActivity implements
 		builder.setMessage(R.string.backup_started_message);
 		builder.setPositiveButton(R.string.ok, null);
 		builder.create().show();
+    }
+
+    @SuppressWarnings({ "unchecked" })
+    private boolean importSettings() {
+        boolean success = false;
+        ObjectInputStream input = null;
+        try {
+            final File file = new File(FileBackend.getBackupDirectory(null) + "settings.dat");
+            input = new ObjectInputStream(new FileInputStream(file));
+            SharedPreferences.Editor prefEdit = PreferenceManager.getDefaultSharedPreferences(getApplicationContext()).edit();
+            prefEdit.clear();
+            Map<String, ?> entries = (Map<String, ?>) input.readObject();
+            for (Map.Entry<String, ?> entry : entries.entrySet()) {
+                Object v = entry.getValue();
+                String key = entry.getKey();
+
+                if (v instanceof Boolean)
+                    prefEdit.putBoolean(key, ((Boolean) v).booleanValue());
+                else if (v instanceof Float)
+                    prefEdit.putFloat(key, ((Float) v).floatValue());
+                else if (v instanceof Integer)
+                    prefEdit.putInt(key, ((Integer) v).intValue());
+                else if (v instanceof Long)
+                    prefEdit.putLong(key, ((Long) v).longValue());
+                else if (v instanceof String)
+                    prefEdit.putString(key, ((String) v));
+            }
+            prefEdit.commit();
+            success = true;
+        } catch (FileNotFoundException e) {
+            e.printStackTrace();
+        } catch (IOException e) {
+            e.printStackTrace();
+        } catch (ClassNotFoundException e) {
+            e.printStackTrace();
+        } finally {
+            try {
+                if (input != null) {
+                    input.close();
+                }
+            } catch (IOException ex) {
+                ex.printStackTrace();
+            }
+        }
+        return success;
     }
 
     private void displayToast(final String msg) {

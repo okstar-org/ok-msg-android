@@ -1148,4 +1148,6 @@
     <string name="pref_pause_voice_on_move_from_ear">Pause voice message automatically</string>
     <string name="pref_pause_voice_on_move_from_ear_summary">Pause the current voice message when you move your device away from your ear.</string>
     <string name="plain_text_document">Plain text document</string>
+    <string name="pref_import_settings_summary">Import app settings from settings.dat file within the monocles chat backup directory.</string>
+    <string name="pref_import_settings">Import app settings</string>
 </resources>
