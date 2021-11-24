@@ -10,3 +10,4 @@
 * renamed "Profile" to "Konten" 
 * added option for import settings (Christian Schneppe)
 * renamed "profile" to "account" 
+* deactivated app update from server
