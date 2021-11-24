@@ -1086,7 +1086,7 @@ public class ConversationFragment extends XmppFragment implements EditMessage.Ke
         menuInflater.inflate(R.menu.fragment_conversation, menu);
         final MenuItem menuInviteContact = menu.findItem(R.id.action_invite);
         final MenuItem menuNeedHelp = menu.findItem(R.id.action_create_issue);
-        final MenuItem menuSearchUpdates = menu.findItem(R.id.action_check_updates);
+        //final MenuItem menuSearchUpdates = menu.findItem(R.id.action_check_updates);
         final MenuItem menuArchiveChat = menu.findItem(R.id.action_archive_chat);
         final MenuItem menuGroupDetails = menu.findItem(R.id.action_group_details);
         final MenuItem menuContactDetails = menu.findItem(R.id.action_contact_details);
@@ -1129,17 +1129,17 @@ public class ConversationFragment extends XmppFragment implements EditMessage.Ke
                         menuGroupDetails.setVisible(false);
                         menuContactDetails.setVisible(!this.conversation.withSelf());
                     }
-                    menuSearchUpdates.setVisible(true);
+                   // menuSearchUpdates.setVisible(true);
                 } else {
                     menuGroupDetails.setVisible(false);
                     menuContactDetails.setVisible(false);
-                    menuSearchUpdates.setVisible(false);
+                    //menuSearchUpdates.setVisible(false);
                 }
             } catch (Exception e) {
                 e.printStackTrace();
                 menuGroupDetails.setVisible(false);
                 menuContactDetails.setVisible(false);
-                menuSearchUpdates.setVisible(false);
+                //menuSearchUpdates.setVisible(false);
             }
             menuMediaBrowser.setVisible(true);
             menuNeedHelp.setVisible(false);
@@ -1152,7 +1152,7 @@ public class ConversationFragment extends XmppFragment implements EditMessage.Ke
             }
         } else {
             menuNeedHelp.setVisible(true);
-            menuSearchUpdates.setVisible(true);
+            //menuSearchUpdates.setVisible(true);
             menuInviteContact.setVisible(false);
             menuGroupDetails.setVisible(false);
             menuContactDetails.setVisible(false);
