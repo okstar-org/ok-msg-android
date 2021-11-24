@@ -839,7 +839,7 @@
     <string name="open_with">Open with…</string>
     <string name="server_info_adhoc_invite">XEP-0050: Ad-Hoc Commands: user invite</string>
     <string name="choose_account">Choose account</string>
-    <string name="set_profile_picture">monocles chat profile picture</string>
+    <string name="set_profile_picture">monocles chat account picture</string>
     <string name="restore_backup">Restore backup</string>
     <string name="restore">Restore</string>
     <string name="enter_password_to_restore">Enter your password for the account %s to restore the backup.</string>
@@ -966,7 +966,7 @@
     <string name="intro_desc_whats_xmpp">XMPP, also called jabber, is a decentralized communication network and works like e-mail. You need an address called Jabber-ID, a password and a chat. More about this later.</string>
     <string name="intro_whats_xmpp">What is XMPP / Jabber / monocles chat?</string>
     <string name="intro_desc_optional_permissions">Permissions to read your address book are required to read Jabber-IDs (if any) from your contacts. Contacts are never shared, uploaded or copied.</string>
-    <string name="intro_desc_account2">You can create a new profile on monocles just by entering a nickname.</string>
+    <string name="intro_desc_account2">You can create a new account on monocles just by entering a nickname.</string>
     <string name="open_join_dialog">Join public channel…</string>
     <string name="intro_optional_permissions">Optional permissions</string>
     <string name="intro_desc_optional_permissions2">Permissions for your location is needed if you would like to share your location.\nFor sharing voice messages it is required to get access to your microphone.</string>
@@ -1086,7 +1086,7 @@
     <string name="pref_invidious_host_summary">Use a custom invidious host</string>
     <string name="pref_invidious_host">Invidious host</string>
     <string name="updated_to_monocles">We have successfully updated Monocles Messenger to monocles chat\n\nThe cooperation of the two projects monocles chat and Monocles Messenger was expanded in November 2020. In the future, the Android app Monocles Messenger will be continued under the name monocles chat.\n\nWhat you can expect:\n- Range of functions remains the same\n- Support chat rooms are merged\n- Colors and logos are adapted to monocles chat\n- App is still available for free in F-Droid Store\n\nYour monocles chat Team</string>
-    <string name="updated_to_monocles_google">We have to apologize that we could not update directly to monocles chat. Under the following link you will receive instructions on how to transfer all your profiles from Monocles Messenger to monocles chat. By clicking on move data we try to move all sent and received files from Monocles Messenger to monocles chat. After a successfully migration keep in mind to remove Monocles Messenger from your device.</string>
+    <string name="updated_to_monocles_google">We have to apologize that we could not update directly to monocles chat. Under the following link you will receive instructions on how to transfer all your account from Monocles Messenger to monocles chat. By clicking on move data we try to move all sent and received files from Monocles Messenger to monocles chat. After a successfully migration keep in mind to remove Monocles Messenger from your device.</string>
     <string name="link">Link</string>
     <string name="no_application_found">No application found</string>
     <string name="move_data">Move  data</string>
