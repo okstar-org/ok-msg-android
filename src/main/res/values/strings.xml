@@ -955,7 +955,7 @@
     <string name="intro_desc_start_chatting">If you have given the contact permissions, already existing Jabber contacts are automatically displayed in your address book. Otherwise, just add Jabber-IDs</string>
     <string name="intro_desc_open_chat">Now you can start chatting, share locations, files, videos and images or send voice messages.</string>
     <string name="intro_chat_details">Chat details</string>
-    <string name="intro_desc_chat_details">You want to open the chat details? Just tip on the chat name in the menu bar on the top.</string>
+    <string name="intro_desc_chat_details">You want to open the chat details? Just tap on the chat name in the menu bar on the top.</string>
     <string name="intro_highlight_user">Highlight user</string>
     <string name="intro_desc_highlight_user">If you want to highlight a user in a group chat just touch the users avatar in the chat. Alternatively, especially if the user is not in the chat, switch to the chat details and look for the user in the participants list. A long touch on the users avatar will show up a popup menu where you can highlight the user.</string>
     <string name="intro_desc_open_chat_details">You have opened the chat details. Here you can see the details of the chat, change the new message notification behaviour, add or remove the chat from your contact list and much more.</string>
