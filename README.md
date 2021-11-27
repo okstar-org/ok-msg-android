@@ -26,7 +26,7 @@ Download ist hier möglich:
 
 Alternativ kannst du den Messenger auch direkt hier von Codeberg unter [Releases](https://codeberg.org/Arne/monocles_chat/releases/latest) herunterladen.
 
-<a rel="me" href="https://monocles.social/?community/news.monocles.de/monocles-news">monocles social</a> 
+Folge uns auf <a rel="me" href="https://monocles.social/@monocles">monocles social</a> 
 
 #### monocles chat nightly bzw. beta
 
