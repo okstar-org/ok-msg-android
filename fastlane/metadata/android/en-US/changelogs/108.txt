@@ -10,4 +10,5 @@
 * renamed "Profile" to "Konten" 
 * added option for import settings (Christian Schneppe)
 * renamed "profile" to "account" 
+* renamed "channel" to "room"
 * deactivated app update from server

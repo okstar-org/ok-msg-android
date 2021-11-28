@@ -10,4 +10,5 @@
 * Umbenennung Profil nach Konten
 * zusätzliche Option für Importeinstellungen (Christian Schneppe)
 * Umbenennung Profil zu Konto
-* Externes App update deaktiviert
+* Umbenennung Channel zu Room
+* Externes App Update deaktiviert
