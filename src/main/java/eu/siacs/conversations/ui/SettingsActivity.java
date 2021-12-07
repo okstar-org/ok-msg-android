@@ -90,6 +90,8 @@ public class SettingsActivity extends XmppActivity implements
     public static final String MIN_ANDROID_SDK21_SHOWN = "min_android_sdk21_shown";
     public static final String INDIVIDUAL_NOTIFICATION_PREFIX = "individual_notification_set_";
     public static final String PAUSE_VOICE = "pause_voice_on_move_from_ear";
+    public static final String ENABLE_OTR_ENCRYPTION = "enable_otr_encryption";
+
 
     public static final int REQUEST_CREATE_BACKUP = 0xbf8701;
     public static final int REQUEST_IMPORT_SETTINGS = 0xbf8702;

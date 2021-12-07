@@ -1,6 +1,13 @@
 package eu.siacs.conversations.ui;
 
 import android.Manifest;
+import android.util.Pair;
+import net.java.otr4j.session.SessionID;
+import java.util.Collections;
+import java.util.Map;
+import java.util.concurrent.atomic.AtomicInteger;
+import eu.siacs.conversations.utils.CryptoHelper;
+
 import android.annotation.SuppressLint;
 import android.annotation.TargetApi;
 import android.app.Activity;
@@ -103,6 +110,7 @@ import eu.siacs.conversations.xmpp.XmppConnection;
 import me.drakeet.support.toast.ToastCompat;
 import pl.droidsonroids.gif.GifDrawable;
 
+import static eu.siacs.conversations.ui.SettingsActivity.ENABLE_OTR_ENCRYPTION;
 import static eu.siacs.conversations.ui.SettingsActivity.USE_BUNDLED_EMOJIS;
 import static eu.siacs.conversations.ui.SettingsActivity.USE_INTERNAL_UPDATER;
 
@@ -419,7 +427,17 @@ public abstract class XmppActivity extends ActionBarActivity {
 
     public void selectPresence(final Conversation conversation, final PresenceSelector.OnPresenceSelected listener) {
         final Contact contact = conversation.getContact();
-        if (contact.showInRoster() || contact.isSelf()) {
+        if (conversation.hasValidOtrSession()) {
+            SessionID id = conversation.getOtrSession().getSessionID();
+            Jid jid;
+            try {
+                jid = Jid.of(id.getAccountID() + "/" + id.getUserID());
+            } catch (IllegalArgumentException e) {
+                jid = null;
+            }
+            conversation.setNextCounterpart(jid);
+            listener.onPresenceSelected();
+        } else if (contact.showInRoster() || contact.isSelf()) {
             final Presences presences = contact.getPresences();
             if (presences.size() == 0) {
                 if (contact.isSelf()) {
@@ -488,6 +506,9 @@ public abstract class XmppActivity extends ActionBarActivity {
 
     public boolean unicoloredBG() {
         return getBooleanPreference("unicolored_chatbg", R.bool.use_unicolored_chatbg) || getPreferences().getString(SettingsActivity.THEME, getString(R.string.theme)).equals("black");
+    }
+    public boolean enableOTR() {
+        return getBooleanPreference(ENABLE_OTR_ENCRYPTION, R.bool.enable_otr);
     }
 
     public void setBubbleColor(final View v, final int backgroundColor, final int borderColor) {
@@ -900,6 +921,56 @@ public abstract class XmppActivity extends ActionBarActivity {
         } else {
             return true;
         }
+    }
+
+    private void showPresenceSelectionDialog(Presences presences, final Conversation conversation, final OnPresenceSelected listener) {
+        final Contact contact = conversation.getContact();
+        final AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        builder.setTitle(getString(R.string.choose_presence));
+        final String[] resourceArray = presences.toResourceArray();
+        Pair<Map<String, String>, Map<String, String>> typeAndName = presences.toTypeAndNameMap();
+        final Map<String, String> resourceTypeMap = typeAndName.first;
+        final Map<String, String> resourceNameMap = typeAndName.second;
+        final String[] readableIdentities = new String[resourceArray.length];
+        final AtomicInteger selectedResource = new AtomicInteger(0);
+        for (int i = 0; i < resourceArray.length; ++i) {
+            String resource = resourceArray[i];
+            if (resource.equals(contact.getLastResource())) {
+                selectedResource.set(i);
+            }
+            String type = resourceTypeMap.get(resource);
+            String name = resourceNameMap.get(resource);
+            if (type != null) {
+                if (Collections.frequency(resourceTypeMap.values(), type) == 1) {
+                    readableIdentities[i] = PresenceSelector.translateType(this, type);
+                } else if (name != null) {
+                    if (Collections.frequency(resourceNameMap.values(), name) == 1
+                            || CryptoHelper.UUID_PATTERN.matcher(resource).matches()) {
+                        readableIdentities[i] = PresenceSelector.translateType(this, type) + "  (" + name + ")";
+                    } else {
+                        readableIdentities[i] = PresenceSelector.translateType(this, type) + " (" + name + " / " + resource + ")";
+                    }
+                } else {
+                    readableIdentities[i] = PresenceSelector.translateType(this, type) + " (" + resource + ")";
+                }
+            } else {
+                readableIdentities[i] = resource;
+            }
+        }
+        builder.setSingleChoiceItems(readableIdentities,
+                selectedResource.get(),
+                (dialog, which) -> selectedResource.set(which));
+        builder.setNegativeButton(R.string.cancel, null);
+        builder.setPositiveButton(R.string.ok, (dialog, which) -> {
+            try {
+                Jid next = Jid.of(contact.getJid().getLocal(), contact.getJid().getDomain(), resourceArray[selectedResource.get()]);
+                conversation.setNextCounterpart(next);
+            } catch (IllegalArgumentException e) {
+                conversation.setNextCounterpart(null);
+            }
+            listener.onPresenceSelected();
+        });
+        builder.create().show();
     }
 
     protected void onActivityResult(int requestCode, int resultCode, final Intent data) {

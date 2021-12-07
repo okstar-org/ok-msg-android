@@ -22,8 +22,11 @@ import eu.siacs.conversations.xmpp.jingle.JingleConnectionManager;
 import eu.siacs.conversations.xmpp.jingle.JingleRtpConnection;
 import eu.siacs.conversations.xmpp.jingle.Media;
 import eu.siacs.conversations.xmpp.stanzas.MessagePacket;
+import net.java.otr4j.OtrException;
+import net.java.otr4j.session.Session;
 
 public class MessageGenerator extends AbstractGenerator {
+    public static final String OTR_FALLBACK_MESSAGE = "I would like to start a private (OTR encrypted) conversation but your client doesn’t seem to support that";
     private static final String OMEMO_FALLBACK_MESSAGE = "I sent you an OMEMO encrypted message but your client doesn’t seem to support that. Find more information on https://conversations.im/omemo";
     private static final String PGP_FALLBACK_MESSAGE = "I sent you a PGP encrypted message but your client doesn’t seem to support that.";
 
@@ -104,6 +107,29 @@ public class MessageGenerator extends AbstractGenerator {
         packet.addChild("no-permanent-store", "urn:xmpp:hints");
         packet.addChild("no-permanent-storage", "urn:xmpp:hints"); //do not copy this. this is wrong. it is *store*
     }
+    public MessagePacket generateOtrChat(Message message) {
+        Conversation conversation = (Conversation) message.getConversation();
+        Session otrSession = conversation.getOtrSession();
+        if (otrSession == null) {
+            return null;
+        }
+        MessagePacket packet = preparePacket(message);
+        addMessageHints(packet);
+        try {
+            String content;
+            if (message.hasFileOnRemoteHost()) {
+                content = message.getFileParams().url.toString();
+            } else {
+                content = message.getBody();
+            }
+            packet.setBody(otrSession.transformSending(content)[0]);
+            packet.addChild("encryption", "urn:xmpp:eme:0").setAttribute("namespace", "urn:xmpp:otr:0");
+            return packet;
+        } catch (OtrException e) {
+            return null;
+        }
+    }
+
 
     public MessagePacket generateChat(Message message) {
         MessagePacket packet = preparePacket(message);

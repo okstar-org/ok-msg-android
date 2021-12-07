@@ -516,6 +516,8 @@ public class Contact implements ListItem, Blockable {
         return avatar;
     }
 
+
+
     public boolean deleteOtrFingerprint(String fingerprint) {
         synchronized (this.keys) {
             boolean success = false;

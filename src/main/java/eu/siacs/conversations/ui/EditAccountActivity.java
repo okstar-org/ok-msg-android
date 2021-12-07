@@ -33,6 +33,7 @@ import androidx.annotation.NonNull;
 import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.widget.Toolbar;
+import androidx.core.content.ContextCompat;
 import androidx.databinding.DataBindingUtil;
 
 import com.google.android.material.textfield.TextInputLayout;
@@ -1296,6 +1297,25 @@ public class EditAccountActivity extends OmemoActivity implements OnAccountUpdat
                 this.binding.actionDeletePgp.setOnClickListener(delete);
             } else {
                 this.binding.pgpFingerprintBox.setVisibility(View.GONE);
+            }
+            final String otrFingerprint = this.mAccount.getOtrFingerprint();
+            if (otrFingerprint != null && Config.supportOtr()) {
+                if ("otr".equals(messageFingerprint)) {
+                    this.binding.otrFingerprintDesc.setTextColor(ContextCompat.getColor(this, R.color.accent));
+                }
+                this.binding.otrFingerprintBox.setVisibility(View.VISIBLE);
+                this.binding.otrFingerprint.setText(CryptoHelper.prettifyFingerprint(otrFingerprint));
+                this.binding.actionCopyToClipboard.setVisibility(View.VISIBLE);
+                this.binding.actionCopyToClipboard.setOnClickListener(v -> {
+                    if (copyTextToClipboard(CryptoHelper.prettifyFingerprint(otrFingerprint), R.string.otr_fingerprint)) {
+                        ToastCompat.makeText(
+                                EditAccountActivity.this,
+                                R.string.toast_message_otr_fingerprint,
+                                Toast.LENGTH_SHORT).show();
+                    }
+                });
+            } else {
+                this.binding.otrFingerprintBox.setVisibility(View.GONE);
             }
             final String ownAxolotlFingerprint = this.mAccount.getAxolotlService().getOwnFingerprint();
             if (ownAxolotlFingerprint != null && Config.supportOmemo()) {
