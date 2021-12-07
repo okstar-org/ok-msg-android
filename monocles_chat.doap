@@ -5,9 +5,9 @@
          xmlns:foaf="http://xmlns.com/foaf/0.1/"
          xmlns:xmpp="https://linkmauve.fr/ns/xmpp-doap#"
          xmlns:schema="https://schema.org/">
-    <name>Conversations</name>
+    <name>monocles chat</name>
 
-    <created>2014-01-14</created>
+    <created>2021-05-22</created>
 
     <shortdesc xml:lang="en">Userfriendly XMPP Client for Android</shortdesc>
 
@@ -462,7 +462,7 @@
         <implements>
         <xmpp:SupportedXep>
             <xmpp:xep rdf:resource="https://xmpp.org/extensions/xep-0364.html"/>
-            <xmpp:status>wip</xmpp:status>
+            <xmpp:status>partial</xmpp:status>
             <xmpp:version>0.3.2</xmpp:version>
             <xmpp:since>1.4.3</xmpp:since>
         </xmpp:SupportedXep>
