@@ -13,7 +13,7 @@ Euer monocles Team
 
 -----
 
-# <img src="art/logo_android.png" width="24"> monocles chat
+# <img src="https://codeberg.org/Arne/monocles_chat/raw/branch/master/src/main/ic_launcher-playstore.png" width="30"> monocles chat
 
 🇬🇧🇺🇸… [English Readme version available here](README-en.md)
 
