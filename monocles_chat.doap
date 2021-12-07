@@ -7,7 +7,7 @@
          xmlns:schema="https://schema.org/">
     <name>monocles chat</name>
 
-    <created>2021-05-22</created>
+    <created>2021-05-04</created>
 
     <shortdesc xml:lang="en">Userfriendly XMPP Client for Android</shortdesc>
 
