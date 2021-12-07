@@ -37,7 +37,6 @@ There are also English and German speaking XMPP-MUCs focusing on support and dev
 If you are interested in the development of the chat, here is a MUC for you (English and German speaking):
 
 Development-Chat:  [development@conference.monocles.de](https://monocles.social/)     
-[![Users in muc](https://inverse.chat/badge.svg?development@conference.monocles.de)]https://monocles.social/)
 
 
 There also is an Support-MUC where you can ask questions and get help with issues you may encounter, see further below for details.
