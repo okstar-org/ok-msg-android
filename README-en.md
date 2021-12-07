@@ -12,7 +12,7 @@ Your monocles Team
 
 -----
 
-# <img src="art/logo_android.png" width="24"> monocles chat
+# <img src="https://codeberg.org/Arne/monocles_chat/raw/branch/master/src/main/ic_launcher-playstore.png" width="30"> monocles chat
 
 🇩🇪… [Deutsche Version der Readme hier verfügbar.](README.md)
 
@@ -37,24 +37,20 @@ There are also English and German speaking XMPP-MUCs focusing on support and dev
 If you are interested in the development of the chat, here is a MUC for you (English and German speaking):
 
 Development-Chat:  [development@conference.monocles.de](https://monocles.social/)     
-[![Users in muc](https://inverse.chat/badge.svg?development@conference.monocles.de)]https://monocles.social/)
 
 
 There also is an Support-MUC where you can ask questions and get help with issues you may encounter, see further below for details.
 
 
 ## How can I support translations ?
-[![Crowdin](https://d322cqt584bo4o.cloudfront.net/pix-art-messenger/localized.svg)](https://crowdin.com/project/pix-art-messenger)
+You can create merge request and add new languages as locales and add and edit translations already existing.
 
-Translation of in-app text is organised via [crowdin.com](https://crowdin.com/project/pix-art-messenger). You can add new languages as locales and add and edit translations already existing.
 
-[Here is the project page on crowdin.com](https://crowdin.com/project/pix-art-messenger/invite?d=75l6j4k6k6k523f4j4m4e473u663d3m4p4t4q4)
 
 ## Help! I've encountered issues!
 The easiest way to get some help is to join our support-MUC (both English and German).  
 
 Support-Chat invite link: [support@conference.monocles.de](https://monocles.social/)     
-[![Users in muc](https://inverse.chat/badge.svg?room=support@conference.monocles.de)](https://monocles.social/)
 
 If we can't fix your problem there, you can open an issue [here](https://codeberg.org/Arne/monocles_chat/issues), detailing your problem, how to reproduce it and provide logs. See instructions below on how to create log files.
 

@@ -13,7 +13,7 @@ Euer monocles Team
 
 -----
 
-# <img src="art/logo_android.png" width="24"> monocles chat
+# <img src="https://codeberg.org/Arne/monocles_chat/raw/branch/master/src/main/ic_launcher-playstore.png" width="30"> monocles chat
 
 🇬🇧🇺🇸… [English Readme version available here](README-en.md)
 
@@ -33,20 +33,14 @@ Folge uns auf <a rel="me" href="https://monocles.social/@monocles">monocles soci
 nightly oder beta Versionen kann man direkt hier von Codeberg unter [Releases](https://codeberg.org/Arne/monocles_chat/releases/latest) herunterladen.
 
 #### Wie kann ich bei der Übersetzung helfen?
-[![Crowdin](https://d322cqt584bo4o.cloudfront.net/pix-art-messenger/localized.svg)](https://crowdin.com/project/pix-art-messenger)
-
-Übersetzungen werden bei [crowdin.com](https://crowdin.com/project/pix-art-messenger) geführt. Dort können Übersetzungen erstellt, geändert und ergänzt werden.
-
-[Hier geht's zur Projektseite bei crowdin.com](https://crowdin.com/project/pix-art-messenger/invite?d=75l6j4k6k6k523f4j4m4e473u663d3m4p4t4q4)
+Du kannst einen Merge Request erstellen in dem du Verbesserungen oder neue Sprachen hinzugefügt hast.
 
 #### Ich habe Probleme, was soll ich tun?
 Am einfachsten ist es, wenn du unserer Support-Gruppe beitrittst, dort werden deine Probleme mit Sicherheit schnell gelöst. 
 
-Support-Chat: [support@conference.monocles.de](https://monocles.social)     
-[![Users in muc](https://inverse.chat/badge.svg?room=support@conference.monocles.de)](https://monocles.social/)
+Support-Chat: [support@conference.monocles.de](https://interact.monocles.de)     
 
 Development-Chat:  [development@conference.monocles.de](https://interact.monocles.de)     
-[![Users in muc](https://inverse.chat/badge.svg?room=development@conference.monocles.de)](https://interact.monocles.de/)
 
 
 Solltest du dort nicht weiter kommen kannst du [hier](https://codeberg.org/Arne/monocles_chat/issues) ein Issue erstellen, in welchem du dein Problem genau beschreibst und welche Schritte erforderlich sind, um zu dem Problem zu gelangen. 
