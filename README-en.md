@@ -12,7 +12,7 @@ Your monocles Team
 
 -----
 
-# <img src="https://codeberg.org/Arne/monocles_chat/raw/branch/master/fastlane/metadata/android/en-US/icon.png" width="24"> monocles chat
+# <img src="https://codeberg.org/Arne/monocles_chat/raw/branch/master/src/main/ic_launcher-playstore.png" width="24"> monocles chat
 
 🇩🇪… [Deutsche Version der Readme hier verfügbar.](README.md)
 
