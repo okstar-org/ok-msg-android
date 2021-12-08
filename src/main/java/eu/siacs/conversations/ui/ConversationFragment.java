@@ -2649,8 +2649,6 @@ public class ConversationFragment extends XmppFragment implements EditMessage.Ke
                 && conversation.smpRequested()) {
             showSnackbar(R.string.smp_requested, R.string.verify, this.mAnswerSmpClickListener);
         } else if (mode == Conversation.MODE_SINGLE
-                && conversation.getNextEncryption() == Message.ENCRYPTION_OTR) {
-        } else if (mode == Conversation.MODE_SINGLE
                 && conversation.hasValidOtrSession()
                 && (conversation.getOtrSession().getSessionStatus() == SessionStatus.ENCRYPTED)
                 && (!conversation.isOtrFingerprintVerified())) {
