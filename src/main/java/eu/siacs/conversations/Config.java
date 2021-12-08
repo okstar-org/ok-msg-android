@@ -61,7 +61,7 @@ public final class Config {
     public static final String inviteHostURL = "monocles.de"; // without http(s)
     public static final String termsOfUseURL = "https://" + "monocles.de" + "/impressum/";
     public static final String privacyURL = "https://" + "monocles.de" + "/impressum/";
-    public static final String migrationURL = "https://" + "monocles.de/howto/";
+    public static final String migrationURL = "https://" + "codeberg.org/Arne/monocles_chat/";
 
     public static final String CHANGELOG_URL = "https://codeberg.org/Arne/monocles_chat/src/branch/master/CHANGELOG.md";
     public static final String GIT_URL = "https://codeberg.org/Arne/monocles_chat/";
