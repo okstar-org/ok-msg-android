@@ -27,6 +27,10 @@ import androidx.appcompat.app.AlertDialog;
 import androidx.core.content.ContextCompat;
 
 import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+import java.io.IOException;
+import java.io.ObjectInputStream;
 import java.security.KeyStoreException;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -307,6 +311,7 @@ public class SettingsActivity extends XmppActivity implements
                 return true;
             });
         }
+
         final Preference importSettingsPreference = mSettingsFragment.findPreference("import_settings");
         if (importSettingsPreference != null) {
             importSettingsPreference.setSummary(getString(R.string.pref_import_settings_summary));
