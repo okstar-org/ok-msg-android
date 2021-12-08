@@ -7,6 +7,7 @@ import android.content.SharedPreferences;
 import android.content.pm.ActivityInfo;
 import android.content.pm.PackageManager;
 import android.content.pm.ResolveInfo;
+import android.content.res.ColorStateList;
 import android.content.res.Configuration;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
@@ -24,11 +25,12 @@ import android.webkit.MimeTypeMap;
 
 import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AlertDialog;
+import androidx.core.content.ContextCompat;
 import androidx.databinding.DataBindingUtil;
 
 import com.davemorrissey.labs.subscaleview.ImageSource;
 import com.davemorrissey.labs.subscaleview.SubsamplingScaleImageView;
-import com.google.android.exoplayer2.ExoPlaybackException;
+import com.google.android.exoplayer2.PlaybackException;
 import com.google.android.exoplayer2.Player;
 import com.google.android.exoplayer2.SimpleExoPlayer;
 import com.google.android.exoplayer2.source.MediaSource;
@@ -38,7 +40,6 @@ import com.google.android.exoplayer2.upstream.DefaultDataSourceFactory;
 import com.leinardi.android.speeddial.SpeedDialActionItem;
 
 import java.io.File;
-import java.io.FileNotFoundException;
 import java.io.InputStream;
 import java.util.List;
 
@@ -46,11 +47,8 @@ import eu.siacs.conversations.Config;
 import eu.siacs.conversations.R;
 import eu.siacs.conversations.databinding.ActivityMediaViewerBinding;
 import eu.siacs.conversations.persistance.FileBackend;
-import eu.siacs.conversations.utils.ExifHelper;
 import eu.siacs.conversations.utils.MimeUtils;
 import me.drakeet.support.toast.ToastCompat;
-
-import static eu.siacs.conversations.persistance.FileBackend.close;
 
 public class MediaViewerActivity extends XmppActivity implements AudioManager.OnAudioFocusChangeListener {
 
@@ -154,6 +152,9 @@ public class MediaViewerActivity extends XmppActivity implements AudioManager.On
         if (info.size() == 0) {
             openIntent.setDataAndType(uri, "*/*");
         }
+        if (player != null && isVideo) {
+            openIntent.putExtra("position", player.getCurrentPosition());
+        }
         try {
             this.startActivity(openIntent);
             finish();
@@ -209,15 +210,18 @@ public class MediaViewerActivity extends XmppActivity implements AudioManager.On
         if (isDeletableFile(mFile)) {
             binding.speedDial.addActionItem(new SpeedDialActionItem.Builder(R.id.action_delete, R.drawable.ic_delete_white_24dp)
                     .setLabel(R.string.action_delete)
+                    .setFabImageTintColor(ContextCompat.getColor(this, R.color.white))
                     .create()
             );
         }
         binding.speedDial.addActionItem(new SpeedDialActionItem.Builder(R.id.action_open, R.drawable.ic_open_in_new_white_24dp)
                 .setLabel(R.string.open_with)
+                .setFabImageTintColor(ContextCompat.getColor(this, R.color.white))
                 .create()
         );
         binding.speedDial.addActionItem(new SpeedDialActionItem.Builder(R.id.action_share, R.drawable.ic_share_white_24dp)
                 .setLabel(R.string.share)
+                .setFabImageTintColor(ContextCompat.getColor(this, R.color.white))
                 .create()
         );
 
@@ -253,6 +257,7 @@ public class MediaViewerActivity extends XmppActivity implements AudioManager.On
                 return false;
             });
         }
+        binding.speedDial.getMainFab().setSupportImageTintList(ColorStateList.valueOf(getResources().getColor(R.color.realwhite)));
         showFab();
     }
 
@@ -315,9 +320,9 @@ public class MediaViewerActivity extends XmppActivity implements AudioManager.On
             binding.messageVideoView.setVisibility(View.VISIBLE);
             player = new SimpleExoPlayer.Builder(this).build();
             player.setPlayWhenReady(true);
-            player.addListener(new SimpleExoPlayer.EventListener() {
+            player.addListener(new Player.Listener() {
                 @Override
-                public void onPlayerError(ExoPlaybackException error) {
+                public void onPlayerError(PlaybackException error) {
                     open();
                 }
             });
@@ -352,14 +357,10 @@ public class MediaViewerActivity extends XmppActivity implements AudioManager.On
     }
 
     private int getRotation(Uri image) {
-        InputStream is = null;
-        try {
-            is = this.getContentResolver().openInputStream(image);
-            return ExifHelper.getOrientation(is);
-        } catch (FileNotFoundException e) {
+        try (final InputStream is = this.getContentResolver().openInputStream(image)) {
+            return is == null ? 0 : FileBackend.getRotation(is);
+        } catch (final Exception e) {
             return 0;
-        } finally {
-            close(is);
         }
     }
 

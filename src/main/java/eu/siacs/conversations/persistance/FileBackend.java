@@ -830,7 +830,7 @@ public class FileBackend {
         }
     }
 
-    private static int getRotation(final InputStream inputStream) throws IOException {
+    public static int getRotation(final InputStream inputStream) throws IOException {
         final ExifInterface exif = new ExifInterface(inputStream);
         final int orientation = exif.getAttributeInt(ExifInterface.TAG_ORIENTATION, ExifInterface.ORIENTATION_UNDEFINED);
         switch (orientation) {
