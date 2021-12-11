@@ -443,6 +443,7 @@ public class Resolver {
             Result result = new Result();
             result.timeRequested = System.currentTimeMillis();
             result.port = port;
+            result.directTls = useDirectTls(port);
             result.hostname = hostname;
             result.ip = ip;
             return result;
