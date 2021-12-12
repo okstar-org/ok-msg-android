@@ -1,5 +1,6 @@
 package eu.siacs.conversations.services;
 
+import static eu.siacs.conversations.utils.Compatibility.runsTwentySix;
 import android.app.Notification;
 import android.app.NotificationManager;
 import android.app.PendingIntent;
@@ -63,8 +64,6 @@ import eu.siacs.conversations.utils.BackupFileHeader;
 import eu.siacs.conversations.utils.Compatibility;
 import eu.siacs.conversations.utils.WakeLockHelper;
 import eu.siacs.conversations.xmpp.Jid;
-
-import static eu.siacs.conversations.utils.Compatibility.runsTwentySix;
 
 public class ExportBackupService extends Service {
 
@@ -324,7 +323,7 @@ public class ExportBackupService extends Service {
 
     private List<File> export() throws Exception {
         wakeLock.acquire(15 * 60 * 1000L /*15 minutes*/);
-        NotificationCompat.Builder mBuilder = new NotificationCompat.Builder(getBaseContext(), "backup");
+        NotificationCompat.Builder mBuilder = new NotificationCompat.Builder(getBaseContext(), NotificationService.BACKUP_CHANNEL_ID);
         mBuilder.setContentTitle(getString(R.string.notification_create_backup_title))
                 .setSmallIcon(R.drawable.ic_archive_white_24dp)
                 .setProgress(1, 0, false);
