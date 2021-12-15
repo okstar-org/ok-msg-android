@@ -49,6 +49,7 @@ import eu.siacs.conversations.xmpp.pep.Avatar;
 import eu.siacs.conversations.xmpp.stanzas.MessagePacket;
 
 
+
 public class MessageParser extends AbstractParser implements OnMessagePacketReceived {
 
     private static final SimpleDateFormat TIME_FORMAT = new SimpleDateFormat("HH:mm:ss", Locale.ENGLISH);
@@ -635,7 +636,7 @@ public class MessageParser extends AbstractParser implements OnMessagePacketRece
                             && replacedMessage.getTrueCounterpart().asBareJid().equals(message.getTrueCounterpart().asBareJid());
                     final boolean mucUserMatches = query == null && replacedMessage.sameMucUser(message); //can not be checked when using mam
                     final boolean duplicate = conversation.hasDuplicateMessage(message);
-                    if (fingerprintsMatch && (trueCountersMatch || !conversationMultiMode || mucUserMatches) && !duplicate && !replacedMessage.hasDeletedBody()) {
+                    if (fingerprintsMatch && (trueCountersMatch || !conversationMultiMode || mucUserMatches) && !duplicate) {
                         Log.d(Config.LOGTAG, "replaced message '" + replacedMessage.getBody() + "' with '" + message.getBody() + "'");
                         synchronized (replacedMessage) {
                             final String uuid = replacedMessage.getUuid();
@@ -689,18 +690,31 @@ public class MessageParser extends AbstractParser implements OnMessagePacketRece
                             && retractedMessage.getTrueCounterpart().asBareJid().equals(message.getTrueCounterpart().asBareJid());
                     final boolean mucUserMatches = query == null && retractedMessage.sameMucUser(message); //can not be checked when using mam
                     final boolean duplicate = conversation.hasDuplicateMessage(message);
-                    if (fingerprintsMatch && (trueCountersMatch || !conversationMultiMode || mucUserMatches) && !duplicate) {
+                    List<Account> lAcc = mXmppConnectionService.getAccounts();
+                    boolean activeSelf = false;
+                    if (message.getTrueCounterpart()!=null) {
+                        for (Account a : lAcc) {
+                            if (a.getJid() != null && a.isOnlineAndConnected() && a.getJid().asBareJid().equals(message.getTrueCounterpart().asBareJid())) {
+                                activeSelf = true;
+                                break;
+                            }
+                        }
+                    }
+                    if (fingerprintsMatch && ((trueCountersMatch || !conversationMultiMode || mucUserMatches || (isCarbon&&activeSelf) && !duplicate) || conversationMultiMode)) {
                         Log.d(Config.LOGTAG, "retracted message '" + retractedMessage.getBody() + "' with '" + message.getBody() + "'");
                         synchronized (retractedMessage) {
 
                             retractedMessage.setBody(mXmppConnectionService.getString(R.string.message_deleted));
-                            retractedMessage.setTime(message.getTimeSent());
                             retractedMessage.setRetractId(retractId);
 
                             extractChatState(mXmppConnectionService.find(account, counterpart.asBareJid()), isTypeGroupChat, packet);
 
                             message.setMessageDeleted(true);
                             message.setRetractId(retractId);
+
+                            if (message.getStatus() > Message.STATUS_RECEIVED) {
+                                retractedMessage.setMessageDeleted(true);
+                            }
 
                             for (Edit itm : retractedMessage.getEditedList()) {
                                 Message tmpRetractedMessage = conversation.findMessageWithUuidOrRemoteId(itm.getEditedId());
@@ -723,8 +737,15 @@ public class MessageParser extends AbstractParser implements OnMessagePacketRece
                         mXmppConnectionService.getNotificationService().updateNotification();
                         return;
                     } else {
-                        Log.d(Config.LOGTAG, account.getJid().asBareJid() + ": received message correction but verification didn't check out");
+                        Log.d(Config.LOGTAG, account.getJid().asBareJid() + ": received message retraction but checks are not valid");
                     }
+                }
+                else {
+                    //we deleted a carbon from ourself and the dialog allready removed it from ui
+                    message.setMessageDeleted(true);
+                    message.setRetractId(retractId);
+                    mXmppConnectionService.databaseBackend.createMessage(message);
+                    return;
                 }
             }
 

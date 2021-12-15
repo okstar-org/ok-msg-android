@@ -2102,6 +2102,17 @@ public class ConversationFragment extends XmppFragment implements EditMessage.Ke
                 retractedMessage.setMessageDeleted(true);
 
                 long time = System.currentTimeMillis();
+                Message retractmessage = new Message(conversation,
+                                                     "This person attempted to retract a previous message, but it's unsupported by your client.",
+                                                     Message.ENCRYPTION_NONE,
+                                                     Message.STATUS_SEND);
+                if (retractedMessage.getEditedList().size() > 0)
+                {
+                    retractmessage.setRetractId(retractedMessage.getEditedList().get(0).getEditedId());
+                }
+                else {
+                    retractmessage.setRetractId(retractedMessage.getRemoteMsgId()!=null?retractedMessage.getRemoteMsgId():retractedMessage.getUuid());
+                }
 
                 retractedMessage.putEdited(retractedMessage.getUuid(), retractedMessage.getServerMsgId(), retractedMessage.getBody(), retractedMessage.getTimeSent());
                 retractedMessage.setBody(Message.DELETED_MESSAGE_BODY);
@@ -2109,15 +2120,6 @@ public class ConversationFragment extends XmppFragment implements EditMessage.Ke
                 retractedMessage.setRemoteMsgId(message.getRemoteMsgId());
                 retractedMessage.setMessageDeleted(true);
 
-                Message retractmessage = new Message(conversation,
-                        "This person attempted to retract a previous message, but it's unsupported by your client.",
-                        Message.ENCRYPTION_NONE,
-                        Message.STATUS_SEND);
-                if (retractedMessage.getEditedList().size() > 0) {
-                    retractmessage.setRetractId(retractedMessage.getEditedList().get(0).getEditedId());
-                } else {
-                    retractmessage.setRetractId(retractedMessage.getRemoteMsgId() != null ? retractedMessage.getRemoteMsgId() : retractedMessage.getUuid());
-                }
                 retractmessage.setType(Message.TYPE_TEXT);
                 retractmessage.setCounterpart(message.getCounterpart());
                 retractmessage.setTrueCounterpart(message.getTrueCounterpart());
