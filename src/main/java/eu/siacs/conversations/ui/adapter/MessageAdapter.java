@@ -918,6 +918,8 @@ public class MessageAdapter extends ArrayAdapter<Message> {
         viewHolder.progressBar.setVisibility(View.GONE);
         final DownloadableFile file = activity.xmppConnectionService.getFileBackend().getFile(message);
         if (!file.exists()) {
+            markFileDeleted(message);
+            displayInfoMessage(viewHolder, activity.getString(R.string.file_deleted), darkBackground, message);
             ToastCompat.makeText(activity, R.string.file_deleted, ToastCompat.LENGTH_SHORT).show();
             return;
         }
@@ -1252,6 +1254,10 @@ public class MessageAdapter extends ArrayAdapter<Message> {
             } else if (transferable != null && transferable.getStatus() == Transferable.STATUS_OFFER_CHECK_FILESIZE) {
                 displayDownloadableMessage(viewHolder, message, activity.getString(R.string.check_x_filesize, UIHelper.getFileDescriptionString(activity, message)), darkBackground);
             } else {
+                if (!activity.xmppConnectionService.getFileBackend().getFile(message).exists()) {
+                    markFileDeleted(message);
+                    displayInfoMessage(viewHolder, activity.getString(R.string.file_deleted), darkBackground, message);
+                }
                 if (checkFileExistence(message, view, viewHolder)) {
                     markFileExisting(message);
                 } else {
@@ -1362,6 +1368,13 @@ public class MessageAdapter extends ArrayAdapter<Message> {
     private void markFileExisting(Message message) {
         Log.d(Config.LOGTAG, "Found and restored orphaned file " + message.getRelativeFilePath());
         message.setFileDeleted(false);
+        activity.xmppConnectionService.updateMessage(message, false);
+        activity.xmppConnectionService.updateConversation((Conversation) message.getConversation());
+    }
+
+    private void markFileDeleted(Message message) {
+        Log.d(Config.LOGTAG, "Mark file deleted " + message.getRelativeFilePath());
+        message.setFileDeleted(true);
         activity.xmppConnectionService.updateMessage(message, false);
         activity.xmppConnectionService.updateConversation((Conversation) message.getConversation());
     }
