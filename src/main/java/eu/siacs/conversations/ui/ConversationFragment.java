@@ -2138,7 +2138,10 @@ public class ConversationFragment extends XmppFragment implements EditMessage.Ke
                     }
                 }
                 activity.xmppConnectionService.updateMessage(retractedMessage, retractedMessage.getUuid());
-                sendMessage(retractmessage);
+                if (finalMessage.getStatus()>=Message.STATUS_SEND) {
+                    //only send retraction messages vor outgoing messages!
+                    sendMessage(retractmessage);
+                }
                 activity.xmppConnectionService.deleteMessage(conversation, retractedMessage);
                 activity.xmppConnectionService.deleteMessage(conversation, retractmessage);
             }
