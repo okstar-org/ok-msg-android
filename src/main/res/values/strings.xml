@@ -1161,4 +1161,5 @@
     <string name="show_edit_log">Message history</string>
     <string name="reconnecting_call">Reconnecting call</string>
     <string name="reconnecting_video_call">Reconnecting video call</string>
+    <string name="user">Nutzer</string>
 </resources>

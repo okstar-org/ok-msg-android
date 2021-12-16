@@ -2250,19 +2250,25 @@ public class ConversationFragment extends XmppFragment implements EditMessage.Ke
     }
 
     public void privateMessageWith(final Jid counterpart) {
-        final Jid tcp = conversation.getMucOptions().getTrueCounterpart(counterpart);
-        if (!getConversation().getMucOptions().isUserInRoom(counterpart) && getConversation().getMucOptions().findUserByRealJid(tcp == null ? null : tcp.asBareJid()) == null) {
-            ToastCompat.makeText(getActivity(), activity.getString(R.string.user_has_left_conference, counterpart.getResource()), ToastCompat.LENGTH_SHORT).show();
-            return;
+        try {
+            final Jid tcp = conversation.getMucOptions().getTrueCounterpart(counterpart);
+            if (!getConversation().getMucOptions().isUserInRoom(counterpart) && getConversation().getMucOptions().findUserByRealJid(tcp == null ? null : tcp.asBareJid()) == null) {
+                ToastCompat.makeText(getActivity(), activity.getString(R.string.user_has_left_conference, counterpart.getResource()), ToastCompat.LENGTH_SHORT).show();
+                return;
+            }
+            if (conversation.setOutgoingChatState(Config.DEFAULT_CHAT_STATE)) {
+                activity.xmppConnectionService.sendChatState(conversation);
+            }
+            this.binding.textinput.setText("");
+            this.conversation.setNextCounterpart(counterpart);
+        } catch (Exception e) {
+            e.printStackTrace();
+            ToastCompat.makeText(getActivity(), activity.getString(R.string.user_has_left_conference, activity.getString(R.string.user)), ToastCompat.LENGTH_SHORT).show();
+        } finally {
+            updateChatMsgHint();
+            updateSendButton();
+            updateEditablity();
         }
-        if (conversation.setOutgoingChatState(Config.DEFAULT_CHAT_STATE)) {
-            activity.xmppConnectionService.sendChatState(conversation);
-        }
-        this.binding.textinput.setText("");
-        this.conversation.setNextCounterpart(counterpart);
-        updateChatMsgHint();
-        updateSendButton();
-        updateEditablity();
     }
 
     private void correctMessage(Message message) {
