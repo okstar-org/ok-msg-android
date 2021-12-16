@@ -1516,15 +1516,15 @@ public class FileBackend {
         final boolean apk = mime != null && mime.equals("application/vnd.android.package-archive");
         final boolean pdf = "application/pdf".equals(mime);
         /* file params:
-         1  |    2     |   3   |    4    |    5    |   6
-                       | image/video/pdf | a/v/gif | vcard/apk
-        url | filesize | width | height  | runtime | name
+         1  |    2     |   3   |    4    |    5    |     6           |
+                       | image/video/pdf | a/v/gif | vcard/apk/audio |
+        url | filesize | width | height  | runtime | name            |
         */
         final StringBuilder body = new StringBuilder();
         if (url != null) {
-            body.append(url);
+            body.append(url); // 1
         }
-        body.append('|').append(file.getSize());
+        body.append('|').append(file.getSize()); // 2
         if (image || video || pdf) {
             try {
                 final Dimensions dimensions;
@@ -1536,26 +1536,37 @@ public class FileBackend {
                     dimensions = getImageDimensions(file);
                 }
                 if (dimensions.valid()) {
-                    body.append('|').append(dimensions.width).append('|').append(dimensions.height);
+                    body.append('|')
+                            .append(dimensions.width) // 3
+                            .append('|')
+                            .append(dimensions.height); // 4
                     if (isGif || video) {
-                        body.append("|").append(getMediaRuntime(file, isGif));
+                        body.append("|").append(getMediaRuntime(file, isGif)); // 5
                     }
                 }
             } catch (NotAVideoFile notAVideoFile) {
                 Log.d(Config.LOGTAG, "file with mime type " + file.getMimeType() + " was not a video file, trying to handle it as audio file");
                 try {
-                    body.append("|0|0|").append(getMediaRuntime(file, false)).append('|').append(getAudioTitleArtist(file));
+                    body.append("|0|0|")  // 3, 4
+                            .append(getMediaRuntime(file, false)) // 5
+                            .append('|')
+                            .append(getAudioTitleArtist(file)); // 6
                 } catch (Exception e) {
                     Log.d(Config.LOGTAG, "file with mime type " + file.getMimeType() + " was neither a video file nor an audio file");
                     //fall threw
                 }
             }
         } else if (audio) {
-            body.append("|0|0|").append(getMediaRuntime(file, false)).append('|').append(getAudioTitleArtist(file));
+            body.append("|0|0|") // 3, 4
+                    .append(getMediaRuntime(file, false)) // 5
+                    .append('|')
+                    .append(getAudioTitleArtist(file)); // 6
         } else if (vcard) {
-            body.append("|0|0|0|").append(getVCard(file));
+            body.append("|0|0|0|") // 3, 4, 5
+                    .append(getVCard(file)); // 6
         } else if (apk) {
-            body.append("|0|0|0|").append(getAPK(file, mXmppConnectionService.getApplicationContext()));
+            body.append("|0|0|0|") // 3, 4, 5
+                    .append(getAPK(file, mXmppConnectionService.getApplicationContext())); // 6
         }
         message.setBody(body.toString());
         message.setFileDeleted(false);
