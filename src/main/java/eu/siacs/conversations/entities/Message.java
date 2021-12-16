@@ -112,6 +112,7 @@ public class Message extends AbstractEntity implements AvatarService.Avatarable 
     protected boolean read = true;
     protected boolean deleted = false;
     protected String remoteMsgId = null;
+
     private String bodyLanguage = null;
     protected String serverMsgId = null;
     private final Conversational conversation;

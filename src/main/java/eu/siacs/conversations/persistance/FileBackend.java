@@ -1,8 +1,11 @@
 package eu.siacs.conversations.persistance;
 
 import android.app.Activity;
+import android.app.Application;
+import android.app.backup.SharedPreferencesBackupHelper;
 import android.content.ContentResolver;
 import android.content.Context;
+import android.content.SharedPreferences;
 import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
 import android.database.Cursor;
@@ -19,11 +22,15 @@ import android.graphics.pdf.PdfRenderer;
 import android.media.MediaMetadataRetriever;
 import android.media.MediaScannerConnection;
 import android.net.Uri;
+
+import eu.siacs.conversations.BuildConfig;
+import eu.siacs.conversations.R;
 import android.os.Build;
 import android.os.Environment;
 import android.os.ParcelFileDescriptor;
 import android.os.StatFs;
 import android.os.SystemClock;
+import android.preference.PreferenceManager;
 import android.provider.MediaStore;
 import android.provider.OpenableColumns;
 import android.system.Os;
@@ -70,6 +77,8 @@ import java.util.List;
 import java.util.Locale;
 import java.util.Stack;
 import java.util.UUID;
+import java.util.concurrent.atomic.AtomicInteger;
+import java.util.prefs.Preferences;
 
 import eu.siacs.conversations.Config;
 import eu.siacs.conversations.R;
@@ -78,6 +87,7 @@ import eu.siacs.conversations.entities.DownloadableFile;
 import eu.siacs.conversations.entities.Message;
 import eu.siacs.conversations.services.AttachFileToConversationRunnable;
 import eu.siacs.conversations.services.XmppConnectionService;
+import eu.siacs.conversations.ui.SettingsActivity;
 import eu.siacs.conversations.ui.util.Attachment;
 import eu.siacs.conversations.utils.CryptoHelper;
 import eu.siacs.conversations.utils.FileUtils;
@@ -104,11 +114,20 @@ public class FileBackend {
     public static final String SENT_IMAGES = "Images/Sent";
     public static final String VIDEOS = "Videos";
     public static final String SENT_VIDEOS = "Videos/Sent";
+    public static final String INNER_APP_DIR[] = new String[]{
+        Environment.getExternalStorageDirectory().getAbsolutePath() + File.separator ,
+        Environment.getDataDirectory() + File.separator + "data" + File.separator +  BuildConfig.APPLICATION_ID + File.separator + "files" + File.separator,
+    };
+    public static final AtomicInteger STORAGE_INDEX = new AtomicInteger(0);
 
     private final XmppConnectionService mXmppConnectionService;
 
     public FileBackend(XmppConnectionService service) {
         this.mXmppConnectionService = service;
+    }
+
+    public static void switchStorage(boolean checked) {
+        STORAGE_INDEX.set(checked?1:0);
     }
 
     private void createNoMedia() {
@@ -532,14 +551,18 @@ public class FileBackend {
 
     public static String getConversationsDirectory(final String type) {
         if (type.equalsIgnoreCase("null")) {
-            return Environment.getExternalStorageDirectory().getAbsolutePath() + File.separator + APP_DIRECTORY + File.separator;
+            // return Environment.getExternalStorageDirectory().getAbsolutePath() + File.separator + APP_DIRECTORY + File.separator;
+            return INNER_APP_DIR[STORAGE_INDEX.get()]
+                   + APP_DIRECTORY + File.separator;
         } else {
             return getAppMediaDirectory() + APP_DIRECTORY + " " + type + File.separator;
         }
     }
 
     public static String getAppMediaDirectory() {
-        return Environment.getExternalStorageDirectory().getAbsolutePath() + File.separator + APP_DIRECTORY + File.separator + "Media" + File.separator;
+      //        return Environment.getExternalStorageDirectory().getAbsolutePath() + File.separator + APP_DIRECTORY + File.separator + "Media" + File.separator;
+      return INNER_APP_DIR[STORAGE_INDEX.get()]
+             + APP_DIRECTORY + File.separator + "Media" + File.separator;
     }
 
     public static String getBackupDirectory(@Nullable String app) {
@@ -1129,6 +1152,13 @@ public class FileBackend {
     }
 
     public static Uri getUriForFile(Context context, File file) {
+        if (PreferenceManager.getDefaultSharedPreferences(context)
+                .getBoolean(SettingsActivity.USE_INNER_STORAGE, true)) {
+            File dataUser0File = new File(file.getAbsolutePath().replace("/data/data", "/data/user/0"));
+            return FileProvider.getUriForFile(context
+                , getAuthority(context)
+                , dataUser0File.exists() ? dataUser0File : file);
+        }
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
             try {
                 return FileProvider.getUriForFile(context, getAuthority(context), file);

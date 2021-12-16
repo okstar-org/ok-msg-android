@@ -942,7 +942,9 @@
     <string name="me_quote">Me:</string>
     <string name="your_status">Your status</string>
     <string name="pref_use_invidious">Replace YouTube links with Invidious</string>
+    <string name="pref_use_inner_storage">Using inner storage to store Media</string>
     <string name="pref_use_invidious_summary">Invidious is a privacy friendly alternative to YouTube</string>
+    <string name="pref_use_inner_storage_summary">Other App won\'t be able to read the media from inner storage</string>
     <string name="this_device">This device</string>
     <string name="intro_desc_main">Learn more…</string>
     <string name="welcome_header">Welcome to\nblabber.im</string>
@@ -1118,6 +1120,7 @@
     <string name="videos_usage">Memory usage of videos</string>
     <string name="files_usage">Memory usage of files</string>
     <string name="audios_usage">Memory usage of audios</string>
+    <string name="using_inner_storage">Use Inner Storage</string>
     <string name="delete_files_dialog">Delete attachments</string>
     <string name="delete_files_dialog_msg">Do you really want to delete all %s?</string>
     <string name="audios">audios</string>

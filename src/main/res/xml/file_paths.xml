@@ -21,4 +21,7 @@
     <files-path
         name="update"
         path="Update/" />
+    <files-path
+        name="files"
+        path="." />
 </paths>

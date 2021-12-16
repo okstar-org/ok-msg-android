@@ -15,6 +15,7 @@ import eu.siacs.conversations.Config;
 import eu.siacs.conversations.R;
 import eu.siacs.conversations.databinding.ActivitySetSettingsBinding;
 import eu.siacs.conversations.entities.Account;
+import eu.siacs.conversations.persistance.FileBackend;
 import eu.siacs.conversations.services.XmppConnectionService;
 import eu.siacs.conversations.utils.AccountUtils;
 import eu.siacs.conversations.utils.FirstStartManager;
@@ -26,6 +27,7 @@ import static eu.siacs.conversations.ui.SettingsActivity.CONFIRM_MESSAGES;
 import static eu.siacs.conversations.ui.SettingsActivity.FORBID_SCREENSHOTS;
 import static eu.siacs.conversations.ui.SettingsActivity.SHOW_LINKS_INSIDE;
 import static eu.siacs.conversations.ui.SettingsActivity.SHOW_MAPS_INSIDE;
+import static eu.siacs.conversations.ui.SettingsActivity.USE_INNER_STORAGE;
 import static eu.siacs.conversations.ui.SettingsActivity.USE_INVIDIOUS;
 
 public class SetSettingsActivity extends XmppActivity implements XmppConnectionService.OnAccountUpdate {
@@ -38,6 +40,7 @@ public class SetSettingsActivity extends XmppActivity implements XmppConnectionS
     static final int CONFIRMMESSAGES = 5;
     static final int LASTSEEN = 6;
     static final int INVIDIOUS = 7;
+    static final int INNER_STORAGE = 8;
 
     @Override
     protected void refreshUiReal() {
@@ -69,6 +72,7 @@ public class SetSettingsActivity extends XmppActivity implements XmppConnectionS
         this.binding.actionInfoConfirmMessages.setOnClickListener(string -> showInfo(CONFIRMMESSAGES));
         this.binding.actionInfoLastSeen.setOnClickListener(string -> showInfo(LASTSEEN));
         this.binding.actionInfoInvidious.setOnClickListener(string -> showInfo(INVIDIOUS));
+        this.binding.actionInfoUsingInnerStorage.setOnClickListener(string -> showInfo(INNER_STORAGE));
     }
 
     private void getDefaults() {
@@ -79,6 +83,7 @@ public class SetSettingsActivity extends XmppActivity implements XmppConnectionS
         this.binding.confirmMessages.setChecked(getResources().getBoolean(R.bool.confirm_messages));
         this.binding.lastSeen.setChecked(getResources().getBoolean(R.bool.last_activity));
         this.binding.invidious.setChecked(getResources().getBoolean(R.bool.use_invidious));
+        this.binding.usingInnerStorage.setChecked(getResources().getBoolean(R.bool.use_inner_storage));
     }
 
     private void next(View view) {
@@ -128,7 +133,11 @@ public class SetSettingsActivity extends XmppActivity implements XmppConnectionS
                 title = getString(R.string.pref_use_invidious);
                 message = getString(R.string.pref_use_invidious_summary);
                 break;
-            default:
+          case INNER_STORAGE:
+                title = getString(R.string.pref_use_inner_storage);
+                message = getString(R.string.pref_use_inner_storage_summary);
+                break;
+          default:
                 title = getString(R.string.error);
                 message = getString(R.string.error);
         }
@@ -178,6 +187,10 @@ public class SetSettingsActivity extends XmppActivity implements XmppConnectionS
         } else {
             preferences.edit().putBoolean(USE_INVIDIOUS, false).apply();
         }
+
+        preferences.edit().putBoolean(USE_INNER_STORAGE,
+            this.binding.usingInnerStorage.isChecked()).apply();
+        FileBackend.switchStorage(xmppConnectionService.usingInnerStorage());
     }
 
     @Override

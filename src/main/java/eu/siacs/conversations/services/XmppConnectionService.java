@@ -8,6 +8,7 @@ import static eu.siacs.conversations.ui.SettingsActivity.CONFIRM_MESSAGES;
 import static eu.siacs.conversations.ui.SettingsActivity.ENABLE_MULTI_ACCOUNTS;
 import static eu.siacs.conversations.ui.SettingsActivity.INDICATE_RECEIVED;
 import static eu.siacs.conversations.ui.SettingsActivity.SHOW_OWN_ACCOUNTS;
+import static eu.siacs.conversations.ui.SettingsActivity.USE_INNER_STORAGE;
 import static eu.siacs.conversations.utils.RichPreview.RICH_LINK_METADATA;
 
 import android.Manifest;
@@ -1403,6 +1404,7 @@ public class XmppConnectionService extends Service {
         if (Build.VERSION.SDK_INT < Build.VERSION_CODES.M || ContextCompat.checkSelfPermission(this, Manifest.permission.READ_CONTACTS) == PackageManager.PERMISSION_GRANTED) {
             startContactObserver();
         }
+        FileBackend.switchStorage(usingInnerStorage());
         FILE_OBSERVER_EXECUTOR.execute(fileBackend::deleteHistoricAvatarPath);
         if (Compatibility.hasStoragePermission(this)) {
             Log.d(Config.LOGTAG, "starting file observer");
@@ -4429,6 +4431,10 @@ public class XmppConnectionService extends Service {
 
     public boolean confirmMessages() {
         return getBooleanPreference(CONFIRM_MESSAGES, R.bool.confirm_messages);
+    }
+
+    public boolean usingInnerStorage() {
+        return getBooleanPreference(USE_INNER_STORAGE, R.bool.use_inner_storage);
     }
 
     public boolean allowMessageCorrection() {
