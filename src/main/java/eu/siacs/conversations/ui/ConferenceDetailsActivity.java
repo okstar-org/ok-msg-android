@@ -277,8 +277,9 @@ public class ConferenceDetailsActivity extends XmppActivity implements OnConvers
             if (mConversation != null) {
                 final Bookmark bookmark = mConversation.getBookmark();
                 if (bookmark != null) {
+                    this.binding.autojoinCheckbox.setEnabled(!getBooleanPreference("autojoin", R.bool.autojoin));
                     bookmark.setAutojoin(this.binding.autojoinCheckbox.isChecked());
-                    xmppConnectionService.createBookmark(mConversation.getAccount(), bookmark);
+                    xmppConnectionService.pushBookmarks(mConversation.getAccount());
                     updateView();
                 }
             }
@@ -636,12 +637,9 @@ public class ConferenceDetailsActivity extends XmppActivity implements OnConvers
                 this.binding.mucInfoMam.setText(R.string.server_info_unavailable);
             }
             if (bookmark != null) {
+                this.binding.autojoinCheckbox.setEnabled(!getBooleanPreference("autojoin", R.bool.autojoin));
                 this.binding.autojoinCheckbox.setVisibility(View.VISIBLE);
-                if (bookmark.autojoin()) {
-                    this.binding.autojoinCheckbox.setChecked(true);
-                } else {
-                    this.binding.autojoinCheckbox.setChecked(false);
-                }
+                this.binding.autojoinCheckbox.setChecked(bookmark.autojoin());
             } else {
                 this.binding.autojoinCheckbox.setVisibility(View.GONE);
             }
@@ -688,6 +686,7 @@ public class ConferenceDetailsActivity extends XmppActivity implements OnConvers
                     deleteFromRosterDialog.setPositiveButton(getString(R.string.delete),
                             (dialog, which) -> {
                                 deleteBookmark();
+                                recreate();
                             });
                     deleteFromRosterDialog.create().show();
                 });
@@ -697,6 +696,7 @@ public class ConferenceDetailsActivity extends XmppActivity implements OnConvers
                 this.binding.addContactButton.setTextColor(getDefaultButtonTextColor());
                 this.binding.addContactButton.setOnClickListener(v2 -> {
                     saveAsBookmark();
+                    recreate();
                 });
             }
         } else {

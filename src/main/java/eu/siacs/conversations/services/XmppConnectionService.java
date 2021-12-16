@@ -2104,6 +2104,14 @@ public class XmppConnectionService extends Service {
         }
     }
 
+    public void pushBookmarks(Account account) {
+        if (account.getXmppConnection().getFeatures().bookmarksConversion()) {
+            pushBookmarksPep(account);
+        } else {
+            pushBookmarksPrivateXml(account);
+        }
+    }
+
     private void pushBookmarksPrivateXml(Account account) {
         Log.d(Config.LOGTAG, account.getJid().asBareJid() + ": pushing bookmarks via private xml");
         IqPacket iqPacket = new IqPacket(IqPacket.TYPE.SET);
@@ -2122,7 +2130,6 @@ public class XmppConnectionService extends Service {
             storage.addChild(bookmark);
         }
         pushNodeAndEnforcePublishOptions(account, Namespace.BOOKMARKS, storage, "current", PublishOptions.persistentWhitelistAccess());
-
     }
 
     private void pushNodeAndEnforcePublishOptions(final Account account, final String node, final Element element, final String id, final Bundle options) {
