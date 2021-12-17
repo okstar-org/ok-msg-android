@@ -126,6 +126,7 @@ import eu.siacs.conversations.ui.util.CallManager;
 import eu.siacs.conversations.ui.util.ConversationMenuConfigurator;
 import eu.siacs.conversations.ui.util.DateSeparator;
 import eu.siacs.conversations.ui.util.EditMessageActionModeCallback;
+import eu.siacs.conversations.ui.util.KeyboardUtils;
 import eu.siacs.conversations.ui.util.ListViewUtils;
 import eu.siacs.conversations.ui.util.MucDetailsContextMenuHelper;
 import eu.siacs.conversations.ui.util.PendingItem;
@@ -254,6 +255,69 @@ public class ConversationFragment extends XmppFragment implements EditMessage.Ke
             });
         }
     };
+
+    private final OnClickListener boldText = v -> insertFormatting("bold");
+
+    private final OnClickListener italicText = v -> insertFormatting("italic");
+
+    private final OnClickListener monospaceText = v -> insertFormatting("monospace");
+
+    private final OnClickListener strikethroughText = v -> insertFormatting("strikethrough");
+
+    private void insertFormatting(String format) {
+        final String BOLD = "*";
+        final String ITALIC = "_";
+        final String MONOSPACE = "`";
+        final String STRIKETHROUGH = "~";
+
+        int selStart = this.binding.textinput.getSelectionStart();
+        int selEnd = this.binding.textinput.getSelectionEnd();
+        int min = 0;
+        int max = this.binding.textinput.getText().length();
+        if (this.binding.textinput.isFocused()) {
+            selStart = this.binding.textinput.getSelectionStart();
+            selEnd = this.binding.textinput.getSelectionEnd();
+            min = Math.max(0, Math.min(selStart, selEnd));
+            max = Math.max(0, Math.max(selStart, selEnd));
+        }
+        final CharSequence selectedText = this.binding.textinput.getText().subSequence(min, max);
+
+        switch (format) {
+            case "bold":
+                if (selectedText.length() != 0) {
+                    this.binding.textinput.getText().replace(Math.min(selStart, selEnd), Math.max(selStart, selEnd),
+                            BOLD + selectedText + BOLD, 0, selectedText.length() + 2);
+                } else {
+                    this.binding.textinput.getText().insert(this.binding.textinput.getSelectionStart(), (BOLD));
+                }
+                return;
+            case "italic":
+                if (selectedText.length() != 0) {
+                    this.binding.textinput.getText().replace(Math.min(selStart, selEnd), Math.max(selStart, selEnd),
+                            ITALIC + selectedText + ITALIC, 0, selectedText.length() + 2);
+                } else {
+                    this.binding.textinput.getText().insert(this.binding.textinput.getSelectionStart(), (ITALIC));
+                }
+                return;
+            case "monospace":
+                if (selectedText.length() != 0) {
+                    this.binding.textinput.getText().replace(Math.min(selStart, selEnd), Math.max(selStart, selEnd),
+                            MONOSPACE + selectedText + MONOSPACE, 0, selectedText.length() + 2);
+                } else {
+                    this.binding.textinput.getText().insert(this.binding.textinput.getSelectionStart(), (MONOSPACE));
+                }
+                return;
+            case "strikethrough":
+                if (selectedText.length() != 0) {
+                    this.binding.textinput.getText().replace(Math.min(selStart, selEnd), Math.max(selStart, selEnd),
+                            STRIKETHROUGH + selectedText + STRIKETHROUGH, 0, selectedText.length() + 2);
+                } else {
+                    this.binding.textinput.getText().insert(this.binding.textinput.getSelectionStart(), (STRIKETHROUGH));
+                }
+                return;
+        }
+    }
+
     private final OnScrollListener mOnScrollListener = new OnScrollListener() {
 
         @Override
@@ -492,6 +556,7 @@ public class ConversationFragment extends XmppFragment implements EditMessage.Ke
                             updateChatMsgHint();
                             updateSendButton();
                             updateEditablity();
+                            updateTextFormat();
                         }
                         break;
                     default:
@@ -1019,6 +1084,7 @@ public class ConversationFragment extends XmppFragment implements EditMessage.Ke
             ConversationMenuConfigurator.configureAttachmentMenu(conversation, mOptionsMenu, activity.getAttachmentChoicePreference(), hasAttachments);
         }
         updateSendButton();
+        updateTextFormat();
     }
 
     private void handleNegativeActivityResult(int requestCode) {
@@ -2268,6 +2334,7 @@ public class ConversationFragment extends XmppFragment implements EditMessage.Ke
             updateChatMsgHint();
             updateSendButton();
             updateEditablity();
+            updateTextFormat();
         }
     }
 
@@ -2822,6 +2889,7 @@ public class ConversationFragment extends XmppFragment implements EditMessage.Ke
                 }
                 updateSendButton();
                 updateEditablity();
+                updateTextFormat();
             }
         }
     }
@@ -2865,6 +2933,17 @@ public class ConversationFragment extends XmppFragment implements EditMessage.Ke
     public long getMaxHttpUploadSize(Conversation conversation) {
         final XmppConnection connection = conversation.getAccount().getXmppConnection();
         return connection == null ? -1 : connection.getFeatures().getMaxHttpUploadSize();
+    }
+
+    private void updateTextFormat() {
+        KeyboardUtils.addKeyboardToggleListener(activity, isVisible -> {
+            Log.d(Config.LOGTAG, "keyboard visible: " + isVisible);
+            if (isVisible) {
+                showTextFormat();
+            } else {
+                hideTextFormat();
+            }
+        });
     }
 
     private void updateEditablity() {
@@ -3472,5 +3551,17 @@ public class ConversationFragment extends XmppFragment implements EditMessage.Ke
             throw new IllegalStateException("Activity not attached");
         }
         return activity;
+    }
+
+    private void showTextFormat() {
+        this.binding.textformat.setVisibility(View.VISIBLE);
+        this.binding.bold.setOnClickListener(boldText);
+        this.binding.italic.setOnClickListener(italicText);
+        this.binding.monospace.setOnClickListener(monospaceText);
+        this.binding.strikethrough.setOnClickListener(strikethroughText);
+    }
+
+    private void hideTextFormat() {
+        this.binding.textformat.setVisibility(View.GONE);
     }
 }

@@ -1164,5 +1164,10 @@
     <string name="show_edit_log">Message history</string>
     <string name="reconnecting_call">Reconnecting call</string>
     <string name="reconnecting_video_call">Reconnecting video call</string>
-    <string name="user">Nutzer</string>
+    <string name="user">User</string>
+    <string name="format_text">Format text</string>
+    <string name="bold">bold></string>
+    <string name="italic">italic></string>
+    <string name="monospace">monospace</string>
+    <string name="strikethrough">strikethrough</string>
 </resources>

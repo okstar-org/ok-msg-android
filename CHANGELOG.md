@@ -8,6 +8,7 @@
 * show number of users in channel discovery (blabber.im)
 * implement message retraction XEP-0424 (blabber.im)
 * implement message history for corrected messages (blabber.im)
+* add text formatting buttons in chat (blabber.im) 
 * show black bars when remote video does not match aspect ratio of screen
 * improve search performance
 * bug fixes
