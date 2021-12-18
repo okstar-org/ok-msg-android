@@ -809,7 +809,6 @@
     <string name="already_drafting_message">Encara estàs redactant un missatge.</string>
     <string name="bad_key_for_encryption">Clau de xifrat incorrecta.</string>
     <string name="delete_message_dialog">Borrar missatge</string>
-    <string name="delete_message_dialog_msg">¿Estàs segur de que que borrar aquest missatge?\n\n<b>Atenció:</b> Aixó no afectarà a les còpias guardadaes en altres dispositius o servidors¡.</string>
     <string name="feature_not_implemented">Característíca no implementada</string>
     <string name="device_does_not_support_unknown_source_op">El teu dispositiu no suporta instal·lar aplicacions des de orígens desconeguts.</string>
     <string name="reject_request">Refusar petició</string>

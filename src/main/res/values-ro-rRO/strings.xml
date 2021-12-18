@@ -250,6 +250,8 @@
     <string name="pref_security_settings">Siguranță</string>
     <string name="pref_allow_message_correction">Permite corecția mesajelor</string>
     <string name="pref_allow_message_correction_summary">Contactele pot să își editeze mesajele scrise în trecut</string>
+    <string name="pref_allow_message_retraction">Permiteți retragerea mesajelor</string>
+    <string name="pref_allow_message_retraction_summary">Permiteți contactelor dumneavoastră să își retragă retroactiv mesajele</string>
     <string name="pref_expert_options">Opțiuni expert</string>
     <string name="title_activity_about">Despre</string>
     <string name="pref_about_conversations_summary">Informații despre versiune și licență</string>
@@ -819,7 +821,7 @@
     <string name="already_drafting_message">Deja aveți ciorna unui mesaj.</string>
     <string name="bad_key_for_encryption">Cheie invalidă pentru criptare.</string>
     <string name="delete_message_dialog">Șterge mesaj</string>
-    <string name="delete_message_dialog_msg">Sigur doriți să ștergeți acest mesaj?\n\n<b>Atenție:</b> Această acțiune nu va șterge copiile acestui mesaj care sunt stocate pe alte dispozitive sau servere.</string>
+    <string name="delete_message_dialog_msg">Sunteți sigur că doriți să ștergeți acest mesaj?\n\n<b>Atenție:</b> Nu este garantat că acest lucru va șterge copiile acestui mesaj care sunt stocate pe alte dispozitive sau servere.</string>
     <string name="feature_not_implemented">Opțiune neimplementată</string>
     <string name="device_does_not_support_unknown_source_op">Dispozitivul dumneavoastră nu permite instalarea de aplicații din surse necunoscute.</string>
     <string name="reject_request">Refuză cererea</string>
@@ -945,11 +947,12 @@
     <string name="please_enter_password">Va rugăm să introduceți parola pentru acest cont</string>
     <string name="unable_to_perform_this_action">Nu se poate realiza această acțiune</string>
     <string name="waiting_for_transfer">În așteptare pentru transfer</string>
-    <string name="x_user_quote">%s:</string>
     <string name="me_quote">Eu:</string>
     <string name="your_status">Statusul dumneavoastră</string>
     <string name="pref_use_invidious">Înlocuiți linkurile YouTube cu Invidious</string>
+    <string name="pref_use_inner_storage">Utilizarea memoriei interne pentru a stoca Media</string>
     <string name="pref_use_invidious_summary">Invidious este o alternativă la YouTube care respectă confidențialitatea</string>
+    <string name="pref_use_inner_storage_summary">Alte aplicații nu vor putea să citească mediile din memoria internă</string>
     <string name="this_device">Acest dispozitiv</string>
     <string name="intro_desc_main">Află mai multe…</string>
     <string name="welcome_header">Bine ați venit pe\nblabber.im</string>
@@ -1042,6 +1045,7 @@
     <string name="microphone_unavailable">Microfonul dumneavoastră nu este disponibil</string>
     <string name="rtp_state_connecting">Conectare</string>
     <string name="rtp_state_connected">Conectat</string>
+    <string name="rtp_state_reconnecting">Reconectarea</string>
     <string name="rtp_state_accepting_call">Acceptare apel</string>
     <string name="rtp_state_ending_call">Se închide apelul</string>
     <string name="rtp_state_finding_device">Descoperirea dispozitivelor</string>
@@ -1125,6 +1129,7 @@
     <string name="videos_usage">Utilizarea memoriei pentru videoclipuri</string>
     <string name="files_usage">Utilizarea memoriei fișierelor</string>
     <string name="audios_usage">Utilizarea memoriei audio</string>
+    <string name="using_inner_storage">Utilizați depozitul interior</string>
     <string name="delete_files_dialog">Șterge atașamente</string>
     <string name="delete_files_dialog_msg">Chiar doriți să ștergeți toate %s?</string>
     <string name="audios">înregistrări audio</string>
@@ -1163,4 +1168,15 @@
     <string name="action_copy_location">Copiați locația</string>
     <string name="account_registrations_are_not_supported">Înregistrările de conturi nu sunt acceptate</string>
     <string name="no_xmpp_adddress_found">Nu s-a găsit nicio adresă XMPP</string>
+    <string name="pref_allowmergemessages">Îmbinarea mesajelor</string>
+    <string name="pref_allowmergemessages_sum">Încercați să unificați mesajele dacă acestea provin de la același jid</string>
+    <string name="show_edit_log">Istoricul mesajelor</string>
+    <string name="reconnecting_call">Reconectarea apelului</string>
+    <string name="reconnecting_video_call">Reconectarea apelului video</string>
+    <string name="user">Utilizator</string>
+    <string name="format_text">Formatați textul</string>
+    <string name="bold">îngroșat</string>
+    <string name="italic">italic</string>
+    <string name="monospace">monospațiu</string>
+    <string name="strikethrough">barat</string>
 </resources>

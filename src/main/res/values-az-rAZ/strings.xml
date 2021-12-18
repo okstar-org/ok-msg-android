@@ -811,7 +811,6 @@
     <string name="already_drafting_message">Siz artıq bir mesaj hazırlayırsınız.</string>
     <string name="bad_key_for_encryption">Şifrələmə üçün pis açar.</string>
     <string name="delete_message_dialog">Mesaji sil</string>
-    <string name="delete_message_dialog_msg">Bu mesajı silmək istədiyinizə əminsinizmi?\n\n&lt;b&gt;Xəbərdarlıq:&lt;b&gt; Bu, digər cihazlar və ya serverdə saxlanılır, bu meaj nüsxəsinin aradan qaldırılması deyil.</string>
     <string name="feature_not_implemented">Funksiya tətbiq edilmədi</string>
     <string name="device_does_not_support_unknown_source_op">Cihazınız tətbiqləri bilinməyən mənbələrdən quraşdırmasına icazə vermir.</string>
     <string name="reject_request">İstəyi rədd et</string>

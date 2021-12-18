@@ -249,6 +249,8 @@
     <string name="pref_security_settings">Beveiliging</string>
     <string name="pref_allow_message_correction">Berichtcorrectie toestaan</string>
     <string name="pref_allow_message_correction_summary">Sta je contacten toe hun berichten na het versturen nog te corrigeren</string>
+    <string name="pref_allow_message_retraction">Berichten intrekken toestaan</string>
+    <string name="pref_allow_message_retraction_summary">Sta je contacten toe hun berichten na het versturen weer te verwijderen</string>
     <string name="pref_expert_options">Instellingen voor experts</string>
     <string name="title_activity_about">Over</string>
     <string name="pref_about_conversations_summary">Build en licentie-informatie</string>
@@ -809,7 +811,7 @@
     <string name="already_drafting_message">Je bent al een bericht aan het typen.</string>
     <string name="bad_key_for_encryption">Verkeerde sleutel voor beveiliging.</string>
     <string name="delete_message_dialog">Bericht verwijderen</string>
-    <string name="delete_message_dialog_msg">Dit bericht verwijderen?\n\n<b>Waarschuwing:</b> Dit zal geen invloed hebben op kopieën van dit bericht die zijn opgeslagen op andere apparaten of servers.</string>
+    <string name="delete_message_dialog_msg">Dit bericht verwijderen?\n\n<b>Waarschuwing:</b> Het kan niet gegarandeerd worden dat kopieën van dit bericht die zijn opgeslagen op andere apparaten of servers óók worden verwijderd.</string>
     <string name="feature_not_implemented">Functie niet geïmplementeerd</string>
     <string name="device_does_not_support_unknown_source_op">Dit apparaat ondersteunt geen installaties vanaf onbekende bronnen.</string>
     <string name="reject_request">Verzoek afwijzen</string>
@@ -934,11 +936,12 @@
     <string name="please_enter_password">Voer het wachtwoord van dit account in</string>
     <string name="unable_to_perform_this_action">Kan de gevraagde actie niet uitvoeren</string>
     <string name="waiting_for_transfer">Wachten op overdracht</string>
-    <string name="x_user_quote">%s:</string>
     <string name="me_quote">Ik:</string>
     <string name="your_status">Je status</string>
     <string name="pref_use_invidious">YouTube-links vervangen met Invidious</string>
+    <string name="pref_use_inner_storage">Afgeschermde opslag gebruiken voor media</string>
     <string name="pref_use_invidious_summary">Invidious is een privacy-vriendelijk alternatief voor YouTube</string>
+    <string name="pref_use_inner_storage_summary">Andere apps zullen de media niet kunnen benaderen</string>
     <string name="this_device">Dit apparaat</string>
     <string name="intro_desc_main">Meer informatie…</string>
     <string name="welcome_header">Welkom bij\nblabber.im</string>
@@ -1031,6 +1034,7 @@
     <string name="microphone_unavailable">De microfoon is niet beschikbaar</string>
     <string name="rtp_state_connecting">Verbinden</string>
     <string name="rtp_state_connected">Verbonden</string>
+    <string name="rtp_state_reconnecting">Opnieuw verbinden</string>
     <string name="rtp_state_accepting_call">Oproep accepteren</string>
     <string name="rtp_state_ending_call">Oproep beëindigen</string>
     <string name="rtp_state_finding_device">Apparaten ontdekken</string>
@@ -1113,6 +1117,7 @@
     <string name="videos_usage">Gebruik door video\'s</string>
     <string name="files_usage">Gebruik door bijlagen</string>
     <string name="audios_usage">Gebruik door geluidsopnames</string>
+    <string name="using_inner_storage">Afgeschermde opslag gebruiken</string>
     <string name="delete_files_dialog">Bijlagen verwijderen</string>
     <string name="delete_files_dialog_msg">Alle %s verwijderen?</string>
     <string name="audios">geluidsopnames</string>
@@ -1151,4 +1156,15 @@
     <string name="action_copy_location">Locatie kopiëren</string>
     <string name="account_registrations_are_not_supported">Het is niet mogelijk om een nieuwe account te registreren</string>
     <string name="no_xmpp_adddress_found">Geen XMPP-adres gevonden</string>
+    <string name="pref_allowmergemessages">Berichten samenvoegen</string>
+    <string name="pref_allowmergemessages_sum">Probeer berichten van dezelfde afzender samen te voegen</string>
+    <string name="show_edit_log">Berichtgeschiedenis</string>
+    <string name="reconnecting_call">Gesprek opnieuw verbinden</string>
+    <string name="reconnecting_video_call">Videogesprek opnieuw verbinden</string>
+    <string name="user">Gebruiker</string>
+    <string name="format_text">Tekstopmaak</string>
+    <string name="bold">vet</string>
+    <string name="italic">cursief</string>
+    <string name="monospace">vaste breedte</string>
+    <string name="strikethrough">doorgehaald</string>
 </resources>

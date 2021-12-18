@@ -809,7 +809,7 @@
     <string name="already_drafting_message">Vous êtes déjà en train de rédiger un brouillon.</string>
     <string name="bad_key_for_encryption">Mauvaise clef pour le chiffrement.</string>
     <string name="delete_message_dialog">Supprimer le message</string>
-    <string name="delete_message_dialog_msg">Voulez-vous vraiment supprimer ce message ? \n\n<b>Attention :</b> Ceci ne procédera pas à la suppression des copies stockées sur d’autres appareils ou serveurs.</string>
+    <string name="delete_message_dialog_msg">Voulez-vous vraiment supprimer ce message ? \n\n<b>Attention :</b> Il n\'est pas certain que cela supprimera les copies stockées sur d’autres appareils ou serveurs.</string>
     <string name="feature_not_implemented">Fonctionnalité non implémentée</string>
     <string name="device_does_not_support_unknown_source_op">Votre appareil n’autorise pas l’installation d’applications provenant de sources inconnues.</string>
     <string name="reject_request">Refuser la demande</string>
@@ -934,7 +934,6 @@
     <string name="please_enter_password">Merci de saisir le mot de passe de ce compte</string>
     <string name="unable_to_perform_this_action">Impossible d\'effectuer cette action</string>
     <string name="waiting_for_transfer">En attente de l\'envoi</string>
-    <string name="x_user_quote">%s :</string>
     <string name="me_quote">Moi :</string>
     <string name="your_status">Votre statut</string>
     <string name="pref_use_invidious">Remplacer les liens YouTube par Invidious</string>
@@ -1031,6 +1030,7 @@
     <string name="microphone_unavailable">Votre micro n\'est pas accessible</string>
     <string name="rtp_state_connecting">Connexion en cours</string>
     <string name="rtp_state_connected">Connecté</string>
+    <string name="rtp_state_reconnecting">Reconnexion en cours</string>
     <string name="rtp_state_accepting_call">Appel accepté</string>
     <string name="rtp_state_ending_call">Fin de l\'appel</string>
     <string name="rtp_state_finding_device">Découvrir des appareils</string>
@@ -1143,12 +1143,17 @@
     <string name="pref_pause_voice_on_move_from_ear">Pause automatique du message vocal</string>
     <string name="pref_pause_voice_on_move_from_ear_summary">Mettre en pause le message vocal en cours lorsque vous éloignez votre appareil de votre oreille.</string>
     <string name="pref_import_settings_summary">Importez les paramètres de l\'application depuis le fichier settings.dat situé dans le répertoire de sauvegarde de blabber.im.</string>
-    <string name="pref_import_settings">Importer les réglages</string>
+    <string name="pref_import_settings">Importer les paramètres</string>
     <string name="success_import_settings">Paramètres importés avec succès.</string>
     <string name="error_import_settings">Erreur lors de l\'importation des paramètres.</string>
     <string name="action_unfix_from_location">Localisation inderterminée</string>
     <string name="action_fix_to_location">Localisation déterminée</string>
     <string name="action_copy_location">Copier l\'emplacement</string>
-    <string name="account_registrations_are_not_supported">La création de comptes ne sont pas prise en charge</string>
+    <string name="account_registrations_are_not_supported">Les créations de comptes ne sont pas prises en charge</string>
     <string name="no_xmpp_adddress_found">Aucune adresse XMPP trouvée</string>
+    <string name="pref_allowmergemessages">Fusionner les messages</string>
+    <string name="pref_allowmergemessages_sum">Essayer de fusionner les messages s\'ils proviennent du même identifiant.</string>
+    <string name="show_edit_log">Historique des messages</string>
+    <string name="reconnecting_call">Reconnexion en cours</string>
+    <string name="reconnecting_video_call">Reconnexion en cours</string>
 </resources>

@@ -811,8 +811,6 @@ Bu, sunucu yöneticinizin iletilerinizi okumasına izin verir, ancak eski istemc
     <string name="already_drafting_message">Zaten bir ileti hazırlıyorsun.</string>
     <string name="bad_key_for_encryption">Şifreleme için kötü anahtar.</string>
     <string name="delete_message_dialog">İletiyi sil</string>
-    <string name="delete_message_dialog_msg">Bu mesajı silmek istediğinizden emin misiniz?
-Uyarı: Bu, diğer aygıtlarda veya sunucularda depolanan bu iletinin kopyalarını silmez.</string>
     <string name="feature_not_implemented">Özellik uygulanmadı</string>
     <string name="device_does_not_support_unknown_source_op">Cihazınız, bilinmeyen kaynaklardan gelen uygulama yüklemelerine izin vermeyi desteklemez.</string>
     <string name="reject_request">İsteği reddet</string>

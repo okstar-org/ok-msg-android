@@ -809,7 +809,6 @@
     <string name="already_drafting_message">Xa está a redactar unha mensaxe.</string>
     <string name="bad_key_for_encryption">Clave errónea para a encriptación.</string>
     <string name="delete_message_dialog">Borrar mensaxe</string>
-    <string name="delete_message_dialog_msg">Estás seguro de que queres borrar esta mensaxe?\n\n<b>Atención</b> Isto non borrará as copias desta mensaxe que estean almacenadas noutros dispositivos ou servidores.</string>
     <string name="feature_not_implemented">Función non implementada</string>
     <string name="device_does_not_support_unknown_source_op">O seu dispositivo non permite a instalación de aplicacións desde fontes descoñecidas.</string>
     <string name="reject_request">Rexeitar a solicitude</string>

@@ -249,6 +249,8 @@
     <string name="pref_security_settings">Sicherheit und Datenschutz</string>
     <string name="pref_allow_message_correction">Nachrichtenkorrektur erlauben</string>
     <string name="pref_allow_message_correction_summary">Erlaube deinen Kontakten, nachträglich ihre Nachrichten zu korrigieren</string>
+    <string name="pref_allow_message_retraction">Nachrichtenlöschung erlauben</string>
+    <string name="pref_allow_message_retraction_summary">Erlaube deinen Kontakten, nachträglich ihre Nachrichten zu löschen</string>
     <string name="pref_expert_options">Experteneinstellungen</string>
     <string name="title_activity_about">Über</string>
     <string name="pref_about_conversations_summary">Versions- und Lizenzinformationen</string>
@@ -850,7 +852,7 @@
     <string name="group_chat_members">Teilnehmer</string>
     <string name="message_deleted">Nachricht wurde gelöscht</string>
     <string name="channel_details">Channel-Details</string>
-    <string name="join_public_channel">Öffentlichen Channel beitreten</string>
+    <string name="join_public_channel">Öffentlichem Channel beitreten</string>
     <string name="create_private_group_chat">Privaten Gruppenchat erstellen</string>
     <string name="create_public_channel">Öffentlichen Channel erstellen</string>
     <string name="create_dialog_channel_name">Channel-Name</string>
@@ -934,11 +936,12 @@
     <string name="please_enter_password">Bitte gib das Kennwort für dieses Profil ein</string>
     <string name="unable_to_perform_this_action">Diese Aktion kann nicht ausgeführt werden</string>
     <string name="waiting_for_transfer">Warte auf Übertragung</string>
-    <string name="x_user_quote">%s:</string>
     <string name="me_quote">Ich:</string>
     <string name="your_status">Dein Status</string>
     <string name="pref_use_invidious">Ersetze YouTube-Links durch Invidious</string>
+    <string name="pref_use_inner_storage">Nutze versteckten Speicher als Medienspeicher</string>
     <string name="pref_use_invidious_summary">Invidious ist eine datenschutzfreundliche Alternative zu YouTube</string>
+    <string name="pref_use_inner_storage_summary">Andere Apps können die Medien aus dem versteckten Speicher nicht lesen</string>
     <string name="this_device">Dieses Gerät</string>
     <string name="intro_desc_main">Mehr erfahren…</string>
     <string name="welcome_header">Willkommen bei\nblabber.im</string>
@@ -962,7 +965,7 @@
     <string name="intro_whats_xmpp">Was ist XMPP / Jabber / blabber.im?</string>
     <string name="intro_desc_optional_permissions">Berechtigungen zum Zugriff deines Adressbuchs sind zum Lesen von Jabber-IDs (falls vorhanden) erforderlich. Kontakte werden niemals geteilt, hochgeladen oder kopiert.</string>
     <string name="intro_desc_account2">Du kannst ein neues Profil auf blabber.im nur durch Eingabe eines Nicknamens erstellen.</string>
-    <string name="open_join_dialog">Öffentlichen Channel beitreten…</string>
+    <string name="open_join_dialog">Öffentlichem Channel beitreten…</string>
     <string name="intro_optional_permissions">Optionale Berechtigungen</string>
     <string name="intro_desc_optional_permissions2">Wenn du deinen Standort teilen möchtest, ist das Erteilen der Standortberechtigung erforderlich.\nFür den Versand von Sprachnachrichten ist es erforderlich, Zugriff auf das Mikrofon zu erhalten.</string>
     <string name="intro_desc_account3">Du hast die Möglichkeit, ein bestehendes Profil zu importieren.\nTippe einfach auf Profil importieren. Wenn Sicherungsdateien verfügbar sind, werden diese angezeigt. Wähle ein Profil aus, das importiert werden soll.</string>
@@ -1031,6 +1034,7 @@
     <string name="microphone_unavailable">Dein Mikrofon ist nicht verfügbar</string>
     <string name="rtp_state_connecting">Verbinde</string>
     <string name="rtp_state_connected">Verbunden</string>
+    <string name="rtp_state_reconnecting">Erneut verbinden</string>
     <string name="rtp_state_accepting_call">Anruf annehmen</string>
     <string name="rtp_state_ending_call">Anruf beenden</string>
     <string name="rtp_state_finding_device">Erkenne Geräte</string>
@@ -1101,7 +1105,7 @@
     <string name="pref_mappreview_host_summary">Nutze benutzerdefinierten Kartenvorschau Server</string>
     <string name="pref_mappreview_host">Kartenvorschau-Server</string>
     <string name="webview_not_available">WebView ist auf deinem Gerät nicht verfügbar.</string>
-    <string name="pref_easy_downloader_summary">Lade alle Anhänge in öffentlichen Channels und von Unbekannten automatisch herunter, anstatt eine Schaltfläche für einen manuellen Download anzuzeigen.</string>
+    <string name="pref_easy_downloader_summary">Lade alle Anhänge in öffentlichen Kanälen und von fremden Nutzern automatisch herunter, anstatt eine Schaltfläche für einen manuellen Download anzuzeigen.</string>
     <string name="pref_easy_downloader">Lade alle Anhänge automatisch herunter</string>
     <string name="got_invitation_from">Du wurdest von %s in den Chatraum %s eingeladen.</string>
     <string name="a_user">einem Benutzer</string>
@@ -1113,6 +1117,7 @@
     <string name="videos_usage">Belegt durch Videos</string>
     <string name="files_usage">Belegt durch andere Dateien</string>
     <string name="audios_usage">Belegt durch Audioaufnahmen</string>
+    <string name="using_inner_storage">Nutze versteckten Speicher</string>
     <string name="delete_files_dialog">Anhänge entfernen</string>
     <string name="delete_files_dialog_msg">Möchtest du wirklich alle %s löschen?</string>
     <string name="audios">Audioaufnahmen</string>
@@ -1151,5 +1156,15 @@
     <string name="action_copy_location">Standort kopieren</string>
     <string name="account_registrations_are_not_supported">Profilregistrierungen werden nicht unterstützt</string>
     <string name="no_xmpp_adddress_found">Keine XMPP-Adresse gefunden</string>
-    <string name="show_edit_log">Änderungshistorie</string>
+    <string name="pref_allowmergemessages">Nachrichten zusammenführen</string>
+    <string name="pref_allowmergemessages_sum">Versuche Nachrichten zusammenzuführen, wenn sie von der gleichen JID stammen</string>
+    <string name="show_edit_log">Nachrichtenverlauf</string>
+    <string name="reconnecting_call">Anruf erneut verbinden</string>
+    <string name="reconnecting_video_call">Videoanruf erneut verbinden</string>
+    <string name="user">Nutzer</string>
+    <string name="format_text">Text formatieren</string>
+    <string name="bold">fett</string>
+    <string name="italic">kursiv</string>
+    <string name="monospace">monospace</string>
+    <string name="strikethrough">durchgestrichen</string>
 </resources>

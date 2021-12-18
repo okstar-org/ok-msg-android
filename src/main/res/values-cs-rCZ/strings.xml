@@ -660,6 +660,7 @@
     <string name="no_camera_permission">blabber.im potřebuje přístup k fotoaparátu</string>
     <string name="edit_status_message_title">Upravit Stavovou Zprávu</string>
     <string name="pref_automatically_delete_messages">Automatické mazání zpráv</string>
+    <string name="pref_automatically_delete_attachments_description">Automaticky z tohoto zařízení smazat přílohy, starší než nastavený časový rámec.</string>
     <string name="pref_automatically_delete_files">Automatické mazání příloh</string>
     <string name="disable_encryption">Vypnout šifrování</string>
     <string name="draft">Koncept:</string>
@@ -688,7 +689,6 @@
     <string name="delete_file_dialog">Smazat soubor</string>
     <string name="delete_file_dialog_msg">Chcete opravdu smazat tento soubor?\n\n<b>Varování:</b> Toto neovlivní kopie uložené na jiných přístrojích nebo serverech.</string>
     <string name="delete_message_dialog">Smazat zprávu</string>
-    <string name="delete_message_dialog_msg">Chcete opravdu smazat tuto zprávu?\n\n<b>Varování:</b> Toto neovlivní kopie uložené na jiných přístrojích nebo serverech.</string>
     <string name="reject_request">Zamítnout žádost</string>
     <string name="your_name">Vaše jméno</string>
     <string name="enter_your_name">Zadejte své jméno</string>
@@ -735,7 +735,6 @@
     <string name="share_backup_files">Sdílet soubory zálohy</string>
     <string name="please_enter_password">Zadejte prosím heslo pro tento účet</string>
     <string name="unable_to_perform_this_action">Tuto akci nelze provést</string>
-    <string name="x_user_quote">%s:</string>
     <string name="me_quote">Já:</string>
     <string name="your_status">Váš stav</string>
     <string name="this_device">Toto zařízení</string>
@@ -766,7 +765,19 @@
     <string name="audio_call">Hlasový hovor</string>
     <string name="video_call">Videohovor</string>
     <string name="pref_message_notification_settings">Nastavení upozornění na zprávy</string>
+    <string name="incoming_calls_channel_name">Příchozí hovory</string>
+    <string name="ongoing_calls_channel_name">Probíhající hovory</string>
+    <string name="rtp_state_incoming_video_call">Příchozí videohovor</string>
+    <string name="rtp_state_incoming_call">Příchozí hovor</string>
+    <string name="dismiss_call">Zamítnout</string>
+    <string name="answer_call">Přijmout</string>
+    <string name="ongoing_call">Probíhající hovor</string>
+    <string name="ongoing_video_call">Probíhající videohovor</string>
+    <string name="notification_group_calls">Hovory</string>
     <string name="rtp_state_connected">Připojeno</string>
+    <string name="rtp_state_reconnecting">Obnovování připojení</string>
+    <string name="rtp_state_accepting_call">Přijímání hovoru</string>
+    <string name="rtp_state_ending_call">Ukončování hovoru</string>
     <string name="rtp_state_ringing">Vyzvánění</string>
     <string name="rtp_state_declined_or_busy">Zaneprázdněný</string>
     <string name="rtp_state_connectivity_lost_error">Spojení ztraceno</string>
@@ -796,8 +807,10 @@
     <string name="oldAndroidVersion">Stará verze Androidu</string>
     <string name="save_x_file">Uložit %s</string>
     <string name="file_copied_to">Soubor kopírován do %s</string>
+    <string name="plain_text_document">Dokument prostého textu</string>
     <string name="pref_import_settings">Import nastavení aplikace</string>
     <string name="success_import_settings">Nastavení úspěšně importováno.</string>
     <string name="error_import_settings">Při importování nastavení došlo k chybě.</string>
     <string name="no_xmpp_adddress_found">Nebyla nalezena žádná XMPP adresa</string>
+    <string name="show_edit_log">Historie zpráv</string>
 </resources>

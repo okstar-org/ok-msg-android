@@ -687,7 +687,6 @@
     <string name="delete_file_dialog">Excluir arquivo</string>
     <string name="cancelled">cancelado</string>
     <string name="delete_message_dialog">Excluir mensagem</string>
-    <string name="delete_message_dialog_msg">Tem certeza que deseja remover essa mensagem?\n\n<b>Aviso:</b> Isto não irá apagar cópias dessa mensagem salvas em outros dispositivos ou servidores.</string>
     <string name="feature_not_implemented">Recurso não implementado</string>
     <string name="pref_screen_security">Proibir screenshots</string>
     <string name="omemo_decryption_failed">Impossível descriptografar mensagem OMEMO.</string>

@@ -781,7 +781,6 @@
     <string name="already_drafting_message">您已经写草稿了</string>
     <string name="bad_key_for_encryption">加密错误</string>
     <string name="delete_message_dialog">删除消息</string>
-    <string name="delete_message_dialog_msg">您确定要删除这条消息吗？\n\n<b>警告:</b>这将不会删除存储在其他设备或服务器上的此消息的副本。</string>
     <string name="feature_not_implemented">功能未实现</string>
     <string name="device_does_not_support_unknown_source_op">您的设备不支持允许来自未知来源的应用安装。</string>
     <string name="reject_request">拒绝请求</string>

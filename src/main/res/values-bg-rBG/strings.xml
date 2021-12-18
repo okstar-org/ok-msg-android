@@ -733,7 +733,6 @@
     <string name="already_drafting_message">Ти вече си започнал да изготвиш съобщение.</string>
     <string name="bad_key_for_encryption">Лош ключ за шифроване.</string>
     <string name="delete_message_dialog">Изтрий съобщение</string>
-    <string name="delete_message_dialog_msg">Сигурни ли сте, че искате да изтриете този файл?\n\n<b>Предупреждение:</b> Това няма да изтрие копия от този файл, които се съхраняват на други устройства или сървъри.</string>
     <string name="feature_not_implemented">Функцията не е приложена</string>
     <string name="device_does_not_support_unknown_source_op">Устройството ви не поддържа разрешение за инсталиране на приложения от неизвестни източници.</string>
     <string name="reject_request">Отхвърли заявката</string>

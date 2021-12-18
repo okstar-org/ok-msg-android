@@ -249,6 +249,8 @@
     <string name="pref_security_settings">Sicurezza</string>
     <string name="pref_allow_message_correction">Permetti correzione del messaggio</string>
     <string name="pref_allow_message_correction_summary">Consenti ai tuoi contatti di modificare retroattivamente i loro messaggi</string>
+    <string name="pref_allow_message_retraction">Consenti ritiro messaggio</string>
+    <string name="pref_allow_message_retraction_summary">Consenti ai tuoi contatti di ritirare retroattivamente i loro messaggi</string>
     <string name="pref_expert_options">Impostazioni avanzate</string>
     <string name="title_activity_about">Info</string>
     <string name="pref_about_conversations_summary">Informazioni sulla licenza</string>
@@ -809,7 +811,7 @@
     <string name="already_drafting_message">Stai già scrivendo una bozza di messaggio.</string>
     <string name="bad_key_for_encryption">Chiave errata per la criptazione.</string>
     <string name="delete_message_dialog">Elimina messaggio</string>
-    <string name="delete_message_dialog_msg">Sei sicuro di voler cancellare questo messaggio?\n\n<b>Attenzione:</b>Questo non eliminerà le copie di questo messaggio salvate su altri dispositivi o server.</string>
+    <string name="delete_message_dialog_msg">Sei sicuro di voler eliminare questo messaggio?\n\n<b>Attenzione:</b> Non è garantito che questo eliminerà le copie di questo messaggio salvate su altri dispositivi o server.</string>
     <string name="feature_not_implemented">Funzionalità non implementata</string>
     <string name="device_does_not_support_unknown_source_op">Il tuo dispositivo non supporta l\'installazione di app da origini sconosciute.</string>
     <string name="reject_request">Rifiuta richiesta</string>
@@ -934,7 +936,6 @@
     <string name="please_enter_password">Per favore inserisci la password per questo account</string>
     <string name="unable_to_perform_this_action">Impossibile eseguire questa operazione</string>
     <string name="waiting_for_transfer">In attesa di trasferimento</string>
-    <string name="x_user_quote">%s:</string>
     <string name="me_quote">Io:</string>
     <string name="your_status">Il tuo stato</string>
     <string name="pref_use_invidious">Rimpiazza i collegamenti a YouTube con Invidious</string>
@@ -1031,6 +1032,7 @@
     <string name="microphone_unavailable">Il tuo microfono non è disponibile</string>
     <string name="rtp_state_connecting">In connessione</string>
     <string name="rtp_state_connected">Connesso</string>
+    <string name="rtp_state_reconnecting">Riconnessione</string>
     <string name="rtp_state_accepting_call">Accettando la chiamata</string>
     <string name="rtp_state_ending_call">Terminando la chiamata</string>
     <string name="rtp_state_finding_device">Ricercando dispositivi</string>
@@ -1151,4 +1153,9 @@
     <string name="action_copy_location">Copia posizione</string>
     <string name="account_registrations_are_not_supported">Le registrazioni account non sono supportate</string>
     <string name="no_xmpp_adddress_found">Nessun indirizzo XMPP trovato</string>
+    <string name="pref_allowmergemessages">Unisci messaggi</string>
+    <string name="pref_allowmergemessages_sum">Prova ad unire i messaggi se arrivano dallo stesso jid</string>
+    <string name="show_edit_log">Cronologia messaggi</string>
+    <string name="reconnecting_call">Riconnettendo la chiamata</string>
+    <string name="reconnecting_video_call">Riconnettendo la videochiamata</string>
 </resources>

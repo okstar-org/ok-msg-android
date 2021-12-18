@@ -792,7 +792,6 @@ Nie spowoduje to usunięcia kopii wiadomości przechowywanych na innych urządze
     <string name="already_drafting_message">Już piszesz wiadomość.</string>
     <string name="bad_key_for_encryption">Zły klucz do szyfrowania.</string>
     <string name="delete_message_dialog">Usuń wiadomość</string>
-    <string name="delete_message_dialog_msg">Czy na pewno chcesz usunąć tą wiadomość?\n\n<b>Uwaga:</b> Nie spowoduje to usunięcia kopii tej wiadomości przechowywanej na innych urządzeniach lub serwerach.</string>
     <string name="feature_not_implemented">Funkcja nie została zaimplementowana</string>
     <string name="device_does_not_support_unknown_source_op">Twoje urządzenie nie wspiera opcji instalacji aplikacji z nieznanych źródeł.</string>
     <string name="reject_request">Odrzuć zapytanie</string>

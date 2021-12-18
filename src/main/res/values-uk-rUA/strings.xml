@@ -776,7 +776,6 @@
     <string name="already_drafting_message">Ви вже маєте чернетку повідомлення.</string>
     <string name="bad_key_for_encryption">Неприйнятний ключ для шифрування</string>
     <string name="delete_message_dialog">Вилучити повідомлення</string>
-    <string name="delete_message_dialog_msg">Дійсно вилучити це повідомлення?\n\n<b>Увага!</b> Копії вашого повідомлення все одно залишаться на інших пристроях та серверах.</string>
     <string name="feature_not_implemented">Функція в розробці.</string>
     <string name="device_does_not_support_unknown_source_op">Ваш пристрій не дозволяє встановлення застосунків з недозволених джерел.</string>
     <string name="reject_request">Відхилити запит</string>

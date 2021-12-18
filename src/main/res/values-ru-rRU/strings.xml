@@ -251,6 +251,8 @@
     <string name="pref_security_settings">Безопасность и защита данных</string>
     <string name="pref_allow_message_correction">Разрешить коррекцию сообщений</string>
     <string name="pref_allow_message_correction_summary">Разрешить Вашим контактам редактировать свои сообщения задним числом</string>
+    <string name="pref_allow_message_retraction">Разрешить отзыв сообщения</string>
+    <string name="pref_allow_message_retraction_summary">Разрешить Вашим контактам отзывать свои сообщения задним числом</string>
     <string name="pref_expert_options">Продвинутые настройки</string>
     <string name="title_activity_about">О программе</string>
     <string name="pref_about_conversations_summary">Информация о сборке и лицензии</string>
@@ -829,7 +831,7 @@
     <string name="already_drafting_message">Вы уже составляете текст послания.</string>
     <string name="bad_key_for_encryption">Неправильный ключ для шифрования.</string>
     <string name="delete_message_dialog">Удаление сообщения</string>
-    <string name="delete_message_dialog_msg">Вы хотите удалить это сообщение?\n\n<b>Предупреждение:</b> Это не затронет сообщения, которые сохранены на других устройствах или серверах.</string>
+    <string name="delete_message_dialog_msg">Вы уверены, что хотите удалить это сообщение?\n\n<b>Предупреждение:</b>Не гарантируется, что это удалит копии этого сообщения, хранящиеся на других устройствах или серверах.</string>
     <string name="feature_not_implemented">Возможность пока недоступна</string>
     <string name="device_does_not_support_unknown_source_op">Ваше устройство не поддерживает установку из неизвестных источников.</string>
     <string name="reject_request">Отклонить запрос</string>
@@ -956,11 +958,12 @@
     <string name="please_enter_password">Пожалуйста, введите пароль для этого аккаунта</string>
     <string name="unable_to_perform_this_action">Не удается выполнить это действие</string>
     <string name="waiting_for_transfer">Ожидание передачи</string>
-    <string name="x_user_quote">%s:</string>
     <string name="me_quote">Я:</string>
     <string name="your_status">Ваш статус</string>
     <string name="pref_use_invidious">Замена ссылок YouTube на Invidious</string>
+    <string name="pref_use_inner_storage">Использование внутреннего хранилища для хранения медиа</string>
     <string name="pref_use_invidious_summary">Invidious - это приватный способ просмотра YouTube</string>
+    <string name="pref_use_inner_storage_summary">Другое приложение не сможет прочитать медиа из внутреннего хранилища</string>
     <string name="this_device">Это устройство</string>
     <string name="intro_desc_main">Узнать больше…</string>
     <string name="welcome_header">Добро пожаловать в\nblabber.im</string>
@@ -1053,6 +1056,7 @@
     <string name="microphone_unavailable">Ваш микрофон недоступен</string>
     <string name="rtp_state_connecting">Подключение</string>
     <string name="rtp_state_connected">Подключено</string>
+    <string name="rtp_state_reconnecting">Переподключение</string>
     <string name="rtp_state_accepting_call">Прием вызова</string>
     <string name="rtp_state_ending_call">Завершение вызова</string>
     <string name="rtp_state_finding_device">Найденные устройства</string>
@@ -1137,6 +1141,7 @@
     <string name="videos_usage">Использование памяти видео</string>
     <string name="files_usage">Использование памяти файлами</string>
     <string name="audios_usage">Использование памяти аудио-файлами</string>
+    <string name="using_inner_storage">Использовать внутреннее хранилище</string>
     <string name="delete_files_dialog">Удалить вложения</string>
     <string name="delete_files_dialog_msg">Вы действительно хотите удалить все %s?</string>
     <string name="audios">аудио</string>
@@ -1175,4 +1180,13 @@
     <string name="action_copy_location">Копировать местоположение</string>
     <string name="account_registrations_are_not_supported">Регистрация учетной записи не поддерживается</string>
     <string name="no_xmpp_adddress_found">XMPP-адрес не найден</string>
+    <string name="pref_allowmergemessages">Объединить сообщения</string>
+    <string name="pref_allowmergemessages_sum">Попробовать объединить сообщения, если они пришли с одного jid</string>
+    <string name="show_edit_log">История сообщений</string>
+    <string name="reconnecting_call">Повторное соединение звонка</string>
+    <string name="reconnecting_video_call">Повторное соединение видеозвонка</string>
+    <string name="user">Пользователь</string>
+    <string name="format_text">Отформатировать текст</string>
+    <string name="monospace">моноширинный</string>
+    <string name="strikethrough">перечеркнутый</string>
 </resources>
