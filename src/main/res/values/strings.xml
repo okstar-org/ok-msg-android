@@ -1170,4 +1170,6 @@
     <string name="italic">italic</string>
     <string name="monospace">monospace</string>
     <string name="strikethrough">strikethrough</string>
+    <string name="grant">Grant</string>
+    <string name="no_manage_storage_permission">Since Android 11, apps needs a special permission to access all file types on the external storage. blabber.im will ask you to grant this permission to continue.</string>
 </resources>
