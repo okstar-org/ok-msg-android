@@ -649,7 +649,7 @@ public class MessageAdapter extends ArrayAdapter<Message> {
                         body.setSpan(new RelativeSizeSpan(1.5f), matcher.start(), matcher.end(), Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
                     }
                 }
-                StylingHelper.format(body, viewHolder.messageBody.getCurrentTextColor());
+                StylingHelper.format(body, viewHolder.messageBody.getCurrentTextColor(), true);
                 if (highlightedTerm != null) {
                     StylingHelper.highlight(activity, body, highlightedTerm, StylingHelper.isDarkText(viewHolder.messageBody));
                 }

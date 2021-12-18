@@ -7,6 +7,7 @@ import android.graphics.Typeface;
 import android.preference.PreferenceManager;
 import android.text.Spannable;
 import android.text.SpannableString;
+import android.text.SpannableStringBuilder;
 import android.text.style.StyleSpan;
 import android.util.Pair;
 import android.view.LayoutInflater;
@@ -34,6 +35,7 @@ import eu.siacs.conversations.ui.util.AvatarWorkerTask;
 import eu.siacs.conversations.ui.util.StyledAttributes;
 import eu.siacs.conversations.utils.EmojiWrapper;
 import eu.siacs.conversations.utils.IrregularUnicodeDetector;
+import eu.siacs.conversations.utils.StylingHelper;
 import eu.siacs.conversations.utils.UIHelper;
 import eu.siacs.conversations.xmpp.Jid;
 import eu.siacs.conversations.xmpp.chatstate.ChatState;
@@ -163,7 +165,9 @@ public class ConversationAdapter extends RecyclerView.Adapter<ConversationAdapte
                 if (message.hasDeletedBody()) {
                     viewHolder.binding.conversationLastmsg.setText(EmojiWrapper.transform(UIHelper.shorten(activity.getString(R.string.message_deleted))));
                 } else {
-                    viewHolder.binding.conversationLastmsg.setText(EmojiWrapper.transform(UIHelper.shorten(replaceYoutube(activity.getApplicationContext(), preview.first.toString()))));
+                    SpannableStringBuilder body = new SpannableStringBuilder(replaceYoutube(activity.getApplicationContext(), preview.first.toString()));
+                    StylingHelper.format(body, viewHolder.binding.conversationLastmsg.getCurrentTextColor(), true);
+                    viewHolder.binding.conversationLastmsg.setText(EmojiWrapper.transform(UIHelper.shorten(body)));
                 }
             } else {
                 viewHolder.binding.conversationLastmsgImg.setContentDescription(preview.first);

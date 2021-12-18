@@ -355,7 +355,7 @@ public class UIHelper {
             } else {
                 SpannableStringBuilder styledBody = new SpannableStringBuilder(MyLinkify.replaceYoutube(context, body));
                 if (textColor != 0) {
-                    StylingHelper.format(styledBody, 0, styledBody.length() - 1, textColor);
+                    StylingHelper.format(styledBody, 0, styledBody.length() - 1, textColor, true);
                 }
                 SpannableStringBuilder builder = new SpannableStringBuilder();
                 for (CharSequence l : CharSequenceUtils.split(styledBody, '\n')) {
