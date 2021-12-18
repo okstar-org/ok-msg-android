@@ -88,6 +88,7 @@ import java.util.Collections;
 import java.util.HashSet;
 import java.util.Iterator;
 import java.util.List;
+import java.util.Objects;
 import java.util.Set;
 import java.util.UUID;
 import java.util.concurrent.atomic.AtomicBoolean;
@@ -255,6 +256,8 @@ public class ConversationFragment extends XmppFragment implements EditMessage.Ke
             });
         }
     };
+
+    private final OnClickListener meCommand = v -> Objects.requireNonNull(binding.textinput.getText()).insert(0, Message.ME_COMMAND + " ");
 
     private final OnClickListener boldText = v -> insertFormatting("bold");
 
@@ -556,7 +559,6 @@ public class ConversationFragment extends XmppFragment implements EditMessage.Ke
                             updateChatMsgHint();
                             updateSendButton();
                             updateEditablity();
-                            updateTextFormat();
                         }
                         break;
                     default:
@@ -1084,7 +1086,14 @@ public class ConversationFragment extends XmppFragment implements EditMessage.Ke
             ConversationMenuConfigurator.configureAttachmentMenu(conversation, mOptionsMenu, activity.getAttachmentChoicePreference(), hasAttachments);
         }
         updateSendButton();
-        updateTextFormat();
+    }
+
+    private boolean canSendMeCommand() {
+        if (conversation != null) {
+            final String body = binding.textinput.getText().toString();
+            return body.length() == 0;
+        }
+        return false;
     }
 
     private void handleNegativeActivityResult(int requestCode) {
@@ -2334,7 +2343,6 @@ public class ConversationFragment extends XmppFragment implements EditMessage.Ke
             updateChatMsgHint();
             updateSendButton();
             updateEditablity();
-            updateTextFormat();
         }
     }
 
@@ -2889,7 +2897,6 @@ public class ConversationFragment extends XmppFragment implements EditMessage.Ke
                 }
                 updateSendButton();
                 updateEditablity();
-                updateTextFormat();
             }
         }
     }
@@ -2935,11 +2942,11 @@ public class ConversationFragment extends XmppFragment implements EditMessage.Ke
         return connection == null ? -1 : connection.getFeatures().getMaxHttpUploadSize();
     }
 
-    private void updateTextFormat() {
+    private void updateTextFormat(final boolean me) {
         KeyboardUtils.addKeyboardToggleListener(activity, isVisible -> {
             Log.d(Config.LOGTAG, "keyboard visible: " + isVisible);
             if (isVisible) {
-                showTextFormat();
+                showTextFormat(me);
             } else {
                 hideTextFormat();
             }
@@ -2986,6 +2993,7 @@ public class ConversationFragment extends XmppFragment implements EditMessage.Ke
         }
         updateSnackBar(conversation);
         updateChatMsgHint();
+        updateTextFormat(canSendMeCommand());
     }
 
     protected void updateStatusMessages() {
@@ -3262,6 +3270,7 @@ public class ConversationFragment extends XmppFragment implements EditMessage.Ke
             service.sendChatState(conversation);
         }
         runOnUiThread(this::updateSendButton);
+
     }
 
     @Override
@@ -3553,8 +3562,10 @@ public class ConversationFragment extends XmppFragment implements EditMessage.Ke
         return activity;
     }
 
-    private void showTextFormat() {
+    private void showTextFormat(final boolean me) {
         this.binding.textformat.setVisibility(View.VISIBLE);
+        this.binding.me.setEnabled(me);
+        this.binding.me.setOnClickListener(meCommand);
         this.binding.bold.setOnClickListener(boldText);
         this.binding.italic.setOnClickListener(italicText);
         this.binding.monospace.setOnClickListener(monospaceText);
