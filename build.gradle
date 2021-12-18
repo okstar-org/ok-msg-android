@@ -99,11 +99,12 @@ ext {
 
 android {
 
+    //noinspection GradleCompatible
     compileSdkVersion 29
 
     defaultConfig {
         minSdkVersion 21
-        targetSdkVersion 29
+        targetSdkVersion 30
 
         versionNameSuffix " beta_(2021-12-17)" // " beta_(XXXX-XX-XX)" // activate for beta versions
         versionCode 330
@@ -193,7 +194,8 @@ android {
     lintOptions {
         error 'StringFormatInvalid' , 'StringFormatMatches'
         disable 'ExtraTranslation', 'MissingTranslation', 'InvalidPackage', 'MissingQuantity', 'AppCompatResource', 'RestrictedApi'
-        abortOnError true
+        checkReleaseBuilds true
+        abortOnError false
     }
 
     subprojects {
