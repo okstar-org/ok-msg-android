@@ -60,11 +60,10 @@ public class AttachFileToConversationRunnable implements Runnable, TranscoderLis
         this.callback = callback;
         this.maxUploadSize = maxUploadSize;
         final String mimeType = MimeUtils.guessMimeTypeFromUriAndMime(mXmppConnectionService, uri, type);
-        final long autoAcceptFileSize = mXmppConnectionService.getResources().getInteger(R.integer.auto_accept_filesize_mobile);
         this.originalFileSize = FileBackend.getFileSize(mXmppConnectionService, uri);
         this.isVideoMessage = !getFileBackend().useFileAsIs(uri)
                 && (mimeType != null && mimeType.startsWith("video/"))
-                && originalFileSize > autoAcceptFileSize
+                && originalFileSize > Config.VIDEO_FAST_UPLOAD_SIZE
                 && !"uncompressed".equals(getVideoCompression());
     }
 
@@ -119,7 +118,7 @@ public class AttachFileToConversationRunnable implements Runnable, TranscoderLis
             throw new FileNotFoundException("Parcel File Descriptor was null");
         }
         final FileDescriptor fileDescriptor = parcelFileDescriptor.getFileDescriptor();
-        final Future<Void> future = getVideoCompression(fileDescriptor, file, maxUploadSize);
+        final Future<Void> future = getVideoCompression(fileDescriptor, file, maxUploadSize, originalFileSize);
         try {
             future.get();
         } catch (InterruptedException e) {
@@ -137,7 +136,7 @@ public class AttachFileToConversationRunnable implements Runnable, TranscoderLis
         }
     }
 
-    private Future<Void> getVideoCompression(final FileDescriptor fileDescriptor, final File file, final long maxUploadSize) throws Exception {
+    private Future<Void> getVideoCompression(final FileDescriptor fileDescriptor, final File file, final long maxUploadSize, final long originalFileSize) throws Exception {
         final MediaMetadataRetriever mediaMetadataRetriever = new MediaMetadataRetriever();
         try {
             mediaMetadataRetriever.setDataSource(fileDescriptor);
@@ -153,9 +152,13 @@ public class AttachFileToConversationRunnable implements Runnable, TranscoderLis
             videoDuration = -1;
         }
         final int bitrateAfterCompression = safeLongToInt(mXmppConnectionService.getCompressVideoBitratePreference() / 8); //in bytes
-        final long size = videoDuration * bitrateAfterCompression;
+        final long sizeAfterCompression = videoDuration * bitrateAfterCompression;
 
-        if (estimatedFileSize >= size) {
+        if (sizeAfterCompression >= originalFileSize && originalFileSize <= Config.VIDEO_FAST_UPLOAD_SIZE) {
+            processAsFile();
+            onTranscodeCanceled();
+            return null;
+        } else if (estimatedFileSize >= sizeAfterCompression && sizeAfterCompression <= originalFileSize) {
             return Transcoder.into(file.getAbsolutePath()).
                     addDataSource(mXmppConnectionService, uri)
                     .setVideoTrackStrategy(TranscoderStrategies.VIDEO(mXmppConnectionService.getCompressVideoBitratePreference(), mXmppConnectionService.getCompressVideoResolutionPreference()))
