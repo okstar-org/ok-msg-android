@@ -110,8 +110,8 @@
             android:name=".ui.ConversationsActivity"
             android:label="@string/app_name"
             android:launchMode="singleTask"
-            android:minWidth="300dp"
-            android:minHeight="300dp"
+            android:minWidth="336dp"
+            android:minHeight="480dp"
             android:windowSoftInputMode="stateHidden" />
         <activity
             android:name=".ui.ScanActivity"

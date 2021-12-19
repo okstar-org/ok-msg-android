@@ -258,14 +258,34 @@ public class ConversationFragment extends XmppFragment implements EditMessage.Ke
     };
 
     private final OnClickListener meCommand = v -> Objects.requireNonNull(binding.textinput.getText()).insert(0, Message.ME_COMMAND + " ");
-
     private final OnClickListener boldText = v -> insertFormatting("bold");
-
     private final OnClickListener italicText = v -> insertFormatting("italic");
-
     private final OnClickListener monospaceText = v -> insertFormatting("monospace");
-
     private final OnClickListener strikethroughText = v -> insertFormatting("strikethrough");
+    private final OnClickListener help = v -> openHelp();
+    private final OnClickListener close = v -> closeFormatting();
+
+    private void openHelp() {
+        final AlertDialog.Builder builder = new AlertDialog.Builder(activity);
+        builder.setTitle(R.string.format_text);
+        builder.setMessage(R.string.help_format_text);
+        builder.setNeutralButton(getString(R.string.ok), null);
+        builder.create().show();
+    }
+
+    private void closeFormatting() {
+        final AlertDialog.Builder builder = new AlertDialog.Builder(activity);
+        builder.setTitle(R.string.close);
+        builder.setMessage(R.string.close_format_text);
+        builder.setPositiveButton(getString(R.string.close),
+                (dialog, which) -> {
+                    final SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(activity);
+                    preferences.edit().putBoolean("showtextformatting", false).apply();
+                    updateSendButton();
+                });
+        builder.setNegativeButton(getString(R.string.cancel), null);
+        builder.create().show();
+    }
 
     private void insertFormatting(String format) {
         final String BOLD = "*";
@@ -1306,15 +1326,15 @@ public class ConversationFragment extends XmppFragment implements EditMessage.Ke
         String filesize = params.size != null ? UIHelper.filesizeToString(params.size) : null;
         String text =
                 MimeUtils.getMimeTypeEmoji(getActivity(), message.getMimeType()) + " "
-                + UIHelper.readableDateTime(getActivity(), message.getTimeSent(), true, true) + " \u00B7 "
-                + filesize;
+                        + UIHelper.readableDateTime(getActivity(), message.getTimeSent(), true, true) + " \u00B7 "
+                        + filesize;
         quoteText(text, user);
     }
 
     private void quoteGeoUri(Message message, @Nullable String user) {
         String text =
                 "\uD83D\uDCCD" + " " // globe with meridians emoji
-                + UIHelper.readableDateTime(getActivity(), message.getTimeSent(), true, true);
+                        + UIHelper.readableDateTime(getActivity(), message.getTimeSent(), true, true);
         quoteText(text, user);
     }
 
@@ -1326,7 +1346,7 @@ public class ConversationFragment extends XmppFragment implements EditMessage.Ke
         } else if (message.isTypeText()) {
             final String text =
                     UIHelper.readableDateTime(getActivity(), message.getTimeSent(), true, true) + System.getProperty("line.separator")
-                    + MessageUtils.prepareQuote(message);
+                            + MessageUtils.prepareQuote(message);
             quoteText(text, user);
         }
     }
@@ -2183,15 +2203,13 @@ public class ConversationFragment extends XmppFragment implements EditMessage.Ke
 
                 long time = System.currentTimeMillis();
                 Message retractmessage = new Message(conversation,
-                                                     "This person attempted to retract a previous message, but it's unsupported by your client.",
-                                                     Message.ENCRYPTION_NONE,
-                                                     Message.STATUS_SEND);
-                if (retractedMessage.getEditedList().size() > 0)
-                {
+                        "This person attempted to retract a previous message, but it's unsupported by your client.",
+                        Message.ENCRYPTION_NONE,
+                        Message.STATUS_SEND);
+                if (retractedMessage.getEditedList().size() > 0) {
                     retractmessage.setRetractId(retractedMessage.getEditedList().get(0).getEditedId());
-                }
-                else {
-                    retractmessage.setRetractId(retractedMessage.getRemoteMsgId()!=null?retractedMessage.getRemoteMsgId():retractedMessage.getUuid());
+                } else {
+                    retractmessage.setRetractId(retractedMessage.getRemoteMsgId() != null ? retractedMessage.getRemoteMsgId() : retractedMessage.getUuid());
                 }
 
                 retractedMessage.putEdited(retractedMessage.getUuid(), retractedMessage.getServerMsgId(), retractedMessage.getBody(), retractedMessage.getTimeSent());
@@ -2218,7 +2236,7 @@ public class ConversationFragment extends XmppFragment implements EditMessage.Ke
                     }
                 }
                 activity.xmppConnectionService.updateMessage(retractedMessage, retractedMessage.getUuid());
-                if (finalMessage.getStatus()>=Message.STATUS_SEND) {
+                if (finalMessage.getStatus() >= Message.STATUS_SEND) {
                     //only send retraction messages vor outgoing messages!
                     sendMessage(retractmessage);
                 }
@@ -2950,7 +2968,7 @@ public class ConversationFragment extends XmppFragment implements EditMessage.Ke
     private void updateTextFormat(final boolean me) {
         KeyboardUtils.addKeyboardToggleListener(activity, isVisible -> {
             Log.d(Config.LOGTAG, "keyboard visible: " + isVisible);
-            if (isVisible) {
+            if (isVisible && activity != null && activity.xmppConnectionService != null && activity.xmppConnectionService.showTextFormatting()) {
                 showTextFormat(me);
             } else {
                 hideTextFormat();
@@ -3476,7 +3494,7 @@ public class ConversationFragment extends XmppFragment implements EditMessage.Ke
             popupMenu.setOnMenuItemClickListener(item -> {
                 final XmppActivity activity = this.activity;
                 if (activity == null) {
-                    Log.e(Config.LOGTAG,"Unable to perform action. no context provided");
+                    Log.e(Config.LOGTAG, "Unable to perform action. no context provided");
                     return true;
                 }
                 switch (item.getItemId()) {
@@ -3575,6 +3593,18 @@ public class ConversationFragment extends XmppFragment implements EditMessage.Ke
         this.binding.italic.setOnClickListener(italicText);
         this.binding.monospace.setOnClickListener(monospaceText);
         this.binding.strikethrough.setOnClickListener(strikethroughText);
+        this.binding.help.setOnClickListener(help);
+        this.binding.close.setOnClickListener(close);
+        if (Compatibility.runsTwentyEight()) {
+            this.binding.me.setTooltipText(activity.getString(R.string.me));
+            this.binding.bold.setTooltipText(activity.getString(R.string.bold));
+            this.binding.italic.setTooltipText(activity.getString(R.string.italic));
+            this.binding.monospace.setTooltipText(activity.getString(R.string.monospace));
+            this.binding.monospace.setTooltipText(activity.getString(R.string.monospace));
+            this.binding.strikethrough.setTooltipText(activity.getString(R.string.strikethrough));
+            this.binding.help.setTooltipText(activity.getString(R.string.help));
+            this.binding.close.setTooltipText(activity.getString(R.string.close));
+        }
     }
 
     private void hideTextFormat() {

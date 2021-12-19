@@ -189,6 +189,8 @@
         <item name="ic_italic" type="reference">@drawable/ic_format_italic_black</item>
         <item name="ic_monospace" type="reference">@drawable/ic_format_monospace_black</item>
         <item name="ic_strikethrough" type="reference">@drawable/ic_format_strikethrough_black</item>
+        <item name="ic_help" type="reference">@drawable/ic_help_black</item>
+        <item name="ic_close" type="reference">@drawable/ic_close_black</item>
 
         <item name="icon_notifications" type="reference">@drawable/ic_notifications_black_24dp
         </item>
@@ -362,6 +364,8 @@
         <item name="ic_italic" type="reference">@drawable/ic_format_italic_white</item>
         <item name="ic_monospace" type="reference">@drawable/ic_format_monospace_white</item>
         <item name="ic_strikethrough" type="reference">@drawable/ic_format_strikethrough_white</item>
+        <item name="ic_help" type="reference">@drawable/ic_help_white</item>
+        <item name="ic_close" type="reference">@drawable/ic_close_white</item>
 
         <item name="icon_notifications" type="reference">@drawable/ic_notifications_white_24dp
         </item>

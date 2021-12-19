@@ -1,8 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <layout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto">
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
 
-    <RelativeLayout xmlns:tools="http://schemas.android.com/tools"
+    <RelativeLayout
         android:id="@+id/conversations_fragment"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
@@ -156,33 +157,25 @@
             <RelativeLayout
                 android:id="@+id/textformat"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
+                android:layout_height="48dp"
                 android:layout_below="@+id/textsend"
                 android:background="?attr/color_background_tertiary">
 
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:gravity="center_vertical"
+                    android:gravity="center"
                     android:orientation="horizontal">
 
                     <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:paddingStart="@dimen/list_padding"
-                        android:paddingEnd="@dimen/list_padding"
-                        android:text="@string/format_text"
-                        android:textAppearance="@style/TextAppearance.Conversations.Caption" />
-
-                    <TextView
                         android:id="@+id/me"
-                        android:gravity="center"
                         android:layout_width="48dp"
                         android:layout_height="48dp"
                         android:background="?attr/selectableItemBackgroundBorderless"
-                        android:textSize="18sp"
                         android:contentDescription="@string/me"
+                        android:gravity="center"
                         android:text="/me"
+                        android:textSize="18sp"
                         android:visibility="visible" />
 
                     <ImageButton
@@ -219,6 +212,24 @@
                         android:background="?attr/selectableItemBackgroundBorderless"
                         android:contentDescription="@string/strikethrough"
                         android:src="?attr/ic_strikethrough"
+                        android:visibility="visible" />
+
+                    <ImageButton
+                        android:id="@+id/help"
+                        android:layout_width="48dp"
+                        android:layout_height="48dp"
+                        android:background="?attr/selectableItemBackgroundBorderless"
+                        android:contentDescription="@string/format_text"
+                        android:src="?attr/ic_help"
+                        android:visibility="visible" />
+
+                    <ImageButton
+                        android:id="@+id/close"
+                        android:layout_width="24dp"
+                        android:layout_height="24dp"
+                        android:background="?attr/selectableItemBackgroundBorderless"
+                        android:contentDescription="@string/close"
+                        android:src="?attr/ic_close"
                         android:visibility="visible" />
                 </LinearLayout>
             </RelativeLayout>

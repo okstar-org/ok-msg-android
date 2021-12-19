@@ -4493,6 +4493,10 @@ public class XmppConnectionService extends Service {
         return getBooleanPreference("allowmergemessages", R.bool.allowmergemessages);
     }
 
+    public boolean showTextFormatting() {
+        return getBooleanPreference("showtextformatting", R.bool.showtextformatting);
+    }
+
     public int unreadCount() {
         int count = 0;
         for (Conversation conversation : getConversations()) {
