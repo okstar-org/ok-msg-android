@@ -1135,6 +1135,7 @@
     <string name="oldAndroidVersionMessage">You are using an old Android version that will no longer be supported in future updates. From blabber.im version 3.1.0 only devices with Android 5 or higher are supported. Please update your device firmware.</string>
     <string name="save_x_file">Save %s</string>
     <string name="file_copied_to">File copied to %s</string>
+    <string name="copy_file_to">Copy file to %s</string>
     <string name="use_individual_notifications">Use individual notifications</string>
     <string name="pref_remove_all_individual_summary">Remove all individual notifications for your contacts and groups.</string>
     <string name="pref_remove_all_individual_notifications_title">Remove all individual notifications</string>

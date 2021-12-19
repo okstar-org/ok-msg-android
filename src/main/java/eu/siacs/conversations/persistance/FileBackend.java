@@ -1,11 +1,8 @@
 package eu.siacs.conversations.persistance;
 
 import android.app.Activity;
-import android.app.Application;
-import android.app.backup.SharedPreferencesBackupHelper;
 import android.content.ContentResolver;
 import android.content.Context;
-import android.content.SharedPreferences;
 import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
 import android.database.Cursor;
@@ -22,9 +19,6 @@ import android.graphics.pdf.PdfRenderer;
 import android.media.MediaMetadataRetriever;
 import android.media.MediaScannerConnection;
 import android.net.Uri;
-
-import eu.siacs.conversations.BuildConfig;
-import eu.siacs.conversations.R;
 import android.os.Build;
 import android.os.Environment;
 import android.os.ParcelFileDescriptor;
@@ -78,8 +72,8 @@ import java.util.Locale;
 import java.util.Stack;
 import java.util.UUID;
 import java.util.concurrent.atomic.AtomicInteger;
-import java.util.prefs.Preferences;
 
+import eu.siacs.conversations.BuildConfig;
 import eu.siacs.conversations.Config;
 import eu.siacs.conversations.R;
 import eu.siacs.conversations.entities.Account;
@@ -2047,14 +2041,21 @@ public class FileBackend {
     }
 
     public void saveFile(final Message message, final Activity activity) {
-        final DownloadableFile source = getFile(message);
-        final File destination = new File(getDestinationToSaveFile(message));
-        try {
-            copyFile(source, destination);
-            ToastCompat.makeText(activity, activity.getString(R.string.file_copied_to, destination), ToastCompat.LENGTH_SHORT).show();
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
+        new Thread(() -> {
+            final DownloadableFile source = getFile(message);
+            final File destination = new File(getDestinationToSaveFile(message));
+            try {
+                activity.runOnUiThread(() -> {
+                    ToastCompat.makeText(activity, activity.getString(R.string.copy_file_to, destination), ToastCompat.LENGTH_SHORT).show();
+                });
+                copyFile(source, destination);
+                activity.runOnUiThread(() -> {
+                    ToastCompat.makeText(activity, activity.getString(R.string.file_copied_to, destination), ToastCompat.LENGTH_SHORT).show();
+                });
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        }).start();
     }
 
     public String getDestinationToSaveFile(Message message) {
