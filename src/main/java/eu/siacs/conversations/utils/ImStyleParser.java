@@ -98,7 +98,8 @@ public class ImStyleParser {
                     return i;
                 }
             } else if (c == '\n') {
-                return -1;
+                // ignore line breaks
+                //return -1;
             }
         }
         return -1;
