@@ -1009,6 +1009,10 @@ public class Message extends AbstractEntity implements AvatarService.Avatarable 
         return isFileOrImage() && getFileParams().url == null;
     }
 
+    public boolean fileIsTransferring() {
+        return transferable.getStatus() == Transferable.STATUS_DOWNLOADING || transferable.getStatus() == Transferable.STATUS_UPLOADING || transferable.getStatus() == Transferable.STATUS_WAITING;
+    }
+
     public static class FileParams {
         public String url;
         public Long size = null;

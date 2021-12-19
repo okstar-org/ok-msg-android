@@ -120,19 +120,36 @@
             android:progress="100" />
     </RelativeLayout>
 
-    <ProgressBar
-        android:id="@+id/progressBar"
-        style="?android:attr/progressBarStyleHorizontal"
+    <RelativeLayout
+        android:id="@+id/transfer"
         android:layout_width="match_parent"
-        android:layout_height="5dp"
-        android:layout_alignParentStart="true"
-        android:layout_alignParentLeft="true"
-        android:layout_alignParentTop="true"
-        android:indeterminate="false"
-        android:max="100"
-        android:minWidth="50dp"
-        android:progress="1"
-        android:visibility="gone" />
+        android:layout_height="24dp"
+        android:gravity="center_vertical"
+        android:orientation="horizontal"
+        android:visibility="gone">
+
+        <ProgressBar
+            android:id="@+id/progressBar"
+            style="?android:attr/progressBarStyleHorizontal"
+            android:layout_width="match_parent"
+            android:layout_height="5dp"
+            android:layout_centerVertical="true"
+            android:layout_toStartOf="@+id/cancel_transfer"
+            android:indeterminate="false"
+            android:max="100"
+            android:minWidth="50dp"
+            android:progress="1" />
+
+        <ImageButton
+            android:id="@+id/cancel_transfer"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentEnd="true"
+            android:layout_gravity="end"
+            android:alpha="?attr/icon_alpha"
+            android:background="?attr/selectableItemBackgroundBorderless"
+            android:src="@drawable/ic_cancel_black_24dp" />
+    </RelativeLayout>
 
     <ImageButton
         android:id="@+id/answer"

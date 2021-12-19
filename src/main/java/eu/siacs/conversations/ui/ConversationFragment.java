@@ -7,7 +7,6 @@ import static eu.siacs.conversations.ui.SettingsActivity.WARN_UNENCRYPTED_CHAT;
 import static eu.siacs.conversations.ui.XmppActivity.EXTRA_ACCOUNT;
 import static eu.siacs.conversations.ui.XmppActivity.REQUEST_INVITE_TO_CONVERSATION;
 import static eu.siacs.conversations.ui.util.SoftKeyboardUtils.hideSoftKeyboard;
-import static eu.siacs.conversations.utils.MessageUtils.fileWithKnownSize;
 import static eu.siacs.conversations.utils.PermissionUtils.allGranted;
 import static eu.siacs.conversations.utils.PermissionUtils.getFirstDenied;
 import static eu.siacs.conversations.utils.PermissionUtils.readGranted;
@@ -1454,9 +1453,6 @@ public class ConversationFragment extends XmppFragment implements EditMessage.Ke
             if (cancelable) {
                 cancelTransmission.setVisible(true);
             }
-            if (fileWithKnownSize(m)) {
-                cancelTransmission.setVisible(false);
-            }
             if (m.isFileOrImage() && !fileDeleted && !cancelable) {
                 String path = m.getRelativeFilePath();
                 Log.d(Config.LOGTAG, "Path = " + path);
@@ -2332,7 +2328,7 @@ public class ConversationFragment extends XmppFragment implements EditMessage.Ke
         }
     }
 
-    private void cancelTransmission(Message message) {
+    public void cancelTransmission(Message message) {
         Transferable transferable = message.getTransferable();
         if (transferable != null) {
             transferable.cancel();

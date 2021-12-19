@@ -246,7 +246,7 @@ public class MessageAdapter extends ArrayAdapter<Message> {
             case Message.STATUS_UNSEND:
                 if (transferable != null) {
                     info = getContext().getString(R.string.sending);
-                    showProgress(viewHolder, transferable);
+                    showProgress(viewHolder, transferable, message);
                 } else {
                     info = getContext().getString(R.string.sending);
                 }
@@ -415,10 +415,10 @@ public class MessageAdapter extends ArrayAdapter<Message> {
         viewHolder.audioPlayer.setVisibility(View.GONE);
         showImages(false, viewHolder);
         viewHolder.richlinkview.setVisibility(View.GONE);
-        viewHolder.progressBar.setVisibility(View.GONE);
+        viewHolder.transfer.setVisibility(View.GONE);
         viewHolder.messageBody.setVisibility(View.VISIBLE);
         viewHolder.messageBody.setText(text);
-        showProgress(viewHolder, message.getTransferable());
+        showProgress(viewHolder, message.getTransferable(), message);
         if (darkBackground) {
             viewHolder.messageBody.setTextAppearance(getContext(), R.style.TextAppearance_Conversations_Body1_Secondary_OnDark);
         } else {
@@ -427,16 +427,35 @@ public class MessageAdapter extends ArrayAdapter<Message> {
         viewHolder.messageBody.setTextIsSelectable(false);
     }
 
-    private void showProgress(final ViewHolder viewHolder, final Transferable transferable) {
+    private void showProgress(final ViewHolder viewHolder, final Transferable transferable, final Message message) {
         if (transferable != null) {
-            if (transferable.getStatus() == Transferable.STATUS_DOWNLOADING || transferable.getStatus() == Transferable.STATUS_UPLOADING || transferable.getStatus() == Transferable.STATUS_WAITING) {
-                viewHolder.progressBar.setVisibility(View.VISIBLE);
+            if (message.fileIsTransferring()) {
+                viewHolder.transfer.setVisibility(View.VISIBLE);
                 viewHolder.progressBar.setProgress(transferable.getProgress());
+                Drawable icon = activity.getResources().getDrawable(R.drawable.ic_cancel_black_24dp);
+                Drawable drawable = DrawableCompat.wrap(icon);
+                DrawableCompat.setTint(drawable, StyledAttributes.getColor(getContext(), R.attr.colorAccent));
+                viewHolder.cancel_transfer.setImageDrawable(drawable);
+                viewHolder.cancel_transfer.setEnabled(true);
+                viewHolder.cancel_transfer.setOnClickListener(v -> {
+                    try {
+                        if (activity instanceof ConversationsActivity) {
+                            ConversationFragment conversationFragment = ConversationFragment.get(activity);
+                            if (conversationFragment != null) {
+                                activity.invalidateOptionsMenu();
+                                conversationFragment.cancelTransmission(message);
+                            }
+                        }
+                    } catch (Exception e) {
+                        viewHolder.cancel_transfer.setEnabled(false);
+                        e.printStackTrace();
+                    }
+                });
             } else {
-                viewHolder.progressBar.setVisibility(View.GONE);
+                viewHolder.transfer.setVisibility(View.GONE);
             }
         } else {
-            viewHolder.progressBar.setVisibility(View.GONE);
+            viewHolder.transfer.setVisibility(View.GONE);
         }
     }
 
@@ -445,7 +464,7 @@ public class MessageAdapter extends ArrayAdapter<Message> {
         viewHolder.audioPlayer.setVisibility(View.GONE);
         showImages(false, viewHolder);
         viewHolder.richlinkview.setVisibility(View.GONE);
-        viewHolder.progressBar.setVisibility(View.GONE);
+        viewHolder.transfer.setVisibility(View.GONE);
         viewHolder.messageBody.setVisibility(View.VISIBLE);
         if (darkBackground) {
             viewHolder.messageBody.setTextAppearance(getContext(), R.style.TextAppearance_Conversations_Body1_Emoji_OnDark);
@@ -496,7 +515,7 @@ public class MessageAdapter extends ArrayAdapter<Message> {
         });
         showImages(false, viewHolder);
         viewHolder.richlinkview.setVisibility(View.GONE);
-        viewHolder.progressBar.setVisibility(View.GONE);
+        viewHolder.transfer.setVisibility(View.GONE);
         viewHolder.messageBody.setVisibility(View.GONE);
     }
 
@@ -574,7 +593,7 @@ public class MessageAdapter extends ArrayAdapter<Message> {
         viewHolder.download_button.setVisibility(View.GONE);
         showImages(false, viewHolder);
         viewHolder.richlinkview.setVisibility(View.GONE);
-        viewHolder.progressBar.setVisibility(View.GONE);
+        viewHolder.transfer.setVisibility(View.GONE);
         viewHolder.audioPlayer.setVisibility(View.GONE);
         viewHolder.messageBody.setVisibility(View.VISIBLE);
         if (darkBackground) {
@@ -672,7 +691,7 @@ public class MessageAdapter extends ArrayAdapter<Message> {
         viewHolder.audioPlayer.setVisibility(View.GONE);
         showImages(false, viewHolder);
         viewHolder.richlinkview.setVisibility(View.GONE);
-        viewHolder.progressBar.setVisibility(View.GONE);
+        viewHolder.transfer.setVisibility(View.GONE);
         viewHolder.download_button.setVisibility(View.VISIBLE);
         viewHolder.download_button.setText(text);
         final Drawable icon = activity.getResources().getDrawable(R.drawable.ic_download_grey600_48dp);
@@ -688,7 +707,7 @@ public class MessageAdapter extends ArrayAdapter<Message> {
         viewHolder.audioPlayer.setVisibility(View.GONE);
         showImages(false, viewHolder);
         viewHolder.richlinkview.setVisibility(View.GONE);
-        viewHolder.progressBar.setVisibility(View.GONE);
+        viewHolder.transfer.setVisibility(View.GONE);
         final String mimeType = message.getMimeType();
         if (mimeType != null && message.getMimeType().contains("vcard")) {
             try {
@@ -777,7 +796,7 @@ public class MessageAdapter extends ArrayAdapter<Message> {
         viewHolder.audioPlayer.setVisibility(View.GONE);
         showImages(false, viewHolder);
         viewHolder.download_button.setVisibility(View.GONE);
-        viewHolder.progressBar.setVisibility(View.GONE);
+        viewHolder.transfer.setVisibility(View.GONE);
         String url;
         if (message.isWebUri()) {
             url = removeTrackingParameter(Uri.parse(message.getBody().trim())).toString();
@@ -831,7 +850,7 @@ public class MessageAdapter extends ArrayAdapter<Message> {
         final String url = GeoHelper.MapPreviewUri(message, activity);
         showImages(false, viewHolder);
         viewHolder.richlinkview.setVisibility(View.GONE);
-        viewHolder.progressBar.setVisibility(View.GONE);
+        viewHolder.transfer.setVisibility(View.GONE);
         if (mShowMapsInside) {
             showImages(mShowMapsInside, 0, false, viewHolder);
             final double target = activity.getResources().getDimension(R.dimen.image_preview_width);
@@ -877,7 +896,7 @@ public class MessageAdapter extends ArrayAdapter<Message> {
         toggleWhisperInfo(viewHolder, message, showTitle(message), darkBackground);
         showImages(false, viewHolder);
         viewHolder.richlinkview.setVisibility(View.GONE);
-        viewHolder.progressBar.setVisibility(View.GONE);
+        viewHolder.transfer.setVisibility(View.GONE);
         viewHolder.download_button.setVisibility(View.GONE);
         final RelativeLayout audioPlayer = viewHolder.audioPlayer;
         audioPlayer.setVisibility(View.VISIBLE);
@@ -915,7 +934,7 @@ public class MessageAdapter extends ArrayAdapter<Message> {
         viewHolder.download_button.setVisibility(View.GONE);
         viewHolder.audioPlayer.setVisibility(View.GONE);
         viewHolder.richlinkview.setVisibility(View.GONE);
-        viewHolder.progressBar.setVisibility(View.GONE);
+        viewHolder.transfer.setVisibility(View.GONE);
         final DownloadableFile file = activity.xmppConnectionService.getFileBackend().getFile(message);
         if (!file.exists() && !message.isFileDeleted()) {
             markFileDeleted(message);
@@ -1120,7 +1139,9 @@ public class MessageAdapter extends ArrayAdapter<Message> {
                     viewHolder.user = view.findViewById(R.id.message_user);
                     viewHolder.time = view.findViewById(R.id.message_time);
                     viewHolder.indicatorReceived = view.findViewById(R.id.indicator_received);
+                    viewHolder.transfer = view.findViewById(R.id.transfer);
                     viewHolder.progressBar = view.findViewById(R.id.progressBar);
+                    viewHolder.cancel_transfer = view.findViewById(R.id.cancel_transfer);
                     break;
                 case RECEIVED:
                     view = activity.getLayoutInflater().inflate(R.layout.message_received, parent, false);
@@ -1143,7 +1164,9 @@ public class MessageAdapter extends ArrayAdapter<Message> {
                     viewHolder.time = view.findViewById(R.id.message_time);
                     viewHolder.indicatorReceived = view.findViewById(R.id.indicator_received);
                     viewHolder.encryption = view.findViewById(R.id.message_encryption);
+                    viewHolder.transfer = view.findViewById(R.id.transfer);
                     viewHolder.progressBar = view.findViewById(R.id.progressBar);
+                    viewHolder.cancel_transfer = view.findViewById(R.id.cancel_transfer);
                     break;
                 case STATUS:
                     view = activity.getLayoutInflater().inflate(R.layout.message_status, parent, false);
@@ -1485,7 +1508,9 @@ public class MessageAdapter extends ArrayAdapter<Message> {
         protected ImageView contact_picture;
         protected TextView status_message;
         protected TextView encryption;
+        protected RelativeLayout transfer;
         protected ProgressBar progressBar;
+        protected ImageButton cancel_transfer;
     }
 
     public void setBubbleBackgroundColor(final View viewHolder, final int type,
