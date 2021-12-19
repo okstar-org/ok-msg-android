@@ -81,6 +81,7 @@ import com.google.common.base.Optional;
 
 import org.jetbrains.annotations.NotNull;
 
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
@@ -88,6 +89,7 @@ import java.util.Collections;
 import java.util.HashSet;
 import java.util.Iterator;
 import java.util.List;
+import java.util.Locale;
 import java.util.Objects;
 import java.util.Set;
 import java.util.UUID;
@@ -207,6 +209,8 @@ public class ConversationFragment extends XmppFragment implements EditMessage.Ke
     private Toast messageLoaderToast;
     private ConversationsActivity activity;
     private Menu mOptionsMenu;
+
+    private final SimpleDateFormat df = new SimpleDateFormat("yyyy-MM-dd  hh:mm (z)", Locale.US);
 
     private boolean reInitRequiredOnStart = true;
     private MediaPreviewAdapter mediaPreviewAdapter;
@@ -1324,17 +1328,16 @@ public class ConversationFragment extends XmppFragment implements EditMessage.Ke
     private void quoteMedia(Message message, @Nullable String user) {
         Message.FileParams params = message.getFileParams();
         String filesize = params.size != null ? UIHelper.filesizeToString(params.size) : null;
-        String text =
-                MimeUtils.getMimeTypeEmoji(getActivity(), message.getMimeType()) + " "
-                        + UIHelper.readableDateTime(getActivity(), message.getTimeSent(), true, true) + " \u00B7 "
-                        + filesize;
+        String text = df.format(message.getTimeSent()) + "\n "
+                + MimeUtils.getMimeTypeEmoji(getActivity(), message.getMimeType()) + " "
+                + " \u00B7 "
+                + filesize;
         quoteText(text, user);
     }
 
     private void quoteGeoUri(Message message, @Nullable String user) {
-        String text =
-                "\uD83D\uDCCD" + " " // globe with meridians emoji
-                        + UIHelper.readableDateTime(getActivity(), message.getTimeSent(), true, true);
+        String text = df.format(message.getTimeSent()) + "\n"
+                + "\uD83D\uDDFA"; // map
         quoteText(text, user);
     }
 
@@ -1344,9 +1347,7 @@ public class ConversationFragment extends XmppFragment implements EditMessage.Ke
         } else if (message.isFileOrImage()) {
             quoteMedia(message, user);
         } else if (message.isTypeText()) {
-            final String text =
-                    UIHelper.readableDateTime(getActivity(), message.getTimeSent(), true, true) + System.getProperty("line.separator")
-                            + MessageUtils.prepareQuote(message);
+            final String text = df.format(message.getTimeSent()) + System.getProperty("line.separator") + MessageUtils.prepareQuote(message);
             quoteText(text, user);
         }
     }
