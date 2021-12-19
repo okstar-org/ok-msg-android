@@ -37,6 +37,11 @@ public class StartUI extends PermissionsActivity
             if (Compatibility.runsAndTargetsThirty(this)) {
                 requestAllFilesAccess(this);
             }
+            if (checkStoragePermission() && !Compatibility.runsAndTargetsThirty(this)) {
+                next(this);
+            }
+        } else {
+            next(this);
         }
     }
 
