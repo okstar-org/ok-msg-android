@@ -1,5 +1,15 @@
 package eu.siacs.conversations.ui;
 
+import static eu.siacs.conversations.ui.SettingsActivity.BROADCAST_LAST_ACTIVITY;
+import static eu.siacs.conversations.ui.SettingsActivity.CHAT_STATES;
+import static eu.siacs.conversations.ui.SettingsActivity.CONFIRM_MESSAGES;
+import static eu.siacs.conversations.ui.SettingsActivity.EASY_DOWNLOADER;
+import static eu.siacs.conversations.ui.SettingsActivity.FORBID_SCREENSHOTS;
+import static eu.siacs.conversations.ui.SettingsActivity.SHOW_LINKS_INSIDE;
+import static eu.siacs.conversations.ui.SettingsActivity.SHOW_MAPS_INSIDE;
+import static eu.siacs.conversations.ui.SettingsActivity.USE_INNER_STORAGE;
+import static eu.siacs.conversations.ui.SettingsActivity.USE_INVIDIOUS;
+
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
@@ -21,15 +31,6 @@ import eu.siacs.conversations.utils.AccountUtils;
 import eu.siacs.conversations.utils.FirstStartManager;
 import eu.siacs.conversations.utils.ThemeHelper;
 
-import static eu.siacs.conversations.ui.SettingsActivity.BROADCAST_LAST_ACTIVITY;
-import static eu.siacs.conversations.ui.SettingsActivity.CHAT_STATES;
-import static eu.siacs.conversations.ui.SettingsActivity.CONFIRM_MESSAGES;
-import static eu.siacs.conversations.ui.SettingsActivity.FORBID_SCREENSHOTS;
-import static eu.siacs.conversations.ui.SettingsActivity.SHOW_LINKS_INSIDE;
-import static eu.siacs.conversations.ui.SettingsActivity.SHOW_MAPS_INSIDE;
-import static eu.siacs.conversations.ui.SettingsActivity.USE_INNER_STORAGE;
-import static eu.siacs.conversations.ui.SettingsActivity.USE_INVIDIOUS;
-
 public class SetSettingsActivity extends XmppActivity implements XmppConnectionService.OnAccountUpdate {
     ActivitySetSettingsBinding binding;
     Account account;
@@ -41,6 +42,7 @@ public class SetSettingsActivity extends XmppActivity implements XmppConnectionS
     static final int LASTSEEN = 6;
     static final int INVIDIOUS = 7;
     static final int INNER_STORAGE = 8;
+    static final int EASY_DOWNLOADER_ATTACHMENTS = 9;
 
     @Override
     protected void refreshUiReal() {
@@ -73,6 +75,7 @@ public class SetSettingsActivity extends XmppActivity implements XmppConnectionS
         this.binding.actionInfoLastSeen.setOnClickListener(string -> showInfo(LASTSEEN));
         this.binding.actionInfoInvidious.setOnClickListener(string -> showInfo(INVIDIOUS));
         this.binding.actionInfoUsingInnerStorage.setOnClickListener(string -> showInfo(INNER_STORAGE));
+        this.binding.actionInfoEasyDownloader.setOnClickListener(string -> showInfo(EASY_DOWNLOADER_ATTACHMENTS));
     }
 
     private void getDefaults() {
@@ -84,6 +87,7 @@ public class SetSettingsActivity extends XmppActivity implements XmppConnectionS
         this.binding.lastSeen.setChecked(getResources().getBoolean(R.bool.last_activity));
         this.binding.invidious.setChecked(getResources().getBoolean(R.bool.use_invidious));
         this.binding.usingInnerStorage.setChecked(getResources().getBoolean(R.bool.use_inner_storage));
+        this.binding.easyDownloader.setChecked(getResources().getBoolean(R.bool.easy_downloader));
     }
 
     private void next(View view) {
@@ -101,7 +105,6 @@ public class SetSettingsActivity extends XmppActivity implements XmppConnectionS
     }
 
     private void showInfo(int setting) {
-        Log.d(Config.LOGTAG, "STRING " + setting);
         String title;
         String message;
         switch (setting) {
@@ -133,11 +136,15 @@ public class SetSettingsActivity extends XmppActivity implements XmppConnectionS
                 title = getString(R.string.pref_use_invidious);
                 message = getString(R.string.pref_use_invidious_summary);
                 break;
-          case INNER_STORAGE:
+            case INNER_STORAGE:
                 title = getString(R.string.pref_use_inner_storage);
                 message = getString(R.string.pref_use_inner_storage_summary);
                 break;
-          default:
+            case EASY_DOWNLOADER_ATTACHMENTS:
+                title = getString(R.string.pref_easy_downloader);
+                message = getString(R.string.pref_easy_downloader_summary);
+                break;
+            default:
                 title = getString(R.string.error);
                 message = getString(R.string.error);
         }
@@ -152,44 +159,15 @@ public class SetSettingsActivity extends XmppActivity implements XmppConnectionS
 
     private void setSettings() {
         final SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(this);
-        if (this.binding.forbidScreenshots.isChecked()) {
-            preferences.edit().putBoolean(FORBID_SCREENSHOTS, true).apply();
-        } else {
-            preferences.edit().putBoolean(FORBID_SCREENSHOTS, false).apply();
-        }
-        if (this.binding.showLinks.isChecked()) {
-            preferences.edit().putBoolean(SHOW_LINKS_INSIDE, true).apply();
-        } else {
-            preferences.edit().putBoolean(SHOW_LINKS_INSIDE, false).apply();
-        }
-        if (this.binding.showMappreview.isChecked()) {
-            preferences.edit().putBoolean(SHOW_MAPS_INSIDE, true).apply();
-        } else {
-            preferences.edit().putBoolean(SHOW_MAPS_INSIDE, false).apply();
-        }
-        if (this.binding.chatStates.isChecked()) {
-            preferences.edit().putBoolean(CHAT_STATES, true).apply();
-        } else {
-            preferences.edit().putBoolean(CHAT_STATES, false).apply();
-        }
-        if (this.binding.confirmMessages.isChecked()) {
-            preferences.edit().putBoolean(CONFIRM_MESSAGES, true).apply();
-        } else {
-            preferences.edit().putBoolean(CONFIRM_MESSAGES, false).apply();
-        }
-        if (this.binding.lastSeen.isChecked()) {
-            preferences.edit().putBoolean(BROADCAST_LAST_ACTIVITY, true).apply();
-        } else {
-            preferences.edit().putBoolean(BROADCAST_LAST_ACTIVITY, false).apply();
-        }
-        if (this.binding.invidious.isChecked()) {
-            preferences.edit().putBoolean(USE_INVIDIOUS, true).apply();
-        } else {
-            preferences.edit().putBoolean(USE_INVIDIOUS, false).apply();
-        }
-
-        preferences.edit().putBoolean(USE_INNER_STORAGE,
-            this.binding.usingInnerStorage.isChecked()).apply();
+        preferences.edit().putBoolean(FORBID_SCREENSHOTS, this.binding.forbidScreenshots.isChecked()).apply();
+        preferences.edit().putBoolean(SHOW_LINKS_INSIDE, this.binding.showLinks.isChecked()).apply();
+        preferences.edit().putBoolean(SHOW_MAPS_INSIDE, this.binding.showMappreview.isChecked()).apply();
+        preferences.edit().putBoolean(CHAT_STATES, this.binding.chatStates.isChecked()).apply();
+        preferences.edit().putBoolean(CONFIRM_MESSAGES, this.binding.confirmMessages.isChecked()).apply();
+        preferences.edit().putBoolean(BROADCAST_LAST_ACTIVITY, this.binding.lastSeen.isChecked()).apply();
+        preferences.edit().putBoolean(USE_INVIDIOUS, this.binding.invidious.isChecked()).apply();
+        preferences.edit().putBoolean(USE_INNER_STORAGE, this.binding.usingInnerStorage.isChecked()).apply();
+        preferences.edit().putBoolean(EASY_DOWNLOADER, this.binding.easyDownloader.isChecked()).apply();
         FileBackend.switchStorage(xmppConnectionService.usingInnerStorage());
     }
 
