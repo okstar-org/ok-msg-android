@@ -213,7 +213,7 @@
                 app:backgroundTint="?attr/color_background_tertiary"
                 app:elevation="4dp"
                 app:fabSize="mini"
-                app:tint="@color/realwhite" />
+                app:tint="?attr/icon_tint" />
 
             <com.google.android.material.floatingactionbutton.FloatingActionButton
                 android:id="@+id/end_call"
@@ -241,7 +241,7 @@
                 app:backgroundTint="?attr/color_background_tertiary"
                 app:elevation="4dp"
                 app:fabSize="mini"
-                app:tint="@color/realwhite" />
+                app:tint="?attr/icon_tint" />
 
             <com.google.android.material.floatingactionbutton.FloatingActionButton
                 android:id="@+id/in_call_action_far_right"
@@ -255,7 +255,7 @@
                 app:backgroundTint="@color/green500"
                 app:elevation="4dp"
                 app:fabSize="mini"
-                app:tint="@color/realwhite" />
+                app:tint="?attr/icon_tint" />
         </RelativeLayout>
 
     </RelativeLayout>
