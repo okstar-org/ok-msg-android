@@ -1179,4 +1179,6 @@
     <string name="close">Close</string>
     <string name="close_format_text">Do you really want to close the text formatting toolbar? You can enable the toolbar in the settings again.</string>
     <string name="port_example">5222</string>
+    <string name="pref_show_date_in_quotes_summary">Show date and time of your quoted messages.</string>
+    <string name="pref_show_date_in_quotes">Show date and time of quotes</string>
 </resources>

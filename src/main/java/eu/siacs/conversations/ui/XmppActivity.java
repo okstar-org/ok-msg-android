@@ -490,6 +490,10 @@ public abstract class XmppActivity extends ActionBarActivity {
         return getBooleanPreference("unicolored_chatbg", R.bool.use_unicolored_chatbg) || getPreferences().getString(SettingsActivity.THEME, getString(R.string.theme)).equals("black");
     }
 
+    public boolean showDateInQuotes() {
+        return getBooleanPreference("show_date_in_quotes", R.bool.show_date_in_quotes);
+    }
+
     public void setBubbleColor(final View v, final int backgroundColor, final int borderColor) {
         GradientDrawable shape = (GradientDrawable) v.getBackground();
         shape.setColor(backgroundColor);

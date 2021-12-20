@@ -1327,17 +1327,23 @@ public class ConversationFragment extends XmppFragment implements EditMessage.Ke
     private void quoteMedia(Message message, @Nullable String user) {
         Message.FileParams params = message.getFileParams();
         String filesize = params.size != null ? UIHelper.filesizeToString(params.size) : null;
-        String text = df.format(message.getTimeSent()) + "\n "
-                + MimeUtils.getMimeTypeEmoji(getActivity(), message.getMimeType()) + " "
-                + " \u00B7 "
-                + filesize;
-        quoteText(text, user);
+        final StringBuilder stringBuilder = new StringBuilder();
+        if (activity.showDateInQuotes()) {
+            stringBuilder.append(df.format(message.getTimeSent())).append(System.getProperty("line.separator"));
+        }
+        stringBuilder.append(MimeUtils.getMimeTypeEmoji(getActivity(), message.getMimeType())).append(" ");
+        stringBuilder.append(" \u00B7 ");
+        stringBuilder.append(filesize);
+        quoteText(stringBuilder.toString(), user);
     }
 
     private void quoteGeoUri(Message message, @Nullable String user) {
-        String text = df.format(message.getTimeSent()) + "\n"
-                + "\uD83D\uDDFA"; // map
-        quoteText(text, user);
+        final StringBuilder stringBuilder = new StringBuilder();
+        if (activity.showDateInQuotes()) {
+            stringBuilder.append(df.format(message.getTimeSent())).append(System.getProperty("line.separator"));
+        }
+        stringBuilder.append("\uD83D\uDDFA"); // map
+        quoteText(stringBuilder.toString(), user);
     }
 
     private void quoteMessage(Message message, @Nullable String user) {
@@ -1346,8 +1352,12 @@ public class ConversationFragment extends XmppFragment implements EditMessage.Ke
         } else if (message.isFileOrImage()) {
             quoteMedia(message, user);
         } else if (message.isTypeText()) {
-            final String text = df.format(message.getTimeSent()) + System.getProperty("line.separator") + MessageUtils.prepareQuote(message);
-            quoteText(text, user);
+            final StringBuilder stringBuilder = new StringBuilder();
+            if (activity.showDateInQuotes()) {
+                stringBuilder.append(df.format(message.getTimeSent())).append(System.getProperty("line.separator"));
+            }
+            stringBuilder.append(MessageUtils.prepareQuote(message));
+            quoteText(stringBuilder.toString(), user);
         }
     }
 

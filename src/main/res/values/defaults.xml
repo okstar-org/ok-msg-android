@@ -95,6 +95,7 @@
     <bool name="easy_downloader">true</bool>
     <bool name="hide_memory_warning">false</bool>
     <bool name="pause_voice">false</bool>
+    <bool name="show_date_in_quotes">true</bool>
     <integer name="individual_notification">0</integer>
 
     <!--
