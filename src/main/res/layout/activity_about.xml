@@ -80,6 +80,7 @@
                         android:layout_height="wrap_content"
                         android:layout_gravity="center_horizontal"
                         android:layout_margin="4dp"
+                        android:backgroundTint="?attr/colorAccent"
                         android:text="@string/show_privacy" />
 
                     <Button
@@ -88,6 +89,7 @@
                         android:layout_height="wrap_content"
                         android:layout_gravity="center_horizontal"
                         android:layout_margin="4dp"
+                        android:backgroundTint="?attr/colorAccent"
                         android:text="@string/show_termsofuse" />
                 </LinearLayout>
 
