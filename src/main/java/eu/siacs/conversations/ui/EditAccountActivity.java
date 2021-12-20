@@ -1,5 +1,8 @@
 package eu.siacs.conversations.ui;
 
+import static eu.siacs.conversations.utils.PermissionUtils.allGranted;
+import static eu.siacs.conversations.utils.PermissionUtils.readGranted;
+
 import android.app.Activity;
 import android.app.PendingIntent;
 import android.content.ActivityNotFoundException;
@@ -84,9 +87,6 @@ import eu.siacs.conversations.xmpp.forms.Data;
 import eu.siacs.conversations.xmpp.pep.Avatar;
 import me.drakeet.support.toast.ToastCompat;
 import okhttp3.HttpUrl;
-
-import static eu.siacs.conversations.utils.PermissionUtils.allGranted;
-import static eu.siacs.conversations.utils.PermissionUtils.readGranted;
 
 public class EditAccountActivity extends OmemoActivity implements OnAccountUpdate, OnUpdateBlocklist,
         OnKeyStatusUpdated, OnCaptchaRequested, KeyChainAliasCallback, XmppConnectionService.OnShowErrorToast, XmppConnectionService.OnMamPreferencesFetched {
@@ -427,6 +427,9 @@ public class EditAccountActivity extends OmemoActivity implements OnAccountUpdat
                 if (view.getId() == R.id.hostname) {
                     resId = mUseTor ? R.string.hostname_or_onion : R.string.hostname_example;
                 }
+                if (view.getId() == R.id.port) {
+                    resId = R.string.port_example;
+                }
                 final int res = resId;
                 new Handler().postDelayed(() -> et.setHint(res), 500);
             } else {
@@ -647,6 +650,7 @@ public class EditAccountActivity extends OmemoActivity implements OnAccountUpdat
         this.binding.hostname.setOnFocusChangeListener(mEditTextFocusListener);
         this.binding.clearDevices.setOnClickListener(v -> showWipePepDialog());
         this.binding.port.setText(String.valueOf(Resolver.DEFAULT_PORT_XMPP));
+        this.binding.port.setOnFocusChangeListener(mEditTextFocusListener);
         this.binding.port.addTextChangedListener(mTextWatcher);
         this.binding.saveButton.setOnClickListener(this.mSaveButtonClickListener);
         this.binding.cancelButton.setOnClickListener(this.mCancelButtonClickListener);
@@ -1141,7 +1145,11 @@ public class EditAccountActivity extends OmemoActivity implements OnAccountUpdat
             binding.accountPassword.getEditableText().append(this.mAccount.getPassword());
             binding.accountPassword.setText(this.mAccount.getPassword());
             this.binding.hostname.setText("");
-            this.binding.hostname.getEditableText().append(this.mAccount.getHostname());
+            if (this.mAccount.getHostname().length() > 0) {
+                this.binding.hostname.getEditableText().append(this.mAccount.getHostname());
+            } else {
+                this.binding.hostname.getEditableText().append(this.mAccount.getDomain());
+            }
             this.binding.port.setText("");
             this.binding.port.getEditableText().append(String.valueOf(this.mAccount.getPort()));
             this.binding.namePort.setVisibility(mShowOptions ? View.VISIBLE : View.GONE);
