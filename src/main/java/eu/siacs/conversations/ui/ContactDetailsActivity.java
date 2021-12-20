@@ -99,6 +99,7 @@ public class ContactDetailsActivity extends OmemoActivity implements OnAccountUp
         @Override
         public void onClick(DialogInterface dialog, int which) {
             xmppConnectionService.deleteContactOnServer(contact);
+            recreate();
         }
     };
     private OnCheckedChangeListener mOnSendCheckedChange = new OnCheckedChangeListener() {

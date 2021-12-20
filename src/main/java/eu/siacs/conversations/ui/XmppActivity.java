@@ -767,7 +767,10 @@ public abstract class XmppActivity extends ActionBarActivity {
         builder.setTitle(contact.getJid().toString());
         builder.setMessage(getString(R.string.not_in_roster));
         builder.setNegativeButton(getString(R.string.cancel), null);
-        builder.setPositiveButton(getString(R.string.add_contact), (dialog, which) -> xmppConnectionService.createContact(contact, true));
+        builder.setPositiveButton(getString(R.string.add_contact), (dialog, which) -> {
+            xmppConnectionService.createContact(contact, true);
+            recreate();
+        });
         builder.create().show();
     }
 
