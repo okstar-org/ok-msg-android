@@ -74,7 +74,6 @@ dependencies {
     implementation 'com.davemorrissey.labs:subsampling-scale-image-view:3.10.0'
     implementation 'com.google.android.exoplayer:exoplayer-core:2.15.0'
     implementation 'com.google.android.exoplayer:exoplayer-ui:2.15.0'
-    implementation 'pub.devrel:easypermissions:3.0.0' // version >= 3.0.0 needs android X libraries
     implementation 'com.wefika:flowlayout:0.4.1'
     implementation 'com.googlecode.ez-vcard:ez-vcard:0.10.5'
     implementation 'org.jxmpp:jxmpp-jid:1.0.1'
@@ -106,11 +105,11 @@ android {
 
         }
     }
-    compileSdkVersion 29
+    compileSdkVersion 30
 
     defaultConfig {
         minSdkVersion 21
-        targetSdkVersion 29
+        targetSdkVersion 30
 
         //versionNameSuffix " beta_(2021-12-08)" // " beta_(XXXX-XX-XX)" // activate for beta versions
         versionCode 109

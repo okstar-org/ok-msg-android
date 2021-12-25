@@ -59,12 +59,20 @@ public class Compatibility {
         return Build.VERSION.SDK_INT >= Build.VERSION_CODES.O;
     }
 
+    public static boolean runsTwentyThree() {
+        return Build.VERSION.SDK_INT >= Build.VERSION_CODES.M;
+    }
+
     public static boolean runsTwentyFour() {
         return Build.VERSION.SDK_INT >= Build.VERSION_CODES.N;
     }
 
-    public static boolean twentyEight() {
+    public static boolean runsTwentyEight() {
         return Build.VERSION.SDK_INT >= Build.VERSION_CODES.P;
+    }
+
+    public static boolean runsThirty() {
+        return Build.VERSION.SDK_INT >= Build.VERSION_CODES.R;
     }
 
     private static boolean getBooleanPreference(Context context, String name, @BoolRes int res) {
@@ -86,6 +94,17 @@ public class Compatibility {
             return true; //when in doubt…
         }
     }
+    private static boolean targetsThirty(Context context) {
+        try {
+            final PackageManager packageManager = context.getPackageManager();
+            final ApplicationInfo applicationInfo = packageManager.getApplicationInfo(context.getPackageName(), 0);
+            return applicationInfo == null || applicationInfo.targetSdkVersion >= 30;
+        } catch (PackageManager.NameNotFoundException e) {
+            return true; //when in doubt…
+        } catch (RuntimeException e) {
+            return true; //when in doubt…
+        }
+    }
 
     private static boolean targetsTwentyFour(Context context) {
         try {
@@ -98,13 +117,16 @@ public class Compatibility {
             return true; //when in doubt…
         }
     }
+    public static boolean runsAndTargetsTwentyFour(Context context) {
+        return runsTwentyFour() && targetsTwentyFour(context);
+    }
 
     public static boolean runsAndTargetsTwentySix(Context context) {
         return runsTwentySix() && targetsTwentySix(context);
     }
 
-    public static boolean runsAndTargetsTwentyFour(Context context) {
-        return runsTwentyFour() && targetsTwentyFour(context);
+    public static boolean runsAndTargetsThirty(Context context) {
+        return runsThirty() && targetsThirty(context);
     }
 
     public static boolean keepForegroundService(Context context) {

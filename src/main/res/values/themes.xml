@@ -373,7 +373,7 @@
     </style>
 
     <!-- blue dialog -->
-    <style name="ConversationsTheme.Dialog" parent="Theme.MaterialComponents.Light.Dialog">
+    <style name="ConversationsTheme.Dialog" parent="Theme.AppCompat.Light.Dialog">
         <item name="colorPrimary">@color/primary</item>
         <item name="colorPrimaryDark">@color/primary_dark</item>
         <item name="colorAccent">@color/accent</item>
@@ -385,10 +385,11 @@
         <item name="TextSizeBody2">14sp</item>
         <item name="TextSizeDisplay2">45sp</item>
         <item name="android:windowNoTitle">true</item>
+        <item name="buttonBarButtonStyle">@style/Conversations.Dialog.Alert.Buttons</item>
     </style>
 
     <!-- blue dialog - dark -->
-    <style name="ConversationsTheme.Dark.Dialog" parent="Theme.MaterialComponents.Dialog">
+    <style name="ConversationsTheme.Dark.Dialog" parent="Theme.AppCompat.Dialog">
         <item name="colorPrimary">@color/primary</item>
         <item name="colorPrimaryDark">@color/primary_dark</item>
         <item name="colorAccent">@color/accent</item>
@@ -399,6 +400,7 @@
         <item name="TextSizeBody2">14sp</item>
         <item name="TextSizeDisplay2">45sp</item>
         <item name="android:windowNoTitle">true</item>
+        <item name="buttonBarButtonStyle">@style/Conversations.Dialog.Alert.Buttons</item>
     </style>
 
     <!-- blue dialog - black -->

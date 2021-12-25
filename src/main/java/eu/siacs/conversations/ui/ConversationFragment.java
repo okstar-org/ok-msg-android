@@ -1862,6 +1862,11 @@ public class ConversationFragment extends XmppFragment implements EditMessage.Ke
                 if (Config.ONLY_INTERNAL_STORAGE && permission.equals(Manifest.permission.WRITE_EXTERNAL_STORAGE) && permission.equals(Manifest.permission.READ_EXTERNAL_STORAGE)) {
                     continue;
                 }
+                if (Compatibility.runsAndTargetsThirty(activity)) {
+                    if (Config.ONLY_INTERNAL_STORAGE && permission.equals(Manifest.permission.MANAGE_EXTERNAL_STORAGE)) {
+                        continue;
+                    }
+                }
                 if (activity.checkSelfPermission(permission) != PackageManager.PERMISSION_GRANTED) {
                     missingPermissions.add(permission);
                 }

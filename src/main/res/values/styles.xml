@@ -163,6 +163,10 @@
         <item name="android:buttonStyle">@style/Widget.Conversations.Button.Borderless</item>
     </style>
 
+    <style name="Conversations.Dialog.Alert.Buttons" parent="Widget.AppCompat.Button.Borderless">
+        <item name="android:textColor">@color/white</item>
+    </style>
+
     <style name="ExoMediaButton.Previous">
         <item name="android:visibility">gone</item>
     </style>

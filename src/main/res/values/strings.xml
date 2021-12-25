@@ -1162,4 +1162,6 @@
     <string name="plain_text_document">Plain text document</string>
     <string name="pref_import_settings_summary">Import app settings from settings.dat file within the monocles chat backup directory.</string>
     <string name="pref_import_settings">Import app settings</string>
+    <string name="grant">Grant</string>
+    <string name="no_manage_storage_permission">Since Android 11, apps needs a special permission to access all file types on the external storage. monocles chat will ask you to grant this permission to continue.</string>
 </resources>

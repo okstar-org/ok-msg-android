@@ -367,7 +367,7 @@ public class ExportBackupService extends Service {
             backupFileHeader.write(dataOutputStream);
             dataOutputStream.flush();
 
-            final Cipher cipher = Compatibility.twentyEight() ? Cipher.getInstance(CIPHERMODE) : Cipher.getInstance(CIPHERMODE, PROVIDER);
+            final Cipher cipher = Compatibility.runsTwentyEight() ? Cipher.getInstance(CIPHERMODE) : Cipher.getInstance(CIPHERMODE, PROVIDER);
             final byte[] key = getKey(password, salt);
             Log.d(Config.LOGTAG, backupFileHeader.toString());
             SecretKeySpec keySpec = new SecretKeySpec(key, KEYTYPE);
