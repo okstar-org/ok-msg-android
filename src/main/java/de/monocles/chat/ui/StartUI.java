@@ -1,4 +1,4 @@
-package de.pixart.messenger.ui;
+package de.monocles.chat.ui;
 
 import android.app.Activity;
 import android.content.Context;
