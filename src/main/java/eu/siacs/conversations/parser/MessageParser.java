@@ -1,5 +1,8 @@
 package eu.siacs.conversations.parser;
 
+import static eu.siacs.conversations.entities.Message.DELETED_MESSAGE_BODY;
+import static eu.siacs.conversations.entities.Message.DELETED_MESSAGE_BODY_OLD;
+
 import android.util.Log;
 import android.util.Pair;
 
@@ -565,7 +568,7 @@ public class MessageParser extends AbstractParser implements OnMessagePacketRece
             } else if (invite.direct && (mucUserElement != null || invite.inviter == null || mXmppConnectionService.isMuc(account, invite.inviter))) {
                 Log.d(Config.LOGTAG, account.getJid().asBareJid() + ": ignoring direct invite to " + invite.jid + " because it was received in MUC");
             } else {
-                invite.execute(account);
+                invite.execute(account, packet.getBody());
                 return;
             }
         }
@@ -1229,6 +1232,10 @@ public class MessageParser extends AbstractParser implements OnMessagePacketRece
         }
 
         public boolean execute(Account account) {
+            return execute(account, null);
+        }
+
+        public boolean execute(Account account, LocalizedContent body) {
             if (jid != null) {
                 Conversation conversation = mXmppConnectionService.findOrCreateConversation(account, jid, true, false);
                 if (conversation.getMucOptions().online()) {
@@ -1240,7 +1247,9 @@ public class MessageParser extends AbstractParser implements OnMessagePacketRece
                     final Contact contact = inviter != null ? account.getRoster().getContactFromContactList(inviter) : null;
                     mXmppConnectionService.joinMuc(conversation, contact != null && contact.mutualPresenceSubscription());
                     mXmppConnectionService.updateConversationUi();
-                    mXmppConnectionService.showInvitationNotification(conversation, contact);
+                    if (body != null) {
+                        mXmppConnectionService.showInvitationNotification(conversation, contact, body);
+                    }
                 }
                 return true;
             }

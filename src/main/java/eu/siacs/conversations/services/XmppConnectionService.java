@@ -5363,8 +5363,8 @@ public class XmppConnectionService extends Service {
         }
     }
 
-    public void showInvitationNotification(final Conversation conversation, final Contact contact) {
-        final String messageId = "MUC_INVITATION_" + System.currentTimeMillis();
+    public void showInvitationNotification(final Conversation conversation, final Contact contact, final LocalizedContent id) {
+        final String messageId = "MUC_INVITATION_" + id;
         final Message message = new Message(
                 conversation,
                 Message.STATUS_RECEIVED,
