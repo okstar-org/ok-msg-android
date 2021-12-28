@@ -215,16 +215,6 @@ public class ConversationsActivity extends XmppActivity implements OnConversatio
             System.exit(0);
         }
 
-        if (useInternalUpdater()) {
-            if (xmppConnectionService.getAccounts().size() != 0) {
-                if (xmppConnectionService.hasInternetConnection()) {
-                    if (xmppConnectionService.isWIFI() || (xmppConnectionService.isMobile() && !xmppConnectionService.isMobileRoaming())) {
-                        AppUpdate(xmppConnectionService.installedFrom());
-                    }
-                }
-            }
-        }
-
         for (@IdRes int id : FRAGMENT_ID_NOTIFICATION_ORDER) {
             notifyFragmentOfBackendConnected(id);
         }
@@ -1082,25 +1072,6 @@ public class ConversationsActivity extends XmppActivity implements OnConversatio
         runOnUiThread(() -> ToastCompat.makeText(this, resId, ToastCompat.LENGTH_SHORT).show());
     }
 
-    protected void AppUpdate(String Store) {
-        String PREFS_NAME = "UpdateTimeStamp";
-        SharedPreferences UpdateTimeStamp = getApplicationContext().getSharedPreferences(PREFS_NAME, Context.MODE_PRIVATE);
-        long lastUpdateTime = UpdateTimeStamp.getLong("lastUpdateTime", 0);
-        Log.d(Config.LOGTAG, "AppUpdater: LastUpdateTime: " + lastUpdateTime);
-   //     if ((lastUpdateTime + (Config.UPDATE_CHECK_TIMER * 1000)) < System.currentTimeMillis()) {
-            lastUpdateTime = System.currentTimeMillis();
-            SharedPreferences.Editor editor = UpdateTimeStamp.edit();
-            editor.putLong("lastUpdateTime", lastUpdateTime);
-            editor.apply();
-            Log.d(Config.LOGTAG, "AppUpdater: CurrentTime: " + lastUpdateTime);
-            if (Store == null) {
-                Log.d(Config.LOGTAG, "AppUpdater started");
-                openInstallFromUnknownSourcesDialogIfNeeded(false);
-            }
-  //      } else {
-            Log.d(Config.LOGTAG, "AppUpdater stopped");
-        }
-   // }
 
     @Override
     public void onRoomDestroySucceeded() {
