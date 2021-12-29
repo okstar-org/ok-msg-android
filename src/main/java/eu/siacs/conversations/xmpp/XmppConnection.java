@@ -56,7 +56,6 @@ import javax.net.ssl.X509TrustManager;
 import eu.siacs.conversations.BuildConfig;
 import eu.siacs.conversations.Config;
 import eu.siacs.conversations.R;
-import eu.siacs.conversations.crypto.DomainHostnameVerifier;
 import eu.siacs.conversations.crypto.XmppDomainVerifier;
 import eu.siacs.conversations.crypto.axolotl.AxolotlService;
 import eu.siacs.conversations.crypto.sasl.Anonymous;
@@ -122,22 +121,22 @@ public class XmppConnection implements Runnable {
             Element error = packet.findChild("error");
             Account.State state = Account.State.REGISTRATION_FAILED;
             deleteAccount(account);
-                if (error != null) {
-                    if (error.hasChild("text")) {
-                        errorMessage = error.findChildContent("text");
-                        Log.d(Config.LOGTAG, "Error creating account : " + error.findChildContent("text"));
-                    }
-                    if (error.hasChild("conflict")) {
-                        state = Account.State.REGISTRATION_CONFLICT;
-                    } else if (error.hasChild("resource-constraint")
-                            && "wait".equals(error.getAttribute("type"))) {
-                        state = Account.State.REGISTRATION_PLEASE_WAIT;
-                    } else if (error.hasChild("not-acceptable")
-                            && PASSWORD_TOO_WEAK_MSGS.contains(error.findChildContent("text"))) {
-                        state = Account.State.REGISTRATION_PASSWORD_TOO_WEAK;
-                    }
+            if (error != null) {
+                if (error.hasChild("text")) {
+                    errorMessage = error.findChildContent("text");
+                    Log.d(Config.LOGTAG, "Error creating account : " + error.findChildContent("text"));
                 }
-                Log.d(Config.LOGTAG, "Delete account because of error " + error);
+                if (error.hasChild("conflict")) {
+                    state = Account.State.REGISTRATION_CONFLICT;
+                } else if (error.hasChild("resource-constraint")
+                        && "wait".equals(error.getAttribute("type"))) {
+                    state = Account.State.REGISTRATION_PLEASE_WAIT;
+                } else if (error.hasChild("not-acceptable")
+                        && PASSWORD_TOO_WEAK_MSGS.contains(error.findChildContent("text"))) {
+                    state = Account.State.REGISTRATION_PASSWORD_TOO_WEAK;
+                }
+            }
+            Log.d(Config.LOGTAG, "Delete account because of error " + error);
             throw new StateChangingError(state);
         }
     };
@@ -195,6 +194,10 @@ public class XmppConnection implements Runnable {
     public XmppConnection(final Account account, final XmppConnectionService service) {
         this.account = account;
         this.mXmppConnectionService = service;
+    }
+
+    public XmppConnectionService getXmppConnectionService() {
+        return mXmppConnectionService;
     }
 
     private void fixResource(Context context, Account account) {
@@ -854,7 +857,12 @@ public class XmppConnection implements Runnable {
             throw new StateChangingException(Account.State.TLS_ERROR);
         }
         final InetAddress address = socket.getInetAddress();
-        final SSLSocket sslSocket = (SSLSocket) sslSocketFactory.createSocket(socket, address.getHostAddress(), socket.getPort(), true);
+        final SSLSocket sslSocket;
+        try {
+            sslSocket = (SSLSocket) sslSocketFactory.createSocket(socket, address.getHostAddress(), socket.getPort(), true);
+        } catch (Exception e) {
+            throw new StateChangingException(Account.State.TLS_ERROR);
+        }
         SSLSocketHelper.setSecurity(sslSocket);
         SSLSocketHelper.setHostname(sslSocket, IDN.toASCII(account.getServer()));
         SSLSocketHelper.setApplicationProtocol(sslSocket, "xmpp-client");

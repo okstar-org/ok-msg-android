@@ -31,7 +31,8 @@
                 android:layout_margin="16dp"
                 android:src="@drawable/ic_person_add_white_24dp"
                 android:visibility="gone"
-                app:backgroundTint="?attr/colorAccent" />
+                app:backgroundTint="?attr/colorAccent"
+                app:tint="@color/realwhite" />
         </FrameLayout>
     </LinearLayout>
 </layout>

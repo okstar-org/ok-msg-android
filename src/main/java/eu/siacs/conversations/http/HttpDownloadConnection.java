@@ -1,5 +1,7 @@
 package eu.siacs.conversations.http;
 
+import static eu.siacs.conversations.http.HttpConnectionManager.FileTransferExecutor;
+
 import android.util.Log;
 
 import androidx.annotation.Nullable;
@@ -34,8 +36,6 @@ import okhttp3.HttpUrl;
 import okhttp3.OkHttpClient;
 import okhttp3.Request;
 import okhttp3.Response;
-
-import static eu.siacs.conversations.http.HttpConnectionManager.FileTransferExecutor;
 
 public class HttpDownloadConnection implements Transferable {
 
@@ -114,13 +114,12 @@ public class HttpDownloadConnection implements Transferable {
                 }
             }
             setupFile();
-            if ((this.message.getEncryption() == Message.ENCRYPTION_OTR
-                    || this.message.getEncryption() == Message.ENCRYPTION_AXOLOTL)
-                    && this.file.getKey() == null) {
+            if (this.message.getEncryption() == Message.ENCRYPTION_AXOLOTL && this.file.getKey() == null) {
                 this.message.setEncryption(Message.ENCRYPTION_NONE);
             }
             //TODO add auth tag size to knownFileSize
             final Long knownFileSize = message.getFileParams().size;
+            Log.d(Config.LOGTAG, "knownFileSize: " + knownFileSize + ", body=" + message.getBody());
             if (knownFileSize != null && interactive) {
                 this.file.setExpectedSize(knownFileSize);
                 download(true);
@@ -145,7 +144,7 @@ public class HttpDownloadConnection implements Transferable {
 
     private void download(final boolean interactive) {
         changeStatus(STATUS_WAITING);
-        Log.d(Config.LOGTAG,"download()",new Exception());
+        Log.d(Config.LOGTAG, "download()", new Exception());
         FileTransferExecutor.execute(new FileDownloader(interactive));
     }
 

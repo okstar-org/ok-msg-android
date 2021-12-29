@@ -70,7 +70,7 @@
                         </TableRow>
 
                         <TableRow
-                            android:layout_width="fill_parent"
+                            android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:paddingBottom="@dimen/card_padding_regular">
 
@@ -100,7 +100,7 @@
                         </TableRow>
 
                         <TableRow
-                            android:layout_width="fill_parent"
+                            android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:paddingBottom="@dimen/card_padding_regular">
 
@@ -130,7 +130,7 @@
                         </TableRow>
 
                         <TableRow
-                            android:layout_width="fill_parent"
+                            android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:paddingBottom="@dimen/card_padding_regular">
 
@@ -160,7 +160,7 @@
                         </TableRow>
 
                         <TableRow
-                            android:layout_width="fill_parent"
+                            android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:paddingBottom="@dimen/card_padding_regular">
 
@@ -190,7 +190,7 @@
                         </TableRow>
 
                         <TableRow
-                            android:layout_width="fill_parent"
+                            android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:paddingBottom="@dimen/card_padding_regular">
 
@@ -220,7 +220,7 @@
                         </TableRow>
 
                         <TableRow
-                            android:layout_width="fill_parent"
+                            android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:paddingBottom="@dimen/card_padding_regular">
 
@@ -244,6 +244,64 @@
 
                             <androidx.appcompat.widget.AppCompatCheckBox
                                 android:id="@+id/invidious"
+                                android:layout_width="wrap_content"
+                                android:layout_height="match_parent"
+                                android:gravity="center_vertical" />
+                        </TableRow>
+                        <TableRow
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:paddingBottom="@dimen/card_padding_regular">
+
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="match_parent"
+                                android:ellipsize="end"
+                                android:gravity="center_vertical"
+                                android:text="@string/using_inner_storage"
+                                android:textAppearance="@style/TextAppearance.Conversations.Body1" />
+
+                            <ImageButton
+                                android:id="@+id/action_info_using_inner_storage"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:alpha="?attr/icon_alpha"
+                                android:background="?attr/selectableItemBackgroundBorderless"
+                                android:gravity="center_vertical"
+                                android:padding="@dimen/image_button_padding"
+                                android:src="?attr/icon_help_black" />
+
+                            <androidx.appcompat.widget.AppCompatCheckBox
+                                android:id="@+id/using_inner_storage"
+                                android:layout_width="wrap_content"
+                                android:layout_height="match_parent"
+                                android:gravity="center_vertical" />
+                        </TableRow>
+                        <TableRow
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:paddingBottom="@dimen/card_padding_regular">
+
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="match_parent"
+                                android:ellipsize="end"
+                                android:gravity="center_vertical"
+                                android:text="@string/pref_easy_downloader"
+                                android:textAppearance="@style/TextAppearance.Conversations.Body1" />
+
+                            <ImageButton
+                                android:id="@+id/action_info_easy_downloader"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:alpha="?attr/icon_alpha"
+                                android:background="?attr/selectableItemBackgroundBorderless"
+                                android:gravity="center_vertical"
+                                android:padding="@dimen/image_button_padding"
+                                android:src="?attr/icon_help_black" />
+
+                            <androidx.appcompat.widget.AppCompatCheckBox
+                                android:id="@+id/easy_downloader"
                                 android:layout_width="wrap_content"
                                 android:layout_height="match_parent"
                                 android:gravity="center_vertical" />

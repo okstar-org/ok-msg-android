@@ -1,6 +1,5 @@
 package eu.siacs.conversations.persistance;
 
-import android.annotation.TargetApi;
 import android.app.Activity;
 import android.content.ContentResolver;
 import android.content.Context;
@@ -25,6 +24,7 @@ import android.os.Environment;
 import android.os.ParcelFileDescriptor;
 import android.os.StatFs;
 import android.os.SystemClock;
+import android.preference.PreferenceManager;
 import android.provider.MediaStore;
 import android.provider.OpenableColumns;
 import android.system.Os;
@@ -35,14 +35,12 @@ import android.util.DisplayMetrics;
 import android.util.Log;
 import android.util.LruCache;
 
-import androidx.exifinterface.media.ExifInterface;
-
 import androidx.annotation.Nullable;
-import androidx.annotation.RequiresApi;
 import androidx.annotation.StringRes;
 import androidx.core.content.FileProvider;
-import com.google.common.io.ByteStreams;
+import androidx.exifinterface.media.ExifInterface;
 
+import com.google.common.io.ByteStreams;
 
 import java.io.ByteArrayOutputStream;
 import java.io.Closeable;
@@ -64,21 +62,27 @@ import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.Date;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Locale;
 import java.util.Stack;
 import java.util.UUID;
+import java.util.concurrent.atomic.AtomicInteger;
 
+import eu.siacs.conversations.BuildConfig;
 import eu.siacs.conversations.Config;
 import eu.siacs.conversations.R;
+import eu.siacs.conversations.entities.Account;
 import eu.siacs.conversations.entities.DownloadableFile;
 import eu.siacs.conversations.entities.Message;
 import eu.siacs.conversations.services.AttachFileToConversationRunnable;
 import eu.siacs.conversations.services.XmppConnectionService;
+import eu.siacs.conversations.ui.SettingsActivity;
 import eu.siacs.conversations.ui.util.Attachment;
-import eu.siacs.conversations.utils.Compatibility;
 import eu.siacs.conversations.utils.CryptoHelper;
 import eu.siacs.conversations.utils.FileUtils;
 import eu.siacs.conversations.utils.FileWriterException;
@@ -104,11 +108,20 @@ public class FileBackend {
     public static final String SENT_IMAGES = "Images/Sent";
     public static final String VIDEOS = "Videos";
     public static final String SENT_VIDEOS = "Videos/Sent";
+    public static final String INNER_APP_DIR[] = new String[]{
+            Environment.getExternalStorageDirectory().getAbsolutePath() + File.separator ,
+            Environment.getDataDirectory() + File.separator + "data" + File.separator +  BuildConfig.APPLICATION_ID + File.separator + "files" + File.separator,
+    };
+    public static final AtomicInteger STORAGE_INDEX = new AtomicInteger(0);
 
     private final XmppConnectionService mXmppConnectionService;
 
     public FileBackend(XmppConnectionService service) {
         this.mXmppConnectionService = service;
+    }
+
+    public static void switchStorage(boolean checked) {
+        STORAGE_INDEX.set(checked?1:0);
     }
 
     private void createNoMedia() {
@@ -288,6 +301,77 @@ public class FileBackend {
         }
     }
 
+    public static void deleteOldBackups(File dir, List<Account> mAccounts) {
+        try {
+            long start = SystemClock.elapsedRealtime();
+            int num = 0;
+            if (dir == null) {
+                return;
+            }
+            Stack<File> dirlist = new Stack<File>();
+            dirlist.clear();
+            dirlist.push(dir);
+            File dirCurrent = dirlist.pop();
+            File[] fileList = dirCurrent.listFiles();
+            while (!dirlist.isEmpty()) {
+                if (fileList != null) {
+                    for (File file : fileList) {
+                        if (file.isDirectory()) {
+                            dirlist.push(file);
+                        }
+                    }
+                }
+            }
+            if (fileList != null) {
+                ArrayList<File> fileListByAccount = new ArrayList<File>();
+                ArrayList<File> simpleFileList = new ArrayList<File>(Arrays.asList(fileList));
+                for (Account account : mAccounts) {
+                    String jid = account.getJid().asBareJid().toString();
+                    for (int i = 0; i < simpleFileList.size(); i++) {
+                        File currentFile = simpleFileList.get(i);
+                        String fileName = currentFile.getName();
+                        if (fileName.startsWith(jid) && fileName.endsWith(".ceb")) {
+                            fileListByAccount.add(currentFile);
+                            simpleFileList.remove(currentFile);
+                            i--;
+                        }
+                    }
+                    if (fileListByAccount.size() > 2) {
+                        num += expireOldBackups(fileListByAccount);
+                    }
+                    fileListByAccount.clear();
+                }
+            } else {
+                return;
+            }
+            Log.d(Config.LOGTAG, "deleted " + num + " old backup files in " + (SystemClock.elapsedRealtime() - start) + "ms");
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
+    private static int expireOldBackups(ArrayList<File> fileListByAccount) {
+        int num = 0;
+        try {
+            Collections.sort(fileListByAccount, new Comparator<File>() {
+                @Override
+                public int compare(File f1, File f2) {
+                    return Long.compare(f2.lastModified(), f1.lastModified());
+                }
+            });
+            fileListByAccount.subList(0, 2).clear();
+            for (File currentFile : fileListByAccount) {
+                if (currentFile.delete()) {
+                    num++;
+                }
+            }
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return num;
+    }
+
     public void deleteFilesInDir(File dir) {
         long start = SystemClock.elapsedRealtime();
         int num = 0;
@@ -295,12 +379,11 @@ public class FileBackend {
             return;
         }
         Stack<File> dirlist = new Stack<>();
-        dirlist.clear();
         dirlist.push(dir);
         while (!dirlist.isEmpty()) {
             File dirCurrent = dirlist.pop();
             File[] fileList = dirCurrent.listFiles();
-            if (fileList.length > 0) {
+            if (fileList != null && fileList.length > 0) {
                 for (File file : fileList) {
                     if (file.isDirectory()) {
                         dirlist.push(file);
@@ -462,20 +545,24 @@ public class FileBackend {
 
     public static String getConversationsDirectory(final String type) {
         if (type.equalsIgnoreCase("null")) {
-            return Environment.getExternalStorageDirectory().getAbsolutePath() + File.separator + APP_DIRECTORY + File.separator;
+            // return Environment.getExternalStorageDirectory().getAbsolutePath() + File.separator + APP_DIRECTORY + File.separator;
+            return INNER_APP_DIR[STORAGE_INDEX.get()]
+                    + APP_DIRECTORY + File.separator;
         } else {
             return getAppMediaDirectory() + APP_DIRECTORY + " " + type + File.separator;
         }
     }
 
     public static String getAppMediaDirectory() {
-        return Environment.getExternalStorageDirectory().getAbsolutePath() + File.separator + APP_DIRECTORY + File.separator + "Media" + File.separator;
+        //        return Environment.getExternalStorageDirectory().getAbsolutePath() + File.separator + APP_DIRECTORY + File.separator + "Media" + File.separator;
+        return INNER_APP_DIR[STORAGE_INDEX.get()]
+                + APP_DIRECTORY + File.separator + "Media" + File.separator;
     }
 
     public static String getBackupDirectory(@Nullable String app) {
         if (app != null && (app.equalsIgnoreCase("conversations") || app.equalsIgnoreCase("Quicksy"))) {
             return Environment.getExternalStorageDirectory().getAbsolutePath() + "/" + app + "/Backup/";
-        } else if (app != null && (app.equalsIgnoreCase("Monocles Messenger"))) {
+        } else if (app != null && (app.equalsIgnoreCase("Pix-Art Messenger"))) {
             return Environment.getExternalStorageDirectory().getAbsolutePath() + File.separator + app + File.separator + "Database" + File.separator;
         } else {
             return Environment.getExternalStorageDirectory().getAbsolutePath() + File.separator + APP_DIRECTORY + File.separator + "Database" + File.separator;
@@ -599,6 +686,8 @@ public class FileBackend {
             try {
                 ByteStreams.copy(is, os);
             } catch (IOException e) {
+                throw new FileWriterException();
+            } catch (Exception e) {
                 throw new FileWriterException();
             }
             try {
@@ -863,7 +952,7 @@ public class FileBackend {
                 }
                 DownloadableFile file = getFile(message);
                 final String mime = file.getMimeType();
-                if ("application/pdf".equals(mime) && Compatibility.runsTwentyOne()) {
+                if ("application/pdf".equals(mime)) {
                     thumbnail = getPDFPreview(file, size);
                 } else if (mime.startsWith("video/")) {
                     thumbnail = getVideoPreview(file, size);
@@ -887,7 +976,6 @@ public class FileBackend {
         return thumbnail;
     }
 
-    @RequiresApi(api = Build.VERSION_CODES.LOLLIPOP)
     private Bitmap getPDFPreview(final File file, int size) {
         try {
             final ParcelFileDescriptor mFileDescriptor = ParcelFileDescriptor.open(file, ParcelFileDescriptor.MODE_READ_ONLY);
@@ -1049,7 +1137,22 @@ public class FileBackend {
         return getUriForFile(mXmppConnectionService, file);
     }
 
+    public static Uri getUriForUri(Context context, Uri uri) {
+        if ("file".equals(uri.getScheme())) {
+            return getUriForFile(context, new File(uri.getPath()));
+        } else {
+            return uri;
+        }
+    }
+
     public static Uri getUriForFile(Context context, File file) {
+        if (PreferenceManager.getDefaultSharedPreferences(context)
+                .getBoolean(SettingsActivity.USE_INNER_STORAGE, true)) {
+            File dataUser0File = new File(file.getAbsolutePath().replace("/data/data", "/data/user/0"));
+            return FileProvider.getUriForFile(context
+                    , getAuthority(context)
+                    , dataUser0File.exists() ? dataUser0File : file);
+        }
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
             try {
                 return FileProvider.getUriForFile(context, getAuthority(context), file);
@@ -1437,53 +1540,63 @@ public class FileBackend {
         final boolean apk = mime != null && mime.equals("application/vnd.android.package-archive");
         final boolean pdf = "application/pdf".equals(mime);
         /* file params:
-         1  |    2     |   3   |    4    |    5    |   6
-                       | image/video/pdf | a/v/gif | vcard/apk
-        url | filesize | width | height  | runtime | name
+         1  |    2     |   3   |    4    |    5    |     6           |
+                       | image/video/pdf | a/v/gif | vcard/apk/audio |
+        url | filesize | width | height  | runtime | name            |
         */
         final StringBuilder body = new StringBuilder();
         if (url != null) {
-            body.append(url);
+            body.append(url); // 1
         }
-        body.append('|').append(file.getSize());
-        if (image || video || (pdf && Compatibility.runsTwentyOne())) {
+        body.append('|').append(file.getSize()); // 2
+        if (image || video || pdf) {
             try {
                 final Dimensions dimensions;
                 if (video) {
                     dimensions = getVideoDimensions(file);
-                } else if (pdf && Compatibility.runsTwentyOne()) {
+                } else if (pdf) {
                     dimensions = getPDFDimensions(file);
                 } else {
                     dimensions = getImageDimensions(file);
                 }
                 if (dimensions.valid()) {
-                    body.append('|').append(dimensions.width).append('|').append(dimensions.height);
+                    body.append('|')
+                            .append(dimensions.width) // 3
+                            .append('|')
+                            .append(dimensions.height); // 4
                     if (isGif || video) {
-                        body.append("|").append(getMediaRuntime(file, isGif));
+                        body.append("|").append(getMediaRuntime(file, isGif)); // 5
                     }
                 }
             } catch (NotAVideoFile notAVideoFile) {
                 Log.d(Config.LOGTAG, "file with mime type " + file.getMimeType() + " was not a video file, trying to handle it as audio file");
                 try {
-                    body.append("|0|0|").append(getMediaRuntime(file, false)).append('|').append(getAudioTitleArtist(file));
+                    body.append("|0|0|")  // 3, 4
+                            .append(getMediaRuntime(file, false)) // 5
+                            .append('|')
+                            .append(getAudioTitleArtist(file)); // 6
                 } catch (Exception e) {
                     Log.d(Config.LOGTAG, "file with mime type " + file.getMimeType() + " was neither a video file nor an audio file");
                     //fall threw
                 }
             }
         } else if (audio) {
-            body.append("|0|0|").append(getMediaRuntime(file, false)).append('|').append(getAudioTitleArtist(file));
+            body.append("|0|0|") // 3, 4
+                    .append(getMediaRuntime(file, false)) // 5
+                    .append('|')
+                    .append(getAudioTitleArtist(file)); // 6
         } else if (vcard) {
-            body.append("|0|0|0|").append(getVCard(file));
+            body.append("|0|0|0|") // 3, 4, 5
+                    .append(getVCard(file)); // 6
         } else if (apk) {
-            body.append("|0|0|0|").append(getAPK(file, mXmppConnectionService.getApplicationContext()));
+            body.append("|0|0|0|") // 3, 4, 5
+                    .append(getAPK(file, mXmppConnectionService.getApplicationContext())); // 6
         }
         message.setBody(body.toString());
         message.setFileDeleted(false);
         message.setType(privateMessage ? Message.TYPE_PRIVATE_FILE : (image ? Message.TYPE_IMAGE : Message.TYPE_FILE));
     }
 
-    @RequiresApi(api = Build.VERSION_CODES.LOLLIPOP)
     private Dimensions getPDFDimensions(final File file) {
         final ParcelFileDescriptor fileDescriptor;
         try {
@@ -1516,16 +1629,16 @@ public class FileBackend {
 
     public int getMediaRuntime(File file, boolean isGif) {
         if (isGif) {
-             try {
-                    final InputStream inputStream = mXmppConnectionService.getContentResolver().openInputStream(getUriForFile(mXmppConnectionService, file));
-                    Movie movie = Movie.decodeStream(inputStream);
-                    int duration = movie.duration();
-                    close(inputStream);
-                    return duration;
-                } catch (FileNotFoundException e) {
-                    Log.d(Config.LOGTAG, "unable to get image dimensions", e);
-                    return 0;
-                }
+            try {
+                final InputStream inputStream = mXmppConnectionService.getContentResolver().openInputStream(getUriForFile(mXmppConnectionService, file));
+                Movie movie = Movie.decodeStream(inputStream);
+                int duration = movie.duration();
+                close(inputStream);
+                return duration;
+            } catch (FileNotFoundException e) {
+                Log.d(Config.LOGTAG, "unable to get image dimensions", e);
+                return 0;
+            }
         } else {
             try {
                 MediaMetadataRetriever mediaMetadataRetriever = new MediaMetadataRetriever();
@@ -1661,7 +1774,7 @@ public class FileBackend {
             return bitmap;
         }
         DownloadableFile file = new DownloadableFile(attachment.getUri().getPath());
-        if ("application/pdf".equals(attachment.getMime()) && Compatibility.runsTwentyOne()) {
+        if ("application/pdf".equals(attachment.getMime())) {
             bitmap = cropCenterSquare(getPDFPreview(file, size), size);
         } else if (attachment.getMime() != null && attachment.getMime().startsWith("video/")) {
             bitmap = cropCenterSquareVideo(attachment.getUri(), size);
@@ -1719,11 +1832,7 @@ public class FileBackend {
             return dimensions;
         }
         final int rotation;
-        if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.JELLY_BEAN_MR1) {
-            rotation = extractRotationFromMediaRetriever(metadataRetriever);
-        } else {
-            rotation = 0;
-        }
+        rotation = extractRotationFromMediaRetriever(metadataRetriever);
         boolean rotated = rotation == 90 || rotation == 270;
         int height;
         try {
@@ -1744,7 +1853,6 @@ public class FileBackend {
         return rotated ? new Dimensions(width, height) : new Dimensions(height, width);
     }
 
-    @RequiresApi(api = Build.VERSION_CODES.JELLY_BEAN_MR1)
     private static int extractRotationFromMediaRetriever(MediaMetadataRetriever metadataRetriever) {
         String r = metadataRetriever.extractMetadata(MediaMetadataRetriever.METADATA_KEY_VIDEO_ROTATION);
         try {
@@ -1851,30 +1959,11 @@ public class FileBackend {
     public static boolean weOwnFile(Context context, Uri uri) {
         if (uri == null || !ContentResolver.SCHEME_FILE.equals(uri.getScheme())) {
             return false;
-        } else if (Build.VERSION.SDK_INT < Build.VERSION_CODES.LOLLIPOP) {
-            return fileIsInFilesDir(context, uri);
         } else {
             return weOwnFileLollipop(uri);
         }
     }
 
-
-    /**
-     * This is more than hacky but probably way better than doing nothing
-     * Further 'optimizations' might contain to get the parents of CacheDir and NoBackupDir
-     * and check against those as well
-     */
-    private static boolean fileIsInFilesDir(Context context, Uri uri) {
-        try {
-            final String haystack = context.getFilesDir().getParentFile().getCanonicalPath();
-            final String needle = new File(uri.getPath()).getCanonicalPath();
-            return needle.startsWith(haystack);
-        } catch (IOException e) {
-            return false;
-        }
-    }
-
-    @TargetApi(Build.VERSION_CODES.LOLLIPOP)
     private static boolean weOwnFileLollipop(Uri uri) {
         try {
             File file = new File(uri.getPath());
@@ -1944,11 +2033,7 @@ public class FileBackend {
     }
 
     public static String getGlobalDocumentsPath() {
-        if (Compatibility.runsNineTeen()) {
-            return Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOCUMENTS) + "/monocles chat/";
-        } else {
-            return Environment.getExternalStorageDirectory().getAbsolutePath() + File.separator + "Documents";
-        }
+        return Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOCUMENTS) + "/monocles chat/";
     }
 
     public static String getGlobalAudiosPath() {
@@ -1956,14 +2041,21 @@ public class FileBackend {
     }
 
     public void saveFile(final Message message, final Activity activity) {
-        final DownloadableFile source = getFile(message);
-        final File destination = new File(getDestinationToSaveFile(message));
-        try {
-            copyFile(source, destination);
-            ToastCompat.makeText(activity, activity.getString(R.string.file_copied_to, destination), ToastCompat.LENGTH_SHORT).show();
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
+        new Thread(() -> {
+            final DownloadableFile source = getFile(message);
+            final File destination = new File(getDestinationToSaveFile(message));
+            try {
+                activity.runOnUiThread(() -> {
+                    ToastCompat.makeText(activity, activity.getString(R.string.copy_file_to, destination), ToastCompat.LENGTH_SHORT).show();
+                });
+                copyFile(source, destination);
+                activity.runOnUiThread(() -> {
+                    ToastCompat.makeText(activity, activity.getString(R.string.file_copied_to, destination), ToastCompat.LENGTH_SHORT).show();
+                });
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        }).start();
     }
 
     public String getDestinationToSaveFile(Message message) {

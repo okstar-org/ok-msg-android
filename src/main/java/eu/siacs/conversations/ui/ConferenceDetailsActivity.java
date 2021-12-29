@@ -4,10 +4,10 @@ import static eu.siacs.conversations.entities.Bookmark.printableValue;
 import static eu.siacs.conversations.ui.util.IntroHelper.showIntro;
 import static eu.siacs.conversations.utils.StringUtils.changed;
 
+import android.app.Activity;
 import android.app.PendingIntent;
 import android.content.Context;
 import android.content.Intent;
-import android.graphics.PorterDuff;
 import android.os.Bundle;
 import android.provider.Settings;
 import android.text.Editable;
@@ -113,6 +113,14 @@ public class ConferenceDetailsActivity extends XmppActivity implements OnConvers
 
         }
     };
+
+    public static void open(final Activity activity, final Conversation conversation) {
+        Intent intent = new Intent(activity, ConferenceDetailsActivity.class);
+        intent.setAction(ConferenceDetailsActivity.ACTION_VIEW_MUC);
+        intent.putExtra("uuid", conversation.getUuid());
+        activity.startActivity(intent);
+        activity.overridePendingTransition(R.animator.fade_in, R.animator.fade_out);
+    }
 
     private OnClickListener mNotifyStatusClickListener = new OnClickListener() {
         @Override
@@ -269,8 +277,9 @@ public class ConferenceDetailsActivity extends XmppActivity implements OnConvers
             if (mConversation != null) {
                 final Bookmark bookmark = mConversation.getBookmark();
                 if (bookmark != null) {
+                    this.binding.autojoinCheckbox.setEnabled(!getBooleanPreference("autojoin", R.bool.autojoin));
                     bookmark.setAutojoin(this.binding.autojoinCheckbox.isChecked());
-                    xmppConnectionService.createBookmark(mConversation.getAccount(), bookmark);
+                    xmppConnectionService.pushBookmarks(mConversation.getAccount());
                     updateView();
                 }
             }
@@ -330,8 +339,6 @@ public class ConferenceDetailsActivity extends XmppActivity implements OnConvers
                 this.mAdvancedMode = !menuItem.isChecked();
                 menuItem.setChecked(this.mAdvancedMode);
                 getPreferences().edit().putBoolean("advanced_muc_mode", mAdvancedMode).apply();
-                final boolean online = mConversation != null && mConversation.getMucOptions().online();
-                this.binding.mucInfoMore.setVisibility(this.mAdvancedMode && online ? View.VISIBLE : View.GONE);
                 invalidateOptionsMenu();
                 updateView();
                 break;
@@ -483,7 +490,7 @@ public class ConferenceDetailsActivity extends XmppActivity implements OnConvers
         final MenuItem share = menu.findItem(R.id.action_share);
         share.setVisible(!groupChat);
         final MenuItem menuMessageNotification = menu.findItem(R.id.action_message_notifications);
-        if (Compatibility.runsTwentySix()) {
+        if (Compatibility.runsTwentySix() && xmppConnectionServiceBound) {
             menuMessageNotification.setVisible(xmppConnectionService.hasIndividualNotification(mConversation));
         } else {
             menuMessageNotification.setVisible(false);
@@ -598,7 +605,7 @@ public class ConferenceDetailsActivity extends XmppActivity implements OnConvers
         }
         if (printableValue(subject)) {
             SpannableStringBuilder spannable = new SpannableStringBuilder(subject);
-            StylingHelper.format(spannable, this.binding.mucSubject.getCurrentTextColor());
+            StylingHelper.format(spannable, this.binding.mucSubject.getCurrentTextColor(), true);
             MyLinkify.addLinks(spannable, false);
             this.binding.mucSubject.setText(EmojiWrapper.transform(spannable));
             this.binding.mucSubject.setTextAppearance(this, subject.length() > (hasTitle ? 128 : 196) ? R.style.TextAppearance_Conversations_Body1_Linkified : R.style.TextAppearance_Conversations_Subhead);
@@ -630,18 +637,15 @@ public class ConferenceDetailsActivity extends XmppActivity implements OnConvers
                 this.binding.mucInfoMam.setText(R.string.server_info_unavailable);
             }
             if (bookmark != null) {
+                this.binding.autojoinCheckbox.setEnabled(!getBooleanPreference("autojoin", R.bool.autojoin));
                 this.binding.autojoinCheckbox.setVisibility(View.VISIBLE);
-                if (bookmark.autojoin()) {
-                    this.binding.autojoinCheckbox.setChecked(true);
-                } else {
-                    this.binding.autojoinCheckbox.setChecked(false);
-                }
+                this.binding.autojoinCheckbox.setChecked(bookmark.autojoin());
             } else {
                 this.binding.autojoinCheckbox.setVisibility(View.GONE);
             }
             if (self.getAffiliation().ranks(MucOptions.Affiliation.OWNER)) {
                 if (mAdvancedMode) {
-                    this.binding.destroy.getBackground().setColorFilter(getWarningButtonColor(), PorterDuff.Mode.MULTIPLY);
+                    this.binding.destroy.getBackground().setTint(getWarningButtonColor());
                     this.binding.destroy.setTextColor(getWarningTextColor());
                     this.binding.destroy.setVisibility(View.VISIBLE);
                 } else {
@@ -667,12 +671,12 @@ public class ConferenceDetailsActivity extends XmppActivity implements OnConvers
                         });
                 LeaveMucDialog.create().show();
             });
-            this.binding.leaveMuc.getBackground().setColorFilter(getWarningButtonColor(), PorterDuff.Mode.MULTIPLY);
+            this.binding.leaveMuc.getBackground().setTint(getWarningButtonColor());
             this.binding.leaveMuc.setTextColor(getWarningTextColor());
             this.binding.addContactButton.setVisibility(View.VISIBLE);
             if (mConversation.getBookmark() != null) {
                 this.binding.addContactButton.setText(R.string.delete_bookmark);
-                this.binding.addContactButton.getBackground().setColorFilter(getWarningButtonColor(), PorterDuff.Mode.MULTIPLY);
+                this.binding.addContactButton.getBackground().setTint(getWarningButtonColor());
                 this.binding.addContactButton.setTextColor(getWarningTextColor());
                 this.binding.addContactButton.setOnClickListener(v2 -> {
                     final AlertDialog.Builder deleteFromRosterDialog = new AlertDialog.Builder(ConferenceDetailsActivity.this);
@@ -682,6 +686,7 @@ public class ConferenceDetailsActivity extends XmppActivity implements OnConvers
                     deleteFromRosterDialog.setPositiveButton(getString(R.string.delete),
                             (dialog, which) -> {
                                 deleteBookmark();
+                                recreate();
                             });
                     deleteFromRosterDialog.create().show();
                 });
@@ -691,6 +696,7 @@ public class ConferenceDetailsActivity extends XmppActivity implements OnConvers
                 this.binding.addContactButton.setTextColor(getDefaultButtonTextColor());
                 this.binding.addContactButton.setOnClickListener(v2 -> {
                     saveAsBookmark();
+                    recreate();
                 });
             }
         } else {

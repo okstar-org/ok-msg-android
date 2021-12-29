@@ -1,5 +1,8 @@
 package eu.siacs.conversations.utils;
 
+import static eu.siacs.conversations.ui.util.MyLinkify.getYoutubeImageUrl;
+import static eu.siacs.conversations.ui.util.MyLinkify.isYoutubeUrl;
+
 import android.content.Context;
 import android.os.AsyncTask;
 import android.view.View;
@@ -23,7 +26,6 @@ import java.net.URISyntaxException;
 import java.net.URLEncoder;
 import java.util.regex.Pattern;
 
-import eu.siacs.conversations.http.HttpConnectionManager;
 import eu.siacs.conversations.Config;
 import eu.siacs.conversations.services.XmppConnectionService;
 
@@ -82,7 +84,11 @@ public class RichPreview {
                         metaData.setUrl(json.getString("url"));
                     }
                     if (json.has("imageurl")) {
-                        metaData.setImageurl(json.getString("imageurl"));
+                        if (isYoutubeUrl(metaData.getUrl())) {
+                            metaData.setImageurl(getYoutubeImageUrl(metaData.getUrl()));
+                        } else {
+                            metaData.setImageurl(json.getString("imageurl"));
+                        }
                     }
                     if (json.has("title")) {
                         metaData.setTitle(json.getString("title"));
@@ -184,7 +190,7 @@ public class RichPreview {
         try {
             doc = Jsoup.connect(url)
                     .timeout(Config.CONNECT_TIMEOUT * 1000)
-                    .userAgent(HttpConnectionManager.getUserAgent())
+                    .userAgent(xmppConnectionService.getIqGenerator().getUserAgent())
                     .get();
         } catch (Exception e) {
             e.printStackTrace();

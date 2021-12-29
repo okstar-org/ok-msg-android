@@ -1,5 +1,7 @@
 package eu.siacs.conversations.services;
 
+import static eu.siacs.conversations.services.NotificationService.IMPORT_BACKUP_NOTIFICATION_ID;
+
 import android.app.Notification;
 import android.app.NotificationManager;
 import android.app.PendingIntent;
@@ -60,7 +62,6 @@ import eu.siacs.conversations.xmpp.Jid;
 
 public class ImportBackupService extends Service {
 
-    private static final int NOTIFICATION_ID = 21;
     private static final AtomicBoolean running = new AtomicBoolean(false);
     private final ImportBackupServiceBinder binder = new ImportBackupServiceBinder();
     private final SerialSingleThreadExecutor executor = new SerialSingleThreadExecutor(getClass().getSimpleName());
@@ -162,7 +163,7 @@ public class ImportBackupService extends Service {
     }
 
     private void startForegroundService() {
-        startForeground(NOTIFICATION_ID, createImportBackupNotification(1, 0));
+        startForeground(IMPORT_BACKUP_NOTIFICATION_ID, createImportBackupNotification(1, 0));
     }
 
     private void updateImportBackupNotification(final long total, final long current) {
@@ -177,7 +178,7 @@ public class ImportBackupService extends Service {
         }
         final NotificationManagerCompat notificationManager = NotificationManagerCompat.from(this);
         try {
-            notificationManager.notify(NOTIFICATION_ID, createImportBackupNotification(max, progress));
+            notificationManager.notify(IMPORT_BACKUP_NOTIFICATION_ID, createImportBackupNotification(max, progress));
         } catch (final RuntimeException e) {
             Log.d(Config.LOGTAG, "unable to make notification", e);
         }
@@ -303,7 +304,7 @@ public class ImportBackupService extends Service {
                 .setAutoCancel(true)
                 .setContentIntent(PendingIntent.getActivity(this, 145, new Intent(this, ManageAccountActivity.class), PendingIntent.FLAG_UPDATE_CURRENT))
                 .setSmallIcon(R.drawable.ic_unarchive_white_24dp);
-        notificationManager.notify(NOTIFICATION_ID, mBuilder.build());
+        notificationManager.notify(IMPORT_BACKUP_NOTIFICATION_ID, mBuilder.build());
     }
 
     private void stopBackgroundService() {

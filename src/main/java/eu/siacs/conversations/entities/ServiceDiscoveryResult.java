@@ -223,9 +223,9 @@ public class ServiceDiscoveryResult {
         for (Data form : forms) {
             s.append(clean(form.getFormType())).append("<");
             List<Field> fields = form.getFields();
-			Collections.sort(fields, (lhs, rhs) -> Strings.nullToEmpty(lhs.getFieldName()).compareTo(Strings.nullToEmpty(rhs.getFieldName())));
+            Collections.sort(fields, (lhs, rhs) -> Strings.nullToEmpty(lhs.getFieldName()).compareTo(Strings.nullToEmpty(rhs.getFieldName())));
             for (Field field : fields) {
-				s.append(Strings.nullToEmpty(field.getFieldName())).append("<");
+                s.append(Strings.nullToEmpty(field.getFieldName())).append("<");
                 List<String> values = field.getValues();
                 Collections.sort(values);
                 for (String value : values) {

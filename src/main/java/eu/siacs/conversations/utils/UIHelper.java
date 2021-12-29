@@ -22,6 +22,7 @@ import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 import java.util.Locale;
+import java.util.TimeZone;
 
 import eu.siacs.conversations.Config;
 import eu.siacs.conversations.R;
@@ -39,10 +40,8 @@ import eu.siacs.conversations.entities.Transferable;
 import eu.siacs.conversations.services.ExportBackupService;
 import eu.siacs.conversations.services.XmppConnectionService;
 import eu.siacs.conversations.ui.util.MyLinkify;
+import eu.siacs.conversations.ui.util.QuoteHelper;
 import eu.siacs.conversations.xmpp.Jid;
-
-import static eu.siacs.conversations.entities.Message.DELETED_MESSAGE_BODY;
-import static eu.siacs.conversations.entities.Message.DELETED_MESSAGE_BODY_OLD;
 
 public class UIHelper {
 
@@ -143,19 +142,22 @@ public class UIHelper {
             | DateUtils.FORMAT_ABBREV_ALL | DateUtils.FORMAT_SHOW_DATE;
 
     public static String readableTimeDifference(Context context, long time) {
-        return readableTimeDifference(context, time, false);
+        return readableTimeDifference(context, time, false, false);
     }
 
     public static String readableTimeDifferenceFull(Context context, long time) {
-        return readableTimeDifference(context, time, true);
+        return readableTimeDifference(context, time, true, false);
     }
 
-    private static String readableTimeDifference(Context context, long time,
-                                                 boolean fullDate) {
+    public static String readableTimeDifference(Context context, long time,
+                                                boolean fullDate, boolean printTz) {
         if (time == 0) {
             return context.getString(R.string.just_now);
         }
         Date date = new Date(time);
+        TimeZone tz = TimeZone.getDefault();
+        String tzString = "(" + tz.getDisplayName(tz.inDaylightTime(date),
+                TimeZone.SHORT, Locale.UK) + ")";
         long difference = (System.currentTimeMillis() - time) / 1000;
         if (difference < 60) {
             return context.getString(R.string.just_now);
@@ -165,15 +167,37 @@ public class UIHelper {
             return context.getString(R.string.minutes_ago, Math.round(difference / 60.0));
         } else if (today(date)) {
             java.text.DateFormat df = DateFormat.getTimeFormat(context);
-            return df.format(date);
+            return printTz ? df.format(date) + " " + tzString : df.format(date);
         } else {
             if (fullDate) {
-                return DateUtils.formatDateTime(context, date.getTime(),
+                return printTz ? DateUtils.formatDateTime(context, date.getTime(),
+                        FULL_DATE_FLAGS) + " " + tzString :  DateUtils.formatDateTime(context, date.getTime(),
                         FULL_DATE_FLAGS);
             } else {
-                return DateUtils.formatDateTime(context, date.getTime(),
+                return printTz ? DateUtils.formatDateTime(context, date.getTime(),
+                        SHORT_DATE_FLAGS) + " " + tzString : DateUtils.formatDateTime(context, date.getTime(),
                         SHORT_DATE_FLAGS);
             }
+        }
+    }
+
+    public static String readableDateTime(Context context, long time,
+                                          boolean fullDate, boolean printTz) {
+        if (time == 0) {
+            return context.getString(R.string.just_now);
+        }
+        Date date = new Date(time);
+        TimeZone tz = TimeZone.getDefault();
+        String tzString = "(" + tz.getDisplayName(tz.inDaylightTime(date),
+                TimeZone.SHORT, Locale.UK) + ")";
+        if (fullDate) {
+            return printTz ? DateUtils.formatDateTime(context, date.getTime(),
+                    FULL_DATE_FLAGS) + " " + tzString : DateUtils.formatDateTime(context, date.getTime(),
+                    FULL_DATE_FLAGS);
+        } else {
+            return printTz ? DateUtils.formatDateTime(context, date.getTime(),
+                    SHORT_DATE_FLAGS) + " " + tzString : DateUtils.formatDateTime(context, date.getTime(),
+                    SHORT_DATE_FLAGS);
         }
     }
 
@@ -317,7 +341,7 @@ public class UIHelper {
             }
         } else {
             final String body = MessageUtils.filterLtrRtl(message.getBody());
-            if (message.getBody().equals(DELETED_MESSAGE_BODY) || message.getBody().equals(DELETED_MESSAGE_BODY_OLD)) {
+            if (message.hasDeletedBody()) {
                 return new Pair<>(context.getString(R.string.message_deleted), false);
             } else if (body.startsWith(Message.ME_COMMAND)) {
                 return new Pair<>(body.replaceAll("^" + Message.ME_COMMAND, UIHelper.getMessageDisplayName(message)), false);
@@ -331,7 +355,7 @@ public class UIHelper {
             } else {
                 SpannableStringBuilder styledBody = new SpannableStringBuilder(MyLinkify.replaceYoutube(context, body));
                 if (textColor != 0) {
-                    StylingHelper.format(styledBody, 0, styledBody.length() - 1, textColor);
+                    StylingHelper.format(styledBody, 0, styledBody.length() - 1, textColor, true);
                 }
                 SpannableStringBuilder builder = new SpannableStringBuilder();
                 for (CharSequence l : CharSequenceUtils.split(styledBody, '\n')) {
@@ -340,7 +364,7 @@ public class UIHelper {
                             continue;
                         }
                         char first = l.charAt(0);
-                        if ((first != '>' || !isPositionFollowedByQuoteableCharacter(l, 0)) && first != '\u00bb') {
+                        if ((!QuoteHelper.isPositionQuoteStart(l, 0))) {
                             CharSequence line = CharSequenceUtils.trim(l);
                             if (line.length() == 0) {
                                 continue;
@@ -384,14 +408,6 @@ public class UIHelper {
         return input.length() > 256 ? StylingHelper.subSequence(input, 0, 256) : input;
     }
 
-    public static boolean isPositionFollowedByWhitespace(CharSequence body, int pos){
-        return Character.isWhitespace(body.charAt(pos + 1));
-    }
-
-    public static boolean isPositionPrecededByWhitespace(CharSequence body, int pos){
-        return Character.isWhitespace(body.charAt(pos -1 ));
-    }
-
     public static boolean isPositionPrecededByBodyStart(CharSequence body, int pos){
         // true if not a single linebreak before current position
         for (int i = pos - 1; i >= 0; i--){
@@ -406,10 +422,7 @@ public class UIHelper {
         if (isPositionPrecededByBodyStart(body, pos)){
             return true;
         }
-        if (body.charAt(pos - 1) == '\n'){
-            return true;
-        }
-        return false;
+        return body.charAt(pos - 1) == '\n';
     }
 
     public static boolean isPositionFollowedByQuoteableCharacter(CharSequence body, int pos) {
@@ -454,26 +467,8 @@ public class UIHelper {
             final char c = body.charAt(i);
             if (Character.isWhitespace(c)) {
                 return false;
-            } else if (c == '<' || c == '>') {
+            } else if (QuoteHelper.isPositionQuoteCharacter(body, pos) || QuoteHelper.isPositionQuoteEndCharacter(body, pos)) {
                 return body.length() == i + 1 || Character.isWhitespace(body.charAt(i + 1));
-            }
-        }
-        return false;
-    }
-
-    public static boolean isPositionFollowedByQuote(CharSequence body, int pos) {
-        if (body.length() <= pos + 1 || Character.isWhitespace(body.charAt(pos + 1))) {
-            return false;
-        }
-        boolean previousWasWhitespace = false;
-        for (int i = pos + 1; i < body.length(); i++) {
-            char c = body.charAt(i);
-            if (c == '\n' || c == '»') {
-                return false;
-            } else if (c == '«' && !previousWasWhitespace) {
-                return true;
-            } else {
-                previousWasWhitespace = Character.isWhitespace(c);
             }
         }
         return false;
@@ -516,6 +511,9 @@ public class UIHelper {
     }
 
     public static String getFileDescriptionString(final Context context, final Message message) {
+        if (message.getType() == Message.TYPE_IMAGE) {
+            return context.getString(R.string.image);
+        }
         final String mime = message.getMimeType();
         if (mime == null) {
             return context.getString(R.string.file);
@@ -525,9 +523,7 @@ public class UIHelper {
             return context.getString(R.string.video);
         } else if (mime.equals("image/gif")) {
             return context.getString(R.string.gif);
-        } else if (mime.equals("image/svg+xml")) {
-            return context.getString(R.string.vector_graphic);
-        } else if (mime.startsWith("image/") || message.getType() == Message.TYPE_IMAGE) {
+        } else if (mime.startsWith("image/")) {
             return context.getString(R.string.image);
         } else if (mime.contains("pdf")) {
             return context.getString(R.string.pdf_document);
@@ -598,8 +594,6 @@ public class UIHelper {
                 } else {
                     return context.getString(R.string.send_message_to_x, conversation.getName());
                 }
-            case Message.ENCRYPTION_OTR:
-                return context.getString(R.string.send_otr_message);
             case Message.ENCRYPTION_AXOLOTL:
                 AxolotlService axolotlService = conversation.getAccount().getAxolotlService();
                 if (axolotlService != null && axolotlService.trustedSessionVerified(conversation)) {

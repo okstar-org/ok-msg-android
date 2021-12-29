@@ -37,6 +37,20 @@ public class PhoneHelper {
         return uri == null ? null : Uri.parse(uri);
     }
 
+    public static String getVersionName(Context context) {
+        final String packageName = context == null ? null : context.getPackageName();
+        if (packageName != null) {
+            try {
+                return context.getPackageManager().getPackageInfo(packageName, 0).versionName;
+            } catch (final PackageManager.NameNotFoundException e) {
+                return "unknown";
+            } catch (final RuntimeException e) {
+                return "unknown";
+            }
+        } else {
+            return "unknown";
+        }
+    }
 
     public static String getOSVersion(Context context) {
         return "Android/" + android.os.Build.MODEL + "/" + android.os.Build.VERSION.RELEASE;

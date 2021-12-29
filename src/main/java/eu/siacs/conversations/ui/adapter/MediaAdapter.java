@@ -104,8 +104,6 @@ public class MediaAdapter extends RecyclerView.Adapter<MediaAdapter.MediaViewHol
                 attr = R.attr.media_preview_document;
             } else if (mime.equals("application/gpx+xml")) {
                 attr = R.attr.media_preview_tour;
-            } else if (mime.startsWith("image/")) {
-                attr = R.attr.media_preview_image;
             } else {
                 attr = R.attr.media_preview_unknown;
             }

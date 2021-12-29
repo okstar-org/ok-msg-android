@@ -37,7 +37,6 @@ public class EasyOnboardingInviteActivity extends XmppActivity implements EasyOn
         this.binding = DataBindingUtil.setContentView(this, R.layout.activity_easy_invite);
         setSupportActionBar((Toolbar) binding.toolbar);
         configureActionBar(getSupportActionBar(), true);
-        this.binding.shareButton.setOnClickListener(v -> share());
         if (bundle != null && bundle.containsKey("invite")) {
             this.easyOnboardingInvite = bundle.getParcelable("invite");
             if (this.easyOnboardingInvite != null) {
@@ -100,7 +99,7 @@ public class EasyOnboardingInviteActivity extends XmppActivity implements EasyOn
         final Point size = new Point();
         getWindowManager().getDefaultDisplay().getSize(size);
         final int width = Math.min(size.x, size.y);
-        final Bitmap bitmap = BarcodeProvider.create2dBarcodeBitmap(invite.getShareableLink(), width);
+        final Bitmap bitmap = BarcodeProvider.create2dBarcodeBitmap(invite.getShareableUri(), width);
         binding.qrCode.setImageBitmap(bitmap);
     }
 

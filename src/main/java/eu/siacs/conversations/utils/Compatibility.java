@@ -1,5 +1,7 @@
 package eu.siacs.conversations.utils;
 
+import static eu.siacs.conversations.services.EventReceiver.EXTRA_NEEDS_FOREGROUND_SERVICE;
+
 import android.Manifest;
 import android.annotation.SuppressLint;
 import android.content.Context;
@@ -25,8 +27,6 @@ import eu.siacs.conversations.R;
 import eu.siacs.conversations.ui.SettingsActivity;
 import eu.siacs.conversations.ui.SettingsFragment;
 
-import static eu.siacs.conversations.services.EventReceiver.EXTRA_NEEDS_FOREGROUND_SERVICE;
-
 public class Compatibility {
     private static final List<String> UNUSED_SETTINGS_POST_TWENTYSIX = Arrays.asList(
             SettingsActivity.SHOW_FOREGROUND_SERVICE,
@@ -45,14 +45,6 @@ public class Compatibility {
 
     public static boolean hasStoragePermission(Context context) {
         return Build.VERSION.SDK_INT < Build.VERSION_CODES.M || (ContextCompat.checkSelfPermission(context, android.Manifest.permission.WRITE_EXTERNAL_STORAGE) == PackageManager.PERMISSION_GRANTED && ContextCompat.checkSelfPermission(context, Manifest.permission.READ_EXTERNAL_STORAGE) == PackageManager.PERMISSION_GRANTED);
-    }
-
-    public static boolean runsTwentyOne() {
-        return Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP;
-    }
-
-    public static boolean runsNineTeen() {
-        return Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT;
     }
 
     public static boolean runsTwentySix() {
@@ -94,6 +86,7 @@ public class Compatibility {
             return true; //when in doubt…
         }
     }
+
     private static boolean targetsThirty(Context context) {
         try {
             final PackageManager packageManager = context.getPackageManager();
@@ -117,6 +110,7 @@ public class Compatibility {
             return true; //when in doubt…
         }
     }
+
     public static boolean runsAndTargetsTwentyFour(Context context) {
         return runsTwentyFour() && targetsTwentyFour(context);
     }
@@ -124,7 +118,6 @@ public class Compatibility {
     public static boolean runsAndTargetsTwentySix(Context context) {
         return runsTwentySix() && targetsTwentySix(context);
     }
-
     public static boolean runsAndTargetsThirty(Context context) {
         return runsThirty() && targetsThirty(context);
     }
@@ -180,14 +173,9 @@ public class Compatibility {
         }
     }
 
-
     @SuppressLint("UnsupportedChromeOsCameraSystemFeature")
     public static boolean hasFeatureCamera(final Context context) {
         final PackageManager packageManager = context.getPackageManager();
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN_MR1) {
-            return packageManager.hasSystemFeature(PackageManager.FEATURE_CAMERA_ANY);
-        } else {
-            return packageManager.hasSystemFeature(PackageManager.FEATURE_CAMERA);
-        }
+        return packageManager.hasSystemFeature(PackageManager.FEATURE_CAMERA_ANY);
     }
 }

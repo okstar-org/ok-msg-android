@@ -2,13 +2,16 @@ package eu.siacs.conversations;
 
 import android.graphics.Bitmap;
 import android.net.Uri;
+import android.util.Log;
 
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 import java.util.Locale;
+import java.util.Random;
 
 import eu.siacs.conversations.crypto.XmppDomainVerifier;
+import eu.siacs.conversations.services.ProviderService;
 import eu.siacs.conversations.xmpp.Jid;
 import eu.siacs.conversations.xmpp.chatstate.ChatState;
 
@@ -44,32 +47,36 @@ public final class Config {
     }
 
     public static String monocles() {
-        if (Locale.getDefault().getLanguage().equalsIgnoreCase("de")) {
-            return "monocles chat";
-        } else {
-            return "monocles chat/en";
-        }
+        //if (Locale.getDefault().getLanguage().equalsIgnoreCase("de")) {
+        return "https://ocean.monocles.de/apps/registration/";
+        /*} else {
+            return "blabber.im/en.html";
+        }*/
     }
 
-    public static final String LOGTAG = BuildConfig.APP_NAME.toLowerCase(Locale.US);
+    public static final String LOGTAG = BuildConfig.LOGTAG;
 
     public static final Jid BUG_REPORTS = Jid.of("support@monocles.de");
-    public static final Uri HELP = Uri.parse("https://help.conversations.im");
+    public static final Uri HELP = Uri.parse("https://monocles.de/howto");
 
-    public static final String inviteUserURL = "https://ocean.monocles.de/apps/registration/";
-    public static final String inviteMUCURL = "https://ocean.monocles.de/apps/registration/";
-    public static final String inviteHostURL = "monocles.de"; // without http(s)
-    public static final String termsOfUseURL = "https://" + "monocles.de" + "/impressum/";
-    public static final String privacyURL = "https://" + "monocles.de" + "/impressum/";
-    public static final String migrationURL = "https://" + "codeberg.org/Arne/monocles_chat/";
+    public static final String inviteUserURL = "https://" + monocles() + "/i/";
+    public static final String inviteMUCURL = "https://" + monocles() + "/j/";
+    public static final String inviteHostURL = monocles(); // without http(s)
+    public static final String INVITE_DOMAIN = monocles();
+    public static final String termsOfUseURL = "https://monocles.de/impressum/";
+    public static final String privacyURL = "https://monocles.de/impressum/";
+    public static final String migrationURL = Locale.getDefault().getLanguage().equalsIgnoreCase("de") ? "https://codeberg.org/Arne/monocles_chat" : "https://codeberg.org/Arne/monocles_chat";
 
     public static final String CHANGELOG_URL = "https://codeberg.org/Arne/monocles_chat/src/branch/master/CHANGELOG.md";
-    public static final String GIT_URL = "https://codeberg.org/Arne/monocles_chat/";
+    public static final String GIT_URL = "https://codeberg.org/Arne/monocles_chat";
+
+    public static final String PROVIDER_URL = "https://invent.kde.org/melvo/xmpp-providers/-/raw/master/providers.json"; // https://invent.kde.org/melvo/xmpp-providers
 
     public static final String XMPP_IP = null; //BuildConfig.XMPP_IP; // set to null means disable
     public static final Integer[] XMPP_Ports = null; //BuildConfig.XMPP_Ports; // set to null means disable
     public static final String DOMAIN_LOCK = BuildConfig.DOMAIN_LOCK; //only allow account creation for this domain
-    public static final String MAGIC_CREATE_DOMAIN = BuildConfig.MAGIC_CREATE_DOMAIN; //"monocles.de";
+    public static final String MAGIC_CREATE_DOMAIN = DOMAIN.getRandomServer();
+
     public static final String QUICKSY_DOMAIN = "quicksy.im";
     public static final String CHANNEL_DISCOVERY = "https://search.jabber.network";
     public static final boolean DISALLOW_REGISTRATION_IN_UI = false; //hide the register checkbox
@@ -102,7 +109,7 @@ public final class Config {
 
     public static final boolean XEP_0392 = true; //enables XEP-0392 v0.6.0
 
-    public static final int FILE_SIZE = 1048576; // 1 MiB
+    public static final int VIDEO_FAST_UPLOAD_SIZE = 5 * 1024 * 1024;
 
     public static final int AVATAR_SIZE = 480;
     public static final Bitmap.CompressFormat AVATAR_FORMAT = Bitmap.CompressFormat.JPEG;
@@ -110,11 +117,6 @@ public final class Config {
 
     public static final Bitmap.CompressFormat IMAGE_FORMAT = Bitmap.CompressFormat.JPEG;
     public static final int IMAGE_QUALITY = 65;
-
-    public static final int DEFAULT_ZOOM = 15; //for locations
-    public final static long LOCATION_FIX_TIME_DELTA = 1000 * 10; // ms
-    public final static float LOCATION_FIX_SPACE_DELTA = 10; // m
-    public final static int LOCATION_FIX_SIGNIFICANT_TIME_DELTA = 1000 * 60 * 2; // ms
 
     public static final int MESSAGE_MERGE_WINDOW = 20;
 
@@ -150,8 +152,9 @@ public final class Config {
     public static final boolean ENCRYPT_ON_HTTP_UPLOADED = false;
 
     public static final boolean X509_VERIFICATION = false; //use x509 certificates to verify OMEMO keys
+    public static final boolean REQUIRE_RTP_VERIFICATION = false; //require a/v calls to be verified with OMEMO
 
-    public static final boolean ONLY_INTERNAL_STORAGE = true; //use internal storage instead of sdcard to save attachments
+    public static final boolean ONLY_INTERNAL_STORAGE = false; //use internal storage instead of sdcard to save attachments
 
     public static final boolean IGNORE_ID_REWRITE_IN_MUC = true;
     public static final boolean MUC_LEAVE_BEFORE_JOIN = false;
@@ -166,8 +169,8 @@ public final class Config {
 
     public static final int EXPIRY_INTERVAL = 30 * 60 * 1000; // 30 minutes
 
-    //public static final String UPDATE_URL = BuildConfig.UPDATE_URL;
-    //public static final long UPDATE_CHECK_TIMER = 24 * 60 * 60; // 24 h in seconds
+    public static final String UPDATE_URL = BuildConfig.UPDATE_URL;
+    public static final long UPDATE_CHECK_TIMER = 24 * 60 * 60; // 24 h in seconds
 
     public static final String ISSUE_URL = "xmpp://support@conference.monocles.de?join";
 
@@ -207,6 +210,45 @@ public final class Config {
         }
     }
 
+    public static class DOMAIN {
+        public static final List<String> DOMAINS = Arrays.asList(
+                "conversations.im",
+                "zp1.net"
+        );
+
+        public static final List<String> BLACKLISTED_DOMAINS = Arrays.asList(
+                "blabber.im"
+        );
+
+        public static String getRandomServer() {
+            try {
+                new ProviderService().execute();
+                final String domain = ProviderService.getProviders().get(new Random().nextInt(ProviderService.getProviders().size()));
+                Log.d(LOGTAG, "MagicCreate account on domain: " + domain);
+                return domain;
+            } catch (Exception e) {
+                Log.d(LOGTAG, "Error getting random server ", e);
+            }
+            return "zp1.net";
+        }
+    }
+
     private Config() {
     }
+
+
+    public static final class Map {
+        public final static double INITIAL_ZOOM_LEVEL = 4;
+        public final static double FINAL_ZOOM_LEVEL = 15;
+        public final static int MY_LOCATION_INDICATOR_SIZE = 15;
+        public final static int MY_LOCATION_INDICATOR_OUTLINE_SIZE = 5;
+        public final static long LOCATION_FIX_TIME_DELTA = 1000 * 10; // ms
+        public final static float LOCATION_FIX_SPACE_DELTA = 10; // m
+        public final static int LOCATION_FIX_SIGNIFICANT_TIME_DELTA = 1000 * 60 * 2; // ms
+    }
+
+    // How deep nested quotes should be displayed. '2' means one quote nested in another.
+    public static final int QUOTE_MAX_DEPTH = 7;
+    // How deep nested quotes should be created on quoting a message.
+    public static final int QUOTING_MAX_DEPTH = 1;
 }

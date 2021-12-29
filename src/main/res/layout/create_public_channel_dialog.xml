@@ -17,11 +17,12 @@
 
         <Spinner
             android:id="@+id/account"
-            android:layout_width="fill_parent"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content" />
 
         <com.google.android.material.textfield.TextInputLayout
             android:id="@+id/name_layout"
+            style="@style/Widget.Conversations.TextInputLayout.OutlinedBox"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             app:errorTextAppearance="@style/TextAppearance.Conversations.Design.Error"
@@ -38,6 +39,7 @@
 
         <com.google.android.material.textfield.TextInputLayout
             android:id="@+id/xmpp_address_layout"
+            style="@style/Widget.Conversations.TextInputLayout.OutlinedBox"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:hint="@string/xmpp_address"
@@ -48,7 +50,7 @@
             <AutoCompleteTextView
                 android:id="@+id/jid"
                 style="@style/Widget.Conversations.EditText"
-                android:layout_width="fill_parent"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:imeOptions="actionDone|flagNoExtractUi"
                 android:inputType="textEmailAddress" />

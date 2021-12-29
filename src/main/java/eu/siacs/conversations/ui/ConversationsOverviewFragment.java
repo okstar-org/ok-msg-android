@@ -121,20 +121,20 @@ public class ConversationsOverviewFragment extends XmppFragment {
         }
     }
 
-	@Override
-	public void onDestroyView() {
-		Log.d(Config.LOGTAG,"ConversationsOverviewFragment.onDestroyView()");
-		super.onDestroyView();
-		this.binding = null;
-		this.conversationsAdapter = null;
-	}
+    @Override
+    public void onDestroyView() {
+        Log.d(Config.LOGTAG,"ConversationsOverviewFragment.onDestroyView()");
+        super.onDestroyView();
+        this.binding = null;
+        this.conversationsAdapter = null;
+    }
 
-	@Override
-	public void onDestroy() {
-		Log.d(Config.LOGTAG,"ConversationsOverviewFragment.onDestroy()");
-		super.onDestroy();
+    @Override
+    public void onDestroy() {
+        Log.d(Config.LOGTAG,"ConversationsOverviewFragment.onDestroy()");
+        super.onDestroy();
 
-	}
+    }
 
     @Override
     public void onPause() {
@@ -236,7 +236,7 @@ public class ConversationsOverviewFragment extends XmppFragment {
                 return true;
         }
         return super.onOptionsItemSelected(item);
-	}
+    }
 
     @Override
     public Animator onCreateAnimator(int transit, boolean enter, int nextAnim) {

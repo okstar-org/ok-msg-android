@@ -1,67 +1,63 @@
 package eu.siacs.conversations.ui;
 
-import android.annotation.TargetApi;
+import android.Manifest;
 import android.content.Context;
 import android.content.Intent;
+import android.content.pm.PackageManager;
 import android.location.Address;
 import android.location.Geocoder;
 import android.location.Location;
 import android.location.LocationListener;
-import android.location.LocationManager;
 import android.os.AsyncTask;
 import android.os.Build;
 import android.os.Bundle;
-import android.provider.Settings;
-import android.text.TextUtils;
-import android.webkit.WebView;
-import android.widget.Button;
+import android.text.Html;
+import android.view.View;
 
-import androidx.coordinatorlayout.widget.CoordinatorLayout;
+import androidx.annotation.NonNull;
+import androidx.appcompat.widget.Toolbar;
+import androidx.databinding.DataBindingUtil;
 
 import com.google.android.material.snackbar.Snackbar;
+import com.google.common.math.DoubleMath;
 
-import org.jetbrains.annotations.Nullable;
+import org.osmdroid.api.IGeoPoint;
+import org.osmdroid.util.GeoPoint;
 
 import java.lang.ref.WeakReference;
+import java.math.RoundingMode;
 import java.util.List;
 import java.util.Locale;
 
+import eu.siacs.conversations.Config;
 import eu.siacs.conversations.R;
-import eu.siacs.conversations.utils.LocationHelper;
+import eu.siacs.conversations.databinding.ActivityShareLocactionBinding;
+import eu.siacs.conversations.ui.util.LocationHelper;
+import eu.siacs.conversations.ui.widget.Marker;
+import eu.siacs.conversations.ui.widget.MyLocation;
+import eu.siacs.conversations.utils.LocationProvider;
 import eu.siacs.conversations.utils.ThemeHelper;
-import me.drakeet.support.toast.ToastCompat;
 
 public class ShareLocationActivity extends LocationActivity implements LocationListener {
 
-    LocationManager locationManager;
-    private Location mLastLocation;
-    private Button mCancelButton;
-    private Button mShareButton;
-    private String mLocationName;
     private Snackbar snackBar;
+    private ActivityShareLocactionBinding binding;
+    private boolean marker_fixed_to_loc = false;
+    private static final String KEY_FIXED_TO_LOC = "fixed_to_loc";
+    private Boolean noAskAgain = false;
 
-    private static String getAddress(Context context, Location location) {
-        double longitude = location.getLongitude();
-        double latitude = location.getLatitude();
-        String address = "";
-        if (latitude != 0 && longitude != 0) {
-            try {
-                Geocoder geoCoder = new Geocoder(context, Locale.getDefault());
-                List<Address> addresses = geoCoder.getFromLocation(latitude, longitude, 1);
-                if (addresses != null && addresses.size() > 0) {
-                    Address Address = addresses.get(0);
-                    StringBuilder strAddress = new StringBuilder("");
+    @Override
+    protected void onSaveInstanceState(@NonNull final Bundle outState) {
+        super.onSaveInstanceState(outState);
+        outState.putBoolean(KEY_FIXED_TO_LOC, marker_fixed_to_loc);
+    }
 
-                    if (Address.getAddressLine(0).length() > 0) {
-                        strAddress.append(Address.getAddressLine(0));
-                    }
-                    address = strAddress.toString().replace(", ", "<br>");
-                }
-            } catch (Exception e) {
-                e.printStackTrace();
-            }
+    @Override
+    protected void onRestoreInstanceState(@NonNull final Bundle savedInstanceState) {
+        super.onRestoreInstanceState(savedInstanceState);
+        if (savedInstanceState.containsKey(KEY_FIXED_TO_LOC)) {
+            this.marker_fixed_to_loc = savedInstanceState.getBoolean(KEY_FIXED_TO_LOC);
         }
-        return address;
     }
 
     @Override
@@ -77,62 +73,99 @@ public class ShareLocationActivity extends LocationActivity implements LocationL
     @Override
     protected void onCreate(final Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_share_locaction);
-        setTitle(getString(R.string.share_location));
-        setSupportActionBar(findViewById(R.id.toolbar));
+
+        this.binding = DataBindingUtil.setContentView(this, R.layout.activity_share_locaction);
+        setSupportActionBar((Toolbar) binding.toolbar);
         configureActionBar(getSupportActionBar());
-        locationManager = (LocationManager) this.getSystemService(Context.LOCATION_SERVICE);
+        setupMapView(binding.map, LocationProvider.getGeoPoint(this));
 
-        mLocationName = getString(R.string.me);
-
-        mCancelButton = findViewById(R.id.cancel_button);
-        mCancelButton.setOnClickListener(view -> {
+        this.binding.cancelButton.setOnClickListener(view -> {
             setResult(RESULT_CANCELED);
             finish();
         });
-        mShareButton = findViewById(R.id.share_button);
-        mShareButton.setOnClickListener(view -> {
-            if (mLastLocation != null) {
-                Intent result = new Intent();
-                result.putExtra("latitude", mLastLocation.getLatitude());
-                result.putExtra("longitude", mLastLocation.getLongitude());
-                result.putExtra("altitude", mLastLocation.getAltitude());
-                result.putExtra("accuracy", (int) mLastLocation.getAccuracy());
-                setResult(RESULT_OK, result);
-                finish();
+
+        this.snackBar = Snackbar.make(this.binding.snackbarCoordinator, R.string.location_sharing_disabled, Snackbar.LENGTH_INDEFINITE);
+        this.snackBar.setAction(R.string.enable, view -> {
+            if (isLocationEnabledAndAllowed()) {
+                updateUi();
+            } else if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M && !hasLocationPermissions()) {
+                requestPermissions(REQUEST_CODE_SNACKBAR_PRESSED);
+            } else if (!isLocationEnabled()) {
+                startActivity(new Intent(android.provider.Settings.ACTION_LOCATION_SOURCE_SETTINGS));
             }
         });
+        ThemeHelper.fix(this.snackBar);
 
-        final CoordinatorLayout snackBarCoordinator = findViewById(R.id.snackbarCoordinator);
-        if (snackBarCoordinator != null) {
-            this.snackBar = Snackbar.make(snackBarCoordinator, R.string.location_sharing_disabled, Snackbar.LENGTH_INDEFINITE);
-            snackBar.setAction(R.string.enable, view -> {
-                showLocation(null, "");
-                if (isLocationEnabled()) {
-                    if (hasLocationPermission(LocationActivity.REQUEST_LOCATION_PERMISSION)) {
-                        requestLocationUpdates();
-                    }
-                } else {
-                    setShareButtonEnabled(false);
-                    if (hasLocationPermission(LocationActivity.REQUEST_LOCATION_PERMISSION)) {
-                        requestLocationUpdates();
-                    }
+        this.binding.shareButton.setOnClickListener(this::shareLocation);
+
+        this.marker_fixed_to_loc = isLocationEnabledAndAllowed();
+
+        this.binding.fab.setOnClickListener(view -> {
+            if (!marker_fixed_to_loc) {
+                if (!isLocationEnabled()) {
                     startActivity(new Intent(android.provider.Settings.ACTION_LOCATION_SOURCE_SETTINGS));
-                    overridePendingTransition(R.animator.fade_in, R.animator.fade_out);
+                } else if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+                    requestPermissions(REQUEST_CODE_FAB_PRESSED);
                 }
-            });
-            ThemeHelper.fix(this.snackBar);
+            }
+            toggleFixedLocation();
+        });
+    }
+
+    private void shareLocation(final View view) {
+        final Intent result = new Intent();
+        if (marker_fixed_to_loc && myLoc != null) {
+            result.putExtra("latitude", myLoc.getLatitude());
+            result.putExtra("longitude", myLoc.getLongitude());
+            result.putExtra("altitude", myLoc.getAltitude());
+            result.putExtra("accuracy", DoubleMath.roundToInt(myLoc.getAccuracy(), RoundingMode.HALF_UP));
+        } else {
+            final IGeoPoint markerPoint = this.binding.map.getMapCenter();
+            result.putExtra("latitude", markerPoint.getLatitude());
+            result.putExtra("longitude", markerPoint.getLongitude());
+        }
+        setResult(RESULT_OK, result);
+        finish();
+    }
+
+    @Override
+    public void onRequestPermissionsResult(final int requestCode,
+                                           @NonNull final String[] permissions,
+                                           @NonNull final int[] grantResults) {
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults);
+
+        if (grantResults.length > 0 &&
+                grantResults[0] != PackageManager.PERMISSION_GRANTED &&
+                Build.VERSION.SDK_INT >= 23 &&
+                permissions.length > 0 &&
+                (
+                        Manifest.permission.LOCATION_HARDWARE.equals(permissions[0]) ||
+                                Manifest.permission.ACCESS_FINE_LOCATION.equals(permissions[0]) ||
+                                Manifest.permission.ACCESS_COARSE_LOCATION.equals(permissions[0])
+                ) &&
+                !shouldShowRequestPermissionRationale(permissions[0])) {
+            noAskAgain = true;
+        }
+
+        if (!noAskAgain && requestCode == REQUEST_CODE_SNACKBAR_PRESSED && !isLocationEnabled() && hasLocationPermissions()) {
+            startActivity(new Intent(android.provider.Settings.ACTION_LOCATION_SOURCE_SETTINGS));
+        }
+        updateUi();
+    }
+
+    @Override
+    protected void gotoLoc(final boolean setZoomLevel) {
+        if (this.myLoc != null && mapController != null) {
+            if (setZoomLevel) {
+                mapController.setZoom(Config.Map.FINAL_ZOOM_LEVEL);
+            }
+            mapController.animateTo(new GeoPoint(this.myLoc));
         }
     }
 
     @Override
-    protected void gotoLoc() throws UnsupportedOperationException {
-        new getAddressAsync(this).execute();
-    }
-
-    @Override
-    protected void setmLastLocation(Location location) {
-        this.mLastLocation = location;
+    protected void setMyLoc(final Location location) {
+        this.myLoc = location;
     }
 
     @Override
@@ -141,23 +174,59 @@ public class ShareLocationActivity extends LocationActivity implements LocationL
     }
 
     @Override
-    public void onResume() {
-        super.onResume();
-        if (isLocationEnabled()) {
-            this.snackBar.dismiss();
-            showLocation(null, "");
+    protected void updateLocationMarkers() {
+        super.updateLocationMarkers();
+        if (this.myLoc != null) {
+            this.binding.map.getOverlays().add(new MyLocation(this, null, this.myLoc));
+            if (this.marker_fixed_to_loc) {
+                this.binding.map.getOverlays().add(new Marker(marker_icon, new GeoPoint(this.myLoc)));
+                new getAddressAsync(this, this.myLoc).execute();
+            } else {
+                this.binding.map.getOverlays().add(new Marker(marker_icon));
+                new getAddressAsync(this, getMarkerPosition()).execute();
+            }
         } else {
-            this.snackBar.show();
+            this.binding.map.getOverlays().add(new Marker(marker_icon));
+            hideAddress();
         }
-        setShareButtonEnabled(false);
+    }
+
+    private Location getMarkerPosition() {
+        final IGeoPoint markerPoint = this.binding.map.getMapCenter();
+        final Location location = new Location("");
+        location.setLatitude(markerPoint.getLatitude());
+        location.setLongitude(markerPoint.getLongitude());
+        return location;
+    }
+
+    private void showAddress(final Location myLoc) {
+        this.binding.address.setText(Html.fromHtml(getAddress(this, myLoc)));
+        if (Html.fromHtml(getAddress(this, myLoc)).length() > 0) {
+            this.binding.address.setVisibility(View.VISIBLE);
+        } else {
+            hideAddress();
+        }
+    }
+
+    private void hideAddress() {
+        this.binding.address.setVisibility(View.GONE);
     }
 
     @Override
     public void onLocationChanged(final Location location) {
-        if (LocationHelper.isBetterLocation(location, this.mLastLocation)) {
-            setShareButtonEnabled(true);
-            this.mLastLocation = location;
-            gotoLoc();
+        if (this.myLoc == null) {
+            this.marker_fixed_to_loc = true;
+        }
+        updateUi();
+        if (LocationHelper.isBetterLocation(location, this.myLoc)) {
+            final Location oldLoc = this.myLoc;
+            this.myLoc = location;
+
+            // Don't jump back to the users location if they're not moving (more or less).
+            if (oldLoc == null || (this.marker_fixed_to_loc && this.myLoc.distanceTo(oldLoc) > 1)) {
+                gotoLoc();
+            }
+            updateLocationMarkers();
         }
     }
 
@@ -176,91 +245,92 @@ public class ShareLocationActivity extends LocationActivity implements LocationL
 
     }
 
-    @TargetApi(Build.VERSION_CODES.KITKAT)
-    private boolean isLocationEnabledKitkat() {
-        try {
-            final int locationMode = Settings.Secure.getInt(getContentResolver(), Settings.Secure.LOCATION_MODE);
-            return locationMode != Settings.Secure.LOCATION_MODE_OFF;
-        } catch (final Settings.SettingNotFoundException e) {
-            return false;
+    private boolean isLocationEnabledAndAllowed() {
+        return this.hasLocationFeature && (Build.VERSION.SDK_INT < Build.VERSION_CODES.M || this.hasLocationPermissions()) && this.isLocationEnabled();
+    }
+
+    private void toggleFixedLocation() {
+        this.marker_fixed_to_loc = isLocationEnabledAndAllowed() && !this.marker_fixed_to_loc;
+        if (this.marker_fixed_to_loc) {
+            gotoLoc(false);
         }
+        updateLocationMarkers();
+        updateUi();
     }
 
-    @SuppressWarnings("deprecation")
-    private boolean isLocationEnabledLegacy() {
-        final String locationProviders = Settings.Secure.getString(getContentResolver(),
-                Settings.Secure.LOCATION_PROVIDERS_ALLOWED);
-        return !TextUtils.isEmpty(locationProviders);
-    }
-
-    private boolean isLocationEnabled() {
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
-            return isLocationEnabledKitkat();
+    @Override
+    protected void updateUi() {
+        if (!hasLocationFeature || noAskAgain || isLocationEnabledAndAllowed()) {
+            this.snackBar.dismiss();
         } else {
-            return isLocationEnabledLegacy();
+            this.snackBar.show();
         }
-    }
 
-    private void setShareButtonEnabled(final boolean enabled) {
-        if (enabled) {
-            this.mShareButton.setEnabled(true);
-            this.mShareButton.setText(R.string.share);
+        if (isLocationEnabledAndAllowed()) {
+            this.binding.fab.setVisibility(View.VISIBLE);
+            runOnUiThread(() -> {
+                this.binding.fab.setImageResource(marker_fixed_to_loc ? R.drawable.ic_gps_fixed_white_24dp :
+                        R.drawable.ic_gps_not_fixed_white_24dp);
+                this.binding.fab.setContentDescription(getResources().getString(
+                        marker_fixed_to_loc ? R.string.action_unfix_from_location : R.string.action_fix_to_location
+                ));
+                this.binding.fab.invalidate();
+            });
         } else {
-            this.mShareButton.setEnabled(false);
-            this.mShareButton.setText(R.string.locating);
+            this.binding.fab.setVisibility(View.GONE);
         }
     }
 
-    private void showLocation(@Nullable Location location, String address) {
-        try {
-            if (location == null && TextUtils.isEmpty(address)) { // no location and no address available
-                final WebView webView = findViewById(R.id.webView);
-                webView.getSettings().setJavaScriptEnabled(true);
-                webView.loadUrl("file:///android_asset/map.html");
-            } else if (location != null && TextUtils.isEmpty(address)) { // location but no address available
-                String LocationName = "<b>" + mLocationName + "</b>";
-                final WebView webView = findViewById(R.id.webView);
-                webView.getSettings().setJavaScriptEnabled(true);
-                webView.loadUrl("javascript:toCoordinates(" + mLastLocation.getLatitude() + "," + mLastLocation.getLongitude() + "," + "'" + LocationName + "'" + ");");
-            } else if (location != null && !TextUtils.isEmpty(address)) { // location and address available
-                String LocationName = "<b>" + mLocationName + "</b><br>" + address;
-                final WebView webView = findViewById(R.id.webView);
-                webView.getSettings().setJavaScriptEnabled(true);
-                webView.loadUrl("javascript:toCoordinates(" + mLastLocation.getLatitude() + "," + mLastLocation.getLongitude() + "," + "'" + LocationName + "'" + ");");
+    private static String getAddress(final Context context, final Location location) {
+        final double longitude = location.getLongitude();
+        final double latitude = location.getLatitude();
+        String address = "";
+        if (latitude != 0 && longitude != 0) {
+            try {
+                final Geocoder geoCoder = new Geocoder(context, Locale.getDefault());
+                final List<Address> addresses = geoCoder.getFromLocation(latitude, longitude, 1);
+                if (addresses != null && addresses.size() > 0) {
+                    final Address Address = addresses.get(0);
+                    StringBuilder strAddress = new StringBuilder("");
+
+                    if (Address.getAddressLine(0).length() > 0) {
+                        strAddress.append(Address.getAddressLine(0));
+                    }
+                    address = strAddress.toString().replace(", ", "<br>");
+                }
+            } catch (Exception e) {
+                e.printStackTrace();
             }
-        } catch (Exception e) {
-            e.printStackTrace();
-            ToastCompat.makeText(this, R.string.error, ToastCompat.LENGTH_LONG);
         }
+        return address;
     }
 
     private class getAddressAsync extends AsyncTask<Void, Void, Void> {
         String address = null;
+        Location location;
 
         private WeakReference<ShareLocationActivity> activityReference;
 
-        getAddressAsync(ShareLocationActivity context) {
+        getAddressAsync(final ShareLocationActivity context, final Location location) {
             activityReference = new WeakReference<>(context);
+            this.location = location;
         }
 
         @Override
         protected void onPreExecute() {
             super.onPreExecute();
-            showLocation(mLastLocation, "");
         }
 
         @Override
         protected Void doInBackground(Void... params) {
-            if (mLastLocation != null) {
-                address = getAddress(ShareLocationActivity.this, mLastLocation);
-            }
+            address = getAddress(ShareLocationActivity.this, this.location);
             return null;
         }
 
         @Override
         protected void onPostExecute(Void result) {
             super.onPostExecute(result);
-            showLocation(mLastLocation, address);
+            showAddress(this.location);
         }
     }
 }

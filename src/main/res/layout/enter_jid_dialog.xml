@@ -23,12 +23,13 @@
 
         <Spinner
             android:id="@+id/account"
-            android:layout_width="fill_parent"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:visibility="gone" />
 
         <com.google.android.material.textfield.TextInputLayout
             android:id="@+id/jid_layout"
+            style="@style/Widget.Conversations.TextInputLayout.OutlinedBox"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:hint="@string/account_settings_jabber_id"
@@ -38,10 +39,11 @@
             <AutoCompleteTextView
                 android:id="@+id/jid"
                 style="@style/Widget.Conversations.EditText"
-                android:layout_width="fill_parent"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:imeOptions="actionDone|flagNoExtractUi"
                 android:inputType="textEmailAddress"
+                android:padding="16dp"
                 android:textColor="?attr/text_Color_Main" />
         </com.google.android.material.textfield.TextInputLayout>
 

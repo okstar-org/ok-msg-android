@@ -23,7 +23,8 @@
             android:layout_gravity="end|bottom"
             android:layout_margin="16dp"
             android:src="@drawable/ic_chat_white_24dp"
-            app:backgroundTint="?attr/colorAccent" />
+            app:backgroundTint="?attr/colorAccent"
+            app:tint="@color/realwhite" />
 
     </androidx.coordinatorlayout.widget.CoordinatorLayout>
 </layout>

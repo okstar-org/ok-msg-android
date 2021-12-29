@@ -97,10 +97,10 @@ public class ShareUtil {
             url = message.getBody();
         } else if (message.hasFileOnRemoteHost()) {
             resId = R.string.file_url;
-			url = message.getFileParams().url;
+            url = message.getFileParams().url;
         } else {
-			final Message.FileParams fileParams = message.getFileParams();
-			url = (fileParams != null && fileParams.url != null) ? fileParams.url : message.getBody().trim();
+            final Message.FileParams fileParams = message.getFileParams();
+            url = (fileParams != null && fileParams.url != null) ? fileParams.url : message.getBody().trim();
             resId = R.string.file_url;
         }
         if (activity.copyTextToClipboard(url, resId)) {

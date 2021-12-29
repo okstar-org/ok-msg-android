@@ -1,6 +1,7 @@
 package eu.siacs.conversations.services;
 
-import android.content.Context;
+import static eu.siacs.conversations.entities.Transferable.VALID_CRYPTO_EXTENSIONS;
+
 import android.os.PowerManager;
 import android.os.SystemClock;
 import android.util.Log;
@@ -34,8 +35,6 @@ import okhttp3.RequestBody;
 import okio.BufferedSink;
 import okio.Okio;
 import okio.Source;
-
-import static eu.siacs.conversations.entities.Transferable.VALID_CRYPTO_EXTENSIONS;
 
 public class AbstractConnectionManager {
     private static final int UI_REFRESH_THRESHOLD = Config.REFRESH_UI_INTERVAL;
@@ -119,9 +118,9 @@ public class AbstractConnectionManager {
     }
 
     public long getAutoAcceptFileSize() {
-        long defaultValue_wifi = this.getXmppConnectionService().getResources().getInteger(R.integer.auto_accept_filesize_wifi);
-        long defaultValue_mobile = this.getXmppConnectionService().getResources().getInteger(R.integer.auto_accept_filesize_mobile);
-        long defaultValue_roaming = this.getXmppConnectionService().getResources().getInteger(R.integer.auto_accept_filesize_roaming);
+        final long defaultValue_wifi = this.getXmppConnectionService().getResources().getInteger(R.integer.auto_accept_filesize_wifi);
+        final long defaultValue_mobile = this.getXmppConnectionService().getResources().getInteger(R.integer.auto_accept_filesize_mobile);
+        final long defaultValue_roaming = this.getXmppConnectionService().getResources().getInteger(R.integer.auto_accept_filesize_roaming);
 
         String config = "0";
         if (mXmppConnectionService.isWIFI()) {
@@ -135,7 +134,7 @@ public class AbstractConnectionManager {
                     "auto_accept_file_size_roaming", String.valueOf(defaultValue_roaming));
         }
         try {
-            return Long.parseLong(config);
+            return Long.parseLong(config) <= 0 ? -1 : Long.parseLong(config);
         } catch (NumberFormatException e) {
             return defaultValue_mobile;
         }
@@ -153,7 +152,6 @@ public class AbstractConnectionManager {
             }
         }
     }
-
 
     public PowerManager.WakeLock createWakeLock(final String name) {
         final PowerManager powerManager = ContextCompat.getSystemService(mXmppConnectionService, PowerManager.class);

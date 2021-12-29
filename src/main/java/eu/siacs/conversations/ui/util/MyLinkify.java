@@ -32,18 +32,22 @@ package eu.siacs.conversations.ui.util;
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.net.Uri;
-import android.os.Build;
 import android.preference.PreferenceManager;
 import android.text.Editable;
 import android.text.SpannableString;
 import android.text.SpannableStringBuilder;
 import android.text.TextUtils;
 import android.text.util.Linkify;
+import android.util.Base64;
 import android.util.Log;
 import android.webkit.URLUtil;
 
+import java.net.URLDecoder;
+import java.nio.charset.StandardCharsets;
+import java.util.Arrays;
+import java.util.Collections;
+import java.util.List;
 import java.util.Locale;
-import java.util.Objects;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -53,12 +57,32 @@ import eu.siacs.conversations.ui.SettingsActivity;
 import eu.siacs.conversations.ui.text.FixedURLSpan;
 import eu.siacs.conversations.utils.GeoHelper;
 import eu.siacs.conversations.utils.Patterns;
-import eu.siacs.conversations.utils.TrackingHelper;
 import eu.siacs.conversations.utils.XmppUri;
 
 public class MyLinkify {
 
-    private static final Pattern youtubePattern = Pattern.compile("(www\\.|m\\.)?(youtube\\.com|youtu\\.be|youtube-nocookie\\.com)\\/(((?!(\"|'|<)).)*)");
+    private final static Pattern youtubePattern = Pattern.compile("(www\\.|m\\.)?(youtube\\.com|youtu\\.be|youtube-nocookie\\.com)/(((?!([\"'<])).)*)");
+    private final static String youtubeURLPattern = "(?:youtube(?:-nocookie)?\\.com\\/(?:[^\\/\\n\\s]+\\/\\S+\\/|(?:v|e(?:mbed)?)\\/|\\S*?[?&]v=)|youtu\\.be\\/)([a-zA-Z0-9_-]{11})";
+
+    public static boolean isYoutubeUrl(String url) {
+        return !url.isEmpty() && url.matches("(?i:http|https):\\/\\/" + youtubePattern);
+    }
+
+    public static String getYoutubeVideoId(String url) {
+        if (url == null || url.trim().length() <= 0) {
+            return null;
+        }
+        final Pattern pattern = Pattern.compile(youtubeURLPattern, Pattern.CASE_INSENSITIVE);
+        final Matcher matcher = pattern.matcher(url);
+        if (matcher.find()) {
+            return matcher.group(1);
+        }
+        return null;
+    }
+
+    public static String getYoutubeImageUrl(String url) {
+        return "https://img.youtube.com/vi/" + getYoutubeVideoId(url) + "/0.jpg";
+    }
 
     public static String replaceYoutube(Context context, String content) {
         return replaceYoutube(context, new SpannableStringBuilder(content)).toString();
@@ -69,35 +93,64 @@ public class MyLinkify {
         if (useInvidious(context)) {
             while (matcher.find()) {
                 final String youtubeId = matcher.group(3);
-                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
-                    if (matcher.group(2) != null && Objects.equals(matcher.group(2), "youtu.be")) {
-                        content = new SpannableStringBuilder(content.toString().replaceAll("(?i)https://" + Pattern.quote(matcher.group()), Matcher.quoteReplacement("https://" + invidiousHost(context) + "/watch?v=" + youtubeId + "&local=true")));
-                        content = new SpannableStringBuilder(content.toString().replaceAll(">" + Pattern.quote(matcher.group()), Matcher.quoteReplacement(">" + invidiousHost(context) + "/watch?v=" + youtubeId + "&local=true")));
-                    } else {
-                        content = new SpannableStringBuilder(content.toString().replaceAll("(?i)https://" + Pattern.quote(matcher.group()), Matcher.quoteReplacement("https://" + invidiousHost(context) + "/" + youtubeId + "&local=true")));
-                        content = new SpannableStringBuilder(content.toString().replaceAll(">" + Pattern.quote(matcher.group()), Matcher.quoteReplacement(">" + invidiousHost(context) + "/" + youtubeId + "&local=true")));
-                    }
+                if (matcher.group(2) != null && matcher.group(2).equals("youtu.be")) {
+                    content = new SpannableStringBuilder(content.toString().replaceAll("https://" + Pattern.quote(matcher.group()), Matcher.quoteReplacement("https://" + invidiousHost(context) + "/watch?v=" + youtubeId + "&local=true")));
                 } else {
-                    if (matcher.group(2) != null && matcher.group(2) == "youtu.be") {
-                        content = new SpannableStringBuilder(content.toString().replaceAll("(?i)https://" + Pattern.quote(matcher.group()), Matcher.quoteReplacement("https://" + invidiousHost(context) + "/watch?v=" + youtubeId + "&local=true")));
-                        content = new SpannableStringBuilder(content.toString().replaceAll(">" + Pattern.quote(matcher.group()), Matcher.quoteReplacement(">" + invidiousHost(context) + "/watch?v=" + youtubeId + "&local=true")));
-                    } else {
-                        content = new SpannableStringBuilder(content.toString().replaceAll("(?i)https://" + Pattern.quote(matcher.group()), Matcher.quoteReplacement("https://" + invidiousHost(context) + "/" + youtubeId + "&local=true")));
-                        content = new SpannableStringBuilder(content.toString().replaceAll(">" + Pattern.quote(matcher.group()), Matcher.quoteReplacement(">" + invidiousHost(context) + "/" + youtubeId + "&local=true")));
-                    }
+                    content = new SpannableStringBuilder(content.toString().replaceAll("https://" + Pattern.quote(matcher.group()), Matcher.quoteReplacement("https://" + invidiousHost(context) + "/" + youtubeId + "&local=true")));
                 }
             }
         }
         return content;
     }
 
-    // https://github.com/M66B/FairEmail/blob/master/app/src/main/java/eu/faircode/email/AdapterMessage.java
+    // https://github.com/M66B/FairEmail/blob/master/app/src/main/java/eu/faircode/email/UriHelper.java
+    // https://github.com/newhouse/url-tracking-stripper
+    private static final List<String> PARANOID_QUERY = Collections.unmodifiableList(Arrays.asList(
+            // https://en.wikipedia.org/wiki/UTM_parameters
+            "awt_a", // AWeber
+            "awt_l", // AWeber
+            "awt_m", // AWeber
+
+            "icid", // Adobe
+            "gclid", // Google
+            "gclsrc", // Google ads
+            "dclid", // DoubleClick (Google)
+            "fbclid", // Facebook
+            "igshid", // Instagram
+
+            "mc_cid", // MailChimp
+            "mc_eid", // MailChimp
+
+            "zanpid", // Zanox (Awin)
+
+            "kclickid" // https://support.freespee.com/hc/en-us/articles/202577831-Kenshoo-integration
+    ));
+
+    // https://github.com/snarfed/granary/blob/master/granary/facebook.py#L1789
+
+    private static final List<String> FACEBOOK_WHITELIST_PATH = Collections.unmodifiableList(Arrays.asList(
+            "/nd/", "/n/", "/story.php"
+    ));
+
+    private static final List<String> FACEBOOK_WHITELIST_QUERY = Collections.unmodifiableList(Arrays.asList(
+            "story_fbid", "fbid", "id", "comment_id"
+    ));
+
     public static SpannableString removeTrackingParameter(Uri uri) {
+        if (uri.isOpaque())
+            return new SpannableString(uri.toString());
+
         boolean changed = false;
         Uri url;
         Uri.Builder builder;
         if (uri.getHost() != null &&
                 uri.getHost().endsWith("safelinks.protection.outlook.com") &&
+                !TextUtils.isEmpty(uri.getQueryParameter("url"))) {
+            changed = true;
+            url = Uri.parse(uri.getQueryParameter("url"));
+        } else if ("https".equals(uri.getScheme()) &&
+                "smex-ctp.trendmicro.com".equals(uri.getHost()) &&
+                "/wis/clicktime/v1/query".equals(uri.getPath()) &&
                 !TextUtils.isEmpty(uri.getQueryParameter("url"))) {
             changed = true;
             url = Uri.parse(uri.getQueryParameter("url"));
@@ -121,26 +174,53 @@ public class MyLinkify {
             }
             changed = (result != null);
             url = (result == null ? uri : result);
-        } else {
+        } else if (uri.getQueryParameterNames().size() == 1) {
+            // Sophos Email Appliance
+            Uri result = null;
+            String key = uri.getQueryParameterNames().iterator().next();
+            if (TextUtils.isEmpty(uri.getQueryParameter(key)))
+                try {
+                    String data = new String(Base64.decode(key, Base64.DEFAULT));
+                    int v = data.indexOf("ver=");
+                    int u = data.indexOf("&&url=");
+                    if (v == 0 && u > 0)
+                        result = Uri.parse(URLDecoder.decode(data.substring(u + 6), StandardCharsets.UTF_8.name()));
+                } catch (Throwable ex) {
+                    ex.printStackTrace();
+                }
+            changed = (result != null);
+            url = (result == null ? uri : result);
+        } else
             url = uri;
-        }
         if (url.isOpaque()) {
             return new SpannableString(uri.toString());
-            //return uri;
         }
         builder = url.buildUpon();
         builder.clearQuery();
-        for (String key : url.getQueryParameterNames())
+        String host = uri.getHost();
+        String path = uri.getPath();
+        if (host != null)
+            host = host.toLowerCase(Locale.ROOT);
+        if (path != null)
+            path = path.toLowerCase(Locale.ROOT);
+        boolean first = "www.facebook.com".equals(host);
+        for (String key : url.getQueryParameterNames()) {
             // https://en.wikipedia.org/wiki/UTM_parameters
             // https://docs.oracle.com/en/cloud/saas/marketing/eloqua-user/Help/EloquaAsynchronousTrackingScripts/EloquaTrackingParameters.htm
-            if (key.toLowerCase(Locale.ROOT).startsWith("utm_") ||
-                    key.toLowerCase(Locale.ROOT).startsWith("elq") ||
-                    TrackingHelper.TRACKING_PARAMETER.contains(key.toLowerCase(Locale.ROOT)) ||
-                    ("snr".equals(key) && "store.steampowered.com".equals(uri.getHost())))
+            String lkey = key.toLowerCase(Locale.ROOT);
+            if (PARANOID_QUERY.contains(lkey) ||
+                    lkey.startsWith("utm_") ||
+                    lkey.startsWith("elq") ||
+                    ((host != null && host.endsWith("facebook.com")) &&
+                            !first &&
+                            FACEBOOK_WHITELIST_PATH.contains(path) &&
+                            !FACEBOOK_WHITELIST_QUERY.contains(lkey)) ||
+                    ("store.steampowered.com".equals(host) &&
+                            "snr".equals(lkey)))
                 changed = true;
             else if (!TextUtils.isEmpty(key))
                 for (String value : url.getQueryParameters(key)) {
-                    Log.i(Config.LOGTAG, "Query " + key + "=" + value);
+                    Log.d(Config.LOGTAG, "Query " + key + "=" + value);
                     Uri suri = Uri.parse(value);
                     if ("http".equals(suri.getScheme()) || "https".equals(suri.getScheme())) {
                         Uri s = Uri.parse(removeTrackingParameter(suri).toString());
@@ -151,6 +231,8 @@ public class MyLinkify {
                     }
                     builder.appendQueryParameter(key, value);
                 }
+            first = false;
+        }
         return (changed ? new SpannableString(builder.build().toString()) : new SpannableString(uri.toString()));
     }
 
@@ -202,16 +284,13 @@ public class MyLinkify {
                 return false;
             }
         }
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
-            if (end < cs.length()) {
-                // Reject strings that were probably matched only because they contain a dot followed by
-                // by some known TLD (see also comment for WORD_BOUNDARY in Patterns.java)
-                if (isAlphabetic(cs.charAt(end - 1)) && isAlphabetic(cs.charAt(end))) {
-                    return false;
-                }
+        if (end < cs.length()) {
+            // Reject strings that were probably matched only because they contain a dot followed by
+            // by some known TLD (see also comment for WORD_BOUNDARY in Patterns.java)
+            if (isAlphabetic(cs.charAt(end - 1)) && isAlphabetic(cs.charAt(end))) {
+                return false;
             }
         }
-
         return true;
     };
 
@@ -221,20 +300,7 @@ public class MyLinkify {
     };
 
     private static boolean isAlphabetic(final int code) {
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
-            return Character.isAlphabetic(code);
-        }
-        switch (Character.getType(code)) {
-            case Character.UPPERCASE_LETTER:
-            case Character.LOWERCASE_LETTER:
-            case Character.TITLECASE_LETTER:
-            case Character.MODIFIER_LETTER:
-            case Character.OTHER_LETTER:
-            case Character.LETTER_NUMBER:
-                return true;
-            default:
-                return false;
-        }
+        return Character.isAlphabetic(code);
     }
 
     private static String invidiousHost(Context context) {
@@ -248,8 +314,7 @@ public class MyLinkify {
 
     private static boolean useInvidious(Context context) {
         SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(context);
-        boolean invidious = sharedPreferences.getBoolean(SettingsActivity.USE_INVIDIOUS, context.getResources().getBoolean(R.bool.use_invidious));
-        return invidious;
+        return sharedPreferences.getBoolean(SettingsActivity.USE_INVIDIOUS, context.getResources().getBoolean(R.bool.use_invidious));
     }
 
     public static void addLinks(Editable body, boolean includeGeo) {

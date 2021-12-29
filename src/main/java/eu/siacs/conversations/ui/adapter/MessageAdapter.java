@@ -1,11 +1,24 @@
 package eu.siacs.conversations.ui.adapter;
 
+import static android.view.ViewGroup.LayoutParams.WRAP_CONTENT;
+import static eu.siacs.conversations.entities.Message.DELETED_MESSAGE_BODY;
+import static eu.siacs.conversations.entities.Message.DELETED_MESSAGE_BODY_OLD;
+import static eu.siacs.conversations.persistance.FileBackend.formatTime;
+import static eu.siacs.conversations.persistance.FileBackend.safeLongToInt;
+import static eu.siacs.conversations.ui.SettingsActivity.PLAY_GIF_INSIDE;
+import static eu.siacs.conversations.ui.SettingsActivity.SHOW_LINKS_INSIDE;
+import static eu.siacs.conversations.ui.SettingsActivity.SHOW_MAPS_INSIDE;
+import static eu.siacs.conversations.ui.util.MyLinkify.removeTrackingParameter;
+import static eu.siacs.conversations.ui.util.MyLinkify.removeTrailingBracket;
+import static eu.siacs.conversations.ui.util.MyLinkify.replaceYoutube;
+
 import android.Manifest;
 import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
+import android.content.res.Resources;
 import android.graphics.Rect;
 import android.graphics.Typeface;
 import android.graphics.drawable.Drawable;
@@ -36,7 +49,6 @@ import android.widget.TextView;
 
 import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
-import androidx.core.graphics.ColorUtils;
 import androidx.core.graphics.drawable.DrawableCompat;
 
 import com.google.common.base.Strings;
@@ -71,6 +83,7 @@ import eu.siacs.conversations.ui.text.DividerSpan;
 import eu.siacs.conversations.ui.text.QuoteSpan;
 import eu.siacs.conversations.ui.util.AvatarWorkerTask;
 import eu.siacs.conversations.ui.util.MyLinkify;
+import eu.siacs.conversations.ui.util.QuoteHelper;
 import eu.siacs.conversations.ui.util.StyledAttributes;
 import eu.siacs.conversations.ui.util.ViewUtil;
 import eu.siacs.conversations.ui.widget.ClickableMovementMethod;
@@ -89,18 +102,6 @@ import eu.siacs.conversations.xmpp.Jid;
 import eu.siacs.conversations.xmpp.mam.MamReference;
 import me.drakeet.support.toast.ToastCompat;
 import pl.droidsonroids.gif.GifImageView;
-
-import static android.view.ViewGroup.LayoutParams.WRAP_CONTENT;
-import static eu.siacs.conversations.entities.Message.DELETED_MESSAGE_BODY;
-import static eu.siacs.conversations.entities.Message.DELETED_MESSAGE_BODY_OLD;
-import static eu.siacs.conversations.persistance.FileBackend.formatTime;
-import static eu.siacs.conversations.persistance.FileBackend.safeLongToInt;
-import static eu.siacs.conversations.ui.SettingsActivity.PLAY_GIF_INSIDE;
-import static eu.siacs.conversations.ui.SettingsActivity.SHOW_LINKS_INSIDE;
-import static eu.siacs.conversations.ui.SettingsActivity.SHOW_MAPS_INSIDE;
-import static eu.siacs.conversations.ui.util.MyLinkify.removeTrackingParameter;
-import static eu.siacs.conversations.ui.util.MyLinkify.removeTrailingBracket;
-import static eu.siacs.conversations.ui.util.MyLinkify.replaceYoutube;
 
 public class MessageAdapter extends ArrayAdapter<Message> {
 
@@ -209,12 +210,21 @@ public class MessageAdapter extends ArrayAdapter<Message> {
             viewHolder.indicatorReceived.setVisibility(View.GONE);
         }
         if (viewHolder.edit_indicator != null) {
-            if (message.edited()) {
+            if (message.edited() && message.getRetractId() == null) {
                 viewHolder.edit_indicator.setVisibility(View.VISIBLE);
                 viewHolder.edit_indicator.setImageResource(darkBackground ? R.drawable.ic_mode_edit_white_18dp : R.drawable.ic_mode_edit_black_18dp);
                 viewHolder.edit_indicator.setAlpha(darkBackground ? 0.7f : 0.57f);
             } else {
                 viewHolder.edit_indicator.setVisibility(View.GONE);
+            }
+        }
+        if (viewHolder.retract_indicator != null) {
+            if (message.getRetractId() != null) {
+                viewHolder.retract_indicator.setVisibility(View.VISIBLE);
+                viewHolder.retract_indicator.setImageResource(darkBackground ? R.drawable.ic_delete_white_18dp : R.drawable.ic_delete_black_18dp);
+                viewHolder.retract_indicator.setAlpha(darkBackground ? 0.7f : 0.57f);
+            } else {
+                viewHolder.retract_indicator.setVisibility(View.GONE);
             }
         }
         final Transferable transferable = message.getTransferable();
@@ -236,7 +246,7 @@ public class MessageAdapter extends ArrayAdapter<Message> {
             case Message.STATUS_UNSEND:
                 if (transferable != null) {
                     info = getContext().getString(R.string.sending);
-                    showProgress(viewHolder, transferable);
+                    showProgress(viewHolder, transferable, message);
                 } else {
                     info = getContext().getString(R.string.sending);
                 }
@@ -405,10 +415,10 @@ public class MessageAdapter extends ArrayAdapter<Message> {
         viewHolder.audioPlayer.setVisibility(View.GONE);
         showImages(false, viewHolder);
         viewHolder.richlinkview.setVisibility(View.GONE);
-        viewHolder.progressBar.setVisibility(View.GONE);
+        viewHolder.transfer.setVisibility(View.GONE);
         viewHolder.messageBody.setVisibility(View.VISIBLE);
         viewHolder.messageBody.setText(text);
-        showProgress(viewHolder, message.getTransferable());
+        showProgress(viewHolder, message.getTransferable(), message);
         if (darkBackground) {
             viewHolder.messageBody.setTextAppearance(getContext(), R.style.TextAppearance_Conversations_Body1_Secondary_OnDark);
         } else {
@@ -417,16 +427,35 @@ public class MessageAdapter extends ArrayAdapter<Message> {
         viewHolder.messageBody.setTextIsSelectable(false);
     }
 
-    private void showProgress(final ViewHolder viewHolder, final Transferable transferable) {
+    private void showProgress(final ViewHolder viewHolder, final Transferable transferable, final Message message) {
         if (transferable != null) {
-            if (transferable.getStatus() == Transferable.STATUS_DOWNLOADING || transferable.getStatus() == Transferable.STATUS_UPLOADING || transferable.getStatus() == Transferable.STATUS_WAITING) {
-                viewHolder.progressBar.setVisibility(View.VISIBLE);
+            if (message.fileIsTransferring()) {
+                viewHolder.transfer.setVisibility(View.VISIBLE);
                 viewHolder.progressBar.setProgress(transferable.getProgress());
+                Drawable icon = activity.getResources().getDrawable(R.drawable.ic_cancel_black_24dp);
+                Drawable drawable = DrawableCompat.wrap(icon);
+                DrawableCompat.setTint(drawable, StyledAttributes.getColor(getContext(), R.attr.colorAccent));
+                viewHolder.cancel_transfer.setImageDrawable(drawable);
+                viewHolder.cancel_transfer.setEnabled(true);
+                viewHolder.cancel_transfer.setOnClickListener(v -> {
+                    try {
+                        if (activity instanceof ConversationsActivity) {
+                            ConversationFragment conversationFragment = ConversationFragment.get(activity);
+                            if (conversationFragment != null) {
+                                activity.invalidateOptionsMenu();
+                                conversationFragment.cancelTransmission(message);
+                            }
+                        }
+                    } catch (Exception e) {
+                        viewHolder.cancel_transfer.setEnabled(false);
+                        e.printStackTrace();
+                    }
+                });
             } else {
-                viewHolder.progressBar.setVisibility(View.GONE);
+                viewHolder.transfer.setVisibility(View.GONE);
             }
         } else {
-            viewHolder.progressBar.setVisibility(View.GONE);
+            viewHolder.transfer.setVisibility(View.GONE);
         }
     }
 
@@ -435,7 +464,7 @@ public class MessageAdapter extends ArrayAdapter<Message> {
         viewHolder.audioPlayer.setVisibility(View.GONE);
         showImages(false, viewHolder);
         viewHolder.richlinkview.setVisibility(View.GONE);
-        viewHolder.progressBar.setVisibility(View.GONE);
+        viewHolder.transfer.setVisibility(View.GONE);
         viewHolder.messageBody.setVisibility(View.VISIBLE);
         if (darkBackground) {
             viewHolder.messageBody.setTextAppearance(getContext(), R.style.TextAppearance_Conversations_Body1_Emoji_OnDark);
@@ -486,7 +515,7 @@ public class MessageAdapter extends ArrayAdapter<Message> {
         });
         showImages(false, viewHolder);
         viewHolder.richlinkview.setVisibility(View.GONE);
-        viewHolder.progressBar.setVisibility(View.GONE);
+        viewHolder.transfer.setVisibility(View.GONE);
         viewHolder.messageBody.setVisibility(View.GONE);
     }
 
@@ -511,48 +540,51 @@ public class MessageAdapter extends ArrayAdapter<Message> {
      */
     private boolean handleTextQuotes(SpannableStringBuilder body, boolean darkBackground) {
         boolean startsWithQuote = false;
-        char previous = '\n';
-        int lineStart = -1;
-        int lineTextStart = -1;
-        int quoteStart = -1;
-        for (int i = 0; i <= body.length(); i++) {
-            char current = body.length() > i ? body.charAt(i) : '\n';
-            if (lineStart == -1) {
-                if (previous == '\n') {
-                    if ((current == '>' && UIHelper.isPositionFollowedByQuoteableCharacter(body, i))
-                            || current == '\u00bb' && !UIHelper.isPositionFollowedByQuote(body, i)) {
-                        // Line start with quote
-                        lineStart = i;
-                        if (quoteStart == -1) quoteStart = i;
-                        if (i == 0) startsWithQuote = true;
-                    } else if (quoteStart >= 0) {
-                        // Line start without quote, apply spans there
-                        applyQuoteSpan(body, quoteStart, i - 1, darkBackground);
-                        quoteStart = -1;
+        int quoteDepth = 1;
+        while (QuoteHelper.bodyContainsQuoteStart(body) && quoteDepth <= Config.QUOTE_MAX_DEPTH) {
+            char previous = '\n';
+            int lineStart = -1;
+            int lineTextStart = -1;
+            int quoteStart = -1;
+            for (int i = 0; i <= body.length(); i++) {
+                char current = body.length() > i ? body.charAt(i) : '\n';
+                if (lineStart == -1) {
+                    if (previous == '\n') {
+                        if (i < body.length() && QuoteHelper.isPositionQuoteStart(body, i)) {
+                            // Line start with quote
+                            lineStart = i;
+                            if (quoteStart == -1) quoteStart = i;
+                            if (i == 0) startsWithQuote = true;
+                        } else if (quoteStart >= 0) {
+                            // Line start without quote, apply spans there
+                            applyQuoteSpan(body, quoteStart, i - 1, darkBackground);
+                            quoteStart = -1;
+                        }
+                    }
+                } else {
+                    // Remove extra spaces between > and first character in the line
+                    // > character will be removed too
+                    if (current != ' ' && lineTextStart == -1) {
+                        lineTextStart = i;
+                    }
+                    if (current == '\n') {
+                        body.delete(lineStart, lineTextStart);
+                        i -= lineTextStart - lineStart;
+                        if (i == lineStart) {
+                            // Avoid empty lines because span over empty line can be hidden
+                            body.insert(i++, " ");
+                        }
+                        lineStart = -1;
+                        lineTextStart = -1;
                     }
                 }
-            } else {
-                // Remove extra spaces between > and first character in the line
-                // > character will be removed too
-                if (current != ' ' && lineTextStart == -1) {
-                    lineTextStart = i;
-                }
-                if (current == '\n') {
-                    body.delete(lineStart, lineTextStart);
-                    i -= lineTextStart - lineStart;
-                    if (i == lineStart) {
-                        // Avoid empty lines because span over empty line can be hidden
-                        body.insert(i++, " ");
-                    }
-                    lineStart = -1;
-                    lineTextStart = -1;
-                }
+                previous = current;
             }
-            previous = current;
-        }
-        if (quoteStart >= 0) {
-            // Apply spans to finishing open quote
-            applyQuoteSpan(body, quoteStart, body.length(), darkBackground);
+            if (quoteStart >= 0) {
+                // Apply spans to finishing open quote
+                applyQuoteSpan(body, quoteStart, body.length(), darkBackground);
+            }
+            quoteDepth++;
         }
         return startsWithQuote;
     }
@@ -561,7 +593,7 @@ public class MessageAdapter extends ArrayAdapter<Message> {
         viewHolder.download_button.setVisibility(View.GONE);
         showImages(false, viewHolder);
         viewHolder.richlinkview.setVisibility(View.GONE);
-        viewHolder.progressBar.setVisibility(View.GONE);
+        viewHolder.transfer.setVisibility(View.GONE);
         viewHolder.audioPlayer.setVisibility(View.GONE);
         viewHolder.messageBody.setVisibility(View.VISIBLE);
         if (darkBackground) {
@@ -587,7 +619,7 @@ public class MessageAdapter extends ArrayAdapter<Message> {
                     body = new SpannableStringBuilder(body, 0, Config.MAX_DISPLAY_MESSAGE_CHARS);
                     body.append("\u2026");
                 }
-            final Message.MergeSeparator[] mergeSeparators = body.getSpans(0, body.length(), Message.MergeSeparator.class);
+                final Message.MergeSeparator[] mergeSeparators = body.getSpans(0, body.length(), Message.MergeSeparator.class);
                 for (Message.MergeSeparator mergeSeparator : mergeSeparators) {
                     int start = body.getSpanStart(mergeSeparator);
                     int end = body.getSpanEnd(mergeSeparator);
@@ -636,7 +668,7 @@ public class MessageAdapter extends ArrayAdapter<Message> {
                         body.setSpan(new RelativeSizeSpan(1.5f), matcher.start(), matcher.end(), Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
                     }
                 }
-                StylingHelper.format(body, viewHolder.messageBody.getCurrentTextColor());
+                StylingHelper.format(body, viewHolder.messageBody.getCurrentTextColor(), true);
                 if (highlightedTerm != null) {
                     StylingHelper.highlight(activity, body, highlightedTerm, StylingHelper.isDarkText(viewHolder.messageBody));
                 }
@@ -659,7 +691,7 @@ public class MessageAdapter extends ArrayAdapter<Message> {
         viewHolder.audioPlayer.setVisibility(View.GONE);
         showImages(false, viewHolder);
         viewHolder.richlinkview.setVisibility(View.GONE);
-        viewHolder.progressBar.setVisibility(View.GONE);
+        viewHolder.transfer.setVisibility(View.GONE);
         viewHolder.download_button.setVisibility(View.VISIBLE);
         viewHolder.download_button.setText(text);
         final Drawable icon = activity.getResources().getDrawable(R.drawable.ic_download_grey600_48dp);
@@ -675,7 +707,7 @@ public class MessageAdapter extends ArrayAdapter<Message> {
         viewHolder.audioPlayer.setVisibility(View.GONE);
         showImages(false, viewHolder);
         viewHolder.richlinkview.setVisibility(View.GONE);
-        viewHolder.progressBar.setVisibility(View.GONE);
+        viewHolder.transfer.setVisibility(View.GONE);
         final String mimeType = message.getMimeType();
         if (mimeType != null && message.getMimeType().contains("vcard")) {
             try {
@@ -764,7 +796,7 @@ public class MessageAdapter extends ArrayAdapter<Message> {
         viewHolder.audioPlayer.setVisibility(View.GONE);
         showImages(false, viewHolder);
         viewHolder.download_button.setVisibility(View.GONE);
-        viewHolder.progressBar.setVisibility(View.GONE);
+        viewHolder.transfer.setVisibility(View.GONE);
         String url;
         if (message.isWebUri()) {
             url = removeTrackingParameter(Uri.parse(message.getBody().trim())).toString();
@@ -786,9 +818,10 @@ public class MessageAdapter extends ArrayAdapter<Message> {
             } else {
                 scaledH = (int) (100 / ((double) 100 / target));
             }
-            LinearLayout.LayoutParams layoutParams = new LinearLayout.LayoutParams(WRAP_CONTENT, scaledH);
+            LinearLayout.LayoutParams layoutParams = new LinearLayout.LayoutParams(WRAP_CONTENT, WRAP_CONTENT);
             layoutParams.setMargins(0, (int) (metrics.density * 4), 0, (int) (metrics.density * 4));
             viewHolder.richlinkview.setLayoutParams(layoutParams);
+            viewHolder.richlinkview.setMinimumHeight(scaledH);
             final String weburl;
             if (link.startsWith("http://") || link.startsWith("https://")) {
                 weburl = removeTrailingBracket(link);
@@ -817,7 +850,7 @@ public class MessageAdapter extends ArrayAdapter<Message> {
         final String url = GeoHelper.MapPreviewUri(message, activity);
         showImages(false, viewHolder);
         viewHolder.richlinkview.setVisibility(View.GONE);
-        viewHolder.progressBar.setVisibility(View.GONE);
+        viewHolder.transfer.setVisibility(View.GONE);
         if (mShowMapsInside) {
             showImages(mShowMapsInside, 0, false, viewHolder);
             final double target = activity.getResources().getDimension(R.dimen.image_preview_width);
@@ -858,10 +891,12 @@ public class MessageAdapter extends ArrayAdapter<Message> {
     }
 
     private void displayAudioMessage(ViewHolder viewHolder, Message message, boolean darkBackground) {
+        final Resources res = activity.getResources();
+        viewHolder.messageBody.setWidth((int) res.getDimension(R.dimen.audio_player_width));
         toggleWhisperInfo(viewHolder, message, showTitle(message), darkBackground);
         showImages(false, viewHolder);
         viewHolder.richlinkview.setVisibility(View.GONE);
-        viewHolder.progressBar.setVisibility(View.GONE);
+        viewHolder.transfer.setVisibility(View.GONE);
         viewHolder.download_button.setVisibility(View.GONE);
         final RelativeLayout audioPlayer = viewHolder.audioPlayer;
         audioPlayer.setVisibility(View.VISIBLE);
@@ -899,9 +934,11 @@ public class MessageAdapter extends ArrayAdapter<Message> {
         viewHolder.download_button.setVisibility(View.GONE);
         viewHolder.audioPlayer.setVisibility(View.GONE);
         viewHolder.richlinkview.setVisibility(View.GONE);
-        viewHolder.progressBar.setVisibility(View.GONE);
+        viewHolder.transfer.setVisibility(View.GONE);
         final DownloadableFile file = activity.xmppConnectionService.getFileBackend().getFile(message);
-        if (!file.exists()) {
+        if (!file.exists() && !message.isFileDeleted()) {
+            markFileDeleted(message);
+            displayInfoMessage(viewHolder, activity.getString(R.string.file_deleted), darkBackground, message);
             ToastCompat.makeText(activity, R.string.file_deleted, ToastCompat.LENGTH_SHORT).show();
             return;
         }
@@ -1092,6 +1129,7 @@ public class MessageAdapter extends ArrayAdapter<Message> {
                     viewHolder.resend_button = view.findViewById(R.id.resend_button);
                     viewHolder.indicator = view.findViewById(R.id.security_indicator);
                     viewHolder.edit_indicator = view.findViewById(R.id.edit_indicator);
+                    viewHolder.retract_indicator = view.findViewById(R.id.retract_indicator);
                     viewHolder.images = view.findViewById(R.id.images);
                     viewHolder.mediaduration = view.findViewById(R.id.media_duration);
                     viewHolder.image = view.findViewById(R.id.message_image);
@@ -1101,7 +1139,9 @@ public class MessageAdapter extends ArrayAdapter<Message> {
                     viewHolder.user = view.findViewById(R.id.message_user);
                     viewHolder.time = view.findViewById(R.id.message_time);
                     viewHolder.indicatorReceived = view.findViewById(R.id.indicator_received);
+                    viewHolder.transfer = view.findViewById(R.id.transfer);
                     viewHolder.progressBar = view.findViewById(R.id.progressBar);
+                    viewHolder.cancel_transfer = view.findViewById(R.id.cancel_transfer);
                     break;
                 case RECEIVED:
                     view = activity.getLayoutInflater().inflate(R.layout.message_received, parent, false);
@@ -1113,6 +1153,7 @@ public class MessageAdapter extends ArrayAdapter<Message> {
                     viewHolder.answer_button = view.findViewById(R.id.answer);
                     viewHolder.indicator = view.findViewById(R.id.security_indicator);
                     viewHolder.edit_indicator = view.findViewById(R.id.edit_indicator);
+                    viewHolder.retract_indicator = view.findViewById(R.id.retract_indicator);
                     viewHolder.images = view.findViewById(R.id.images);
                     viewHolder.mediaduration = view.findViewById(R.id.media_duration);
                     viewHolder.image = view.findViewById(R.id.message_image);
@@ -1123,7 +1164,9 @@ public class MessageAdapter extends ArrayAdapter<Message> {
                     viewHolder.time = view.findViewById(R.id.message_time);
                     viewHolder.indicatorReceived = view.findViewById(R.id.indicator_received);
                     viewHolder.encryption = view.findViewById(R.id.message_encryption);
+                    viewHolder.transfer = view.findViewById(R.id.transfer);
                     viewHolder.progressBar = view.findViewById(R.id.progressBar);
+                    viewHolder.cancel_transfer = view.findViewById(R.id.cancel_transfer);
                     break;
                 case STATUS:
                     view = activity.getLayoutInflater().inflate(R.layout.message_status, parent, false);
@@ -1153,9 +1196,6 @@ public class MessageAdapter extends ArrayAdapter<Message> {
                 viewHolder.status_message.setText(DateUtils.formatDateTime(activity, message.getTimeSent(), DateUtils.FORMAT_SHOW_DATE | DateUtils.FORMAT_SHOW_YEAR));
             }
             viewHolder.message_box.setBackgroundResource(darkBackground ? R.drawable.date_bubble_dark : R.drawable.date_bubble);
-            
-            int date_bubble_color = ColorUtils.setAlphaComponent(StyledAttributes.getColor(activity, R.attr.colorAccent), 80); //set alpha to date_bubble
-            activity.setBubbleColor(viewHolder.message_box, (date_bubble_color), -1); // themed color
             return view;
         } else if (type == RTP_SESSION) {
             final boolean isDarkTheme = activity.isDarkTheme();
@@ -1179,9 +1219,6 @@ public class MessageAdapter extends ArrayAdapter<Message> {
             viewHolder.indicatorReceived.setImageResource(RtpSessionStatus.getDrawable(received, rtpSessionStatus.successful, isDarkTheme));
             viewHolder.indicatorReceived.setAlpha(isDarkTheme ? 0.7f : 0.57f);
             viewHolder.message_box.setBackgroundResource(darkBackground ? R.drawable.date_bubble_dark : R.drawable.date_bubble);
-
-            int date_bubble_color = ColorUtils.setAlphaComponent(StyledAttributes.getColor(activity, R.attr.colorAccent), 80); //set alpha to date bubble
-            activity.setBubbleColor(viewHolder.message_box, (date_bubble_color), -1); //themed color
             return view;
         } else if (type == STATUS) {
             if ("LOAD_MORE".equals(message.getBody())) {
@@ -1240,6 +1277,10 @@ public class MessageAdapter extends ArrayAdapter<Message> {
             } else if (transferable != null && transferable.getStatus() == Transferable.STATUS_OFFER_CHECK_FILESIZE) {
                 displayDownloadableMessage(viewHolder, message, activity.getString(R.string.check_x_filesize, UIHelper.getFileDescriptionString(activity, message)), darkBackground);
             } else {
+                if (!activity.xmppConnectionService.getFileBackend().getFile(message).exists() && !message.isFileDeleted()) {
+                    markFileDeleted(message);
+                    displayInfoMessage(viewHolder, activity.getString(R.string.file_deleted), darkBackground, message);
+                }
                 if (checkFileExistence(message, view, viewHolder)) {
                     markFileExisting(message);
                 } else {
@@ -1282,12 +1323,12 @@ public class MessageAdapter extends ArrayAdapter<Message> {
             } else if (message.treatAsDownloadable()) {
                 try {
                     final URI uri = new URI(message.getBody());
-                        displayDownloadableMessage(viewHolder,
-                                message,
-                                activity.getString(R.string.check_x_filesize_on_host,
-                                        UIHelper.getFileDescriptionString(activity, message),
-                                        uri.getHost()),
-                                darkBackground);
+                    displayDownloadableMessage(viewHolder,
+                            message,
+                            activity.getString(R.string.check_x_filesize_on_host,
+                                    UIHelper.getFileDescriptionString(activity, message),
+                                    uri.getHost()),
+                            darkBackground);
                 } catch (Exception e) {
                     displayDownloadableMessage(viewHolder,
                             message,
@@ -1348,10 +1389,21 @@ public class MessageAdapter extends ArrayAdapter<Message> {
     }
 
     private void markFileExisting(Message message) {
-        Log.d(Config.LOGTAG, "Found and restored orphaned file " + message.getRelativeFilePath());
-        message.setFileDeleted(false);
-        activity.xmppConnectionService.updateMessage(message, false);
-        activity.xmppConnectionService.updateConversation((Conversation) message.getConversation());
+        new Thread(() -> {
+            Log.d(Config.LOGTAG, "Found and restored orphaned file " + message.getRelativeFilePath());
+            message.setFileDeleted(false);
+            activity.xmppConnectionService.updateMessage(message, false);
+            activity.xmppConnectionService.updateConversation((Conversation) message.getConversation());
+        }).start();
+    }
+
+    private void markFileDeleted(Message message) {
+        new Thread(() -> {
+            Log.d(Config.LOGTAG, "Mark file deleted " + message.getRelativeFilePath());
+            message.setFileDeleted(true);
+            activity.xmppConnectionService.updateMessage(message, false);
+            activity.xmppConnectionService.updateConversation((Conversation) message.getConversation());
+        }).start();
     }
 
     private boolean checkFileExistence(Message message, View view, ViewHolder viewHolder) {
@@ -1436,6 +1488,7 @@ public class MessageAdapter extends ArrayAdapter<Message> {
 
         public Button load_more_messages;
         public ImageView edit_indicator;
+        public ImageView retract_indicator;
         public RelativeLayout audioPlayer;
         public RelativeLayout images;
         protected LinearLayout message_box;
@@ -1455,7 +1508,9 @@ public class MessageAdapter extends ArrayAdapter<Message> {
         protected ImageView contact_picture;
         protected TextView status_message;
         protected TextView encryption;
+        protected RelativeLayout transfer;
         protected ProgressBar progressBar;
+        protected ImageButton cancel_transfer;
     }
 
     public void setBubbleBackgroundColor(final View viewHolder, final int type,

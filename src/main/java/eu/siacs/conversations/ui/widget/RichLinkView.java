@@ -9,12 +9,13 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
-import java.util.HashMap;
-import java.util.Map;
 
 import androidx.annotation.RequiresApi;
 
 import com.squareup.picasso.Picasso;
+
+import java.util.HashMap;
+import java.util.Map;
 
 import eu.siacs.conversations.R;
 import eu.siacs.conversations.services.XmppConnectionService;
@@ -174,7 +175,6 @@ public class RichLinkView extends RelativeLayout {
 
     private static Map<String, MetaData> linkMap = new HashMap<>();
 
-
     public void setLink(final String url, final String filename, final boolean dataSaverDisabled, final XmppConnectionService mXmppConnectionService, final int color, final RichPreview.ViewListener viewListener) {
         MetaData data = linkMap.get(url);
         if (data == null) {
@@ -188,8 +188,8 @@ public class RichLinkView extends RelativeLayout {
                         linkMap.put(url, metaData);
                     }
                     initView(dataSaverDisabled, color);
-
                 }
+
                 @Override
                 public void onError(Exception e) {
                     viewListener.onError(e);

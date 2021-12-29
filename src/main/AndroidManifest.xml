@@ -8,7 +8,7 @@
     <uses-permission android:name="android.permission.MANAGE_EXTERNAL_STORAGE" />
     <uses-permission android:name="android.permission.READ_CONTACTS" />
     <uses-permission android:name="android.permission.READ_PROFILE" />
-    <uses-permission android:name="android.permission.READ_PHONE_STATE" android:maxSdkVersion="28" />
+    <uses-permission android:name="android.permission.READ_PHONE_STATE" android:maxSdkVersion="22" />
     <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
     <uses-permission android:name="android.permission.WAKE_LOCK" />
@@ -81,9 +81,7 @@
             </intent-filter>
             <intent-filter>
                 <action android:name="android.intent.action.PACKAGE_REPLACED" />
-                <data
-                    android:path="${applicationId}"
-                    android:scheme="package" />
+
             </intent-filter>
             <intent-filter>
                 <action android:name="android.intent.action.PACKAGE_RESTARTED" />
@@ -92,7 +90,7 @@
                     android:scheme="package" />
             </intent-filter>
         </receiver>
-        <receiver android:name=".services.AlarmReceiver"></receiver>
+        <receiver android:name=".services.AlarmReceiver" />
 
         <activity
             android:name="de.monocles.chat.ui.StartUI"
@@ -110,8 +108,8 @@
             android:name=".ui.ConversationsActivity"
             android:label="@string/app_name"
             android:launchMode="singleTask"
-            android:minWidth="300dp"
-            android:minHeight="300dp"
+            android:minWidth="336dp"
+            android:minHeight="480dp"
             android:windowSoftInputMode="stateHidden" />
         <activity
             android:name=".ui.ScanActivity"
@@ -147,6 +145,14 @@
 
                 <data android:scheme="imto" />
                 <data android:host="jabber" />
+            </intent-filter>
+            <intent-filter>
+                <action android:name="android.intent.action.SENDTO" />
+
+                <category android:name="android.intent.category.DEFAULT" />
+
+                <data android:scheme="imto" />
+                <data android:host="xmpp" />
             </intent-filter>
         </activity>
         <activity
@@ -279,10 +285,6 @@
             android:name=".ui.PublishGroupChatProfilePictureActivity"
             android:label="@string/group_chat_avatar" />
         <activity
-            android:name=".ui.VerifyOTRActivity"
-            android:label="@string/verify_otr"
-            android:windowSoftInputMode="stateHidden" />
-        <activity
             android:name=".ui.ShareWithActivity"
             android:label="@string/app_name"
             android:launchMode="singleTop">
@@ -359,7 +361,12 @@
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value=".ui.SettingsActivity" />
         </activity>
-
+        <activity
+            android:name=".ui.UpdaterActivity"
+            android:configChanges="orientation|screenSize"
+            android:label="@string/title_activity_updater"
+            android:launchMode="singleTask"
+            android:theme="@style/ConversationsTheme" />
         <activity
             android:name=".ui.ShortcutActivity"
             android:label="@string/contact"

@@ -1,20 +1,18 @@
 package eu.siacs.conversations.entities;
 
+import static eu.siacs.conversations.entities.Bookmark.printableValue;
+
 import android.content.ContentValues;
+import android.content.SharedPreferences;
 import android.database.Cursor;
+import android.preference.PreferenceManager;
 import android.text.TextUtils;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
-import net.java.otr4j.OtrException;
-import net.java.otr4j.crypto.OtrCryptoException;
-import net.java.otr4j.session.SessionID;
-import net.java.otr4j.session.SessionImpl;
-import net.java.otr4j.session.SessionStatus;
+
 import com.google.common.collect.ComparisonChain;
 import com.google.common.collect.Lists;
-import java.security.interfaces.DSAPublicKey;
-import java.util.Locale;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -22,6 +20,7 @@ import org.json.JSONObject;
 
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
 import java.util.ListIterator;
@@ -34,12 +33,11 @@ import eu.siacs.conversations.persistance.DatabaseBackend;
 import eu.siacs.conversations.services.AvatarService;
 import eu.siacs.conversations.services.QuickConversationsService;
 import eu.siacs.conversations.utils.JidHelper;
+import eu.siacs.conversations.utils.MessageUtils;
 import eu.siacs.conversations.utils.UIHelper;
 import eu.siacs.conversations.xmpp.Jid;
 import eu.siacs.conversations.xmpp.chatstate.ChatState;
 import eu.siacs.conversations.xmpp.mam.MamReference;
-
-import static eu.siacs.conversations.entities.Bookmark.printableValue;
 
 
 public class Conversation extends AbstractEntity implements Blockable, Comparable<Conversation>, Conversational, AvatarService.Avatarable {
@@ -84,15 +82,10 @@ public class Conversation extends AbstractEntity implements Blockable, Comparabl
     private int mode;
     private JSONObject attributes;
     private Jid nextCounterpart;
-    private transient SessionImpl otrSession;
-    private transient String otrFingerprint = null;
-    private Smp mSmp = new Smp();
     private transient MucOptions mucOptions = null;
-    private byte[] symmetricKey;
     private boolean messagesLeftOnServer = true;
     private ChatState mOutgoingChatState = Config.DEFAULT_CHAT_STATE;
     private ChatState mIncomingChatState = Config.DEFAULT_CHAT_STATE;
-    private String mLastReceivedOtrMessageId = null;
     private String mFirstMamReference = null;
 
     public Conversation(final String name, final Account account, final Jid contactJid,
@@ -305,9 +298,22 @@ public class Conversation extends AbstractEntity implements Blockable, Comparabl
     public Message findMessageWithFileAndUuid(final String uuid) {
         synchronized (this.messages) {
             for (final Message message : this.messages) {
+                final Transferable transferable = message.getTransferable();
+                final boolean unInitiatedButKnownSize = MessageUtils.unInitiatedButKnownSize(message);
                 if (message.getUuid().equals(uuid)
                         && message.getEncryption() != Message.ENCRYPTION_PGP
-                        && (message.isFileOrImage() || message.treatAsDownloadable())) {
+                        && (message.isFileOrImage() || message.treatAsDownloadable() || unInitiatedButKnownSize || (transferable != null && transferable.getStatus() != Transferable.STATUS_UPLOADING))) {
+                    return message;
+                }
+            }
+        }
+        return null;
+    }
+
+    public Message findMessageWithUuid(final String uuid) {
+        synchronized (this.messages) {
+            for (final Message message : this.messages) {
+                if (message.getUuid().equals(uuid)) {
                     return message;
                 }
             }
@@ -386,7 +392,13 @@ public class Conversation extends AbstractEntity implements Blockable, Comparabl
     public void trim() {
         synchronized (this.messages) {
             final int size = messages.size();
-            final int maxsize = Config.PAGE_SIZE * Config.MAX_NUM_PAGES;
+            int maxsize = Config.PAGE_SIZE * Config.MAX_NUM_PAGES;
+            if (getAccount() != null && getAccount().getXmppConnection() != null && getAccount().getXmppConnection().getXmppConnectionService() != null) {
+                SharedPreferences pref = PreferenceManager.getDefaultSharedPreferences(getAccount().getXmppConnection().getXmppConnectionService());
+                int pagesize = Integer.parseInt(pref.getString("pagesize", String.valueOf(Config.PAGE_SIZE)));
+                int maxnumpages = Integer.parseInt(pref.getString("max_num_pages", String.valueOf(Config.MAX_NUM_PAGES)));
+                maxsize = pagesize * maxnumpages;
+            }
             if (size > maxsize) {
                 List<Message> discards = this.messages.subList(0, size - maxsize);
                 final PgpDecryptionService pgpDecryptionService = account.getPgpDecryptionService();
@@ -395,17 +407,6 @@ public class Conversation extends AbstractEntity implements Blockable, Comparabl
                 }
                 discards.clear();
                 untieMessages();
-            }
-        }
-    }
-
-    public void findUnsentMessagesWithEncryption(int encryptionType, OnMessageFound onMessageFound) {
-        synchronized (this.messages) {
-            for (Message message : this.messages) {
-                if ((message.getStatus() == Message.STATUS_UNSEND || message.getStatus() == Message.STATUS_WAITING)
-                        && (message.getEncryption() == encryptionType)) {
-                    onMessageFound.onMessageFound(message);
-                }
             }
         }
     }
@@ -425,12 +426,23 @@ public class Conversation extends AbstractEntity implements Blockable, Comparabl
     }
 
     public Message findSentMessageWithUuidOrRemoteId(String id) {
+        return findSentMessageWithUuidOrRemoteId(id, false, false);
+    }
+
+    public Message findSentMessageWithUuidOrRemoteId(String id, boolean ignorestatus, boolean withedits) {
         synchronized (this.messages) {
             for (Message message : this.messages) {
-                if (id.equals(message.getUuid())
-                        || (message.getStatus() >= Message.STATUS_SEND
-                        && id.equals(message.getRemoteMsgId()))) {
+
+                if (id.equals(message.getUuid()) || ((message.getStatus() >= Message.STATUS_SEND || ignorestatus) && id.equals(message.getRemoteMsgId()))) {
                     return message;
+                }
+
+                if (withedits) {
+                    for (Edit itm : message.edits) {
+                        if (id.equals(itm.getEditedId())) {
+                            return message;
+                        }
+                    }
                 }
             }
         }
@@ -450,8 +462,6 @@ public class Conversation extends AbstractEntity implements Blockable, Comparabl
                     final boolean idMatch = id.equals(message.getRemoteMsgId()) || message.remoteMsgIdMatchInEdit(id);
                     if (idMatch && !message.isFileOrImage() && !message.treatAsDownloadable()) {
                         return message;
-                    } else {
-                        return null;
                     }
                 }
             }
@@ -504,10 +514,51 @@ public class Conversation extends AbstractEntity implements Blockable, Comparabl
         return false;
     }
 
+    public List<Message> filterDuplicates(List<Message> list) {
+        HashMap<String, Message> items = new HashMap<String, Message>();
+        for (Message item : list) {
+            items.put(item.getUuid(), item);
+        }
+
+        ArrayList<Message> result = new ArrayList<Message>(items.values());
+        Collections.sort(result, (o1, o2) -> {
+            if (o1.getTimeSent() < o2.getTimeSent())
+                return -1;
+            if (o1.getTimeSent() > o2.getTimeSent())
+                return 1;
+            return 0;
+        });
+        return result;
+    }
+
     public void populateWithMessages(final List<Message> messages) {
         synchronized (this.messages) {
             messages.clear();
-            messages.addAll(this.messages);
+            messages.addAll(filterDuplicates(this.messages));
+
+            for (int n = 0; n < messages.size(); n++) {
+                if (messages.get(n).isMessageDeleted()) {
+                    messages.remove(n);
+                    n--;
+                    continue;
+                }
+
+                if (messages.get(n).getRetractId() != null) {
+                    if (messages.get(n).getStatus() != Message.STATUS_RECEIVED) {
+                        messages.remove(n);
+                        n--;
+                        continue;
+                    }
+                }
+            }
+
+            for (Message itm : messages) {
+                if (itm.isMessageDeleted()) {
+                    if (itm.getEditedList().size() > 0) {
+                        itm.setTime(itm.getEditedList().get(0).getTimeSent());
+                    }
+                }
+            }
         }
         for (Iterator<Message> iterator = messages.iterator(); iterator.hasNext(); ) {
             if (iterator.next().wasMergedIntoPrevious()) {
@@ -529,13 +580,6 @@ public class Conversation extends AbstractEntity implements Blockable, Comparabl
     @Override
     public Jid getBlockedJid() {
         return getContact().getBlockedJid();
-    }
-    public String getLastReceivedOtrMessageId() {
-        return this.mLastReceivedOtrMessageId;
-    }
-
-    public void setLastReceivedOtrMessageId(String id) {
-        this.mLastReceivedOtrMessageId = id;
     }
 
     public int countMessages() {
@@ -734,112 +778,6 @@ public class Conversation extends AbstractEntity implements Blockable, Comparabl
     public void setMode(int mode) {
         this.mode = mode;
     }
-    public SessionImpl startOtrSession(String presence, boolean sendStart) {
-        if (this.otrSession != null) {
-            return this.otrSession;
-        } else {
-            final SessionID sessionId = new SessionID(this.getJid().asBareJid().toString(),
-                    presence,
-                    "xmpp");
-            this.otrSession = new SessionImpl(sessionId, getAccount().getOtrService());
-            try {
-                if (sendStart) {
-                    this.otrSession.startSession();
-                    return this.otrSession;
-                }
-                return this.otrSession;
-            } catch (OtrException e) {
-                return null;
-            }
-        }
-
-    }
-
-    public SessionImpl getOtrSession() {
-        return this.otrSession;
-    }
-
-    public void resetOtrSession() {
-        this.otrFingerprint = null;
-        this.otrSession = null;
-        this.mSmp.hint = null;
-        this.mSmp.secret = null;
-        this.mSmp.status = Smp.STATUS_NONE;
-    }
-
-    public Smp smp() {
-        return mSmp;
-    }
-
-    public boolean startOtrIfNeeded() {
-        if (this.otrSession != null && this.otrSession.getSessionStatus() != SessionStatus.ENCRYPTED) {
-            try {
-                this.otrSession.startSession();
-                return true;
-            } catch (OtrException e) {
-                this.resetOtrSession();
-                return false;
-            }
-        } else {
-            return true;
-        }
-    }
-
-    public boolean endOtrIfNeeded() {
-        if (this.otrSession != null) {
-            if (this.otrSession.getSessionStatus() == SessionStatus.ENCRYPTED) {
-                try {
-                    this.otrSession.endSession();
-                    this.resetOtrSession();
-                    return true;
-                } catch (OtrException e) {
-                    this.resetOtrSession();
-                    return false;
-                }
-            } else {
-                this.resetOtrSession();
-                return false;
-            }
-        } else {
-            return false;
-        }
-    }
-
-    public boolean hasValidOtrSession() {
-        return this.otrSession != null;
-    }
-
-    public synchronized String getOtrFingerprint() {
-        if (this.otrFingerprint == null) {
-            try {
-                if (getOtrSession() == null || getOtrSession().getSessionStatus() != SessionStatus.ENCRYPTED) {
-                    return null;
-                }
-                DSAPublicKey remotePubKey = (DSAPublicKey) getOtrSession().getRemotePublicKey();
-                this.otrFingerprint = getAccount().getOtrService().getFingerprint(remotePubKey).toLowerCase(Locale.US);
-            } catch (final OtrCryptoException ignored) {
-                return null;
-            } catch (final UnsupportedOperationException ignored) {
-                return null;
-            }
-        }
-        return this.otrFingerprint;
-    }
-
-    public boolean verifyOtrFingerprint() {
-        final String fingerprint = getOtrFingerprint();
-        if (fingerprint != null) {
-            getContact().addOtrFingerprint(fingerprint);
-            return true;
-        } else {
-            return false;
-        }
-    }
-
-    public boolean isOtrFingerprintVerified() {
-        return getContact().getOtrFingerprints().contains(getOtrFingerprint());
-    }
-
 
     /**
      * short for is Private and Non-anonymous
@@ -876,7 +814,7 @@ public class Conversation extends AbstractEntity implements Blockable, Comparabl
     }
 
     public int getNextEncryption() {
-        if (!Config.supportOmemo() && !Config.supportOpenPgp() && !Config.supportOtr()) {
+        if (!Config.supportOmemo() && !Config.supportOpenPgp()) {
             return Message.ENCRYPTION_NONE;
         }
         if (OmemoSetting.isAlways()) {
@@ -892,10 +830,8 @@ public class Conversation extends AbstractEntity implements Blockable, Comparabl
             defaultEncryption = Message.ENCRYPTION_NONE;
         }
         int encryption = this.getIntAttribute(ATTRIBUTE_NEXT_ENCRYPTION, defaultEncryption);
-        if (encryption < 0) {
+        if (encryption == Message.ENCRYPTION_OTR || encryption < 0) {
             return defaultEncryption;
-        } else if (encryption == Message.ENCRYPTION_OTR) {
-            return encryption;
         } else {
             return encryption;
         }
@@ -908,9 +844,6 @@ public class Conversation extends AbstractEntity implements Blockable, Comparabl
     public String getNextMessage() {
         final String nextMessage = getAttribute(ATTRIBUTE_NEXT_MESSAGE);
         return nextMessage == null ? "" : nextMessage;
-    }
-    public boolean smpRequested() {
-        return smp().status == Smp.STATUS_CONTACT_REQUESTED;
     }
 
     public @Nullable
@@ -934,23 +867,21 @@ public class Conversation extends AbstractEntity implements Blockable, Comparabl
         }
         return changed;
     }
-    public void setSymmetricKey(byte[] key) {
-        this.symmetricKey = key;
-    }
-
-    public byte[] getSymmetricKey() {
-        return this.symmetricKey;
-    }
 
     public Bookmark getBookmark() {
         return this.account.getBookmark(this.contactJid);
     }
 
-    public Message findDuplicateMessage(Message message) {
+    public Message findDuplicateMessage(Message message, boolean withremoteid) {
         synchronized (this.messages) {
             for (int i = this.messages.size() - 1; i >= 0; --i) {
                 if (this.messages.get(i).similar(message)) {
                     return this.messages.get(i);
+                }
+                if (withremoteid) {
+                    if (this.messages.get(i).remoteMsgId != null && message.getRemoteMsgId() != null && this.messages.get(i).remoteMsgId.equals(message.getRemoteMsgId())) {
+                        return this.messages.get(i);
+                    }
                 }
             }
         }
@@ -1308,15 +1239,23 @@ public class Conversation extends AbstractEntity implements Blockable, Comparabl
             return message;
         }
     }
-    public class Smp {
-        public static final int STATUS_NONE = 0;
-        public static final int STATUS_CONTACT_REQUESTED = 1;
-        public static final int STATUS_WE_REQUESTED = 2;
-        public static final int STATUS_FAILED = 3;
-        public static final int STATUS_VERIFIED = 4;
 
-        public String secret = null;
-        public String hint = null;
-        public int status = 0;
+    public Message findDuplicateMessage(Message message) {
+        return findDuplicateMessage(message, false);
+    }
+
+    public boolean hasDuplicateMessage(Message message, boolean withremoteid) {
+        return findDuplicateMessage(message, withremoteid) != null;
+    }
+
+    public Message findMessageWithUuidOrRemoteId(final String id) {
+        synchronized (this.messages) {
+            for (final Message message : this.messages) {
+                if (message.getRemoteMsgId() != null && message.getRemoteMsgId().equals(id) || message.getUuid().equals(id)) {
+                    return message;
+                }
+            }
+        }
+        return null;
     }
 }

@@ -1,5 +1,10 @@
 package eu.siacs.conversations.ui;
 
+import static eu.siacs.conversations.persistance.FileBackend.AUDIOS;
+import static eu.siacs.conversations.persistance.FileBackend.FILES;
+import static eu.siacs.conversations.persistance.FileBackend.IMAGES;
+import static eu.siacs.conversations.persistance.FileBackend.VIDEOS;
+
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.widget.ImageButton;
@@ -14,31 +19,26 @@ import eu.siacs.conversations.persistance.FileBackend;
 import eu.siacs.conversations.utils.ThemeHelper;
 import eu.siacs.conversations.utils.UIHelper;
 
-import static eu.siacs.conversations.persistance.FileBackend.AUDIOS;
-import static eu.siacs.conversations.persistance.FileBackend.FILES;
-import static eu.siacs.conversations.persistance.FileBackend.IMAGES;
-import static eu.siacs.conversations.persistance.FileBackend.VIDEOS;
-
 public class MemoryManagementActivity extends XmppActivity {
 
-    private TextView disk_storage;
-    private TextView media_usage;
+    private static TextView disk_storage;
+    private static TextView media_usage;
     private ImageButton delete_media;
-    private TextView pictures_usage;
+    private static TextView pictures_usage;
     private ImageButton delete_pictures;
-    private TextView videos_usage;
+    private static TextView videos_usage;
     private ImageButton delete_videos;
-    private TextView files_usage;
+    private static TextView files_usage;
     private ImageButton delete_files;
-    private TextView audios_usage;
+    private static TextView audios_usage;
     private ImageButton delete_audios;
 
-    String totalMemory = "...";
-    String mediaUsage = "...";
-    String picturesUsage = "...";
-    String videosUsage = "...";
-    String filesUsage = "...";
-    String audiosUsage = "...";
+    static String totalMemory = "...";
+    static String mediaUsage = "...";
+    static String picturesUsage = "...";
+    static String videosUsage = "...";
+    static String filesUsage = "...";
+    static String audiosUsage = "...";
 
     @Override
     protected void refreshUiReal() {
@@ -117,7 +117,7 @@ public class MemoryManagementActivity extends XmppActivity {
         builder.create().show();
     }
 
-    class getMemoryUsages extends AsyncTask<Void, Void, Void> {
+    static class getMemoryUsages extends AsyncTask<Void, Void, Void> {
 
         @Override
         protected void onPreExecute() {

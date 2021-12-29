@@ -15,12 +15,12 @@
             layout="@layout/toolbar" />
 
         <ScrollView
-            android:layout_width="fill_parent"
-            android:layout_height="fill_parent">
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
 
             <LinearLayout
                 android:id="@+id/muc_main_layout"
-                android:layout_width="fill_parent"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:orientation="vertical">
 
@@ -120,6 +120,7 @@
                                     android:visibility="gone">
 
                                     <com.google.android.material.textfield.TextInputLayout
+                                        style="@style/Widget.Conversations.TextInputLayout.OutlinedBox"
                                         android:layout_width="match_parent"
                                         android:layout_height="wrap_content"
                                         app:errorTextAppearance="@style/TextAppearance.Conversations.Design.Error"
@@ -134,6 +135,7 @@
                                     </com.google.android.material.textfield.TextInputLayout>
 
                                     <com.google.android.material.textfield.TextInputLayout
+                                        style="@style/Widget.Conversations.TextInputLayout.OutlinedBox"
                                         android:layout_width="match_parent"
                                         android:layout_height="wrap_content"
                                         app:errorTextAppearance="@style/TextAppearance.Conversations.Design.Error"
@@ -164,7 +166,7 @@
 
                             <RelativeLayout
                                 android:id="@+id/muc_settings"
-                                android:layout_width="fill_parent"
+                                android:layout_width="match_parent"
                                 android:layout_height="wrap_content">
 
                                 <TextView
@@ -194,7 +196,7 @@
                             </RelativeLayout>
 
                             <RelativeLayout
-                                android:layout_width="fill_parent"
+                                android:layout_width="match_parent"
                                 android:layout_height="wrap_content">
 
                                 <TextView
@@ -287,10 +289,12 @@
                             <Button
                                 android:id="@+id/destroy"
                                 style="@style/Widget.Conversations.Button"
-                                android:layout_width="match_parent"
+                                android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
                                 android:layout_gravity="center_horizontal"
-                                android:layout_marginTop="24dp" />
+                                android:layout_marginTop="24dp"
+                                app:icon="@drawable/ic_delete_white_24dp"
+                                app:iconTint="?attr/color_warning_button_text" />
 
                             <Button
                                 android:id="@+id/add_contact_button"
@@ -333,14 +337,12 @@
                         <LinearLayout
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:gravity="center_horizontal"
-                            android:orientation="vertical"
+                            android:orientation="horizontal"
                             android:padding="@dimen/card_padding_regular">
 
                             <RelativeLayout
                                 android:layout_width="match_parent"
-                                android:layout_height="match_parent"
-                                android:layout_marginTop="2dp">
+                                android:layout_height="match_parent">
 
                                 <com.makeramen.roundedimageview.RoundedImageView
                                     android:id="@+id/your_photo"
@@ -354,7 +356,7 @@
                                     app:riv_corner_radius="@dimen/rounded_image_border" />
 
                                 <LinearLayout
-                                    android:layout_width="fill_parent"
+                                    android:layout_width="wrap_content"
                                     android:layout_height="wrap_content"
                                     android:layout_centerVertical="true"
                                     android:layout_toEndOf="@+id/your_photo"
@@ -439,12 +441,11 @@
 
                         <androidx.recyclerview.widget.RecyclerView
                             android:id="@+id/users"
-                            android:layout_width="fill_parent"
-                            android:layout_height="0dp"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
                             android:layout_marginStart="-2dp"
                             android:layout_marginEnd="-2dp"
-                            android:layout_weight="1"
-                            android:divider="?android:dividerHorizontal"
+                            android:minHeight="88dp"
                             android:orientation="horizontal"
                             android:paddingStart="@dimen/card_padding_regular"
                             android:paddingTop="@dimen/card_padding_regular"
@@ -452,8 +453,8 @@
                             android:paddingBottom="@dimen/card_padding_list" />
 
                         <LinearLayout
-                            android:layout_width="wrap_content"
-                            android:layout_height="match_parent"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
                             android:layout_gravity="end"
                             android:orientation="horizontal">
 
@@ -505,12 +506,10 @@
 
                         <androidx.recyclerview.widget.RecyclerView
                             android:id="@+id/media"
-                            android:layout_width="fill_parent"
-                            android:layout_height="0dp"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
                             android:layout_marginStart="-2dp"
                             android:layout_marginEnd="-2dp"
-                            android:layout_weight="1"
-                            android:divider="?android:dividerHorizontal"
                             android:orientation="horizontal"
                             android:paddingStart="@dimen/card_padding_regular"
                             android:paddingTop="@dimen/card_padding_regular"

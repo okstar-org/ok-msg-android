@@ -21,7 +21,7 @@
             app:riv_corner_radius="2dp" />
 
         <LinearLayout
-            android:layout_width="fill_parent"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_centerVertical="true"
             android:layout_toStartOf="@+id/tgl_account_status"

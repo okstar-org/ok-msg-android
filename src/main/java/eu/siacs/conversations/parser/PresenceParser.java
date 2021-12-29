@@ -313,10 +313,10 @@ public class PresenceParser extends AbstractParser implements
             PgpEngine pgp = mXmppConnectionService.getPgpEngine();
             Element x = packet.findChild("x", "jabber:x:signed");
             if (pgp != null && x != null) {
-				final String status = packet.findChildContent("status");
-				final long keyId = pgp.fetchKeyId(account, status, x.getContent());
-				if (keyId != 0 && contact.setPgpKeyId(keyId)) {
-					Log.d(Config.LOGTAG,account.getJid().asBareJid()+": found OpenPGP key id for "+contact.getJid()+" "+OpenPgpUtils.convertKeyIdToHex(keyId));
+                final String status = packet.findChildContent("status");
+                final long keyId = pgp.fetchKeyId(account, status, x.getContent());
+                if (keyId != 0 && contact.setPgpKeyId(keyId)) {
+                    Log.d(Config.LOGTAG,account.getJid().asBareJid()+": found OpenPGP key id for "+contact.getJid()+" "+OpenPgpUtils.convertKeyIdToHex(keyId));
                     mXmppConnectionService.syncRoster(account);
                 }
             }

@@ -6,16 +6,14 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 
-
 import eu.siacs.conversations.R;
 import eu.siacs.conversations.ui.ConversationsActivity;
 import eu.siacs.conversations.ui.util.IntroHelper;
-
 import eu.siacs.conversations.utils.Compatibility;
 import eu.siacs.conversations.utils.ThemeHelper;
 
-    public class StartUI extends PermissionsActivity
-            implements PermissionsActivity.OnPermissionGranted {
+public class StartUI extends PermissionsActivity
+        implements PermissionsActivity.OnPermissionGranted {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -25,22 +23,26 @@ import eu.siacs.conversations.utils.ThemeHelper;
         IntroHelper.showIntro(this, false);
     }
 
-
     @Override
-        protected void onStart() {
-            super.onStart();
-            requestNeededPermissions();
+    protected void onStart() {
+        super.onStart();
+        requestNeededPermissions();
     }
 
-        private void requestNeededPermissions() {
-            if (Compatibility.runsTwentyThree()) {
-                if (!checkStoragePermission()) {
-                    requestStoragePermission(this);
-                }
-                if (Compatibility.runsAndTargetsThirty(this)) {
-                    requestAllFilesAccess(this);
-                }
+    private void requestNeededPermissions() {
+        if (Compatibility.runsTwentyThree()) {
+            if (!checkStoragePermission()) {
+                requestStoragePermission(this);
             }
+            if (Compatibility.runsAndTargetsThirty(this)) {
+                requestAllFilesAccess(this);
+            }
+            if (checkStoragePermission() && !Compatibility.runsAndTargetsThirty(this)) {
+                next(this);
+            }
+        } else {
+            next(this);
+        }
     }
 
     @Override

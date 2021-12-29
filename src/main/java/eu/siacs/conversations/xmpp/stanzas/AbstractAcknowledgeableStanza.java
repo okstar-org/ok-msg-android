@@ -24,10 +24,10 @@ abstract public class AbstractAcknowledgeableStanza extends AbstractStanza {
             return null;
         }
         for (final Element element : error.getChildren()) {
-                if (!element.getName().equals("text")) {
-                    return element;
-                }
+            if (!element.getName().equals("text")) {
+                return element;
             }
+        }
         return null;
     }
 

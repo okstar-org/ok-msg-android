@@ -4,15 +4,17 @@ import android.content.Context;
 import android.content.SharedPreferences;
 import android.media.MediaMetadataRetriever;
 import android.net.Uri;
-import android.os.Build;
 import android.os.ParcelFileDescriptor;
 import android.preference.PreferenceManager;
 import android.util.Log;
 
-import androidx.annotation.RequiresApi;
+import androidx.annotation.NonNull;
 
-import net.ypresto.androidtranscoder.MediaTranscoder;
-import net.ypresto.androidtranscoder.format.MediaFormatStrategyPresets;
+import com.otaliastudios.transcoder.Transcoder;
+import com.otaliastudios.transcoder.TranscoderListener;
+import com.otaliastudios.transcoder.strategy.DefaultAudioStrategy;
+
+import org.jetbrains.annotations.NotNull;
 
 import java.io.File;
 import java.io.FileDescriptor;
@@ -20,6 +22,7 @@ import java.io.FileNotFoundException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.Locale;
+import java.util.Objects;
 import java.util.concurrent.ExecutionException;
 import java.util.concurrent.Future;
 
@@ -32,8 +35,9 @@ import eu.siacs.conversations.entities.Message;
 import eu.siacs.conversations.persistance.FileBackend;
 import eu.siacs.conversations.ui.UiCallback;
 import eu.siacs.conversations.utils.MimeUtils;
+import eu.siacs.conversations.utils.TranscoderStrategies;
 
-public class AttachFileToConversationRunnable implements Runnable, MediaTranscoder.Listener {
+public class AttachFileToConversationRunnable implements Runnable, TranscoderListener {
 
     private final XmppConnectionService mXmppConnectionService;
     private final Message message;
@@ -56,16 +60,15 @@ public class AttachFileToConversationRunnable implements Runnable, MediaTranscod
         this.callback = callback;
         this.maxUploadSize = maxUploadSize;
         final String mimeType = MimeUtils.guessMimeTypeFromUriAndMime(mXmppConnectionService, uri, type);
-        final int autoAcceptFileSize = Config.FILE_SIZE;
         this.originalFileSize = FileBackend.getFileSize(mXmppConnectionService, uri);
         this.isVideoMessage = !getFileBackend().useFileAsIs(uri)
-                && (mimeType != null && mimeType.startsWith("video/")
-                && (mXmppConnectionService.getCompressVideoBitratePreference() != 0 && mXmppConnectionService.getCompressVideoResolutionPreference() != 0))
-                && originalFileSize > autoAcceptFileSize;
+                && (mimeType != null && mimeType.startsWith("video/"))
+                && originalFileSize > Config.VIDEO_FAST_UPLOAD_SIZE
+                && !"uncompressed".equals(getVideoCompression());
     }
 
     boolean isVideoMessage() {
-        return this.isVideoMessage && Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN_MR2;
+        return this.isVideoMessage;
     }
 
     private void processAsFile() {
@@ -100,21 +103,22 @@ public class AttachFileToConversationRunnable implements Runnable, MediaTranscod
         }
     }
 
-    @RequiresApi(api = Build.VERSION_CODES.JELLY_BEAN_MR2)
     private void processAsVideo() throws Exception {
         Log.d(Config.LOGTAG, "processing file as video");
         mXmppConnectionService.startForcingForegroundNotification();
         isCompressingVideo = conversation.getUuid();
-        SimpleDateFormat fileDateFormat = new SimpleDateFormat("yyyyMMdd_HHmmss", Locale.US);
+        final SimpleDateFormat fileDateFormat = new SimpleDateFormat("yyyyMMdd_HHmmss", Locale.US);
         message.setRelativeFilePath("Sent/" + fileDateFormat.format(new Date(message.getTimeSent())) + "_" + message.getUuid().substring(0, 4) + "_komp.mp4");
         final DownloadableFile file = mXmppConnectionService.getFileBackend().getFile(message);
-        file.getParentFile().mkdirs();
+        if (Objects.requireNonNull(file.getParentFile()).mkdirs()) {
+            Log.d(Config.LOGTAG, "created parent directory for video file");
+        }
         final ParcelFileDescriptor parcelFileDescriptor = mXmppConnectionService.getContentResolver().openFileDescriptor(uri, "r");
         if (parcelFileDescriptor == null) {
             throw new FileNotFoundException("Parcel File Descriptor was null");
         }
-        FileDescriptor fileDescriptor = parcelFileDescriptor.getFileDescriptor();
-        Future<Void> future = getVideoCompressor(fileDescriptor, file, maxUploadSize);
+        final FileDescriptor fileDescriptor = parcelFileDescriptor.getFileDescriptor();
+        final Future<Void> future = getVideoCompression(fileDescriptor, file, maxUploadSize, originalFileSize);
         try {
             future.get();
         } catch (InterruptedException e) {
@@ -127,13 +131,13 @@ public class AttachFileToConversationRunnable implements Runnable, MediaTranscod
                 isCompressingVideo = null;
                 processAsFile();
             } else {
-                Log.d(Config.LOGTAG, "ignoring execution exception. Should get handled by onTranscodeFiled() instead", e);
+                Log.d(Config.LOGTAG, "ignoring execution exception. Should get handled by onTranscodeFailed() instead", e);
             }
         }
     }
 
-    private Future<Void> getVideoCompressor(final FileDescriptor fileDescriptor, final File file, final long maxUploadSize) throws Exception {
-        MediaMetadataRetriever mediaMetadataRetriever = new MediaMetadataRetriever();
+    private Future<Void> getVideoCompression(final FileDescriptor fileDescriptor, final File file, final long maxUploadSize, final long originalFileSize) throws Exception {
+        final MediaMetadataRetriever mediaMetadataRetriever = new MediaMetadataRetriever();
         try {
             mediaMetadataRetriever.setDataSource(fileDescriptor);
         } catch (Exception e) {
@@ -141,31 +145,52 @@ public class AttachFileToConversationRunnable implements Runnable, MediaTranscod
             throw new Exception(e);
         }
         long videoDuration;
-        long estimatedFileSize = maxUploadSize / 2;  // keep estimated filesize half as big as maxUploadSize
+        final long estimatedFileSize = maxUploadSize / 2;  // keep estimated filesize half as big as maxUploadSize
         try {
             videoDuration = Long.parseLong(mediaMetadataRetriever.extractMetadata(MediaMetadataRetriever.METADATA_KEY_DURATION)) / 1000; //in seconds
         } catch (NumberFormatException e) {
             videoDuration = -1;
         }
-        int bitrateAfterCompression = safeLongToInt(mXmppConnectionService.getCompressVideoBitratePreference() / 8); //in bytes
-        long size = videoDuration * bitrateAfterCompression;
-        if (estimatedFileSize >= size) {
-            return MediaTranscoder.getInstance().transcodeVideo(fileDescriptor, file.getAbsolutePath(), MediaFormatStrategyPresets.createAndroidStandardStrategy(mXmppConnectionService.getCompressVideoBitratePreference(), mXmppConnectionService.getCompressVideoResolutionPreference()), this);
+        final int bitrateAfterCompression = safeLongToInt(mXmppConnectionService.getCompressVideoBitratePreference() / 8); //in bytes
+        final long sizeAfterCompression = videoDuration * bitrateAfterCompression;
+
+        if (sizeAfterCompression >= originalFileSize && originalFileSize <= Config.VIDEO_FAST_UPLOAD_SIZE) {
+            processAsFile();
+            onTranscodeCanceled();
+            return null;
+        } else if (estimatedFileSize >= sizeAfterCompression && sizeAfterCompression <= originalFileSize) {
+            return Transcoder.into(file.getAbsolutePath()).
+                    addDataSource(mXmppConnectionService, uri)
+                    .setVideoTrackStrategy(TranscoderStrategies.VIDEO(mXmppConnectionService.getCompressVideoBitratePreference(), mXmppConnectionService.getCompressVideoResolutionPreference()))
+                    .setAudioTrackStrategy(mXmppConnectionService.getCompressAudioPreference())
+                    .setListener(this)
+                    .transcode();
         } else {
+            DefaultAudioStrategy audioStrategy;
             int newBitrate = safeLongToInt((estimatedFileSize / videoDuration) * 8); // in bits/sec
             int newResoloution = 0;
             if (newBitrate <= mXmppConnectionService.getResources().getInteger(R.integer.verylow_video_bitrate)) {
                 newResoloution = mXmppConnectionService.getResources().getInteger(R.integer.verylow_video_res);
+                audioStrategy = TranscoderStrategies.AUDIO_LQ;
             } else if (newBitrate > mXmppConnectionService.getResources().getInteger(R.integer.verylow_video_bitrate) && newBitrate <= mXmppConnectionService.getResources().getInteger(R.integer.low_video_bitrate)) {
                 newResoloution = mXmppConnectionService.getResources().getInteger(R.integer.low_video_res);
+                audioStrategy = TranscoderStrategies.AUDIO_LQ;
             } else if (newBitrate > mXmppConnectionService.getResources().getInteger(R.integer.low_video_bitrate) && newBitrate <= mXmppConnectionService.getResources().getInteger(R.integer.mid_video_bitrate)) {
                 newResoloution = mXmppConnectionService.getResources().getInteger(R.integer.mid_video_res);
+                audioStrategy = TranscoderStrategies.AUDIO_MQ;
             } else if (newBitrate > mXmppConnectionService.getResources().getInteger(R.integer.mid_video_bitrate) && newBitrate <= mXmppConnectionService.getResources().getInteger(R.integer.high_video_bitrate)) {
                 newResoloution = mXmppConnectionService.getResources().getInteger(R.integer.high_video_res);
+                audioStrategy = TranscoderStrategies.AUDIO_HQ;
             } else {
                 newResoloution = mXmppConnectionService.getResources().getInteger(R.integer.high_video_res);
+                audioStrategy = TranscoderStrategies.AUDIO_HQ;
             }
-            return MediaTranscoder.getInstance().transcodeVideo(fileDescriptor, file.getAbsolutePath(), MediaFormatStrategyPresets.createAndroidStandardStrategy(newBitrate, newResoloution), this);
+            return Transcoder.into(file.getAbsolutePath()).
+                    addDataSource(mXmppConnectionService, uri)
+                    .setVideoTrackStrategy(TranscoderStrategies.VIDEO(newBitrate, newResoloution))
+                    .setAudioTrackStrategy(audioStrategy)
+                    .setListener(this)
+                    .transcode();
         }
     }
 
@@ -187,7 +212,7 @@ public class AttachFileToConversationRunnable implements Runnable, MediaTranscod
     }
 
     @Override
-    public void onTranscodeCompleted() {
+    public void onTranscodeCompleted(int successCode) {
         mXmppConnectionService.stopForcingForegroundNotification();
         isCompressingVideo = null;
         final File file = mXmppConnectionService.getFileBackend().getFile(message);
@@ -219,10 +244,10 @@ public class AttachFileToConversationRunnable implements Runnable, MediaTranscod
     }
 
     @Override
-    public void onTranscodeFailed(Exception e) {
+    public void onTranscodeFailed(@NonNull @NotNull Throwable exception) {
         mXmppConnectionService.stopForcingForegroundNotification();
         isCompressingVideo = null;
-        Log.d(Config.LOGTAG, "video transcoding failed", e);
+        Log.d(Config.LOGTAG, "video transcoding failed", exception);
         processAsFile();
     }
 
@@ -238,6 +263,10 @@ public class AttachFileToConversationRunnable implements Runnable, MediaTranscod
         } else {
             processAsFile();
         }
+    }
+
+    private String getVideoCompression() {
+        return getVideoCompression(mXmppConnectionService);
     }
 
     public static String getVideoCompression(final Context context) {

@@ -1,6 +1,8 @@
 package eu.siacs.conversations.services;
 
+import static eu.siacs.conversations.services.NotificationService.EXPORT_BACKUP_NOTIFICATION_ID;
 import static eu.siacs.conversations.utils.Compatibility.runsTwentySix;
+
 import android.app.Notification;
 import android.app.NotificationManager;
 import android.app.PendingIntent;
@@ -17,8 +19,6 @@ import android.os.IBinder;
 import android.os.PowerManager;
 import android.preference.PreferenceManager;
 import android.util.Log;
-import java.io.FileNotFoundException;
-import java.io.ObjectOutputStream;
 
 import androidx.core.app.NotificationCompat;
 
@@ -81,7 +81,6 @@ public class ExportBackupService extends Service {
     private static final String DIRECTORY_STRING_FORMAT = FileBackend.getAppLogsDirectory() + "%s";
     private static final String MESSAGE_STRING_FORMAT = "(%s) %s: %s\n";
 
-    private static final int NOTIFICATION_ID = 19;
     private static final int PAGE_SIZE = 20;
     private static final AtomicBoolean RUNNING = new AtomicBoolean(false);
     private DatabaseBackend mDatabaseBackend;
@@ -271,6 +270,7 @@ public class ExportBackupService extends Service {
                 RUNNING.set(false);
                 if (success) {
                     notifySuccess(files, notify);
+                    FileBackend.deleteOldBackups(new File(FileBackend.getBackupDirectory(null)), this.mAccounts);
                 } else {
                     notifyError();
                 }
@@ -313,7 +313,7 @@ public class ExportBackupService extends Service {
             final int percentage = i * 100 / size;
             if (p < percentage) {
                 p = percentage;
-                notificationManager.notify(NOTIFICATION_ID, progress.build(p));
+                notificationManager.notify(EXPORT_BACKUP_NOTIFICATION_ID, progress.build(p));
             }
         }
         if (cursor != null) {
@@ -327,7 +327,7 @@ public class ExportBackupService extends Service {
         mBuilder.setContentTitle(getString(R.string.notification_create_backup_title))
                 .setSmallIcon(R.drawable.ic_archive_white_24dp)
                 .setProgress(1, 0, false);
-        startForeground(NOTIFICATION_ID, mBuilder.build());
+        startForeground(EXPORT_BACKUP_NOTIFICATION_ID, mBuilder.build());
         int count = 0;
         final int max = this.mAccounts.size();
         final SecureRandom secureRandom = new SecureRandom();
@@ -344,55 +344,58 @@ public class ExportBackupService extends Service {
         final List<File> files = new ArrayList<>();
         Log.d(Config.LOGTAG, "starting backup for " + max + " accounts");
         for (final Account account : this.mAccounts) {
-            final String password = account.getPassword();
-            if (Strings.nullToEmpty(password).trim().isEmpty()) {
-                Log.d(Config.LOGTAG, String.format("skipping backup for %s because password is empty. unable to encrypt", account.getJid().asBareJid()));
-                continue;
-            }
-            Log.d(Config.LOGTAG, String.format("exporting data for account %s (%s)", account.getJid().asBareJid(), account.getUuid()));
-            final byte[] IV = new byte[12];
-            final byte[] salt = new byte[16];
-            secureRandom.nextBytes(IV);
-            secureRandom.nextBytes(salt);
-            final BackupFileHeader backupFileHeader = new BackupFileHeader(getString(R.string.app_name), account.getJid(), System.currentTimeMillis(), IV, salt);
-            final Progress progress = new Progress(mBuilder, max, count);
-            final File file = new File(FileBackend.getBackupDirectory(null) + account.getJid().asBareJid().toEscapedString() + ".ceb");
-            files.add(file);
-            final File directory = file.getParentFile();
-            if (directory != null && directory.mkdirs()) {
-                Log.d(Config.LOGTAG, "created backup directory " + directory.getAbsolutePath());
-            }
-            final FileOutputStream fileOutputStream = new FileOutputStream(file);
-            final DataOutputStream dataOutputStream = new DataOutputStream(fileOutputStream);
-            backupFileHeader.write(dataOutputStream);
-            dataOutputStream.flush();
+            try {
+                final String password = account.getPassword();
+                if (Strings.nullToEmpty(password).trim().isEmpty()) {
+                    Log.d(Config.LOGTAG, String.format("skipping backup for %s because password is empty. unable to encrypt", account.getJid().asBareJid()));
+                    continue;
+                }
+                Log.d(Config.LOGTAG, String.format("exporting data for account %s (%s)", account.getJid().asBareJid(), account.getUuid()));
+                final byte[] IV = new byte[12];
+                final byte[] salt = new byte[16];
+                secureRandom.nextBytes(IV);
+                secureRandom.nextBytes(salt);
+                final BackupFileHeader backupFileHeader = new BackupFileHeader(getString(R.string.app_name), account.getJid(), System.currentTimeMillis(), IV, salt);
+                final Progress progress = new Progress(mBuilder, max, count);
+                final File file = new File(FileBackend.getBackupDirectory(null) + account.getJid().asBareJid().toEscapedString() + "_" + ((new SimpleDateFormat("yyyy-MM-dd")).format(new Date())) + ".ceb");
+                files.add(file);
+                final File directory = file.getParentFile();
+                if (directory != null && directory.mkdirs()) {
+                    Log.d(Config.LOGTAG, "created backup directory " + directory.getAbsolutePath());
+                }
+                final FileOutputStream fileOutputStream = new FileOutputStream(file);
+                final DataOutputStream dataOutputStream = new DataOutputStream(fileOutputStream);
+                backupFileHeader.write(dataOutputStream);
+                dataOutputStream.flush();
 
-            final Cipher cipher = Compatibility.runsTwentyEight() ? Cipher.getInstance(CIPHERMODE) : Cipher.getInstance(CIPHERMODE, PROVIDER);
-            final byte[] key = getKey(password, salt);
-            Log.d(Config.LOGTAG, backupFileHeader.toString());
-            SecretKeySpec keySpec = new SecretKeySpec(key, KEYTYPE);
-            IvParameterSpec ivSpec = new IvParameterSpec(IV);
-            cipher.init(Cipher.ENCRYPT_MODE, keySpec, ivSpec);
-            CipherOutputStream cipherOutputStream = new CipherOutputStream(fileOutputStream, cipher);
-
-            GZIPOutputStream gzipOutputStream = new GZIPOutputStream(cipherOutputStream);
-            PrintWriter writer = new PrintWriter(gzipOutputStream);
-            SQLiteDatabase db = this.mDatabaseBackend.getReadableDatabase();
-            final String uuid = account.getUuid();
-            accountExport(db, uuid, writer);
-            simpleExport(db, Conversation.TABLENAME, Conversation.ACCOUNT, uuid, writer);
-            messageExport(db, uuid, writer, progress);
-            for (String table : Arrays.asList(SQLiteAxolotlStore.PREKEY_TABLENAME, SQLiteAxolotlStore.SIGNED_PREKEY_TABLENAME, SQLiteAxolotlStore.SESSION_TABLENAME, SQLiteAxolotlStore.IDENTITIES_TABLENAME)) {
-                simpleExport(db, table, SQLiteAxolotlStore.ACCOUNT, uuid, writer);
+                final Cipher cipher = Compatibility.runsTwentyEight() ? Cipher.getInstance(CIPHERMODE) : Cipher.getInstance(CIPHERMODE, PROVIDER);
+                final byte[] key = getKey(password, salt);
+                Log.d(Config.LOGTAG, backupFileHeader.toString());
+                SecretKeySpec keySpec = new SecretKeySpec(key, KEYTYPE);
+                IvParameterSpec ivSpec = new IvParameterSpec(IV);
+                cipher.init(Cipher.ENCRYPT_MODE, keySpec, ivSpec);
+                CipherOutputStream cipherOutputStream = new CipherOutputStream(fileOutputStream, cipher);
+                GZIPOutputStream gzipOutputStream = new GZIPOutputStream(cipherOutputStream);
+                PrintWriter writer = new PrintWriter(gzipOutputStream);
+                SQLiteDatabase db = this.mDatabaseBackend.getReadableDatabase();
+                final String uuid = account.getUuid();
+                accountExport(db, uuid, writer);
+                simpleExport(db, Conversation.TABLENAME, Conversation.ACCOUNT, uuid, writer);
+                messageExport(db, uuid, writer, progress);
+                for (String table : Arrays.asList(SQLiteAxolotlStore.PREKEY_TABLENAME, SQLiteAxolotlStore.SIGNED_PREKEY_TABLENAME, SQLiteAxolotlStore.SESSION_TABLENAME, SQLiteAxolotlStore.IDENTITIES_TABLENAME)) {
+                    simpleExport(db, table, SQLiteAxolotlStore.ACCOUNT, uuid, writer);
+                }
+                writer.flush();
+                writer.close();
+                mediaScannerScanFile(file);
+                Log.d(Config.LOGTAG, "written backup to " + file.getAbsoluteFile());
+            } catch (Exception e) {
+                Log.d(Config.LOGTAG, "backup for " + account.getJid() + " failed with " + e);
             }
-            writer.flush();
-            writer.close();
-            mediaScannerScanFile(file);
-            Log.d(Config.LOGTAG, "written backup to " + file.getAbsoluteFile());
             count++;
         }
         stopForeground(true);
-        notificationManager.cancel(NOTIFICATION_ID);
+        notificationManager.cancel(EXPORT_BACKUP_NOTIFICATION_ID);
         return files;
     }
 
@@ -465,7 +468,7 @@ public class ExportBackupService extends Service {
         if (shareFilesIntent != null) {
             mBuilder.addAction(R.drawable.ic_share_white_24dp, getString(R.string.share_backup_files), shareFilesIntent);
         }
-        notificationManager.notify(NOTIFICATION_ID, mBuilder.build());
+        notificationManager.notify(EXPORT_BACKUP_NOTIFICATION_ID, mBuilder.build());
     }
 
     private void notifyError() {
@@ -477,7 +480,7 @@ public class ExportBackupService extends Service {
                 .setStyle(new NotificationCompat.BigTextStyle().bigText(getString(R.string.notification_backup_failed_subtitle, FileBackend.getBackupDirectory(null))))
                 .setAutoCancel(true)
                 .setSmallIcon(R.drawable.ic_warning_white_24dp);
-        notificationManager.notify(NOTIFICATION_ID, mBuilder.build());
+        notificationManager.notify(EXPORT_BACKUP_NOTIFICATION_ID, mBuilder.build());
     }
 
     private void writeToFile(Conversation conversation) {

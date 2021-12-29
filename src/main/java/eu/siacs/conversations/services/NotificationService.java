@@ -1,5 +1,7 @@
 package eu.siacs.conversations.services;
 
+import static eu.siacs.conversations.ui.util.MyLinkify.replaceYoutube;
+
 import android.app.Notification;
 import android.app.NotificationChannel;
 import android.app.NotificationChannelGroup;
@@ -33,6 +35,8 @@ import androidx.core.app.Person;
 import androidx.core.app.RemoteInput;
 import androidx.core.content.ContextCompat;
 import androidx.core.graphics.drawable.IconCompat;
+
+import com.google.common.collect.Iterables;
 
 import java.io.File;
 import java.io.IOException;
@@ -72,8 +76,6 @@ import eu.siacs.conversations.xmpp.XmppConnection;
 import eu.siacs.conversations.xmpp.jingle.AbstractJingleConnection;
 import eu.siacs.conversations.xmpp.jingle.Media;
 
-import static eu.siacs.conversations.ui.util.MyLinkify.replaceYoutube;
-
 public class NotificationService {
 
     public static final Object CATCHUP_LOCK = new Object();
@@ -106,6 +108,8 @@ public class NotificationService {
     public static final int ONGOING_CALL_NOTIFICATION_ID = NOTIFICATION_ID_MULTIPLIER * 10;
     private static final int DELIVERY_FAILED_NOTIFICATION_ID = NOTIFICATION_ID_MULTIPLIER * 12;
     public static final int MISSED_CALL_NOTIFICATION_ID = NOTIFICATION_ID_MULTIPLIER * 14;
+    public static final int IMPORT_BACKUP_NOTIFICATION_ID = NOTIFICATION_ID_MULTIPLIER * 16;
+    public static final int EXPORT_BACKUP_NOTIFICATION_ID = NOTIFICATION_ID_MULTIPLIER * 18;
     private final XmppConnectionService mXmppConnectionService;
     private final LinkedHashMap<String, ArrayList<Message>> notifications = new LinkedHashMap<>();
     private final LinkedHashMap<Conversational, MissedCallsInfo> mMissedCalls = new LinkedHashMap<>();
@@ -730,14 +734,23 @@ public class NotificationService {
         notify(INCOMING_CALL_NOTIFICATION_ID, notification);
     }
 
-    public Notification getOngoingCallNotification(final AbstractJingleConnection.Id id, final Set<Media> media) {
+    public Notification getOngoingCallNotification(final XmppConnectionService.OngoingCall ongoingCall) {
+        final AbstractJingleConnection.Id id = ongoingCall.id;
         final NotificationCompat.Builder builder = new NotificationCompat.Builder(mXmppConnectionService, ONGOING_CALLS_CHANNEL_ID);
-        if (media.contains(Media.VIDEO)) {
+        if (ongoingCall.media.contains(Media.VIDEO)) {
             builder.setSmallIcon(R.drawable.ic_videocam_white_24dp);
-            builder.setContentTitle(mXmppConnectionService.getString(R.string.ongoing_video_call));
+            if (ongoingCall.reconnecting) {
+                builder.setContentTitle(mXmppConnectionService.getString(R.string.reconnecting_video_call));
+            } else {
+                builder.setContentTitle(mXmppConnectionService.getString(R.string.ongoing_video_call));
+            }
         } else {
             builder.setSmallIcon(R.drawable.ic_call_white_24dp);
-            builder.setContentTitle(mXmppConnectionService.getString(R.string.ongoing_call));
+            if (ongoingCall.reconnecting) {
+                builder.setContentTitle(mXmppConnectionService.getString(R.string.reconnecting_call));
+            } else {
+                builder.setContentTitle(mXmppConnectionService.getString(R.string.ongoing_call));
+            }
         }
         builder.setContentText(id.account.getRoster().getContact(id.with).getDisplayName());
         builder.setVisibility(NotificationCompat.VISIBILITY_PUBLIC);
@@ -1214,17 +1227,18 @@ public class NotificationService {
                         .setSemanticAction(NotificationCompat.Action.SEMANTIC_ACTION_MARK_AS_READ)
                         .setShowsUserInterface(false)
                         .build();
-                String replyLabel = mXmppConnectionService.getString(R.string.reply);
-                NotificationCompat.Action replyAction = new NotificationCompat.Action.Builder(
+                final String replyLabel = mXmppConnectionService.getString(R.string.reply);
+                final String lastMessageUuid = Iterables.getLast(messages).getUuid();
+                final NotificationCompat.Action replyAction = new NotificationCompat.Action.Builder(
                         R.drawable.ic_reply_white_24dp,
                         replyLabel,
-                        createReplyIntent(conversation, false))
+                        createReplyIntent(conversation, lastMessageUuid, false))
                         .setSemanticAction(NotificationCompat.Action.SEMANTIC_ACTION_REPLY)
                         .setShowsUserInterface(false)
                         .addRemoteInput(remoteInput).build();
-                NotificationCompat.Action wearReplyAction = new NotificationCompat.Action.Builder(R.drawable.ic_wear_reply,
+                final NotificationCompat.Action wearReplyAction = new NotificationCompat.Action.Builder(R.drawable.ic_wear_reply,
                         replyLabel,
-                        createReplyIntent(conversation, true)).addRemoteInput(remoteInput).build();
+                        createReplyIntent(conversation, lastMessageUuid, true)).addRemoteInput(remoteInput).build();
                 mBuilder.extend(new NotificationCompat.WearableExtender().addAction(wearReplyAction));
                 int addedActionsCount = 1;
                 mBuilder.addAction(markReadAction);
@@ -1505,13 +1519,14 @@ public class NotificationService {
         return PendingIntent.getService(mXmppConnectionService, 1, intent, 0);
     }
 
-    private PendingIntent createReplyIntent(Conversation conversation, boolean dismissAfterReply) {
+    private PendingIntent createReplyIntent(final Conversation conversation, final String lastMessageUuid, final boolean dismissAfterReply) {
         final Intent intent = new Intent(mXmppConnectionService, XmppConnectionService.class);
         intent.setAction(XmppConnectionService.ACTION_REPLY_TO_CONVERSATION);
         intent.putExtra("uuid", conversation.getUuid());
         intent.putExtra("dismiss_notification", dismissAfterReply);
+        intent.putExtra("last_message_uuid", lastMessageUuid);
         final int id = generateRequestCode(conversation, dismissAfterReply ? 12 : 14);
-        return PendingIntent.getService(mXmppConnectionService, id, intent, 0);
+        return PendingIntent.getService(mXmppConnectionService, id, intent, PendingIntent.FLAG_UPDATE_CURRENT);
     }
 
     private PendingIntent createReadPendingIntent(Conversation conversation) {

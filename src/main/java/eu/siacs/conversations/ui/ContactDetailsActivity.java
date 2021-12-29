@@ -1,5 +1,7 @@
 package eu.siacs.conversations.ui;
 
+import static eu.siacs.conversations.ui.util.IntroHelper.showIntro;
+
 import android.Manifest;
 import android.content.ActivityNotFoundException;
 import android.content.Context;
@@ -7,7 +9,6 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
-import android.graphics.PorterDuff;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
@@ -28,8 +29,6 @@ import android.widget.CompoundButton;
 import android.widget.CompoundButton.OnCheckedChangeListener;
 import android.widget.ImageButton;
 import android.widget.TextView;
-import eu.siacs.conversations.utils.CryptoHelper;
-
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.ActionBar;
@@ -84,8 +83,6 @@ import eu.siacs.conversations.xmpp.jingle.OngoingRtpSession;
 import eu.siacs.conversations.xmpp.jingle.RtpCapability;
 import me.drakeet.support.toast.ToastCompat;
 
-import static eu.siacs.conversations.ui.util.IntroHelper.showIntro;
-
 public class ContactDetailsActivity extends OmemoActivity implements OnAccountUpdate, OnRosterUpdate, OnUpdateBlocklist, OnKeyStatusUpdated, OnMediaLoaded {
     public static final String ACTION_VIEW_CONTACT = "view_contact";
     private final int REQUEST_SYNC_CONTACTS = 0x28cf;
@@ -102,6 +99,7 @@ public class ContactDetailsActivity extends OmemoActivity implements OnAccountUp
         @Override
         public void onClick(DialogInterface dialog, int which) {
             xmppConnectionService.deleteContactOnServer(contact);
+            recreate();
         }
     };
     private OnCheckedChangeListener mOnSendCheckedChange = new OnCheckedChangeListener() {
@@ -161,6 +159,8 @@ public class ContactDetailsActivity extends OmemoActivity implements OnAccountUp
     }
 
     private void showAddToPhoneBookDialog() {
+        //TODO check if isQuicksy and contact is on quicksy.im domain
+        // store in final boolean. show different message. use phone number for add
         final AlertDialog.Builder builder = new AlertDialog.Builder(this);
         builder.setTitle(getString(R.string.action_add_phone_book));
         builder.setMessage(getString(R.string.add_phone_book_text, contact.getJid().toEscapedString()));
@@ -170,6 +170,8 @@ public class ContactDetailsActivity extends OmemoActivity implements OnAccountUp
             intent.setType(Contacts.CONTENT_ITEM_TYPE);
             intent.putExtra(Intents.Insert.IM_HANDLE, contact.getJid().toEscapedString());
             intent.putExtra(Intents.Insert.IM_PROTOCOL, CommonDataKinds.Im.PROTOCOL_JABBER);
+            //TODO for modern use we want PROTOCOL_CUSTOM and an extra field with a value of 'XMPP'
+            // however we don’t have such a field and thus have to use the legacy PROTOCOL_JABBER
             intent.putExtra("finishActivityOnSaveCompleted", true);
             try {
                 startActivityForResult(intent, 0);
@@ -319,6 +321,7 @@ public class ContactDetailsActivity extends OmemoActivity implements OnAccountUp
 
     @Override
     public void onRequestPermissionsResult(int requestCode, @NonNull String permissions[], @NonNull int[] grantResults) {
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults);
         if (grantResults.length > 0)
             if (grantResults[0] == PackageManager.PERMISSION_GRANTED) {
                 if (requestCode == REQUEST_SYNC_CONTACTS && xmppConnectionServiceBound) {
@@ -553,7 +556,7 @@ public class ContactDetailsActivity extends OmemoActivity implements OnAccountUp
             binding.detailsReceivePresence.setOnCheckedChangeListener(null);
             binding.addContactButton.setVisibility(View.VISIBLE);
             binding.addContactButton.setText(getString(R.string.action_delete_contact));
-            binding.addContactButton.getBackground().setColorFilter(getWarningButtonColor(), PorterDuff.Mode.MULTIPLY);
+            binding.addContactButton.getBackground().setTint(getWarningButtonColor());
             binding.addContactButton.setTextColor(getWarningTextColor());
             binding.addContactButton.setOnClickListener(view -> {
                 final AlertDialog.Builder deleteFromRosterDialog = new AlertDialog.Builder(ContactDetailsActivity.this);
@@ -677,26 +680,6 @@ public class ContactDetailsActivity extends OmemoActivity implements OnAccountUp
         binding.detailsContactKeys.removeAllViews();
         boolean hasKeys = false;
         LayoutInflater inflater = (LayoutInflater) getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-        if (Config.supportOtr()) {
-            for (final String otrFingerprint : contact.getOtrFingerprints()) {
-                hasKeys = true;
-                View view = inflater.inflate(R.layout.contact_key, binding.detailsContactKeys, false);
-                TextView key = view.findViewById(R.id.key);
-                TextView keyType = view.findViewById(R.id.key_type);
-                ImageButton removeButton = view
-                        .findViewById(R.id.button_remove);
-                removeButton.setVisibility(View.VISIBLE);
-                key.setText(CryptoHelper.prettifyFingerprint(otrFingerprint));
-                if (otrFingerprint != null && otrFingerprint.equalsIgnoreCase(messageFingerprint)) {
-                    keyType.setText(R.string.otr_fingerprint_selected_message);
-                    keyType.setTextColor(ContextCompat.getColor(this, R.color.accent));
-                } else {
-                    keyType.setText(R.string.otr_fingerprint);
-                }
-                binding.detailsContactKeys.addView(view);
-                removeButton.setOnClickListener(v -> confirmToDeleteFingerprint(otrFingerprint));
-            }
-        }
         final AxolotlService axolotlService = contact.getAccount().getAxolotlService();
         if (Config.supportOmemo() && axolotlService != null) {
             final Collection<XmppAxolotlSession> sessions = axolotlService.findSessionsForContact(contact);
@@ -784,20 +767,6 @@ public class ContactDetailsActivity extends OmemoActivity implements OnAccountUp
                 ToastCompat.makeText(this, R.string.no_application_found_to_view_contact, ToastCompat.LENGTH_SHORT).show();
             }
         }
-    }
-    protected void confirmToDeleteFingerprint(final String fingerprint) {
-        final AlertDialog.Builder builder = new AlertDialog.Builder(this);
-        builder.setTitle(R.string.delete_fingerprint);
-        builder.setMessage(R.string.sure_delete_fingerprint);
-        builder.setNegativeButton(R.string.cancel, null);
-        builder.setPositiveButton(R.string.delete,
-                (dialog, which) -> {
-                    if (contact.deleteOtrFingerprint(fingerprint)) {
-                        populateView();
-                        xmppConnectionService.syncRosterToDisk(contact.getAccount());
-                    }
-                });
-        builder.create().show();
     }
 
     public void onBackendConnected() {

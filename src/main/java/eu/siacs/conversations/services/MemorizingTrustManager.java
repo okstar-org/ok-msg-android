@@ -67,8 +67,8 @@ import java.security.cert.X509Certificate;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Enumeration;
-import java.util.Locale;
 import java.util.List;
+import java.util.Locale;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import java.util.regex.Pattern;
@@ -95,6 +95,7 @@ import eu.siacs.conversations.ui.MemorizingActivity;
  * opening sockets!
  */
 public class MemorizingTrustManager {
+
     private static final SimpleDateFormat DATE_FORMAT = new SimpleDateFormat("yyyy-MM-dd", Locale.US);
 
     final static String DECISION_INTENT = "de.duenndns.ssl.DECISION";
@@ -358,6 +359,7 @@ public class MemorizingTrustManager {
         }
     }
 
+
     private void checkCertTrusted(X509Certificate[] chain, String authType, String domain, boolean isServer, boolean interactive)
             throws CertificateException {
         LOGGER.log(Level.FINE, "checkCertTrusted(" + chain + ", " + authType + ", " + isServer + ")");
@@ -525,6 +527,7 @@ public class MemorizingTrustManager {
     }
 
     private void certDetails(final StringBuffer si, final X509Certificate c, final boolean showValidFor) {
+
         si.append("\n");
         if (showValidFor) {
             try {
@@ -574,6 +577,7 @@ public class MemorizingTrustManager {
         }
         return si.toString();
     }
+
     /**
      * Returns the top-most entry of the activity stack.
      *
@@ -646,6 +650,7 @@ public class MemorizingTrustManager {
     public X509TrustManager getInteractive() {
         return new InteractiveMemorizingTrustManager(null);
     }
+
     private class NonInteractiveMemorizingTrustManager implements X509TrustManager {
 
         private final String domain;

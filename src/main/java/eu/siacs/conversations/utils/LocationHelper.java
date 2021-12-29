@@ -19,8 +19,8 @@ public final class LocationHelper {
 
         // Check whether the new location fix is newer or older
         final long timeDelta = location.getTime() - prevLoc.getTime();
-        final boolean isSignificantlyNewer = timeDelta > Config.LOCATION_FIX_SIGNIFICANT_TIME_DELTA;
-        final boolean isSignificantlyOlder = timeDelta < -Config.LOCATION_FIX_SIGNIFICANT_TIME_DELTA;
+        final boolean isSignificantlyNewer = timeDelta > Config.Map.LOCATION_FIX_SIGNIFICANT_TIME_DELTA;
+        final boolean isSignificantlyOlder = timeDelta < -Config.Map.LOCATION_FIX_SIGNIFICANT_TIME_DELTA;
         final boolean isNewer = timeDelta > 0;
 
         if (isSignificantlyNewer) {

@@ -49,7 +49,7 @@ public class GeoHelper {
         } catch (NumberFormatException nfe) {
             return null;
         }
-        return getMappreviewHost(activity) + "?center=" + latitude + "," + longitude + "&size=500x500&markers=" + latitude + "," + longitude + "&zoom=" + Config.DEFAULT_ZOOM;
+        return getMappreviewHost(activity) + "?center=" + latitude + "," + longitude + "&size=500x500&markers=" + latitude + "," + longitude + "&zoom=" + Config.Map.FINAL_ZOOM_LEVEL;
     }
 
     private static String getMappreviewHost(Activity activity) {
@@ -72,7 +72,7 @@ public class GeoHelper {
         try {
             return URLUtil.isValidUrl(urlstring) && Patterns.WEB_URL.matcher(urlstring).matches();
         } catch (Exception e) {
-            Log.d(Config.LOGTAG, "Could not use custom mappreview host and using monocles chat for mappreview " + e);
+            Log.d(Config.LOGTAG, "Could not use custom mappreview host and using blabber.im for mappreview " + e);
         }
         return false;
     }
@@ -110,14 +110,14 @@ public class GeoHelper {
         final Conversational conversation = message.getConversation();
         final String label = getLabel(context, message);
 
-        Intent locationPluginIntent = new Intent(context, ShowLocationActivity.class);
+        final Intent locationPluginIntent = new Intent(context, ShowLocationActivity.class);
         locationPluginIntent.putExtra("latitude", geoPoint.getLatitude());
         locationPluginIntent.putExtra("longitude", geoPoint.getLongitude());
         if (message.getStatus() != Message.STATUS_RECEIVED) {
             locationPluginIntent.putExtra("jid", conversation.getAccount().getJid().toString());
             locationPluginIntent.putExtra("name", context.getString(R.string.me));
         } else {
-            Contact contact = message.getContact();
+            final Contact contact = message.getContact();
             if (contact != null) {
                 locationPluginIntent.putExtra("name", contact.getDisplayName());
                 locationPluginIntent.putExtra("jid", contact.getJid().toString());

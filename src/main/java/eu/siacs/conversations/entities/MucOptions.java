@@ -1,6 +1,5 @@
 package eu.siacs.conversations.entities;
 
-import android.annotation.SuppressLint;
 import android.text.TextUtils;
 
 import androidx.annotation.NonNull;
@@ -25,7 +24,6 @@ import eu.siacs.conversations.xmpp.forms.Data;
 import eu.siacs.conversations.xmpp.forms.Field;
 import eu.siacs.conversations.xmpp.pep.Avatar;
 
-@SuppressLint("DefaultLocale")
 public class MucOptions {
 
     public static final String STATUS_CODE_SELF_PRESENCE = "110";
@@ -211,6 +209,10 @@ public class MucOptions {
 
     public boolean moderated() {
         return conversation.getBooleanAttribute(Conversation.ATTRIBUTE_MODERATED, false);
+    }
+
+    public boolean stableId() {
+        return getFeatures().contains("http://jabber.org/protocol/muc#stable_id");
     }
 
     public User deleteUser(Jid jid) {
@@ -630,8 +632,8 @@ public class MucOptions {
         OUTCAST(0, R.string.outcast),
         NONE(1, R.string.no_affiliation);
 
-        private int resId;
-        private int rank;
+        private final int resId;
+        private final int rank;
 
         Affiliation(int rank, int resId) {
             this.resId = resId;
@@ -673,8 +675,8 @@ public class MucOptions {
         PARTICIPANT(R.string.participant, 2),
         NONE(R.string.no_role, 0);
 
-        private int resId;
-        private int rank;
+        private final int resId;
+        private final int rank;
 
         Role(int resId, int rank) {
             this.resId = resId;
@@ -741,7 +743,7 @@ public class MucOptions {
         private Jid fullJid;
         private long pgpKeyId = 0;
         private Avatar avatar;
-        private MucOptions options;
+        private final MucOptions options;
         private ChatState chatState = Config.DEFAULT_CHAT_STATE;
 
         public User(MucOptions options, Jid fullJid) {
@@ -852,7 +854,7 @@ public class MucOptions {
 
         @Override
         public String toString() {
-            return "[fulljid:" + String.valueOf(fullJid) + ",realjid:" + String.valueOf(realJid) + ",affiliation" + affiliation.toString() + "]";
+            return "[fulljid:" + fullJid + ",realjid:" + realJid + ",affiliation" + affiliation.toString() + "]";
         }
 
         public boolean realJidMatchesAccount() {

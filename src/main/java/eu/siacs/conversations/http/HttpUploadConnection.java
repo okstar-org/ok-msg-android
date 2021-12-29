@@ -1,5 +1,7 @@
 package eu.siacs.conversations.http;
 
+import static eu.siacs.conversations.http.HttpConnectionManager.FileTransferExecutor;
+
 import android.util.Log;
 
 import com.google.common.util.concurrent.FutureCallback;
@@ -29,8 +31,6 @@ import okhttp3.OkHttpClient;
 import okhttp3.Request;
 import okhttp3.RequestBody;
 import okhttp3.Response;
-
-import static eu.siacs.conversations.http.HttpConnectionManager.FileTransferExecutor;
 
 public class HttpUploadConnection implements Transferable, AbstractConnectionManager.ProgressListener {
 
@@ -185,26 +185,26 @@ public class HttpUploadConnection implements Transferable, AbstractConnectionMan
             @Override
             public void onResponse(@NotNull Call call, @NotNull Response response)  {
                 final int code = response.code();
-            if (code == 200 || code == 201) {
-                Log.d(Config.LOGTAG, "finished uploading file");
-                final String get;
-                if (key != null) {
+                if (code == 200 || code == 201) {
+                    Log.d(Config.LOGTAG, "finished uploading file");
+                    final String get;
+                    if (key != null) {
                         get = AesGcmURL.toAesGcmUrl(slot.get.newBuilder().fragment(CryptoHelper.bytesToHex(key)).build());
                     } else {
                         get = slot.get.toString();
+                    }
+                    mXmppConnectionService.getFileBackend().updateFileParams(message, get);
+                    mXmppConnectionService.getFileBackend().updateMediaScanner(file);
+                    finish();
+                    if (!message.isPrivateMessage()) {
+                        message.setCounterpart(message.getConversation().getJid().asBareJid());
+                    }
+                    mXmppConnectionService.resendMessage(message, delayed);
+                } else {
+                    Log.d(Config.LOGTAG, "http upload failed because response code was " + code);
+                    fail("http upload failed because response code was " + code);
                 }
-                mXmppConnectionService.getFileBackend().updateFileParams(message, get);
-                mXmppConnectionService.getFileBackend().updateMediaScanner(file);
-                finish();
-                if (!message.isPrivateMessage()) {
-                    message.setCounterpart(message.getConversation().getJid().asBareJid());
-                }
-                mXmppConnectionService.resendMessage(message, delayed);
-            } else {
-                Log.d(Config.LOGTAG, "http upload failed because response code was " + code);
-                fail("http upload failed because response code was " + code);
             }
-        }
         });
     }
 

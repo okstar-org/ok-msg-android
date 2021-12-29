@@ -12,7 +12,6 @@ import java.util.List;
 import java.util.Locale;
 import java.util.TimeZone;
 
-import eu.siacs.conversations.BuildConfig;
 import eu.siacs.conversations.Config;
 import eu.siacs.conversations.R;
 import eu.siacs.conversations.crypto.axolotl.AxolotlService;
@@ -54,11 +53,11 @@ public abstract class AbstractGenerator {
     private final String[] MESSAGE_CORRECTION_FEATURES = {
             "urn:xmpp:message-correct:0"
     };
+    private final String[] MESSAGE_RETRACTION_FEATURES = {
+            "urn:xmpp:message-retract:0"
+    };
     private final String[] PRIVACY_SENSITIVE = {
             "urn:xmpp:time" //XEP-0202: Entity Time leaks time zone
-    };
-    private final String[] OTR = {
-            "urn:xmpp:otr:0"
     };
     private final String[] VOIP_NAMESPACES = {
             Namespace.JINGLE_TRANSPORT_ICE_UDP,
@@ -70,6 +69,7 @@ public abstract class AbstractGenerator {
     };
 
     protected XmppConnectionService mXmppConnectionService;
+    private String mVersion = null;
 
     AbstractGenerator(XmppConnectionService service) {
         this.mXmppConnectionService = service;
@@ -81,11 +81,18 @@ public abstract class AbstractGenerator {
     }
 
     String getIdentityVersion() {
-        return BuildConfig.VERSION_NAME;
+        if (mVersion == null) {
+            this.mVersion = PhoneHelper.getVersionName(mXmppConnectionService);
+        }
+        return this.mVersion;
     }
 
     public String getIdentityName() {
-        return BuildConfig.APP_NAME;
+        return mXmppConnectionService.getString(R.string.app_name) + ' ' + getIdentityVersion();
+    }
+
+    public String getUserAgent() {
+        return System.getProperty("http.agent");
     }
 
     String getIdentityType() {
@@ -122,15 +129,15 @@ public abstract class AbstractGenerator {
         if (mXmppConnectionService.allowMessageCorrection()) {
             features.addAll(Arrays.asList(MESSAGE_CORRECTION_FEATURES));
         }
+        if (mXmppConnectionService.allowMessageRetraction()) {
+            features.addAll(Arrays.asList(MESSAGE_RETRACTION_FEATURES));
+        }
         if (Config.supportOmemo()) {
             features.add(AxolotlService.PEP_DEVICE_LIST_NOTIFY);
         }
         if (!mXmppConnectionService.useTorToConnect() && !account.isOnion()) {
             features.addAll(Arrays.asList(PRIVACY_SENSITIVE));
             features.addAll(Arrays.asList(VOIP_NAMESPACES));
-        }
-        if (Config.supportOtr()) {
-            features.addAll(Arrays.asList(OTR));
         }
         if (mXmppConnectionService.broadcastLastActivity()) {
             features.add(Namespace.IDLE);

@@ -1,8 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <layout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto">
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
 
-    <RelativeLayout xmlns:tools="http://schemas.android.com/tools"
+    <RelativeLayout
         android:id="@+id/conversations_fragment"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
@@ -152,11 +153,92 @@
                     android:contentDescription="@string/send_message"
                     android:src="@drawable/ic_send_text_offline" />
             </RelativeLayout>
+
+            <RelativeLayout
+                android:id="@+id/textformat"
+                android:layout_width="match_parent"
+                android:layout_height="48dp"
+                android:layout_below="@+id/textsend"
+                android:background="?attr/color_background_tertiary">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:gravity="center"
+                    android:orientation="horizontal">
+
+                    <TextView
+                        android:id="@+id/me"
+                        android:layout_width="48dp"
+                        android:layout_height="48dp"
+                        android:background="?attr/selectableItemBackgroundBorderless"
+                        android:contentDescription="@string/me"
+                        android:gravity="center"
+                        android:text="/me"
+                        android:textSize="18sp"
+                        android:visibility="visible" />
+
+                    <ImageButton
+                        android:id="@+id/bold"
+                        android:layout_width="48dp"
+                        android:layout_height="48dp"
+                        android:background="?attr/selectableItemBackgroundBorderless"
+                        android:contentDescription="@string/bold"
+                        android:src="?attr/ic_bold"
+                        android:visibility="visible" />
+
+                    <ImageButton
+                        android:id="@+id/italic"
+                        android:layout_width="48dp"
+                        android:layout_height="48dp"
+                        android:background="?attr/selectableItemBackgroundBorderless"
+                        android:contentDescription="@string/italic"
+                        android:src="?attr/ic_italic"
+                        android:visibility="visible" />
+
+                    <ImageButton
+                        android:id="@+id/monospace"
+                        android:layout_width="48dp"
+                        android:layout_height="48dp"
+                        android:background="?attr/selectableItemBackgroundBorderless"
+                        android:contentDescription="@string/monospace"
+                        android:src="?attr/ic_monospace"
+                        android:visibility="visible" />
+
+                    <ImageButton
+                        android:id="@+id/strikethrough"
+                        android:layout_width="48dp"
+                        android:layout_height="48dp"
+                        android:background="?attr/selectableItemBackgroundBorderless"
+                        android:contentDescription="@string/strikethrough"
+                        android:src="?attr/ic_strikethrough"
+                        android:visibility="visible" />
+
+                    <ImageButton
+                        android:id="@+id/help"
+                        android:layout_width="48dp"
+                        android:layout_height="48dp"
+                        android:background="?attr/selectableItemBackgroundBorderless"
+                        android:contentDescription="@string/format_text"
+                        android:src="?attr/ic_help"
+                        android:visibility="visible" />
+
+                    <ImageButton
+                        android:id="@+id/close"
+                        android:layout_width="24dp"
+                        android:layout_height="24dp"
+                        android:background="?attr/selectableItemBackgroundBorderless"
+                        android:contentDescription="@string/close"
+                        android:src="?attr/ic_close"
+                        android:visibility="visible" />
+                </LinearLayout>
+            </RelativeLayout>
+
         </RelativeLayout>
 
         <RelativeLayout
             android:id="@+id/snackbar"
-            android:layout_width="fill_parent"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_above="@+id/input"
             android:layout_marginStart="8dp"
@@ -166,6 +248,7 @@
             android:layout_marginBottom="4dp"
             android:background="@drawable/snackbar"
             android:minHeight="48dp"
+            android:orientation="horizontal"
             android:visibility="visible">
 
             <TextView
@@ -197,7 +280,7 @@
                 android:textAllCaps="true"
                 android:textAppearance="@style/TextAppearance.Conversations.Body1.OnDark"
                 android:textStyle="bold" />
-        </RelativeLayout>
 
+        </RelativeLayout>
     </RelativeLayout>
 </layout>

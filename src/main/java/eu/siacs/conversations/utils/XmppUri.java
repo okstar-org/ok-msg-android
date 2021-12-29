@@ -4,18 +4,22 @@ import android.net.Uri;
 
 import androidx.annotation.NonNull;
 
+import com.google.common.base.CharMatcher;
+import com.google.common.collect.Collections2;
 import com.google.common.collect.ImmutableList;
 import com.google.common.collect.ImmutableMap;
 
 import java.io.UnsupportedEncodingException;
 import java.net.URLDecoder;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 import java.util.Locale;
 import java.util.Map;
 import java.util.regex.Pattern;
 
+import eu.siacs.conversations.Config;
 import eu.siacs.conversations.xmpp.Jid;
 
 public class XmppUri {
@@ -138,10 +142,10 @@ public class XmppUri {
             return;
         }
         this.uri = uri;
-        String scheme = uri.getScheme();
-        String host = uri.getHost();
+        final String scheme = uri.getScheme();
+        final String host = uri.getHost();
         List<String> segments = uri.getPathSegments();
-        if ("https".equalsIgnoreCase(scheme) && "monocles.de".equalsIgnoreCase(host)) {
+        if ("https".equalsIgnoreCase(scheme) && Config.INVITE_DOMAIN.equalsIgnoreCase(host)) {
             if (segments.size() >= 2 && segments.get(1).contains("@")) {
                 // sample : https://conversations.im/i/foo@bar.com
                 try {
@@ -172,7 +176,7 @@ public class XmppUri {
                 }
             }
             this.fingerprints = parseFingerprints(parameters);
-        } else if ("imto".equalsIgnoreCase(scheme)) {
+        } else if ("imto".equalsIgnoreCase(scheme) && Arrays.asList("xmpp", "jabber").contains(uri.getHost())) {
             // sample: imto://xmpp/foo@bar.com
             try {
                 jid = URLDecoder.decode(uri.getEncodedPath(), "UTF-8").split("/")[1].trim();
@@ -194,7 +198,10 @@ public class XmppUri {
     }
 
     public boolean isAction(final String action) {
-        return parameters.containsKey(action);
+        return Collections2.transform(
+                parameters.keySet(),
+                s -> CharMatcher.inRange('a', 'z').or(CharMatcher.inRange('A', 'Z')).retainFrom(s)
+        ).contains(action);
     }
 
     public Jid getJid() {

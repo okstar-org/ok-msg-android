@@ -229,31 +229,31 @@ public class MessageArchiveService implements OnAdvancedStreamFeaturesLoaded {
     private void execute(final Query query) {
         final Account account = query.getAccount();
         if (account.getStatus() == Account.State.ONLINE) {
-			final Conversation conversation = query.getConversation();
-			if (conversation != null && conversation.getStatus() == Conversation.STATUS_ARCHIVED) {
-				throw new IllegalStateException("Attempted to run MAM query for archived conversation");
-			}
+            final Conversation conversation = query.getConversation();
+            if (conversation != null && conversation.getStatus() == Conversation.STATUS_ARCHIVED) {
+                throw new IllegalStateException("Attempted to run MAM query for archived conversation");
+            }
             Log.d(Config.LOGTAG, account.getJid().asBareJid().toString() + ": running mam query " + query.toString());
-			final IqPacket packet = this.mXmppConnectionService.getIqGenerator().queryMessageArchiveManagement(query);
+            final IqPacket packet = this.mXmppConnectionService.getIqGenerator().queryMessageArchiveManagement(query);
             this.mXmppConnectionService.sendIqPacket(account, packet, (a, p) -> {
-				final Element fin = p.findChild("fin", query.version.namespace);
+                final Element fin = p.findChild("fin", query.version.namespace);
                 if (p.getType() == IqPacket.TYPE.TIMEOUT) {
-					synchronized (this.queries) {
-						this.queries.remove(query);
+                    synchronized (this.queries) {
+                        this.queries.remove(query);
                         if (query.hasCallback()) {
                             query.callback(false);
                         }
                     }
                 } else if (p.getType() == IqPacket.TYPE.RESULT && fin != null) {
-					final boolean running;
-					synchronized (this.queries) {
-						running = this.queries.contains(query);
-					}
-					if (running) {
-						processFin(query, fin);
-					} else {
-						Log.d(Config.LOGTAG,account.getJid().asBareJid()+": ignoring MAM iq result because query had been killed");
-					}
+                    final boolean running;
+                    synchronized (this.queries) {
+                        running = this.queries.contains(query);
+                    }
+                    if (running) {
+                        processFin(query, fin);
+                    } else {
+                        Log.d(Config.LOGTAG,account.getJid().asBareJid()+": ignoring MAM iq result because query had been killed");
+                    }
                 } else if (p.getType() == IqPacket.TYPE.RESULT && query.isLegacy()) {
                     //do nothing
                 } else {
@@ -268,11 +268,11 @@ public class MessageArchiveService implements OnAdvancedStreamFeaturesLoaded {
         }
     }
 
-	private void finalizeQuery(final Query query, boolean done) {
+    private void finalizeQuery(final Query query, boolean done) {
         synchronized (this.queries) {
-			if (!this.queries.remove(query)) {
-				throw new IllegalStateException("Unable to remove query from queries");
-			}
+            if (!this.queries.remove(query)) {
+                throw new IllegalStateException("Unable to remove query from queries");
+            }
         }
         final Conversation conversation = query.getConversation();
         if (conversation != null) {
@@ -403,7 +403,7 @@ public class MessageArchiveService implements OnAdvancedStreamFeaturesLoaded {
             }
         }
         synchronized (this.queries) {
-			for (final Query q : queries) {
+            for (final Query q : queries) {
                 if (q.conversation == conversation) {
                     toBeKilled.add(q);
                 }
@@ -627,7 +627,7 @@ public class MessageArchiveService implements OnAdvancedStreamFeaturesLoaded {
             }
         }
 
-		@NotNull
+        @NotNull
         @Override
         public String toString() {
             StringBuilder builder = new StringBuilder();

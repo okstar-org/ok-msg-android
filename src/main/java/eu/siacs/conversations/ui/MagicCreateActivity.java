@@ -5,36 +5,30 @@ import android.content.pm.ActivityInfo;
 import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextWatcher;
-import android.text.method.LinkMovementMethod;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.CompoundButton;
-import android.widget.TextView;
 
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.widget.Toolbar;
 import androidx.databinding.DataBindingUtil;
 
 import java.security.SecureRandom;
-import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
+import java.util.concurrent.ExecutionException;
 
 import eu.siacs.conversations.Config;
 import eu.siacs.conversations.R;
 import eu.siacs.conversations.databinding.ActivityMagicCreateBinding;
 import eu.siacs.conversations.entities.Account;
+import eu.siacs.conversations.services.ProviderService;
 import eu.siacs.conversations.utils.CryptoHelper;
 import eu.siacs.conversations.utils.InstallReferrerUtils;
 import eu.siacs.conversations.xmpp.Jid;
 
 public class MagicCreateActivity extends XmppActivity implements TextWatcher, AdapterView.OnItemSelectedListener, CompoundButton.OnCheckedChangeListener {
-
-    private void setupHyperlink() {
-        TextView linkTextView = findViewById(R.id.activity_main_link);
-        linkTextView.setMovementMethod(LinkMovementMethod.getInstance());
-    }
 
     private boolean useOwnProvider = false;
     private boolean registerFromUri = false;
@@ -86,10 +80,17 @@ public class MagicCreateActivity extends XmppActivity implements TextWatcher, Ad
         }
         super.onCreate(savedInstanceState);
         this.binding = DataBindingUtil.setContentView(this, R.layout.activity_magic_create);
-        final List<String> domains = Arrays.asList(getResources().getStringArray(R.array.domains));
+        final List<String> domains = ProviderService.getProviders();
         Collections.sort(domains, String::compareToIgnoreCase);
         final ArrayAdapter<String> adapter = new ArrayAdapter<>(this, android.R.layout.simple_selectable_list_item, domains);
-        int defaultServer = adapter.getPosition("monocles.de");
+        try {
+            if (new ProviderService().execute().get()) {
+                adapter.notifyDataSetChanged();
+            }
+        } catch (ExecutionException | InterruptedException e) {
+            e.printStackTrace();
+        }
+        int defaultServer = adapter.getPosition(Config.DOMAIN.getRandomServer());
         if (registerFromUri && !useOwnProvider && (this.preAuth != null || domain != null)) {
             binding.server.setEnabled(false);
             binding.server.setVisibility(View.GONE);
@@ -188,7 +189,6 @@ public class MagicCreateActivity extends XmppActivity implements TextWatcher, Ad
             }
         });
         binding.username.addTextChangedListener(this);
-        setupHyperlink();
     }
 
     private String updateDomain() {
@@ -230,7 +230,7 @@ public class MagicCreateActivity extends XmppActivity implements TextWatcher, Ad
     private void updateFullJidInformation(String username) {
         if (useOwnProvider && !registerFromUri) {
             this.domain = updateDomain();
-        } else if (!registerFromUri){
+        } else if (!registerFromUri) {
             this.domain = binding.server.getSelectedItem().toString();
         }
         if (username.trim().isEmpty()) {

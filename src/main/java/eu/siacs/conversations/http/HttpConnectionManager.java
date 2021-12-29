@@ -22,7 +22,6 @@ import java.util.concurrent.TimeUnit;
 import javax.net.ssl.SSLSocketFactory;
 import javax.net.ssl.X509TrustManager;
 
-import eu.siacs.conversations.BuildConfig;
 import eu.siacs.conversations.Config;
 import eu.siacs.conversations.entities.Account;
 import eu.siacs.conversations.entities.Message;
@@ -55,10 +54,10 @@ public class HttpConnectionManager extends AbstractConnectionManager {
                 .build();
     }
 
-
     public static String getUserAgent() {
-        return String.format("%s/%s", BuildConfig.APP_NAME, BuildConfig.VERSION_NAME);
+        return System.getProperty("http.agent");
     }
+
     public HttpConnectionManager(XmppConnectionService service) {
         super(service);
     }
@@ -149,7 +148,8 @@ public class HttpConnectionManager extends AbstractConnectionManager {
             final SSLSocketFactory sf = new TLSSocketFactory(new X509TrustManager[]{trustManager}, mXmppConnectionService.getRNG());
             builder.sslSocketFactory(sf, trustManager);
             builder.hostnameVerifier(new StrictHostnameVerifier());
-        } catch (final KeyManagementException | NoSuchAlgorithmException ignored) {
+        } catch (final KeyManagementException ignored) {
+        } catch (final NoSuchAlgorithmException ignored) {
         }
     }
 

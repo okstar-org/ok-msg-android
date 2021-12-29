@@ -1,13 +1,9 @@
 package eu.siacs.conversations.ui;
 
-import android.Manifest;
-import android.util.Pair;
-import net.java.otr4j.session.SessionID;
-import java.util.Collections;
-import java.util.Map;
-import java.util.concurrent.atomic.AtomicInteger;
-import eu.siacs.conversations.utils.CryptoHelper;
+import static eu.siacs.conversations.ui.SettingsActivity.USE_BUNDLED_EMOJIS;
+import static eu.siacs.conversations.ui.SettingsActivity.USE_INTERNAL_UPDATER;
 
+import android.Manifest;
 import android.annotation.SuppressLint;
 import android.annotation.TargetApi;
 import android.app.Activity;
@@ -91,6 +87,7 @@ import eu.siacs.conversations.services.AvatarService;
 import eu.siacs.conversations.services.BarcodeProvider;
 import eu.siacs.conversations.services.EmojiService;
 import eu.siacs.conversations.services.QuickConversationsService;
+import eu.siacs.conversations.services.UpdateService;
 import eu.siacs.conversations.services.XmppConnectionService;
 import eu.siacs.conversations.services.XmppConnectionService.XmppConnectionBinder;
 import eu.siacs.conversations.ui.util.AvatarWorkerTask;
@@ -108,10 +105,6 @@ import eu.siacs.conversations.xmpp.OnUpdateBlocklist;
 import eu.siacs.conversations.xmpp.XmppConnection;
 import me.drakeet.support.toast.ToastCompat;
 import pl.droidsonroids.gif.GifDrawable;
-
-import static eu.siacs.conversations.ui.SettingsActivity.ENABLE_OTR_ENCRYPTION;
-import static eu.siacs.conversations.ui.SettingsActivity.USE_BUNDLED_EMOJIS;
-import static eu.siacs.conversations.ui.SettingsActivity.USE_INTERNAL_UPDATER;
 
 public abstract class XmppActivity extends ActionBarActivity {
 
@@ -426,17 +419,7 @@ public abstract class XmppActivity extends ActionBarActivity {
 
     public void selectPresence(final Conversation conversation, final PresenceSelector.OnPresenceSelected listener) {
         final Contact contact = conversation.getContact();
-        if (conversation.hasValidOtrSession()) {
-            SessionID id = conversation.getOtrSession().getSessionID();
-            Jid jid;
-            try {
-                jid = Jid.of(id.getAccountID() + "/" + id.getUserID());
-            } catch (IllegalArgumentException e) {
-                jid = null;
-            }
-            conversation.setNextCounterpart(jid);
-            listener.onPresenceSelected();
-        } else if (contact.showInRoster() || contact.isSelf()) {
+        if (contact.showInRoster() || contact.isSelf()) {
             final Presences presences = contact.getPresences();
             if (presences.size() == 0) {
                 if (contact.isSelf()) {
@@ -507,8 +490,8 @@ public abstract class XmppActivity extends ActionBarActivity {
         return getBooleanPreference("unicolored_chatbg", R.bool.use_unicolored_chatbg) || getPreferences().getString(SettingsActivity.THEME, getString(R.string.theme)).equals("black");
     }
 
-    public boolean enableOTR() {
-        return getBooleanPreference(ENABLE_OTR_ENCRYPTION, R.bool.enable_otr);
+    public boolean showDateInQuotes() {
+        return getBooleanPreference("show_date_in_quotes", R.bool.show_date_in_quotes);
     }
 
     public void setBubbleColor(final View v, final int backgroundColor, final int borderColor) {
@@ -788,7 +771,10 @@ public abstract class XmppActivity extends ActionBarActivity {
         builder.setTitle(contact.getJid().toString());
         builder.setMessage(getString(R.string.not_in_roster));
         builder.setNegativeButton(getString(R.string.cancel), null);
-        builder.setPositiveButton(getString(R.string.add_contact), (dialog, which) -> xmppConnectionService.createContact(contact, true));
+        builder.setPositiveButton(getString(R.string.add_contact), (dialog, which) -> {
+            xmppConnectionService.createContact(contact, true);
+            recreate();
+        });
         builder.create().show();
     }
 
@@ -923,56 +909,6 @@ public abstract class XmppActivity extends ActionBarActivity {
         }
     }
 
-    private void showPresenceSelectionDialog(Presences presences, final Conversation conversation, final OnPresenceSelected listener) {
-        final Contact contact = conversation.getContact();
-        final AlertDialog.Builder builder = new AlertDialog.Builder(this);
-        builder.setTitle(getString(R.string.choose_presence));
-        final String[] resourceArray = presences.toResourceArray();
-        Pair<Map<String, String>, Map<String, String>> typeAndName = presences.toTypeAndNameMap();
-        final Map<String, String> resourceTypeMap = typeAndName.first;
-        final Map<String, String> resourceNameMap = typeAndName.second;
-        final String[] readableIdentities = new String[resourceArray.length];
-        final AtomicInteger selectedResource = new AtomicInteger(0);
-        for (int i = 0; i < resourceArray.length; ++i) {
-            String resource = resourceArray[i];
-            if (resource.equals(contact.getLastResource())) {
-                selectedResource.set(i);
-            }
-            String type = resourceTypeMap.get(resource);
-            String name = resourceNameMap.get(resource);
-            if (type != null) {
-                if (Collections.frequency(resourceTypeMap.values(), type) == 1) {
-                    readableIdentities[i] = PresenceSelector.translateType(this, type);
-                } else if (name != null) {
-                    if (Collections.frequency(resourceNameMap.values(), name) == 1
-                            || CryptoHelper.UUID_PATTERN.matcher(resource).matches()) {
-                        readableIdentities[i] = PresenceSelector.translateType(this, type) + "  (" + name + ")";
-                    } else {
-                        readableIdentities[i] = PresenceSelector.translateType(this, type) + " (" + name + " / " + resource + ")";
-                    }
-                } else {
-                    readableIdentities[i] = PresenceSelector.translateType(this, type) + " (" + resource + ")";
-                }
-            } else {
-                readableIdentities[i] = resource;
-            }
-        }
-        builder.setSingleChoiceItems(readableIdentities,
-                selectedResource.get(),
-                (dialog, which) -> selectedResource.set(which));
-        builder.setNegativeButton(R.string.cancel, null);
-        builder.setPositiveButton(R.string.ok, (dialog, which) -> {
-            try {
-                Jid next = Jid.of(contact.getJid().getLocal(), contact.getJid().getDomain(), resourceArray[selectedResource.get()]);
-                conversation.setNextCounterpart(next);
-            } catch (IllegalArgumentException e) {
-                conversation.setNextCounterpart(null);
-            }
-            listener.onPresenceSelected();
-        });
-        builder.create().show();
-    }
-
     protected void onActivityResult(int requestCode, int resultCode, final Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
         if (requestCode == REQUEST_INVITE_TO_CONVERSATION && resultCode == RESULT_OK) {
@@ -1036,14 +972,11 @@ public abstract class XmppActivity extends ActionBarActivity {
             ToastCompat.makeText(this, R.string.no_accounts, ToastCompat.LENGTH_SHORT).show();
             return;
         }
-
-        if (!xmppConnectionService.multipleAccounts()) {
-            Account mAccount = xmppConnectionService.getAccounts().get(0);
-            if (EasyOnboardingInvite.hasAccountSupport(mAccount)) {
-                selectAccountToStartEasyInvite();
-            } else {
-                String user = Jid.ofEscaped(mAccount.getJid()).getLocal();
-                String domain = Jid.ofEscaped(mAccount.getJid()).getDomain().toEscapedString();
+        if (!selectAccountToStartEasyInvite()) {
+            if (!xmppConnectionService.multipleAccounts()) {
+                final Account mAccount = xmppConnectionService.getAccounts().get(0);
+                final String user = Jid.ofEscaped(mAccount.getJid()).getLocal();
+                final String domain = Jid.ofEscaped(mAccount.getJid()).getDomain().toEscapedString();
                 String inviteURL;
                 try {
                     inviteURL = new getAdHocInviteUri(mAccount.getXmppConnection(), mAccount).execute().get();
@@ -1058,40 +991,36 @@ public abstract class XmppActivity extends ActionBarActivity {
                     inviteURL = Config.inviteUserURL + user + "/" + domain;
                 }
                 Log.d(Config.LOGTAG, "Invite uri = " + inviteURL);
-                String inviteText = getString(R.string.InviteText, user);
-                Intent intent = new Intent(android.content.Intent.ACTION_SEND);
+                final String inviteText = getString(R.string.InviteText, user);
+                final Intent intent = new Intent(android.content.Intent.ACTION_SEND);
                 intent.setType("text/plain");
                 intent.putExtra(Intent.EXTRA_SUBJECT, user + " " + getString(R.string.inviteUser_Subject) + " " + getString(R.string.app_name));
                 intent.putExtra(Intent.EXTRA_TEXT, inviteText + "\n\n" + inviteURL);
                 startActivity(Intent.createChooser(intent, getString(R.string.invite_contact)));
                 overridePendingTransition(R.animator.fade_in, R.animator.fade_out);
-            }
-        } else {
-            final AlertDialog.Builder builder = new AlertDialog.Builder(this);
-            builder.setTitle(R.string.chooce_account);
-            final View dialogView = this.getLayoutInflater().inflate(R.layout.choose_account_dialog, null);
-            final Spinner spinner = dialogView.findViewById(R.id.account);
-            builder.setView(dialogView);
-            List<String> mActivatedAccounts = new ArrayList<>();
-            for (Account account : xmppConnectionService.getAccounts()) {
-                if (account.getStatus() != Account.State.DISABLED) {
-                    if (Config.DOMAIN_LOCK != null) {
-                        mActivatedAccounts.add(account.getJid().getLocal());
-                    } else {
-                        mActivatedAccounts.add(account.getJid().asBareJid().toString());
+            } else {
+                final AlertDialog.Builder builder = new AlertDialog.Builder(this);
+                builder.setTitle(R.string.chooce_account);
+                final View dialogView = this.getLayoutInflater().inflate(R.layout.choose_account_dialog, null);
+                final Spinner spinner = dialogView.findViewById(R.id.account);
+                builder.setView(dialogView);
+                List<String> mActivatedAccounts = new ArrayList<>();
+                for (Account account : xmppConnectionService.getAccounts()) {
+                    if (account.getStatus() != Account.State.DISABLED) {
+                        if (Config.DOMAIN_LOCK != null) {
+                            mActivatedAccounts.add(account.getJid().getLocal());
+                        } else {
+                            mActivatedAccounts.add(account.getJid().asBareJid().toString());
+                        }
                     }
                 }
-            }
-            StartConversationActivity.populateAccountSpinner(this, mActivatedAccounts, spinner);
-            builder.setPositiveButton(R.string.ok,
-                    (dialog, id) -> {
-                        String selection = spinner.getSelectedItem().toString();
-                        Account mAccount = xmppConnectionService.findAccountByJid(Jid.of(selection).asBareJid());
-                        if (EasyOnboardingInvite.hasAccountSupport(mAccount)) {
-                            selectAccountToStartEasyInvite();
-                        } else {
-                            String user = Jid.of(mAccount.getJid()).getLocal();
-                            String domain = Jid.of(mAccount.getJid()).getDomain().toEscapedString();
+                StartConversationActivity.populateAccountSpinner(this, mActivatedAccounts, spinner);
+                builder.setPositiveButton(R.string.ok,
+                        (dialog, id) -> {
+                            final String selection = spinner.getSelectedItem().toString();
+                            final Account mAccount = xmppConnectionService.findAccountByJid(Jid.of(selection).asBareJid());
+                            final String user = Jid.of(mAccount.getJid()).getLocal();
+                            final String domain = Jid.of(mAccount.getJid()).getDomain().toEscapedString();
                             String inviteURL;
                             try {
                                 inviteURL = new getAdHocInviteUri(mAccount.getXmppConnection(), mAccount).execute().get();
@@ -1106,30 +1035,31 @@ public abstract class XmppActivity extends ActionBarActivity {
                                 inviteURL = Config.inviteUserURL + user + "/" + domain;
                             }
                             Log.d(Config.LOGTAG, "Invite uri = " + inviteURL);
-                            String inviteText = getString(R.string.InviteText, user);
-                            Intent intent = new Intent(Intent.ACTION_SEND);
+                            final String inviteText = getString(R.string.InviteText, user);
+                            final Intent intent = new Intent(Intent.ACTION_SEND);
                             intent.setType("text/plain");
                             intent.putExtra(Intent.EXTRA_SUBJECT, user + " " + getString(R.string.inviteUser_Subject) + " " + getString(R.string.app_name));
                             intent.putExtra(Intent.EXTRA_TEXT, inviteText + "\n\n" + inviteURL);
                             startActivity(Intent.createChooser(intent, getString(R.string.invite_contact)));
                             overridePendingTransition(R.animator.fade_in, R.animator.fade_out);
-                        }
-                    });
-            builder.setNegativeButton(R.string.cancel, null);
-            builder.create().show();
+                        });
+                builder.setNegativeButton(R.string.cancel, null);
+                builder.create().show();
+            }
         }
     }
 
-    private void selectAccountToStartEasyInvite() {
+    private boolean selectAccountToStartEasyInvite() {
         final List<Account> accounts = EasyOnboardingInvite.getSupportingAccounts(this.xmppConnectionService);
         if (accounts.size() == 0) {
             //This can technically happen if opening the menu item races with accounts reconnecting or something
             ToastCompat.makeText(this, R.string.no_active_accounts_support_this, ToastCompat.LENGTH_LONG).show();
+            return false;
         } else if (accounts.size() == 1) {
             openEasyInviteScreen(accounts.get(0));
         } else {
             final AtomicReference<Account> selectedAccount = new AtomicReference<>(accounts.get(0));
-            final android.app.AlertDialog.Builder alertDialogBuilder = new android.app.AlertDialog.Builder(this);
+            final androidx.appcompat.app.AlertDialog.Builder alertDialogBuilder = new androidx.appcompat.app.AlertDialog.Builder(this);
             alertDialogBuilder.setTitle(R.string.choose_account);
             final String[] asStrings = Collections2.transform(accounts, a -> a.getJid().asBareJid().toEscapedString()).toArray(new String[0]);
             alertDialogBuilder.setSingleChoiceItems(asStrings, 0, (dialog, which) -> selectedAccount.set(accounts.get(which)));
@@ -1137,6 +1067,7 @@ public abstract class XmppActivity extends ActionBarActivity {
             alertDialogBuilder.setPositiveButton(R.string.ok, (dialog, which) -> openEasyInviteScreen(selectedAccount.get()));
             alertDialogBuilder.create().show();
         }
+        return true;
     }
 
     private void openEasyInviteScreen(final Account account) {
@@ -1457,7 +1388,44 @@ public abstract class XmppActivity extends ActionBarActivity {
         return installFromUnknownSource;
     }
 
-
+    protected void openInstallFromUnknownSourcesDialogIfNeeded(boolean showToast) {
+        String ShowToast;
+        if (showToast == true) {
+            ShowToast = "true";
+        } else {
+            ShowToast = "false";
+        }
+        if (!installFromUnknownSourceAllowed() && xmppConnectionService.installedFrom() == null) {
+            final AlertDialog.Builder builder = new AlertDialog.Builder(this);
+            builder.setTitle(R.string.install_from_unknown_sources_disabled);
+            builder.setMessage(R.string.install_from_unknown_sources_disabled_dialog);
+            builder.setPositiveButton(R.string.next, (dialog, which) -> {
+                Intent intent;
+                if (android.os.Build.VERSION.SDK_INT >= 26) {
+                    intent = new Intent(Settings.ACTION_MANAGE_UNKNOWN_APP_SOURCES);
+                    Uri uri = Uri.parse("package:" + getPackageName());
+                    intent.setData(uri);
+                } else {
+                    intent = new Intent(Settings.ACTION_SECURITY_SETTINGS);
+                }
+                Log.d(Config.LOGTAG, "Allow install from unknown sources for Android SDK " + Build.VERSION.SDK_INT + " intent " + intent.toString());
+                try {
+                    startActivityForResult(intent, REQUEST_UNKNOWN_SOURCE_OP);
+                } catch (ActivityNotFoundException e) {
+                    ToastCompat.makeText(XmppActivity.this, R.string.device_does_not_support_unknown_source_op, ToastCompat.LENGTH_SHORT).show();
+                } finally {
+                    UpdateService task = new UpdateService(this, xmppConnectionService.installedFrom(), xmppConnectionService);
+                    task.executeOnExecutor(UpdateService.THREAD_POOL_EXECUTOR, ShowToast);
+                    Log.d(Config.LOGTAG, "AppUpdater started");
+                }
+            });
+            builder.create().show();
+        } else {
+            UpdateService task = new UpdateService(this, xmppConnectionService.installedFrom(), xmppConnectionService);
+            task.executeOnExecutor(UpdateService.THREAD_POOL_EXECUTOR, ShowToast);
+            Log.d(Config.LOGTAG, "AppUpdater started");
+        }
+    }
 
     public void ShowAvatarPopup(final Activity activity, final AvatarService.Avatarable user) {
         final AlertDialog.Builder builder = new AlertDialog.Builder(activity);

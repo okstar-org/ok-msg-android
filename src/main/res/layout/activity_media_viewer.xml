@@ -26,13 +26,13 @@
             android:id="@+id/messageVideoView"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
+            android:visibility="gone"
             app:played_color="?attr/colorAccent"
             app:scrubber_color="?attr/colorAccent"
-            app:show_vr_button="false"
-            app:show_subtitle_button="false"
-            app:show_shuffle_button="false"
             app:show_buffering="never"
-            android:visibility="gone" />
+            app:show_shuffle_button="false"
+            app:show_subtitle_button="false"
+            app:show_vr_button="false" />
 
         <com.leinardi.android.speeddial.SpeedDialOverlayLayout
             android:id="@+id/overlay"
@@ -52,6 +52,7 @@
             app:sdMainFabClosedSrc="@drawable/ic_menu_white_24dp"
             app:sdMainFabOpenedBackgroundColor="?attr/colorAccent"
             app:sdMainFabOpenedSrc="@drawable/ic_close_white_24dp"
-            app:sdOverlayLayout="@id/overlay" />
+            app:sdOverlayLayout="@id/overlay"
+            app:tint="@color/realwhite" />
     </RelativeLayout>
 </layout>

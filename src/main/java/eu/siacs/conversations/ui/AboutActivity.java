@@ -37,7 +37,6 @@ public class AboutActivity extends XmppActivity {
         setContentView(R.layout.activity_about);
         setSupportActionBar(findViewById(R.id.toolbar));
         configureActionBar(getSupportActionBar());
-        setTitle(getString(R.string.title_activity_about_x, getString(R.string.app_name)));
         aboutmessage = findViewById(R.id.aboutmessage);
         libraries = findViewById(R.id.libraries);
         Button privacyButton = findViewById(R.id.show_privacy_policy);

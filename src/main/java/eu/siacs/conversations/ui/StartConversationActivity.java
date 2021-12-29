@@ -9,6 +9,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
+import android.content.res.ColorStateList;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
@@ -31,15 +32,18 @@ import android.widget.AutoCompleteTextView;
 import android.widget.CheckBox;
 import android.widget.EditText;
 import android.widget.ListView;
+import android.widget.PopupMenu;
 import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import androidx.annotation.MenuRes;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.widget.Toolbar;
+import androidx.core.content.ContextCompat;
 import androidx.databinding.DataBindingUtil;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
@@ -49,6 +53,8 @@ import androidx.viewpager.widget.PagerAdapter;
 import androidx.viewpager.widget.ViewPager;
 
 import com.google.android.material.textfield.TextInputLayout;
+import com.leinardi.android.speeddial.SpeedDialActionItem;
+import com.leinardi.android.speeddial.SpeedDialView;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -94,17 +100,17 @@ public class StartConversationActivity extends XmppActivity implements XmppConne
     public int conference_context_id;
     public int contact_context_id;
     private ListPagerAdapter mListPagerAdapter;
-	private final List<ListItem> contacts = new ArrayList<>();
+    private final List<ListItem> contacts = new ArrayList<>();
     private ListItemAdapter mContactsAdapter;
-	private final List<ListItem> conferences = new ArrayList<>();
+    private final List<ListItem> conferences = new ArrayList<>();
     private ListItemAdapter mConferenceAdapter;
-	private final List<String> mActivatedAccounts = new ArrayList<>();
+    private final List<String> mActivatedAccounts = new ArrayList<>();
     private EditText mSearchEditText;
-	private final AtomicBoolean mRequestedContactsPermission = new AtomicBoolean(false);
-	private final AtomicBoolean mOpenedFab = new AtomicBoolean(false);
+    private final AtomicBoolean mRequestedContactsPermission = new AtomicBoolean(false);
+    private final AtomicBoolean mOpenedFab = new AtomicBoolean(false);
     private boolean mHideOfflineContacts = false;
     private boolean createdByViewIntent = false;
-	private final MenuItem.OnActionExpandListener mOnActionExpandListener = new MenuItem.OnActionExpandListener() {
+    private final MenuItem.OnActionExpandListener mOnActionExpandListener = new MenuItem.OnActionExpandListener() {
 
         @Override
         public boolean onMenuItemActionExpand(MenuItem item) {
@@ -133,7 +139,7 @@ public class StartConversationActivity extends XmppActivity implements XmppConne
             return true;
         }
     };
-	private final TextWatcher mSearchTextWatcher = new TextWatcher() {
+    private final TextWatcher mSearchTextWatcher = new TextWatcher() {
 
         @Override
         public void afterTextChanged(Editable editable) {
@@ -149,7 +155,7 @@ public class StartConversationActivity extends XmppActivity implements XmppConne
         }
     };
     private MenuItem mMenuSearchView;
-	private final ListItemAdapter.OnTagClickedListener mOnTagClickedListener = new ListItemAdapter.OnTagClickedListener() {
+    private final ListItemAdapter.OnTagClickedListener mOnTagClickedListener = new ListItemAdapter.OnTagClickedListener() {
         @Override
         public void onTagClicked(String tag) {
             if (mMenuSearchView != null) {
@@ -162,7 +168,7 @@ public class StartConversationActivity extends XmppActivity implements XmppConne
     };
     private Pair<Integer, Intent> mPostponedActivityResult;
     private Toast mToast;
-	private final UiCallback<Conversation> mAdhocConferenceCallback = new UiCallback<Conversation>() {
+    private final UiCallback<Conversation> mAdhocConferenceCallback = new UiCallback<Conversation>() {
         @Override
         public void success(final Conversation conversation) {
             runOnUiThread(() -> {
@@ -182,7 +188,7 @@ public class StartConversationActivity extends XmppActivity implements XmppConne
     };
 
     private ActivityStartConversationBinding binding;
-	private final TextView.OnEditorActionListener mSearchDone = new TextView.OnEditorActionListener() {
+    private final TextView.OnEditorActionListener mSearchDone = new TextView.OnEditorActionListener() {
         @Override
         public boolean onEditorAction(TextView v, int actionId, KeyEvent event) {
             int pos = binding.startConversationViewPager.getCurrentItem();
@@ -263,7 +269,7 @@ public class StartConversationActivity extends XmppActivity implements XmppConne
         Toolbar toolbar = (Toolbar) binding.toolbar;
         setSupportActionBar(toolbar);
         configureActionBar(getSupportActionBar());
-        binding.speedDial.inflate(R.menu.start_conversation_fab_submenu);
+        inflateFab(binding.speedDial, R.menu.start_conversation_fab_submenu);
         binding.tabLayout.setupWithViewPager(binding.startConversationViewPager);
         binding.startConversationViewPager.addOnPageChangeListener(new ViewPager.SimpleOnPageChangeListener() {
             @Override
@@ -330,6 +336,22 @@ public class StartConversationActivity extends XmppActivity implements XmppConne
             }
             return false;
         });
+        binding.speedDial.getMainFab().setSupportImageTintList(ColorStateList.valueOf(getResources().getColor(R.color.realwhite)));
+    }
+
+    private void inflateFab(final SpeedDialView speedDialView, final @MenuRes int menuRes) {
+        speedDialView.clearActionItems();
+        final PopupMenu popupMenu = new PopupMenu(this, new View(this));
+        popupMenu.inflate(menuRes);
+        final Menu menu = popupMenu.getMenu();
+        for (int i = 0; i < menu.size(); i++) {
+            final MenuItem menuItem = menu.getItem(i);
+            final SpeedDialActionItem actionItem = new SpeedDialActionItem.Builder(menuItem.getItemId(), menuItem.getIcon())
+                    .setLabel(menuItem.getTitle() != null ? menuItem.getTitle().toString() : null)
+                    .setFabImageTintColor(ContextCompat.getColor(this, R.color.white))
+                    .create();
+            speedDialView.addActionItem(actionItem);
+        }
     }
 
     public static boolean isValidJid(String input) {
@@ -623,10 +645,10 @@ public class StartConversationActivity extends XmppActivity implements XmppConne
         }
         if (binding.startConversationViewPager.getCurrentItem() == 0) {
             mSearchEditText.setHint(R.string.search_contacts);
-			mSearchEditText.setContentDescription(getString(R.string.search_contacts));
+            mSearchEditText.setContentDescription(getString(R.string.search_contacts));
         } else {
             mSearchEditText.setHint(R.string.search_bookmarks);
-			mSearchEditText.setContentDescription(getString(R.string.search_bookmarks));
+            mSearchEditText.setContentDescription(getString(R.string.search_bookmarks));
         }
     }
 

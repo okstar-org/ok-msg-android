@@ -67,7 +67,7 @@ public class UserAdapter extends ListAdapter<MucOptions.User, UserAdapter.ViewHo
     @Override
     public void onBindViewHolder(@NonNull ViewHolder viewHolder, int position) {
         final MucOptions.User user = getItem(position);
-        AvatarWorkerTask.loadAvatar(user, viewHolder.binding.contactPhoto, R.dimen.avatar);
+        AvatarWorkerTask.loadAvatar(user, viewHolder.binding.contactPhoto, R.dimen.avatar_on_details_screen_size);
         viewHolder.binding.getRoot().setOnClickListener(v -> {
             final XmppActivity activity = XmppActivity.find(v);
             if (activity != null) {
@@ -115,8 +115,6 @@ public class UserAdapter extends ListAdapter<MucOptions.User, UserAdapter.ViewHo
         } else {
             viewHolder.binding.key.setVisibility(View.GONE);
         }
-
-
     }
 
     public MucOptions.User getSelectedUser() {

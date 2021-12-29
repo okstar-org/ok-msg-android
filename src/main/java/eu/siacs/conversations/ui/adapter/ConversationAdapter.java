@@ -1,10 +1,13 @@
 package eu.siacs.conversations.ui.adapter;
 
+import static eu.siacs.conversations.ui.util.MyLinkify.replaceYoutube;
+
 import android.content.SharedPreferences;
 import android.graphics.Typeface;
 import android.preference.PreferenceManager;
 import android.text.Spannable;
 import android.text.SpannableString;
+import android.text.SpannableStringBuilder;
 import android.text.style.StyleSpan;
 import android.util.Pair;
 import android.view.LayoutInflater;
@@ -32,14 +35,11 @@ import eu.siacs.conversations.ui.util.AvatarWorkerTask;
 import eu.siacs.conversations.ui.util.StyledAttributes;
 import eu.siacs.conversations.utils.EmojiWrapper;
 import eu.siacs.conversations.utils.IrregularUnicodeDetector;
+import eu.siacs.conversations.utils.StylingHelper;
 import eu.siacs.conversations.utils.UIHelper;
 import eu.siacs.conversations.xmpp.Jid;
 import eu.siacs.conversations.xmpp.chatstate.ChatState;
 import eu.siacs.conversations.xmpp.jingle.OngoingRtpSession;
-
-import static eu.siacs.conversations.entities.Message.DELETED_MESSAGE_BODY;
-import static eu.siacs.conversations.entities.Message.DELETED_MESSAGE_BODY_OLD;
-import static eu.siacs.conversations.ui.util.MyLinkify.replaceYoutube;
 
 public class ConversationAdapter extends RecyclerView.Adapter<ConversationAdapter.ConversationViewHolder> {
 
@@ -162,12 +162,12 @@ public class ConversationAdapter extends RecyclerView.Adapter<ConversationAdapte
             }
             final Pair<CharSequence, Boolean> preview = UIHelper.getMessagePreview(activity, message, viewHolder.binding.conversationLastmsg.getCurrentTextColor());
             if (showPreviewText) {
-                if (message.getBody().equals(DELETED_MESSAGE_BODY)) {
-                    viewHolder.binding.conversationLastmsg.setText(EmojiWrapper.transform(UIHelper.shorten(activity.getString(R.string.message_deleted))));
-                } else if (message.getBody().equals(DELETED_MESSAGE_BODY_OLD)) {
+                if (message.hasDeletedBody()) {
                     viewHolder.binding.conversationLastmsg.setText(EmojiWrapper.transform(UIHelper.shorten(activity.getString(R.string.message_deleted))));
                 } else {
-                    viewHolder.binding.conversationLastmsg.setText(EmojiWrapper.transform(UIHelper.shorten(replaceYoutube(activity.getApplicationContext(), preview.first.toString()))));
+                    SpannableStringBuilder body = new SpannableStringBuilder(replaceYoutube(activity.getApplicationContext(), preview.first.toString()));
+                    StylingHelper.format(body, viewHolder.binding.conversationLastmsg.getCurrentTextColor(), true);
+                    viewHolder.binding.conversationLastmsg.setText(EmojiWrapper.transform(UIHelper.shorten(body)));
                 }
             } else {
                 viewHolder.binding.conversationLastmsgImg.setContentDescription(preview.first);
@@ -220,8 +220,8 @@ public class ConversationAdapter extends RecyclerView.Adapter<ConversationAdapte
 
         if (ongoingCall.isPresent()) {
             viewHolder.binding.notificationStatus.setVisibility(View.VISIBLE);
-                final int ic_ongoing_call = activity.getThemeResource(R.attr.ic_ongoing_call_hint, R.drawable.ic_phone_in_talk_black_18dp);
-                viewHolder.binding.notificationStatus.setImageResource(ic_ongoing_call);
+            final int ic_ongoing_call = activity.getThemeResource(R.attr.ic_ongoing_call_hint, R.drawable.ic_phone_in_talk_black_18dp);
+            viewHolder.binding.notificationStatus.setImageResource(ic_ongoing_call);
         } else {
             final long muted_till = conversation.getLongAttribute(Conversation.ATTRIBUTE_MUTED_TILL, 0);
             if (muted_till == Long.MAX_VALUE) {
@@ -298,18 +298,18 @@ public class ConversationAdapter extends RecyclerView.Adapter<ConversationAdapte
         if (activity.xmppConnectionService.indicateReceived()) {
             switch (message.getMergedStatus()) {
                 case Message.STATUS_SEND_RECEIVED:
-                        if (viewHolder.binding.indicatorReceived != null) {
-                            viewHolder.binding.indicatorReceived.setVisibility(View.VISIBLE);
-                            viewHolder.binding.indicatorReceived.setImageResource(activity.isDarkTheme() ? R.drawable.ic_check_white_18dp : R.drawable.ic_check_black_18dp);
-                            viewHolder.binding.indicatorReceived.setAlpha(activity.isDarkTheme() ? 0.7f : 0.57f);
-                        }
+                    if (viewHolder.binding.indicatorReceived != null) {
+                        viewHolder.binding.indicatorReceived.setVisibility(View.VISIBLE);
+                        viewHolder.binding.indicatorReceived.setImageResource(activity.isDarkTheme() ? R.drawable.ic_check_white_18dp : R.drawable.ic_check_black_18dp);
+                        viewHolder.binding.indicatorReceived.setAlpha(activity.isDarkTheme() ? 0.7f : 0.57f);
+                    }
                     break;
                 case Message.STATUS_SEND_DISPLAYED:
-                        if (viewHolder.binding.indicatorReceived != null) {
-                            viewHolder.binding.indicatorReceived.setVisibility(View.VISIBLE);
-                            viewHolder.binding.indicatorReceived.setImageResource(activity.isDarkTheme() ? R.drawable.ic_check_all_white_18dp : R.drawable.ic_check_all_black_18dp);
-                            viewHolder.binding.indicatorReceived.setAlpha(activity.isDarkTheme() ? 0.7f : 0.57f);
-                        }
+                    if (viewHolder.binding.indicatorReceived != null) {
+                        viewHolder.binding.indicatorReceived.setVisibility(View.VISIBLE);
+                        viewHolder.binding.indicatorReceived.setImageResource(activity.isDarkTheme() ? R.drawable.ic_check_all_white_18dp : R.drawable.ic_check_all_black_18dp);
+                        viewHolder.binding.indicatorReceived.setAlpha(activity.isDarkTheme() ? 0.7f : 0.57f);
+                    }
                     break;
                 default:
                     viewHolder.binding.indicatorReceived.setVisibility(View.GONE);

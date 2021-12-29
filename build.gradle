@@ -15,19 +15,18 @@ apply plugin: 'com.android.application'
 allprojects {
     repositories {
         google()
-        jcenter()
         mavenCentral()
         maven { url "https://jitpack.io" }
-        maven { url "https://github.com/robjperez/libwebrtc_maven/raw/master/libwebrtc.aar" }
+        maven { url "https://raw.github.com/abdularis/libwebrtc-android/repo/" }
     }
 }
 
 repositories {
     google()
     mavenCentral()
-    jcenter()
     maven { url "https://jitpack.io" }
-    maven { url "https://github.com/robjperez/libwebrtc_maven/raw/master/libwebrtc.aar" }
+    maven { url "https://raw.github.com/abdularis/libwebrtc-android/repo/" }
+    jcenter()
 }
 
 configurations {
@@ -37,9 +36,9 @@ configurations {
 }
 
 dependencies {
-    implementation 'org.webrtc:google-webrtc:1.+'
+    implementation 'com.github.webrtc-sdk:android:93.4577.01'
     implementation project(':libs:android-transcoder')
-    playstoreImplementation('com.google.firebase:firebase-messaging:22.0.0') { ///higher versions are causing crashes due to missing project IDs
+    playstoreImplementation('com.google.firebase:firebase-messaging:22.0.0') {
         exclude group: 'com.google.firebase', module: 'firebase-core'
         exclude group: 'com.google.firebase', module: 'firebase-analytics'
         exclude group: 'com.google.firebase', module: 'firebase-measurement-connector'
@@ -51,7 +50,6 @@ dependencies {
         exclude group: 'com.android.support', module: 'appcompat-v7'
         exclude group: 'com.android.support', module: 'exifinterface'
     }
-    implementation 'org.jitsi:org.otr4j:0.23'
     implementation 'org.bouncycastle:bcmail-jdk15on:1.64'
     implementation 'org.gnu.inet:libidn:1.15'
     implementation 'com.google.zxing:core:3.3.3' // > 3.3.x not working below SDK 24
@@ -69,28 +67,30 @@ dependencies {
     implementation 'androidx.emoji:emoji:1.1.0'
     gitImplementation 'androidx.emoji:emoji-appcompat:1.1.0'
     gitImplementation 'androidx.emoji:emoji-bundled:1.1.0'
-    implementation 'com.google.android.material:material:1.0.0' // higher versions than 1.0.0 cause strange fab design
+    implementation 'androidx.recyclerview:recyclerview:1.2.1'
+    implementation 'com.google.android.material:material:1.4.0'
     implementation 'androidx.cardview:cardview:1.0.0' // for compatibility
     implementation 'com.davemorrissey.labs:subsampling-scale-image-view:3.10.0'
     implementation 'com.google.android.exoplayer:exoplayer-core:2.15.0'
     implementation 'com.google.android.exoplayer:exoplayer-ui:2.15.0'
     implementation 'com.wefika:flowlayout:0.4.1'
     implementation 'com.googlecode.ez-vcard:ez-vcard:0.10.5'
-    implementation 'org.jxmpp:jxmpp-jid:1.0.1'
+    implementation 'org.jxmpp:jxmpp-jid:1.0.2'
     implementation 'org.hsluv:hsluv:0.2'
     implementation 'org.conscrypt:conscrypt-android:2.5.2'
-    implementation 'pl.droidsonroids.gif:android-gif-drawable:1.2.15' // 1.2.15 is last working version for minSDK 16
+    implementation 'pl.droidsonroids.gif:android-gif-drawable:1.2.23'
     implementation 'me.drakeet.support:toastcompat:1.1.0'
-    implementation 'org.osmdroid:osmdroid-android:6.1.5'
-    implementation 'com.leinardi.android:speed-dial:3.1.1'
+    implementation 'org.osmdroid:osmdroid-android:6.1.11'
+    implementation 'com.leinardi.android:speed-dial:3.2.0'
     implementation 'com.squareup.picasso:picasso:2.71828'
-    implementation 'com.squareup.okhttp3:okhttp:4.9.2' // versions > 3.12.x don't support API level < 21 anymore
-    implementation 'com.squareup.retrofit2:retrofit:2.9.0' //retrofit needs to stick with 2.6.x for SDK < 21 (https://github.com/square/retrofit/blob/master/CHANGELOG.md)
+    implementation 'com.squareup.okhttp3:okhttp:4.9.2'
+    implementation 'com.squareup.retrofit2:retrofit:2.9.0'
     implementation 'com.squareup.retrofit2:converter-gson:2.9.0'
-    implementation 'com.google.guava:guava:30.1.1-android'
+    implementation 'com.google.guava:guava:31.0.1-android'
     implementation 'com.github.AppIntro:AppIntro:6.1.0'
-    implementation "androidx.browser:browser:1.3.0"
-    implementation fileTree(include: ['libwebrtc-m90.aar'], dir: 'libs')
+    implementation 'androidx.browser:browser:1.3.0'
+    implementation 'com.otaliastudios:transcoder:0.9.1' // 0.10.4 seems to be buggy
+    implementation fileTree(include: ['libwebrtc-m92.aar'], dir: 'libs')
 }
 
 ext {
@@ -100,36 +100,29 @@ ext {
 
 android {
 
-    signingConfigs {
-        'monocles chat' {
-
-        }
-    }
+    //noinspection GradleCompatible
     compileSdkVersion 30
 
     defaultConfig {
         minSdkVersion 21
         targetSdkVersion 30
 
-        versionNameSuffix " beta_(2021-12-26)" // " beta_(XXXX-XX-XX)" // activate for beta versions
+        versionNameSuffix " beta_(2021-12-19)" // " beta_(XXXX-XX-XX)" // activate for beta versions
         versionCode 110
         versionName "1.4.4"
         //resConfigs "en"
 
         archivesBaseName += "-$versionName"
-        //archivesBaseName += "$versionNameSuffix"  // activate for beta versions
+        archivesBaseName += "$versionNameSuffix"  // activate for beta versions
         applicationId "de.monocles.chat"
         multiDexEnabled true
 
+        buildConfigField("String", "LOGTAG", '"monocles chat"')
         buildConfigField("String", "DOMAIN_LOCK", 'null')
-        buildConfigField("String", "MAGIC_CREATE_DOMAIN", '"monocles.de"')
         buildConfigField("boolean", "SHOW_INTRO", 'true')
-        //buildConfigField("String", "UPDATE_URL", '"https://monocles.de/chat/update/"')
+        buildConfigField("String", "UPDATE_URL", '"https://monocles.de/chat/update/"')
         resValue "string", "applicationId", applicationId
-        signingConfig signingConfigs.'monocles chat'
-        def appName = "monocles chat"
-        resValue "string", "app_name", appName
-        buildConfigField "String", "APP_NAME", "\"$appName\"";
+        resValue "string", "app_name", "monocles chat"
     }
 
     dataBinding {
@@ -159,13 +152,10 @@ android {
             applicationId "de.monocles.chat"
             buildConfigField("boolean", "SHOW_MIGRATION_INFO", 'false')
             resValue "string", "applicationId", applicationId
-            signingConfig signingConfigs.'monocles chat'
         }
         git {
             dimension "distribution"
             buildConfigField("boolean", "SHOW_MIGRATION_INFO", 'true')
-            applicationId 'de.monocles.chat'
-            signingConfig signingConfigs.'monocles chat'
         }
     }
     if (project.hasProperty('mStoreFile') &&
@@ -205,7 +195,8 @@ android {
     lintOptions {
         error 'StringFormatInvalid' , 'StringFormatMatches'
         disable 'ExtraTranslation', 'MissingTranslation', 'InvalidPackage', 'MissingQuantity', 'AppCompatResource', 'RestrictedApi'
-        abortOnError true
+        checkReleaseBuilds true
+        abortOnError false
     }
 
     subprojects {

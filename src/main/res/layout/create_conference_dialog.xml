@@ -23,11 +23,12 @@
 
         <Spinner
             android:id="@+id/account"
-            android:layout_width="fill_parent"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:visibility="gone" />
 
         <com.google.android.material.textfield.TextInputLayout
+            style="@style/Widget.Conversations.TextInputLayout.OutlinedBox"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             app:errorTextAppearance="@style/TextAppearance.Conversations.Design.Error"

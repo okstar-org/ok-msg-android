@@ -14,7 +14,7 @@
             layout="@layout/toolbar" />
 
         <ScrollView
-            android:layout_width="fill_parent"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_above="@+id/button_bar"
             android:layout_below="@id/toolbar">
@@ -27,7 +27,7 @@
 
                 <androidx.cardview.widget.CardView
                     android:id="@+id/editor"
-                    android:layout_width="fill_parent"
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginStart="@dimen/activity_horizontal_margin"
                     android:layout_marginLeft="@dimen/activity_horizontal_margin"
@@ -46,14 +46,14 @@
 
                         <LinearLayout
                             android:id="@+id/jid_password_box"
-                            android:layout_width="fill_parent"
+                            android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:layout_below="@+id/status_avatar_box"
                             android:orientation="vertical">
 
                             <LinearLayout
                                 android:id="@+id/name_port"
-                                android:layout_width="fill_parent"
+                                android:layout_width="match_parent"
                                 android:layout_height="wrap_content"
                                 android:layout_marginTop="8dp"
                                 android:orientation="horizontal"
@@ -62,11 +62,12 @@
                                 <LinearLayout
                                     android:layout_width="0dp"
                                     android:layout_height="match_parent"
-                                    android:layout_weight="0.8"
+                                    android:layout_weight="0.7"
                                     android:orientation="vertical">
 
                                     <com.google.android.material.textfield.TextInputLayout
                                         android:id="@+id/hostname_layout"
+                                        style="@style/Widget.Conversations.TextInputLayout.OutlinedBox"
                                         android:layout_width="match_parent"
                                         android:layout_height="wrap_content"
                                         android:hint="@string/account_settings_hostname"
@@ -76,7 +77,7 @@
                                         <EditText
                                             android:id="@+id/hostname"
                                             style="@style/Widget.Conversations.EditText"
-                                            android:layout_width="fill_parent"
+                                            android:layout_width="match_parent"
                                             android:layout_height="wrap_content"
                                             android:inputType="textWebEmailAddress" />
                                     </com.google.android.material.textfield.TextInputLayout>
@@ -85,11 +86,12 @@
                                 <LinearLayout
                                     android:layout_width="0dp"
                                     android:layout_height="match_parent"
-                                    android:layout_weight="0.2"
+                                    android:layout_weight="0.3"
                                     android:orientation="vertical">
 
                                     <com.google.android.material.textfield.TextInputLayout
                                         android:id="@+id/port_layout"
+                                        style="@style/Widget.Conversations.TextInputLayout.OutlinedBox"
                                         android:layout_width="match_parent"
                                         android:layout_height="match_parent"
                                         android:hint="@string/account_settings_port"
@@ -109,6 +111,7 @@
 
                             <com.google.android.material.textfield.TextInputLayout
                                 android:id="@+id/account_jid_layout"
+                                style="@style/Widget.Conversations.TextInputLayout.OutlinedBox"
                                 android:layout_width="match_parent"
                                 android:layout_height="wrap_content"
                                 android:hint="@string/account_settings_jabber_id"
@@ -122,11 +125,13 @@
                                     android:layout_height="wrap_content"
                                     android:imeOptions="actionNext"
                                     android:inputType="textEmailAddress"
+                                    android:padding="16dp"
                                     android:textColor="?attr/edit_text_color" />
                             </com.google.android.material.textfield.TextInputLayout>
 
                             <com.google.android.material.textfield.TextInputLayout
                                 android:id="@+id/account_password_layout"
+                                style="@style/Widget.Conversations.TextInputLayout.OutlinedBox"
                                 android:layout_width="match_parent"
                                 android:layout_height="wrap_content"
                                 app:errorTextAppearance="@style/TextAppearance.Conversations.Design.Error"
@@ -159,6 +164,7 @@
                                 android:layout_gravity="center_horizontal"
                                 android:layout_marginTop="4dp"
                                 android:layout_marginBottom="4dp"
+                                android:backgroundTint="?attr/colorAccent"
                                 android:text="@string/show_privacy"
                                 android:visibility="gone" />
 
@@ -169,6 +175,7 @@
                                 android:layout_gravity="center_horizontal"
                                 android:layout_marginTop="4dp"
                                 android:layout_marginBottom="4dp"
+                                android:backgroundTint="?attr/colorAccent"
                                 android:text="@string/show_termsofuse"
                                 android:visibility="gone" />
                         </LinearLayout>
@@ -311,7 +318,7 @@
 
                 <androidx.cardview.widget.CardView
                     android:id="@+id/os_optimization"
-                    android:layout_width="fill_parent"
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginStart="@dimen/activity_horizontal_margin"
                     android:layout_marginLeft="@dimen/activity_horizontal_margin"
@@ -373,8 +380,8 @@
 
                 <androidx.cardview.widget.CardView
                     android:id="@+id/stats"
-                    android:layout_width="fill_parent"
-                    android:layout_height="fill_parent"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
                     android:layout_marginLeft="@dimen/activity_horizontal_margin"
                     android:layout_marginTop="@dimen/activity_vertical_margin"
                     android:layout_marginRight="@dimen/activity_horizontal_margin"
@@ -403,7 +410,7 @@
                             android:stretchColumns="1">
 
                             <TableRow
-                                android:layout_width="fill_parent"
+                                android:layout_width="match_parent"
                                 android:layout_height="wrap_content"
                                 tools:ignore="UselessParent">
 
@@ -436,7 +443,7 @@
                             android:visibility="gone">
 
                             <TableRow
-                                android:layout_width="fill_parent"
+                                android:layout_width="match_parent"
                                 android:layout_height="wrap_content">
 
                                 <TextView
@@ -458,7 +465,7 @@
                             </TableRow>
 
                             <TableRow
-                                android:layout_width="fill_parent"
+                                android:layout_width="match_parent"
                                 android:layout_height="wrap_content">
 
                                 <TextView
@@ -480,7 +487,7 @@
                             </TableRow>
 
                             <TableRow
-                                android:layout_width="fill_parent"
+                                android:layout_width="match_parent"
                                 android:layout_height="wrap_content">
 
                                 <TextView
@@ -502,7 +509,7 @@
                             </TableRow>
 
                             <TableRow
-                                android:layout_width="fill_parent"
+                                android:layout_width="match_parent"
                                 android:layout_height="wrap_content">
 
                                 <TextView
@@ -511,7 +518,7 @@
                                     android:ellipsize="end"
                                     android:singleLine="true"
                                     android:text="@string/server_info_external_service_discovery"
-                                    android:textAppearance="@style/TextAppearance.Conversations.Body1"/>
+                                    android:textAppearance="@style/TextAppearance.Conversations.Body1" />
 
                                 <TextView
                                     android:id="@+id/server_info_external_service"
@@ -520,11 +527,11 @@
                                     android:layout_gravity="right"
                                     android:paddingLeft="4dp"
                                     android:textAppearance="@style/TextAppearance.Conversations.Body1"
-                                    tools:ignore="RtlHardcoded"/>
+                                    tools:ignore="RtlHardcoded" />
                             </TableRow>
 
                             <TableRow
-                                android:layout_width="fill_parent"
+                                android:layout_width="match_parent"
                                 android:layout_height="wrap_content">
 
                                 <TextView
@@ -546,7 +553,7 @@
                             </TableRow>
 
                             <TableRow
-                                android:layout_width="fill_parent"
+                                android:layout_width="match_parent"
                                 android:layout_height="wrap_content">
 
                                 <TextView
@@ -568,7 +575,7 @@
                             </TableRow>
 
                             <TableRow
-                                android:layout_width="fill_parent"
+                                android:layout_width="match_parent"
                                 android:layout_height="wrap_content">
 
                                 <TextView
@@ -590,7 +597,7 @@
                             </TableRow>
 
                             <TableRow
-                                android:layout_width="fill_parent"
+                                android:layout_width="match_parent"
                                 android:layout_height="wrap_content">
 
                                 <TextView
@@ -612,7 +619,7 @@
                             </TableRow>
 
                             <TableRow
-                                android:layout_width="fill_parent"
+                                android:layout_width="match_parent"
                                 android:layout_height="wrap_content">
 
                                 <TextView
@@ -634,7 +641,7 @@
                             </TableRow>
 
                             <TableRow
-                                android:layout_width="fill_parent"
+                                android:layout_width="match_parent"
                                 android:layout_height="wrap_content">
 
                                 <TextView
@@ -657,7 +664,7 @@
 
                             <TableRow
                                 android:id="@+id/push_row"
-                                android:layout_width="fill_parent"
+                                android:layout_width="match_parent"
                                 android:layout_height="wrap_content">
 
                                 <TextView
@@ -679,7 +686,7 @@
                             </TableRow>
 
                             <TableRow
-                                android:layout_width="fill_parent"
+                                android:layout_width="match_parent"
                                 android:layout_height="wrap_content">
 
                                 <TextView
@@ -752,58 +759,6 @@
                         </RelativeLayout>
 
                         <RelativeLayout
-                            android:id="@+id/otr_fingerprint_box"
-                            android:layout_width="wrap_content"
-                            android:layout_height="match_parent"
-                            android:layout_marginTop="24dp">
-
-                            <LinearLayout
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:layout_alignParentStart="true"
-                                android:layout_alignParentLeft="true"
-                                android:layout_centerVertical="true"
-                                android:layout_toStartOf="@+id/key_actions"
-                                android:layout_toLeftOf="@+id/key_actions"
-                                android:orientation="vertical">
-
-                                <TextView
-                                    android:id="@+id/otr_fingerprint"
-                                    android:layout_width="wrap_content"
-                                    android:layout_height="wrap_content"
-                                    android:textAppearance="@style/TextAppearance.Conversations.Fingerprint" />
-
-                                <TextView
-                                    android:id="@+id/otr_fingerprint_desc"
-                                    android:layout_width="wrap_content"
-                                    android:layout_height="wrap_content"
-                                    android:text="@string/otr_fingerprint"
-                                    android:textAppearance="@style/TextAppearance.Conversations.Caption" />
-
-                            </LinearLayout>
-
-                            <LinearLayout
-                                android:id="@+id/key_actions"
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:layout_alignParentEnd="true"
-                                android:layout_alignParentRight="true"
-                                android:layout_centerVertical="true"
-                                android:orientation="horizontal">
-
-                                <ImageButton
-                                    android:id="@+id/action_copy_to_clipboard"
-                                    android:layout_width="wrap_content"
-                                    android:layout_height="wrap_content"
-                                    android:background="?attr/selectableItemBackgroundBorderless"
-                                    android:contentDescription="@string/copy_otr_clipboard_description"
-                                    android:padding="@dimen/image_button_padding"
-                                    android:src="?attr/icon_copy"
-                                    android:visibility="visible" />
-                            </LinearLayout>
-                        </RelativeLayout>
-
-                        <RelativeLayout
                             android:id="@+id/axolotl_fingerprint_box"
                             android:layout_width="wrap_content"
                             android:layout_height="match_parent"
@@ -867,7 +822,7 @@
 
                 <androidx.cardview.widget.CardView
                     android:id="@+id/other_device_keys_card"
-                    android:layout_width="fill_parent"
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginStart="@dimen/activity_horizontal_margin"
                     android:layout_marginLeft="@dimen/activity_horizontal_margin"
@@ -894,7 +849,7 @@
 
                         <LinearLayout
                             android:id="@+id/other_device_keys"
-                            android:layout_width="fill_parent"
+                            android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:orientation="vertical" />
 
@@ -930,7 +885,7 @@
 
             <View
                 android:layout_width="1dp"
-                android:layout_height="fill_parent"
+                android:layout_height="match_parent"
                 android:layout_marginTop="7dp"
                 android:layout_marginBottom="7dp" />
 

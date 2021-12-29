@@ -114,7 +114,7 @@ public class SlotRequester {
                                     final String name = child.getAttribute("name");
                                     final String value = child.getContent();
                                     if (HttpUploadConnection.WHITE_LISTED_HEADERS.contains(name) && value != null && !value.trim().contains("\n")) {
-										headers.put(name, value.trim());
+                                        headers.put(name, value.trim());
                                     }
                                 }
                             }

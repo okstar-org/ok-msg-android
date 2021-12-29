@@ -1,5 +1,7 @@
 package eu.siacs.conversations.xml;
 
+import org.jetbrains.annotations.NotNull;
+
 import java.util.ArrayList;
 import java.util.Hashtable;
 import java.util.List;
@@ -120,13 +122,13 @@ public class Element {
     public Element setAttribute(String name, String value) {
         if (name != null && value != null) {
             this.attributes.put(name, value);
-		}
-		return this;
-	}
+        }
+        return this;
+    }
 
-	public Element setAttribute(String name, Jid value) {
-		if (name != null && value != null) {
-			this.attributes.put(name, value.toEscapedString());
+    public Element setAttribute(String name, Jid value) {
+        if (name != null && value != null) {
+            this.attributes.put(name, value.toEscapedString());
         }
         return this;
     }
@@ -165,8 +167,9 @@ public class Element {
         return this.attributes;
     }
 
+    @NotNull
     public String toString() {
-        StringBuilder elementOutput = new StringBuilder();
+        final StringBuilder elementOutput = new StringBuilder();
         if ((content == null) && (children.size() == 0)) {
             Tag emptyTag = Tag.empty(name);
             emptyTag.setAtttributes(this.attributes);

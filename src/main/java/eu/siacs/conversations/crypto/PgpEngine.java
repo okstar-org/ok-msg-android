@@ -128,22 +128,22 @@ public class PgpEngine {
                 api.executeApiAsync(params, is, os, result -> {
                     switch (result.getIntExtra(OpenPgpApi.RESULT_CODE, OpenPgpApi.RESULT_CODE_ERROR)) {
                         case OpenPgpApi.RESULT_CODE_SUCCESS:
-                                try {
-                                    os.flush();
-                                } catch (IOException ignored) {
-                                    //ignored
-                                }
-                                FileBackend.close(os);
-                                mXmppConnectionService.sendMessage(message);
-                                callback.success(message);
-                                break;
-                            case OpenPgpApi.RESULT_CODE_USER_INTERACTION_REQUIRED:
-                                callback.userInputRequired(result.getParcelableExtra(OpenPgpApi.RESULT_INTENT), message);
-                                break;
-                            case OpenPgpApi.RESULT_CODE_ERROR:
-                                logError(conversation.getAccount(), result.getParcelableExtra(OpenPgpApi.RESULT_ERROR));
-                                callback.error(R.string.openpgp_error, message);
-                                break;
+                            try {
+                                os.flush();
+                            } catch (IOException ignored) {
+                                //ignored
+                            }
+                            FileBackend.close(os);
+                            mXmppConnectionService.sendMessage(message);
+                            callback.success(message);
+                            break;
+                        case OpenPgpApi.RESULT_CODE_USER_INTERACTION_REQUIRED:
+                            callback.userInputRequired(result.getParcelableExtra(OpenPgpApi.RESULT_INTENT), message);
+                            break;
+                        case OpenPgpApi.RESULT_CODE_ERROR:
+                            logError(conversation.getAccount(), result.getParcelableExtra(OpenPgpApi.RESULT_ERROR));
+                            callback.error(R.string.openpgp_error, message);
+                            break;
                     }
                 });
             } catch (final IOException e) {

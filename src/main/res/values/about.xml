@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string name="pref_about_message" translatable="false"><b>monocles chat</b>
+    <string name="pref_about_message" translatable="false"><b>blabber.im</b>
 			\n\nCopyright © 2018-%s Arne-Brün Vogelsang
-			\n\nhttps://monocles.de/more
+			\n\nhttps://monocles.de/more/
 			\n\nThis program is free software: you can redistribute it and/or modify
 			it under the terms of the GNU General Public License as published by
 			the Free Software Foundation, either version 3 of the License, or
@@ -11,14 +11,13 @@
 			but WITHOUT ANY WARRANTY; without even the implied warranty of
 			MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
 			GNU General Public License for more details.
-			The monocles names, monocles logos and the monocles colors are under copyright by Arne-Bruen Vogelsang and not allowed to be reused.
 			\n\nYou should have received a copy of the GNU General Public License
 			along with this program. If not, see https://www.gnu.org/licenses
 			\n\nDownload the full original source code at https://github.com/siacs/Conversations (Copyright © Daniel Gultsch)
-			\n\nDownload the modified source code at https://codeberg.org/Arne/monocles_chat
-			\n\nYou can support the monocles project by making a donation or buy a secure account. More information on https://monocles.de/more
+			\n\nDownload the modified source code at https://codeberg.org/kriztan/blabber.im
+            \n\nYou can buy me a coffee by making a donation in form of a gift in sense of § 516 ff BGB i.e. a gratuitous donation via PayPal for pix-art@pix-art.de
 	</string>
-    <string name="pref_about_libraries" translatable="false"><b>Libraries</b>
+	<string name="pref_about_libraries" translatable="false"><b>Libraries</b>
 			\n\nhttps://www.bouncycastle.org\n(The MIT License (MIT))
 			\n\nhttps://www.gnu.org/software/libidn\n(Apache License, Version 2.0)
 			\n\nhttps://github.com/ge0rg/MemorizingTrustManager\n(The MIT License (MIT))
@@ -32,7 +31,6 @@
 			\n\nhttps://github.com/vinc3m1/RoundedImageView\n(Apache License, Version 2.0)
 			\n\nhttps://github.com/jdamcd/android-crop\n(Apache License, Version 2.0)
 		    \n\nhttps://github.com/google/gson\n(Apache License, Version 2.0)
-		    \n\nhttps://github.com/jitsi/otr4j\n(LGPL-3.0)
 		    \n\nhttp://hc.apache.org/httpcomponents-client\n(Apache License, Version 2.0)
 		    \n\nhttp://hc.apache.org/httpcomponents-core\n(Apache License, Version 2.0)
 			\n\nhttps://github.com/square/picasso\n(Apache License, Version 2.0)

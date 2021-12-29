@@ -16,11 +16,6 @@ import android.preference.PreferenceCategory;
 import android.preference.PreferenceManager;
 import android.preference.PreferenceScreen;
 import android.util.Log;
-import java.io.FileInputStream;
-import java.io.FileNotFoundException;
-import java.io.IOException;
-import java.io.ObjectInputStream;
-
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AlertDialog;
@@ -86,16 +81,16 @@ public class SettingsActivity extends XmppActivity implements
     public static final String CONFIRM_MESSAGES = "confirm_messages";
     public static final String INDICATE_RECEIVED = "indicate_received";
     public static final String USE_INVIDIOUS = "use_invidious";
+    public static final String USE_INNER_STORAGE = "use_inner_storage";
     public static final String INVIDIOUS_HOST = "invidious_host";
     public static final String MAPPREVIEW_HOST = "mappreview_host";
     public static final String ALLOW_MESSAGE_CORRECTION = "allow_message_correction";
+    public static final String ALLOW_MESSAGE_RETRACTION = "allow_message_retraction";
     public static final String USE_UNICOLORED_CHATBG = "unicolored_chatbg";
     public static final String EASY_DOWNLOADER = "easy_downloader";
     public static final String MIN_ANDROID_SDK21_SHOWN = "min_android_sdk21_shown";
     public static final String INDIVIDUAL_NOTIFICATION_PREFIX = "individual_notification_set_";
     public static final String PAUSE_VOICE = "pause_voice_on_move_from_ear";
-    public static final String ENABLE_OTR_ENCRYPTION = "enable_otr_encryption";
-
 
     public static final int REQUEST_CREATE_BACKUP = 0xbf8701;
     public static final int REQUEST_IMPORT_SETTINGS = 0xbf8702;
@@ -194,7 +189,7 @@ public class SettingsActivity extends XmppActivity implements
                 if (choices[i] == 0) {
                     entries[i] = getString(R.string.never);
                 } else {
-					entries[i] = TimeFrameUtils.resolve(this, 1000L * choices[i]);
+                    entries[i] = TimeFrameUtils.resolve(this, 1000L * choices[i]);
                 }
             }
             automaticMessageDeletionList.setEntries(entries);
@@ -564,6 +559,7 @@ public class SettingsActivity extends XmppActivity implements
                 TREAT_VIBRATE_AS_SILENT,
                 MANUALLY_CHANGE_PRESENCE,
                 BROADCAST_LAST_ACTIVITY);
+        FileBackend.switchStorage(preferences.getBoolean(USE_INNER_STORAGE, true));
         if (name.equals(OMEMO_SETTING)) {
             OmemoSetting.load(this, preferences);
             changeOmemoSettingSummary();
@@ -594,7 +590,6 @@ public class SettingsActivity extends XmppActivity implements
 
     @Override
     public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
-        super.onRequestPermissionsResult(requestCode, permissions, grantResults);
         if (grantResults.length > 0) {
             if (grantResults[0] == PackageManager.PERMISSION_GRANTED) {
                 if (requestCode == REQUEST_CREATE_BACKUP) {
@@ -613,10 +608,10 @@ public class SettingsActivity extends XmppActivity implements
         final Intent intent = new Intent(this, ExportBackupService.class);
         intent.putExtra("NOTIFY_ON_BACKUP_COMPLETE", notify);
         ContextCompat.startForegroundService(this, intent);
-		final AlertDialog.Builder builder = new AlertDialog.Builder(this);
-		builder.setMessage(R.string.backup_started_message);
-		builder.setPositiveButton(R.string.ok, null);
-		builder.create().show();
+        final AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        builder.setMessage(R.string.backup_started_message);
+        builder.setPositiveButton(R.string.ok, null);
+        builder.create().show();
     }
 
     @SuppressWarnings({ "unchecked" })
@@ -660,6 +655,11 @@ public class SettingsActivity extends XmppActivity implements
             } catch (IOException ex) {
                 ex.printStackTrace();
             }
+        }
+        if (success) {
+            ToastCompat.makeText(this, R.string.success_import_settings, ToastCompat.LENGTH_SHORT).show();
+        } else {
+            ToastCompat.makeText(this, R.string.error_import_settings, ToastCompat.LENGTH_SHORT).show();
         }
         return success;
     }

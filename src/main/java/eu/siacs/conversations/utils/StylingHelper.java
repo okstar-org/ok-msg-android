@@ -40,6 +40,7 @@ import android.text.Spanned;
 import android.text.TextWatcher;
 import android.text.style.BackgroundColorSpan;
 import android.text.style.ForegroundColorSpan;
+import android.text.style.RelativeSizeSpan;
 import android.text.style.StrikethroughSpan;
 import android.text.style.StyleSpan;
 import android.text.style.TypefaceSpan;
@@ -75,23 +76,28 @@ public class StylingHelper {
         }
     }
 
-    public static void format(final Editable editable, int start, int end, @ColorInt int textColor) {
+    public static void format(final Editable editable, int start, int end, @ColorInt int textColor, boolean hideStylingKeywords) {
         for (ImStyleParser.Style style : ImStyleParser.parse(editable, start, end)) {
             final int keywordLength = style.getKeyword().length();
+            final float size = 0f;
             editable.setSpan(createSpanForStyle(style), style.getStart() + keywordLength, style.getEnd() - keywordLength + 1, Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
+            if (hideStylingKeywords) {
+                editable.setSpan(new RelativeSizeSpan(size), style.getStart(), style.getStart() + keywordLength, Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
+                editable.setSpan(new RelativeSizeSpan(size), style.getEnd() - keywordLength + 1, style.getEnd() + 1, Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
+            }
             makeKeywordOpaque(editable, style.getStart(), style.getStart() + keywordLength, textColor);
             makeKeywordOpaque(editable, style.getEnd() - keywordLength + 1, style.getEnd() + 1, textColor);
         }
     }
 
-    public static void format(final Editable editable, @ColorInt int textColor) {
+    public static void format(final Editable editable, @ColorInt int textColor, boolean hideStylingKeywords) {
         int end = 0;
         Message.MergeSeparator[] spans = editable.getSpans(0, editable.length() - 1, Message.MergeSeparator.class);
         for (Message.MergeSeparator span : spans) {
-            format(editable, end, editable.getSpanStart(span), textColor);
+            format(editable, end, editable.getSpanStart(span), textColor, hideStylingKeywords);
             end = editable.getSpanEnd(span);
         }
-        format(editable, end, editable.length() - 1, textColor);
+        format(editable, end, editable.length() - 1, textColor, hideStylingKeywords);
     }
 
     public static void highlight(final Context context, final Editable editable, List<String> needles, boolean dark) {
@@ -249,7 +255,7 @@ public class StylingHelper {
         @Override
         public void afterTextChanged(Editable editable) {
             clear(editable);
-            format(editable, mEditText.getCurrentTextColor());
+            format(editable, mEditText.getCurrentTextColor(), false);
         }
     }
 }

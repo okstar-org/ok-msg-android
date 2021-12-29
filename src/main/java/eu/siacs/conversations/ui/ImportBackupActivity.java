@@ -138,7 +138,9 @@ public class ImportBackupActivity extends XmppActivity implements ServiceConnect
         try {
             final ImportBackupService.BackupFile backupFile = ImportBackupService.BackupFile.read(this, uri);
             showEnterPasswordDialog(backupFile, finishOnCancel);
-        } catch (final IOException | IllegalArgumentException e) {
+        } catch (final IOException e) {
+            Snackbar.make(binding.coordinator, R.string.not_a_backup_file, Snackbar.LENGTH_LONG).show();
+        } catch (IllegalArgumentException e) {
             Log.d(Config.LOGTAG, "unable to open backup file " + uri, e);
             Snackbar.make(binding.coordinator, R.string.not_a_backup_file, Snackbar.LENGTH_LONG).show();
         }

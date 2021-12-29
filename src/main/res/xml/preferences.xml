@@ -469,6 +469,11 @@
                 android:summary="@string/pref_show_dynamic_tags_summary"
                 android:title="@string/pref_show_dynamic_tags" />
             <CheckBoxPreference
+                android:defaultValue="@bool/show_date_in_quotes"
+                android:key="show_date_in_quotes"
+                android:summary="@string/pref_show_date_in_quotes_summary"
+                android:title="@string/pref_show_date_in_quotes" />
+            <CheckBoxPreference
                 android:defaultValue="@bool/use_bundled_emoji"
                 android:key="use_bundled_emoji"
                 android:summary="@string/pref_use_bundled_emoji_summary"
@@ -484,11 +489,6 @@
                 android:key="delete_omemo_identities"
                 android:summary="@string/pref_delete_omemo_identities_summary"
                 android:title="@string/pref_delete_omemo_identities" />
-            <CheckBoxPreference
-                android:defaultValue="@bool/enable_otr"
-                android:key="enable_otr_encryption"
-                android:summary="@string/pref_enable_otr_summary"
-                android:title="@string/pref_enable_otr" />
             <CheckBoxPreference
                 android:defaultValue="@bool/dont_trust_system_cas"
                 android:key="dont_trust_system_cas"

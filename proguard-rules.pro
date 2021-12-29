@@ -1,6 +1,7 @@
 -dontobfuscate
 
 -keep class de.monocles.chat.**
+-keep class de.pixart.messenger.**
 -keep class eu.siacs.conversations.**
 -keep class org.whispersystems.**
 -keep class com.kyleduo.switchbutton.Configuration
@@ -37,7 +38,6 @@
 -dontwarn org.openjsse.javax.net.ssl.SSLParameters
 -dontwarn org.openjsse.javax.net.ssl.SSLSocket
 -dontwarn org.openjsse.net.ssl.OpenJSSE
-
 
 -keepclassmembers class eu.siacs.conversations.http.services.** {
   !transient <fields>;

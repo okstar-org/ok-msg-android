@@ -39,6 +39,7 @@ import eu.siacs.conversations.entities.Conversational;
 import eu.siacs.conversations.entities.Message;
 import eu.siacs.conversations.http.AesGcmURL;
 import eu.siacs.conversations.http.URL;
+import eu.siacs.conversations.ui.util.QuoteHelper;
 
 public class MessageUtils {
 
@@ -68,8 +69,7 @@ public class MessageUtils {
                 continue;
             }
             final char c = line.charAt(0);
-            if (c == '>' && UIHelper.isPositionFollowedByQuoteableCharacter(line, 0)
-                    || (c == '\u00bb' && !UIHelper.isPositionFollowedByQuote(line, 0))) {
+            if (QuoteHelper.isNestedTooDeeply(line)) {
                 continue;
             }
             if (builder.length() != 0) {
@@ -81,15 +81,15 @@ public class MessageUtils {
     }
 
     public static boolean treatAsDownloadable(final String body, final boolean oob) {
-            final String[] lines = body.split("\n");
-            if (lines.length == 0) {
+        final String[] lines = body.split("\n");
+        if (lines.length == 0) {
+            return false;
+        }
+        for (final String line : lines) {
+            if (line.contains("\\s+")) {
                 return false;
             }
-        for (final String line : lines) {
-                if (line.contains("\\s+")) {
-                    return false;
-                }
-            }
+        }
         final URI uri;
         try {
             uri = new URI(lines[0]);
@@ -102,11 +102,11 @@ public class MessageUtils {
         final String ref = uri.getFragment();
         final String protocol = uri.getScheme();
         final boolean encrypted = ref != null && AesGcmURL.IV_KEY.matcher(ref).matches();
-            final boolean followedByDataUri = lines.length == 2 && lines[1].startsWith("data:");
+        final boolean followedByDataUri = lines.length == 2 && lines[1].startsWith("data:");
         final boolean validAesGcm = AesGcmURL.PROTOCOL_NAME.equalsIgnoreCase(protocol) && encrypted && (lines.length == 1 || followedByDataUri);
         final boolean validProtocol = "http".equalsIgnoreCase(protocol) || "https".equalsIgnoreCase(protocol);
-            final boolean validOob = validProtocol && (oob || encrypted) && lines.length == 1;
-            return validAesGcm || validOob;
+        final boolean validOob = validProtocol && (oob || encrypted) && lines.length == 1;
+        return validAesGcm || validOob;
     }
 
     public static String filterLtrRtl(String body) {
@@ -118,6 +118,6 @@ public class MessageUtils {
     }
 
     public static boolean fileWithKnownSize(Message message) {
-        return message.getType() == Message.TYPE_TEXT && message.isOOb() && message.getFileParams().size > 0 && message.getFileParams().url != null;
+        return message.getType() == Message.TYPE_TEXT && message.isOOb() && message.getFileParams().size != null && message.getFileParams().size > 0 && message.getFileParams().url != null;
     }
 }

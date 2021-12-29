@@ -28,12 +28,12 @@ import me.drakeet.support.toast.ToastCompat;
 public class UpdateHelper {
     private static final SimpleDateFormat DATE_FORMAT = new SimpleDateFormat("yyyy-MM-dd", Locale.ENGLISH);
     private static final String INSTALL_DATE = "2020-11-01";
-    private static final String monocles_message = "MONOCLES_CHAT_UPDATE_MESSAGE";
+    private static final String monocles_message = "MONOCLES.IM_UPDATE_MESSAGE";
     private static boolean moveData = true;
     private static boolean dataMoved = false;
 
     private static final File PAM_MainDirectory = new File(Environment.getExternalStorageDirectory().getAbsolutePath() + "/Monocles Messenger/");
-    private static final File Monocles_MainDirectory = new File(Environment.getExternalStorageDirectory() + "/monocles chat/");
+    private static final File monocles_MainDirectory = new File(Environment.getExternalStorageDirectory() + "/monocles chat/");
     private static final File PAM_PicturesDirectory = new File(Environment.getExternalStorageDirectory().getAbsolutePath() + "/Monocles Messenger/Media/Monocles Messenger Images/");
     private static final File PAM_FilesDirectory = new File(Environment.getExternalStorageDirectory().getAbsolutePath() + "/Monocles Messenger/Media/Monocles Messenger Files/");
     private static final File PAM_AudiosDirectory = new File(Environment.getExternalStorageDirectory().getAbsolutePath() + "/Monocles Messenger/Media/Monocles Messenger Audios/");
@@ -115,7 +115,7 @@ public class UpdateHelper {
 
     private static void checkOldData() {
         if (PAM_MainDirectory.exists() && PAM_MainDirectory.isDirectory()) {
-            if (Monocles_MainDirectory.exists() && Monocles_MainDirectory.isDirectory()) {
+            if (monocles_MainDirectory.exists() && monocles_MainDirectory.isDirectory()) {
                 moveData = false;
             } else {
                 moveData = true;
@@ -180,16 +180,16 @@ public class UpdateHelper {
             }
         }
         if (PAM_MainDirectory.exists() && PAM_MainDirectory.isDirectory()) {
-            Monocles_MainDirectory.mkdirs();
+            monocles_MainDirectory.mkdirs();
             final File[] files = PAM_MainDirectory.listFiles();
             if (files == null) {
                 return;
             }
-            if (PAM_MainDirectory.renameTo(Monocles_MainDirectory)) {
+            if (PAM_MainDirectory.renameTo(monocles_MainDirectory)) {
                 dataMoved = true;
-                Log.d(Config.LOGTAG, "moved " + PAM_MainDirectory.getAbsolutePath() + " to " + Monocles_MainDirectory.getAbsolutePath());
+                Log.d(Config.LOGTAG, "moved " + PAM_MainDirectory.getAbsolutePath() + " to " + monocles_MainDirectory.getAbsolutePath());
             } else {
-                Log.d(Config.LOGTAG, "could not move " + PAM_MainDirectory.getAbsolutePath() + " to " + Monocles_MainDirectory.getAbsolutePath());
+                Log.d(Config.LOGTAG, "could not move " + PAM_MainDirectory.getAbsolutePath() + " to " + monocles_MainDirectory.getAbsolutePath());
             }
         }
     }
@@ -265,7 +265,7 @@ public class UpdateHelper {
     private static boolean PAMInstalled(Activity activity) {
         PackageManager pm = activity.getPackageManager();
         try {
-            return pm.getApplicationLabel(pm.getApplicationInfo("de.monocles.chat", 0)).equals("Monocles Messenger");
+            return pm.getApplicationLabel(pm.getApplicationInfo("de.pixart.messenger", 0)).equals("Monocles Messenger");
         } catch (PackageManager.NameNotFoundException e) {
             return false;
         }
