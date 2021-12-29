@@ -61,8 +61,8 @@
     <string name="unblock">Engeli kaldır</string>
     <string name="save">Kaydet</string>
     <string name="ok">Tamam</string>
-    <string name="crash_report_title">blabber.im hata verdi</string>
-    <string name="crash_report_message">Hata raporlarını göndererek blabber.im\'in devam eden geliştirmesine yardımcı oluyorsunuz.\n<b>Uyarı:</b> Geliştiriciye hata raporlarını göndermek için XMPP hesabınız kullanılacak.</string>
+    <string name="crash_report_title">monocles chat hata verdi</string>
+    <string name="crash_report_message">Hata raporlarını göndererek monocles chat\'in devam eden geliştirmesine yardımcı oluyorsunuz.\n<b>Uyarı:</b> Geliştiriciye hata raporlarını göndermek için XMPP hesabınız kullanılacak.</string>
     <string name="send_now">Şimdi Gönder</string>
     <string name="send_never">Bir daha sorma</string>
     <string name="problem_connecting_to_account">Sunucuya bağlanılamıyor</string>
@@ -93,7 +93,7 @@
     <string name="offering">teklif yapılıyor…</string>
     <string name="waiting">Bekleniyor…</string>
     <string name="no_pgp_key">Hiç OpenPGP anahtarı bulunamadı</string>
-    <string name="contact_has_no_pgp_key">blabber.im mesajlarınızı şifreleyemiyor çünkü kişi sizin veya kendisinin açık anahtarını paylaşmıyor.\n\n<small>Lütfen kişiden OpenPGP\'yi kurmasını isteyin.</small></string>
+    <string name="contact_has_no_pgp_key">monocles chat mesajlarınızı şifreleyemiyor çünkü kişi sizin veya kendisinin açık anahtarını paylaşmıyor.\n\n<small>Lütfen kişiden OpenPGP\'yi kurmasını isteyin.</small></string>
     <string name="no_pgp_keys">OpenPGP anahtarları bulunamadı</string>
     <string name="pref_general">Genel</string>
     <string name="pref_accept_files_wifi">WiFi bağlantılarındaki dosyaları kabul et</string>
@@ -111,7 +111,7 @@
     <string name="pref_sound">Zil sesi</string>
     <string name="pref_sound_summary">Yeni bir mesaj geldiği zaman ses çıkar</string>
     <string name="pref_send_crash">Kilitlenme raporlarını gönderin</string>
-    <string name="pref_send_crash_summary">Hata raporları göndererek blabber.im\'in devam etmekte olan gelişimine yardım ediyorsunuz</string>
+    <string name="pref_send_crash_summary">Hata raporları göndererek monocles chat\'in devam etmekte olan gelişimine yardım ediyorsunuz</string>
     <string name="pref_confirm_messages">Mesajları Onayla</string>
     <string name="pref_confirm_messages_summary">Kişilerinize mesajlarınızı ne zaman aldığınızı ve okuduğunuzu bilmelerini sağlayın</string>
     <string name="pref_ui_options">Arayüz</string>
@@ -160,7 +160,7 @@
     <string name="mgmt_account_delete_confirm_message">Eğer hesabınızı silerseniz bütün lokal sohbet geçmişiniz kaybolacak.\n\nEğer hesabınızı bu sunucudan silerseniz, tüm hesabımınız sunucudan da kaldırılacaktır ve Yeni bir hesap açana kadar oturum açamayacaksınız.</string>
     <string name="attach_record_voice">Kayıt sesi</string>
     <string name="account_settings_jabber_id">Jabber Kimliği</string>
-    <string name="account_settings_example_jabber_id">kullanıcıadı@blabber.im</string>
+    <string name="account_settings_example_jabber_id">kullanıcıadı@monocles.de</string>
     <string name="password">Parola</string>
     <string name="invalid_jid">Bu geçerli bir Jabber-ID değil</string>
     <string name="error_out_of_memory">Bellek yetersiz. Görüntü çok büyük</string>
@@ -435,11 +435,11 @@
     <string name="pref_away_when_screen_off">Cihaz kitlendiğinde uzağa al</string>
     <string name="pref_away_when_screen_off_summary">Telefon kilitliyken uzakta göster </string>
     <string name="pref_dnd_on_silent_mode">Sessiz modda \'\'Rahatsız etme\'\'</string>
-    <string name="update_info">blabber.im otomatik olarak yükleniyor. Lütfen bekle…</string>
+    <string name="update_info">monocles chat otomatik olarak yükleniyor. Lütfen bekle…</string>
     <string name="pref_dnd_on_silent_mode_summary">Cihaz sessiz moddayken kaynağınızı \"Rahatsız etmeyin\" olarak işaretler</string>
     <string name="pref_treat_vibrate_as_silent">Titreşimsiz mod olarak işlem yap</string>
     <string name="pref_treat_vibrate_as_dnd_summary">Cihaz titrediğinde kaynağı \"Rahatsız etmeyin\" olarak işaretler</string>
-    <string name="hostname_example">blabber.im</string>
+    <string name="hostname_example">monocles.de</string>
     <string name="action_add_account_with_certificate">Sertifika ile hesap ekle</string>
     <string name="unable_to_parse_certificate">Sertifika çözümlenemedi</string>
     <string name="authenticate_with_certificate">Sertifikanın kimliğini doğrulamak için boş bırakın</string>
@@ -467,10 +467,10 @@
         <item quantity="other">%d mesajlar</item>
     </plurals>
     <string name="load_more_messages">Daha fazla ileti yükle</string>
-    <string name="no_storage_permission">blabber.im harici depolama alanına erişim gerekiyor</string>
+    <string name="no_storage_permission">monocles chat harici depolama alanına erişim gerekiyor</string>
     <string name="sync_with_contacts">Bağlantıyı senkronize et</string>
     <string name="sync_with_contacts_long">Bllabber.im tam adlarını ve avatarlarını göstermek için xmpp listenizi kişilerinizle eşleştirmek ister.
-blabber.im kişilerinizi yalnızca okuyacak ve sunucunuza yüklemeden yerel olarak eşleştirecektir.
+monocles chat kişilerinizi yalnızca okuyacak ve sunucunuza yüklemeden yerel olarak eşleştirecektir.
 Kişilerinize erişmek için izin vermeniz istenecektir. </string>
     <string name="notify_on_all_messages">Tüm mesajları bildir</string>
     <string name="notify_only_when_highlighted">Yalnızca bahsedildiğinde bildir</string>
@@ -501,7 +501,7 @@ Kişilerinize erişmek için izin vermeniz istenecektir. </string>
     <string name="correct_message">Mesajı düzenle</string>
     <string name="send_corrected_message">Düzeltilmiş mesajı gönder</string>
     <string name="no_keys_just_confirm">Bu kişiye zaten güvenin. \'tamam\' seçeneğini seçerseniz, yalnızca%s, bu grup sohbetinin bir parçası olduğunu onaylıyorsunuz demektir.</string>
-    <string name="contacts_have_no_pgp_keys">Kişileriniz genel anahtarlarını duyurmadığı için blabber.im mesajlarınızı şifreleyemiyor.</string>
+    <string name="contacts_have_no_pgp_keys">Kişileriniz genel anahtarlarını duyurmadığı için monocles chat mesajlarınızı şifreleyemiyor.</string>
     <string name="this_account_is_disabled">Bu hesabı devre dışı bıraktınız</string>
     <string name="no_application_to_share_uri">URI\'yi paylaşacak hiçbir uygulama bulunamadı</string>
     <string name="share_uri_with">Ile URI paylaş…</string>
@@ -537,11 +537,11 @@ Kişilerinize erişmek için izin vermeniz istenecektir. </string>
     <string name="import_database">Yedeği içeri aktar</string>
     <string name="invite_again">Tekrar davet et</string>
     <string name="inviteUser_Subject">sizi davet etti</string>
-    <string name="InviteText">Merhaba, kullanıcı sizi Blabber.im\'e davet etti. Sadece aşşağıdaki bağlantıya tıklayın. </string>
+    <string name="InviteText">Merhaba, kullanıcı sizi monocles chat\'e davet etti. Sadece aşşağıdaki bağlantıya tıklayın. </string>
     <string name="pref_broadcast_last_activity">Son kullanıcı etkileşimlerini yayınla</string>
-    <string name="pref_broadcast_last_activity_summary">Blabber.im kullandığınızı kişilerinize bildirin</string>
-    <string name="request_permissions_message">Blabber.im birkaç izin vermenizi isteyecektir. Tüm bu izinlerin bu mesajlaşma aracının tüm özelliklerine sahip olmasına izin vermeniz önemlidir. Bu izinlerden herhangi birini reddederseniz, uygulama kendiliğinden kapanacaktır.</string>
-    <string name="request_permissions_message_again">Bunun için gereken izinlerin bir kısmını veya tamamını reddettiniz. Blabber.im ayarlarına gitmek ve bu izinlere izinleri vermek ister misiniz? Bu izinlerden herhangi birini reddederseniz, uygulama kendiliğinden kapanacaktır.</string>
+    <string name="pref_broadcast_last_activity_summary">monocles chat kullandığınızı kişilerinize bildirin</string>
+    <string name="request_permissions_message">monocles chat birkaç izin vermenizi isteyecektir. Tüm bu izinlerin bu mesajlaşma aracının tüm özelliklerine sahip olmasına izin vermeniz önemlidir. Bu izinlerden herhangi birini reddederseniz, uygulama kendiliğinden kapanacaktır.</string>
+    <string name="request_permissions_message_again">Bunun için gereken izinlerin bir kısmını veya tamamını reddettiniz. monocles chat ayarlarına gitmek ve bu izinlere izinleri vermek ister misiniz? Bu izinlerden herhangi birini reddederseniz, uygulama kendiliğinden kapanacaktır.</string>
     <string name="unable_to_connect_to_keychain">OpenKeyChain\'e bağlanılamıyor</string>
     <string name="this_device_is_no_longer_in_use">Bu cihaz artık kullanılmıyor</string>
     <string name="please_wait">Lütfen bekleyin…</string>
@@ -569,9 +569,9 @@ Kişilerinize erişmek için izin vermeniz istenecektir. </string>
     <string name="show_error_message">Hata mesajını göster</string>
     <string name="error_message">Hattı mesaj</string>
     <string name="data_saver_enabled">Veri kaydedici etkin</string>
-    <string name="data_saver_enabled_explained">İşletim sisteminiz Blabber.im\'in arka planda olduğunda internete erişmesini kısıtlıyor. Yeni mesaj bildirimlerini almak için, veri koruyucu açıkken Blabber.im\'e sınırsız erişime izin vermelisiniz.
-Blabber.im mümkün olduğunca veri korumak için çaba gösterecektir.</string>
-    <string name="device_does_not_support_data_saver">Cihazınız blabber.im için veri koruyucuyu devre dışı bırakmayı desteklemiyor. </string>
+    <string name="data_saver_enabled_explained">İşletim sisteminiz monocles chat\'in arka planda olduğunda internete erişmesini kısıtlıyor. Yeni mesaj bildirimlerini almak için, veri koruyucu açıkken monocles chat\'e sınırsız erişime izin vermelisiniz.
+monocles chat mümkün olduğunca veri korumak için çaba gösterecektir.</string>
+    <string name="device_does_not_support_data_saver">Cihazınız monocles chat için veri koruyucuyu devre dışı bırakmayı desteklemiyor. </string>
     <string name="add_to_contact_list">Bağlantı listesine ekle</string>
     <string name="contact">Bağlantı</string>
     <string name="unable_to_start_recording">Kayıt başlatılamıyor</string>
@@ -677,7 +677,7 @@ Blabber.im mümkün olduğunca veri korumak için çaba gösterecektir.</string>
     <string name="server_info_partial">kısmi</string>
     <string name="pref_show_foreground_service_summary">Bazı Android cihazlar belirli bir süre sonra bazı uygulamaları kapatacak ve yeni mesajlar alamayacaksınız. Bu tür sorunlarınız varsa, ön plan hizmetini etkinleştirmeyi deneyin. Fakat, bu seçeneği işaretleyerek kalıcı bir bildirimde bulunacağınızı unutmayın.</string>
     <string name="pref_show_foreground_service">Ön plan hizmetini kullan</string>
-    <string name="update_service">Blabber.im güncelleme hizmeti</string>
+    <string name="update_service">monocles chat güncelleme hizmeti</string>
     <string name="install_update">Güncellemeyi yükle?</string>
     <string name="highlight_in_muc">kullanıcıyı vurgula</string>
     <string name="no_application_found_to_open_link">Link\'i açmak için uyguluma bulunamadı</string>
@@ -700,7 +700,7 @@ Blabber.im mümkün olduğunca veri korumak için çaba gösterecektir.</string>
 Lütfen Tamam  tuşuna basarak grup sohbeti ayrıntılarına gidin ve bir kişiye uzun tıklayarak bir moderatör, yönetici ya da sahibine özel mesaj gönderin. Yazma erişimi istemek için listenin başındaki üyelerin adını yazın.</string>
     <string name="snooze">Ertele</string>
     <string name="huawei_protected_apps">Korunan uygulamalar</string>
-    <string name="huawei_protected_apps_summary">Bildirim almaya devam etmek için, ekran kapalı olduğunda bile, korunan uygulamalar listesine Blabber.im\'i eklemeniz gerekir.</string>
+    <string name="huawei_protected_apps_summary">Bildirim almaya devam etmek için, ekran kapalı olduğunda bile, korunan uygulamalar listesine monocles chat\'i eklemeniz gerekir.</string>
     <string name="pref_enable_multi_accounts_title">Birden çok hesabı aktifleştir</string>
     <string name="pref_enable_multi_accounts_summary">Birden fazla hesabı kullanmak ister misiniz? </string>
     <string name="mtm_accept_cert">Bilinmeyen sertifika kabul edilsin mi?</string>
@@ -713,14 +713,14 @@ Lütfen Tamam  tuşuna basarak grup sohbeti ayrıntılarına gidin ve bir kişiy
     <string name="qr_code_scanner_needs_access_to_camera">QR kod tarayıcısının kameraya erişmesi gerekiyor</string>
     <string name="pref_scroll_to_bottom_summary">Mesaj gönderdikten sonra aşağı kaydırın</string>
     <string name="pref_scroll_to_bottom">En alta kaydır</string>
-    <string name="no_camera_permission">Blabber.im kameraya erişmek istiyor</string>
+    <string name="no_camera_permission">monocles chat kameraya erişmek istiyor</string>
     <string name="edit_status_message_title">Durum Mesajını Düzenle</string>
     <string name="pref_automatically_delete_messages_description">Bu cihazdan yapılandırılmış zaman aralığından olan eski mesajları otomatik olarak silin.</string>
     <string name="pref_automatically_delete_messages">Otomatik ileti silme</string>
     <string name="pref_automatically_delete_attachments_description">Bu cihazdan yapılandırılmış zaman aralığından olan eski mesajları otomatik olarak silin.</string>
     <string name="pref_automatically_delete_files">Otomatik ek silme</string>
     <string name="disable_encryption">Şifrelemeyi devre dışı bırak</string>
-    <string name="error_trustkey_general">Blabber.im şifreli mesaj gönderemiyor. Bu, OMEMO\'yu desteklemeyen eski bir sunucu veya OMEMO desteklemeyen istemci kullanan kişinizden kaynaklanıyor olabilir.</string>
+    <string name="error_trustkey_general">monocles chat şifreli mesaj gönderemiyor. Bu, OMEMO\'yu desteklemeyen eski bir sunucu veya OMEMO desteklemeyen istemci kullanan kişinizden kaynaklanıyor olabilir.</string>
     <string name="error_trustkey_device_list">Aygıt listesi alınamıyor</string>
     <string name="error_trustkey_bundle">Aygıt listesi alınamıyor</string>
     <string name="error_trustkey_hint_mutual">İpucu: bazı durumlarda, bu, kişi listelerinizi birbirine ekleyerek düzeltilebilir.</string>
@@ -747,7 +747,7 @@ Bu, sunucu yöneticinizin iletilerinizi okumasına izin verir, ancak eski istemc
     <string name="large">Büyük</string>
     <string name="create_shortcut">Kısayol Oluştur</string>
     <string name="not_encrypted_for_this_device">Mesaj bu cihaz için şifrelenmedi.</string>
-    <string name="no_microphone_permission">Blabber.im mikrofona erişmek istiyor</string>
+    <string name="no_microphone_permission">monocles chat mikrofona erişmek istiyor</string>
     <string name="search_messages">İleti ara</string>
     <string name="gif">GIF</string>
     <string name="view_conversation">Sohbeti görüntüle</string>
@@ -776,15 +776,15 @@ Bu, sunucu yöneticinizin iletilerinizi okumasına izin verir, ancak eski istemc
     <string name="delete_message">Mesajı sil</string>
     <string name="conference_destroyed">Bu grup sohbeti yok edilmiştir</string>
     <string name="no_application_found_to_view_contact">Bu kişiyi görüntüleyecek uygulama bulunamadı</string>
-    <string name="welcome_server_info">Sağlayıcınız olarak blabber.im kullanmayı öneririz. </string>
-    <string name="no_location_permission">Blabber.im konum servisine erişmek istiyor</string>
+    <string name="welcome_server_info">Sağlayıcınız olarak monocles chat kullanmayı öneririz. </string>
+    <string name="no_location_permission">monocles chat konum servisine erişmek istiyor</string>
     <string name="pref_show_record_voice_btn_summary">Sohbetlerdeki ses kayıt düğmesini hızlı Eylem olarak göster</string>
     <string name="pref_show_record_voice_btn">Kayıt ses düğmesini göster</string>
     <string name="pref_use_quick_share_attachment_choice_summary">Mesaj yazılmazsa Gönder düğmesini ek seçeneğiyle değiştirin. Aksi takdirde, aşağıdaki ayarda yapılandırılabilen hızlı eylemleri gösterin.</string>
     <string name="pref_quick_share_attachment_choice">Dosya seç</string>
     <string name="unable_to_save_recording">Kayıt kaydedilemiyor</string>
     <string name="foreground_service_channel_name">Ön plan hizmeti</string>
-    <string name="foreground_service_channel_description">Bu bildirim kategorisi, Blabber.im \'in çalıştığını belirten kalıcı bir bildirim görüntülemek için kullanılır.</string>
+    <string name="foreground_service_channel_description">Bu bildirim kategorisi, monocles chat \'in çalıştığını belirten kalıcı bir bildirim görüntülemek için kullanılır.</string>
     <string name="notification_group_status_information">Durum bilgisi</string>
     <string name="error_channel_name">Bağlantı Sorunları</string>
     <string name="error_channel_description">Bu bildirim kategorisi bir hesaba bağlanırken bir sorun olması durumunda bir bildirim görüntülemek için kullanılır.</string>
@@ -835,7 +835,7 @@ Bu, sunucu yöneticinizin iletilerinizi okumasına izin verir, ancak eski istemc
     <string name="open_with">Birlikte aç...</string>
     <string name="server_info_adhoc_invite">XEP-0050: Ad-Hoc komutları: kullanıcı davet</string>
     <string name="choose_account">Hesap seçin</string>
-    <string name="set_profile_picture">Blabber.im profil fotoğrafı</string>
+    <string name="set_profile_picture">monocles chat profil fotoğrafı</string>
     <string name="restore_backup">Yedekleri yükle</string>
     <string name="restore">Geri Yükle</string>
     <string name="enter_password_to_restore">Yedeklemeyi geri yüklemek için %s hesabınızın parolasını girin.</string>
@@ -927,12 +927,12 @@ Bu özelliği kullandığınız zaman IP adresiniz ve arama tercihlerini bu hizm
     <string name="action_unblock_participant">Katılımcının engelini kaldır</string>
     <string name="action_block_participant">Katılımcıları engelle</string>
     <string name="share_backup_files">Yedek dosyaları paylaş</string>
-    <string name="conversations_backup">Blabber.im yedekleme</string>
+    <string name="conversations_backup">monocles chat yedekleme</string>
     <string name="event">Olay</string>
     <string name="pref_vibrate_in_chat_summary">Açık bir sohbette yeni bir mesaj geldiğinde titreşim</string>
     <string name="pref_vibrate_in_chat">Açık sohbette titreşim</string>
     <string name="open_backup">Yedeklemeyi aç</string>
-    <string name="not_a_backup_file">Seçtiğiniz dosya bir dosya değil, blabber.im yedekleme dosyası</string>
+    <string name="not_a_backup_file">Seçtiğiniz dosya bir dosya değil, monocles chat yedekleme dosyası</string>
     <string name="account_already_setup">Bu hesap zaten kuruldu</string>
     <string name="please_enter_password">Lütfen bu hesabınızın şifresini girin</string>
     <string name="unable_to_perform_this_action">Bu eylemi gerçekleştirilemiyor</string>
@@ -942,7 +942,7 @@ Bu özelliği kullandığınız zaman IP adresiniz ve arama tercihlerini bu hizm
     <string name="pref_use_invidious_summary">Invidious, YouTube\'a gizlilik dostu bir alternatiftir</string>
     <string name="this_device">Bu cihaz</string>
     <string name="intro_desc_main">Daha fazla bilgi </string>
-    <string name="welcome_header">Blabber.im\'e hoşgeldiniz</string>
+    <string name="welcome_header">monocles chat\'e hoşgeldiniz</string>
     <string name="intro_required_permissions">Gerekli izinler</string>
     <string name="intro_desc_required_permissions">Girişin sonunda, henüz vermediyseniz, depolama izinleri (zorunlu) vermeniz istenecektir. Ekleme izinleri gerektiği gibi istenir ve isteğe bağlıdır.</string>
     <string name="intro_account">Sizin hesabınız</string>

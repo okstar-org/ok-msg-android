@@ -62,8 +62,8 @@
     <string name="unblock">Odblokovat</string>
     <string name="save">Uložit</string>
     <string name="ok">OK</string>
-    <string name="crash_report_title">Pád aplikace blabber.im</string>
-    <string name="crash_report_message">Zasláním detailů o důvodu selhání pomůžete dalšímu vývoji aplikace blabber.im\n<b>Varování:</b> Pro zaslání detailů vývojářům bude použit váš XMPP účet.</string>
+    <string name="crash_report_title">Pád aplikace monocles chat</string>
+    <string name="crash_report_message">Zasláním detailů o důvodu selhání pomůžete dalšímu vývoji aplikace monocles chat\n<b>Varování:</b> Pro zaslání detailů vývojářům bude použit váš XMPP účet.</string>
     <string name="send_now">Odeslat teď</string>
     <string name="send_never">Již se neptat</string>
     <string name="problem_connecting_to_account">Připojení k účtu se nezdařilo</string>
@@ -88,7 +88,7 @@
     <string name="send_unencrypted">Poslat nešifrované</string>
     <string name="decryption_failed">Zašifrování se nezdařilo. Možná nemáte správný privátní klíč.</string>
     <string name="openkeychain_required">OpenKeychain</string>
-    <string name="openkeychain_required_long">blabber.im využívá aplikaci třetí strany, <b>OpenKeychain</b>, k šifrování a dešifrování zpráv a ke správě veřejných klíčů.\n\nOpenKeychain je licencován pod GPLv3 a dostupný na F-Droid a Google Play.\n\n<small>(Po instalaci prosím restartujte tuto aplikaci.)</small></string>
+    <string name="openkeychain_required_long">monocles chat využívá aplikaci třetí strany, <b>OpenKeychain</b>, k šifrování a dešifrování zpráv a ke správě veřejných klíčů.\n\nOpenKeychain je licencován pod GPLv3 a dostupný na F-Droid a Google Play.\n\n<small>(Po instalaci prosím restartujte tuto aplikaci.)</small></string>
     <string name="restart">Restartovat</string>
     <string name="install">Instalovat</string>
     <string name="offering">nabízí…</string>
@@ -159,7 +159,7 @@
     <string name="mgmt_account_are_you_sure">Jste si jisti?</string>
     <string name="attach_record_voice">Nahrát hlas</string>
     <string name="account_settings_jabber_id">Jabber ID</string>
-    <string name="account_settings_example_jabber_id">uživatelské jméno@blabber.im</string>
+    <string name="account_settings_example_jabber_id">uživatelské jméno@monocles.de</string>
     <string name="password">Heslo</string>
     <string name="invalid_jid">Toto není platné Jabber ID</string>
     <string name="error_out_of_memory">Nedostatek paměti. Obrázek je příliš velký</string>
@@ -431,11 +431,11 @@
     <string name="pref_away_when_screen_off">Pryč, když je zařízení zamknuto</string>
     <string name="pref_away_when_screen_off_summary">Při vypnuté obrazovce přepne váš stav na pryč</string>
     <string name="pref_dnd_on_silent_mode">\"Zaneprázdněný\" v tichém režimu</string>
-    <string name="update_info">blabber.im stahuje a instaluje novou verzi.\n\nProsím čekejte…</string>
+    <string name="update_info">monocles chat stahuje a instaluje novou verzi.\n\nProsím čekejte…</string>
     <string name="pref_dnd_on_silent_mode_summary">Pokud je vaše zařízení v tichém režimu, přepne váš stav na \"Zaneprázdněný\"</string>
     <string name="pref_treat_vibrate_as_silent">Vibrační mód brát stejně jako tichý</string>
     <string name="pref_treat_vibrate_as_dnd_summary">Pokud je vaše zařízení v režimu vibrace, přepne váš stav na \"Zaneprázdněný\"</string>
-    <string name="hostname_example">blabber.im</string>
+    <string name="hostname_example">monocles.de</string>
     <string name="action_add_account_with_certificate">Přidat účet s certifikátem</string>
     <string name="unable_to_parse_certificate">Nelze načíst certifikát</string>
     <string name="authenticate_with_certificate">Nechat prázdné pro ověření s certifikátem</string>
@@ -466,7 +466,7 @@
     </plurals>
     <string name="load_more_messages">Načíst více zpráv</string>
     <string name="sync_with_contacts">Synchronizovat s kontakty</string>
-    <string name="sync_with_contacts_long">Aplikace blabber.im by ráda porovnala svůj XMPP seznam s vašimi kontakty, aby mohla zobrazit plná jména a avatary.\n\nblabber.im načte a porovná kontakty pouze lokálně, bez jejich nahrávání na server.\n\nNyní budete dotázáni na udělení práv pro přístup k seznamu kontaktů.</string>
+    <string name="sync_with_contacts_long">Aplikace monocles chat by ráda porovnala svůj XMPP seznam s vašimi kontakty, aby mohla zobrazit plná jména a avatary.\n\nmonocles chat načte a porovná kontakty pouze lokálně, bez jejich nahrávání na server.\n\nNyní budete dotázáni na udělení práv pro přístup k seznamu kontaktů.</string>
     <string name="notify_on_all_messages">Upozorňovat na všechny zprávy</string>
     <string name="notify_never">Upozornění vypnuta</string>
     <string name="notify_paused">Upozornění pozastavena</string>
@@ -482,7 +482,7 @@
     <string name="always">Vždy</string>
     <string name="always_off">Vždy vypnuto</string>
     <string name="battery_optimizations_enabled">Povolena optimalizace využití baterie</string>
-    <string name="battery_optimizations_enabled_explained">Vaše zařízení provádí agresivní optimalizace využití baterie pro aplikaci blabber.im. Ty mohou způsobit zpoždění upozornění nebo ztrátu zpráv.\nJe doporučeno to vypnout.</string>
+    <string name="battery_optimizations_enabled_explained">Vaše zařízení provádí agresivní optimalizace využití baterie pro aplikaci monocles chat. Ty mohou způsobit zpoždění upozornění nebo ztrátu zpráv.\nJe doporučeno to vypnout.</string>
     <string name="battery_optimizations_enabled_dialog">Vaše zařízení používá agresivní optimalizaci spotřeby energie, které může vést ke zpožděným notifikacím i ztrátám zpráv.\n\nBudete nyní požádáni o jejich vypnutí.</string>
     <string name="install_from_unknown_sources_disabled">Instalování z neznámých zdrojů zakázáno</string>
     <string name="disable">Vypnout</string>
@@ -494,7 +494,7 @@
     <string name="correct_message">Opravit zprávu</string>
     <string name="send_corrected_message">Odeslat opravenou zprávu</string>
     <string name="no_keys_just_confirm">Tomuto kontaktu již věříte. Stiskem tlačítka hotovo pouze potvrzujete, že je %s členem této skupiny.</string>
-    <string name="contacts_have_no_pgp_keys">Není možné zašifrovat zprávy v aplikaci blabber.im, protože kontakty neoznamují svůj veřejný klíč.\n\n<small>Požádejte své kontakty ať si nastaví OpenPGP.</small></string>
+    <string name="contacts_have_no_pgp_keys">Není možné zašifrovat zprávy v aplikaci monocles chat, protože kontakty neoznamují svůj veřejný klíč.\n\n<small>Požádejte své kontakty ať si nastaví OpenPGP.</small></string>
     <string name="this_account_is_disabled">Tento účet byl vypnut</string>
     <string name="no_application_to_share_uri">Nebyla nalezena aplikace pro sdílení URI</string>
     <string name="share_uri_with">Sdílet URI s...</string>
@@ -550,8 +550,8 @@
     <string name="show_error_message">Zobrazit chybovou zprávu</string>
     <string name="error_message">Chybové hlášení</string>
     <string name="data_saver_enabled">Zapnuta úspora dat</string>
-    <string name="data_saver_enabled_explained">Váš operační systém zabraňuje aplikaci blabber.im v přístupu na Internet, když běží na pozadí. Pro příjem upozornění na nové zprávy musíte aplikaci blabber.im povolit neomezený přístup při zapnuté úspoře dat.\n\nblabber.im se bude i přesto snažit omezovat přenos dat.</string>
-    <string name="device_does_not_support_data_saver">Tento přístroj nepodporuje vypnutí šetření dat pro aplikaci blabber.im.</string>
+    <string name="data_saver_enabled_explained">Váš operační systém zabraňuje aplikaci monocles chat v přístupu na Internet, když běží na pozadí. Pro příjem upozornění na nové zprávy musíte aplikaci monocles chat povolit neomezený přístup při zapnuté úspoře dat.\n\nmonocles chat se bude i přesto snažit omezovat přenos dat.</string>
+    <string name="device_does_not_support_data_saver">Tento přístroj nepodporuje vypnutí šetření dat pro aplikaci monocles chat.</string>
     <string name="add_to_contact_list">Přidat do seznamu kontaktů</string>
     <string name="contact">Kontakt</string>
     <string name="unable_to_start_recording">Nahrávání nelze spustit</string>
@@ -657,7 +657,7 @@
     <string name="once">Jednou</string>
     <string name="pref_scroll_to_bottom_summary">Přejít na konec konverze po odeslání zprávy</string>
     <string name="pref_scroll_to_bottom">Přejít na konec</string>
-    <string name="no_camera_permission">blabber.im potřebuje přístup k fotoaparátu</string>
+    <string name="no_camera_permission">monocles chat potřebuje přístup k fotoaparátu</string>
     <string name="edit_status_message_title">Upravit Stavovou Zprávu</string>
     <string name="pref_automatically_delete_messages">Automatické mazání zpráv</string>
     <string name="pref_automatically_delete_attachments_description">Automaticky z tohoto zařízení smazat přílohy, starší než nastavený časový rámec.</string>
@@ -739,7 +739,7 @@
     <string name="your_status">Váš stav</string>
     <string name="this_device">Toto zařízení</string>
     <string name="intro_account">Váš účet</string>
-    <string name="intro_whats_xmpp">Co je to XMPP / Jabber / blabber.im?</string>
+    <string name="intro_whats_xmpp">Co je to XMPP / Jabber / monocles chat?</string>
     <string name="open_join_dialog">Připojit se k veřejné skupině…</string>
     <string name="no_results">Žádné výsledky</string>
     <string name="file_transmission_cancelled">přenos souboru byl zrušen</string>
@@ -747,7 +747,7 @@
     <string name="gp_medium">Střední</string>
     <string name="pref_theme_blue">Modrý</string>
     <string name="pref_theme_orange">Oranžový</string>
-    <string name="pref_theme_monocles">blabber.im</string>
+    <string name="pref_theme_monocles">monocles</string>
     <string name="pref_theme_grey">Šedý</string>
     <string name="pref_theme_pink">Růžový</string>
     <string name="pref_theme_black">Černý (AMOLED)</string>

@@ -61,8 +61,8 @@
     <string name="unblock">Sblocca</string>
     <string name="save">Salva</string>
     <string name="ok">OK</string>
-    <string name="crash_report_title">blabber.im si è chiuso inaspettatamente</string>
-    <string name="crash_report_message">Se scegli di inviare una segnalazione dell’errore aiuterai lo sviluppo di blabber.im\n<b>Attenzione:</b> Questo utilizzerà il tuo account XMPP per inviare la segnalazione agli sviluppatori.</string>
+    <string name="crash_report_title">monocles chat si è chiuso inaspettatamente</string>
+    <string name="crash_report_message">Se scegli di inviare una segnalazione dell’errore aiuterai lo sviluppo di monocles chat\n<b>Attenzione:</b> Questo utilizzerà il tuo account XMPP per inviare la segnalazione agli sviluppatori.</string>
     <string name="send_now">Invia adesso</string>
     <string name="send_never">Non chiedere più</string>
     <string name="problem_connecting_to_account">Impossibile collegarsi tramite questo utente</string>
@@ -93,7 +93,7 @@
     <string name="offering">offrendo…</string>
     <string name="waiting">in attesa…</string>
     <string name="no_pgp_key">Nessuna chiave OpenPGP trovata</string>
-    <string name="contact_has_no_pgp_key">blabber.im non è in grado di cifrare i tuoi messaggi perché il contatto non sta annunciando la sua chiave pubblica.\n\n<small>Per favore chiedi al tuo contatto di configurare OpenPGP.</small></string>
+    <string name="contact_has_no_pgp_key">monocles chat non è in grado di cifrare i tuoi messaggi perché il contatto non sta annunciando la sua chiave pubblica.\n\n<small>Per favore chiedi al tuo contatto di configurare OpenPGP.</small></string>
     <string name="no_pgp_keys">Nessuna chiave OpenPGP trovata</string>
     <string name="pref_general">Generale</string>
     <string name="pref_accept_files_wifi">Accetta files con connessioni WiFi</string>
@@ -111,7 +111,7 @@
     <string name="pref_sound">Suono di notifica</string>
     <string name="pref_sound_summary">Esegui un suono quando arriva un nuovo messaggio</string>
     <string name="pref_send_crash">Invia riepiloghi dei problemi</string>
-    <string name="pref_send_crash_summary">Inviando queste tracce aiuti lo sviluppo di blabber.im</string>
+    <string name="pref_send_crash_summary">Inviando queste tracce aiuti lo sviluppo di monocles chat</string>
     <string name="pref_confirm_messages">Conferma messaggi</string>
     <string name="pref_confirm_messages_summary">Fai sapere ai tuoi contatti quando hai ricevuto e letto i loro messaggi</string>
     <string name="pref_ui_options">Interfaccia utente</string>
@@ -161,7 +161,7 @@
     <string name="mgmt_account_delete_confirm_message">Se elimini il tuo account, la tua cronologia locale delle conversazioni sarà persa.\n\nSe elimini l\'account dal server, tutto il tuo account sarà eliminato anche dal server, e non sarai in grado di accedere più finchè non registrerai un nuovo account.</string>
     <string name="attach_record_voice">Registra la voce</string>
     <string name="account_settings_jabber_id">ID Jabber</string>
-    <string name="account_settings_example_jabber_id">nomeutente@blabber.im</string>
+    <string name="account_settings_example_jabber_id">nomeutente@monocles.de</string>
     <string name="password">Password</string>
     <string name="invalid_jid">Questo non è un ID Jabber valido</string>
     <string name="error_out_of_memory">Memoria esaurita. L’immagine è tropppo grande</string>
@@ -443,7 +443,7 @@
     <string name="pref_dnd_on_silent_mode_summary">Segna la tua risorsa come \"Non disturbare\" quando il dispositivo è in modalità silenziosa</string>
     <string name="pref_treat_vibrate_as_silent">Tratta vibrazione come modalità silenziosa</string>
     <string name="pref_treat_vibrate_as_dnd_summary">Segna la tua risorsa come \"Non disturbare\" quando il dispositivo ha solo la vibrazione</string>
-    <string name="hostname_example">blabber.im</string>
+    <string name="hostname_example">monocles.de</string>
     <string name="action_add_account_with_certificate">Aggiungi account con certificato</string>
     <string name="unable_to_parse_certificate">Impossibile analizzare il certificato</string>
     <string name="authenticate_with_certificate">Lasciare vuoto per autenticarsi con certificato</string>

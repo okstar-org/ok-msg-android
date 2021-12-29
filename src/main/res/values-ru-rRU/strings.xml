@@ -163,7 +163,7 @@
     <string name="mgmt_account_delete_confirm_message">Если Вы удалите свою учетную запись, вся Ваша локальная история переписки будет потеряна.\n\nЕсли Вы удалите свою учетную запись с сервера, Вы не сможете больше входить в систему, пока не зарегистрируете новую учетную запись.</string>
     <string name="attach_record_voice">Записать голосовое сообщение</string>
     <string name="account_settings_jabber_id">Jabber-ID</string>
-    <string name="account_settings_example_jabber_id">username@blabber.im</string>
+    <string name="account_settings_example_jabber_id">username@monocles.de</string>
     <string name="password">Пароль</string>
     <string name="invalid_jid">Недействительный Jabber-ID</string>
     <string name="error_out_of_memory">Недостаточно памяти. Изображение слишком большое</string>
@@ -447,7 +447,7 @@
     <string name="pref_dnd_on_silent_mode_summary">Устанавливать статус \"Не беспокоить\", когда устройство находится в беззвучном режиме</string>
     <string name="pref_treat_vibrate_as_silent">Считать режим вибрации беззвучным режимом</string>
     <string name="pref_treat_vibrate_as_dnd_summary">Устанавливать статус \"Не беспокоить\", когда устройство находится в режиме вибрации</string>
-    <string name="hostname_example">blabber.im</string>
+    <string name="hostname_example">monocles.de</string>
     <string name="action_add_account_with_certificate">Добавить аккаунт с сертификатом</string>
     <string name="unable_to_parse_certificate">Не удается обработать сертификат</string>
     <string name="authenticate_with_certificate">Оставьте пустым для аутентификации с сертификатом</string>

@@ -441,7 +441,7 @@
     <string name="pref_dnd_on_silent_mode_summary">Canvia el teu estat a \"no molestar\" quan el dispositiu està en mode silenci</string>
     <string name="pref_treat_vibrate_as_silent">Mode vibració como a mode silenci</string>
     <string name="pref_treat_vibrate_as_dnd_summary">Canvia el teu estat a \"no molestar\" quan el dispositiu està en mode vibració</string>
-    <string name="hostname_example">blabber.im</string>
+    <string name="hostname_example">monocles.de</string>
     <string name="action_add_account_with_certificate">Afegir compte amb certificat</string>
     <string name="unable_to_parse_certificate">No s\'ha pogut llegir el certificat</string>
     <string name="authenticate_with_certificate">Deixar buit  per a autentificar el  certificat w/ </string>

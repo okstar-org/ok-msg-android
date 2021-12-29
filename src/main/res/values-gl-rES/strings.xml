@@ -61,8 +61,8 @@
     <string name="unblock">Desbloquear</string>
     <string name="save">Gardar</string>
     <string name="ok">OK</string>
-    <string name="crash_report_title">blabber.im pechouse</string>
-    <string name="crash_report_message">Enviando volcados de pilas axudas ao desenrolo de blabber.im\n<b>Aviso:</b> Isto empregará a túa conta XMPP para enviar o volcado de pila ao desenrolador.</string>
+    <string name="crash_report_title">monocles chat pechouse</string>
+    <string name="crash_report_message">Enviando volcados de pilas axudas ao desenrolo de monocles chat\n<b>Aviso:</b> Isto empregará a túa conta XMPP para enviar o volcado de pila ao desenrolador.</string>
     <string name="send_now">Enviar agora</string>
     <string name="send_never">Non preguntar de novo</string>
     <string name="problem_connecting_to_account">Erro na conexión á conta</string>
@@ -93,7 +93,7 @@
     <string name="offering">ofrecendo…</string>
     <string name="waiting">agardando...</string>
     <string name="no_pgp_key">Clave OpenPGP non atopada</string>
-    <string name="contact_has_no_pgp_key">blabber.im non foi quen de cifrar as túas mensaxes porque o teu contactos non está anunciando a súa clave pública.\n\n<small>Por favor, pídelle ao teu contacto que configure OpenPGP.</small></string>
+    <string name="contact_has_no_pgp_key">monocles chat non foi quen de cifrar as túas mensaxes porque o teu contactos non está anunciando a súa clave pública.\n\n<small>Por favor, pídelle ao teu contacto que configure OpenPGP.</small></string>
     <string name="no_pgp_keys">Non se atoparon chaves OpenPGP</string>
     <string name="pref_general">Xeral</string>
     <string name="pref_accept_files_wifi">Aceptar arquivos con conexións WiFi</string>
@@ -111,7 +111,7 @@
     <string name="pref_sound">Ton de aviso</string>
     <string name="pref_sound_summary">Emitir son cando chegue unha nova mensaxe</string>
     <string name="pref_send_crash">Enviar reporte de erro</string>
-    <string name="pref_send_crash_summary">Enviando os stack traces estás a axudar ao desenvolvemento continuo de blabber.im</string>
+    <string name="pref_send_crash_summary">Enviando os stack traces estás a axudar ao desenvolvemento continuo de monocles chat</string>
     <string name="pref_confirm_messages">Confirmación de mensaxes</string>
     <string name="pref_confirm_messages_summary">Permitir aos seus contactos saber si recibeu e leu as súas mensaxes</string>
     <string name="pref_ui_options">Interface</string>
@@ -161,7 +161,7 @@
     <string name="mgmt_account_delete_confirm_message">Se borra a súa conta, todo o teu historial de conversacións locais perderase.\n\n-Si borra a súa conta do servidor, toda a súa conta borrarase tamén do servidor, non poderá volver entrar ata que rexistre una nova conta.</string>
     <string name="attach_record_voice">Grabar audio</string>
     <string name="account_settings_jabber_id">ID Jabber</string>
-    <string name="account_settings_example_jabber_id">nome_de_usuario@blabber.im</string>
+    <string name="account_settings_example_jabber_id">nome_de_usuario@monocles.de</string>
     <string name="password">Contrasinal</string>
     <string name="invalid_jid">O identificador non é un identificador de Jabber válido</string>
     <string name="error_out_of_memory">Exceso de memoria. A imaxe é demasiado grande</string>
@@ -441,7 +441,7 @@
     <string name="pref_dnd_on_silent_mode_summary">Marca o seu recurso como \"Non molestar\" cando o dispositivo está en modo silencioso</string>
     <string name="pref_treat_vibrate_as_silent">Trata a vibración como modo silencioso</string>
     <string name="pref_treat_vibrate_as_dnd_summary">Marca o seu recurso como \"Non molestar\" cando o dispositivo está en modo vibración</string>
-    <string name="hostname_example">blabber.im</string>
+    <string name="hostname_example">monocles.de</string>
     <string name="action_add_account_with_certificate">Engadir conta con certificado</string>
     <string name="unable_to_parse_certificate">Non se puido procesar o certificado</string>
     <string name="authenticate_with_certificate">Deixar baldeiro autenticar con certificado</string>

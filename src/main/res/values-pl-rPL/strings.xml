@@ -151,7 +151,7 @@ Nie spowoduje to usunięcia kopii wiadomości przechowywanych na innych urządze
     <string name="mgmt_account_delete_confirm_message">W przypadku usunięcia konta z urządzenia zostanie usunięta tylko lokalna historia rozmów.\n\nUsunięcie konta z serwera będzie skutkowało brakiem możliwości zalogowania do niego.</string>
     <string name="attach_record_voice">Nagraj głos</string>
     <string name="account_settings_jabber_id">Jabber ID</string>
-    <string name="account_settings_example_jabber_id">nazwaużytkownika@blabber.im</string>
+    <string name="account_settings_example_jabber_id">nazwaużytkownika@monocles.de</string>
     <string name="password">Hasło</string>
     <string name="invalid_jid">Wprowadzono niepoprawny Jabber ID</string>
     <string name="error_out_of_memory">Brak pamięci, obraz jest za duży</string>
@@ -428,7 +428,7 @@ Nie spowoduje to usunięcia kopii wiadomości przechowywanych na innych urządze
     <string name="pref_dnd_on_silent_mode_summary">Oznacza Twój zasób jako \"Nie przeszkadzać\", gdy urządzenie jest w trybie cichym</string>
     <string name="pref_treat_vibrate_as_silent">Traktuj tryb wibracji jak tryb cichy</string>
     <string name="pref_treat_vibrate_as_dnd_summary">Oznacza Twój zasób jako \"Nie przeszkadzać\", gdy urządzenie jest w trybie wibracji</string>
-    <string name="hostname_example">blabber.im</string>
+    <string name="hostname_example">monocles.de</string>
     <string name="action_add_account_with_certificate">Dodaj konto za pomocą certyfikatu</string>
     <string name="unable_to_parse_certificate">Nie mogę odczytać certyfikatu</string>
     <string name="authenticate_with_certificate">Pozostaw puste by autoryzować za pomocą certyfikatu</string>

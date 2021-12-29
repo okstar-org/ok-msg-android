@@ -162,7 +162,7 @@
     <string name="mgmt_account_delete_confirm_message">Dacă vă ștergeți contul, tot istoricul conversațiilor locale va fi pierdut.\n\nDacă vă ștergeți contul de pe server, tot contul dumneavoastră va fi șters și de pe server, nu veți mai putea să vă conectați până când nu veți înregistra un cont nou.</string>
     <string name="attach_record_voice">Înregistrare voce</string>
     <string name="account_settings_jabber_id">Adresă XMPP</string>
-    <string name="account_settings_example_jabber_id">username@blabber.im</string>
+    <string name="account_settings_example_jabber_id">username@monocles.de</string>
     <string name="password">Parolă</string>
     <string name="invalid_jid">Aceasta nu este o adresă XMPP valabilă</string>
     <string name="error_out_of_memory">Memorie epuizată. Imaginea este prea mare.</string>
@@ -445,7 +445,7 @@
     <string name="pref_dnd_on_silent_mode_summary">Prezintă clientul drept \"Nu deranja\" atunci când dispozitivul este în mod silențios</string>
     <string name="pref_treat_vibrate_as_silent">Tratează modul vibrație ca silențios</string>
     <string name="pref_treat_vibrate_as_dnd_summary">Prezintă clientul drept \"Nu deranja\" atunci când dispozitivul este în mod vibrație</string>
-    <string name="hostname_example">blabber.im</string>
+    <string name="hostname_example">monocles.de</string>
     <string name="action_add_account_with_certificate">Adaugă un cont cu certificat</string>
     <string name="unable_to_parse_certificate">Nu se poate analiza certificatul</string>
     <string name="authenticate_with_certificate">Lăsați gol pentru a autentifica cu un certificat</string>

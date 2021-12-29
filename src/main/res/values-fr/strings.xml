@@ -534,7 +534,7 @@
     <string name="registration_password_too_weak">Échec de l’enregistrement : le mot de passe n’est pas assez fort</string>
     <string name="choose_participants">Choisir les participant⸱e⸱s</string>
     <string name="creating_conference">Création du groupe de discussion…</string>
-    <string name="import_text">Si une sauvegarde est disponible, vous pouvez la restaurer en appuyant sur le bouton ci-dessous.(Monocles Messenger, Conversations, blabber.im)</string>
+    <string name="import_text">Si une sauvegarde est disponible, vous pouvez la restaurer en appuyant sur le bouton ci-dessous.(Monocles Messenger, Conversations, monocles chat)</string>
     <string name="import_database">Importer une sauvegarde</string>
     <string name="invite_again">Inviter à nouveau</string>
     <string name="inviteUser_Subject">vous a invité via</string>
