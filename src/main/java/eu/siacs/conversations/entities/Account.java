@@ -7,6 +7,13 @@ import android.util.Log;
 
 import com.google.common.base.Strings;
 
+import net.java.otr4j.crypto.OtrCryptoEngineImpl;
+import net.java.otr4j.crypto.OtrCryptoException;
+import java.security.PublicKey;
+import java.security.interfaces.DSAPublicKey;
+import java.util.Locale;
+
+
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -24,6 +31,7 @@ import eu.siacs.conversations.R;
 import eu.siacs.conversations.crypto.PgpDecryptionService;
 import eu.siacs.conversations.crypto.axolotl.AxolotlService;
 import eu.siacs.conversations.crypto.axolotl.XmppAxolotlSession;
+import eu.siacs.conversations.crypto.OtrService;
 import eu.siacs.conversations.services.AvatarService;
 import eu.siacs.conversations.services.XmppConnectionService;
 import eu.siacs.conversations.utils.UIHelper;
@@ -82,6 +90,7 @@ public class Account extends AbstractEntity implements AvatarService.Avatarable 
     protected String hostname = null;
     protected int port = 5222;
     protected boolean online = false;
+    private OtrService mOtrService = null;
     private String rosterVersion;
     private String displayName = null;
     private AxolotlService axolotlService = null;
@@ -396,11 +405,15 @@ public class Account extends AbstractEntity implements AvatarService.Avatarable 
     }
 
     public void initAccountServices(final XmppConnectionService context) {
+        this.mOtrService = new OtrService(context, this);
         this.axolotlService = new AxolotlService(this, context);
         this.pgpDecryptionService = new PgpDecryptionService(context);
         if (xmppConnection != null) {
             xmppConnection.addOnAdvancedStreamFeaturesAvailableListener(axolotlService);
         }
+    }
+    public OtrService getOtrService() {
+        return this.mOtrService;
     }
 
     public PgpDecryptionService getPgpDecryptionService() {
@@ -413,6 +426,26 @@ public class Account extends AbstractEntity implements AvatarService.Avatarable 
 
     public void setXmppConnection(final XmppConnection connection) {
         this.xmppConnection = connection;
+    }
+
+    public String getOtrFingerprint() {
+        if (this.otrFingerprint == null) {
+            try {
+                if (this.mOtrService == null) {
+                    return null;
+                }
+                final PublicKey publicKey = this.mOtrService.getPublicKey();
+                if (publicKey == null || !(publicKey instanceof DSAPublicKey)) {
+                    return null;
+                }
+                this.otrFingerprint = new OtrCryptoEngineImpl().getFingerprint(publicKey).toLowerCase(Locale.US);
+                return this.otrFingerprint;
+            } catch (final OtrCryptoException ignored) {
+                return null;
+            }
+        } else {
+            return this.otrFingerprint;
+        }
     }
 
     public String getRosterVersion() {
@@ -578,6 +611,10 @@ public class Account extends AbstractEntity implements AvatarService.Avatarable 
 
     private List<XmppUri.Fingerprint> getFingerprints() {
         ArrayList<XmppUri.Fingerprint> fingerprints = new ArrayList<>();
+        final String otr = this.getOtrFingerprint();
+        if (otr != null) {
+            fingerprints.add(new XmppUri.Fingerprint(XmppUri.FingerprintType.OTR, otr));
+        }
         if (axolotlService == null) {
             return fingerprints;
         }

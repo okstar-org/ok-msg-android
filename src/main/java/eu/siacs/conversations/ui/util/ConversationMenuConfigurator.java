@@ -132,6 +132,7 @@ public class ConversationMenuConfigurator {
         if (conversation.getNextEncryption() != Message.ENCRYPTION_NONE) {
             menuSecure.setIcon(R.drawable.ic_lock_white_24dp);
         }
+        otr.setVisible(Config.supportOtr() && activity.enableOTR());
         if (conversation.getMode() == Conversation.MODE_MULTI) {
             otr.setVisible(false);
         }

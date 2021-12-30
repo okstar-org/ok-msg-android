@@ -36,6 +36,7 @@ configurations {
 }
 
 dependencies {
+    implementation 'org.jitsi:org.otr4j:0.23'
     implementation 'com.github.webrtc-sdk:android:93.4577.01'
     implementation project(':libs:android-transcoder')
     playstoreImplementation('com.google.firebase:firebase-messaging:22.0.0') {
