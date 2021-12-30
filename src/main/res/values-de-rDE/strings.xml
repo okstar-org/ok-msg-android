@@ -508,7 +508,7 @@
     <string name="no_application_to_share_uri">Keine Anwendung zum Teilen der URI gefunden</string>
     <string name="share_uri_with">Teile URI mit…</string>
     <string name="mgmt_account_reconnect">Neu verbinden</string>
-    <string name="welcome_text">…ist ein kostenfreier und sicherer XMPP/Jabber Client.</string>
+    <string name="welcome_text">…ist ein privatsphäre respektierender und sicherer Chat Client.</string>
     <string name="magic_create_text">Wir erstellen nun mit dir gemeinsam ein Konto mit einem zufällig generierten Kennwort, welches du benutzen oder auf der nächsten Seite ändern kannst\nDanach kannst du mit Kontakten auf diesem und anderen Servern in Kontakt treten, indem du ihnen deine Jabber-ID mitteilst.</string>
     <string name="your_full_jid_will_be">Deine Jabber-ID lautet: %s</string>
     <string name="create_account">Neues Konto erstellen</string>
