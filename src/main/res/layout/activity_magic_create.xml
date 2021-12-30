@@ -134,7 +134,7 @@
                         android:layout_centerHorizontal="true"
                         android:layout_centerVertical="true"
                         android:padding="8dp"
-                        android:src="@mipmap/ic_launcher_foreground" />
+                        android:src="@drawable/logo_800" />
                 </RelativeLayout>
             </RelativeLayout>
         </ScrollView>
