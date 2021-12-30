@@ -969,7 +969,7 @@
     <string name="intro_optional_permissions">Optionale Berechtigungen</string>
     <string name="intro_desc_optional_permissions2">Wenn du deinen Standort teilen möchtest, ist das Erteilen der Standortberechtigung erforderlich.\nFür den Versand von Sprachnachrichten ist es erforderlich, Zugriff auf das Mikrofon zu erhalten.</string>
     <string name="intro_desc_account3">Du hast die Möglichkeit, ein bestehendes Konto zu importieren.\nTippe einfach auf Konto importieren. Wenn Sicherungsdateien verfügbar sind, werden diese angezeigt. Wähle ein Konto aus, das importiert werden soll.</string>
-    <string name="intro_desc_start_chatting2">Du kannst auch Gruppenchats - sogenannte MUCs (Multi-User-Chats) - hinzufügen, erstellen oder ihnen beitreten. Man unterscheidet zwischen privaten Gruppenchats und öffentlichen Gruppenchats - sogenannten Räumen.</string>
+    <string name="intro_desc_start_chatting2">Du kannst auch Gruppenchats - sogenannte Räume - hinzufügen, erstellen oder ihnen beitreten. Man unterscheidet zwischen privaten Gruppenchats und öffentlichen Gruppenchats - sogenannten Räumen.</string>
     <string name="intro_desc_start_chatting3">Herzlichen Glückwunsch!\nJetzt geht\'s los und viel Spaß…</string>
     <string name="intro_privacy">Deine Privatsphäre\nDeine Souveränität</string>
     <string name="intro_desc_privacy">monocles chat wird deine Daten weder verkaufen noch analysieren und du entscheidest, welche Berechtigungen du erteilst.</string>

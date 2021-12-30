@@ -969,7 +969,7 @@
     <string name="intro_optional_permissions">Optionele machtigingen</string>
     <string name="intro_desc_optional_permissions2">Als je je locatie wilt delen, is de machtiging voor je locatie nodig.\nVoor het delen van spraakberichten heeft de app toegang tot je microfoon nodig.</string>
     <string name="intro_desc_account3">Bestaande accounts kunnen worden geïmporteerd.\nAls er back-ups beschikbaar zijn, dan zullen die worden getoond.</string>
-    <string name="intro_desc_start_chatting2">Er kunnen ook groepsgesprekken worden aangemaakt (Multi-User Chats ofwel MUCs). Deze kunnen worden onderverdeeld in besloten groepsgesprekken en openbare kanalen.</string>
+    <string name="intro_desc_start_chatting2">Er kunnen ook groepsgesprekken worden aangemaakt (rooms). Deze kunnen worden onderverdeeld in besloten groepsgesprekken en openbare kanalen.</string>
     <string name="intro_desc_start_chatting3">Gefeliciteerd!\nDaar gaan we dan… Veel plezier!</string>
     <string name="intro_privacy">Jouw privacy\nJouw soevereiniteit</string>
     <string name="intro_desc_privacy">monocles chatzal je gegevens niet analyseren of verkopen en jij bepaalt zelf de machtigingen voor deze app.</string>

@@ -944,7 +944,7 @@ Nie spowoduje to usunięcia kopii wiadomości przechowywanych na innych urządze
     <string name="intro_optional_permissions">Uprawnienia opcjonalne</string>
     <string name="intro_desc_optional_permissions2">monocles chat potrzebuje uprawnień do uzyskania Twojej lokalizacji w celu udostępniania przez Ciebie lokalizacji.\nW celu wysyłania wiadomości głosowych monocles chat potrzebuje uprawnień do korzystania z mikrofonu.</string>
     <string name="intro_desc_account3">Możesz zaimportować aktualnie istniejące konto.\nJeśli jakaś kopia zapasowa jest dostępna, zostanie ona wyświetlona.</string>
-    <string name="intro_desc_start_chatting2">Możesz także utworzyć lub dołączyć do czatów grupowych - zwanych MUCs (multi user chats). Czaty grupowe dzielą się na prywatne czaty grupowe i publiczne czaty grupowe - tak zwane kanały.</string>
+    <string name="intro_desc_start_chatting2">Możesz także utworzyć lub dołączyć do czatów grupowych - zwanych rooms. Czaty grupowe dzielą się na prywatne czaty grupowe i publiczne czaty grupowe - tak zwane kanały.</string>
     <string name="intro_desc_start_chatting3">Gratulacje!\nMiłej zabawy…</string>
     <string name="intro_privacy">Twoja prywatność\nTwoja niezależność</string>
     <string name="no_results">Brak rezultatów</string>

@@ -32,7 +32,7 @@ nightly or beta-release APKs are available via codeberg: [Releases](https://code
 ## Social Media
 Follow us on <a rel="me" href="https://monocles.social/@monocles">monocles social</a>
 
-There are also English and German speaking XMPP-MUCs focusing on support and development of the monocles chat.
+There are also English and German speaking XMPP-room focusing on support and development of the monocles chat.
 
 If you are interested in the development of the chat, here is a MUC for you (English and German speaking):
 

@@ -38,11 +38,11 @@
     <bool name="auto_rotate">false</bool>
     <bool name="send_crashreport">true</bool>
     <bool name="use_invidious">false</bool>
-    <bool name="use_inner_storage">false</bool>
+    <bool name="use_inner_storage">true</bool>
     <string name="invidious_host">monocles.live</string>
     <bool name="plain_text_logs">false</bool>
     <bool name="validate_hostname">false</bool>
-    <bool name="show_foreground_service">true</bool>
+    <bool name="show_foreground_service">false</bool>
     <bool name="warn_unencrypted_chat">true</bool>
     <bool name="hide_you_are_not_participating">false</bool>
     <bool name="use_bundled_emoji">true</bool>
@@ -57,10 +57,10 @@
     <bool name="screen_security">false</bool>
     <bool name="play_gif_inside">false</bool>
     <bool name="prefer_xmpp_avatar">true</bool>
-    <bool name="show_links_inside">true</bool>
-    <bool name="show_maps_inside">true</bool>
+    <bool name="show_links_inside">false</bool>
+    <bool name="show_maps_inside">false</bool>
     <string name="mappreview_url">https://blabber.im/staticmap/staticmap.php</string>
-    <bool name="use_internal_updater">true</bool>
+    <bool name="use_internal_updater">false</bool>
     <bool name="show_own_accounts">true</bool>
     <bool name="vibrate_in_chat">true</bool>
     <bool name="enable_otr">false</bool>
@@ -93,7 +93,7 @@
     <integer name="low_video_res">360</integer>
     <integer name="mid_video_res">720</integer>
     <integer name="high_video_res">1080</integer>
-    <bool name="easy_downloader">true</bool>
+    <bool name="easy_downloader">false</bool>
     <bool name="hide_memory_warning">false</bool>
     <bool name="pause_voice">false</bool>
     <bool name="show_date_in_quotes">true</bool>

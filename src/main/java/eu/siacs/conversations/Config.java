@@ -213,7 +213,7 @@ public final class Config {
     public static class DOMAIN {
         public static final List<String> DOMAINS = Arrays.asList(
                 "conversations.im",
-                "zp1.net"
+                "monocles.de"
         );
 
         public static final List<String> BLACKLISTED_DOMAINS = Arrays.asList(
@@ -229,7 +229,7 @@ public final class Config {
             } catch (Exception e) {
                 Log.d(LOGTAG, "Error getting random server ", e);
             }
-            return "zp1.net";
+            return "monocles.de";
         }
     }
 

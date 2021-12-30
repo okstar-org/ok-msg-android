@@ -985,7 +985,7 @@
     <string name="intro_optional_permissions">Optional permissions</string>
     <string name="intro_desc_optional_permissions2">Permissions for your location is needed if you would like to share your location.\nFor sharing voice messages it is required to get access to your microphone.</string>
     <string name="intro_desc_account3">You have the option to import an existing account.\nIf there are backup files available, they will be shown.</string>
-    <string name="intro_desc_start_chatting2">You can also add, create or join multi user chats - so-called MUCs. They where distinguished  between private group chats and public group chats - so called rooms.</string>
+    <string name="intro_desc_start_chatting2">You can also add, create or join multi user chats - so-called rooms. They where distinguished  between private group chats and public group chats - so called rooms.</string>
     <string name="intro_desc_start_chatting3">Congratulations!\nHere we go and have fun…</string>
     <string name="intro_privacy">Your privacy\nYour sovereignty</string>
     <string name="intro_desc_privacy">monocles will neither sell nor analyze your data and you decide which permissions you grant.</string>

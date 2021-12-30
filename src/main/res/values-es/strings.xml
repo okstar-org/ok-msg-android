@@ -967,7 +967,7 @@
     <string name="intro_optional_permissions">Permisos opcionales</string>
     <string name="intro_desc_optional_permissions2">El permiso para tu ubicación es necesario si quieres compartir tu ubicación.\nPara usar mensajes de voz se requiere tener acceso a tu micrófono.</string>
     <string name="intro_desc_account3">Tienes la opción de importar una cuenta existente.\nSi hay archivos de copia disponibles, serán mostrados.</string>
-    <string name="intro_desc_start_chatting2">También puede añadir, crear o unirte a chats multiusuario llamados MUCs. Hay grupos de chat privados y grupos de chat públicos también llamados canales.</string>
+    <string name="intro_desc_start_chatting2">También puede añadir, crear o unirte a chats multiusuario llamados rooms. Hay grupos de chat privados y grupos de chat públicos también llamados canales.</string>
     <string name="intro_desc_start_chatting3">¡Enhorabuena!\nVamos a divertirnos…</string>
     <string name="intro_privacy">Tu privacidad\nTu soberanía</string>
     <string name="intro_desc_privacy">monocles chat no vende ni analiza tus datos y tú decides que permisos otorgas.</string>
