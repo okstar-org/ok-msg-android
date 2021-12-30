@@ -473,7 +473,7 @@
     <string name="load_more_messages">Daha çox mesaj yükləyin</string>
     <string name="no_storage_permission">monocles chat xarici yaddaşa izn tələb edir</string>
     <string name="sync_with_contacts">Kontaktlarla sinxronizasiya edin</string>
-    <string name="sync_with_contacts_long">monocles chat adlarınızı və avatarlarınızı göstərmək üçün XMPP siyahısınızı kontaktlarınızla uyğunlaşdırmaq istəyir.\n\nPix-Art Messenger serverlərinizə yükləmədən yalnız kontaktlarınızı oxuyacaq və yerli uyğunlaşacaq.\n\nİndi edəcəksiniz əlaqələrinizə daxil olmaq üçün icazə verilməsini istənir.</string>
+    <string name="sync_with_contacts_long">monocles chat adlarınızı və avatarlarınızı göstərmək üçün XMPP siyahısınızı kontaktlarınızla uyğunlaşdırmaq istəyir.\n\nMonocles Messenger serverlərinizə yükləmədən yalnız kontaktlarınızı oxuyacaq və yerli uyğunlaşacaq.\n\nİndi edəcəksiniz əlaqələrinizə daxil olmaq üçün icazə verilməsini istənir.</string>
     <string name="notify_on_all_messages">Bütün mesajlarda bildirin</string>
     <string name="notify_only_when_highlighted">Yalnız qeyd edildikdə bildirin</string>
     <string name="notify_never">Bildirişlər deaktiv edilmişdir</string>
@@ -541,9 +541,9 @@
     <string name="inviteUser_Subject">vasitəsilə sizi dəvət etdi</string>
     <string name="InviteText">Salam,\n\n %s istifadəçisi sizi monocles chat - a dəvət etdi. Yalnız aşağıdakı linki vurun…</string>
     <string name="pref_broadcast_last_activity">Son istifadəçinin qarşılıqlı əlaqəsi</string>
-    <string name="pref_broadcast_last_activity_summary">Blabber.im-i istifadə etdiyiniz zaman bütün kontaktlarınızı bildirin</string>
+    <string name="pref_broadcast_last_activity_summary">monocles chat-i istifadə etdiyiniz zaman bütün kontaktlarınızı bildirin</string>
     <string name="request_permissions_message">monocles chatr bir neçə icazə verməyinizi xahiş edəcəkdir. Bütün bu icazələrin bu mesenjerin bütün xüsusiyyətlərindən istifadə etməsinə icazə verməyiniz vacibdir. Bu icazələrin hər hansı birini inkar etsəniz, tətbiq özünü bağlayacaqdır.</string>
-    <string name="request_permissions_message_again">Blabber.im üçün lazım olan bəzi və ya bütün icazələri rədd etmisiniz. Parametrlərə tullanmaq və bu icazələrə icazə vermək istərdinizmi? Bu icazələrin hər hansı birini inkar etsəniz, tətbiq özünü bağlayacaqdır.</string>
+    <string name="request_permissions_message_again">monocles chat üçün lazım olan bəzi və ya bütün icazələri rədd etmisiniz. Parametrlərə tullanmaq və bu icazələrə icazə vermək istərdinizmi? Bu icazələrin hər hansı birini inkar etsəniz, tətbiq özünü bağlayacaqdır.</string>
     <string name="unable_to_connect_to_keychain">OpenKeychain-ə qoşulmaq olmur</string>
     <string name="this_device_is_no_longer_in_use">Bu cihaz artıq istifadə edilmir</string>
     <string name="please_wait">Zəhmət olmasa gözləyin…</string>
@@ -776,7 +776,7 @@
     <string name="delete_message">Mesaji sil</string>
     <string name="conference_destroyed">Bu qrup söhbət məhv edilmişdir</string>
     <string name="no_application_found_to_view_contact">Kontaktı görmək üçün heç bir tətbiq tapılmadı</string>
-    <string name="welcome_server_info">Blabber.im-in provayderiniz kimi istifadəsini tövsiyə edirik.</string>
+    <string name="welcome_server_info">monocles chat-in provayderiniz kimi istifadəsini tövsiyə edirik.</string>
     <string name="no_location_permission">monocles chat yerləşmə yerinizə izn tələb edir</string>
     <string name="pref_show_record_voice_btn_summary">Səsli səs düyməsini sürətli hərəkət kimi göstərin</string>
     <string name="pref_show_record_voice_btn">Qeyd səs düyməsini göstər</string>
@@ -940,7 +940,7 @@
     <string name="pref_use_invidious_summary">Invidious-bu YouTube-un şəxsi və dostsayağı alternativ servisdir</string>
     <string name="this_device">Bu cihaz</string>
     <string name="intro_desc_main">Daha ətraflı…</string>
-    <string name="welcome_header">Blabber.im-ə xoş gəlmisən</string>
+    <string name="welcome_header">monocles chat-ə xoş gəlmisən</string>
     <string name="intro_required_permissions">Tələb olunan icazələr</string>
     <string name="intro_desc_required_permissions">Girişin sonunda saxlama icazələrini verməyiniz xahiş olunur (məcburi). İcazələrin verilməsi tələb olduqca istənilir.</string>
     <string name="intro_account">Sənin hesabın</string>
@@ -1079,8 +1079,8 @@
     <string name="n_missed_calls_from_m_contacts">%2$d kontaktdan %1$d cavabsız zəng</string>
     <string name="pref_invidious_host_summary">Əlavə invidious hostun istifadəsi</string>
     <string name="pref_invidious_host">Invidious hostu</string>
-    <string name="updated_to_monocles">Biz uğurla Pix-Art Messenger-dən monocles chat-ə keçdik\n\nİki layihənin əməkdaşlığı monocles chat- i düzəltdik. Pıx-Art Messenger isə 2020-ci ilin noyabrında genişləndirilib. Gələcəkdə Pıx-Art Messenger Android tətbiqi blabber adı altında davam edəcək.\n\nNə gözləmək olar:\n- Həmin funksiyalar qalır\n- Çat otağların köçürmə imkanı\n- Rənglər və loqotiplər monocles chat-ə uyğunlaşdırılmışdır\n- Tətbiq Google Play Store və F-Droid Store-da pulsuz olaraq mövcuddur\n\nSizin monocles chat Team</string>
-    <string name="updated_to_monocles_google">Birbaşa monocles chat-ə yeniləyə bilmədiyimiz üçün üzr istəməliyik. Aşağıdakı keçid altında bütün profillərinizi Pix-Art Messenger-dən monocles chat-ə köçürmək barədə təlimat alacaqsınız. Hərəkət məlumatlarına tıklayaraq göndərilən və alınan bütün sənədləri Pix-Art Messenger-dən monocles chat-ə köçürməyə çalışırıq. Uğurlu bir köçdən sonra Pix-Art Messenger\'i cihazınızdan silməyi unutmayın.</string>
+    <string name="updated_to_monocles">Biz uğurla Monocles Messenger-dən monocles chat-ə keçdik\n\nİki layihənin əməkdaşlığı monocles chat- i düzəltdik. Monocles Messenger isə 2020-ci ilin noyabrında genişləndirilib. Gələcəkdə Monocles Messenger Android tətbiqi blabber adı altında davam edəcək.\n\nNə gözləmək olar:\n- Həmin funksiyalar qalır\n- Çat otağların köçürmə imkanı\n- Rənglər və loqotiplər monocles chat-ə uyğunlaşdırılmışdır\n- Tətbiq Google Play Store və F-Droid Store-da pulsuz olaraq mövcuddur\n\nSizin monocles chat Team</string>
+    <string name="updated_to_monocles_google">Birbaşa monocles chat-ə yeniləyə bilmədiyimiz üçün üzr istəməliyik. Aşağıdakı keçid altında bütün profillərinizi Monocles Messenger-dən monocles chat-ə köçürmək barədə təlimat alacaqsınız. Hərəkət məlumatlarına tıklayaraq göndərilən və alınan bütün sənədləri Monocles Messenger-dən monocles chat-ə köçürməyə çalışırıq. Uğurlu bir köçdən sonra Monocles Messenger\'i cihazınızdan silməyi unutmayın.</string>
     <string name="link">Link</string>
     <string name="no_application_found">Heç bir tətbiq tapılmadı</string>
     <string name="move_data">Məlumatı köçürün</string>
@@ -1123,7 +1123,7 @@
     <string name="memory_warning_force">Mesenceriniz %1$s (%2$s) daxili yaddaşdan istifadə edir.\n\nSiz avtomatik qoşmanın silinməsi ilə əlaqədar avtomatik mesaj silinməsini təmin etməli və ya saxlanan medianı əl ilə silməlisiniz!</string>
     <string name="open_settings">Ayarları açın</string>
     <string name="oldAndroidVersion">Köhnə Android versiyası</string>
-    <string name="oldAndroidVersionMessage">Gələcək yeniləmələrdə artıq dəstəklənməyəcək köhnə bir Android versiyasından istifadə edirsiniz. Blabber.im versiyası 3.1.0-dan yalnız Android 5 və ya daha yüksək olan cihazlara dəstək verilir. Zəhmət olmasa cihazınızın proqram təminatını yeniləyin.</string>
+    <string name="oldAndroidVersionMessage">Gələcək yeniləmələrdə artıq dəstəklənməyəcək köhnə bir Android versiyasından istifadə edirsiniz. monocles chat versiyası 3.1.0-dan yalnız Android 5 və ya daha yüksək olan cihazlara dəstək verilir. Zəhmət olmasa cihazınızın proqram təminatını yeniləyin.</string>
     <string name="save_x_file">Saxla %s</string>
     <string name="file_copied_to">Faylı %s saxla</string>
     <string name="use_individual_notifications">Fərdi bildirişlərdən istifadə edin</string>

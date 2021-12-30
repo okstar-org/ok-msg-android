@@ -534,7 +534,7 @@
     <string name="registration_password_too_weak">Registrierung fehlgeschlagen: Passwort zu schwach</string>
     <string name="choose_participants">Mitglieder auswählen</string>
     <string name="creating_conference">Gruppenchat wird erstellt…</string>
-    <string name="import_text">Falls ein Backup verfügbar ist, kannst du es über den unten stehenden Button aus dem Monocles Messenger, Conversations oder blabber.im importieren.</string>
+    <string name="import_text">Falls ein Backup verfügbar ist, kannst du es über den unten stehenden Button aus dem Monocles Messenger, Conversations oder monocles chat importieren.</string>
     <string name="import_database">Backup importieren</string>
     <string name="invite_again">Erneut hinzufügen</string>
     <string name="inviteUser_Subject">hat dich eingeladen über</string>

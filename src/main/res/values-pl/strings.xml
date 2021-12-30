@@ -522,7 +522,7 @@ Nie spowoduje to usunięcia kopii wiadomości przechowywanych na innych urządze
     <string name="registration_password_too_weak">Rejestracja nie powiodła się: hasło zbyt słabe</string>
     <string name="choose_participants">Wybierz uczestnika</string>
     <string name="creating_conference">Utwórz czat grupowy…</string>
-    <string name="import_text">Jeśli dostępna jest kopia zapasowa, możesz ją zaimportować używając przycisku poniżej.(Monocles Messenger, Conversations, blabber.im)</string>
+    <string name="import_text">Jeśli dostępna jest kopia zapasowa, możesz ją zaimportować używając przycisku poniżej.(Monocles Messenger, Conversations, monocles chat)</string>
     <string name="import_database">Importować backup</string>
     <string name="invite_again">Zaproś ponownie</string>
     <string name="inviteUser_Subject">zaprosił/a Cie poprzez</string>

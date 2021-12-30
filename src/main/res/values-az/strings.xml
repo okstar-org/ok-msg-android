@@ -535,7 +535,7 @@
     <string name="registration_password_too_weak">Qeydiyyat alınmadı: parol çox zəifdir</string>
     <string name="choose_participants">İştirakçıları seçin</string>
     <string name="creating_conference">Qrup söhbəti yaradılır…</string>
-    <string name="import_text">Mövcud bir nüsxə varsa, aşağıdakı düyməni basaraq idxal edə bilərsiniz.(Monocles Messenger, Conversations, blabber.im)</string>
+    <string name="import_text">Mövcud bir nüsxə varsa, aşağıdakı düyməni basaraq idxal edə bilərsiniz.(Monocles Messenger, Conversations, monocles chat)</string>
     <string name="import_database">Nüsxəni idxal et</string>
     <string name="invite_again">Yenidən dəvət et</string>
     <string name="inviteUser_Subject">vasitəsilə sizi dəvət etdi</string>

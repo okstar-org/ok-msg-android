@@ -535,7 +535,7 @@
     <string name="registration_password_too_weak">Fallo no rexistro: contrasinal moi feble</string>
     <string name="choose_participants">Escoller participantes</string>
     <string name="creating_conference">Creando unha conversa en grupo...</string>
-    <string name="import_text">Se hai unha copia de seguridade dispoñible, pode importala pulsando o botón de abaixo.(Monocles Messenger, Conversations, blabber.im)</string>
+    <string name="import_text">Se hai unha copia de seguridade dispoñible, pode importala pulsando o botón de abaixo.(Monocles Messenger, Conversations, monocles chat)</string>
     <string name="import_database">Importar copia de seguridade</string>
     <string name="invite_again">Invitar de novo</string>
     <string name="inviteUser_Subject">convidoulle a través de</string>

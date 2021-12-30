@@ -65,8 +65,8 @@
     <string name="unblock">ألغ الحجب</string>
     <string name="save">احفظ</string>
     <string name="ok">موافق</string>
-    <string name="crash_report_title">انهار blabber.im</string>
-    <string name="crash_report_message">بإرسال معلومات التنقيح فإنك تساعد في تطوير blabber.im\n<b>تحذير:</b> سيتم استخدام حساب XMPP لإرسال السجلات إلى المطورين.</string>
+    <string name="crash_report_title">انهار monocles chat</string>
+    <string name="crash_report_message">بإرسال معلومات التنقيح فإنك تساعد في تطوير monocles chat\n<b>تحذير:</b> سيتم استخدام حساب XMPP لإرسال السجلات إلى المطورين.</string>
     <string name="send_now">أرسل الآن</string>
     <string name="send_never">لا تسأل مجددًا</string>
     <string name="problem_connecting_to_account">تعذر الاتصال بالحساب</string>
@@ -115,7 +115,7 @@
     <string name="pref_sound">النغمة</string>
     <string name="pref_sound_summary">شغّل نغمة عند استلام رسالة جديدة</string>
     <string name="pref_send_crash">أرسل تقارير انهيار التطبيق</string>
-    <string name="pref_send_crash_summary">بإرسال معلومات التنقيح فإنك تساعد في تطوير blabber.im</string>
+    <string name="pref_send_crash_summary">بإرسال معلومات التنقيح فإنك تساعد في تطوير monocles chat</string>
     <string name="pref_confirm_messages">تأكيد الرسائل</string>
     <string name="pref_confirm_messages_summary">دع كافة مُتراسِليك يعلمون أنك قد تلقيت رسائلهم و قمتَ بقراءتها</string>
     <string name="pref_ui_options">واجهة المستخدم</string>
@@ -420,7 +420,7 @@
         <item quantity="other">%d رسالةٍ</item>
     </plurals>
     <string name="load_more_messages">حمّل مزيدًا من الرسائل</string>
-    <string name="no_storage_permission">يحتاج blabber.im الوصول للذاكرة الخارجية</string>
+    <string name="no_storage_permission">يحتاج monocles chat الوصول للذاكرة الخارجية</string>
     <string name="sync_with_contacts">زامِن مع المتراسِلين</string>
     <string name="notify_on_all_messages">نبهني بورود رسائل جديدة</string>
     <string name="notify_only_when_highlighted">نبهني عند ذِكري فقط</string>
@@ -480,7 +480,7 @@
     <string name="import_database">استورد نسخة احتياطية</string>
     <string name="invite_again">أعد الدعوة</string>
     <string name="inviteUser_Subject">دعاك عبر</string>
-    <string name="InviteText">مرحبًا،\n\n دعاك %s لاستخدام blabber.im. للحصول عليه اتّبع الرابط…</string>
+    <string name="InviteText">مرحبًا،\n\n دعاك %s لاستخدام monocles chat. للحصول عليه اتّبع الرابط…</string>
     <string name="unable_to_connect_to_keychain">تعذر الاتصال بـ OpenKeychain</string>
     <string name="please_wait">يُرجى الانتظار…</string>
     <string name="pref_export_plain_text_logs_summary">فعّل تصدير سجلات المحادثة كنصوص قابلة للقراءة</string>
@@ -608,7 +608,7 @@
     <string name="create_dialog_group_chat_name">اسم المحادثة الجماعية</string>
     <string name="delete_message">احذف الرسالة</string>
     <string name="conference_destroyed">دُمرت هذه المحادثة الجماعية</string>
-    <string name="welcome_server_info">ننصح باستخدام blabber.im كمزوّد خدمة.</string>
+    <string name="welcome_server_info">ننصح باستخدام monocles chat كمزوّد خدمة.</string>
     <string name="pref_quick_share_attachment_choice">اختيار الملفات المرفَقة</string>
     <string name="unable_to_save_recording">لا يمكن حفظ التسجيل</string>
     <string name="foreground_service_channel_name">الخدمة الأمامية</string>
@@ -776,7 +776,7 @@
     <string name="move_data">انقل البيانات</string>
     <string name="error_moving_data">حدث خطأ أثناء نقل البيانات القديمة. رجاءً قم بذلك يدويًا.</string>
     <string name="data_successfully_moved">نجح نقل البيانات.</string>
-    <string name="invite_to_app">أدعوه إلى blabber.im</string>
+    <string name="invite_to_app">أدعوه إلى monocles chat</string>
     <string name="server_does_not_support_easy_onboarding_invites">الخادم لا يدعم توليد الدعوات</string>
     <string name="your_server">المزوِّد</string>
     <string name="pref_easy_downloader">تنزيل كل الملفات المرفقة تلقائيًا</string>
