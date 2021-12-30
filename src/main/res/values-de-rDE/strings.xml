@@ -211,8 +211,8 @@
     <string name="select">Auswählen</string>
     <string name="contact_already_exists">Der Kontakt existiert bereits</string>
     <string name="join">Beitreten</string>
-    <string name="channel_full_jid_example">channel@conference.domain.de/Nickname</string>
-    <string name="channel_bare_jid_example">channel@conference.domain.de</string>
+    <string name="channel_full_jid_example">raum@conference.domain.de/Nickname</string>
+    <string name="channel_bare_jid_example">raum@conference.domain.de</string>
     <string name="save_as_bookmark">Zur Kontaktliste hinzufügen</string>
     <string name="delete_bookmark">Von Kontaktliste entfernen</string>
     <string name="topic">Thema</string>
