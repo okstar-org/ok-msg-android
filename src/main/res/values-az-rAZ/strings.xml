@@ -62,7 +62,7 @@
     <string name="save">Saxla</string>
     <string name="ok">Oldu</string>
     <string name="crash_report_title">monocles chat qəzaya uğrayıb</string>
-    <string name="crash_report_message">Yığma izləri göndərməklə blabber-im-in davamlı inkişafına kömək edir\n&lt;b&gt;xəbərdarlıq:&lt;/ b&gt;Bu geliştirici yığını iz göndərmək üçün XMPP hesabı istifadə edəcək.</string>
+    <string name="crash_report_message">Yığma izləri göndərməklə monocles chat-in davamlı inkişafına kömək edir\n&lt;b&gt;xəbərdarlıq:&lt;/ b&gt;Bu geliştirici yığını iz göndərmək üçün XMPP hesabı istifadə edəcək.</string>
     <string name="send_now">İndi göndər</string>
     <string name="send_never">Bir daha soruşma</string>
     <string name="problem_connecting_to_account">Hesabla bağlantı qurula bilmədi</string>
@@ -1079,7 +1079,7 @@
     <string name="n_missed_calls_from_m_contacts">%2$d kontaktdan %1$d cavabsız zəng</string>
     <string name="pref_invidious_host_summary">Əlavə invidious hostun istifadəsi</string>
     <string name="pref_invidious_host">Invidious hostu</string>
-    <string name="updated_to_monocles">Biz uğurla Monocles Messenger-dən monocles chat-ə keçdik\n\nİki layihənin əməkdaşlığı monocles chat- i düzəltdik. Monocles Messenger isə 2020-ci ilin noyabrında genişləndirilib. Gələcəkdə Monocles Messenger Android tətbiqi blabber adı altında davam edəcək.\n\nNə gözləmək olar:\n- Həmin funksiyalar qalır\n- Çat otağların köçürmə imkanı\n- Rənglər və loqotiplər monocles chat-ə uyğunlaşdırılmışdır\n- Tətbiq Google Play Store və F-Droid Store-da pulsuz olaraq mövcuddur\n\nSizin monocles chat Team</string>
+    <string name="updated_to_monocles">Biz uğurla Monocles Messenger-dən monocles chat-ə keçdik\n\nİki layihənin əməkdaşlığı monocles chat- i düzəltdik. Monocles Messenger isə 2020-ci ilin noyabrında genişləndirilib. Gələcəkdə Monocles Messenger Android tətbiqi monocles chat adı altında davam edəcək.\n\nNə gözləmək olar:\n- Həmin funksiyalar qalır\n- Çat otağların köçürmə imkanı\n- Rənglər və loqotiplər monocles chat-ə uyğunlaşdırılmışdır\n- Tətbiq Google Play Store və F-Droid Store-da pulsuz olaraq mövcuddur\n\nSizin monocles chat Team</string>
     <string name="updated_to_monocles_google">Birbaşa monocles chat-ə yeniləyə bilmədiyimiz üçün üzr istəməliyik. Aşağıdakı keçid altında bütün profillərinizi Monocles Messenger-dən monocles chat-ə köçürmək barədə təlimat alacaqsınız. Hərəkət məlumatlarına tıklayaraq göndərilən və alınan bütün sənədləri Monocles Messenger-dən monocles chat-ə köçürməyə çalışırıq. Uğurlu bir köçdən sonra Monocles Messenger\'i cihazınızdan silməyi unutmayın.</string>
     <string name="link">Link</string>
     <string name="no_application_found">Heç bir tətbiq tapılmadı</string>

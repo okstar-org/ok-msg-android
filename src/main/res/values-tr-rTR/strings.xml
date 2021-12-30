@@ -488,8 +488,8 @@ Kişilerinize erişmek için izin vermeniz istenecektir. </string>
     <string name="always">Her zaman</string>
     <string name="always_off">Her zaman kapalı</string>
     <string name="battery_optimizations_enabled">Pil optimizasyonları etkin</string>
-    <string name="battery_optimizations_enabled_explained">Cihazınız blabber\'da bildirimleri gecikmeli bildirime hatta mesaj kaybına yol açabilecek bazı ağır pil optimizasyonları yapıyor. \nBunları devre dışı bırakmanız önerilir.</string>
-    <string name="battery_optimizations_enabled_dialog">Cihazınız blabber\'da bildirimleri gecikmeli bildirime hatta mesaj kaybına yol açabilecek bazı ağır pil optimizasyonları yapıyor.\n\nŞimdi bunları kapatmanız istenecek.</string>
+    <string name="battery_optimizations_enabled_explained">Cihazınız monocles chat\'da bildirimleri gecikmeli bildirime hatta mesaj kaybına yol açabilecek bazı ağır pil optimizasyonları yapıyor. \nBunları devre dışı bırakmanız önerilir.</string>
+    <string name="battery_optimizations_enabled_dialog">Cihazınız monocles chat\'da bildirimleri gecikmeli bildirime hatta mesaj kaybına yol açabilecek bazı ağır pil optimizasyonları yapıyor.\n\nŞimdi bunları kapatmanız istenecek.</string>
     <string name="install_from_unknown_sources_disabled">Bilinmeyen açık kaynaklardan yüklemeleri devre dışı bırak</string>
     <string name="install_from_unknown_sources_disabled_dialog">Cihazınız, Google PlayStore dışında bilinmeyen kaynaklardan uygulama yüklemelerine izin vermeyecek şekilde yapılandırıldı. Bu, uygulama güncelleyicisinde sorunlara neden olur. \n\n Bundan sonra bilinmeyen kaynaklardan uygulama yüklemelerine izin vermeniz istenecektir.</string>
     <string name="disable">Devre dışı</string>
@@ -899,7 +899,7 @@ Bu, sunucu yöneticinizin iletilerinizi okumasına izin verir, ancak eski istemc
     <string name="password_forgotten_title">Şifremi Unuttum</string>
     <string name="password_forgotten_text">Hesap şifrenizi mi unuttunuz? Şimdi sağlayıcınızın destek web sitesini açmaya çalışacağız.</string>
     <string name="set_settings_intro">Burada ihtiyaçlarınıza göre bazı önemli gizlilik ayarlarını yapabilirsiniz. Tüm ayarlar daha sonra da değiştirilebilir.</string>
-    <string name="pref_show_mappreview_inside_summary">Türkçe: Harita önizlemelerini doğrudan sohbet görünümünde gösterin, blabber. im sunucusuna bir bağlantı kurulacaktır.</string>
+    <string name="pref_show_mappreview_inside_summary">Türkçe: Harita önizlemelerini doğrudan sohbet görünümünde gösterin, monocles chat sunucusuna bir bağlantı kurulacaktır.</string>
     <string name="pref_show_mappreview_inside">Sohbetteki konumların önizlemelerini göster</string>
     <string name="pref_use_internal_updater_summary">Messenger\'n günde bir kez yeni uygulama güncellemeleri aramasına izin verin</string>
     <string name="pref_use_internal_updater">Güncellemeleri kontrol et</string>
