@@ -846,8 +846,8 @@
     <string name="are_you_sure_verify_fingerprint">Are you sure that you want to verify your contacts OTR fingerprint?</string>
     <string name="copy_otr_clipboard_description">Copy OTR fingerprint to clipboard</string>
     <string name="otr_session_not_started">Send a message to start an encrypted chat</string>
-    <string name="pref_enable_otr_summary">Enable OTR encryption for message encryption</string>
-    <string name="pref_enable_otr">Enable OTR encryption</string>
+    <string name="pref_enable_otr_summary">Enable OTR encryption for message encryption. OTR is still highly unstable, please only use it if you know what you do.</string>
+    <string name="pref_enable_otr">Enable OTR encryption (BETA)</string>
     <string name="otr_warning">The support of OTR encryption is in the beta mode. Click read more to get more information. A link in a browser will open.</string>
     <string name="server_info_adhoc_invite">XEP-0050: Ad-Hoc Commands: user invite</string>
     <string name="choose_account">Choose account</string>
