@@ -211,8 +211,8 @@
     <string name="select">Auswählen</string>
     <string name="contact_already_exists">Der Kontakt existiert bereits</string>
     <string name="join">Beitreten</string>
-    <string name="channel_full_jid_example">channel@conference.domain.de/Nickname</string>
-    <string name="channel_bare_jid_example">channel@conference.domain.de</string>
+    <string name="channel_full_jid_example">raum@conference.domain.de/Nickname</string>
+    <string name="channel_bare_jid_example">raum@conference.domain.de</string>
     <string name="save_as_bookmark">Zur Kontaktliste hinzufügen</string>
     <string name="delete_bookmark">Von Kontaktliste entfernen</string>
     <string name="topic">Thema</string>
@@ -700,7 +700,7 @@
     <string name="snooze">Schlummern</string>
     <string name="huawei_protected_apps">Geschützte Apps</string>
     <string name="huawei_protected_apps_summary">Um Benachrichtigungen zu erhalten, selbst wenn der Bildschirm ausgeschaltet ist, füge monocles chat bitte der Liste geschützter Apps hinzu.</string>
-    <string name="pref_enable_multi_accounts_title">Mehrprofil-Modus aktivieren</string>
+    <string name="pref_enable_multi_accounts_title">Mehrkonto-Modus aktivieren</string>
     <string name="pref_enable_multi_accounts_summary">Möchtest du mehrere Konten benutzen?</string>
     <string name="mtm_accept_cert">Unbekanntes Zertifikat akzeptieren?</string>
     <string name="mtm_trust_anchor">Das Serverzertifikat wurde nicht von einer bekannten Zertifizierungsstelle signiert.</string>
@@ -967,7 +967,7 @@
     <string name="intro_optional_permissions">Optionale Berechtigungen</string>
     <string name="intro_desc_optional_permissions2">Wenn du deinen Standort teilen möchtest, sind Berechtigungen auf deinen Standort erforderlich.\nFür den Versand von Sprachnachrichten ist es erforderlich, Zugang zum Mikrofon zu erhalten.</string>
     <string name="intro_desc_account3">Du hast die Möglichkeit, ein bestehendes Konto zu importieren.\nTippe einfach auf Konto importieren. Wenn Backup-Dateien verfügbar sind, werden diese angezeigt. Wähle ein Konto aus, das importiert werden soll.</string>
-    <string name="intro_desc_start_chatting2">Du kannst auch Gruppenchats - sogenannte MUCs (Multi-User-Chats) - hinzufügen, erstellen oder beitreten. Man unterscheidet zwischen privaten Gruppenchats und öffentlichen Gruppenchats - sogenannten Chaträumen.</string>
+    <string name="intro_desc_start_chatting2">Du kannst auch Gruppenchats - sogenannte Räume - hinzufügen, erstellen oder beitreten. Man unterscheidet zwischen privaten Gruppenchats und öffentlichen Gruppenchats - sogenannten Chaträumen.</string>
     <string name="intro_desc_start_chatting3">Herzlichen Glückwunsch!\nJetzt geht\'s los und viel Spaß…</string>
     <string name="intro_privacy">Deine Privatsphäre\nDeine Souveränität</string>
     <string name="intro_desc_privacy">monocles chat wird deine Daten weder verkaufen noch analysieren und du entscheidest, welche Berechtigungen du erteilst.</string>
@@ -1001,7 +1001,7 @@
     <string name="pref_use_unicolored_chatbg">Nutze einfarbigen Hintergrund</string>
     <string name="pref_alternative_voice_settings_summary">Falls du bei der Sprachaufnahme Probleme hast, nutze einen alternativen Codec.</string>
     <string name="pref_alternative_voice_settings">Alternative Methode zur Sprachaufnahme</string>
-    <string name="pref_use_colored_muc_names_summary">Namen in Gruppen-Chats oder Channels wie Standard-Avatar-Hintergründe einfärben.</string>
+    <string name="pref_use_colored_muc_names_summary">Namen in Gruppen-Chats oder Räume wie Standard-Avatar-Hintergründe einfärben.</string>
     <string name="pref_use_colored_muc_names">Farbige Namen</string>
     <string name="show_videos_images_only">Nur Bilder/Videos</string>
     <string name="show_avatar">Kontobild anzeigen</string>
@@ -1067,7 +1067,7 @@
     <string name="encrypted_with_omemo">Mit OMEMO verschlüsselt</string>
     <string name="encrypted_with_openpgp">Mit OpenPGP verschlüsselt</string>
     <string name="not_encrypted">Nicht verschlüsselt</string>
-    <string name="add_contact_or_create_or_join_group_chat">Kontakt hinzufügen, Gruppenchat erstellen oder beitreten oder Channels entdecken</string>
+    <string name="add_contact_or_create_or_join_group_chat">Kontakt hinzufügen, Gruppenchat erstellen oder beitreten oder Räume entdecken</string>
     <plurals name="some_messages_could_not_be_delivered">
         <item quantity="one">Eine Nachricht konnte nicht zugestellt werden</item>
         <item quantity="other">Mehrere Nachrichten konnten nicht zugestellt werden</item>

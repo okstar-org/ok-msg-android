@@ -39,6 +39,7 @@
         <item name="colorControlNormal">@color/accent</item>
         <item name="colorControlActivated">@color/accent</item>
         <item name="text_Color_Main">@color/realblack</item>
+        <item name="colorOnPrimary">@color/realblack</item>
         <item name="button_text_color_disabled">@color/grey500</item>
         <item name="chat_bg">@drawable/bg_light_blue</item>
         <item name="icon_tint">@color/black54</item>
@@ -47,6 +48,7 @@
         <item name="color_background_tertiary">@color/grey300</item>
         <item name="color_background_overlay">@color/grey300_40</item>
         <item name="color_warning">@color/red700</item>
+        <item name="color_warning_button_text">@color/warning_button_dark</item>
         <item name="TextColorOnline">@color/green500</item>
         <item name="TextColorError">@color/red800</item>
         <item name="edit_text_color">@color/black87</item>
@@ -63,6 +65,9 @@
         <item name="android:actionModeBackground">@color/accent</item>
         <item name="android:homeAsUpIndicator" type="reference">@drawable/ic_arrow_back_white_24dp
         </item>
+        <item name="buttonBarPositiveButtonStyle">@style/Widget.Conversations.Button.Dialog</item>
+        <item name="buttonBarNeutralButtonStyle">@style/Widget.Conversations.Button.Dialog</item>
+        <item name="buttonBarNegativeButtonStyle">@style/Widget.Conversations.Button.Dialog</item>
 
         <item name="TextSizeCaption">12sp</item>
         <item name="TextSizeBody1">14sp</item>
@@ -91,8 +96,8 @@
         <item name="ic_send_videocam_offline" type="reference">@drawable/ic_send_videocam_offline
         </item>
         <item name="ic_send_voice_offline" type="reference">@drawable/ic_send_voice_offline</item>
-        <item name="media_preview_image" type="reference">@drawable/ic_image_black_48dp</item>
-        <item name="media_preview_document" type="reference">@drawable/ic_description_black_48dp</item>
+        <item name="media_preview_document" type="reference">@drawable/ic_description_black_48dp
+        </item>
         <item name="media_preview_recording" type="reference">@drawable/ic_mic_black_48dp</item>
         <item name="media_preview_audio" type="reference">@drawable/ic_headset_black_48dp</item>
         <item name="media_preview_location" type="reference">@drawable/ic_room_black_48dp</item>
@@ -104,11 +109,16 @@
         <item name="media_preview_ebook" type="reference">@drawable/ic_book_black_48dp</item>
         <item name="media_preview_unknown" type="reference">@drawable/ic_help_black_48dp</item>
         <item name="media_preview_backup" type="reference">@drawable/ic_backup_black_48dp</item>
+        <item name="icon_gps_fixed" type="reference">@drawable/ic_gps_fixed_black_24dp</item>
+        <item name="icon_gps_not_fixed" type="reference">@drawable/ic_gps_not_fixed_black_24dp
+        </item>
         <item name="icon_add_group" type="reference">@drawable/ic_group_add_white_24dp</item>
         <item name="icon_add_person" type="reference">@drawable/ic_person_add_white_24dp</item>
         <item name="icon_cancel" type="reference">@drawable/ic_cancel_black_24dp</item>
         <item name="icon_chat" type="reference">@drawable/ic_action_chat</item>
         <item name="icon_copy" type="reference">@drawable/ic_content_copy_grey600_24dp</item>
+        <item name="icon_action_copy" type="reference">@drawable/ic_content_copy_white_24dp</item>
+        <item name="icon_navigate" type="reference">@drawable/ic_navigation_white_24dp</item>
         <item name="icon_show_qr_code" type="reference">@drawable/ic_qrcode_grey600_24dp</item>
         <item name="icon_discard" type="reference">@drawable/ic_delete_white_24dp</item>
         <item name="icon_download" type="reference">@drawable/ic_file_download_white_24dp</item>
@@ -137,6 +147,7 @@
         <item name="icon_settings" type="reference">@drawable/ic_settings_black_24dp</item>
         <item name="icon_delete" type="reference">@drawable/ic_delete_black_24dp</item>
         <item name="icon_share" type="reference">@drawable/ic_share_black_24dp</item>
+        <item name="icon_action_share" type="reference">@drawable/ic_share_white_24dp</item>
         <item name="ic_cloud_download" type="reference">@drawable/ic_cloud_download_white_24dp
         </item>
         <item name="icon_scan_qr_code" type="reference">@drawable/ic_qrcode_scan_white_24dp</item>
@@ -210,6 +221,7 @@
         <item name="colorControlNormal">@color/accent</item>
         <item name="colorControlActivated">@color/accent</item>
         <item name="text_Color_Main">@color/realwhite</item>
+        <item name="colorOnPrimary">@color/realwhite</item>
         <item name="button_text_color_disabled">@color/grey500</item>
         <item name="android:navigationBarColor" tools:targetApi="21">@color/black</item>
         <item name="chat_bg">@drawable/bg_dark_blue</item>
@@ -219,6 +231,7 @@
         <item name="color_background_tertiary">@color/grey900</item>
         <item name="color_background_overlay">@color/grey900_40</item>
         <item name="color_warning">@color/red700</item>
+        <item name="color_warning_button_text">@color/warning_button</item>
         <item name="TextColorOnline">@color/green500</item>
         <item name="TextColorError">@color/red500</item>
         <item name="edit_text_color">@color/white</item>
@@ -235,6 +248,9 @@
         <item name="android:actionModeBackground">@color/accent</item>
         <item name="android:homeAsUpIndicator" type="reference">@drawable/ic_arrow_back_white_24dp
         </item>
+        <item name="buttonBarPositiveButtonStyle">@style/Widget.Conversations.Button.Dialog</item>
+        <item name="buttonBarNeutralButtonStyle">@style/Widget.Conversations.Button.Dialog</item>
+        <item name="buttonBarNegativeButtonStyle">@style/Widget.Conversations.Button.Dialog</item>
 
         <item name="TextSizeCaption">12sp</item>
         <item name="TextSizeBody1">14sp</item>
@@ -288,8 +304,8 @@
         <item name="dialog_horizontal_padding">24dp</item>
         <item name="dialog_vertical_padding">16dp</item>
 
-        <item name="media_preview_image" type="reference">@drawable/ic_image_white_48dp</item>
-        <item name="media_preview_document" type="reference">@drawable/ic_description_white_48dp</item>
+        <item name="media_preview_document" type="reference">@drawable/ic_description_white_48dp
+        </item>
         <item name="media_preview_recording" type="reference">@drawable/ic_mic_white_48dp</item>
         <item name="media_preview_audio" type="reference">@drawable/ic_headset_white_48dp</item>
         <item name="media_preview_location" type="reference">@drawable/ic_room_white_48dp</item>
@@ -301,11 +317,15 @@
         <item name="media_preview_ebook" type="reference">@drawable/ic_book_white_48dp</item>
         <item name="media_preview_unknown" type="reference">@drawable/ic_help_white_48dp</item>
         <item name="media_preview_backup" type="reference">@drawable/ic_backup_white_48dp</item>
-
+        <item name="icon_gps_fixed" type="reference">@drawable/ic_gps_fixed_white_24dp</item>
+        <item name="icon_gps_not_fixed" type="reference">@drawable/ic_gps_not_fixed_white_24dp
+        </item>
         <item name="icon_add_group" type="reference">@drawable/ic_group_add_white_24dp</item>
         <item name="icon_add_person" type="reference">@drawable/ic_person_add_white_24dp</item>
         <item name="icon_cancel" type="reference">@drawable/ic_cancel_white_24dp</item>
         <item name="icon_copy" type="reference">@drawable/ic_content_copy_white_24dp</item>
+        <item name="icon_action_copy" type="reference">@drawable/ic_content_copy_white_24dp</item>
+        <item name="icon_navigate" type="reference">@drawable/ic_navigation_white_24dp</item>
         <item name="icon_show_qr_code" type="reference">@drawable/ic_qrcode_white_24dp</item>
         <item name="icon_discard" type="reference">@drawable/ic_delete_white_24dp</item>
         <item name="icon_download" type="reference">@drawable/ic_file_download_white_24dp</item>
@@ -334,6 +354,7 @@
         <item name="icon_settings" type="reference">@drawable/ic_settings_white_24dp</item>
         <item name="icon_delete" type="reference">@drawable/ic_delete_white_24dp</item>
         <item name="icon_share" type="reference">@drawable/ic_share_white_24dp</item>
+        <item name="icon_action_share" type="reference">@drawable/ic_share_white_24dp</item>
         <item name="ic_cloud_download" type="reference">@drawable/ic_cloud_download_white_24dp
         </item>
         <item name="icon_scan_qr_code" type="reference">@drawable/ic_qrcode_scan_white_24dp</item>
@@ -549,6 +570,7 @@
         <item name="TextSizeBody">18sp</item>
         <item name="TextSizeHeadline">22sp</item>
     </style>
+
 
     <!-- 2. monocles -->
     <!-- monocles theme -->
