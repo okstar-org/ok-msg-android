@@ -130,7 +130,7 @@
     <string name="block_contact">Αποκλεισμός επαφής</string>
     <string name="unblock_contact">Άρση αποκλεισμού επαφής</string>
     <string name="create">Δημιουργία</string>
-    <string name="create_monocles_account"><a href="https://ocean.monocles.de/apps/registration/">Get a monocles account!</a></string>
+    <string name="create_monocles_account">Get a monocles account!</string>
     <string name="contact_already_exists">Η επαφή υπάρχει ήδη</string>
     <string name="join">Συμμετοχή</string>
     <string name="save_as_bookmark">Αποθήκευση σαν σελιδοδείκτη</string>

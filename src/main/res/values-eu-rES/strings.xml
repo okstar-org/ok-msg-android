@@ -143,9 +143,9 @@
     <string name="openpgp_has_been_published">OpenPGP gako publikoa argitaratu da.</string>
     <string name="mgmt_account_are_you_sure">Ziur al zaude?</string>
     <string name="attach_record_voice">Ahotsa grabatu</string>
-    <string name="account_settings_jabber_id">Jabber IDa</string>
+    <string name="account_settings_jabber_id">chat addressa</string>
     <string name="password">Pasahitza</string>
-    <string name="invalid_jid">Hau ez da Jabber ID baliodun bat</string>
+    <string name="invalid_jid">Hau ez da chat address baliodun bat</string>
     <string name="error_out_of_memory">Memoriarik gabe. Irudia handiegia da</string>
     <string name="add_phone_book_text">%s zure helbideen liburura gehitu nahi duzu?</string>
     <string name="server_info_show_more">Zerbitzariaren informazioa</string>
@@ -373,7 +373,7 @@
     <string name="captcha_required">Captcha beharrezkoa da</string>
     <string name="captcha_hint">Sar ezazu goiko irudiko testua</string>
     <string name="certificate_chain_is_not_trusted">Ziurtagiriaren katea ez da fidagarria</string>
-    <string name="jid_does_not_match_certificate">Jabber IDa ez du ziurtagiriarekin bat egiten</string>
+    <string name="jid_does_not_match_certificate">chat addressa ez du ziurtagiriarekin bat egiten</string>
     <string name="action_renew_certificate">Ziurtagiria berriztu</string>
     <string name="error_fetching_omemo_key">Akatsa OMEMO gakoa eskuratzerakoan!</string>
     <string name="verified_omemo_key_with_certificate">OMEMO gakoa ziurtagiriarekin egiaztatuta!</string>
@@ -405,8 +405,8 @@
     <string name="no_application_to_share_uri">Ez da aplikaziorik aurkitu URIa partekatzeko</string>
     <string name="share_uri_with">URIa honekin partekatu...</string>
     <string name="welcome_text">XMPP hornitzaleez independiente den protokolo bat da. Bezero hau aukeratzen duzun edozein XMPP zerbitzariarekin erabili dezakezu.\nHala ere zure erosotasunerako conversations.im¹-en, Conversationsekin bereziki erabiltzeko egokia den hornitzaile batean, kontu bat sortzea erraz egin dugu.</string>
-    <string name="magic_create_text">conversations.im-en kontu bat sortzeko prozesuan zehar gidatuko zaitugu.\nconversations.im¹ hornitzaile bezala aukeratzerakoan beste hornitzaileen erabiltzaileekin komunikatzeko gai izango zara haiei zure Jabber ID osoa emanez.</string>
-    <string name="your_full_jid_will_be">Zure Jabber ID osoa %s izango da</string>
+    <string name="magic_create_text">You can use monocles chat with every modern XMPP account or get a affordable and secure monocles account, hosted on the monocles server station and powered with regenerative energies!\n\n This includes:\n● two month encrypted temporary chat storage\n● e-mail with 1 GB end-to-end encrypted storage\n\n optionally: \n● 4 GB cloud storage (nextcloud)\n● calendar and contact sync\n● a secure conferencing tool \n● and <a href="https://monocles.de/more/">more</a></string>
+    <string name="your_full_jid_will_be">Zure chat address osoa %s izango da</string>
     <string name="create_account">Kontua sortu</string>
     <string name="pick_your_username">Aukeratu zure erabiltzaile izena</string>
     <string name="status_message">Egoera mezua</string>
@@ -489,7 +489,7 @@
     <string name="yesterday">Atzo</string>
     <string name="pref_validate_hostname">Ostalariaren izena DNSSECekin balioztatu</string>
     <string name="pref_validate_hostname_summary">Ostalariaren izena balioztatuta daukaten zerbitzarien ziurtagiriak egiaztatutzat hartzen dira</string>
-    <string name="certificate_does_not_contain_jid">Ziurtagiriak ez dauka Jabber ID baliodun bat</string>
+    <string name="certificate_does_not_contain_jid">Ziurtagiriak ez dauka chat address baliodun bat</string>
     <string name="error_no_keys_to_trust_presence">Ez dago gako erabilgarririk kontaktu honetarako.\nEgiaztatu ezazu bien arteko presentzia harpidetza duzuela.</string>
     <string name="server_info_partial">partziala</string>
     <string name="no_application_found_to_open_link">Ez da lotura hau ireki dezakeen aplikaziorik aurkitu</string>

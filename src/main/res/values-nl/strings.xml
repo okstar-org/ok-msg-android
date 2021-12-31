@@ -133,7 +133,7 @@
     <string name="openpgp_has_been_published">OpenPGP-publieke sleutel is gepubliceerd.</string>
     <string name="mgmt_account_are_you_sure">Weet je het zeker?</string>
     <string name="attach_record_voice">Stem opnemen</string>
-    <string name="account_settings_jabber_id">Jabber-ID:</string>
+    <string name="account_settings_jabber_id">chat address:</string>
     <string name="password">Wachtwoord</string>
     <string name="invalid_jid">Dit is geen geldige chat address</string>
     <string name="error_out_of_memory">Geen geheugen beschikbaar. Afbeelding is te groot</string>
@@ -309,7 +309,7 @@
     <string name="could_not_change_affiliation">Kon aansluiting niet wijzigen</string>
     <string name="ban_from_conference">Verbannen uit groepsgesprek</string>
     <string name="ban_now">Nu verbannen</string>
-    <string name="non_anonymous">Maak Jabber ID\'s zichtbaar voor iedereen</string>
+    <string name="non_anonymous">Maak chat address\'s zichtbaar voor iedereen</string>
     <string name="you_are_not_participating">Je neemt geen deel</string>
     <string name="modified_conference_options">Gespreksopties aangepast!</string>
     <string name="could_not_modify_conference_options">Kon gespreksopties niet aanpassen</string>
@@ -420,7 +420,7 @@
     <string name="mgmt_account_reconnect">Opnieuw verbinden</string>
     <string name="your_full_jid_will_be">Je volledige chat address zal %s zijn</string>
     <string name="create_account">Account aanmaken</string>
-    <string name="create_monocles_account"><a href="https://ocean.monocles.de/apps/registration/">Get a monocles account!</a></string>
+    <string name="create_monocles_account">Get a monocles account!</string>
     <string name="welcome_existing_account">Ik heb een account</string>
     <string name="pick_your_username">Kies je gebruikersnaam</string>
     <string name="pref_manually_change_presence">Stel je aanwezigheid in bij het bewerken van je statusbericht</string>
@@ -607,7 +607,7 @@
     <string name="allow_participants_to_invite_others">Laat iedereen om anderen uit te nodigen</string>
     <string name="anyone_can_edit_subject">Iedereen kan het onderwerp bewerken.</string>
     <string name="anyone_can_invite_others">Iedereen kan anderen uitnodigen.</string>
-    <string name="jabber_ids_are_visible_to_anyone">Jabber ID\'s zijn voor iedereen zichtbaar.</string>
+    <string name="jabber_ids_are_visible_to_anyone">chat address\'s zijn voor iedereen zichtbaar.</string>
     <string name="no_users_hint_channel">Dit openbare kanaal heeft geen deelnemers. Nodig je contactpersonen uit of gebruik de knop \'Delen\' om het XMPP-adres te delen.</string>
     <string name="destroy_channel">Kanaal vernietigen</string>
     <string name="no_attachments">Er zijn geen bijlagen</string>

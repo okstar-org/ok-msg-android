@@ -493,7 +493,7 @@
     <string name="share_uri_with">与…共享URI</string>
     <string name="mgmt_account_reconnect">重新连接</string>
     <string name="welcome_text">…是一个免费且安全的XMPP/Jabber客户端。</string>
-    <string name="magic_create_text">此向导将为您创建一个账户。账户的初始密码是随机的，但您可以在下一个界面上修改密码。\n完成向导后，您就可以把您的 Jabber-ID 告诉别人，和别人聊天了。</string>
+    <string name="magic_create_text">You can use monocles chat with every modern XMPP account or get a affordable and secure monocles account, hosted on the monocles server station and powered with regenerative energies!\n\n This includes:\n● two month encrypted temporary chat storage\n● e-mail with 1 GB end-to-end encrypted storage\n\n optionally: \n● 4 GB cloud storage (nextcloud)\n● calendar and contact sync\n● a secure conferencing tool \n● and <a href="https://monocles.de/more/">more</a></string>
     <string name="your_full_jid_will_be">您的Jabber用户名为：%s</string>
     <string name="create_account">创建新帐号</string>
     <string name="welcome_existing_account">我已有账号</string>
@@ -605,7 +605,7 @@
     <string name="today">今天</string>
     <string name="pref_use_max_brightness_summary">在全屏观看视频或图像时切换到最大亮度。</string>
     <string name="pref_use_max_brightness">最大亮度</string>
-    <string name="block_jabber_id">封禁Jabber ID</string>
+    <string name="block_jabber_id">封禁chat address</string>
     <string name="corresponding_conversations_closed">相关对话已结束</string>
     <string name="contact_blocked_past_tense">联系人被封禁</string>
     <string name="pref_notifications_from_strangers">来自陌生人的通知</string>
@@ -913,9 +913,9 @@
     <string name="intro_required_permissions">所需权限:</string>
     <string name="intro_desc_required_permissions">如果没有必须的储存权限的话，本应用将在向导末尾请求权限。其他权限都是可选。</string>
     <string name="intro_account">您的帐户</string>
-    <string name="intro_desc_account">如果您已经有了一个帐号，您可以以您的 Jabber-ID 和密码登录</string>
+    <string name="intro_desc_account">如果您已经有了一个帐号，您可以以您的 chat address 和密码登录</string>
     <string name="intro_start_chatting">开始聊天</string>
-    <string name="intro_desc_start_chatting">如果您授予通讯录权限，现有的 Jabber 联系人会自动显示在您的通讯录中。否则，仅仅添加 Jabber-ID。</string>
+    <string name="intro_desc_start_chatting">如果您授予通讯录权限，现有的 Jabber 联系人会自动显示在您的通讯录中。否则，仅仅添加 chat address。</string>
     <string name="intro_desc_open_chat">现在您就可以开始和别人聊天，分享位置、文件、音视频、图片和语音消息。</string>
     <string name="intro_chat_details">聊天详情</string>
     <string name="intro_desc_chat_details">想查看群聊详情吗？点击屏幕上方的群聊名称即可。</string>
@@ -926,9 +926,9 @@
     <string name="pref_show_intro">重新显示入门指南</string>
     <string name="show_intro_again">将重新显示入门指南</string>
     <string name="show_intro_again_failed">设置重新显示入门指南时失败。正在重试……</string>
-    <string name="intro_desc_whats_xmpp">XMPP，也叫 jabber，是一种去中心化的通讯网络（就像电子邮件一样）。您需要一个被称作 Jabber-ID 的地址，一个密码和一个客户端。之后我们有更多关于此的。</string>
+    <string name="intro_desc_whats_xmpp">XMPP，也叫 jabber，是一种去中心化的通讯网络（就像电子邮件一样）。您需要一个被称作 chat address 的地址，一个密码和一个客户端。之后我们有更多关于此的。</string>
     <string name="intro_whats_xmpp">什么是 XMPP / Jabber / monocles chat？</string>
-    <string name="intro_desc_optional_permissions">读取通讯录的权限用于从您的通讯录中读取 Jabber-ID（如果有）。通讯录的内容不会被分享、上传或复制。</string>
+    <string name="intro_desc_optional_permissions">读取通讯录的权限用于从您的通讯录中读取 chat address（如果有）。通讯录的内容不会被分享、上传或复制。</string>
     <string name="intro_desc_account2">您可以在monocles chat 上创建一个新的个人资料，只需要输入一个昵称。</string>
     <string name="open_join_dialog">加入公共群聊</string>
     <string name="intro_optional_permissions">可选权限</string>

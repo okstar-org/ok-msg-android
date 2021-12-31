@@ -160,10 +160,10 @@
     <string name="mgmt_account_are_you_sure">Weet je het zeker?</string>
     <string name="mgmt_account_delete_confirm_message">Bij het verwijderen van deze account zal de hele gespreksgeschiedenis op dit apparaat verloren gaan.\n\nBij het verwijderen van het account op de server kan ook niet meer worden ingelogd met dit account.</string>
     <string name="attach_record_voice">Stem opnemen</string>
-    <string name="account_settings_jabber_id">Jabber-ID:</string>
+    <string name="account_settings_jabber_id">chat address:</string>
     <string name="account_settings_example_jabber_id">gebruikersnaam@monocles.de</string>
     <string name="password">Wachtwoord</string>
-    <string name="invalid_jid">Dit is geen geldige Jabber-ID</string>
+    <string name="invalid_jid">Dit is geen geldige chat address</string>
     <string name="error_out_of_memory">Geen geheugen beschikbaar. Afbeelding is te groot</string>
     <string name="add_phone_book_text">Wil je %s toevoegen aan je adresboek?</string>
     <string name="server_info_show_more">Server-info</string>
@@ -367,7 +367,7 @@
     <string name="kicking_from_conference">Je probeert %s uit een groepsgesprek te verbannen.</string>
     <string name="ban_now">Nu verbannen</string>
     <string name="kick_now">Nu verbannen</string>
-    <string name="non_anonymous">Maak Jabber ID\'s zichtbaar voor iedereen</string>
+    <string name="non_anonymous">Maak chat address\'s zichtbaar voor iedereen</string>
     <string name="moderated">Kanaal gemodereerd maken</string>
     <string name="you_are_not_participating">Je neemt geen deel</string>
     <string name="modified_conference_options">Gespreksopties aangepast!</string>
@@ -454,7 +454,7 @@
     <string name="captcha_required">Captcha vereist</string>
     <string name="captcha_hint">Voer de tekst van de afbeelding hierboven in</string>
     <string name="certificate_chain_is_not_trusted">Certificaatsketen is niet vertrouwd</string>
-    <string name="jid_does_not_match_certificate">Jabber-ID komt niet overeen met certificaat</string>
+    <string name="jid_does_not_match_certificate">chat address komt niet overeen met certificaat</string>
     <string name="action_renew_certificate">Certificaat vernieuwen</string>
     <string name="error_fetching_omemo_key">Fout bij ophalen van OMEMO-sleutel!</string>
     <string name="verified_omemo_key_with_certificate">OMEMO-sleutel geverifieerd met certificaat!</string>
@@ -509,8 +509,8 @@
     <string name="share_uri_with">URI delen met…</string>
     <string name="mgmt_account_reconnect">Opnieuw verbinden</string>
     <string name="welcome_text">…is een gratis en veilige client voor XMPP/Jabber.</string>
-    <string name="magic_create_text">We zullen je begeleiden bij het aanmaken van een account met een willekeurig wachtwoord. Je kunt dit wachtwoord veranderen op de volgende pagina.\nDaarna kun je communiceren met gebruikers van deze en andere providers door hen je volledige XMPP-adres te sturen.</string>
-    <string name="your_full_jid_will_be">Je volledige Jabber-ID zal %s zijn</string>
+    <string name="magic_create_text">You can use monocles chat with every modern XMPP account or get a affordable and secure monocles account, hosted on the monocles server station and powered with regenerative energies!\n\n This includes:\n● two month encrypted temporary chat storage\n● e-mail with 1 GB end-to-end encrypted storage\n\n optionally: \n● 4 GB cloud storage (nextcloud)\n● calendar and contact sync\n● a secure conferencing tool \n● and <a href="https://monocles.de/more/">more</a></string>
+    <string name="your_full_jid_will_be">Je volledige chat address zal %s zijn</string>
     <string name="create_account">Account aanmaken</string>
     <string name="welcome_existing_account">Ik heb een account</string>
     <string name="pick_your_username">Kies je gebruikersnaam</string>
@@ -632,7 +632,7 @@
     <string name="today">Vandaag</string>
     <string name="pref_use_max_brightness_summary">Maximale helderheid bij het bekijken van afbeeldingen en video\'s in volledig scherm.</string>
     <string name="pref_use_max_brightness">Maximale helderheid</string>
-    <string name="block_jabber_id">Jabber-ID blokkeren</string>
+    <string name="block_jabber_id">chat address blokkeren</string>
     <string name="corresponding_conversations_closed">Bijbehorende gesprekken gesloten.</string>
     <string name="contact_blocked_past_tense">Contact geblokkeerd.</string>
     <string name="pref_notifications_from_strangers">Meldingen van onbekenden</string>
@@ -672,7 +672,7 @@
     <string name="yesterday">Gisteren</string>
     <string name="pref_validate_hostname">Hostnaam met DNSSEC valideren</string>
     <string name="pref_validate_hostname_summary">Servercertificaten die de gevalideerde hostnaam bevatten, worden beschouwd als geverifieerd</string>
-    <string name="certificate_does_not_contain_jid">Certificaat bevat geen Jabber-ID</string>
+    <string name="certificate_does_not_contain_jid">Certificaat bevat geen chat address</string>
     <string name="error_no_keys_to_trust_presence">Er zijn geen bruikbare sleutels beschikbaar voor dit contact.\nZorg dat je allebei op elkaars aanwezigheidsupdates bent geabonneerd.</string>
     <string name="mark_as_read">Als gelezen markeren</string>
     <string name="server_info_partial">gedeeltelijk</string>
@@ -874,8 +874,8 @@
     <string name="admins_can_edit_subject">Beheerders kunnen het onderwerp wijzigen.</string>
     <string name="owners_can_invite_others">Eigenaren kunnen anderen uitnodigen.</string>
     <string name="anyone_can_invite_others">Iedereen kan anderen uitnodigen.</string>
-    <string name="jabber_ids_are_visible_to_admins">Jabber-ID\'s zijn zichtbaar voor beheerders.</string>
-    <string name="jabber_ids_are_visible_to_anyone">Jabber ID\'s zijn voor iedereen zichtbaar.</string>
+    <string name="jabber_ids_are_visible_to_admins">chat address\'s zijn zichtbaar voor beheerders.</string>
+    <string name="jabber_ids_are_visible_to_anyone">chat address\'s zijn voor iedereen zichtbaar.</string>
     <string name="no_users_hint_channel">Dit openbare kanaal heeft geen deelnemers. Nodig je contactpersonen uit of gebruik de knop \'Delen\' om het XMPP-adres te delen.</string>
     <string name="no_users_hint_group_chat">Dit besloten groepsgesprek heeft geen deelnemers.</string>
     <string name="grant_owner_privileges">Eigenaarsrechten verlenen</string>
@@ -948,9 +948,9 @@
     <string name="intro_required_permissions">Vereiste machtigingen</string>
     <string name="intro_desc_required_permissions">Aan het einde van de introductie word je gevraagd om de machtiging voor opslag te geven aan de app (verplicht). Andere machtigingen zijn optioneel en worden gevraagd zodra ze nodig zijn.</string>
     <string name="intro_account">Je account</string>
-    <string name="intro_desc_account">Als je al een account hebt, kun je gewoon inloggen met je Jabber-ID en wachtwoord</string>
+    <string name="intro_desc_account">Als je al een account hebt, kun je gewoon inloggen met je chat address en wachtwoord</string>
     <string name="intro_start_chatting">Een gesprek beginnen</string>
-    <string name="intro_desc_start_chatting">Als je de machtiging om je Android-adresboek te lezen aan de app geeft, worden personen met een Jabber-ID automatisch in je contactlijst getoond. Anders kun je gewoon zelf Jabber-ID\'s toevoegen.</string>
+    <string name="intro_desc_start_chatting">Als je de machtiging om je Android-adresboek te lezen aan de app geeft, worden personen met een chat address automatisch in je contactlijst getoond. Anders kun je gewoon zelf chat address\'s toevoegen.</string>
     <string name="intro_desc_open_chat">Vanaf nu kun je beginnen met chatten, je locatie, bestanden, afbeeldingen en video\'s delen of spraakberichten versturen.</string>
     <string name="intro_chat_details">Gespreksgegevens</string>
     <string name="intro_desc_chat_details">Wil je de gespreksgegevens inzien? Druk dan bovenaan op de naam van het gesprek.</string>
@@ -961,9 +961,9 @@
     <string name="pref_show_intro">Introductieschermen nogmaals tonen</string>
     <string name="show_intro_again">De introductieschermen worden opnieuw getoond</string>
     <string name="show_intro_again_failed">Resetten van introductieschermen mislukt. Probeer opnieuw…</string>
-    <string name="intro_desc_whats_xmpp">XMPP, ook wel jabber genoemd, is een gedecentraliseerd communicatienetwerk en werkt zoals e-mail: je hebt een adres nodig (een Jabber-ID), een wachtwoord en een app. Hierover later meer.</string>
+    <string name="intro_desc_whats_xmpp">XMPP, ook wel jabber genoemd, is een gedecentraliseerd communicatienetwerk en werkt zoals e-mail: je hebt een adres nodig (een chat address), een wachtwoord en een app. Hierover later meer.</string>
     <string name="intro_whats_xmpp">Wat is XMPP / Jabber / monocles chat?</string>
-    <string name="intro_desc_optional_permissions">De machtiging om je contacten te lezen is nodig om Jabber-ID\'s (indien aanwezig) van je contacten te verzamelen. Contacten zullen nooit worden gedeeld, geüpload of gekopieerd.</string>
+    <string name="intro_desc_optional_permissions">De machtiging om je contacten te lezen is nodig om chat address\'s (indien aanwezig) van je contacten te verzamelen. Contacten zullen nooit worden gedeeld, geüpload of gekopieerd.</string>
     <string name="intro_desc_account2">Je kunt eenvoudig een nieuw profiel aanmaken op monocles chat door een bijnaam in te voeren.</string>
     <string name="open_join_dialog">Deelnemen aan openbaar kanaal…</string>
     <string name="intro_optional_permissions">Optionele machtigingen</string>

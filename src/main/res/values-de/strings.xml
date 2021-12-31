@@ -507,7 +507,7 @@
     <string name="share_uri_with">Teile URI mit…</string>
     <string name="mgmt_account_reconnect">Neu verbinden</string>
     <string name="welcome_text">…ist ein privatsphäre respektierender und sicherer Chat Client.</string>
-    <string name="magic_create_text">Wir erstellen nun mit dir gemeinsam ein Konto mit einem zufällig generierten Passwort, welches du benutzen oder auf der nächsten Seite ändern kannst\nDanach kannst du mit Kontakten auf diesem und anderen Servern in Kontakt treten, indem du ihnen deine Jabber-ID gibst.</string>
+    <string name="magic_create_text">Wir erstellen nun mit dir gemeinsam ein Konto mit einem zufällig generierten Passwort, welches du benutzen oder auf der nächsten Seite ändern kannst\nDanach kannst du mit Kontakten auf diesem und anderen Servern in Kontakt treten, indem du ihnen deine Chat Adresse gibst.</string>
     <string name="your_full_jid_will_be">Deine Chat Adresse lautet: %s</string>
     <string name="create_account">Neues Konto erstellen</string>
     <string name="create_monocles_account"><a href="https://ocean.monocles.de/apps/registration/">Bekomme einen monocles account!</a></string>
@@ -631,7 +631,7 @@
     <string name="today">Heute</string>
     <string name="pref_use_max_brightness_summary">Maximale Helligkeit aktivieren, wenn Videos oder Bilder im Vollbild betracht werden.</string>
     <string name="pref_use_max_brightness">Maximale Helligkeit</string>
-    <string name="block_jabber_id">Blockiere Jabber-ID</string>
+    <string name="block_jabber_id">Blockiere Chat Adresse</string>
     <string name="corresponding_conversations_closed">Zugehörige Unterhaltung beendet.</string>
     <string name="contact_blocked_past_tense">Kontakt gesperrt.</string>
     <string name="pref_notifications_from_strangers">Benachrichtigungen von Unbekannten</string>
@@ -821,7 +821,7 @@
     <string name="install_orbot">Orbot installieren</string>
     <string name="start_orbot">Orbot starten</string>
     <string name="no_market_app_installed">Kein App-Store installiert.</string>
-    <string name="group_chat_will_make_your_jabber_id_public">Dieser Raum wird deine Jabber-ID öffentlich zugänglich machen</string>
+    <string name="group_chat_will_make_your_jabber_id_public">Dieser Raum wird deine Chat Adresse öffentlich zugänglich machen</string>
     <string name="ebook">E-Book</string>
     <string name="your_name">Dein Name</string>
     <string name="enter_your_name">Gib deinen Namen ein</string>
@@ -946,9 +946,9 @@
     <string name="intro_required_permissions">Erforderliche Berechtigungen</string>
     <string name="intro_desc_required_permissions">Am Ende des Intros wirst du gefragt, Zugriff auf externen Speicher zuzulassen (erforderlich), wenn du ihn nicht bereits erteilt hast. Zusätzliche Berechtigungen werden bei Bedarf angefragt und sind optional.</string>
     <string name="intro_account">Dein Konto</string>
-    <string name="intro_desc_account">Wenn du bereits ein Konto hast, kannst du dich einfach mit deiner Jabber-ID und deinem Passwort anmelden</string>
+    <string name="intro_desc_account">Wenn du bereits ein Konto hast, kannst du dich einfach mit deiner Chat Adresse und deinem Passwort anmelden</string>
     <string name="intro_start_chatting">Mit dem Chatten beginnen</string>
-    <string name="intro_desc_start_chatting">Hast du den Adressbuchzugriff erlaubt, werden bereits vorhandene Jabber-Kontakte automatisch in deiner Kontaktliste angezeigt. Andernfalls füge einfach Jabber-IDs hinzu</string>
+    <string name="intro_desc_start_chatting">Hast du den Adressbuchzugriff erlaubt, werden bereits vorhandene Jabber-Kontakte automatisch in deiner Kontaktliste angezeigt. Andernfalls füge einfach Chat Adressen hinzu</string>
     <string name="intro_desc_open_chat">Jetzt kannst du mit dem Chatten beginnen, Orte, Dateien, Videos und Bilder freigeben oder Sprachnachrichten senden.</string>
     <string name="intro_chat_details">Chat-Details</string>
     <string name="intro_desc_chat_details">Du möchtest die Chat-Details öffnen? Tippe einfach auf den Chat-Namen oben in der Menüleiste.</string>
@@ -959,9 +959,9 @@
     <string name="pref_show_intro">Hilfen erneut anzeigen</string>
     <string name="show_intro_again">Hilfen werden erneut angezeigt</string>
     <string name="show_intro_again_failed">Zurücksetzen der Hilfen fehlgeschlagen. Versuche es erneut…</string>
-    <string name="intro_desc_whats_xmpp">XMPP, auch Jabber genannt, ist ein dezentrales Kommunikationsnetzwerk und funktioniert wie E-Mail. Du brauchst eine Adresse namens Jabber-ID, ein Passwort und einen Messenger. Mehr dazu später.</string>
+    <string name="intro_desc_whats_xmpp">XMPP, auch Jabber genannt, ist ein dezentrales Kommunikationsnetzwerk und funktioniert wie E-Mail. Du brauchst eine Adresse namens Chat Adresse, ein Passwort und einen Messenger. Mehr dazu später.</string>
     <string name="intro_whats_xmpp">Was ist XMPP / Jabber / monocles chat?</string>
-    <string name="intro_desc_optional_permissions">Berechtigungen zum Zugriff deines Adressbuchs sind zum Lesen von Jabber-IDs (falls vorhanden) erforderlich. Kontakte werden niemals geteilt, hochgeladen oder kopiert.</string>
+    <string name="intro_desc_optional_permissions">Berechtigungen zum Zugriff deines Adressbuchs sind zum Lesen von Chat Adressen (falls vorhanden) erforderlich. Kontakte werden niemals geteilt, hochgeladen oder kopiert.</string>
     <string name="intro_desc_account2">Du kannst einen neuen Account auf monocles erstellen.</string>
     <string name="open_join_dialog">Öffentlichen Raum beitreten…</string>
     <string name="intro_optional_permissions">Optionale Berechtigungen</string>
@@ -993,9 +993,9 @@
     <string name="pref_theme_black">Schwarz (AMOLED)</string>
     <string name="pref_theme_color_options_summary">Wähle das Farbschema</string>
     <string name="pref_theme_color_options">Designfarbe</string>
-    <string name="magic_create_text_on_x">Du wurdest zu %1$s eingeladen. Wir erstellen nun mit dir gemeinsam ein Konto.\nWenn du %1$s als deinen Provider wählst, kannst du mit Kontakten auf diesem und anderen Servern in Kontakt treten, indem du ihnen deine Jabber-ID gibst.</string>
+    <string name="magic_create_text_on_x">Du wurdest zu %1$s eingeladen. Wir erstellen nun mit dir gemeinsam ein Konto.\nWenn du %1$s als deinen Provider wählst, kannst du mit Kontakten auf diesem und anderen Servern in Kontakt treten, indem du ihnen deine Chat Adresse gibst.</string>
     <string name="account_status_regis_invalid_token">Falscher Registrierungsschlüssel</string>
-    <string name="magic_create_text_fixed">Du wurdest zu %1$s eingeladen. Ein Nutzername wurde für dich bereits voreingestellt. Wir erstellen nun mit dir gemeinsam ein Konto.\nDu kannst mit Kontakten auf diesem und anderen Servern in Kontakt treten, indem du ihnen deine Jabber-ID gibst.</string>
+    <string name="magic_create_text_fixed">Du wurdest zu %1$s eingeladen. Ein Nutzername wurde für dich bereits voreingestellt. Wir erstellen nun mit dir gemeinsam ein Konto.\nDu kannst mit Kontakten auf diesem und anderen Servern in Kontakt treten, indem du ihnen deine Chat Adresse gibst.</string>
     <string name="your_server_invitation">Deine Server-Einladung</string>
     <string name="pref_use_unicolored_chatbg_summary">Nutze einfarbigen Hintergrund in Chats.</string>
     <string name="pref_use_unicolored_chatbg">Nutze einfarbigen Hintergrund</string>

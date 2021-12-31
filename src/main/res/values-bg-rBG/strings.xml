@@ -147,7 +147,7 @@
     <string name="mgmt_account_delete_confirm_message">Ако изтриете профила си, цялата история на локалните ви разговори ще бъде загубена.\n\nАко изтриете акаунта си от сървъра, целият ви акаунт ще бъде изтрит и от сървъра, няма да можете да влизате повече, докато не регистрирате нов профил. ,</string>
     <string name="attach_record_voice">Запис на глас</string>
     <string name="password">Парола</string>
-    <string name="invalid_jid">Това не е валиден Jabber-ID</string>
+    <string name="invalid_jid">Това не е валиден chat address</string>
     <string name="error_out_of_memory">Недостиг на памет. Снимката е твърде голема</string>
     <string name="add_phone_book_text">Искате ли да добавите%s към адресната си книга?</string>
     <string name="server_info_show_more">Информация за сървъра</string>
@@ -419,7 +419,7 @@
     <string name="unable_to_fetch_mam_prefs">Предпочитанията за архивиране не могат да бъдът извлечени</string>
     <string name="captcha_hint">Въведете текста от снимката по-горе</string>
     <string name="certificate_chain_is_not_trusted">Веригата на сертификата не е надеждна</string>
-    <string name="jid_does_not_match_certificate">Jabber-ID не съответства на сертификата</string>
+    <string name="jid_does_not_match_certificate">chat address не съответства на сертификата</string>
     <string name="action_renew_certificate">Подновяване на сертификата</string>
     <string name="error_fetching_omemo_key">Грешка при извличането на ключа OMEMO!</string>
     <string name="verified_omemo_key_with_certificate">Проверен OMEMO ключ със сертификат!</string>
@@ -463,8 +463,8 @@
     <string name="share_uri_with">Сподели URI с…</string>
     <string name="mgmt_account_reconnect">Повторно Свързване</string>
     <string name="welcome_text">...е безплатен и сигурен XMPP / Jabber клиент.</string>
-    <string name="magic_create_text">Ще ви преведем през процеса на създаване на акаунт със случайна парола, която можете да използвате или да промените на собствената си парола на следващата страница. \nСлед това ще можете да общувате с потребителите на този и други доставчици, като им дадете пълния си Jabber-ID.</string>
-    <string name="your_full_jid_will_be">Вашият Jabber-ID ще бъде: %s</string>
+    <string name="magic_create_text">You can use monocles chat with every modern XMPP account or get a affordable and secure monocles account, hosted on the monocles server station and powered with regenerative energies!\n\n This includes:\n● two month encrypted temporary chat storage\n● e-mail with 1 GB end-to-end encrypted storage\n\n optionally: \n● 4 GB cloud storage (nextcloud)\n● calendar and contact sync\n● a secure conferencing tool \n● and <a href="https://monocles.de/more/">more</a></string>
+    <string name="your_full_jid_will_be">Вашият chat address ще бъде: %s</string>
     <string name="create_account">Създаване на нов акаунт</string>
     <string name="welcome_existing_account">Имам профил</string>
     <string name="pick_your_username">Изберете потребителското си име</string>
@@ -742,7 +742,7 @@
     <string name="install_orbot">Инсталирай Orbot</string>
     <string name="start_orbot">Стартирай Orbot</string>
     <string name="no_market_app_installed">Няма инсталирана пазарна програма.</string>
-    <string name="group_chat_will_make_your_jabber_id_public">Този канал ще направи публично вашето Jabber ID</string>
+    <string name="group_chat_will_make_your_jabber_id_public">Този канал ще направи публично вашето chat address</string>
     <string name="ebook">електронна книга</string>
     <string name="your_name">Твоето име</string>
     <string name="enter_your_name">Въведете вашето име</string>

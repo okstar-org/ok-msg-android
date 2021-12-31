@@ -507,7 +507,7 @@
     <string name="share_uri_with">Partager l’URI avec …</string>
     <string name="mgmt_account_reconnect">Se reconnecter</string>
     <string name="welcome_text">… est un client XMPP/Jabber libre et sécurisé.</string>
-    <string name="magic_create_text">Nous vous guiderons pendant toute la procédure de création d’un compte utilisateur/trice avec un mot de passe aléatoire que vous pourrez utiliser ou modifier, au choix, durant la prochaine étape. \nEnsuite vous pourrez communiquer avec les utilisateurs/trices des autres fournisseurs en leur transmettant votre identifiant Jabber complet.</string>
+    <string name="magic_create_text">You can use monocles chat with every modern XMPP account or get a affordable and secure monocles account, hosted on the monocles server station and powered with regenerative energies!\n\n This includes:\n● two month encrypted temporary chat storage\n● e-mail with 1 GB end-to-end encrypted storage\n\n optionally: \n● 4 GB cloud storage (nextcloud)\n● calendar and contact sync\n● a secure conferencing tool \n● and <a href="https://monocles.de/more/">more</a></string>
     <string name="your_full_jid_will_be">Votre identifiant Jabber complet sera : %s</string>
     <string name="create_account">Création d’un nouveau compte</string>
     <string name="welcome_existing_account">J’ai déjà un compte</string>

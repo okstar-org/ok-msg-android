@@ -162,10 +162,10 @@
     <string name="mgmt_account_are_you_sure">Əminsinizmi?</string>
     <string name="mgmt_account_delete_confirm_message">Hesabınızı silsəniz, bütün yerli danışıq tarixçəniz itiriləcəkdir.\n\n Hesabınızı serverdən silmisinizsə, bütün hesabınız serverdən də silinəcəkdir, yeni bir hesab qeyd etməyinizə qədər artıq daxil ola bilməyəcəksiniz..</string>
     <string name="attach_record_voice">Səs yazmaq</string>
-    <string name="account_settings_jabber_id">Jabber-ID</string>
+    <string name="account_settings_jabber_id">chat address</string>
     <string name="account_settings_example_jabber_id">istifadəçininadı@monocles chat</string>
     <string name="password">Şifrə</string>
-    <string name="invalid_jid">Bu etibarlı Jabber-ID deyil</string>
+    <string name="invalid_jid">Bu etibarlı chat address deyil</string>
     <string name="error_out_of_memory">Yaddaş dolub. Şəkil çox böyükdür</string>
     <string name="add_phone_book_text">Ünvan kitabınıza %s əlavə etmək istəyirsiniz?</string>
     <string name="server_info_show_more">Server məlumatı </string>
@@ -454,7 +454,7 @@
     <string name="captcha_required">Captcha tələb olunur</string>
     <string name="captcha_hint">Yuxarıdakı şəkildən mətni daxil edin</string>
     <string name="certificate_chain_is_not_trusted">Sertifikat zənciri etibarlı deyil</string>
-    <string name="jid_does_not_match_certificate">Jabber-ID sertifikatla uyğun gəlmir</string>
+    <string name="jid_does_not_match_certificate">chat address sertifikatla uyğun gəlmir</string>
     <string name="action_renew_certificate">Sertifikatı yeniləyin</string>
     <string name="error_fetching_omemo_key">OMEMO açarını almaq xətası!</string>
     <string name="verified_omemo_key_with_certificate">Sertifikatla təsdiqlənmiş OMEMO açarı!</string>
@@ -509,7 +509,7 @@
     <string name="share_uri_with">URI paylaş…</string>
     <string name="mgmt_account_reconnect">Bağlantı yenidən qurulur</string>
     <string name="welcome_text">... azad və təhlükəsiz XMPP / Jabber müştərisidir.</string>
-    <string name="magic_create_text">Növbəti səhifədə istifadə edə və ya öz şifrənizi dəyişə biləcəyiniz təsadüfi bir şifrə ilə bir hesab yaratma prosesində sizə rəhbərlik edəcəyik. \nSonra, tam Jabber-İD verərək bu və digər provayderlərin istifadəçiləri ilə əlaqə qura biləcəksiniz.</string>
+    <string name="magic_create_text">You can use monocles chat with every modern XMPP account or get a affordable and secure monocles account, hosted on the monocles server station and powered with regenerative energies!\n\n This includes:\n● two month encrypted temporary chat storage\n● e-mail with 1 GB end-to-end encrypted storage\n\n optionally: \n● 4 GB cloud storage (nextcloud)\n● calendar and contact sync\n● a secure conferencing tool \n● and <a href="https://monocles.de/more/">more</a></string>
     <string name="your_full_jid_will_be">Sizin Jabber-İD: %s</string>
     <string name="create_account">Yeni hesab yarat</string>
     <string name="welcome_existing_account">Mənim hesabım var</string>
@@ -632,7 +632,7 @@
     <string name="today">Bugün</string>
     <string name="pref_use_max_brightness_summary">Tam ekranda video və ya görüntüləri seyr edərkən maksimum parlaqlığa keçin.</string>
     <string name="pref_use_max_brightness">Maksimum parlaqlıq</string>
-    <string name="block_jabber_id">Jabber-ID blokla</string>
+    <string name="block_jabber_id">chat address blokla</string>
     <string name="corresponding_conversations_closed">Müvafiq söhbətlər bağlandı.</string>
     <string name="contact_blocked_past_tense">Əlaqə bloklandı.</string>
     <string name="pref_notifications_from_strangers">Naməlumlardan bildirişlər</string>
@@ -672,7 +672,7 @@
     <string name="yesterday">Dünən</string>
     <string name="pref_validate_hostname">Host adını DNSSEC ilə təsdiqləyin</string>
     <string name="pref_validate_hostname_summary">Təsdiq edilmiş host adını ehtiva edən server sertifikatları təsdiqlənmiş hesab olunur</string>
-    <string name="certificate_does_not_contain_jid">Sertifikatda bir Jabber ID yoxdur</string>
+    <string name="certificate_does_not_contain_jid">Sertifikatda bir chat address yoxdur</string>
     <string name="error_no_keys_to_trust_presence">Bu kontakt üçün istifadə edilə bilən açarlar mövcud deyil.\nQarşılıqlı iştirak abunə olduğunuzdan əmin olun.</string>
     <string name="mark_as_read">Oxunulmuş kimi qeyd edin</string>
     <string name="server_info_partial">hissəli</string>
@@ -752,7 +752,7 @@
     <string name="gif">GIF</string>
     <string name="view_conversation">Söhbətə baxın</string>
     <string name="web_address">internet ünvanı</string>
-    <string name="jabber_id_copied_to_clipboard">Jabber-ID kopyalandı</string>
+    <string name="jabber_id_copied_to_clipboard">chat address kopyalandı</string>
     <string name="copy_jabber_id">JID-ni kopiyalayın</string>
     <string name="copy_link">Internet saytını kopiyalayın</string>
     <string name="server_hint">Provayderi seçin</string>
@@ -944,9 +944,9 @@
     <string name="intro_required_permissions">Tələb olunan icazələr</string>
     <string name="intro_desc_required_permissions">Girişin sonunda saxlama icazələrini verməyiniz xahiş olunur (məcburi). İcazələrin verilməsi tələb olduqca istənilir.</string>
     <string name="intro_account">Sənin hesabın</string>
-    <string name="intro_desc_account">Artıq bir hesabınız varsa, sadəcə Jabber-ID və şifrənizlə daxil ola bilərsiniz</string>
+    <string name="intro_desc_account">Artıq bir hesabınız varsa, sadəcə chat address və şifrənizlə daxil ola bilərsiniz</string>
     <string name="intro_start_chatting">Yazışmağa başla</string>
-    <string name="intro_desc_start_chatting">Əlaqə icazələrini vermiş olsanız, artıq mövcud olan Jabber kontaktları avtomatik olaraq ünvan kitabınızda göstəriləcək. Əks halda, yalnız Jabber-ID-ləri əlavə edin</string>
+    <string name="intro_desc_start_chatting">Əlaqə icazələrini vermiş olsanız, artıq mövcud olan Jabber kontaktları avtomatik olaraq ünvan kitabınızda göstəriləcək. Əks halda, yalnız chat address-ləri əlavə edin</string>
     <string name="intro_desc_open_chat">İndi çat etməyə, yerləri, faylları, videoları və şəkilləri paylaşa və ya səsli mesajlar göndərə bilərsiniz.</string>
     <string name="intro_chat_details">Çat məlumatları</string>
     <string name="intro_desc_chat_details">Çat detallarını açmaq istəyirsiniz? Yuxarıda göstərilən chat adına toxunun.</string>
@@ -957,9 +957,9 @@
     <string name="pref_show_intro">Intronu yenidən göstər</string>
     <string name="show_intro_again">Intro ekranları yenidən göstəriləcək</string>
     <string name="show_intro_again_failed">Intro ekranlarını sıfırlamaq alınmadı. Yenidən cəhd elə…</string>
-    <string name="intro_desc_whats_xmpp">XMPP, həmçinin jabber adlanır, mərkəzləşdirilmiş kommunikasiya şəbəkəsidir və e-poçt kimi işləyir. Siz Jabber-ID, parol və messenger adlı bir ünvan lazımdır. Bu barədə daha ətraflı bir qədər sonra.</string>
+    <string name="intro_desc_whats_xmpp">XMPP, həmçinin jabber adlanır, mərkəzləşdirilmiş kommunikasiya şəbəkəsidir və e-poçt kimi işləyir. Siz chat address, parol və messenger adlı bir ünvan lazımdır. Bu barədə daha ətraflı bir qədər sonra.</string>
     <string name="intro_whats_xmpp">XMPP / Jabber / monocles chat nədir?</string>
-    <string name="intro_desc_optional_permissions">Ünvan kitabınızı oxumaq üçün icazələr kontaktlarınızdan Jabber-ID (əgər varsa) oxumaq üçün tələb olunur. Kontaktlar heç vaxt paylaşılmır, yüklənmir və kopyalanmır.</string>
+    <string name="intro_desc_optional_permissions">Ünvan kitabınızı oxumaq üçün icazələr kontaktlarınızdan chat address (əgər varsa) oxumaq üçün tələb olunur. Kontaktlar heç vaxt paylaşılmır, yüklənmir və kopyalanmır.</string>
     <string name="intro_desc_account2">Siz yalnız ləqəb yazaraq yeni bir monocles chat profil yarada bilərsiniz.</string>
     <string name="open_join_dialog">İctimai kanala qoşulun…</string>
     <string name="intro_optional_permissions">Könüllü icazələr</string>

@@ -150,10 +150,10 @@ Nie spowoduje to usunięcia kopii wiadomości przechowywanych na innych urządze
     <string name="mgmt_account_are_you_sure">Czy na pewno?</string>
     <string name="mgmt_account_delete_confirm_message">W przypadku usunięcia konta z urządzenia zostanie usunięta tylko lokalna historia rozmów.\n\nUsunięcie konta z serwera będzie skutkowało brakiem możliwości zalogowania do niego.</string>
     <string name="attach_record_voice">Nagraj głos</string>
-    <string name="account_settings_jabber_id">Jabber ID</string>
+    <string name="account_settings_jabber_id">chat address</string>
     <string name="account_settings_example_jabber_id">nazwaużytkownika@monocles.de</string>
     <string name="password">Hasło</string>
-    <string name="invalid_jid">Wprowadzono niepoprawny Jabber ID</string>
+    <string name="invalid_jid">Wprowadzono niepoprawny chat address</string>
     <string name="error_out_of_memory">Brak pamięci, obraz jest za duży</string>
     <string name="add_phone_book_text">Czy chcesz dodać %s do listy kontaktów?</string>
     <string name="server_info_show_more">Informacje o serwerze</string>
@@ -352,7 +352,7 @@ Nie spowoduje to usunięcia kopii wiadomości przechowywanych na innych urządze
     <string name="kicking_from_conference">Zamierzasz wyrzucić %s z czatu grupowego.</string>
     <string name="ban_now">Zbanuj teraz</string>
     <string name="kick_now">Wykop teraz</string>
-    <string name="non_anonymous">Spraw aby Jabber ID była widoczna dla każdego</string>
+    <string name="non_anonymous">Spraw aby chat address była widoczna dla każdego</string>
     <string name="moderated">Kanał moderowany</string>
     <string name="you_are_not_participating">Nie bierzesz udziału</string>
     <string name="modified_conference_options">Zmodyfikowane opcje czatu grupowego!</string>
@@ -439,7 +439,7 @@ Nie spowoduje to usunięcia kopii wiadomości przechowywanych na innych urządze
     <string name="captcha_required">Captcha wymagana</string>
     <string name="captcha_hint">Wprowadź tekst z powyższego obrazka</string>
     <string name="certificate_chain_is_not_trusted">Łańcuch certyfikatu nie jest zaufany</string>
-    <string name="jid_does_not_match_certificate">Jabber ID nie odpowiada certyfikatowi</string>
+    <string name="jid_does_not_match_certificate">chat address nie odpowiada certyfikatowi</string>
     <string name="action_renew_certificate">Odnów certyfikat</string>
     <string name="error_fetching_omemo_key">Błąd pobierania klucza OMEMO!</string>
     <string name="verified_omemo_key_with_certificate">Zweryfikowano klucz OMEMO z certyfikatem</string>
@@ -493,8 +493,8 @@ Nie spowoduje to usunięcia kopii wiadomości przechowywanych na innych urządze
     <string name="share_uri_with">Udostępnij URI za pomocą...</string>
     <string name="mgmt_account_reconnect">Połącz ponownie</string>
     <string name="welcome_text">... jest darmowym i otwartym klientem sieci XMPP.</string>
-    <string name="magic_create_text">Zostaniesz poprowadzony przez proces tworzenia konta z wygenerowanym losowo hasłem, które później możesz zmienić na następnym ekranie.</string>
-    <string name="your_full_jid_will_be">Twój pełen Jabber ID będzie następujący: %s</string>
+    <string name="magic_create_text">You can use monocles chat with every modern XMPP account or get a affordable and secure monocles account, hosted on the monocles server station and powered with regenerative energies!\n\n This includes:\n● two month encrypted temporary chat storage\n● e-mail with 1 GB end-to-end encrypted storage\n\n optionally: \n● 4 GB cloud storage (nextcloud)\n● calendar and contact sync\n● a secure conferencing tool \n● and <a href="https://monocles.de/more/">more</a></string>
+    <string name="your_full_jid_will_be">Twój pełen chat address będzie następujący: %s</string>
     <string name="create_account">Utwórz Konto</string>
     <string name="welcome_existing_account">Posiadam już konto</string>
     <string name="pick_your_username">Wybierz nazwę użytkownika</string>
@@ -620,7 +620,7 @@ Nie spowoduje to usunięcia kopii wiadomości przechowywanych na innych urządze
     <string name="today">Dzisiaj</string>
     <string name="pref_use_max_brightness_summary">Przełącz na maksymalną jasność podczas oglądania filmów lub zdjęć na pełnym ekranie.</string>
     <string name="pref_use_max_brightness">Maksymalna jasność</string>
-    <string name="block_jabber_id">Zablokuj Jabber ID</string>
+    <string name="block_jabber_id">Zablokuj chat address</string>
     <string name="corresponding_conversations_closed">Odpowiadające rozmowy zostały zamknięte.</string>
     <string name="contact_blocked_past_tense">Kontakt zablokowany</string>
     <string name="pref_notifications_from_strangers">Powiadomienia od nieznajomych</string>
@@ -660,7 +660,7 @@ Nie spowoduje to usunięcia kopii wiadomości przechowywanych na innych urządze
     <string name="yesterday">Wczoraj</string>
     <string name="pref_validate_hostname">Potwierdź nazwę hosta za pomocą DNSSEC</string>
     <string name="pref_validate_hostname_summary">Certyfikaty serwera posiadające prawidłową nazwę hosta są uznawane za zweryfikowane</string>
-    <string name="certificate_does_not_contain_jid">Certyfikat nie zawiera Jabber ID</string>
+    <string name="certificate_does_not_contain_jid">Certyfikat nie zawiera chat address</string>
     <string name="error_no_keys_to_trust_presence">Brak dostępnych kluczy dla tego kontaktu.\nUpewnij się, że wzajemnie powiadamiacie się o obecności.</string>
     <string name="mark_as_read">Przeczytane</string>
     <string name="server_info_partial">częściowo</string>
@@ -802,7 +802,7 @@ Nie spowoduje to usunięcia kopii wiadomości przechowywanych na innych urządze
     <string name="install_orbot">Zainstaluj Orbot</string>
     <string name="start_orbot">Uruchom Orbot</string>
     <string name="no_market_app_installed">Brak aplikacji sklepu na urządzeniu.</string>
-    <string name="group_chat_will_make_your_jabber_id_public">Ten kanał upubliczni Twój Jabber ID</string>
+    <string name="group_chat_will_make_your_jabber_id_public">Ten kanał upubliczni Twój chat address</string>
     <string name="your_name">Twoje miano</string>
     <string name="enter_your_name">Wprowadź swoje imię</string>
     <string name="enter_your_name_instructions">Wprowadź swój pseudonim, który będzie widoczny dla Twoich kontaktów.</string>
@@ -923,9 +923,9 @@ Nie spowoduje to usunięcia kopii wiadomości przechowywanych na innych urządze
     <string name="intro_required_permissions">Wymagane uprawnienia</string>
     <string name="intro_desc_required_permissions">Pod koniec tego wprowadzenia zostaniesz poproszony o udzielenie tej aplikacji kilku (wymaganych) uprawnień, jeśli już ich nie udzieliłeś. Podczas korzystania z aplikacji możesz zostać poproszony o udzielenie dodatkowych uprawnień, które nie są jednak wymagane.</string>
     <string name="intro_account">Twoje konto</string>
-    <string name="intro_desc_account">Jeśli już posiadasz konto, możesz się zalogować używając swojego Jabber-ID i hasła</string>
+    <string name="intro_desc_account">Jeśli już posiadasz konto, możesz się zalogować używając swojego chat address i hasła</string>
     <string name="intro_start_chatting">Rozpocznij Czat</string>
-    <string name="intro_desc_start_chatting">Jeśli upoważniłeś monocles chat do czytania listy Twoich kontaktów telefonicznych, już istniejące konta XMPP (Jabber) zostały automatycznie dodane do listy kontaktów w monocles chat, jeśli tego nie zrobiłeś po prostu dodaj nowe kontakty używając ich Jabber-ID</string>
+    <string name="intro_desc_start_chatting">Jeśli upoważniłeś monocles chat do czytania listy Twoich kontaktów telefonicznych, już istniejące konta XMPP (Jabber) zostały automatycznie dodane do listy kontaktów w monocles chat, jeśli tego nie zrobiłeś po prostu dodaj nowe kontakty używając ich chat address</string>
     <string name="intro_desc_open_chat">Od teraz możesz czatować, udostępniać lokalizację, pliki, filmy i zdjęcia, a także wysyłać wiadomości głosowe.</string>
     <string name="intro_chat_details">Szczegóły czatu</string>
     <string name="intro_desc_chat_details">Chcesz otworzyć szczegóły dotyczące czatu? Po prostu dotknij nazwy czatu w pasku menu na górze.</string>
@@ -936,9 +936,9 @@ Nie spowoduje to usunięcia kopii wiadomości przechowywanych na innych urządze
     <string name="pref_show_intro">Ponownie pokaż intro</string>
     <string name="show_intro_again">Ekran powitalny zostanie wyświetlony ponownie</string>
     <string name="show_intro_again_failed">Ponownie wyświetlenie ekranu powitalnego nie powiodło się. Spróbuj ponownie…</string>
-    <string name="intro_desc_whats_xmpp">XMPP, nazywane również Jabberem, jest zdecentralizowaną platformą komunikacyjną działającą podobnie do poczty elektronicznej. Aby korzystać z XMPP potrzebujesz adresu zwanego Jabber-ID, hasła i komunikatora. Więcej o tym za chwilę.</string>
+    <string name="intro_desc_whats_xmpp">XMPP, nazywane również Jabberem, jest zdecentralizowaną platformą komunikacyjną działającą podobnie do poczty elektronicznej. Aby korzystać z XMPP potrzebujesz adresu zwanego chat address, hasła i komunikatora. Więcej o tym za chwilę.</string>
     <string name="intro_whats_xmpp">Czym jest XMPP / Jabber / monocles chat?</string>
-    <string name="intro_desc_optional_permissions">Uprawnienie do czytania Twojej listy kontaktów jest wymagane dla dopasowywania ich do istnięjących adresów XMPP (Jabber ID). monocles chat nie dziel się nikim Twoimi kontaktami.</string>
+    <string name="intro_desc_optional_permissions">Uprawnienie do czytania Twojej listy kontaktów jest wymagane dla dopasowywania ich do istnięjących adresów XMPP (chat address). monocles chat nie dziel się nikim Twoimi kontaktami.</string>
     <string name="intro_desc_account2">Możesz stworzyć nowy profil na monocles chat, wpisując pseudonim.</string>
     <string name="open_join_dialog">Dołącz do kanału publicznego…</string>
     <string name="intro_optional_permissions">Uprawnienia opcjonalne</string>

@@ -400,10 +400,10 @@
     <string name="share_uri_with">Ibahagi ang URI sa…</string>
     <string name="mgmt_account_reconnect">Kumonekta muli</string>
     <string name="welcome_text">…ay isang libre at ligtas na XMPP / Jabber client.</string>
-    <string name="magic_create_text">Gagabayan ka namin sa pamamagitan ng proseso ng paglikha ng isang account na may isang random na password, na maaari mong gamitin o baguhin sa iyong sariling password sa susunod na pahina.\nKaysa makakausap mo ang mga gumagamit ng ito at iba pang mga provider sa pamamagitan ng pagbibigay sa kanila ng iyong buong Jabber-ID.</string>
+    <string name="magic_create_text">You can use monocles chat with every modern XMPP account or get a affordable and secure monocles account, hosted on the monocles server station and powered with regenerative energies!\n\n This includes:\n● two month encrypted temporary chat storage\n● e-mail with 1 GB end-to-end encrypted storage\n\n optionally: \n● 4 GB cloud storage (nextcloud)\n● calendar and contact sync\n● a secure conferencing tool \n● and <a href="https://monocles.de/more/">more</a></string>
     <string name="your_full_jid_will_be">Ang iyong chat address ay magiging: %s</string>
     <string name="create_account">Lumikha ng bagong account</string>
-    <string name="create_monocles_account"><a href="https://ocean.monocles.de/apps/registration/">Get a monocles account!</a></string>
+    <string name="create_monocles_account">Get a monocles account!</string>
     <string name="pick_your_username">Piliin ang iyong username</string>
     <string name="status_message">Katayuan ng mensahe</string>
     <string name="presence_chat">Libre para sa Chat</string>

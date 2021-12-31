@@ -45,43 +45,9 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginTop="8dp"
+                        android:autoLink="all"
                         android:text="@string/magic_create_text"
                         android:textAppearance="@style/TextAppearance.Conversations.Body1" />
-
-                    <TextView
-                        android:id="@+id/title"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_marginTop="8dp"
-                        android:text="@string/pick_your_username"
-                        android:textAppearance="@style/TextAppearance.Conversations.Subhead" />
-
-                    <EditText
-                        android:id="@+id/username"
-                        style="@style/Widget.Conversations.EditText"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:hint="@string/username_hint"
-                        android:imeOptions="actionNext"
-                        android:inputType="text"
-                        android:textColor="?attr/edit_text_color" />
-
-                    <TextView
-                        android:id="@+id/servertitle"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_marginTop="8dp"
-                        android:text="@string/choose_your_server"
-                        android:textAppearance="@style/TextAppearance.Conversations.Subhead" />
-
-                    <Spinner
-                        android:id="@+id/server"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_gravity="center_horizontal"
-                        android:hint="@string/server_hint"
-                        android:prompt="@string/server_hint"
-                        android:spinnerMode="dialog" />
 
                     <EditText
                         android:id="@+id/yourserver"
@@ -95,28 +61,13 @@
                         android:enabled="false"
                         android:visibility="gone"/>
 
-                    <CheckBox
-                        android:id="@+id/use_own"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:text="@string/use_own_provider" />
-
-                    <TextView
-                        android:id="@+id/full_jid"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_marginTop="8dp"
-                        android:text="@string/your_full_jid_will_be"
-                        android:textAppearance="@style/TextAppearance.Conversations.Caption"
-                        android:visibility="invisible" />
-
                     <Button
                         android:id="@+id/create_account"
                         style="@style/Widget.Conversations.Button.Borderless"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_gravity="end"
-                        android:text="@string/next"
+                        android:text="@string/create_monocles_account"
                         android:textColor="?attr/colorAccent" />
 
                 </LinearLayout>
@@ -131,8 +82,7 @@
                     <ImageView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_centerHorizontal="true"
-                        android:layout_centerVertical="true"
+                        android:layout_centerInParent="true"
                         android:padding="8dp"
                         android:src="@drawable/logo_800" />
                 </RelativeLayout>

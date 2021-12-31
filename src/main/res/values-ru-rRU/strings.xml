@@ -162,10 +162,10 @@
     <string name="mgmt_account_are_you_sure">Вы уверены?</string>
     <string name="mgmt_account_delete_confirm_message">Если Вы удалите свою учетную запись, вся Ваша локальная история переписки будет потеряна.\n\nЕсли Вы удалите свою учетную запись с сервера, Вы не сможете больше входить в систему, пока не зарегистрируете новую учетную запись.</string>
     <string name="attach_record_voice">Записать голосовое сообщение</string>
-    <string name="account_settings_jabber_id">Jabber-ID</string>
+    <string name="account_settings_jabber_id">chat address</string>
     <string name="account_settings_example_jabber_id">username@monocles.de</string>
     <string name="password">Пароль</string>
-    <string name="invalid_jid">Недействительный Jabber-ID</string>
+    <string name="invalid_jid">Недействительный chat address</string>
     <string name="error_out_of_memory">Недостаточно памяти. Изображение слишком большое</string>
     <string name="add_phone_book_text">Хотите добавить %s в Вашу адресную книгу?</string>
     <string name="server_info_show_more">Информация о сервере</string>
@@ -369,7 +369,7 @@
     <string name="kicking_from_conference">Вы пытаетесь исключить %s из группового чата.</string>
     <string name="ban_now">Заблокировать сейчас</string>
     <string name="kick_now">Исключить</string>
-    <string name="non_anonymous">Сделать Jabber ID видимыми для всех</string>
+    <string name="non_anonymous">Сделать chat address видимыми для всех</string>
     <string name="moderated">Сделать канал модерируемым</string>
     <string name="you_are_not_participating">Вы не участник</string>
     <string name="modified_conference_options">Настройки группового чата изменены!</string>
@@ -458,7 +458,7 @@
     <string name="captcha_required">Требуется CAPTCHA</string>
     <string name="captcha_hint">Введите текст с картинки выше</string>
     <string name="certificate_chain_is_not_trusted">Связь сертификата не является доверенной</string>
-    <string name="jid_does_not_match_certificate">Jabber-ID не соответствует сертификату</string>
+    <string name="jid_does_not_match_certificate">chat address не соответствует сертификату</string>
     <string name="action_renew_certificate">Обновить сертификат</string>
     <string name="error_fetching_omemo_key">Не удалось получить ключ OMEMO!</string>
     <string name="verified_omemo_key_with_certificate">Ключ OMEMO был подтвержден сертификатом!</string>
@@ -515,8 +515,8 @@
     <string name="share_uri_with">Поделиться URI с…</string>
     <string name="mgmt_account_reconnect">Переподключить</string>
     <string name="welcome_text">...это свободный и безопасный XMPP/Jabber клиент.</string>
-    <string name="magic_create_text">Мы поможем Вам создать учетную запись со случайным паролем, который Вы сможете использовать или изменить на свой собственный пароль на следующей странице. \nВы сможете общаться с пользователями этого и других серверов, сообщив им свой полный Jabber-ID.</string>
-    <string name="your_full_jid_will_be">Ваш Jabber-ID был: %s</string>
+    <string name="magic_create_text">You can use monocles chat with every modern XMPP account or get a affordable and secure monocles account, hosted on the monocles server station and powered with regenerative energies!\n\n This includes:\n● two month encrypted temporary chat storage\n● e-mail with 1 GB end-to-end encrypted storage\n\n optionally: \n● 4 GB cloud storage (nextcloud)\n● calendar and contact sync\n● a secure conferencing tool \n● and <a href="https://monocles.de/more/">more</a></string>
+    <string name="your_full_jid_will_be">Ваш chat address был: %s</string>
     <string name="create_account">Создать новую учетную запись</string>
     <string name="welcome_existing_account">У меня есть аккаунт</string>
     <string name="pick_your_username">Выберите имя пользователя</string>
@@ -652,7 +652,7 @@
     <string name="today">Сегодня</string>
     <string name="pref_use_max_brightness_summary">Установить максимальную яркость при полноэкранном просмотре видео и изображений.</string>
     <string name="pref_use_max_brightness">Максимальная яркость</string>
-    <string name="block_jabber_id">Заблокировать Jabber-ID</string>
+    <string name="block_jabber_id">Заблокировать chat address</string>
     <string name="corresponding_conversations_closed">Соответствующие разговоры были закрыты.</string>
     <string name="contact_blocked_past_tense">Контакт заблокирован.</string>
     <string name="pref_notifications_from_strangers">Уведомления от незнакомцев</string>
@@ -692,7 +692,7 @@
     <string name="yesterday">Вчера</string>
     <string name="pref_validate_hostname">Проверять имя хоста через DNSSEC</string>
     <string name="pref_validate_hostname_summary">Сертификаты сервера, содержащие проверенное имя хоста, считаются проверенными</string>
-    <string name="certificate_does_not_contain_jid">Сертификат не содержит Jabber ID</string>
+    <string name="certificate_does_not_contain_jid">Сертификат не содержит chat address</string>
     <string name="error_no_keys_to_trust_presence">Для этого контакта не существует доступных ключей.\nMake убедитесь, что у вас есть подписка на взаимное присутствие.</string>
     <string name="mark_as_read">Отметить как прочитанное</string>
     <string name="server_info_partial">частичный</string>
@@ -842,7 +842,7 @@
     <string name="install_orbot">Установить Orbot</string>
     <string name="start_orbot">Запуск Orbot</string>
     <string name="no_market_app_installed">Приложение market не установлено.</string>
-    <string name="group_chat_will_make_your_jabber_id_public">Этот канал будет создан с помощью вашего публичного Jabber ID</string>
+    <string name="group_chat_will_make_your_jabber_id_public">Этот канал будет создан с помощью вашего публичного chat address</string>
     <string name="ebook">электронная книга</string>
     <string name="your_name">Ваше имя</string>
     <string name="enter_your_name">Введите Ваше имя</string>
@@ -896,8 +896,8 @@
     <string name="admins_can_edit_subject">Админы могут изменять эту тему.</string>
     <string name="owners_can_invite_others">Владельцы могут приглашать других.</string>
     <string name="anyone_can_invite_others">Все могут приглашать других.</string>
-    <string name="jabber_ids_are_visible_to_admins">Jabber ID видим для админов.</string>
-    <string name="jabber_ids_are_visible_to_anyone">Jabber ID видим для всех.</string>
+    <string name="jabber_ids_are_visible_to_admins">chat address видим для админов.</string>
+    <string name="jabber_ids_are_visible_to_anyone">chat address видим для всех.</string>
     <string name="no_users_hint_channel">В этом канале нет участников. Пригласите ваших контактов или используйте кнопку \"Поделиться\" для распространения этого XMPP-адреса.</string>
     <string name="no_users_hint_group_chat">В этой группе нет участников.</string>
     <string name="grant_owner_privileges">Предоставить права владельца</string>
@@ -970,9 +970,9 @@
     <string name="intro_required_permissions">Необходимые разрешения</string>
     <string name="intro_desc_required_permissions">В конце вступления Вам будет предложено предоставить разрешение на доступ к хранилищу (обязательное), если Вы еще не предоставили его. Другие разрешения запрашиваются по мере необходимости и являются необязательными.</string>
     <string name="intro_account">Ваш аккаунт</string>
-    <string name="intro_desc_account">Если у Вас уже есть учетная запись, Вы можете просто войти в систему с помощью Jabber-ID и пароля</string>
+    <string name="intro_desc_account">Если у Вас уже есть учетная запись, Вы можете просто войти в систему с помощью chat address и пароля</string>
     <string name="intro_start_chatting">Начните чатиться</string>
-    <string name="intro_desc_start_chatting">Если Вы предоставили разрешение на доступ к контактам, уже существующие контакты Jabber автоматически отобразятся в Вашей адресной книге. В противном случае просто добавьте Jabber-ID</string>
+    <string name="intro_desc_start_chatting">Если Вы предоставили разрешение на доступ к контактам, уже существующие контакты Jabber автоматически отобразятся в Вашей адресной книге. В противном случае просто добавьте chat address</string>
     <string name="intro_desc_open_chat">Теперь Вы можете начать общаться, обмениваться местоположением, файлами, видео, изображениями и отправлять голосовые сообщения.</string>
     <string name="intro_chat_details">Детали чата</string>
     <string name="intro_desc_chat_details">Хотите открыть детали чате? Просто нажмите на название чата в строке меню вверху.</string>
@@ -983,9 +983,9 @@
     <string name="pref_show_intro">Показ ознакомительных экранов</string>
     <string name="show_intro_again">Ознакомительные экраны будут показаны снова</string>
     <string name="show_intro_again_failed">Не удалось сбросить ознакомительные экраны. Попробуйте еще раз…</string>
-    <string name="intro_desc_whats_xmpp">XMPP, также известный как jabber, является децентрализованной коммуникационной сетью и работает подобно электронной почте. Вам понадобится адрес под названием Jabber-ID, пароль и мессенджер. Подробнее об этом позже.</string>
+    <string name="intro_desc_whats_xmpp">XMPP, также известный как jabber, является децентрализованной коммуникационной сетью и работает подобно электронной почте. Вам понадобится адрес под названием chat address, пароль и мессенджер. Подробнее об этом позже.</string>
     <string name="intro_whats_xmpp">Что такое XMPP / Jabber / monocles chat?</string>
-    <string name="intro_desc_optional_permissions">Разрешение на чтение Вашей адресной книги необходимо для получения Jabber-ID (если есть) Ваших контактов. Контакты никогда не передаются, не загружаются и не копируются.</string>
+    <string name="intro_desc_optional_permissions">Разрешение на чтение Вашей адресной книги необходимо для получения chat address (если есть) Ваших контактов. Контакты никогда не передаются, не загружаются и не копируются.</string>
     <string name="intro_desc_account2">Вы можете создать новый профиль на monocles chat, просто введя ник.</string>
     <string name="open_join_dialog">Присоединиться к публичному каналу…</string>
     <string name="intro_optional_permissions">Дополнительные разрешения</string>

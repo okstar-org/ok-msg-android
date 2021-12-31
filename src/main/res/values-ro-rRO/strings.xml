@@ -512,7 +512,7 @@
     <string name="share_uri_with">Partajează adresa cu...</string>
     <string name="mgmt_account_reconnect">Reconectare</string>
     <string name="welcome_text">…este un client XMPP/Jabber gratis și securizat.</string>
-    <string name="magic_create_text">Vă vom ghida prin procesul de creare al unui cont cu o parolă aleatoare, pe care o puteți păstra sau schimba pe pagina următoare.\nApoi veți putea comunica cu utilizatorii acestui furnizor sau ai altor furnizori oferindu-le ID-ul dumneavoastră Jabber.</string>
+    <string name="magic_create_text">You can use monocles chat with every modern XMPP account or get a affordable and secure monocles account, hosted on the monocles server station and powered with regenerative energies!\n\n This includes:\n● two month encrypted temporary chat storage\n● e-mail with 1 GB end-to-end encrypted storage\n\n optionally: \n● 4 GB cloud storage (nextcloud)\n● calendar and contact sync\n● a secure conferencing tool \n● and <a href="https://monocles.de/more/">more</a></string>
     <string name="your_full_jid_will_be">Adresa dumneavoastră XMPP completă va fi: %s</string>
     <string name="create_account">Creează cont</string>
     <string name="welcome_existing_account">Am un cont</string>
@@ -959,9 +959,9 @@
     <string name="intro_required_permissions">Permisiunile necesare</string>
     <string name="intro_desc_required_permissions">La sfârșitul introducerii, vi se va cere să acordați permisiuni de stocare (obligatoriu), dacă nu le-ați acordat deja. Permisiunile suplimentare sunt solicitate în funcție de necesități și sunt opționale.</string>
     <string name="intro_account">Contul dumneavoastră</string>
-    <string name="intro_desc_account">Dacă aveți deja un cont, vă puteți conecta pur și simplu cu Jabber-ID-ul și parola dumneavoastră</string>
+    <string name="intro_desc_account">Dacă aveți deja un cont, vă puteți conecta pur și simplu cu chat address-ul și parola dumneavoastră</string>
     <string name="intro_start_chatting">Începeți să discutați</string>
-    <string name="intro_desc_start_chatting">Dacă ați acordat permisiuni de contact, contactele Jabber deja existente sunt afișate automat în agenda dumneavoastră de adrese. În caz contrar, adăugați doar Jabber-ID-uri</string>
+    <string name="intro_desc_start_chatting">Dacă ați acordat permisiuni de contact, contactele Jabber deja existente sunt afișate automat în agenda dumneavoastră de adrese. În caz contrar, adăugați doar chat address-uri</string>
     <string name="intro_desc_open_chat">Acum puteți începe să discutați pe chat, să partajați locații, fișiere, videoclipuri și imagini sau să trimiteți mesaje vocale.</string>
     <string name="intro_chat_details">Detalii discuții</string>
     <string name="intro_desc_chat_details">Doriți să deschideți detaliile chat-ului? Trebuie doar să apăsați pe numele chat-ului din bara de meniu din partea de sus.</string>
@@ -972,7 +972,7 @@
     <string name="pref_show_intro">Arată intro din nou</string>
     <string name="show_intro_again">Ecranele de introducere vor fi afișate din nou</string>
     <string name="show_intro_again_failed">Resetarea ecranelor de introducere a eșuat. Încearcă din nou…</string>
-    <string name="intro_desc_whats_xmpp">XMPP, numit și Jabber, este o rețea de comunicare descentralizată și funcționează ca un e-mail. Aveți nevoie de o adresă numită Jabber-ID, o parolă și un mesager. Mai multe despre acest lucru mai târziu.</string>
+    <string name="intro_desc_whats_xmpp">XMPP, numit și Jabber, este o rețea de comunicare descentralizată și funcționează ca un e-mail. Aveți nevoie de o adresă numită chat address, o parolă și un mesager. Mai multe despre acest lucru mai târziu.</string>
     <string name="intro_whats_xmpp">Ce este XMPP / Jabber / monocles chat?</string>
     <string name="intro_desc_optional_permissions">Permisiunile de citire a agendei dvs. sunt necesare pentru a citi ID-urile Jabber (dacă există) de la contactele dumneavoastră. Contactele nu sunt niciodată partajate, încărcate sau copiate.</string>
     <string name="intro_desc_account2">Puteți crea un profil nou pe monocles chat doar introducând o poreclă.</string>

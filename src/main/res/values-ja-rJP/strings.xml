@@ -159,10 +159,10 @@
     <string name="mgmt_account_are_you_sure">よろしいですか？</string>
     <string name="mgmt_account_delete_confirm_message">アカウントを削除すると、ローカルの会話履歴全体が失われます。\n\nサーバーからアカウントを削除すると、サーバーからもアカウント全体が削除され、新規アカウントを登録するまで、もはやログインできなくなります。</string>
     <string name="attach_record_voice">音声を録音</string>
-    <string name="account_settings_jabber_id">Jabber-ID</string>
+    <string name="account_settings_jabber_id">chat address</string>
     <string name="account_settings_example_jabber_id">username@monocles chat</string>
     <string name="password">パスワード</string>
-    <string name="invalid_jid">有効なJabber-IDではありません</string>
+    <string name="invalid_jid">有効なchat addressではありません</string>
     <string name="error_out_of_memory">メモリ不足です。画像が大きすぎます</string>
     <string name="add_phone_book_text">アドレス帳に %s を追加しますか？</string>
     <string name="server_info_show_more">サーバー情報</string>
@@ -359,7 +359,7 @@
     <string name="kicking_from_conference">%s をグループチャットから蹴り出そうとしています。</string>
     <string name="ban_now">今すぐ出禁にする</string>
     <string name="kick_now">今すぐ蹴り出す</string>
-    <string name="non_anonymous">Jabber IDを誰でも見れるようにする</string>
+    <string name="non_anonymous">chat addressを誰でも見れるようにする</string>
     <string name="moderated">談話室の調停をする</string>
     <string name="you_are_not_participating">あなたは参加していません</string>
     <string name="modified_conference_options">グループチャットの設定が変更されました！</string>
@@ -444,7 +444,7 @@
     <string name="captcha_required">キャプチャが要求されました</string>
     <string name="captcha_hint">上の画像からテキストを入力</string>
     <string name="certificate_chain_is_not_trusted">証明書の鎖が信頼できません</string>
-    <string name="jid_does_not_match_certificate">Jabber-IDが証明書と一致しません</string>
+    <string name="jid_does_not_match_certificate">chat addressが証明書と一致しません</string>
     <string name="action_renew_certificate">証明書を更新</string>
     <string name="error_fetching_omemo_key">OMEMO鍵の取得中にエラー！</string>
     <string name="verified_omemo_key_with_certificate">証明書付きのOMEMO鍵を検証しました！</string>
@@ -498,8 +498,8 @@
     <string name="share_uri_with">…でURIを共有</string>
     <string name="mgmt_account_reconnect">再接続</string>
     <string name="welcome_text">…は、自由かつ安全なXMPP/Jabberクライアントです。</string>
-    <string name="magic_create_text">次のページでは、無作為なパスワードを使ってアカウントを作成する手順を説明します。このパスワードは、使用することも、自分のパスワードに変更することもできます。\nその後、あなたの完全なJabber-IDを伝えることで、ここのユーザーや他のプロバイダのユーザーと通信することができます。</string>
-    <string name="your_full_jid_will_be">あなたのJabber-IDはこの通りになります: %s</string>
+    <string name="magic_create_text">You can use monocles chat with every modern XMPP account or get a affordable and secure monocles account, hosted on the monocles server station and powered with regenerative energies!\n\n This includes:\n● two month encrypted temporary chat storage\n● e-mail with 1 GB end-to-end encrypted storage\n\n optionally: \n● 4 GB cloud storage (nextcloud)\n● calendar and contact sync\n● a secure conferencing tool \n● and <a href="https://monocles.de/more/">more</a></string>
+    <string name="your_full_jid_will_be">あなたのchat addressはこの通りになります: %s</string>
     <string name="create_account">新規アカウントを作成</string>
     <string name="welcome_existing_account">アカウントを持っています</string>
     <string name="pick_your_username">ユーザー名を選択してください</string>
@@ -612,7 +612,7 @@
     <string name="today">今日</string>
     <string name="pref_use_max_brightness_summary">ビデオや画像を全画面で見ているときは、最大の明るさに切り替えます。</string>
     <string name="pref_use_max_brightness">最大の明るさ</string>
-    <string name="block_jabber_id">Jabber IDをブロック</string>
+    <string name="block_jabber_id">chat addressをブロック</string>
     <string name="corresponding_conversations_closed">対応する会話が閉じられました。</string>
     <string name="contact_blocked_past_tense">連絡先をブロックしました。</string>
     <string name="pref_notifications_from_strangers">見知らぬ人からの通知</string>
@@ -652,7 +652,7 @@
     <string name="yesterday">昨日</string>
     <string name="pref_validate_hostname">DNSSECでホスト名の妥当性を確認</string>
     <string name="pref_validate_hostname_summary">検証されたホスト名を含むサーバー証明書は検証済みと見なされます</string>
-    <string name="certificate_does_not_contain_jid">証明書はJabber IDを含みません</string>
+    <string name="certificate_does_not_contain_jid">証明書はchat addressを含みません</string>
     <string name="error_no_keys_to_trust_presence">この連絡先で利用可能な鍵はありません。\n双方に出席情報の購読があることを確認してください。</string>
     <string name="mark_as_read">既読にする</string>
     <string name="pref_show_foreground_service_summary">一部のAndroid端末では、一定時間が経過すると一部のアプリが終了してしまい、新着メッセージを受信できなくなります。このような問題が発生した場合は、フォアグラウンドサービスを有効にしてください。ただし、この選択肢をチェックすると、通知が永続的に表示されることに注意してください。</string>
@@ -800,7 +800,7 @@
     <string name="install_orbot">Orbotをインストール</string>
     <string name="start_orbot">Orbotを起動</string>
     <string name="no_market_app_installed">マーケットアプリがインストールされていません。</string>
-    <string name="group_chat_will_make_your_jabber_id_public">この談話室では、あなたのJabber IDを公開します</string>
+    <string name="group_chat_will_make_your_jabber_id_public">この談話室では、あなたのchat addressを公開します</string>
     <string name="ebook">電子書籍</string>
     <string name="your_name">あなたの名前</string>
     <string name="enter_your_name">あなたの名前を入力</string>
@@ -851,8 +851,8 @@
     <string name="admins_can_edit_subject">管理者は題目を編集できます。</string>
     <string name="owners_can_invite_others">所有者は他の人を招待できます。</string>
     <string name="anyone_can_invite_others">誰でも他の人を招待できます。</string>
-    <string name="jabber_ids_are_visible_to_admins">Jabber IDは管理者が見れます。</string>
-    <string name="jabber_ids_are_visible_to_anyone">Jabber IDは誰でも見れます。</string>
+    <string name="jabber_ids_are_visible_to_admins">chat addressは管理者が見れます。</string>
+    <string name="jabber_ids_are_visible_to_anyone">chat addressは誰でも見れます。</string>
     <string name="no_users_hint_channel">この公開談話室には参加者がいません。連絡先を招待したり、共有ボタンを使用してXMPPアドレスを配布できます。</string>
     <string name="no_users_hint_group_chat">この非公開グループチャットには参加者がいません。</string>
     <string name="grant_owner_privileges">所有者権限を付与</string>
@@ -922,9 +922,9 @@
     <string name="intro_required_permissions">必要な権限</string>
     <string name="intro_desc_required_permissions">導入の最後に、まだストレージのアクセス権を与えていない場合は、その権限を与えるように求められます（必須）。追加の権限は必要に応じて要求され、任意です。</string>
     <string name="intro_account">あなたのアカウント</string>
-    <string name="intro_desc_account">すでにアカウントをお持ちの方は、Jabber-IDとパスワードで簡単にログインできます。</string>
+    <string name="intro_desc_account">すでにアカウントをお持ちの方は、chat addressとパスワードで簡単にログインできます。</string>
     <string name="intro_start_chatting">チャットを開始</string>
-    <string name="intro_desc_start_chatting">連絡先のアクセス権を与えている場合は、すでに存在するJabberの連絡先が自動的にアドレス帳に表示されます。そうでない場合は、Jabber-IDを追加するだけです。</string>
+    <string name="intro_desc_start_chatting">連絡先のアクセス権を与えている場合は、すでに存在するJabberの連絡先が自動的にアドレス帳に表示されます。そうでない場合は、chat addressを追加するだけです。</string>
     <string name="intro_desc_open_chat">これで、チャット、位置、ファイル、ビデオ、画像の共有、音声メッセージの送信が可能になります。</string>
     <string name="intro_chat_details">チャットの詳細</string>
     <string name="intro_desc_chat_details">チャットの詳細を開きたいですか？上部のメニューバーにあるチャット名をクリックしてください。</string>
@@ -935,9 +935,9 @@
     <string name="pref_show_intro">導入を再度表示</string>
     <string name="show_intro_again">導入画面が再度表示されます</string>
     <string name="show_intro_again_failed">導入画面の再設定に失敗しました。もう一度お試しください…</string>
-    <string name="intro_desc_whats_xmpp">jabberとも呼ばれるXMPPは、分権化された通信網で、電子メールのように動きます。Jabber-ID、パスワード及びメッセンジャーが必要です。これについては後ほど詳しくご紹介します。</string>
+    <string name="intro_desc_whats_xmpp">jabberとも呼ばれるXMPPは、分権化された通信網で、電子メールのように動きます。chat address、パスワード及びメッセンジャーが必要です。これについては後ほど詳しくご紹介します。</string>
     <string name="intro_whats_xmpp">XMPP / Jabber / monocles chat とは？</string>
-    <string name="intro_desc_optional_permissions">連絡先からJabber-ID（存在する場合）を読み取るためには、アドレス帳の読み取りに必要なアクセス権が必要です。連絡先が共有、アップロード、コピーされることはありません。</string>
+    <string name="intro_desc_optional_permissions">連絡先からchat address（存在する場合）を読み取るためには、アドレス帳の読み取りに必要なアクセス権が必要です。連絡先が共有、アップロード、コピーされることはありません。</string>
     <string name="intro_desc_account2">monocles chatでは、ニックネームを入力するだけで、新しいプロフィールを作成することができます。</string>
     <string name="open_join_dialog">公開談話室に参加…</string>
     <string name="intro_optional_permissions">追加の権限</string>

@@ -499,7 +499,7 @@
     <string name="share_uri_with">Partilhar URI com...</string>
     <string name="mgmt_account_reconnect">Reconectar</string>
     <string name="welcome_text">…é um cliente XMPP/Jabber gratuito e seguro.</string>
-    <string name="your_full_jid_will_be">Seu Jabber-ID será: %s</string>
+    <string name="your_full_jid_will_be">Seu chat address será: %s</string>
     <string name="create_account">Criar conta</string>
     <string name="welcome_existing_account">Já tenho uma conta</string>
     <string name="pick_your_username">Escolha seu nome de usuário</string>

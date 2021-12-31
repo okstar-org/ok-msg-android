@@ -121,7 +121,7 @@
     <string name="mgmt_account_are_you_sure">Är du säker?</string>
     <string name="attach_record_voice">Spela in röst</string>
     <string name="password">Lösenord</string>
-    <string name="invalid_jid">Detta är inte ett korrekt Jabber-ID</string>
+    <string name="invalid_jid">Detta är inte ett korrekt chat address</string>
     <string name="error_out_of_memory">Slut på minne. Bilden är för stor</string>
     <string name="add_phone_book_text">Vill du lägga till %s i din enhets kontakter?</string>
     <string name="server_info_show_more">Server-info</string>
@@ -333,7 +333,7 @@
     <string name="captcha_required">CAPTCHA krävs</string>
     <string name="captcha_hint">Skriv i texten från bilden ovan</string>
     <string name="certificate_chain_is_not_trusted">Certifikatskedjan är inte betrodd</string>
-    <string name="jid_does_not_match_certificate">Jabber-ID matchar inte certifikat</string>
+    <string name="jid_does_not_match_certificate">chat address matchar inte certifikat</string>
     <string name="action_renew_certificate">Förnya certifikat</string>
     <string name="error_fetching_omemo_key">Misslyckades med att hämta OMEMO-nyckel!</string>
     <string name="verified_omemo_key_with_certificate">Verifierade OMEMO-nyckel med certifikat!</string>

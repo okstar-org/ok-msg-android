@@ -365,7 +365,7 @@
     <string name="share_uri_with">Dela URI med...</string>
     <string name="your_full_jid_will_be">Ditt chat address blir: %s</string>
     <string name="create_account">Skapa konto</string>
-    <string name="create_monocles_account"><a href="https://ocean.monocles.de/apps/registration/">Get a monocles account!</a></string>
+    <string name="create_monocles_account">Get a monocles account!</string>
     <string name="pick_your_username">Välj användarnamn</string>
     <string name="status_message">Statusmeddelande</string>
     <string name="presence_chat">Tillgänglig</string>
