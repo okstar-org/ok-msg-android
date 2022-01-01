@@ -1129,7 +1129,7 @@
     <string name="memory_warning_force">De app gebruikt %1$s (%2$s) van de interne opslag.\n\nSchakel het automatisch verwijderen van bijlagen in of verwijder de opgeslagen media handmatig. Er is nog maar weinig ruimte beschikbaar!</string>
     <string name="open_settings">Instellingen openen</string>
     <string name="oldAndroidVersion">Oude Android-versie</string>
-    <string name="oldAndroidVersionMessage">Je gebruikt een oude Android-versie die niet langer wordt ondersteund in toekomstige updates. Vanaf monocles chat versie 3.1.0 worden alleen toestellen met Android 5 of hoger ondersteund. Update de firmware van je toestel.</string>
+    <string name="oldAndroidVersionMessage">Je gebruikt een oude Android-versie die niet langer wordt ondersteund in toekomstige updates. Vanaf monocles chat versie 1.0 worden alleen toestellen met Android 5 of hoger ondersteund. Update de firmware van je toestel.</string>
     <string name="save_x_file">%s opslaan</string>
     <string name="file_copied_to">Bestand gekopieerd naar %s</string>
     <string name="use_individual_notifications">Individuele meldingsinstellingen gebruiken</string>

@@ -1121,7 +1121,7 @@
     <string name="memory_warning_force">O seu mensaxeiro está a utilizar %1$s (%2$s) da memoria interna.\n\nDebería activar o borrado automático dos arquivos adxuntos ou borrar manualmente os medios almacenados. ¡O seu dispositivo quedará sen memoria!</string>
     <string name="open_settings">Abrir axustes</string>
     <string name="oldAndroidVersion">Versión antiga de Android</string>
-    <string name="oldAndroidVersionMessage">Está a utilizar unha versión antiga de Android que xa non será soportada en futuras actualizacións. A partir da versión 3.1.0 de monocles chat só admítense dispositivos con Android 5 ou superior. Por favor, actualice o firmware do teu dispositivo.</string>
+    <string name="oldAndroidVersionMessage">Está a utilizar unha versión antiga de Android que xa non será soportada en futuras actualizacións. A partir da versión 1.0 de monocles chat só admítense dispositivos con Android 5 ou superior. Por favor, actualice o firmware do teu dispositivo.</string>
     <string name="save_x_file">Gardar %s</string>
     <string name="file_copied_to">Arquivo copiado en %s</string>
     <string name="use_individual_notifications">Utilizar notificacións individuais</string>

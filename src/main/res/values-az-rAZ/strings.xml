@@ -1123,7 +1123,7 @@
     <string name="memory_warning_force">Mesenceriniz %1$s (%2$s) daxili yaddaşdan istifadə edir.\n\nSiz avtomatik qoşmanın silinməsi ilə əlaqədar avtomatik mesaj silinməsini təmin etməli və ya saxlanan medianı əl ilə silməlisiniz!</string>
     <string name="open_settings">Ayarları açın</string>
     <string name="oldAndroidVersion">Köhnə Android versiyası</string>
-    <string name="oldAndroidVersionMessage">Gələcək yeniləmələrdə artıq dəstəklənməyəcək köhnə bir Android versiyasından istifadə edirsiniz. monocles chat versiyası 3.1.0-dan yalnız Android 5 və ya daha yüksək olan cihazlara dəstək verilir. Zəhmət olmasa cihazınızın proqram təminatını yeniləyin.</string>
+    <string name="oldAndroidVersionMessage">Gələcək yeniləmələrdə artıq dəstəklənməyəcək köhnə bir Android versiyasından istifadə edirsiniz. monocles chat versiyası 1.0-dan yalnız Android 5 və ya daha yüksək olan cihazlara dəstək verilir. Zəhmət olmasa cihazınızın proqram təminatını yeniləyin.</string>
     <string name="save_x_file">Saxla %s</string>
     <string name="file_copied_to">Faylı %s saxla</string>
     <string name="use_individual_notifications">Fərdi bildirişlərdən istifadə edin</string>

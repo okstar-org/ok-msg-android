@@ -1052,7 +1052,7 @@
     <string name="all_media_files">媒体文件</string>
     <string name="open_settings">打开设置</string>
     <string name="oldAndroidVersion">旧的 Android 版本</string>
-    <string name="oldAndroidVersionMessage">您使用的是旧的Android系统版本，在未来的更新中不再支持。monocles chat 3.1.0版本仅支持Android 5或更高版本的设备。请更新您设备的固件。</string>
+    <string name="oldAndroidVersionMessage">您使用的是旧的Android系统版本，在未来的更新中不再支持。monocles chat 1.0版本仅支持Android 5或更高版本的设备。请更新您设备的固件。</string>
     <string name="save_x_file">保存 %s</string>
     <string name="file_copied_to">文件粘贴到 %s</string>
     <string name="use_individual_notifications">使用单独的通知</string>

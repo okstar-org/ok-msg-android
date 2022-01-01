@@ -1096,7 +1096,7 @@
     <string name="memory_warning_force">メッセンジャーは内部メモリの%1$s（%2$s）を使用中です。\n\n添付の自動削除を有効化したり、保存したメディアを手動で削除するべきです。デバイスはメモリ不足になります！</string>
     <string name="open_settings">設定を開く</string>
     <string name="oldAndroidVersion">古いAndroidバージョン</string>
-    <string name="oldAndroidVersionMessage">今後のアップデートではサポートされない古いAndroidバージョンを使用しています。monocles chatバージョン3.1.0からは、Android 5以上の端末のみがサポートされます。お使いの端末のファームウェアをアップデートしてください。</string>
+    <string name="oldAndroidVersionMessage">今後のアップデートではサポートされない古いAndroidバージョンを使用しています。monocles chatバージョン1.0からは、Android 5以上の端末のみがサポートされます。お使いの端末のファームウェアをアップデートしてください。</string>
     <string name="save_x_file">%s を保存</string>
     <string name="file_copied_to">ファイルを %s にコピーしました</string>
     <string name="use_individual_notifications">個別通知を使用</string>
