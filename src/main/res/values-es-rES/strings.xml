@@ -160,7 +160,7 @@
     <string name="mgmt_account_are_you_sure">¿Estás seguro?</string>
     <string name="mgmt_account_delete_confirm_message">Si eliminas tu cuenta, tu historial local de conversación será completamente eliminado.\n\nSi eliminas tu cuenta del servir, será eliminada del servidor también, no podrás entrar nunca más hasta que no registres una nueva cuenta.</string>
     <string name="attach_record_voice">Grabar audio</string>
-    <string name="account_settings_jabber_id">Identificador Jabber</string>
+    <string name="account_settings_jabber_id">Identificador chat</string>
     <string name="account_settings_example_jabber_id">usuario@monocles.de</string>
     <string name="password">Contraseña</string>
     <string name="invalid_jid">El identificador no es un identificador Jabber válido</string>
@@ -950,7 +950,7 @@
     <string name="intro_account">Tu cuenta</string>
     <string name="intro_desc_account">Si ya tienes una cuenta, puedes simplemente entrar con tu chat address y contraseña</string>
     <string name="intro_start_chatting">Iniciar conversación</string>
-    <string name="intro_desc_start_chatting">Si ya has dado permisos para los contactos, los contactos Jabber existentes se mostrarán automáticamente en tu libreta de direcciones. De otro modo, simplemente, añade chat addresses/string>
+    <string name="intro_desc_start_chatting">Si ya has dado permisos para los contactos, los contactos Jabber existentes se mostrarán automáticamente en tu libreta de direcciones. De otro modo, simplemente, añade chat addresses</string>
     <string name="intro_desc_open_chat">Ahora ya puedes empezar a chatear, compartir ubicaciones, archivos, videos e imágenes, o enviar mensajes de voz.</string>
     <string name="intro_chat_details">Detalles del chat</string>
     <string name="intro_desc_chat_details">¿Quieres abrir los detalles del chat? Pulsa el nombre del chat en la barra superior de menú.</string>
