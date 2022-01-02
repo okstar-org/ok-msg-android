@@ -493,7 +493,7 @@
     <string name="share_uri_with">与…共享URI</string>
     <string name="mgmt_account_reconnect">重新连接</string>
     <string name="welcome_text">…是一个免费且安全的XMPP/Jabber客户端。</string>
-    <string name="magic_create_text">You can use monocles chat with every modern XMPP account or get a affordable and secure monocles account, hosted on the monocles server station and powered with regenerative energies!\n\n This includes:\n● two month encrypted temporary chat storage\n● e-mail with 1 GB end-to-end encrypted storage\n\n optionally: \n● 4 GB cloud storage (nextcloud)\n● calendar and contact sync\n● a secure conferencing tool \n● and <a href="https://monocles.de/more/">more</a></string>
+    <string name="magic_create_text">You can use monocles chat with every modern XMPP account or get a affordable and secure monocles account, hosted on the monocles server station and powered with regenerative energies!\n\n This includes:\n● two month encrypted temporary chat storage\n● e-mail with 1 GB end-to-end encrypted storage\n\n optionally: \n● 4 GB cloud storage (nextcloud)\n● calendar and contact sync\n● a secure conferencing tool \n● and more on https://monocles.de/more/</string>
     <string name="your_full_jid_will_be">您的Jabber用户名为：%s</string>
     <string name="create_account">创建新帐号</string>
     <string name="welcome_existing_account">我已有账号</string>
