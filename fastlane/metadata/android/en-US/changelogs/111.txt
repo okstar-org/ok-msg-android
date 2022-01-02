@@ -1,0 +1,9 @@
+* starting to integrate OTR encryption
+* updated Webrtc
+* improved translations
+* option to use hidden storage for files
+* improvement of text correction and deletion
+* improvement of A/V calls and connection
+* new text formatting function
+* changed registration process
+* and many more..

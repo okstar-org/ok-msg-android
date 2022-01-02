@@ -437,10 +437,7 @@ public abstract class XmppActivity extends ActionBarActivity {
             }
             conversation.setNextCounterpart(jid);
             listener.onPresenceSelected();
-        } else if (!contact.showInRoster()) {
-            showAddToRosterDialog(conversation);
-        }
-        if (contact.showInRoster() || contact.isSelf()) {
+        } else if (contact.showInRoster() || contact.isSelf()) {
             final Presences presences = contact.getPresences();
             if (presences.size() == 0) {
                 if (contact.isSelf()) {
