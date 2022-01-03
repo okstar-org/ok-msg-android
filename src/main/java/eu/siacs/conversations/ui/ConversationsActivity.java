@@ -280,7 +280,7 @@ public class ConversationsActivity extends XmppActivity implements OnConversatio
                 return;
             }
             openBatteryOptimizationDialogIfNeeded();
-            new showMemoryWarning().execute();
+            new showMemoryWarning(this).execute();
             showOutdatedVersionWarning();
         }
     }
@@ -347,6 +347,7 @@ public class ConversationsActivity extends XmppActivity implements OnConversatio
 
     public class showMemoryWarning extends AsyncTask<Void, Void, Void> {
 
+        ConversationsActivity activity;
         long totalMemory = 0;
         long mediaUsage = 0;
         double relativeUsage = 0;
@@ -357,6 +358,10 @@ public class ConversationsActivity extends XmppActivity implements OnConversatio
         double normalWarningAbsolute = 10f * 1024 * 1024 * 1024; // 10 GiB
         // force warning: usage is more than 50%
         double forceWarningRelative = 0.5f; // 50%
+
+        public showMemoryWarning(ConversationsActivity conversationsActivity) {
+            activity = conversationsActivity;
+        }
 
         @Override
         protected void onPreExecute() {
@@ -396,11 +401,11 @@ public class ConversationsActivity extends XmppActivity implements OnConversatio
         protected void onPostExecute(Void result) {
             super.onPostExecute(result);
             Log.d(Config.LOGTAG, "Memory management: using " + UIHelper.filesizeToString(mediaUsage) + " from " + UIHelper.filesizeToString(totalMemory) + " (" + percentUsage + ")");
-            if (showWarning(force)) {
-                final AlertDialog.Builder builder = new AlertDialog.Builder(ConversationsActivity.this);
+            if (showWarning(force) && activity != null) {
+                final AlertDialog.Builder builder = new AlertDialog.Builder(activity);
                 builder.setPositiveButton(R.string.open_settings, (dialog, which) -> {
                     try {
-                        final Intent intent = new Intent(ConversationsActivity.this, SettingsActivity.class);
+                        final Intent intent = new Intent(activity, SettingsActivity.class);
                         intent.setAction(Intent.ACTION_VIEW);
                         intent.addCategory("android.intent.category.PREFERENCE");
                         intent.putExtra("page", "security");
