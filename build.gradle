@@ -17,7 +17,6 @@ allprojects {
         google()
         mavenCentral()
         maven { url "https://jitpack.io" }
-        maven { url "https://raw.github.com/abdularis/libwebrtc-android/repo/" }
     }
 }
 
@@ -25,7 +24,6 @@ repositories {
     google()
     mavenCentral()
     maven { url "https://jitpack.io" }
-    maven { url "https://raw.github.com/abdularis/libwebrtc-android/repo/" }
     jcenter()
 }
 
