@@ -692,6 +692,7 @@ public class MessageParser extends AbstractParser implements OnMessagePacketRece
                 final Message retractedMessage = conversation.findSentMessageWithUuidOrRemoteId(retractId, true, true);
                 if (retractedMessage != null) {
                     final boolean fingerprintsMatch = retractedMessage.getFingerprint() == null
+                            || message.getFingerprint() == null
                             || retractedMessage.getFingerprint().equals(message.getFingerprint());
                     final boolean trueCountersMatch = retractedMessage.getTrueCounterpart() != null
                             && message.getTrueCounterpart() != null
