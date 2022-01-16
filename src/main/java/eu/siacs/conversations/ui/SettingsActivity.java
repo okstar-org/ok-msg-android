@@ -23,7 +23,6 @@ import androidx.core.content.ContextCompat;
 
 import java.io.File;
 import java.io.FileInputStream;
-import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.security.KeyStoreException;
@@ -591,6 +590,7 @@ public class SettingsActivity extends XmppActivity implements
 
     @Override
     public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults);
         if (grantResults.length > 0) {
             if (grantResults[0] == PackageManager.PERMISSION_GRANTED) {
                 if (requestCode == REQUEST_CREATE_BACKUP) {
@@ -617,7 +617,7 @@ public class SettingsActivity extends XmppActivity implements
 
     @SuppressWarnings({ "unchecked" })
     private boolean importSettings() {
-        boolean success = false;
+        boolean success;
         ObjectInputStream input = null;
         try {
             final File file = new File(FileBackend.getBackupDirectory(null) + "settings.dat");
@@ -626,27 +626,24 @@ public class SettingsActivity extends XmppActivity implements
             prefEdit.clear();
             Map<String, ?> entries = (Map<String, ?>) input.readObject();
             for (Map.Entry<String, ?> entry : entries.entrySet()) {
-                Object v = entry.getValue();
+                Object value = entry.getValue();
                 String key = entry.getKey();
 
-                if (v instanceof Boolean)
-                    prefEdit.putBoolean(key, ((Boolean) v).booleanValue());
-                else if (v instanceof Float)
-                    prefEdit.putFloat(key, ((Float) v).floatValue());
-                else if (v instanceof Integer)
-                    prefEdit.putInt(key, ((Integer) v).intValue());
-                else if (v instanceof Long)
-                    prefEdit.putLong(key, ((Long) v).longValue());
-                else if (v instanceof String)
-                    prefEdit.putString(key, ((String) v));
+                if (value instanceof Boolean)
+                    prefEdit.putBoolean(key, ((Boolean) value).booleanValue());
+                else if (value instanceof Float)
+                    prefEdit.putFloat(key, ((Float) value).floatValue());
+                else if (value instanceof Integer)
+                    prefEdit.putInt(key, ((Integer) value).intValue());
+                else if (value instanceof Long)
+                    prefEdit.putLong(key, ((Long) value).longValue());
+                else if (value instanceof String)
+                    prefEdit.putString(key, ((String) value));
             }
             prefEdit.commit();
             success = true;
-        } catch (FileNotFoundException e) {
-            e.printStackTrace();
-        } catch (IOException e) {
-            e.printStackTrace();
-        } catch (ClassNotFoundException e) {
+        } catch (Exception e) {
+            success = false;
             e.printStackTrace();
         } finally {
             try {

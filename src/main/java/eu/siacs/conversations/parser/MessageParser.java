@@ -513,7 +513,7 @@ public class MessageParser extends AbstractParser implements OnMessagePacketRece
         if (timestamp == null) {
             timestamp = AbstractParser.parseTimestamp(original, AbstractParser.parseTimestamp(packet));
         }
-        final LocalizedContent body = packet.getBody();
+
         final Element mucUserElement = packet.findChild("x", Namespace.MUC_USER);
         final String pgpEncrypted = packet.findChildContent("x", "jabber:x:encrypted");
         final Element replaceElement = packet.findChild("replace", "urn:xmpp:message-correct:0");
@@ -523,6 +523,13 @@ public class MessageParser extends AbstractParser implements OnMessagePacketRece
 
         final Element applyToElement = packet.findChild("apply-to", "urn:xmpp:fasten:0");
         final String retractId = applyToElement != null && applyToElement.findChild("retract", "urn:xmpp:message-retract:0") != null ? applyToElement.getAttribute("id") : null;
+        if (packet.getBody()==null && retractId != null)
+        {   //It's RECOMMENDED that you include a Fallback Indication (XEP-0428) [6] tag with fallback text in the <body/>, so that older clients can still indicate the intent to retract and so that older servers will archive the retraction.
+            //Otherwhise the following code will not execute the retraction, because it searchs for body content!
+            packet.setBody("This person attempted to retract a previous message, but it's unsupported by your client.");
+        }
+
+        final LocalizedContent body = packet.getBody();
 
         final Element axolotlEncrypted = packet.findChildEnsureSingle(XmppAxolotlMessage.CONTAINERTAG, AxolotlService.PEP_PREFIX);
         int status;
@@ -801,6 +808,7 @@ public class MessageParser extends AbstractParser implements OnMessagePacketRece
                 final Message retractedMessage = conversation.findSentMessageWithUuidOrRemoteId(retractId, true, true);
                 if (retractedMessage != null) {
                     final boolean fingerprintsMatch = retractedMessage.getFingerprint() == null
+                            || message.getFingerprint() == null
                             || retractedMessage.getFingerprint().equals(message.getFingerprint());
                     final boolean trueCountersMatch = retractedMessage.getTrueCounterpart() != null
                             && message.getTrueCounterpart() != null

@@ -303,21 +303,26 @@ public class ExportBackupService extends Service {
         Log.d(Config.LOGTAG, "exporting " + size + " messages for account " + uuid);
         int i = 0;
         int p = 0;
-        while (cursor != null && cursor.moveToNext()) {
-            writer.write(cursorToString(Message.TABLENAME, cursor, PAGE_SIZE, false));
-            if (i + PAGE_SIZE > size) {
-                i = size;
-            } else {
-                i += PAGE_SIZE;
+        try {
+            while (cursor != null && cursor.moveToNext()) {
+                writer.write(cursorToString(Message.TABLENAME, cursor, PAGE_SIZE, false));
+                if (i + PAGE_SIZE > size) {
+                    i = size;
+                } else {
+                    i += PAGE_SIZE;
+                }
+                final int percentage = i * 100 / size;
+                if (p < percentage) {
+                    p = percentage;
+                    notificationManager.notify(EXPORT_BACKUP_NOTIFICATION_ID, progress.build(p));
+                }
             }
-            final int percentage = i * 100 / size;
-            if (p < percentage) {
-                p = percentage;
-                notificationManager.notify(EXPORT_BACKUP_NOTIFICATION_ID, progress.build(p));
+        } catch (Exception e) {
+            e.printStackTrace();
+        } finally {
+            if (cursor != null) {
+                cursor.close();
             }
-        }
-        if (cursor != null) {
-            cursor.close();
         }
     }
 
