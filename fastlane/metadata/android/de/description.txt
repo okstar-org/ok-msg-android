@@ -13,7 +13,7 @@ Damit lassen sich Nachrichten auf dem Sendegerät verschlüsseln und nur durch d
 für den Empfang bestimmte Empfangsgerät entschlüsseln.
 
 Features:
-* Ende-zu-Ende Verschlüsselung entweder mit <a href="http://conversations.im/omemo/">OMEMO</a> oder <a href="http://openpgp.org/about/">OpenPGP</a>
+* Ende-zu-Ende Verschlüsselung entweder mit <a href="https://de.wikipedia.org/wiki/Off-the-Record_Messaging">OTR</a>, <a href="http://conversations.im/omemo/">OMEMO</a> oder <a href="http://openpgp.org/about/">OpenPGP</a>
 * Austausch von Bildern sowie anderen Dateien
 * Standorte senden und empfangen
 * Sprachnachrichten senden und empfangen

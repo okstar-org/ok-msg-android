@@ -10,7 +10,7 @@ or OpenPGP can be used. This allows messages to be encrypted on the sending
 device and decrypted only by the receiving device intended for reception.
 
 Features:
-* End-to-end encryption with either <a href="http://conversations.im/omemo/">OMEMO</a> or <a href="http://openpgp.org/about/">OpenPGP</a>
+* End-to-end encryption with either <a href="https://en.wikipedia.org/wiki/Off-the-Record_Messaging">OTR</a>, <a href="http://conversations.im/omemo/">OMEMO</a> or <a href="http://openpgp.org/about/">OpenPGP</a>
 * Send and receive images as well as other files
 * Send and receive locations
 * Send and receive voice messages
