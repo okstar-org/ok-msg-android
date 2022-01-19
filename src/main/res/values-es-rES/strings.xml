@@ -473,7 +473,7 @@
     <string name="load_more_messages">Cargar más mensajes</string>
     <string name="no_storage_permission">monocles chatnecesita acceso al almacenamiento externo</string>
     <string name="sync_with_contacts">Sincronizar contactos</string>
-    <string name="sync_with_contacts_long">monocles chatquiere cruzar tu lista de contactos de XMPP con tus contactos del móvil para mostrar sus nombres completos y sus fotos de perfil.\n\nmonocles chat solo leerá tus contactos y los cruzará localmente sin subirlos a tu servidor.\n\nEl sistema te preguntará ahora para conceder los permisos de acceso a tus contactos del móvil.</string>
+    <string name="sync_with_contacts_long">monocles chat quiere cruzar tu lista de contactos de XMPP con tus contactos del móvil para mostrar sus nombres completos y sus fotos de perfil.\n\nmonocles chat solo leerá tus contactos y los cruzará localmente sin subirlos a tu servidor.\n\nEl sistema te preguntará ahora para conceder los permisos de acceso a tus contactos del móvil.</string>
     <string name="notify_on_all_messages">Notificar para todos los mensajes</string>
     <string name="notify_only_when_highlighted">Notificar solo cuando eres mencionado</string>
     <string name="notify_never">Notificaciones deshabilitadas</string>
@@ -747,7 +747,7 @@
     <string name="large">Grande</string>
     <string name="create_shortcut">Crear atajo</string>
     <string name="not_encrypted_for_this_device">El mensaje no fue cifrado para este dispositivo.</string>
-    <string name="no_microphone_permission">monocles chatnecesita acceder al micrófono</string>
+    <string name="no_microphone_permission">monocles chat necesita acceder al micrófono</string>
     <string name="search_messages">Buscar mensajes</string>
     <string name="gif">GIF</string>
     <string name="view_conversation">Ver conversación</string>
@@ -777,7 +777,7 @@
     <string name="conference_destroyed">Este grupo de chat ha sido destruido</string>
     <string name="no_application_found_to_view_contact">No se ha encontrado ninguna aplicación con la que ver este contacto</string>
     <string name="welcome_server_info">Recomendamos el uso de monocles chat como tu proveedor.</string>
-    <string name="no_location_permission">monocles chatnecesita acceso a los servicio de ubicación</string>
+    <string name="no_location_permission">monocles chat necesita acceso a los servicio de ubicación</string>
     <string name="pref_show_record_voice_btn_summary">Mostrar el botón de grabación de voz en conversaciones como acción rápida</string>
     <string name="pref_show_record_voice_btn">Mostrar botón de grabación de voz</string>
     <string name="pref_use_quick_share_attachment_choice_summary">Reemplazar el botón de enviar con selección de adjunto si no se está tecleando un mensaje. En otro caso mostrar acciones rápidas, que pueden ser configuradas en la siguiente opción.</string>
@@ -961,9 +961,9 @@
     <string name="pref_show_intro">Mostrar de nuevo la introducción</string>
     <string name="show_intro_again">Se volverán a mostrar las pantallas de introducción</string>
     <string name="show_intro_again_failed">El reinicio de pantallas de introducción ha fallado. Intentar otra vez…</string>
-    <string name="intro_desc_whats_xmpp">XMPP, también conocido como Jabber, es una red de comunicación descentralizada y funciona parecido al correo electrónico. Necesitar una dirección llamada chat address, una contraseña y un cliente. Más información más adelante.</string>
+    <string name="intro_desc_whats_xmpp">XMPP, también conocido como Jabber, es una red de comunicación descentralizada y funciona parecido al correo electrónico. Necesita una dirección llamada dirección de chat, una contraseña y un cliente. Más información más adelante.</string>
     <string name="intro_whats_xmpp">¿Qué es XMPP / Jabber / monocles chat?</string>
-    <string name="intro_desc_optional_permissions">El permiso para leer tu libreta de direcciones es necesario para leer los chat addresses (si hay alguno) desde tus contactos. Los contactos nunca se comparten, se suben o se copian.</string>
+    <string name="intro_desc_optional_permissions">El permiso para leer tu libreta de direcciones es necesario para leer las direcciones de chat (si hay alguna) desde tus contactos. Los contactos nunca se comparten, se suben o se copian.</string>
     <string name="intro_desc_account2">Puedes crear un nuevo perfil en monocles chat solo entrando un alias.</string>
     <string name="open_join_dialog">Unirse a un canal público…</string>
     <string name="intro_optional_permissions">Permisos opcionales</string>
@@ -972,7 +972,7 @@
     <string name="intro_desc_start_chatting2">También puede añadir, crear o unirte a chats multiusuario llamados rooms. Hay grupos de chat privados y grupos de chat públicos también llamados canales.</string>
     <string name="intro_desc_start_chatting3">¡Enhorabuena!\nVamos a divertirnos…</string>
     <string name="intro_privacy">Tu privacidad\nTu soberanía</string>
-    <string name="intro_desc_privacy">monocles chatno vende ni analiza tus datos y tú decides que permisos otorgas.</string>
+    <string name="intro_desc_privacy">monocles chat no vende ni analiza tus datos y tú decides que permisos otorgas.</string>
     <string name="no_results">No ha resultados</string>
     <string name="file_transmission_cancelled">transmisión de archivo cancelada</string>
     <string name="sharing_application_not_grant_permission">La aplicación de compartición no otorgó permiso de acceso a este archivo.</string>
