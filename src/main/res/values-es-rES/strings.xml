@@ -1167,4 +1167,14 @@
     <string name="italic">cursiva</string>
     <string name="monospace">monoespaciado</string>
     <string name="strikethrough">tachado</string>
+    <string name="grant">Otorgar</string>
+    <string name="no_manage_storage_permission">Desde Android 11, Las aplicaciones necesitan un permiso especial para acceder a todo tipo de ficheros en el almacenamiento externo. monocles chat te pedirá que otorgues este permiso para continuar.</string>
+    <string name="pref_showtextformatting_sum">Mostrar la barra de formateo de texto en el chat cuando se muestre el teclado</string>
+    <string name="pref_showtextformatting">Mostrar barra de herramientas de formateo de texto</string>
+    <string name="help_format_text">Puedes usar opciones simples de formateo para tu texto. Las claves para identificar el comienzo y el fin de un formates es exactamente al comienzo y al final de una palabra o grupo de palabras. Debe haber un espacio delante de la clave y un espacio después de la clave final, si no el formato no será reconocido.\n\nPuedes usar las herramientas directamente al escribir, presionando un herramienta se insertará la clave en la posición del cursor. O puedes seleccionar una palabra o grupo de palabras y presionar un botón de formateo.</string>
+    <string name="close">Cerrar</string>
+    <string name="close_format_text">¿Quieres cerrar la barra de herramientas de formateo de texto? Puedes habilitarla de nuevo en la configuración.</string>
+    <string name="port_example" translatable="false">5222</string>
+    <string name="pref_show_date_in_quotes_summary">Mostrar fecha y hora de tus mensajes citados.</string>
+    <string name="pref_show_date_in_quotes">Mostrar fecha y hora de citas</string>
 </resources>
