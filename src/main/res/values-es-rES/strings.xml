@@ -984,6 +984,22 @@
     <string name="gp_short">Corto</string>
     <string name="gp_medium">Medio</string>
     <string name="gp_long">Largo</string>
+    <string name="send_otr_message">Enviar mensaje cifrado con OTR</string>
+    <string name="unknown_otr_fingerprint">Huella OTR desconocida</string>
+    <string name="otr_fingerprint">Huella OTR</string>
+    <string name="otr_fingerprint_selected_message">Huella OTR del mensaje</string>
+    <string name="toast_message_otr_fingerprint">¡Huella OTR copiada al portapeles!</string>
+    <string name="verify_otr">Verificar OTR</string>
+    <string name="no_otr_session_found">¡No se ha encontrado sesión OTR válida!</string>
+    <string name="are_you_sure_verify_fingerprint">¿Estás seguro de que quieres verificar la huella OTR de tus contactos?</string>
+    <string name="copy_otr_clipboard_description">Copiar huella OTR al portapapeles</string>
+    <string name="otr_session_not_started">Enviar un mensaje para empezar un chat cifrado</string>
+    <string name="pref_enable_otr_summary">Habilitar cifrado OTR. OTR todavía es muy inestable, por favor, úsalo solo si sabes lo que haces.</string>
+    <string name="pref_enable_otr">Habilitar cifrado OTR (BETA)</string>
+    <string name="otr_warning">El soporte de cifrado OTR está en beta. Haz click par obtener más información. Se abrirá un enlace en el navegador.</string>
+    <string translatable="false" name="x_user_quote">%s:</string>
+    <string name="create_monocles_account">¡Consigue una cuenta monocles!</string>
+    <string name="copy_file_to">Copiar fichero a %s</string>
     <string name="pref_notification_grace_period">Periodo de gracia</string>
     <string name="pref_notification_grace_period_summary">Periodo de tiempo en el que se silencian las notificaciones después de detectar actividad en uno de tus otros dispositivos.</string>
     <string name="ask_for_writeaccess">Por favor, pide permiso de escritura</string>
