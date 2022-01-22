@@ -77,7 +77,6 @@
                         android:layout_marginTop="8dp"
                         android:layout_marginBottom="8dp"
                         android:textAppearance="@style/TextAppearance.Conversations.Body1" />
-
                 </LinearLayout>
             </androidx.cardview.widget.CardView>
         </ScrollView>
@@ -99,6 +98,13 @@
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
                 android:text="@string/cancel" />
+
+            <View
+                android:layout_width="1dp"
+                android:layout_height="match_parent"
+                android:layout_marginTop="7dp"
+                android:layout_marginBottom="7dp"
+                android:background="?attr/divider" />
 
             <View
                 android:layout_width="1dp"

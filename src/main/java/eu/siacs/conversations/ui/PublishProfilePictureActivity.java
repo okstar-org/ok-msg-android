@@ -7,6 +7,8 @@ import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.View.OnLongClickListener;
 import android.widget.Button;
@@ -82,6 +84,12 @@ public class PublishProfilePictureActivity extends XmppActivity implements XmppC
     }
 
     @Override
+    public boolean onCreateOptionsMenu(final Menu menu) {
+        getMenuInflater().inflate(R.menu.activity_publish_avatar, menu);
+        return super.onCreateOptionsMenu(menu);
+    }
+
+    @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_publish_profile_picture);
@@ -127,7 +135,6 @@ public class PublishProfilePictureActivity extends XmppActivity implements XmppC
         outState.putBoolean("handle_external_uri", handledExternalUri.get());
         super.onSaveInstanceState(outState);
     }
-
 
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
@@ -226,10 +233,9 @@ public class PublishProfilePictureActivity extends XmppActivity implements XmppC
             try {
                 bm = xmppConnectionService.getFileBackend().cropCenterSquare(uri, getPixel(Config.AVATAR_SIZE));
             } catch (Exception e) {
-                Log.d(Config.LOGTAG, "unable to load bitmap into image view", e);
+                Log.d(Config.LOGTAG, "unable to load avatar into image view", e);
             }
         }
-
         if (bm == null) {
             togglePublishButton(false, R.string.publish);
             this.hintOrWarning.setVisibility(View.VISIBLE);
@@ -275,6 +281,18 @@ public class PublishProfilePictureActivity extends XmppActivity implements XmppC
     @Override
     public void onAccountUpdate() {
         refreshUi();
+    }
+
+    public boolean onOptionsItemSelected(final MenuItem item) {
+        switch (item.getItemId()) {
+            case R.id.action_delete_avatar:
+                if (account != null) {
+                    xmppConnectionService.deleteAvatar(account);
+                    finish();
+                }
+                break;
+        }
+        return super.onOptionsItemSelected(item);
     }
 
 }
