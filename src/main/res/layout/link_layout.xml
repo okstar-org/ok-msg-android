@@ -8,8 +8,7 @@
     android:layout_marginTop="5dp"
     android:layout_marginRight="5dp"
     android:layout_marginBottom="5dp"
-    android:gravity="center">
-
+    android:gravity="center_vertical">
     <View
         android:id="@+id/quote_message"
         android:layout_width="2dp"
