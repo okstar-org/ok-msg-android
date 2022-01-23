@@ -106,6 +106,12 @@
                 android:layout_marginTop="7dp"
                 android:layout_marginBottom="7dp"
                 android:background="?attr/divider" />
+            <View
+                android:layout_width="1dp"
+                android:layout_height="match_parent"
+                android:layout_marginTop="7dp"
+                android:layout_marginBottom="7dp"
+                android:background="?attr/divider" />
 
             <Button
                 android:id="@+id/publish_button"

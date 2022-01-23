@@ -4077,6 +4077,31 @@ public class XmppConnectionService extends Service {
         });
     }
 
+    public void deleteAvatar(Account account) {
+        Log.d(Config.LOGTAG, account.getJid().asBareJid() + ": deleting avatar");
+        IqPacket packet = this.mIqGenerator.deleteNode("urn:xmpp:avatar:data");
+        this.sendIqPacket(account, packet, new OnIqPacketReceived() {
+
+            @Override
+            public void onIqPacketReceived(Account account, IqPacket result) {
+                if (result.getType() == IqPacket.TYPE.RESULT) {
+                    Log.d(Config.LOGTAG, account.getJid().asBareJid() + ": avatar deletion succeed");
+                    if (account.getAvatar() != null) {
+                        if (getFileBackend().deleteAvatar(getFileBackend().getAvatarFile(account.getAvatar()))) {
+                            mAvatarService.clear(account);
+                            Log.d(Config.LOGTAG, account.getJid().asBareJid() + ": local avatar cache deletion succeed");
+                        }
+                    }
+                    //todo callback
+                } else {
+                    Element error = result.findChild("error");
+                    Log.d(Config.LOGTAG, account.getJid().asBareJid() + ": avatar deletion failed " + (error != null ? error.toString() : ""));
+                    // todo callback
+                }
+            }
+        });
+    }
+
     public void publishAvatarMetadata(Account account, final Avatar avatar, final Bundle options, final boolean retry, final OnAvatarPublication callback) {
         final IqPacket packet = XmppConnectionService.this.mIqGenerator.publishAvatarMetadata(avatar, options);
         sendIqPacket(account, packet, new OnIqPacketReceived() {

@@ -1311,6 +1311,12 @@ public class FileBackend {
         final File file = getAvatarFile(avatar.getFilename());
         return file.exists();
     }
+    public boolean deleteAvatar(final File avatar) {
+        if (avatar.exists()) {
+            return avatar.delete();
+        }
+        return false;
+    }
 
     public boolean save(final Avatar avatar) {
         File file;
@@ -1389,7 +1395,7 @@ public class FileBackend {
         return new File(mXmppConnectionService.getFilesDir(), "/avatars/");
     }
 
-    private File getAvatarFile(String avatar) {
+    public File getAvatarFile(String avatar) {
         return new File(mXmppConnectionService.getCacheDir(), "/avatars/" + avatar);
     }
 

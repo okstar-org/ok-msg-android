@@ -1195,4 +1195,5 @@
     <string name="port_example" translatable="false">5222</string>
     <string name="pref_show_date_in_quotes_summary">Show date and time of your quoted messages.</string>
     <string name="pref_show_date_in_quotes">Show date and time of quotes</string>
+    <string name="delete_avatar">Delete own avatar</string>
 </resources>
