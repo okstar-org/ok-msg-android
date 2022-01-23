@@ -19,6 +19,7 @@ public class EnterNameActivity extends XmppActivity implements XmppConnectionSer
 
     private ActivityEnterNameBinding binding;
     private Account account;
+    private boolean mExisting = false;
     private AtomicBoolean setNick = new AtomicBoolean(false);
 
     @Override
@@ -27,6 +28,7 @@ public class EnterNameActivity extends XmppActivity implements XmppConnectionSer
         this.binding = DataBindingUtil.setContentView(this, R.layout.activity_enter_name);
         setSupportActionBar((Toolbar) this.binding.toolbar);
         this.binding.next.setOnClickListener(this::next);
+        this.binding.skip.setOnClickListener(this::skip);
         updateNextButton();
         this.setNick.set(savedInstanceState != null && savedInstanceState.getBoolean("set_nick", false));
     }
@@ -38,6 +40,18 @@ public class EnterNameActivity extends XmppActivity implements XmppConnectionSer
         } else if (account != null && (account.getStatus() == Account.State.ONLINE)) {
             this.binding.next.setEnabled(true);
             this.binding.next.setText(R.string.next);
+        }
+    }
+    @Override
+    protected void onStart() {
+        super.onStart();
+        final Intent intent = getIntent();
+        final int theme = findTheme();
+        if (this.mTheme != theme) {
+            recreate();
+        } else if (intent != null) {
+            boolean existing = intent.getBooleanExtra("existing", false);
+            this.mExisting = existing;
         }
     }
 
@@ -59,6 +73,23 @@ public class EnterNameActivity extends XmppActivity implements XmppConnectionSer
                 startActivity(intent);
                 overridePendingTransition(R.animator.fade_in, R.animator.fade_out);
             }
+        }
+        finish();
+    }
+    private void skip(View view) {
+        if (account != null) {
+            String name = this.binding.name.getText().toString().trim();
+            account.setDisplayName(name);
+            xmppConnectionService.publishDisplayName(account);
+            final Intent intent = new Intent(getApplicationContext(), StartConversationActivity.class);
+            if (xmppConnectionService != null && xmppConnectionService.getAccounts().size() == 1) {
+                intent.putExtra("init", true);
+            }
+            StartConversationActivity.addInviteUri(intent, getIntent());
+            intent.putExtra(EXTRA_ACCOUNT, account.getJid().asBareJid().toEscapedString());
+            startActivity(intent);
+            overridePendingTransition(R.animator.fade_in, R.animator.fade_out);
+            finish();
         }
         finish();
     }

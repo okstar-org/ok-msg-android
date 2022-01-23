@@ -330,6 +330,7 @@ public class EditAccountActivity extends OmemoActivity implements OnAccountUpdat
         if (redirectInProgress.compareAndSet(false, true)) {
             Intent intent = new Intent(this, EnterNameActivity.class);
             intent.putExtra(EXTRA_ACCOUNT, mAccount.getJid().asBareJid().toString());
+            intent.putExtra("existing", mExisting);
             startActivity(intent);
             overridePendingTransition(R.animator.fade_in, R.animator.fade_out);
             finish();
