@@ -111,7 +111,7 @@
     <string name="pref_sound">Tono</string>
     <string name="pref_sound_summary">Reproduce tono con la notificación</string>
     <string name="pref_send_crash">Enviar informes de errores</string>
-    <string name="pref_send_crash_summary">Al enviar rastros de pila, estás contribuyendo al desarrollo continuo de monocles chat</string>
+    <string name="pref_send_crash_summary">Al enviar trazas de la pila, estás contribuyendo al desarrollo continuo de monocles chat</string>
     <string name="pref_confirm_messages">Confirmar mensajes</string>
     <string name="pref_confirm_messages_summary">Permitir a tus contactos saber cuando has recibido y leído sus mensajes</string>
     <string name="pref_ui_options">Pantalla</string>
@@ -158,7 +158,7 @@
     <string name="unpublish_pgp_message">¿Estás seguro de que quieres eliminar tu clave pública OpenPGP de tu anuncio de presencia?\nTus contactos no podrán enviarte mensajes cifrados con OpenPGP.</string>
     <string name="openpgp_has_been_published">Clave pública OpenPGP ha sido publicada.</string>
     <string name="mgmt_account_are_you_sure">¿Estás seguro?</string>
-    <string name="mgmt_account_delete_confirm_message">Si eliminas tu cuenta, tu historial local de conversación será completamente eliminado.\n\nSi eliminas tu cuenta del servir, será eliminada del servidor también, no podrás entrar nunca más hasta que no registres una nueva cuenta.</string>
+    <string name="mgmt_account_delete_confirm_message">Si eliminas tu cuenta, tu historial local de conversación será completamente eliminado.\n\nSi eliminas tu cuenta en el servidor, será eliminada del servidor también, no podrás entrar nunca más hasta que no registres una nueva cuenta.</string>
     <string name="attach_record_voice">Grabar audio</string>
     <string name="account_settings_jabber_id">Identificador chat</string>
     <string name="account_settings_example_jabber_id">usuario@monocles.de</string>
@@ -471,7 +471,7 @@
         <item quantity="other">%d mensajes</item>
     </plurals>
     <string name="load_more_messages">Cargar más mensajes</string>
-    <string name="no_storage_permission">monocles chatnecesita acceso al almacenamiento externo</string>
+    <string name="no_storage_permission">monocles chat necesita acceso al almacenamiento externo</string>
     <string name="sync_with_contacts">Sincronizar contactos</string>
     <string name="sync_with_contacts_long">monocles chat quiere cruzar tu lista de contactos de XMPP con tus contactos del móvil para mostrar sus nombres completos y sus fotos de perfil.\n\nmonocles chat solo leerá tus contactos y los cruzará localmente sin subirlos a tu servidor.\n\nEl sistema te preguntará ahora para conceder los permisos de acceso a tus contactos del móvil.</string>
     <string name="notify_on_all_messages">Notificar para todos los mensajes</string>
@@ -503,13 +503,13 @@
     <string name="correct_message">Corregir mensaje</string>
     <string name="send_corrected_message">Enviar mensaje corregido</string>
     <string name="no_keys_just_confirm">Ya confías en este contacto. Seleccionando \'hecho\', estás confirmando que %s es parte de este grupo.</string>
-    <string name="contacts_have_no_pgp_keys">monocles chatno ha podido cifrar tus mensajes porque tus contactos no están anunciando sus claves públicas.\n\n</string>
+    <string name="contacts_have_no_pgp_keys">monocles chat no ha podido cifrar tus mensajes porque tus contactos no están anunciando sus claves públicas.\n\n</string>
     <string name="this_account_is_disabled">Has deshabilitado esta cuenta</string>
     <string name="no_application_to_share_uri">No se ha encontrado ninguna aplicación para compartir la URI</string>
     <string name="share_uri_with">Compartir URI con...</string>
     <string name="mgmt_account_reconnect">Reconectar</string>
     <string name="welcome_text">... es una aplicación XMPP/Jabber gratuita y segura.</string>
-    <string name="magic_create_text">You can use monocles chat with every modern XMPP account or get a affordable and secure monocles account, hosted on the monocles server station and powered with regenerative energies!\n\n This includes:\n● two month encrypted temporary chat storage\n● e-mail with 1 GB end-to-end encrypted storage\n\n optionally: \n● 4 GB cloud storage (nextcloud)\n● calendar and contact sync\n● a secure conferencing tool \n● and more on https://monocles.de/more/</string>
+    <string name="magic_create_text">¡Puedes usar monocles chat con cualquier cuenta de XMPP u obtener una cuenta segura y asequible en monocles, alojada en el servidor de monocles alimentado con energía renovable!\n\n Esto incluye:\n● dos meses de almacenamiento cifrado de chat\n● correo con 1 GB de almacenamiento cifrado extremo-a-extremo \n\n opcionalmente: \n● 4 GB de almacenamiento en nube (nextcloud)\n● sincronización de calendario y contactos\n● una herramienta segura de conferencia \n● y más en https://monocles.de/more/</string>
     <string name="your_full_jid_will_be">Tu identificador Jabber será: %s</string>
     <string name="create_account">Crear cuenta</string>
     <string name="welcome_existing_account">Tengo una cuenta</string>
@@ -542,7 +542,7 @@
     <string name="InviteText">Hola,\n\nel usuario %s te ha invitado a monocles chat. Haz click en el siguiente enlace…</string>
     <string name="pref_broadcast_last_activity">Informar de tu última interacción</string>
     <string name="pref_broadcast_last_activity_summary">Informa a todos sus contactos cuando uses monocles chat</string>
-    <string name="request_permissions_message">monocles chatte pedirá que concedas algunos permisos. Es importante que permitas que todos estos permisos para usar todas las características de este mensajero. Si deniegas cualquiera de estos permisos, la aplicación se cerrará sola.</string>
+    <string name="request_permissions_message">monocles chat te pedirá que concedas algunos permisos. Es importante que permitas que todos estos permisos para usar todas las características de este mensajero. Si deniegas cualquiera de estos permisos, la aplicación se cerrará sola.</string>
     <string name="request_permissions_message_again">Has denegado uno o todos los permisos requeridos para monocles chat. ¿Deseas ir a la configuración para permitir estos permisos? Si rechazas uno de estos permisos, la aplicación se cerrará.</string>
     <string name="unable_to_connect_to_keychain">No se ha podido conectar a OpenKeychain</string>
     <string name="this_device_is_no_longer_in_use">Este dispositivo ya no está en uso</string>
@@ -713,14 +713,14 @@
     <string name="qr_code_scanner_needs_access_to_camera">El escáner de código QR necesita acceso a la cámara</string>
     <string name="pref_scroll_to_bottom_summary">Desplazarse hasta abajo después de enviar un mensaje</string>
     <string name="pref_scroll_to_bottom">Desplazarse hasta abajo</string>
-    <string name="no_camera_permission">monocles chatnecesita acceso a la cámara</string>
+    <string name="no_camera_permission">monocles chat necesita acceso a la cámara</string>
     <string name="edit_status_message_title">Editar el mensaje de estado</string>
     <string name="pref_automatically_delete_messages_description">Eliminar automáticamente los mensajes del dispositivo que sean anteriores al tiempo seleccionado.</string>
     <string name="pref_automatically_delete_messages">Borrado automático de mensajes</string>
     <string name="pref_automatically_delete_attachments_description">Borrar automáticamente los mensajes del dispositivo que sean anteriores al tiempo seleccionado.</string>
     <string name="pref_automatically_delete_files">Borrado automático de adjunto</string>
     <string name="disable_encryption">Desactivar cifrado</string>
-    <string name="error_trustkey_general">monocles chatno puede enviar mensajes cifrados a %1$s. Esto puede ser debido a que tu contacto está usando un servidor o un cliente desactualizado que no puede manejar las claves OMEMO.</string>
+    <string name="error_trustkey_general">monocles chat no puede enviar mensajes cifrados a %1$s. Esto puede ser debido a que tu contacto está usando un servidor o un cliente desactualizado que no puede manejar las claves OMEMO.</string>
     <string name="error_trustkey_device_list">No se pudo obtener la lista de dispositivos</string>
     <string name="error_trustkey_bundle">No se han podido conseguir las claves del dispositivo</string>
     <string name="error_trustkey_hint_mutual">Consejo: En algunas ocasiones esto se puede arreglar al agregarse cada uno a su lista de contactos.</string>
