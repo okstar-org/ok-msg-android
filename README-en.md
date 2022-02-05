@@ -14,7 +14,7 @@ Your monocles Team
 
 # <img src="https://codeberg.org/Arne/monocles_chat/raw/branch/master/src/main/ic_launcher-playstore.png" width="30"> monocles chat
 
-🇩🇪… [Deutsche Version der Readme hier verfügbar.](README.md)
+🇩🇪… [Deutsche Version der Readme hier verfügbar.](README.md) /  [Francais ici](README-fr.md)
 
 monocles chat is a fork of blabber.im and [Conversations](https://github.com/siacs/Conversations).
 The changes aim to improve usability and ease transition from pre-installed and other widespread chats. Here are some screenshots:
