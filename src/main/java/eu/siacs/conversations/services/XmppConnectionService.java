@@ -4079,7 +4079,7 @@ public class XmppConnectionService extends Service {
 
     public void deleteAvatar(Account account) {
         Log.d(Config.LOGTAG, account.getJid().asBareJid() + ": deleting avatar");
-        IqPacket packet = this.mIqGenerator.deleteNode("urn:xmpp:avatar:data");
+        IqPacket packet = this.mIqGenerator.deleteAvatar();
         this.sendIqPacket(account, packet, new OnIqPacketReceived() {
 
             @Override
@@ -4088,7 +4088,9 @@ public class XmppConnectionService extends Service {
                     Log.d(Config.LOGTAG, account.getJid().asBareJid() + ": avatar deletion succeed");
                     if (account.getAvatar() != null) {
                         if (getFileBackend().deleteAvatar(getFileBackend().getAvatarFile(account.getAvatar()))) {
-                            mAvatarService.clear(account);
+                            getAvatarService().clear(account);
+                            databaseBackend.updateAccount(account);
+                            notifyAccountAvatarHasChanged(account);
                             Log.d(Config.LOGTAG, account.getJid().asBareJid() + ": local avatar cache deletion succeed");
                         }
                     }

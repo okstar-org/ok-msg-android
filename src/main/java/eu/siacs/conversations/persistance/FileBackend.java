@@ -1311,6 +1311,16 @@ public class FileBackend {
         final File file = getAvatarFile(avatar.getFilename());
         return file.exists();
     }
+    public boolean deleteAvatar(final String avatarFilename) {
+        final File file = getAvatarFile(avatarFilename);
+        return deleteAvatar(file);
+    }
+
+    public boolean deleteAvatar(final Avatar avatar) {
+        final File file = getAvatarFile(avatar.getFilename());
+        return deleteAvatar(file);
+    }
+
     public boolean deleteAvatar(final File avatar) {
         if (avatar.exists()) {
             return avatar.delete();
