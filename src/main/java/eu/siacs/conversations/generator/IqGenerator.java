@@ -181,6 +181,12 @@ public class IqGenerator extends AbstractGenerator {
         return publish("urn:xmpp:avatar:metadata", item, options);
     }
 
+    public IqPacket deleteAvatar() {
+        final Element item = new Element("item");
+        item.addChild("metadata", "urn:xmpp:avatar:metadata");
+        return publish("urn:xmpp:avatar:metadata", item);
+    }
+
     public IqPacket retrievePepAvatar(final Avatar avatar) {
         final Element item = new Element("item");
         item.setAttribute("id", avatar.sha1sum);
