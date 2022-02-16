@@ -108,6 +108,11 @@
             android:summary="@string/pref_start_search_summary"
             android:title="@string/pref_start_search" />
         <CheckBoxPreference
+            android:defaultValue="@bool/allowmergemessages"
+            android:key="allowmergemessages"
+            android:summary="@string/pref_allowmergemessages_sum"
+            android:title="@string/pref_allowmergemessages" />
+        <CheckBoxPreference
             android:defaultValue="@bool/showtextformatting"
             android:key="showtextformatting"
             android:summary="@string/pref_showtextformatting_sum"
@@ -337,6 +342,11 @@
             android:summary="@string/pref_allow_message_correction_summary"
             android:title="@string/pref_allow_message_correction" />
         <CheckBoxPreference
+            android:defaultValue="@bool/allow_message_retraction"
+            android:key="allow_message_retraction"
+            android:summary="@string/pref_allow_message_retraction_summary"
+            android:title="@string/pref_allow_message_retraction" />
+        <CheckBoxPreference
             android:defaultValue="@bool/indicate_received"
             android:key="indicate_received"
             android:summary="@string/pref_use_indicate_received_summary"
@@ -400,6 +410,11 @@
             android:key="crashreport"
             android:summary="@string/pref_send_crash_summary"
             android:title="@string/pref_send_crash" />
+        <CheckBoxPreference
+            android:defaultValue="@bool/use_inner_storage"
+            android:key="use_inner_storage"
+            android:summary="@string/pref_use_inner_storage_summary"
+            android:title="@string/pref_use_inner_storage" />
         <CheckBoxPreference
             android:defaultValue="@bool/use_invidious"
             android:disableDependentsState="false"
