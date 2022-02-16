@@ -38,8 +38,8 @@ Am einfachsten ist es, wenn du unserer Support-Gruppe beitrittst, dort werden de
 Support-Chat: [support@room.pix-art.de](https://blabber.im/j/support@room.pix-art.de?join)     
 [![Users in muc](https://inverse.chat/badge.svg?room=support@room.pix-art.de)](https://blabber.im/j/support@room.pix-art.de?join)
 
-Development-Chat:  [developement@room.pix-art.de](https://blabber.im/j/developement@room.pix-art.de?join)     
-[![Users in muc](https://inverse.chat/badge.svg?room=developement@room.pix-art.de)](https://blabber.im/j/developement@room.pix-art.de?join)
+Development-Chat:  [development@room.pix-art.de](https://blabber.im/j/development@room.pix-art.de?join)     
+[![Users in muc](https://inverse.chat/badge.svg?room=development@room.pix-art.de)](https://blabber.im/j/development@room.pix-art.de?join)
 
 
 Solltest du dort nicht weiter kommen kannst du [hier](https://codeberg.org/kriztan/blabber.im/issues) ein Issue erstellen, in welchem du dein Problem genau beschreibst und welche Schritte erforderlich sind, um zu dem Problem zu gelangen. 
