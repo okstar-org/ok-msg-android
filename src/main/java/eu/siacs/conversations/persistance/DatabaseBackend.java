@@ -101,7 +101,7 @@ public class DatabaseBackend extends SQLiteOpenHelper {
 
     private static final String CREATE_PREKEYS_STATEMENT = "CREATE TABLE "
             + SQLiteAxolotlStore.PREKEY_TABLENAME + "("
-            + SQLiteAxolotlStore.ACCOUNT + " TEXT, "
+            + SQLiteAxolotlStore.ACCOUNT + " TEXT,  "
             + SQLiteAxolotlStore.ID + " INTEGER, "
             + SQLiteAxolotlStore.KEY + " TEXT, FOREIGN KEY("
             + SQLiteAxolotlStore.ACCOUNT
