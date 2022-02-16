@@ -101,7 +101,7 @@ public class DatabaseBackend extends SQLiteOpenHelper {
 
     private static final String CREATE_PREKEYS_STATEMENT = "CREATE TABLE "
             + SQLiteAxolotlStore.PREKEY_TABLENAME + "("
-            + SQLiteAxolotlStore.ACCOUNT + " TEXT,  "
+            + SQLiteAxolotlStore.ACCOUNT + " TEXT, "
             + SQLiteAxolotlStore.ID + " INTEGER, "
             + SQLiteAxolotlStore.KEY + " TEXT, FOREIGN KEY("
             + SQLiteAxolotlStore.ACCOUNT
@@ -214,8 +214,15 @@ public class DatabaseBackend extends SQLiteOpenHelper {
 
     @Override
     public void onConfigure(SQLiteDatabase db) {
+        final long start = SystemClock.elapsedRealtime();
         db.execSQL("PRAGMA foreign_keys=ON");
+        Log.d(Config.LOGTAG, "configure the DB (foreign_keys) in " + (SystemClock.elapsedRealtime() - start) + "ms");
         db.rawQuery("PRAGMA secure_delete=ON", null).close();
+        Log.d(Config.LOGTAG, "configure the DB (secure_delete) in " + (SystemClock.elapsedRealtime() - start) + "ms");
+        db.execSQL("PRAGMA optimize");
+        Log.d(Config.LOGTAG, "configure the DB (optimize) in " + (SystemClock.elapsedRealtime() - start) + "ms");
+        db.execSQL("PRAGMA auto_vacuum = FULL");
+        Log.d(Config.LOGTAG, "configure the DB (vacuum) in " + (SystemClock.elapsedRealtime() - start) + "ms");
     }
 
     @Override
@@ -1809,7 +1816,7 @@ public class DatabaseBackend extends SQLiteOpenHelper {
 
     public List<ShortcutService.FrequentContact> getFrequentContacts(int days) {
         SQLiteDatabase db = this.getReadableDatabase();
-        final String SQL = "select " + Conversation.TABLENAME + "." + Conversation.ACCOUNT + "," + Conversation.TABLENAME + "." + Conversation.CONTACTJID + " from " + Conversation.TABLENAME + " join " + Message.TABLENAME + " on conversations.uuid=messages.conversationUuid where messages.status!=0 and carbon==0  and conversations.mode=0 and messages.timeSent>=? group by conversations.uuid order by count(body) desc limit 4;";
+        final String SQL = "select " + Conversation.TABLENAME + "." + Conversation.ACCOUNT + "," + Conversation.TABLENAME + "." + Conversation.CONTACTJID + " from " + Conversation.TABLENAME + " join " + Message.TABLENAME + " on conversations.uuid=messages.conversationUuid where messages.status>0 and carbon==0  and conversations.mode=0 and messages.timeSent>=? group by conversations.uuid order by count(body) desc limit 4;";
         String[] whereArgs = new String[]{String.valueOf(System.currentTimeMillis() - (Config.MILLISECONDS_IN_DAY * days))};
         Cursor cursor = db.rawQuery(SQL, whereArgs);
         ArrayList<ShortcutService.FrequentContact> contacts = new ArrayList<>();
