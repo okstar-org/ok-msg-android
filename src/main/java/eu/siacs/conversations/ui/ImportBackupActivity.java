@@ -30,6 +30,7 @@ import eu.siacs.conversations.databinding.ActivityImportBackupBinding;
 import eu.siacs.conversations.databinding.DialogEnterPasswordBinding;
 import eu.siacs.conversations.services.ImportBackupService;
 import eu.siacs.conversations.ui.adapter.BackupFileAdapter;
+import eu.siacs.conversations.utils.Compatibility;
 import eu.siacs.conversations.utils.ThemeHelper;
 
 public class ImportBackupActivity extends XmppActivity implements ServiceConnection, ImportBackupService.OnBackupFilesLoaded, BackupFileAdapter.OnItemClickedListener, ImportBackupService.OnBackupProcessed {
@@ -123,8 +124,13 @@ public class ImportBackupActivity extends XmppActivity implements ServiceConnect
                 this.binding.list.setVisibility(View.VISIBLE);
                 backupFileAdapter.setFiles(files);
             } else {
-                this.binding.list.setVisibility(View.GONE);
                 this.binding.hint.setVisibility(View.VISIBLE);
+                if (Compatibility.runsThirty()) {
+                    this.binding.hint.setText(getString(R.string.import_backup_description));
+                } else {
+                    this.binding.hint.setText(getString(R.string.no_backup_available));
+                }
+                this.binding.list.setVisibility(View.GONE);
             }
         });
     }
@@ -254,7 +260,12 @@ public class ImportBackupActivity extends XmppActivity implements ServiceConnect
     }
 
     private void openBackupFile() {
-        final Intent intent = new Intent(Intent.ACTION_GET_CONTENT);
+        Intent intent;
+        if (Compatibility.runsThirty()) {
+            intent = new Intent(Intent.ACTION_OPEN_DOCUMENT);
+        } else {
+            intent = new Intent(Intent.ACTION_GET_CONTENT);
+        }
         intent.setType("*/*");
         intent.putExtra(Intent.EXTRA_ALLOW_MULTIPLE, false);
         intent.addCategory(Intent.CATEGORY_OPENABLE);

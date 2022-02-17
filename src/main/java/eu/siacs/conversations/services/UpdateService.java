@@ -1,5 +1,7 @@
 package eu.siacs.conversations.services;
 
+import static eu.siacs.conversations.http.HttpConnectionManager.getProxy;
+
 import android.app.PendingIntent;
 import android.content.Context;
 import android.content.Intent;
@@ -28,16 +30,11 @@ import eu.siacs.conversations.http.NoSSLv3SocketFactory;
 import eu.siacs.conversations.ui.UpdaterActivity;
 import me.drakeet.support.toast.ToastCompat;
 
-import static eu.siacs.conversations.http.HttpConnectionManager.getProxy;
-
 public class UpdateService extends AsyncTask<String, Object, UpdateService.Wrapper> {
     private boolean mUseTor;
     private Context context;
     private String store;
     private NotificationService getNotificationService;
-
-    public UpdateService() {
-    }
 
     public UpdateService(Context context, String Store, XmppConnectionService mXmppConnectionService) {
         this.context = context;

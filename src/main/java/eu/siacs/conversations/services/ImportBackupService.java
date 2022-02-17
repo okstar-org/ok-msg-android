@@ -135,13 +135,16 @@ public class ImportBackupService extends Service {
                     Log.d(Config.LOGTAG, "directory not found: " + directory.getAbsolutePath());
                     continue;
                 }
+                Log.d(Config.LOGTAG, "directory found: " + directory.getAbsolutePath());
                 final File[] files = directory.listFiles();
                 if (files == null) {
                     onBackupFilesLoaded.onBackupFilesLoaded(backupFiles);
+                    Log.d(Config.LOGTAG, "Backup files: null");
                     return;
                 }
                 for (final File file : files) {
                     if (file.isFile() && file.getName().endsWith(".ceb")) {
+                        Log.d(Config.LOGTAG, "Backup files: " + directory.getAbsolutePath() + "/" + file);
                         try {
                             final BackupFile backupFile = BackupFile.read(file);
                             if (accounts.contains(backupFile.getHeader().getJid())) {

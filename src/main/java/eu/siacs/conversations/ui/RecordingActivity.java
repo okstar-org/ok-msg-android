@@ -180,7 +180,7 @@ public class RecordingActivity extends AppCompatActivity implements View.OnClick
 
     private static File generateOutputFilename(Context context) {
         SimpleDateFormat dateFormat = new SimpleDateFormat("yyyyMMdd_HHmmssSSS", Locale.US);
-        return new File(FileBackend.getConversationsDirectory("Audios/Sent")
+        return new File(FileBackend.getConversationsDirectory(context, "Audios/Sent")
                 + dateFormat.format(new Date())
                 + ".m4a");
     }

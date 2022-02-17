@@ -5,6 +5,7 @@ import static eu.siacs.conversations.persistance.FileBackend.FILES;
 import static eu.siacs.conversations.persistance.FileBackend.IMAGES;
 import static eu.siacs.conversations.persistance.FileBackend.VIDEOS;
 
+import android.content.Context;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.widget.ImageButton;
@@ -71,21 +72,21 @@ public class MemoryManagementActivity extends XmppActivity {
     @Override
     protected void onStart() {
         super.onStart();
-        new getMemoryUsages().execute();
+        new getMemoryUsages(this).execute();
         delete_media.setOnClickListener(view -> {
-            deleteMedia(new File(FileBackend.getAppMediaDirectory()));
+            deleteMedia(new File(FileBackend.getAppMediaDirectory(this)));
         });
         delete_pictures.setOnClickListener(view -> {
-            deleteMedia(new File(FileBackend.getConversationsDirectory(IMAGES)));
+            deleteMedia(new File(FileBackend.getConversationsDirectory(this, IMAGES)));
         });
         delete_videos.setOnClickListener(view -> {
-            deleteMedia(new File(FileBackend.getConversationsDirectory(VIDEOS)));
+            deleteMedia(new File(FileBackend.getConversationsDirectory(this, VIDEOS)));
         });
         delete_files.setOnClickListener(view -> {
-            deleteMedia(new File(FileBackend.getConversationsDirectory(FILES)));
+            deleteMedia(new File(FileBackend.getConversationsDirectory(this, FILES)));
         });
         delete_audios.setOnClickListener(view -> {
-            deleteMedia(new File(FileBackend.getConversationsDirectory(AUDIOS)));
+            deleteMedia(new File(FileBackend.getConversationsDirectory(this, AUDIOS)));
         });
     }
 
@@ -110,7 +111,7 @@ public class MemoryManagementActivity extends XmppActivity {
         builder.setPositiveButton(R.string.confirm, (dialog, which) -> {
             Thread t = new Thread(() -> {
                 xmppConnectionService.getFileBackend().deleteFilesInDir(dir);
-                runOnUiThread(() -> new getMemoryUsages().execute());
+                runOnUiThread(() -> new getMemoryUsages(this).execute());
             });
             t.start();
         });
@@ -118,6 +119,11 @@ public class MemoryManagementActivity extends XmppActivity {
     }
 
     static class getMemoryUsages extends AsyncTask<Void, Void, Void> {
+        private Context mContext;
+
+        public getMemoryUsages(Context context) {
+            mContext = context;
+        }
 
         @Override
         protected void onPreExecute() {
@@ -133,11 +139,11 @@ public class MemoryManagementActivity extends XmppActivity {
         @Override
         protected Void doInBackground(Void... params) {
             totalMemory = UIHelper.filesizeToString(FileBackend.getDiskSize());
-            mediaUsage = UIHelper.filesizeToString(FileBackend.getDirectorySize(new File(FileBackend.getAppMediaDirectory())));
-            picturesUsage = UIHelper.filesizeToString(FileBackend.getDirectorySize(new File(FileBackend.getConversationsDirectory(IMAGES))));
-            videosUsage = UIHelper.filesizeToString(FileBackend.getDirectorySize(new File(FileBackend.getConversationsDirectory(VIDEOS))));
-            filesUsage = UIHelper.filesizeToString(FileBackend.getDirectorySize(new File(FileBackend.getConversationsDirectory(FILES))));
-            audiosUsage = UIHelper.filesizeToString(FileBackend.getDirectorySize(new File(FileBackend.getConversationsDirectory(AUDIOS))));
+            mediaUsage = UIHelper.filesizeToString(FileBackend.getDirectorySize(new File(FileBackend.getAppMediaDirectory(mContext))));
+            picturesUsage = UIHelper.filesizeToString(FileBackend.getDirectorySize(new File(FileBackend.getConversationsDirectory(mContext, IMAGES))));
+            videosUsage = UIHelper.filesizeToString(FileBackend.getDirectorySize(new File(FileBackend.getConversationsDirectory(mContext, VIDEOS))));
+            filesUsage = UIHelper.filesizeToString(FileBackend.getDirectorySize(new File(FileBackend.getConversationsDirectory(mContext, FILES))));
+            audiosUsage = UIHelper.filesizeToString(FileBackend.getDirectorySize(new File(FileBackend.getConversationsDirectory(mContext, AUDIOS))));
             return null;
         }
 

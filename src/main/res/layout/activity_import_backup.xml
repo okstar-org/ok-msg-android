@@ -50,6 +50,7 @@
                 android:textAlignment="center"
                 android:textAppearance="@style/TextAppearance.Conversations.Body1"
                 android:visibility="gone" />
+
         </androidx.coordinatorlayout.widget.CoordinatorLayout>
 
     </LinearLayout>
