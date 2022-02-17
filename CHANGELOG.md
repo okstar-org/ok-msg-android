@@ -3,13 +3,13 @@
 #### Version 3.1.0
 * remove Android 4 support
 * update WebRTC
-* show channel avatars for channel discovery (blabber.im)
+* show channel avatars and number of users for channel discovery (blabber.im)
 * add ability to ex-/import app settings (blabber.im)
-* show number of users in channel discovery (blabber.im)
 * implement message retraction XEP-0424 (blabber.im)
 * implement message history for corrected messages (blabber.im)
 * add text formatting buttons in chat (blabber.im)
 * hide text formatting in chats (blabber.im)
+* add ability to delete own avatar (blabber.im)
 * show black bars when remote video does not match aspect ratio of screen
 * improve search performance
 * bug fixes
