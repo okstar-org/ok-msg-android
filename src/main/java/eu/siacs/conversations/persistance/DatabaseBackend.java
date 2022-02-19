@@ -216,13 +216,8 @@ public class DatabaseBackend extends SQLiteOpenHelper {
     public void onConfigure(SQLiteDatabase db) {
         final long start = SystemClock.elapsedRealtime();
         db.execSQL("PRAGMA foreign_keys=ON");
-        Log.d(Config.LOGTAG, "configure the DB (foreign_keys) in " + (SystemClock.elapsedRealtime() - start) + "ms");
         db.rawQuery("PRAGMA secure_delete=ON", null).close();
-        Log.d(Config.LOGTAG, "configure the DB (secure_delete) in " + (SystemClock.elapsedRealtime() - start) + "ms");
-        db.execSQL("PRAGMA optimize");
-        Log.d(Config.LOGTAG, "configure the DB (optimize) in " + (SystemClock.elapsedRealtime() - start) + "ms");
-        db.execSQL("PRAGMA auto_vacuum = FULL");
-        Log.d(Config.LOGTAG, "configure the DB (vacuum) in " + (SystemClock.elapsedRealtime() - start) + "ms");
+        Log.d(Config.LOGTAG, "configure the DB in " + (SystemClock.elapsedRealtime() - start) + "ms");
     }
 
     @Override
