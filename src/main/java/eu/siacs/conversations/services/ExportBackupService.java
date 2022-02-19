@@ -78,7 +78,6 @@ public class ExportBackupService extends Service {
 
     boolean ReadableLogsEnabled = false;
     private static final SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss");
-    private static final String DIRECTORY_STRING_FORMAT = FileBackend.getAppLogsDirectory() + "%s";
     private static final String MESSAGE_STRING_FORMAT = "(%s) %s: %s\n";
 
     private static final int PAGE_SIZE = 20;
@@ -492,6 +491,7 @@ public class ExportBackupService extends Service {
         Jid accountJid = resolveAccountUuid(conversation.getAccountUuid());
         Jid contactJid = conversation.getJid();
 
+        String DIRECTORY_STRING_FORMAT = FileBackend.getAppLogsDirectory() + "%s";
         File dir = new File(String.format(DIRECTORY_STRING_FORMAT, accountJid.asBareJid().toString()));
         dir.mkdirs();
 

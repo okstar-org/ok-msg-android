@@ -256,7 +256,7 @@ public class MediaAdapter extends RecyclerView.Adapter<MediaAdapter.MediaViewHol
     }
 
     private boolean isDeletableFile(File file) {
-        return (file == null || !file.toString().startsWith("/") || file.toString().contains(FileBackend.getConversationsDirectory("null")));
+        return (file == null || !file.toString().startsWith("/") || file.toString().contains(FileBackend.getConversationsDirectory(this.activity, "null")));
     }
 
     public void setAttachments(List<Attachment> attachments) {

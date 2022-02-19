@@ -5603,7 +5603,7 @@ public class XmppConnectionService extends Service {
         new Thread(() -> {
             long timestamp = getAutomaticAttachmentDeletionDate();
             if (timestamp > 0) {
-                getFileBackend().expireOldFiles(new File(FileBackend.getAppMediaDirectory()), timestamp);
+                getFileBackend().expireOldFiles(new File(FileBackend.getAppMediaDirectory(this)), timestamp);
                 updateConversationUi();
             }
         }).start();

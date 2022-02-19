@@ -1196,4 +1196,5 @@
     <string name="pref_show_date_in_quotes_summary">Show date and time of your quoted messages.</string>
     <string name="pref_show_date_in_quotes">Show date and time of quotes</string>
     <string name="delete_avatar">Delete own avatar</string>
+    <string name="import_backup_description">Since Android 11 we can not list files on the storage. You can try to navigate to a backup path, which usually is in Documents/monocles chat/Database.</string>
 </resources>

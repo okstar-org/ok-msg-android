@@ -83,6 +83,7 @@ import eu.siacs.conversations.services.AttachFileToConversationRunnable;
 import eu.siacs.conversations.services.XmppConnectionService;
 import eu.siacs.conversations.ui.SettingsActivity;
 import eu.siacs.conversations.ui.util.Attachment;
+import eu.siacs.conversations.utils.Compatibility;
 import eu.siacs.conversations.utils.CryptoHelper;
 import eu.siacs.conversations.utils.FileUtils;
 import eu.siacs.conversations.utils.FileWriterException;
@@ -108,10 +109,7 @@ public class FileBackend {
     public static final String SENT_IMAGES = "Images/Sent";
     public static final String VIDEOS = "Videos";
     public static final String SENT_VIDEOS = "Videos/Sent";
-    public static final String INNER_APP_DIR[] = new String[]{
-            Environment.getExternalStorageDirectory().getAbsolutePath() + File.separator ,
-            Environment.getDataDirectory() + File.separator + "data" + File.separator +  BuildConfig.APPLICATION_ID + File.separator + "files" + File.separator,
-    };
+
     public static final AtomicInteger STORAGE_INDEX = new AtomicInteger(0);
 
     private final XmppConnectionService mXmppConnectionService;
@@ -121,16 +119,16 @@ public class FileBackend {
     }
 
     public static void switchStorage(boolean checked) {
-        STORAGE_INDEX.set(checked?1:0);
+        STORAGE_INDEX.set(checked ? 1 : 0);
     }
 
-    private void createNoMedia() {
-        final File nomedia_files = new File(getConversationsDirectory(FILES) + ".nomedia");
-        final File nomedia_audios = new File(getConversationsDirectory(AUDIOS) + ".nomedia");
-        final File nomedia_videos_sent = new File(getConversationsDirectory(SENT_VIDEOS) + ".nomedia");
-        final File nomedia_files_sent = new File(getConversationsDirectory(SENT_FILES) + ".nomedia");
-        final File nomedia_audios_sent = new File(getConversationsDirectory(SENT_AUDIOS) + ".nomedia");
-        final File nomedia_images_sent = new File(getConversationsDirectory(SENT_IMAGES) + ".nomedia");
+    private void createNoMedia(Context context) {
+        final File nomedia_files = new File(getConversationsDirectory(context, FILES) + ".nomedia");
+        final File nomedia_audios = new File(getConversationsDirectory(context, AUDIOS) + ".nomedia");
+        final File nomedia_videos_sent = new File(getConversationsDirectory(context, SENT_VIDEOS) + ".nomedia");
+        final File nomedia_files_sent = new File(getConversationsDirectory(context, SENT_FILES) + ".nomedia");
+        final File nomedia_audios_sent = new File(getConversationsDirectory(context, SENT_AUDIOS) + ".nomedia");
+        final File nomedia_images_sent = new File(getConversationsDirectory(context, SENT_IMAGES) + ".nomedia");
         if (!nomedia_files.exists()) {
             try {
                 nomedia_files.createNewFile();
@@ -220,8 +218,8 @@ public class FileBackend {
     }
 
     public void updateMediaScanner(File file, final Runnable callback) {
-        if (file.getAbsolutePath().startsWith(getConversationsDirectory(IMAGES))
-                || file.getAbsolutePath().startsWith(getConversationsDirectory(VIDEOS))) {
+        if (file.getAbsolutePath().startsWith(getConversationsDirectory(mXmppConnectionService, IMAGES))
+                || file.getAbsolutePath().startsWith(getConversationsDirectory(mXmppConnectionService, VIDEOS))) {
             MediaScannerConnection.scanFile(mXmppConnectionService, new String[]{file.getAbsolutePath()}, null, new MediaScannerConnection.MediaScannerConnectionClient() {
                 @Override
                 public void onMediaScannerConnected() {
@@ -245,7 +243,7 @@ public class FileBackend {
             intent.setData(Uri.fromFile(file));
             mXmppConnectionService.sendBroadcast(intent);*/
         } else {
-            createNoMedia();
+            createNoMedia(mXmppConnectionService);
         }
         if (callback != null) {
             callback.run();
@@ -413,13 +411,13 @@ public class FileBackend {
             file = new DownloadableFile(path);
         } else {
             if (mime != null && mime.startsWith("image")) {
-                file = new DownloadableFile(getConversationsDirectory(IMAGES) + path);
+                file = new DownloadableFile(getConversationsDirectory(mXmppConnectionService, IMAGES) + path);
             } else if (mime != null && mime.startsWith("video")) {
-                file = new DownloadableFile(getConversationsDirectory(VIDEOS) + path);
+                file = new DownloadableFile(getConversationsDirectory(mXmppConnectionService, VIDEOS) + path);
             } else if (mime != null && mime.startsWith("audio")) {
-                file = new DownloadableFile(getConversationsDirectory(AUDIOS) + path);
+                file = new DownloadableFile(getConversationsDirectory(mXmppConnectionService, AUDIOS) + path);
             } else {
-                file = new DownloadableFile(getConversationsDirectory(FILES) + path);
+                file = new DownloadableFile(getConversationsDirectory(mXmppConnectionService, FILES) + path);
             }
         }
         return file;
@@ -440,7 +438,7 @@ public class FileBackend {
         }
         final DownloadableFile file = getFileForPath(path, message.getMimeType());
         if (encrypted) {
-            return new DownloadableFile(getConversationsDirectory(FILES) + file.getName() + ".pgp");
+            return new DownloadableFile(getConversationsDirectory(mXmppConnectionService, FILES) + file.getName() + ".pgp");
         } else {
             return file;
         }
@@ -543,20 +541,36 @@ public class FileBackend {
         return attachments;
     }
 
-    public static String getConversationsDirectory(final String type) {
+    public static String getConversationsDirectory(final Context context, final String type) {
         if (type.equalsIgnoreCase("null")) {
-            // return Environment.getExternalStorageDirectory().getAbsolutePath() + File.separator + APP_DIRECTORY + File.separator;
-            return INNER_APP_DIR[STORAGE_INDEX.get()]
-                    + APP_DIRECTORY + File.separator;
+            return getStorage(context, STORAGE_INDEX.get()) + APP_DIRECTORY + File.separator;
         } else {
-            return getAppMediaDirectory() + APP_DIRECTORY + " " + type + File.separator;
+            if (Compatibility.runsThirty()) {
+                return getAppMediaDirectory(context) + type + File.separator;
+            } else {
+                return getAppMediaDirectory(context) + APP_DIRECTORY + " " + type + File.separator;
+            }
         }
     }
 
-    public static String getAppMediaDirectory() {
-        //        return Environment.getExternalStorageDirectory().getAbsolutePath() + File.separator + APP_DIRECTORY + File.separator + "Media" + File.separator;
-        return INNER_APP_DIR[STORAGE_INDEX.get()]
-                + APP_DIRECTORY + File.separator + "Media" + File.separator;
+    public static String getAppMediaDirectory(final Context context) {
+        return getStorage(context, STORAGE_INDEX.get());
+    }
+
+    public static String getStorage(Context c, int index) {
+        if (index == 0) {
+            return getData(c);
+        } else {
+            return Environment.getDataDirectory() + File.separator + "data" + File.separator + BuildConfig.APPLICATION_ID + File.separator + "files" + File.separator;
+        }
+    };
+
+    private static String getData(Context context) {
+        if (Compatibility.runsThirty()) {
+            return context.getExternalFilesDir(null).getAbsolutePath() + File.separator;
+        } else {
+            return Environment.getExternalStorageDirectory().getAbsolutePath() + File.separator + APP_DIRECTORY + File.separator + "Media" + File.separator;
+        }
     }
 
     public static String getBackupDirectory(@Nullable String app) {
@@ -565,16 +579,28 @@ public class FileBackend {
         } else if (app != null && (app.equalsIgnoreCase("Monocles Messenger"))) {
             return Environment.getExternalStorageDirectory().getAbsolutePath() + File.separator + app + File.separator + "Database" + File.separator;
         } else {
-            return Environment.getExternalStorageDirectory().getAbsolutePath() + File.separator + APP_DIRECTORY + File.separator + "Database" + File.separator;
+            if (Compatibility.runsThirty()) {
+                return getGlobalDocumentsPath() + File.separator + "Database" + File.separator;
+            } else {
+                return Environment.getExternalStorageDirectory().getAbsolutePath() + File.separator + APP_DIRECTORY + File.separator + "Database" + File.separator;
+            }
         }
     }
 
     public static String getAppLogsDirectory() {
-        return Environment.getExternalStorageDirectory().getAbsolutePath() + File.separator + APP_DIRECTORY + File.separator + "Chats" + File.separator;
+        if (Compatibility.runsThirty()) {
+            return getGlobalDocumentsPath() + File.separator + "Chats" + File.separator;
+        } else {
+            return Environment.getExternalStorageDirectory().getAbsolutePath() + File.separator + APP_DIRECTORY + File.separator + "Chats" + File.separator;
+        }
     }
 
     public static String getAppUpdateDirectory() {
-        return Environment.getExternalStorageDirectory().getAbsolutePath() + File.separator + APP_DIRECTORY + File.separator + "Update" + File.separator;
+        if (Compatibility.runsThirty()) {
+            return getGlobalDownloadsPath() + File.separator + "Update" + File.separator;
+        } else {
+            return Environment.getExternalStorageDirectory().getAbsolutePath() + File.separator + APP_DIRECTORY + File.separator + "Update" + File.separator;
+        }
     }
 
     private Bitmap resize(final Bitmap originalBitmap, int size) throws IOException {
@@ -652,7 +678,7 @@ public class FileBackend {
             Log.d(Config.LOGTAG, "File path = null");
             return false;
         }
-        if (path.contains(getConversationsDirectory("null"))) {
+        if (path.contains(getConversationsDirectory(mXmppConnectionService, "null"))) {
             Log.d(Config.LOGTAG, "File " + path + " is in our directory");
             return true;
         }
@@ -759,7 +785,7 @@ public class FileBackend {
     private void copyImageToPrivateStorage(File file, Uri image, int sampleSize) throws FileCopyException, ImageCompressionException {
         final File parent = file.getParentFile();
         if (parent != null && parent.mkdirs()) {
-            Log.d(Config.LOGTAG,"created parent directory");
+            Log.d(Config.LOGTAG, "created parent directory");
         }
         InputStream is = null;
         OutputStream os = null;
@@ -1311,6 +1337,7 @@ public class FileBackend {
         final File file = getAvatarFile(avatar.getFilename());
         return file.exists();
     }
+
     public boolean deleteAvatar(final String avatarFilename) {
         final File file = getAvatarFile(avatarFilename);
         return deleteAvatar(file);
@@ -1397,7 +1424,7 @@ public class FileBackend {
             }
         }
         if (file.delete()) {
-            Log.d(Config.LOGTAG,"deleted "+file.getAbsolutePath());
+            Log.d(Config.LOGTAG, "deleted " + file.getAbsolutePath());
         }
     }
 
@@ -2050,6 +2077,10 @@ public class FileBackend {
 
     public static String getGlobalDocumentsPath() {
         return Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOCUMENTS) + "/monocles chat/";
+    }
+
+    public static String getGlobalDownloadsPath() {
+        return Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS) + "/monocles chat/";
     }
 
     public static String getGlobalAudiosPath() {
