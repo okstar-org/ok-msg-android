@@ -1198,4 +1198,6 @@
     <string name="delete_avatar">Delete own avatar</string>
     <string name="import_backup_description">Since Android 11 we can not list files on the storage. You can try to navigate to a backup path, which usually is in Documents/monocles chat/Database.</string>
     <string name="optimize_database">Optimizing database... Please wait...</string>
+    <string name="verifying_omemo_keys_trusted_source_account">You are about to verify the OMEMO keys of your own account. This is only secure if you followed this link from a trusted source where only you could have published this link.</string>
+    <string name="continue_btn">Continue</string>
 </resources>
