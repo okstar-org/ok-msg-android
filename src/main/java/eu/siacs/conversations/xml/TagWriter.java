@@ -51,37 +51,33 @@ public class TagWriter {
         this.outputStream = new OutputStreamWriter(out);
     }
 
-    public TagWriter beginDocument() throws IOException {
+    public void beginDocument() throws IOException {
         if (outputStream == null) {
             throw new IOException("output stream was null");
         }
         outputStream.write("<?xml version='1.0'?>");
         outputStream.flush();
-        return this;
     }
 
-    public synchronized  TagWriter writeTag(Tag tag) throws IOException {
+    public synchronized  void writeTag(Tag tag) throws IOException {
         if (outputStream == null) {
             throw new IOException("output stream was null");
         }
         outputStream.write(tag.toString());
         outputStream.flush();
-        return this;
     }
 
-    public synchronized TagWriter writeElement(Element element) throws IOException {
+    public synchronized void writeElement(Element element) throws IOException {
         if (outputStream == null) {
             throw new IOException("output stream was null");
         }
         outputStream.write(element.toString());
         outputStream.flush();
-        return this;
     }
 
-    public TagWriter writeStanzaAsync(AbstractStanza stanza) {
+    public void writeStanzaAsync(AbstractStanza stanza) {
         if (finished) {
             Log.d(Config.LOGTAG, "attempting to write stanza to finished TagWriter");
-            return this;
         } else {
             if (!asyncStanzaWriter.isAlive()) {
                 try {
@@ -91,7 +87,6 @@ public class TagWriter {
                 }
             }
             writeQueue.add(stanza);
-            return this;
         }
     }
 
