@@ -36,10 +36,15 @@ public class MemoryManagementPref extends Preference {
     }
 
     private void setSummary() {
-        new getMemoryUsages().execute();
+        new getMemoryUsages(this.getContext()).execute();
     }
 
     public class getMemoryUsages extends AsyncTask<Void, Void, Void> {
+        private Context mContext;
+
+        public getMemoryUsages(Context context) {
+            mContext = context;
+        }
 
         @Override
         protected void onPreExecute() {
@@ -50,7 +55,7 @@ public class MemoryManagementPref extends Preference {
         @Override
         protected Void doInBackground(Void... params) {
             totalMemory = UIHelper.filesizeToString(FileBackend.getDiskSize());
-            mediaUsage = UIHelper.filesizeToString(FileBackend.getDirectorySize(new File(FileBackend.getAppMediaDirectory())));
+            mediaUsage = UIHelper.filesizeToString(FileBackend.getDirectorySize(new File(FileBackend.getAppMediaDirectory(mContext))));
             return null;
         }
 

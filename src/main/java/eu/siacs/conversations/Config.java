@@ -212,7 +212,7 @@ public final class Config {
 
     public static class DOMAIN {
         public static final List<String> DOMAINS = Arrays.asList(
-                "cmonocles.de"
+                "monocles.de"
         );
 
         public static final List<String> BLACKLISTED_DOMAINS = Arrays.asList(

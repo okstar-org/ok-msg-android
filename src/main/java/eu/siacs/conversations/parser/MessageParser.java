@@ -320,6 +320,10 @@ public class MessageParser extends AbstractParser implements OnMessagePacketRece
                 } else if (mXmppConnectionService.isDataSaverDisabled()) {
                     mXmppConnectionService.fetchAvatar(account, avatar);
                 }
+            } else {
+                final Contact c = account.getRoster().getContact(from);
+                mXmppConnectionService.getAvatarService().clear(c);
+                mXmppConnectionService.getFileBackend().deleteAvatar(c.getAvatarFilename());
             }
         } else if (Namespace.NICK.equals(node)) {
             final Element i = items.findChild("item");
@@ -770,7 +774,6 @@ public class MessageParser extends AbstractParser implements OnMessagePacketRece
                             replacedMessage.setUuid(UUID.randomUUID().toString());
                             replacedMessage.setBody(message.getBody());
                             replacedMessage.setRemoteMsgId(remoteMsgId);
-                            replacedMessage.setTime(message.getTimeSent());
                             if (replacedMessage.getServerMsgId() == null || message.getServerMsgId() != null) {
                                 replacedMessage.setServerMsgId(message.getServerMsgId());
                             }

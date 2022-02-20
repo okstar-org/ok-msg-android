@@ -15,7 +15,7 @@ Euer monocles Team
 
 # <img src="https://codeberg.org/Arne/monocles_chat/raw/branch/master/src/main/ic_launcher-playstore.png" width="30"> monocles chat
 
-🇬🇧🇺🇸… [English Readme version available here](README-en.md)
+🇬🇧🇺🇸… [English Readme version available here](README-en.md) / [Francais ici](README-fr.md)
 
 monocles chat ist eine Kopie der Android Anwendung blabber.im und der offiziellen Android-App [Conversations](https://github.com/siacs/Conversations) mit einigen Änderungen, insbesondere zur Verbesserung der Benutzerfreundlichkeit, um den Umstieg von oftmals vorinstallierten Messengern zu erleichtern. Die folgenden Bilder geben erste Eindrücke der App:
 

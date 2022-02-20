@@ -107,6 +107,16 @@
             android:key="start_searching"
             android:summary="@string/pref_start_search_summary"
             android:title="@string/pref_start_search" />
+        <CheckBoxPreference
+            android:defaultValue="@bool/allowmergemessages"
+            android:key="allowmergemessages"
+            android:summary="@string/pref_allowmergemessages_sum"
+            android:title="@string/pref_allowmergemessages" />
+        <CheckBoxPreference
+            android:defaultValue="@bool/showtextformatting"
+            android:key="showtextformatting"
+            android:summary="@string/pref_showtextformatting_sum"
+            android:title="@string/pref_showtextformatting" />
         <Preference
             android:key="show_intro"
             android:summary="@string/pref_show_intro_summary"
@@ -234,6 +244,11 @@
             android:key="auto_accept_file_size_roaming"
             android:summary="@string/pref_accept_files_summary_mobileroaming"
             android:title="@string/pref_accept_files_mobileroaming" />
+        <CheckBoxPreference
+            android:defaultValue="@bool/easy_downloader"
+            android:key="easy_downloader"
+            android:summary="@string/pref_easy_downloader_summary"
+            android:title="@string/pref_easy_downloader" />
         <ListPreference
             android:defaultValue="@string/image_compression"
             android:entries="@array/image_compression_entries"
@@ -327,6 +342,11 @@
             android:summary="@string/pref_allow_message_correction_summary"
             android:title="@string/pref_allow_message_correction" />
         <CheckBoxPreference
+            android:defaultValue="@bool/allow_message_retraction"
+            android:key="allow_message_retraction"
+            android:summary="@string/pref_allow_message_retraction_summary"
+            android:title="@string/pref_allow_message_retraction" />
+        <CheckBoxPreference
             android:defaultValue="@bool/indicate_received"
             android:key="indicate_received"
             android:summary="@string/pref_use_indicate_received_summary"
@@ -336,11 +356,6 @@
             android:key="last_activity"
             android:summary="@string/pref_broadcast_last_activity_summary"
             android:title="@string/pref_broadcast_last_activity" />
-        <CheckBoxPreference
-            android:defaultValue="@bool/easy_downloader"
-            android:key="easy_downloader"
-            android:summary="@string/pref_easy_downloader_summary"
-            android:title="@string/pref_easy_downloader" />
         <CheckBoxPreference
             android:defaultValue="@bool/notifications_from_strangers"
             android:key="notifications_from_strangers"
@@ -395,6 +410,11 @@
             android:key="crashreport"
             android:summary="@string/pref_send_crash_summary"
             android:title="@string/pref_send_crash" />
+        <CheckBoxPreference
+            android:defaultValue="@bool/use_inner_storage"
+            android:key="use_inner_storage"
+            android:summary="@string/pref_use_inner_storage_summary"
+            android:title="@string/pref_use_inner_storage" />
         <CheckBoxPreference
             android:defaultValue="@bool/use_invidious"
             android:disableDependentsState="false"

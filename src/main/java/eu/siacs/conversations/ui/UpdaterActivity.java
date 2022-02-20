@@ -1,5 +1,11 @@
 package eu.siacs.conversations.ui;
 
+import static eu.siacs.conversations.Config.monocles;
+import static eu.siacs.conversations.http.HttpConnectionManager.getProxy;
+import static eu.siacs.conversations.services.XmppConnectionService.FDroid;
+import static eu.siacs.conversations.services.XmppConnectionService.PlayStore;
+
+
 import android.Manifest;
 import android.app.ProgressDialog;
 import android.content.Context;
@@ -41,11 +47,6 @@ import eu.siacs.conversations.services.XmppConnectionService;
 import eu.siacs.conversations.ui.util.CustomTab;
 import eu.siacs.conversations.utils.WakeLockHelper;
 import me.drakeet.support.toast.ToastCompat;
-
-import static eu.siacs.conversations.Config.monocles;
-import static eu.siacs.conversations.http.HttpConnectionManager.getProxy;
-import static eu.siacs.conversations.services.XmppConnectionService.FDroid;
-import static eu.siacs.conversations.services.XmppConnectionService.PlayStore;
 
 public class UpdaterActivity extends XmppActivity {
     static final private String FileName = "update.apk";
@@ -293,8 +294,6 @@ public class UpdaterActivity extends XmppActivity {
 
     private class DownloadTask extends AsyncTask<String, Integer, String> {
         XmppActivity activity;
-        File dir = new File(FileBackend.getAppUpdateDirectory());
-        File file = new File(dir, FileName);
         XmppConnectionService xmppConnectionService;
         private Context context;
         private PowerManager.WakeLock mWakeLock;
@@ -304,6 +303,9 @@ public class UpdaterActivity extends XmppActivity {
         DownloadTask(Context context) {
             this.context = context;
         }
+
+        File dir = new File(FileBackend.getAppUpdateDirectory());
+        File file = new File(dir, FileName);
 
         @Override
         protected void onPreExecute() {

@@ -214,8 +214,10 @@ public class DatabaseBackend extends SQLiteOpenHelper {
 
     @Override
     public void onConfigure(SQLiteDatabase db) {
+        final long start = SystemClock.elapsedRealtime();
         db.execSQL("PRAGMA foreign_keys=ON");
         db.rawQuery("PRAGMA secure_delete=ON", null).close();
+        Log.d(Config.LOGTAG, "configure the DB in " + (SystemClock.elapsedRealtime() - start) + "ms");
     }
 
     @Override
@@ -1809,7 +1811,7 @@ public class DatabaseBackend extends SQLiteOpenHelper {
 
     public List<ShortcutService.FrequentContact> getFrequentContacts(int days) {
         SQLiteDatabase db = this.getReadableDatabase();
-        final String SQL = "select " + Conversation.TABLENAME + "." + Conversation.ACCOUNT + "," + Conversation.TABLENAME + "." + Conversation.CONTACTJID + " from " + Conversation.TABLENAME + " join " + Message.TABLENAME + " on conversations.uuid=messages.conversationUuid where messages.status!=0 and carbon==0  and conversations.mode=0 and messages.timeSent>=? group by conversations.uuid order by count(body) desc limit 4;";
+        final String SQL = "select " + Conversation.TABLENAME + "." + Conversation.ACCOUNT + "," + Conversation.TABLENAME + "." + Conversation.CONTACTJID + " from " + Conversation.TABLENAME + " join " + Message.TABLENAME + " on conversations.uuid=messages.conversationUuid where messages.status>0 and carbon==0  and conversations.mode=0 and messages.timeSent>=? group by conversations.uuid order by count(body) desc limit 4;";
         String[] whereArgs = new String[]{String.valueOf(System.currentTimeMillis() - (Config.MILLISECONDS_IN_DAY * days))};
         Cursor cursor = db.rawQuery(SQL, whereArgs);
         ArrayList<ShortcutService.FrequentContact> contacts = new ArrayList<>();

@@ -490,6 +490,6 @@ public class MediaViewerActivity extends XmppActivity implements AudioManager.On
     }
 
     private boolean isDeletableFile(File file) {
-        return (file == null || !file.toString().startsWith("/") || file.toString().contains(FileBackend.getConversationsDirectory("null")));
+        return (file == null || !file.toString().startsWith("/") || file.toString().contains(FileBackend.getConversationsDirectory(this, "null")));
     }
 }
