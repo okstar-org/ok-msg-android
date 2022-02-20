@@ -1194,4 +1194,8 @@
     <string name="pref_show_date_in_quotes_summary">Mostrar fecha y hora de tus mensajes citados.</string>
     <string name="pref_show_date_in_quotes">Mostrar fecha y hora de citas</string>
     <string name="delete_avatar">Eliminar mi avatar</string>
+    <string name="import_backup_description">Desde Android 11 no podemos listar los ficheros en el almacenamiento. Puedes probar a navegar a la ruta de backup, que normalmente está en Documents/monocles chat/Database.</string>
+    <string name="optimize_database">Optimizando base de datos... Por favor espera...</string>
+    <string name="verifying_omemo_keys_trusted_source_account">Estás a punto de verificar las claves OMEMO de tu propia cuenta. Esto es únicamente seguro si has seguido este enlace desde un origen de confianza donde solo tú puedes haber este enlace.</string>
+    <string name="continue_btn">Continuar</string>
 </resources>
