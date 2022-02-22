@@ -161,7 +161,6 @@
     <string name="mgmt_account_delete_confirm_message">Si elimines el teu compte, el teu historial local de conversa serà completament eliminat.\n\nSi elimines el teu compte del servidor, serà eliminat del servidor tambè, no podràs entrar mai més fins que no registris un nou compte.</string>
     <string name="attach_record_voice">Gravar àudio</string>
     <string name="account_settings_jabber_id">Identificador Jabber</string>
-    <string name="account_settings_example_jabber_id">nom_d\'usuari@blabber.im</string>
     <string name="password">Contrasenya</string>
     <string name="invalid_jid">L\'identificador jabber- ID no és vàlid</string>
     <string name="error_out_of_memory">Sense memòria. La imatge és massa gran</string>
@@ -249,6 +248,8 @@
     <string name="pref_security_settings">Seguretat</string>
     <string name="pref_allow_message_correction">Correcció del missatge</string>
     <string name="pref_allow_message_correction_summary">Permetre als teus contactes editar missatges prèviament enviats</string>
+    <string name="pref_allow_message_retraction">Permetre la retirada de missatges</string>
+    <string name="pref_allow_message_retraction_summary">Permetre que els teus contactes es desdiguin retroactivament dels seus missatges</string>
     <string name="pref_expert_options">Opcions per a experts</string>
     <string name="title_activity_about">Sobre</string>
     <string name="pref_about_conversations_summary">Informació de compilació i llicència</string>
@@ -809,6 +810,7 @@
     <string name="already_drafting_message">Encara estàs redactant un missatge.</string>
     <string name="bad_key_for_encryption">Clau de xifrat incorrecta.</string>
     <string name="delete_message_dialog">Borrar missatge</string>
+    <string name="delete_message_dialog_msg">Estàs segur que vols esborrar aquest missatge?\n\n<b>Atenció:</b> No es garanteix que això elimini les còpies d\'aquest missatge que estan emmagatzemades en altres dispositius o servidors.</string>
     <string name="feature_not_implemented">Característíca no implementada</string>
     <string name="device_does_not_support_unknown_source_op">El teu dispositiu no suporta instal·lar aplicacions des de orígens desconeguts.</string>
     <string name="reject_request">Refusar petició</string>
@@ -933,9 +935,12 @@
     <string name="please_enter_password">Si us plau, introdueixi la contrasenya d\'aquest compte</string>
     <string name="unable_to_perform_this_action">No es pot realitzar aquesta acció</string>
     <string name="waiting_for_transfer">A l\'espera d\'un enviament</string>
+    <string name="me_quote">Jo:</string>
     <string name="your_status">El teu estat</string>
     <string name="pref_use_invidious">Substituir els enllaços de YouTube per Invidious</string>
+    <string name="pref_use_inner_storage">Utilitzar l\'emmagatzematge intern per a guardar els mitjans de comunicació</string>
     <string name="pref_use_invidious_summary">Invidious és una alternativa a YouTube que respecta la privacitat</string>
+    <string name="pref_use_inner_storage_summary">Cap aplicació podrà llegir els mitjans de comunicació des de l\'emmagatzematge intern</string>
     <string name="this_device">Aquest dispositiu</string>
     <string name="intro_desc_main">Més informació…</string>
     <string name="welcome_header">Benvingut a\nblabber.im</string>
@@ -1028,6 +1033,7 @@
     <string name="microphone_unavailable">El seu micròfon no està disponible</string>
     <string name="rtp_state_connecting">Connectant</string>
     <string name="rtp_state_connected">Connectat</string>
+    <string name="rtp_state_reconnecting">Reconnectant</string>
     <string name="rtp_state_accepting_call">Acceptar la trucada</string>
     <string name="rtp_state_ending_call">S\'està finalitzant la trucada</string>
     <string name="rtp_state_finding_device">Descobrint dispositius</string>
@@ -1110,6 +1116,7 @@
     <string name="videos_usage">Ús de la memòria dels vídeos</string>
     <string name="files_usage">Ús de la memòria dels arxius</string>
     <string name="audios_usage">Ús de la memòria dels àudios</string>
+    <string name="using_inner_storage">Utilitzar l\'emmagatzematge intern</string>
     <string name="delete_files_dialog">Esborrar arxius adjunts</string>
     <string name="delete_files_dialog_msg">Realment vols esborrar tots els %s?</string>
     <string name="audios">audios</string>
@@ -1124,6 +1131,7 @@
     <string name="oldAndroidVersionMessage">Està utilitzant una versió antiga d\'Android que ja no serà suportada en futures actualitzacions. A partir de la versió 3.1.0 de blabber.im només s\'admeten dispositius amb Android 5 o superior. Si us plau, actualitzi el microprogramari del teu dispositiu.</string>
     <string name="save_x_file">Desa %s</string>
     <string name="file_copied_to">Arxiu copiat en %s</string>
+    <string name="copy_file_to">Copiar l\'arxiu en %s</string>
     <string name="use_individual_notifications">Utilitzar les notificacions individuals</string>
     <string name="pref_remove_all_individual_summary">Eliminar totes les notificacions individuals dels contactes i grups.</string>
     <string name="pref_remove_all_individual_notifications_title">Eliminar totes les notificacions individuals</string>
@@ -1143,4 +1151,31 @@
     <string name="pref_import_settings">Importar la configuració de l\'aplicació</string>
     <string name="success_import_settings">Configuració importada amb èxit.</string>
     <string name="error_import_settings">Error en importar la configuració.</string>
+    <string name="action_unfix_from_location">Desfixar la posició</string>
+    <string name="action_fix_to_location">Fixar la posició</string>
+    <string name="action_copy_location">Ubicació de la còpia</string>
+    <string name="account_registrations_are_not_supported">No s\'admet el registre de comptes</string>
+    <string name="no_xmpp_adddress_found">No s\'ha trobat cap direcció XMPP</string>
+    <string name="pref_allowmergemessages">Fusionar missatges</string>
+    <string name="pref_allowmergemessages_sum">Intentar fusionar els missatges si provenen del mateix jid</string>
+    <string name="show_edit_log">Historial de missatges</string>
+    <string name="reconnecting_call">Reconnectant la trucada</string>
+    <string name="reconnecting_video_call">Reconnectant la video trucada</string>
+    <string name="user">Usuari</string>
+    <string name="format_text">Format de text</string>
+    <string name="bold">negreta</string>
+    <string name="italic">cursiva</string>
+    <string name="monospace">espai únic</string>
+    <string name="strikethrough">tatxat</string>
+    <string name="grant">Permetre</string>
+    <string name="no_manage_storage_permission">Des d\'Android 11, les aplicacions necessiten un permís especial per a accedir a tots els tipus d\'arxius de l\'emmagatzematge extern. blabber.im et demanarà que concedeixis aquest permís per a continuar.</string>
+    <string name="pref_showtextformatting_sum">Mostrar la barra d\'eines de format de text en el xat mentre es mostra el teclat</string>
+    <string name="pref_showtextformatting">Mostrar la barra d\'eines de format de text</string>
+    <string name="help_format_text">Pot utilitzar opcions d\'estil senzilles per a donar format al text. Les claus per a identificar el començament i el final d\'un format es troben exactament al principi i al final de la paraula o del grup de paraules. Ha d\'haver-hi un espai abans de la tecla d\'inici i un espai després de la tecla de finalització, en cas contrari el format no serà reconegut.\n\nPot utilitzar les eines directament mentre escrius, prement una eina s\'inserirà la tecla en la posició del cursor. O pot marcar una paraula o grup de paraules i prémer un botó de format.</string>
+    <string name="close">Tanca</string>
+    <string name="close_format_text">Realment vol tancar la barra d\'eines de format de text? Pot tornar a activar la barra d\'eines en la configuració.</string>
+    <string name="pref_show_date_in_quotes_summary">Mostra la data i l\'hora dels teus missatges citats.</string>
+    <string name="pref_show_date_in_quotes">Mostrar data i hora de les cotitzacions</string>
+    <string name="delete_avatar">Esborrar l\'avatar propi</string>
+    <string name="import_backup_description">Des d\'Android 11 no podem llistar els arxius en l\'emmagatzematge. Vostè pot tractar de navegar a una ruta de còpia de seguretat, que en general es troba en Documents/blabber.im/Database.</string>
 </resources>

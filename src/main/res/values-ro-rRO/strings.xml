@@ -162,7 +162,6 @@
     <string name="mgmt_account_delete_confirm_message">Dacă vă ștergeți contul, tot istoricul conversațiilor locale va fi pierdut.\n\nDacă vă ștergeți contul de pe server, tot contul dumneavoastră va fi șters și de pe server, nu veți mai putea să vă conectați până când nu veți înregistra un cont nou.</string>
     <string name="attach_record_voice">Înregistrare voce</string>
     <string name="account_settings_jabber_id">Adresă XMPP</string>
-    <string name="account_settings_example_jabber_id">username@blabber.im</string>
     <string name="password">Parolă</string>
     <string name="invalid_jid">Aceasta nu este o adresă XMPP valabilă</string>
     <string name="error_out_of_memory">Memorie epuizată. Imaginea este prea mare.</string>
@@ -1144,6 +1143,7 @@
     <string name="oldAndroidVersionMessage">Folosiți o versiune veche de Android care nu va mai fi susținută în actualizările viitoare. Începând cu versiunea 3.1.0 a blabber.im sunt acceptate doar dispozitivele cu Android 5 sau mai mare. Vă rugăm să vă actualizați firmware-ul dispozitivului.</string>
     <string name="save_x_file">Salvare %s</string>
     <string name="file_copied_to">Fișier copiat la %s</string>
+    <string name="copy_file_to">Copiați fișierul în %s</string>
     <string name="use_individual_notifications">Utilizați notificări individuale</string>
     <string name="pref_remove_all_individual_summary">Eliminați toate notificările individuale pentru contactele și grupurile dumneavoastră.</string>
     <string name="pref_remove_all_individual_notifications_title">Eliminați toate notificările individuale</string>
@@ -1179,4 +1179,18 @@
     <string name="italic">italic</string>
     <string name="monospace">monospațiu</string>
     <string name="strikethrough">barat</string>
+    <string name="grant">Autorizați</string>
+    <string name="no_manage_storage_permission">Începând cu Android 11, aplicațiile au nevoie de o permisiune specială pentru a accesa toate tipurile de fișiere de pe memoria externă. blabber.im vă va cere să acordați această permisiune pentru a continua.</string>
+    <string name="pref_showtextformatting_sum">Afișarea barei de instrumente de formatare a textului în chat în timp ce este afișată tastatura</string>
+    <string name="pref_showtextformatting">Afișați bara de instrumente de formatare a textului</string>
+    <string name="help_format_text">Puteți utiliza opțiuni simple de stilizare pentru a formata textul. Cheile de identificare a începutului și a sfârșitului unei formări se află exact la începutul și la sfârșitul cuvântului sau grupului de cuvinte. Trebuie să existe un spațiu înainte de tasta de început și un spațiu după tasta de sfârșit, în caz contrar formatarea nu va fi recunoscută.\n\nPuteți utiliza instrumentele direct în timpul scrierii, apăsarea unui instrument va introduce tasta în poziția cursorului. Sau puteți să marcați un cuvânt sau un grup de cuvinte și să apăsați un buton de formatare.</string>
+    <string name="close">Închide</string>
+    <string name="close_format_text">Chiar doriți să închideți bara de instrumente de formatare a textului? Puteți activa din nou bara de instrumente în setări.</string>
+    <string name="pref_show_date_in_quotes_summary">Afișați data și ora mesajelor dumneavoastră citate.</string>
+    <string name="pref_show_date_in_quotes">Afișați data și ora cotațiilor</string>
+    <string name="delete_avatar">Șterge avatar propriu</string>
+    <string name="import_backup_description">De la Android 11 nu mai putem lista fișierele din spațiul de stocare. Puteți încerca să navigați către o cale de backup, care de obicei se află în Documents/blabber.im/Database.</string>
+    <string name="optimize_database">Optimizarea bazei de date... Vă rugăm să așteptați...</string>
+    <string name="verifying_omemo_keys_trusted_source_account">Sunteți pe cale să verificați cheile OMEMO ale contului dumneavoastră. Acest lucru este sigur numai dacă ați urmat acest link dintr-o sursă de încredere, unde numai dumneavoastră ați fi putut publica acest link.</string>
+    <string name="continue_btn">Continuați</string>
 </resources>

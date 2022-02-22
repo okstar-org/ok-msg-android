@@ -161,7 +161,6 @@
     <string name="mgmt_account_delete_confirm_message">Bij het verwijderen van deze account zal de hele gespreksgeschiedenis op dit apparaat verloren gaan.\n\nBij het verwijderen van het account op de server kan ook niet meer worden ingelogd met dit account.</string>
     <string name="attach_record_voice">Stem opnemen</string>
     <string name="account_settings_jabber_id">Jabber-ID:</string>
-    <string name="account_settings_example_jabber_id">gebruikersnaam@blabber.im</string>
     <string name="password">Wachtwoord</string>
     <string name="invalid_jid">Dit is geen geldige Jabber-ID</string>
     <string name="error_out_of_memory">Geen geheugen beschikbaar. Afbeelding is te groot</string>
@@ -594,7 +593,7 @@
     <string name="invalid_barcode">Ongeldige QR Code</string>
     <string name="verify_with_qr_code">met QR-code verifiëren</string>
     <string name="i_followed_this_link_from_a_trusted_source">Ik heb deze link gevolgd vanuit een betrouwbare bron</string>
-    <string name="verifying_omemo_keys_trusted_source">Je staat op het punt de OMEMO-sleutels van %1$s te verifiëren door op een link te klikken. Dit is enkel veilig als je de link van een betrouwbare bron hebt gevolgd, waarbij alleen %2$s de link gepubliceerd kan hebben.</string>
+    <string name="verifying_omemo_keys_trusted_source">Je staat op het punt de OMEMO-sleutels van %1$s te verifiëren door op een link te klikken. Dit is enkel veilig als je de link hebt gevolgd vanaf een betrouwbare locatie, waarbij alleen %2$s die link gepubliceerd kan hebben.</string>
     <string name="verify_omemo_keys">OMEMO-sleutels verifiëren</string>
     <string name="show_inactive_devices">Niet-actieve tonen</string>
     <string name="hide_inactive_devices">Verberg inactief</string>
@@ -1132,6 +1131,7 @@
     <string name="oldAndroidVersionMessage">Je gebruikt een oude Android-versie die niet langer wordt ondersteund in toekomstige updates. Vanaf blabber.im versie 3.1.0 worden alleen toestellen met Android 5 of hoger ondersteund. Update de firmware van je toestel.</string>
     <string name="save_x_file">%s opslaan</string>
     <string name="file_copied_to">Bestand gekopieerd naar %s</string>
+    <string name="copy_file_to">Bestand kopiëren naar %s</string>
     <string name="use_individual_notifications">Individuele meldingsinstellingen gebruiken</string>
     <string name="pref_remove_all_individual_summary">Verwijder alle individuele meldingsinstellingen voor je contacten en groepen.</string>
     <string name="pref_remove_all_individual_notifications_title">Alle individuele meldingsinstellingen verwijderen</string>
@@ -1167,4 +1167,18 @@
     <string name="italic">cursief</string>
     <string name="monospace">vaste breedte</string>
     <string name="strikethrough">doorgehaald</string>
+    <string name="grant">Toestaan</string>
+    <string name="no_manage_storage_permission">Vanaf Android 11 hebben apps een speciale machtiging nodig om op externe opslag alle bestandstypes te benaderen. blabber.im zal nu om deze machtiging vragen.</string>
+    <string name="pref_showtextformatting_sum">Toon de werkbalk tekstopmaak als het toetsenbord wordt weergegeven</string>
+    <string name="pref_showtextformatting">Werkbalk tekstopmaak tonen</string>
+    <string name="help_format_text">Voor tekst zijn enkele eenvoudige stijlen beschikbaar. Dit kan met symbolen die direct aan het begin en het einde van de opgemaakte tekst worden geplaatst, met een spatie vóór het beginsymbool en een spatie na het eindsymbool.\n\nSelecteer de op te maken tekst en klik op de werkbalkknop om de desbetreffende symbolen in te voegen, of klik zonder selectie op de knop om de symbolen bij de cursor te plaatsen.</string>
+    <string name="close">Sluiten</string>
+    <string name="close_format_text">De werkbalk tekstopmaak nu sluiten? Schakel de werkbalk weer in via de instellingen.</string>
+    <string name="pref_show_date_in_quotes_summary">Toon de datum en tijd bij geciteerde berichten.</string>
+    <string name="pref_show_date_in_quotes">Datum en tijd bij geciteerde berichten</string>
+    <string name="delete_avatar">Eigen avatar verwijderen</string>
+    <string name="import_backup_description">Het is sinds Android 11 niet meer mogelijk om bestanden van de telefoonopslag te tonen. Probeer te navigeren naar de backup-map Documenten/blabber.im/Database.</string>
+    <string name="optimize_database">Database optimaliseren... Even geduld...</string>
+    <string name="verifying_omemo_keys_trusted_source_account">Je staat op het punt de OMEMO-sleutels van je eigen account te verifiëren. Dit is enkel veilig als je de link hebt gevolgd vanaf een betrouwbare locatie, waarop alleen jij die link gepubliceerd kunt hebben.</string>
+    <string name="continue_btn">Doorgaan</string>
 </resources>

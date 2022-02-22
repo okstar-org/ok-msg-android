@@ -161,7 +161,6 @@
     <string name="mgmt_account_delete_confirm_message">Si vous supprimez votre compte, l\'historique complet de vos conversations sera perdu.\n\nSi vous supprimez votre compte du serveur, votre compte sera entièrement supprimé, vous ne pourrez plus vous connecter jusqu\'à ce que vous ayez créé un nouveau compte.</string>
     <string name="attach_record_voice">Enregistrer un son</string>
     <string name="account_settings_jabber_id">Identifiant</string>
-    <string name="account_settings_example_jabber_id">nomutilisateur@blabber.im</string>
     <string name="password">Mot de passe</string>
     <string name="invalid_jid">Cet identifiant n\'est pas valide</string>
     <string name="error_out_of_memory">Plus de mémoire disponible. L’image est trop grande</string>
@@ -249,6 +248,8 @@
     <string name="pref_security_settings">Sécurité</string>
     <string name="pref_allow_message_correction">Autoriser la correction</string>
     <string name="pref_allow_message_correction_summary">Permet à vos contacts de modifier leurs messages rétroactivement.</string>
+    <string name="pref_allow_message_retraction">Permettre la rétractation des messages</string>
+    <string name="pref_allow_message_retraction_summary">Permettre à vos contacts de rétracter rétroactivement leurs messages.</string>
     <string name="pref_expert_options">Paramètres avancés</string>
     <string name="title_activity_about">À propos</string>
     <string name="pref_about_conversations_summary">Informations sur la version et les licences</string>
@@ -937,7 +938,9 @@
     <string name="me_quote">Moi :</string>
     <string name="your_status">Votre statut</string>
     <string name="pref_use_invidious">Remplacer les liens YouTube par Invidious</string>
+    <string name="pref_use_inner_storage">Utilisation du stockage interne pour stocker les médias</string>
     <string name="pref_use_invidious_summary">Invidious est une alternative à Youtube et respecte la vie privée.</string>
+    <string name="pref_use_inner_storage_summary">Les autres applications ne pourront pas lire les médias du stockage interne.</string>
     <string name="this_device">Cet appareil</string>
     <string name="intro_desc_main">En savoir plus…</string>
     <string name="welcome_header">Bienvenue sur\nblabber.im</string>
@@ -1113,6 +1116,7 @@
     <string name="videos_usage">Utilisation mémoire des vidéos</string>
     <string name="files_usage">Utilisation mémoire des fichiers</string>
     <string name="audios_usage">Utilisation mémoire des audios</string>
+    <string name="using_inner_storage">Utiliser le stockage interne</string>
     <string name="delete_files_dialog">Supprimer les pièces jointes</string>
     <string name="delete_files_dialog_msg">Voulez-vous vraiment supprimer tous les %s ?</string>
     <string name="audios">audios</string>
@@ -1127,6 +1131,7 @@
     <string name="oldAndroidVersionMessage">Vous utilisez une ancienne version d\'Android qui ne sera plus prise en charge dans les futures mises à jour. À partir de la version 3.1.0 de blabber.im, seuls les appareils avec Android 5 ou supérieur sont pris en charge. Veuillez mettre à jour l\'OS de votre appareil.</string>
     <string name="save_x_file">Enregistrer %s</string>
     <string name="file_copied_to">Fichier copié vers %s</string>
+    <string name="copy_file_to">Copie du fichier vers %s</string>
     <string name="use_individual_notifications">Utiliser les notifications individuelles</string>
     <string name="pref_remove_all_individual_summary">Supprimez toutes les notifications individuelles de vos contacts et groupes.</string>
     <string name="pref_remove_all_individual_notifications_title">Supprimez toutes les notifications individuelles</string>
@@ -1156,4 +1161,24 @@
     <string name="show_edit_log">Historique des messages</string>
     <string name="reconnecting_call">Reconnexion en cours</string>
     <string name="reconnecting_video_call">Reconnexion en cours</string>
+    <string name="user">Utiliser</string>
+    <string name="format_text">Format du texte</string>
+    <string name="bold">gras</string>
+    <string name="italic">italique</string>
+    <string name="monospace">espacement fixe</string>
+    <string name="strikethrough">barré</string>
+    <string name="grant">Autorisation</string>
+    <string name="no_manage_storage_permission">Depuis Android 11, les applications ont besoin d\'une autorisation spéciale pour accéder à tous les types de fichiers sur le stockage externe. blabber.im vous demandera d\'accorder cette autorisation pour continuer.</string>
+    <string name="pref_showtextformatting_sum">Afficher la barre d\'outils de formatage du texte dans le chat lorsque le clavier est affiché.</string>
+    <string name="pref_showtextformatting">Afficher la barre d\'outils de formatage du texte</string>
+    <string name="help_format_text">Vous pouvez utiliser des styles simples pour mettre en forme votre texte. La mise en forme s\'applique du début à la fin du mot ou du groupe de mots. Il doit y avoir un espace avant la lettre de début et un espace après la lettre de fin, sinon le formatage ne sera pas reconnu.\n\nVous pouvez utiliser ces outils directement pendant que vous écrivez, en appuyant sur un outil, l\'insertion se fera à la position du curseur. Vous pouvez également marquer un mot ou un groupe de mots et appuyer sur un bouton de formatage.</string>
+    <string name="close">Fermer</string>
+    <string name="close_format_text">Voulez-vous vraiment fermer la barre d\'outils de formatage du texte ? Vous pouvez réactiver la barre d\'outils dans les paramètres.</string>
+    <string name="pref_show_date_in_quotes_summary">Affiche la date et l\'heure de vos messages cités.</string>
+    <string name="pref_show_date_in_quotes">Afficher la date de l\'heure des citations</string>
+    <string name="delete_avatar">Supprimer votre propre avatar</string>
+    <string name="import_backup_description">Depuis Android 11 nous ne pouvons plus lister les fichiers sur le stockage. Vous pouvez essayer de naviguer vers un chemin de sauvegarde, qui se trouve généralement dans Documents/blabber.im/Database.</string>
+    <string name="optimize_database">Optimisation de la base de données... Merci de patienter...</string>
+    <string name="verifying_omemo_keys_trusted_source_account">Vous êtes sur le point de vérifier les clés OMEMO de votre propre compte. Cette opération n\'est sécurisée que si vous avez suivi ce lien à partir d\'une source de confiance où vous seul avez pu publier ce lien.</string>
+    <string name="continue_btn">Continuer</string>
 </resources>

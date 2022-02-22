@@ -163,7 +163,6 @@
     <string name="mgmt_account_delete_confirm_message">Если Вы удалите свою учетную запись, вся Ваша локальная история переписки будет потеряна.\n\nЕсли Вы удалите свою учетную запись с сервера, Вы не сможете больше входить в систему, пока не зарегистрируете новую учетную запись.</string>
     <string name="attach_record_voice">Записать голосовое сообщение</string>
     <string name="account_settings_jabber_id">Jabber-ID</string>
-    <string name="account_settings_example_jabber_id">username@blabber.im</string>
     <string name="password">Пароль</string>
     <string name="invalid_jid">Недействительный Jabber-ID</string>
     <string name="error_out_of_memory">Недостаточно памяти. Изображение слишком большое</string>
@@ -1156,6 +1155,7 @@
     <string name="oldAndroidVersionMessage">Вы используете старую версию Android, которая больше не будет поддерживаться в будущих обновлениях. Начиная с blabber.im версии 3.1.0 поддерживаются только устройства с Android 5 и выше. Пожалуйста, обновите прошивку Вашего устройства.</string>
     <string name="save_x_file">Сохранить %s</string>
     <string name="file_copied_to">Файл скопирован в %s</string>
+    <string name="copy_file_to">Копировать файл в %s</string>
     <string name="use_individual_notifications">Используйте индивидуальные уведомления</string>
     <string name="pref_remove_all_individual_summary">Удалите все индивидуальные уведомления для ваших контактов и групп.</string>
     <string name="pref_remove_all_individual_notifications_title">Удалить все отдельные уведомления</string>
@@ -1187,6 +1187,22 @@
     <string name="reconnecting_video_call">Повторное соединение видеозвонка</string>
     <string name="user">Пользователь</string>
     <string name="format_text">Отформатировать текст</string>
+    <string name="bold">жирный</string>
+    <string name="italic">курсив</string>
     <string name="monospace">моноширинный</string>
     <string name="strikethrough">перечеркнутый</string>
+    <string name="grant">Разрешения</string>
+    <string name="no_manage_storage_permission">Начиная с Android 11, приложениям нужно разрешение на доступ к всем типам файлов на внешнем хранилище. blabber.im попросит предоставить это разрешение для продолжения.</string>
+    <string name="pref_showtextformatting_sum">Показывать панель инструментов форматирования текста в чате, когда показана клавиатура</string>
+    <string name="pref_showtextformatting">Показ панели инструментов форматирования текста</string>
+    <string name="help_format_text">Вы можете использовать простые варианты стиля для форматирования Вашего текста. Ключи для идентификации начала и конца форматирования именно в начале и конце слова или группы слов. Должен быть отступ перед началом ключа и после ключа, иначе форматирование не будет распознано.\n\nВы можете использовать инструменты непосредственно во время набора сообщения, нажатие инструмента вставит ключ в положении курсора. Или Вы можете пометить слово или группу слов и нажать кнопку форматирования.</string>
+    <string name="close">Закрыть</string>
+    <string name="close_format_text">Вы действительно хотите закрыть панель инструментов форматирования текста? Вы можете снова включить панель инструментов в настройках.</string>
+    <string name="pref_show_date_in_quotes_summary">Отображать дату и время Ваших цитируемых сообщений.</string>
+    <string name="pref_show_date_in_quotes">Отображение даты и времени цитат</string>
+    <string name="delete_avatar">Удалить аватар</string>
+    <string name="import_backup_description">Начиная с Android 11 мы не имеем доступа к хранилищу. Вы можете попробовать перейти к резервной копии вручную (обычно Documents/blabber.im/Database).</string>
+    <string name="optimize_database">Оптимизация базы данных... Пожалуйста, ждите...</string>
+    <string name="verifying_omemo_keys_trusted_source_account">Вы собираетесь проверить ключи OMEMO Вашей учетной записи. Это безопасно только в том случае, если Вы перешли по этой ссылке из надежного источника, где только Вы могли опубликовать эту ссылку.</string>
+    <string name="continue_btn">Продолжить</string>
 </resources>

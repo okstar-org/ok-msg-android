@@ -160,7 +160,6 @@
     <string name="mgmt_account_delete_confirm_message">アカウントを削除すると、ローカルの会話履歴全体が失われます。\n\nサーバーからアカウントを削除すると、サーバーからもアカウント全体が削除され、新規アカウントを登録するまで、もはやログインできなくなります。</string>
     <string name="attach_record_voice">音声を録音</string>
     <string name="account_settings_jabber_id">Jabber-ID</string>
-    <string name="account_settings_example_jabber_id">username@blabber.im</string>
     <string name="password">パスワード</string>
     <string name="invalid_jid">有効なJabber-IDではありません</string>
     <string name="error_out_of_memory">メモリ不足です。画像が大きすぎます</string>
@@ -915,7 +914,9 @@
     <string name="waiting_for_transfer">転送待機中</string>
     <string name="your_status">あなたの状態</string>
     <string name="pref_use_invidious">YouTubeのリンクをInvidiousに置換</string>
+    <string name="pref_use_inner_storage">メディアを保存するのに内部ストレージを使用</string>
     <string name="pref_use_invidious_summary">Invidiousはプライバシーに配慮された、YouTubeの代替です</string>
+    <string name="pref_use_inner_storage_summary">他のアプリは、内部ストレージからメディアを読み取ることが不可能になります</string>
     <string name="this_device">このデバイス</string>
     <string name="intro_desc_main">詳細…</string>
     <string name="welcome_header">blabber.im\nにようこそ</string>
@@ -1099,6 +1100,7 @@
     <string name="oldAndroidVersionMessage">今後のアップデートではサポートされない古いAndroidバージョンを使用しています。blabber.imバージョン3.1.0からは、Android 5以上の端末のみがサポートされます。お使いの端末のファームウェアをアップデートしてください。</string>
     <string name="save_x_file">%s を保存</string>
     <string name="file_copied_to">ファイルを %s にコピーしました</string>
+    <string name="copy_file_to">%s へファイルをコピー</string>
     <string name="use_individual_notifications">個別通知を使用</string>
     <string name="pref_remove_all_individual_summary">連絡先とグループのための全個別通知を削除</string>
     <string name="pref_remove_all_individual_notifications_title">全個別通知を削除</string>
@@ -1126,8 +1128,19 @@
     <string name="pref_allowmergemessages">メッセージを統合</string>
     <string name="pref_allowmergemessages_sum">同じjidからメッセージが来たとき、メッセージの統合を試みます</string>
     <string name="show_edit_log">メッセージ履歴</string>
+    <string name="format_text">テキストの書式</string>
     <string name="bold">太字</string>
     <string name="italic">斜体</string>
     <string name="monospace">等幅</string>
     <string name="strikethrough">取り消し線</string>
+    <string name="grant">許可</string>
+    <string name="no_manage_storage_permission">Android 11以降、アプリは外部ストレージの全種類のファイルにアクセスする特別な権限が必要です。blabber.imは続行するためにこの権限を付与するよう求めます。</string>
+    <string name="pref_showtextformatting_sum">キーボード表示中にチャットでテキスト書式ツールバーを表示する</string>
+    <string name="pref_showtextformatting">テキスト書式ツールバーを表示</string>
+    <string name="help_format_text">簡単な型設定を使用して、テキストの書式を設定することができます。書式の開始と終了を識別するキーは、ちょうど単語または単語グループの開始と終了にあります。開始キーの前にスペースがあり、終了キーの後にスペースがなければ、書式は認識されません。\n\nツールを押すと、カーソルの位置にキーが挿入され、書きながら直接使用することができます。また、単語や単語グループを印して、書式設定ボタンを押すこともできます。</string>
+    <string name="close">閉じる</string>
+    <string name="close_format_text">テキスト書式ツールバーを本当に閉じてもよろしいですか? 再度、設定からツールバーを有効にすることができます。</string>
+    <string name="pref_show_date_in_quotes_summary">引用したメッセージの日付と時間を表示します。</string>
+    <string name="pref_show_date_in_quotes">引用の日付と時間を表示</string>
+    <string name="delete_avatar">所有するアバターを削除</string>
 </resources>

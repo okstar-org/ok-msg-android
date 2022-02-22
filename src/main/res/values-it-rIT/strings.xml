@@ -161,7 +161,6 @@
     <string name="mgmt_account_delete_confirm_message">Se elimini il tuo account, la tua cronologia locale delle conversazioni sarà persa.\n\nSe elimini l\'account dal server, tutto il tuo account sarà eliminato anche dal server, e non sarai in grado di accedere più finchè non registrerai un nuovo account.</string>
     <string name="attach_record_voice">Registra la voce</string>
     <string name="account_settings_jabber_id">ID Jabber</string>
-    <string name="account_settings_example_jabber_id">nomeutente@blabber.im</string>
     <string name="password">Password</string>
     <string name="invalid_jid">Questo non è un ID Jabber valido</string>
     <string name="error_out_of_memory">Memoria esaurita. L’immagine è tropppo grande</string>
@@ -939,7 +938,9 @@
     <string name="me_quote">Io:</string>
     <string name="your_status">Il tuo stato</string>
     <string name="pref_use_invidious">Rimpiazza i collegamenti a YouTube con Invidious</string>
+    <string name="pref_use_inner_storage">Utilizzo della memoria interna per il salvataggio dei Media</string>
     <string name="pref_use_invidious_summary">Invidious è un\'interfaccia alternativa di YouTube che rispetta la tua privacy</string>
+    <string name="pref_use_inner_storage_summary">Altre App non saranno in grado di leggere i media dalla memoria interna</string>
     <string name="this_device">Questo dispositivo</string>
     <string name="intro_desc_main">Scopri di più…</string>
     <string name="welcome_header">Benvenuto su\nblabber.im</string>
@@ -1115,6 +1116,7 @@
     <string name="videos_usage">Utilizzo memoria dei video</string>
     <string name="files_usage">Utilizzo memoria dei file</string>
     <string name="audios_usage">Utilizzo memoria degli audio</string>
+    <string name="using_inner_storage">Utilizza Memoria Interna</string>
     <string name="delete_files_dialog">Elimina allegati</string>
     <string name="delete_files_dialog_msg">Vuoi veramente eliminare tutti %s?</string>
     <string name="audios">audio</string>
@@ -1129,6 +1131,7 @@
     <string name="oldAndroidVersionMessage">Stai utilizzando una vecchia versione di Android che non sarà più supportata dagli aggiornamenti futuri. Da blabber.im versione 3.1.0 solo i dispositivi con Android 5 o superiore saranno supportati. Per favore aggiorna il firmware del tuo dispositivo.</string>
     <string name="save_x_file">Salva %s</string>
     <string name="file_copied_to">File copiato in %s</string>
+    <string name="copy_file_to">Copia file in %s</string>
     <string name="use_individual_notifications">Utilizza notifiche individuali</string>
     <string name="pref_remove_all_individual_summary">Rimuovi tutte le notifiche individuali per i tuoi contatti e gruppi.</string>
     <string name="pref_remove_all_individual_notifications_title">Rimuovi tutte le notifiche individuali</string>
@@ -1158,4 +1161,20 @@
     <string name="show_edit_log">Cronologia messaggi</string>
     <string name="reconnecting_call">Riconnettendo la chiamata</string>
     <string name="reconnecting_video_call">Riconnettendo la videochiamata</string>
+    <string name="user">Utente</string>
+    <string name="format_text">Formatta testo</string>
+    <string name="bold">grassetto</string>
+    <string name="italic">corsivo</string>
+    <string name="monospace">spaziatura fissa</string>
+    <string name="strikethrough">barrato</string>
+    <string name="grant">Concedi</string>
+    <string name="no_manage_storage_permission">A partire da Android 11, le app devono richiedere un permesso speciale per accedere a tutti i tipi di file sulla memoria esterna. blabber.im ti chiederà di concedere questo permesso per continuare.</string>
+    <string name="pref_showtextformatting_sum">Mostra barra di formattazione del testo nella conversazione mentre è mostrata la tastiera</string>
+    <string name="pref_showtextformatting">Mostra barra di formattazione del testo</string>
+    <string name="help_format_text">Puoi utilizzare delle semplici opzioni di stile per formattare il tuo test. Le chiavi per identificare l\'inizio e la fine della formattazione sono esattamente all\'inizio e alla fine della parola o gruppo di parole. Deve esserci uno spazio prima della chiave iniziale e uno spazio dopo la chiave finale, altrimenti la formattazione non sarà riconosciuta.\n\nPuoi utilizzare direttamente gli strumenti mentre scrivi, premendo uno strumento inserirà la chiave nella posizione del cursore. O puoi selezionare una parola o un gruppo di parole e premere il pulsante di formattazione.</string>
+    <string name="close">Chiudi</string>
+    <string name="close_format_text">Vuoi veramente chiudere la barra di formattazione del testo? Puoi abilitarla di nuovo dalle impostazioni.</string>
+    <string name="pref_show_date_in_quotes_summary">Mostra data e ora dei tuoi messaggi citati.</string>
+    <string name="pref_show_date_in_quotes">Mostra data e ora delle citazioni</string>
+    <string name="delete_avatar">Eliminare la propria immagine profilo</string>
 </resources>

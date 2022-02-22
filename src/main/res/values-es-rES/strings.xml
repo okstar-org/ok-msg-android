@@ -161,7 +161,6 @@
     <string name="mgmt_account_delete_confirm_message">Si eliminas tu cuenta, tu historial local de conversación será completamente eliminado.\n\nSi eliminas tu cuenta del servir, será eliminada del servidor también, no podrás entrar nunca más hasta que no registres una nueva cuenta.</string>
     <string name="attach_record_voice">Grabar audio</string>
     <string name="account_settings_jabber_id">Identificador Jabber</string>
-    <string name="account_settings_example_jabber_id">usuario@blabber.im</string>
     <string name="password">Contraseña</string>
     <string name="invalid_jid">El identificador no es un identificador Jabber válido</string>
     <string name="error_out_of_memory">Sin memoria. La imagen es demasiado grande</string>
@@ -1132,6 +1131,7 @@
     <string name="oldAndroidVersionMessage">Estás usando una versión de Android antigua que no será soportada en futuras actualizaciones. A partir de la versión 3.1.0 de blabber.im solo tendrán soporte los dispositivos con Android 5 o superior. Por favor actualiza el firmware de tu dispositivo.</string>
     <string name="save_x_file">Guardar %s</string>
     <string name="file_copied_to">Fichero copiado a %s</string>
+    <string name="copy_file_to">Copiar fichero a %s</string>
     <string name="use_individual_notifications">Usar notificaciones individuales</string>
     <string name="pref_remove_all_individual_summary">Borrar todas las notificaciones individuales para tus contactos y grupos.</string>
     <string name="pref_remove_all_individual_notifications_title">Borrar todas las notificaciones individuales</string>
@@ -1167,4 +1167,18 @@
     <string name="italic">cursiva</string>
     <string name="monospace">monoespaciado</string>
     <string name="strikethrough">tachado</string>
+    <string name="grant">Otorgar</string>
+    <string name="no_manage_storage_permission">Desde Android 11, las aplicaciones necesitan un permiso especial para acceder a todo tipo de ficheros en el almacenamiento externo. blabber.im te pedirá que otorgues este permiso para continuar.</string>
+    <string name="pref_showtextformatting_sum">Mostrar barra de herramientas de formateo de texto en el chat a la vez que se muestra el teclado</string>
+    <string name="pref_showtextformatting">Mostrar barra de herramientas de formateo de texto</string>
+    <string name="help_format_text">Puedes usar opciones de estilo simples para dar formato a tu texto. Las claves para identificar el principio y el final de un formato están exactamente al principio y al final de la palabra o grupo de palabras. Debe haber un espacio antes de la tecla de inicio y un espacio después de la tecla de finalización; de lo contrario, no se reconocerá el formato.\n\nPuedes usar las herramientas directamente mientras escribes, al presionar una herramienta se insertará la tecla en la posición de los cursores. O puedes marcar una palabra o un grupo de palabras y presionar un botón de formateo.</string>
+    <string name="close">Cerrar</string>
+    <string name="close_format_text">¿Realmente quieres cerrar la barra de herramientas de formateo de texto? Puedes habilitarla de nuevo en los ajustes.</string>
+    <string name="pref_show_date_in_quotes_summary">Mostrar la fecha y la hora de tus mensajes citados.</string>
+    <string name="pref_show_date_in_quotes">Mostrar fecha y hora de citas</string>
+    <string name="delete_avatar">Borrar mi avatar</string>
+    <string name="import_backup_description">Desde Android 11 no podemos mostrar los ficheros en el almacenamiento. Puedes intentar navegar a una ruta que usualmente es Documents/blabber.im/Database.</string>
+    <string name="optimize_database">Optimizando base de datos... Por favor espere...</string>
+    <string name="verifying_omemo_keys_trusted_source_account">Estás a punto de verificar las claves OMEMO de tu propia cuenta. Este es seguro solo si has seguido este enlace desde un origen de confianza donde solo tú podrías haber publicado este enlace.</string>
+    <string name="continue_btn">Continuar</string>
 </resources>

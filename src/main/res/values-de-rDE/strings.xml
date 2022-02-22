@@ -46,7 +46,7 @@
     <string name="contact_blocked">Kontakt gesperrt</string>
     <string name="blocked">Gesperrt</string>
     <string name="remove_bookmark_text">Möchtest du %s von deiner Kontaktliste entfernen? Die Unterhaltung mit dieser Konferenz wird dabei nicht entfernt.</string>
-    <string name="register_account">Neues Profil auf Server erstellen</string>
+    <string name="register_account">Neues Profil am Server erstellen</string>
     <string name="change_password_on_server">Kennwort ändern</string>
     <string name="share_with">Teilen mit…</string>
     <string name="start_conversation">Unterhaltung beginnen</string>
@@ -161,7 +161,6 @@
     <string name="mgmt_account_delete_confirm_message">Wenn du dein Profil löschst, gehen deine lokal gespeicherten Chatverläufe verloren.\n\nWenn du dein Profil vom Server löschst, wird dein gesamtes Benutzerprofil ebenfalls gelöscht, du wirst dich nicht mehr einloggen können bis du ein neues Profil erstellt hast.</string>
     <string name="attach_record_voice">Sprache aufzeichnen</string>
     <string name="account_settings_jabber_id">Jabber-ID</string>
-    <string name="account_settings_example_jabber_id">benutzer@blabber.im</string>
     <string name="password">Kennwort</string>
     <string name="invalid_jid">Ungültige Jabber-ID</string>
     <string name="error_out_of_memory">Zu wenig Speicher vorhanden. Das Bild ist zu groß</string>
@@ -225,7 +224,7 @@
     <string name="publishing">Veröffentliche…</string>
     <string name="error_publish_avatar_server_reject">Der Server hat die Veröffentlichung des Profilbildes abgelehnt.</string>
     <string name="error_publish_avatar_converting">Bei der Konvertierung des Profilbildes lief etwas schief.</string>
-    <string name="error_saving_avatar">Avatar kann nicht gespeichert werden</string>
+    <string name="error_saving_avatar">Profilbild kann nicht gespeichert werden</string>
     <string name="or_long_press_for_default">(Oder klicke lange, um Standard wiederherzustellen)</string>
     <string name="error_publish_avatar_no_server_support">Dein Server unterstützt die Veröffentlichung von Profilbildern nicht.</string>
     <string name="private_message">private Nachricht:</string>
@@ -262,7 +261,7 @@
     <string name="pref_use_send_button_to_indicate_status">Senden-Schaltfläche zeigt Online-Status an</string>
     <string name="pref_use_colored_names_to_indicate_status">Kontaktnamen-Farbe zeigt Online-Status an</string>
     <string name="pref_use_indicate_received">Empfangsbestätigungen anfragen</string>
-    <string name="pref_use_indicate_received_summary">Empfangene Nachrichten werden mit einem Häkchen markiert. Bitte beachte, dass dies nicht in allen Fällen funktioniert</string>
+    <string name="pref_use_indicate_received_summary">Empfangene Nachrichten werden mit einem Häkchen markiert. Bitte beachte, dass dies nicht in allen Fällen funktioniert.</string>
     <string name="pref_use_send_button_to_indicate_status_summary">Senden-Schaltfläche einfärben, um den Online-Status des Kontakts anzuzeigen</string>
     <string name="pref_use_colored_names_to_indicate_status_summary">Kontaktnamen einfärben, um den Online-Status des Kontakts anzuzeigen</string>
     <string name="pref_expert_options_other">Sonstiges</string>
@@ -334,7 +333,7 @@
     <string name="error_trustkeys_title">Es ist ein Fehler aufgetreten</string>
     <string name="fetching_history_from_server">Lade Chatverlauf…</string>
     <string name="no_more_history_on_server">Keine weiteren Nachrichten vorhanden</string>
-    <string name="updating">Aktualisieren…</string>
+    <string name="updating">Aktualisiere…</string>
     <string name="password_changed">Kennwort geändert.</string>
     <string name="could_not_change_password">Kennwort kann nicht geändert werden.</string>
     <string name="ask_question">Frage stellen</string>
@@ -843,8 +842,8 @@
     <string name="restore_warning">Benutze die Wiederherstellungsfunktion unter keinen Umständen, außer im Falle einer Migration oder eines Verlustes deines Geräts.</string>
     <string name="unable_to_restore_backup">Sicherung kann nicht wiederhergestellt werden.</string>
     <string name="unable_to_decrypt_backup">Sicherung kann nicht entschlüsselt werden. Stimmt das Kennwort?</string>
-    <string name="pref_prefer_xmpp_avatar_summary">Bevorzuge den vom Benutzer gesetzten Avatar anstatt des Profilbildes in deinem Adressbuch</string>
-    <string name="pref_prefer_xmpp_avatar">XMPP-Avatar bevorzugen</string>
+    <string name="pref_prefer_xmpp_avatar_summary">Bevorzuge das vom Benutzer gesetzte Profilbild anstatt des Profilbildes aus deinem Adressbuch</string>
+    <string name="pref_prefer_xmpp_avatar">XMPP-Profilbilder bevorzugen</string>
     <plurals name="view_users">
         <item quantity="one">%1$d Teilnehmer anzeigen</item>
         <item quantity="other">%1$d Teilnehmer anzeigen</item>
@@ -955,7 +954,7 @@
     <string name="intro_chat_details">Chat-Details</string>
     <string name="intro_desc_chat_details">Du möchtest die Chat-Details öffnen? Tippe einfach auf den Chat-Namen oben in der Menüleiste.</string>
     <string name="intro_highlight_user">Benutzer erwähnen</string>
-    <string name="intro_desc_highlight_user">Wenn du einen Benutzer in einem Gruppenchat erwähnen möchtest, berühre einfach den Avatar des Benutzers im Chat. Alternativ, insbesondere wenn sich der Benutzer nicht im Chat befindet, wechsele zu den Chat-Details und suche den Benutzer in der Teilnehmerliste. Ein langer Klick auf den Avatar des Benutzers öffnet ein Popup-Menü, in dem du den Benutzer erwähnen kannst.</string>
+    <string name="intro_desc_highlight_user">Wenn du einen Benutzer in einem Gruppenchat erwähnen möchtest, berühre einfach das Profilbild des Benutzers im Chat. Alternativ, insbesondere wenn sich der Benutzer nicht im Chat befindet, wechsele zu den Chat-Details und suche den Benutzer in der Teilnehmerliste. Ein langer Klick auf das Profilbild des Benutzers öffnet ein Popup-Menü, in dem du den Benutzer erwähnen kannst.</string>
     <string name="intro_desc_open_chat_details">Du hast die Chat-Details geöffnet. Hier kannst du die Details des Chats sehen, das Verhalten der Benachrichtigung für neue Nachrichten ändern, den Chat deiner Kontaktliste hinzufügen oder entfernen und vieles mehr.</string>
     <string name="pref_show_intro_summary">Die Hilfe-Bildschirme erneut anzeigen</string>
     <string name="pref_show_intro">Hilfen erneut anzeigen</string>
@@ -1003,7 +1002,7 @@
     <string name="pref_use_unicolored_chatbg">Nutze einfarbigen Hintergrund</string>
     <string name="pref_alternative_voice_settings_summary">Falls du bei der Sprachaufnahme Probleme hast, nutze einen alternativen Codec.</string>
     <string name="pref_alternative_voice_settings">Alternative Methode zur Sprachaufnahme</string>
-    <string name="pref_use_colored_muc_names_summary">Namen in Gruppen-Chats oder Channels wie Standard-Avatar-Hintergründe einfärben.</string>
+    <string name="pref_use_colored_muc_names_summary">Namen in Gruppen-Chats oder Channels wie Standard-Profilbild-Hintergründe einfärben.</string>
     <string name="pref_use_colored_muc_names">Farbige Namen</string>
     <string name="show_videos_images_only">Nur Bilder/Videos</string>
     <string name="show_avatar">Profilbild anzeigen</string>
@@ -1034,7 +1033,7 @@
     <string name="microphone_unavailable">Dein Mikrofon ist nicht verfügbar</string>
     <string name="rtp_state_connecting">Verbinde</string>
     <string name="rtp_state_connected">Verbunden</string>
-    <string name="rtp_state_reconnecting">Erneut verbinden</string>
+    <string name="rtp_state_reconnecting">Verbinde erneut</string>
     <string name="rtp_state_accepting_call">Anruf annehmen</string>
     <string name="rtp_state_ending_call">Anruf beenden</string>
     <string name="rtp_state_finding_device">Erkenne Geräte</string>
@@ -1044,7 +1043,7 @@
     <string name="rtp_state_connectivity_lost_error">Verbindung verloren</string>
     <string name="rtp_state_retracted">Rückruf</string>
     <string name="rtp_state_application_failure">Anwendungsfehler</string>
-    <string name="rtp_state_security_error">Problem bei der Verifizierung</string>
+    <string name="rtp_state_security_error">Problem bei der Überprüfung</string>
     <string name="incoming_call_duration">%s · Eingehender Anruf · %s</string>
     <string name="incoming_call_time">%s · Eingehender Anruf</string>
     <string name="incoming_call">Eingehender Anruf</string>
@@ -1066,8 +1065,8 @@
     <string name="could_not_correct_message">Nachricht konnte nicht korrigiert werden</string>
     <string name="search_all_conversations">Alle Unterhaltungen</string>
     <string name="search_this_conversation">Diese Unterhaltung</string>
-    <string name="your_avatar">Dein Avatar</string>
-    <string name="avatar_for_x">Avatar für %s</string>
+    <string name="your_avatar">Dein Profilbild</string>
+    <string name="avatar_for_x">Profilbild für %s</string>
     <string name="encrypted_with_omemo">Mit OMEMO verschlüsselt</string>
     <string name="encrypted_with_openpgp">Mit OpenPGP verschlüsselt</string>
     <string name="not_encrypted">Nicht verschlüsselt</string>
@@ -1132,6 +1131,7 @@
     <string name="oldAndroidVersionMessage">Du verwendest eine alte Android-Version, die in zukünftigen Updates nicht mehr unterstützt wird. Ab blabber.im Version 3.1.0 werden nur noch Geräte mit Android 5 oder höher unterstützt. Bitte aktualisiere deine Geräte-Firmware.</string>
     <string name="save_x_file">%s speichern</string>
     <string name="file_copied_to">Datei nach %s kopiert</string>
+    <string name="copy_file_to">Kopiere Datei nach %s</string>
     <string name="use_individual_notifications">Nutze individuelle Benachrichtigen</string>
     <string name="pref_remove_all_individual_summary">Entferne alle individuellen Benachrichtigungen für deine Kontakte und Gruppen.</string>
     <string name="pref_remove_all_individual_notifications_title">Entferne alle individuellen Benachrichtigen</string>
@@ -1143,11 +1143,11 @@
     <string name="backup_started_message">Die Sicherung wurde gestartet. Du erhältst eine Benachrichtigung, sobald sie abgeschlossen ist.</string>
     <string name="error_security_exception">Die App, die zum Freigeben dieser Datei verwendet wurde, hat nicht genügend Berechtigungen erteilt.</string>
     <string name="unable_to_enable_video">Video kann nicht aktiviert werden.</string>
-    <string name="plain_text_document">Reintext-Dokument</string>
+    <string name="plain_text_document">Nur-Text-Dokument</string>
     <string name="delete_recording_dialog_message">Soll die Aufnahme wirklich beendet und gelöscht werden?</string>
     <string name="pref_pause_voice_on_move_from_ear">Sprachnachrichten automatisch anhalten</string>
     <string name="pref_pause_voice_on_move_from_ear_summary">Hält die Wiedergabe von Sprachnachrichten an, sobald du dein Gerät vom Ohr entfernst.</string>
-    <string name="pref_import_settings_summary">Importiere Einstellungen aus der settings.dat Datei aus dem blabber.im Sicherungs-Verzeichnis.</string>
+    <string name="pref_import_settings_summary">Importiere Einstellungen aus der Datei \"settings.dat\" im blabber.im-Sicherungsverzeichnis.</string>
     <string name="pref_import_settings">Einstellungen importieren</string>
     <string name="success_import_settings">Einstellungen erfolgreich importiert.</string>
     <string name="error_import_settings">Fehler beim Importieren der Einstellungen.</string>
@@ -1159,12 +1159,26 @@
     <string name="pref_allowmergemessages">Nachrichten zusammenführen</string>
     <string name="pref_allowmergemessages_sum">Versuche Nachrichten zusammenzuführen, wenn sie von der gleichen JID stammen</string>
     <string name="show_edit_log">Nachrichtenverlauf</string>
-    <string name="reconnecting_call">Anruf erneut verbinden</string>
-    <string name="reconnecting_video_call">Videoanruf erneut verbinden</string>
+    <string name="reconnecting_call">Verbinde Anruf erneut</string>
+    <string name="reconnecting_video_call">Verbinden Videoanruf erneut</string>
     <string name="user">Nutzer</string>
     <string name="format_text">Text formatieren</string>
     <string name="bold">fett</string>
     <string name="italic">kursiv</string>
-    <string name="monospace">monospace</string>
+    <string name="monospace">Festbreite</string>
     <string name="strikethrough">durchgestrichen</string>
+    <string name="grant">Zugriff erlauben</string>
+    <string name="no_manage_storage_permission">Seit Android 11 benötigen Apps eine spezielle Erlaubnis, um auf alle Dateitypen auf dem externen Speicher zuzugreifen. blabber.im wird dich um Erlaubnis fragen, um fortzufahren.</string>
+    <string name="pref_showtextformatting_sum">Symbolleiste zur Textformatierung im Chat anzeigen, während die Tastatur angezeigt wird</string>
+    <string name="pref_showtextformatting">Symbolleiste zur Textformatierung im Chat anzeigen</string>
+    <string name="help_format_text">Du kannst einfache Formatierungsoptionen verwenden, um Text zu formatieren. Die Zeichen zur Kennzeichnung des Beginns und des Endes einer Formatierung befinden sich genau am Anfang und am Ende des zu formatierenden Wortes oder der Wortgruppe. Vor dem Beginnzeichen muss ein Leerzeichen und nach dem Endzeichen muss ebenfalls ein Leerzeichen stehen, sonst wird die Formatierung nicht erkannt.\n\nDu kannst die Formatierung direkt beim Schreiben verwenden, dies wird die Kennzeichen an der Position des Cursors einfügen. Oder du kannst ein Wort oder eine Wortgruppe markieren und eine Formatierung wählen.</string>
+    <string name="close">Schließen</string>
+    <string name="close_format_text">Willst du die Symbolleiste zur Textformatierung wirklich schließen? Du kannst die Symbolleiste in den Einstellungen wieder aktivieren.</string>
+    <string name="pref_show_date_in_quotes_summary">Zeige Datum und Zeit der von dir zitierten Nachrichten.</string>
+    <string name="pref_show_date_in_quotes">Zeige Datum und Zeit von zitierten Nachrichten</string>
+    <string name="delete_avatar">Eigenes Profilbild löschen</string>
+    <string name="import_backup_description">Seit Android 11 können keine Dateien mehr aufgelistet werden. Du kannst versuchen manuell zum Backup Verzeichnis zu navigieren, welches üblicherweise unter /Documents/blabber.im/Database zu finden ist.</string>
+    <string name="optimize_database">Optimiere Datenbank... bitte warten...</string>
+    <string name="verifying_omemo_keys_trusted_source_account">Du bestätigst deinen eigenen OMEMO-Fingerabdruck. Dies ist nur dann sicher, wenn du den Link von einer vertrauenswürdigen Quelle hast, auf welcher nur du den Link veröffentlichen konntest.</string>
+    <string name="continue_btn">Weiter</string>
 </resources>

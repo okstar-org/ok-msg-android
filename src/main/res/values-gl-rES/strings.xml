@@ -161,7 +161,6 @@
     <string name="mgmt_account_delete_confirm_message">Se borra a súa conta, todo o teu historial de conversacións locais perderase.\n\n-Si borra a súa conta do servidor, toda a súa conta borrarase tamén do servidor, non poderá volver entrar ata que rexistre una nova conta.</string>
     <string name="attach_record_voice">Grabar audio</string>
     <string name="account_settings_jabber_id">ID Jabber</string>
-    <string name="account_settings_example_jabber_id">nome_de_usuario@blabber.im</string>
     <string name="password">Contrasinal</string>
     <string name="invalid_jid">O identificador non é un identificador de Jabber válido</string>
     <string name="error_out_of_memory">Exceso de memoria. A imaxe é demasiado grande</string>
@@ -249,6 +248,8 @@
     <string name="pref_security_settings">Seguridade</string>
     <string name="pref_allow_message_correction">Permitir a corrección de mensaxes</string>
     <string name="pref_allow_message_correction_summary">Permitir aos seus contactos editar as súas mensaxes de xeito retroactivo</string>
+    <string name="pref_allow_message_retraction">Permitir a retirada de mensaxes</string>
+    <string name="pref_allow_message_retraction_summary">Permitir que os teus contactos se retracten retroactivamente das súas mensaxes</string>
     <string name="pref_expert_options">Axustes de experto</string>
     <string name="title_activity_about">Sobre o Conversations</string>
     <string name="pref_about_conversations_summary">Información da compilación e licenza</string>
@@ -809,6 +810,7 @@
     <string name="already_drafting_message">Xa está a redactar unha mensaxe.</string>
     <string name="bad_key_for_encryption">Clave errónea para a encriptación.</string>
     <string name="delete_message_dialog">Borrar mensaxe</string>
+    <string name="delete_message_dialog_msg">Estás seguro de que queres borrar esta mensaxe?\n\n<b>Perigo:</b> Non se garante que isto elimine as copias desta mensaxe que están almacenadas noutros dispositivos ou servidores.</string>
     <string name="feature_not_implemented">Función non implementada</string>
     <string name="device_does_not_support_unknown_source_op">O seu dispositivo non permite a instalación de aplicacións desde fontes descoñecidas.</string>
     <string name="reject_request">Rexeitar a solicitude</string>
@@ -933,9 +935,12 @@
     <string name="please_enter_password">Por favor introduza a contrasinal para esta conta</string>
     <string name="unable_to_perform_this_action">Non se pode realizar esta acción</string>
     <string name="waiting_for_transfer">Esperando para a transferencia</string>
+    <string name="me_quote">Eu:</string>
     <string name="your_status">O seu estado</string>
     <string name="pref_use_invidious">Substituír enlácelos de YouTube por Invidious</string>
+    <string name="pref_use_inner_storage">Utilizar o almacenamento interno para gardar os medios de comunicación</string>
     <string name="pref_use_invidious_summary">Invidious é unha alternativa a YouTube que respecta a privacidade</string>
+    <string name="pref_use_inner_storage_summary">Ningunha aplicación poderá ler os medios de comunicación desde o almacenamento interno</string>
     <string name="this_device">Este dispositivo</string>
     <string name="intro_desc_main">Saber máis…</string>
     <string name="welcome_header">Benvido a\n blabber.im</string>
@@ -1028,6 +1033,7 @@
     <string name="microphone_unavailable">O seu micrófono non está dispoñible</string>
     <string name="rtp_state_connecting">Conectando</string>
     <string name="rtp_state_connected">Conectado</string>
+    <string name="rtp_state_reconnecting">Reconectando</string>
     <string name="rtp_state_accepting_call">Aceptando a chamada</string>
     <string name="rtp_state_ending_call">Finalizando a chamada</string>
     <string name="rtp_state_finding_device">Descubrindo dispositivos</string>
@@ -1110,6 +1116,7 @@
     <string name="videos_usage">Uso de memoria dos vídeos</string>
     <string name="files_usage">Uso de memoria dos arquivos</string>
     <string name="audios_usage">Uso de memoria dos audios</string>
+    <string name="using_inner_storage">Utilizar o almacenamento interno</string>
     <string name="delete_files_dialog">Borrar arquivos adxuntos</string>
     <string name="delete_files_dialog_msg">Realmente quere borrar todos os %s?</string>
     <string name="audios">audios</string>
@@ -1124,6 +1131,7 @@
     <string name="oldAndroidVersionMessage">Está a utilizar unha versión antiga de Android que xa non será soportada en futuras actualizacións. A partir da versión 3.1.0 de blabber.im só admítense dispositivos con Android 5 ou superior. Por favor, actualice o firmware do teu dispositivo.</string>
     <string name="save_x_file">Gardar %s</string>
     <string name="file_copied_to">Arquivo copiado en %s</string>
+    <string name="copy_file_to">Copia o arquivo en %s</string>
     <string name="use_individual_notifications">Utilizar notificacións individuais</string>
     <string name="pref_remove_all_individual_summary">Eliminar todas as notificacións individuais dos teus contactos e grupos.</string>
     <string name="pref_remove_all_individual_notifications_title">Eliminar todas as notificacións individuais</string>
@@ -1143,4 +1151,31 @@
     <string name="pref_import_settings">Importar a configuración da aplicación</string>
     <string name="success_import_settings">Configuración importada con éxito.</string>
     <string name="error_import_settings">Erro ao importar a configuración.</string>
+    <string name="action_unfix_from_location">Desfixa a posición</string>
+    <string name="action_fix_to_location">Fixa a posición</string>
+    <string name="action_copy_location">Localización das copias</string>
+    <string name="account_registrations_are_not_supported">Non se admite o rexistro de contas</string>
+    <string name="no_xmpp_adddress_found">Non se atopou ningunha dirección XMPP</string>
+    <string name="pref_allowmergemessages">Fusionar menxases</string>
+    <string name="pref_allowmergemessages_sum">Tentar fusionar as mensaxes se proveñen do mesmo jid</string>
+    <string name="show_edit_log">Historial de mensaxes</string>
+    <string name="reconnecting_call">Reconectando a chamada</string>
+    <string name="reconnecting_video_call">Reconectando a video chamada</string>
+    <string name="user">Usuario</string>
+    <string name="format_text">Formato do texto</string>
+    <string name="bold">grosa</string>
+    <string name="italic">cursiva</string>
+    <string name="monospace">monoespazo</string>
+    <string name="strikethrough">riscado</string>
+    <string name="grant">Permitir</string>
+    <string name="no_manage_storage_permission">Desde Android 11, as aplicacións necesitan un permiso especial para acceder a todos os tipos de arquivos do almacenamento externo. blabber.im pedirache que concedas este permiso para continuar.</string>
+    <string name="pref_showtextformatting_sum">Mostrar a barra de ferramentas de formato de texto no chat mentres se mostra o teclado</string>
+    <string name="pref_showtextformatting">Mostrar a barra de ferramentas de formato de texto</string>
+    <string name="help_format_text">Pode utilizar opcións de estilo sinxelas para dar formato ao texto. As claves para identificar o comezo e o final dun formato atópanse exactamente ao principio e ao final da palabra ou do grupo de palabras. Debe haber un espazo antes da tecla de inicio e un espazo despois da tecla de finalización, de non ser así o formato non será recoñecido.\n\nPode utilizar as ferramentas directamente mentres escribe, pulsando unha ferramenta inserirase a tecla na posición do cursor. Ou pode marcar unha palabra ou grupo de palabras e pulsar un botón de formato.</string>
+    <string name="close">Pechar</string>
+    <string name="close_format_text">Realmente quere pechar a barra de ferramentas de formato de texto? Pode volver activar a barra de ferramentas na configuración.</string>
+    <string name="pref_show_date_in_quotes_summary">Mostrar a data e a hora das súas mensaxes citadas.</string>
+    <string name="pref_show_date_in_quotes">Mostrar data e hora das consultas</string>
+    <string name="delete_avatar">Borrar o avatar propio</string>
+    <string name="import_backup_description">Desde Android 11 non podemos listar os arquivos no almacenamento. Vostede pode tratar de navegar a unha ruta de copia de seguridade, que polo xeral se atopa en Documents/blabber.im/Database.</string>
 </resources>

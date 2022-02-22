@@ -163,7 +163,6 @@
     <string name="mgmt_account_delete_confirm_message">Hesabınızı silsəniz, bütün yerli danışıq tarixçəniz itiriləcəkdir.\n\n Hesabınızı serverdən silmisinizsə, bütün hesabınız serverdən də silinəcəkdir, yeni bir hesab qeyd etməyinizə qədər artıq daxil ola bilməyəcəksiniz..</string>
     <string name="attach_record_voice">Səs yazmaq</string>
     <string name="account_settings_jabber_id">Jabber-ID</string>
-    <string name="account_settings_example_jabber_id">istifadəçininadı@blabber.im</string>
     <string name="password">Şifrə</string>
     <string name="invalid_jid">Bu etibarlı Jabber-ID deyil</string>
     <string name="error_out_of_memory">Yaddaş dolub. Şəkil çox böyükdür</string>
@@ -251,6 +250,8 @@
     <string name="pref_security_settings">Təhlükəsizlik və məlumatların qorunması</string>
     <string name="pref_allow_message_correction">Mesaj düzəlişinə icazə verin</string>
     <string name="pref_allow_message_correction_summary">Kontaktlarınıza mesajlarını retroaktiv şəkildə redaktə etməyə icazə verin</string>
+    <string name="pref_allow_message_retraction">Mesaj düzəlişinə icazə verin</string>
+    <string name="pref_allow_message_retraction_summary">Kontaktlarınıza mesajlarını retroaktiv şəkildə redaktə etməyə icazə verin</string>
     <string name="pref_expert_options">Mütəxəssis parametrləri</string>
     <string name="title_activity_about">Haqqında</string>
     <string name="pref_about_conversations_summary">Quraşdırma və lisenziyalaşdırma məlumatları</string>
@@ -811,6 +812,7 @@
     <string name="already_drafting_message">Siz artıq bir mesaj hazırlayırsınız.</string>
     <string name="bad_key_for_encryption">Şifrələmə üçün pis açar.</string>
     <string name="delete_message_dialog">Mesaji sil</string>
+    <string name="delete_message_dialog_msg">Bu mesajı silmək istədiyinizə əminsinizmi? \n\n<b>Xəbərdarlıq:</b> Bu, digər cihazlar və ya serverdə saxlanılır, bu meaj nüsxəsinin aradan qaldırılması deyil.</string>
     <string name="feature_not_implemented">Funksiya tətbiq edilmədi</string>
     <string name="device_does_not_support_unknown_source_op">Cihazınız tətbiqləri bilinməyən mənbələrdən quraşdırmasına icazə vermir.</string>
     <string name="reject_request">İstəyi rədd et</string>
@@ -935,9 +937,12 @@
     <string name="please_enter_password">Zəhmət olmasa bu hesab üçün parol daxil edin</string>
     <string name="unable_to_perform_this_action">Bu hərəkəti yerinə yetirmək olmur</string>
     <string name="waiting_for_transfer">Transferi gözləyirəm</string>
+    <string name="me_quote">Mən:</string>
     <string name="your_status">Sənin statusun</string>
     <string name="pref_use_invidious">YouTube linkləri Invidious ilə əvəz edin</string>
+    <string name="pref_use_inner_storage">Faylları saxlamaq üçün daxili yaddaşdan istifadə</string>
     <string name="pref_use_invidious_summary">Invidious-bu YouTube-un şəxsi və dostsayağı alternativ servisdir</string>
+    <string name="pref_use_inner_storage_summary">Digər tətbiqlər daxili yaddaşdan faylları oxuya bilməyəcək</string>
     <string name="this_device">Bu cihaz</string>
     <string name="intro_desc_main">Daha ətraflı…</string>
     <string name="welcome_header">Blabber.im-ə xoş gəlmisən</string>
@@ -1030,6 +1035,7 @@
     <string name="microphone_unavailable">Mikrofon əlçatmazdır</string>
     <string name="rtp_state_connecting">Bağlantı qurulur</string>
     <string name="rtp_state_connected">Qoşuldu</string>
+    <string name="rtp_state_reconnecting">Bağlantı yenidən qurulur</string>
     <string name="rtp_state_accepting_call">Zəngi qəbul edir</string>
     <string name="rtp_state_ending_call">Zəngi bitir</string>
     <string name="rtp_state_finding_device">Cihazların kəşf etməsi</string>
@@ -1112,6 +1118,7 @@
     <string name="videos_usage">Videodən yaddaş istifadəsi</string>
     <string name="files_usage">Fayllardan yaddaş istifadəsi</string>
     <string name="audios_usage">Audiodan yaddaş istifadəsi</string>
+    <string name="using_inner_storage">Daxili yaddaşdan istifadə edin</string>
     <string name="delete_files_dialog">Bərkidilən faylların silinməsi</string>
     <string name="delete_files_dialog_msg">Həqiqətən bütün %s silmək istəyirsən?</string>
     <string name="audios">səslər</string>
@@ -1126,6 +1133,7 @@
     <string name="oldAndroidVersionMessage">Gələcək yeniləmələrdə artıq dəstəklənməyəcək köhnə bir Android versiyasından istifadə edirsiniz. Blabber.im versiyası 3.1.0-dan yalnız Android 5 və ya daha yüksək olan cihazlara dəstək verilir. Zəhmət olmasa cihazınızın proqram təminatını yeniləyin.</string>
     <string name="save_x_file">Saxla %s</string>
     <string name="file_copied_to">Faylı %s saxla</string>
+    <string name="copy_file_to">Faylı %s-ə kopyala</string>
     <string name="use_individual_notifications">Fərdi bildirişlərdən istifadə edin</string>
     <string name="pref_remove_all_individual_summary">Kontaktlarınız və qruplarınız üçün bütün fərdi bildirişləri silin.</string>
     <string name="pref_remove_all_individual_notifications_title">Bütün fərdi bildirişləri silin</string>
@@ -1141,4 +1149,34 @@
     <string name="delete_recording_dialog_message">Həqiqətən yazını ləğv etmək və silmək istəyirsiniz?</string>
     <string name="pref_pause_voice_on_move_from_ear">Səs mesajını avtomatik dayandırın</string>
     <string name="pref_pause_voice_on_move_from_ear_summary">Cihazınızı qulağınızdan uzaqlaşdırdığınız zaman səs mesajını dayandırın.</string>
+    <string name="pref_import_settings_summary">Blabber.im ehtiyat qovluğundakı settings.dat faylından proqram parametrlərini idxal edin.</string>
+    <string name="pref_import_settings">Tənzimləmələri idxal et</string>
+    <string name="success_import_settings">Tənzimləmələr, uğurla idxal edildi.</string>
+    <string name="error_import_settings">Tənzimləmələr yenilənmədi.</string>
+    <string name="action_unfix_from_location">Mövqeyi aradan qaldırın</string>
+    <string name="action_fix_to_location">Mövqeyi düzəltmək</string>
+    <string name="action_copy_location">Mövqeyi kopyalayın</string>
+    <string name="account_registrations_are_not_supported">Hesab qeydiyyatı dəstəklənmir</string>
+    <string name="no_xmpp_adddress_found">XMPP ünvanı tapılmadı</string>
+    <string name="pref_allowmergemessages">Mesajları birləşdirin</string>
+    <string name="pref_allowmergemessages_sum">Mesajlar eyni ciddən gəlibsə, onları birləşdirməyə çalışın</string>
+    <string name="show_edit_log">Mesaj tarixçəsi</string>
+    <string name="reconnecting_call">Bağlantı yenidən qurulur</string>
+    <string name="reconnecting_video_call">Video bağlantı yenidən qurulur</string>
+    <string name="user">İstifadəçi</string>
+    <string name="format_text">Mətnin formatı</string>
+    <string name="bold">qalın</string>
+    <string name="italic">kursiv</string>
+    <string name="monospace">monospace</string>
+    <string name="strikethrough">üstündən xətt</string>
+    <string name="grant">İcazə ver</string>
+    <string name="no_manage_storage_permission">Android 11-dən bəri tətbiqlərə xarici yaddaşdakı bütün fayl növlərinə daxil olmaq üçün xüsusi icazə lazımdır. blabber.im davam etmək üçün bu icazəni vermənizi xahiş edəcək.</string>
+    <string name="pref_showtextformatting_sum">Klaviaturanı göstərərkən söhbətdə mətn formatı alət panelini göstərin</string>
+    <string name="pref_showtextformatting">Mətn formatlama alətlər panelini göstərin</string>
+    <string name="help_format_text">Mətninizi formatlaşdırmaq üçün sadə üslub seçimlərindən istifadə edə bilərsiniz. Formatlaşdırmanın başlanğıcını və sonunu müəyyən etmək üçün düymələr sözün və ya söz qrupunun əvvəlində və sonundadır. Başlanğıc düyməsindən əvvəl boşluq və bitirmə düyməsindən sonra boşluq olmalıdır, əks halda formatlaşdırma tanınmayacaq.\n\nAlətlərdən yazarkən birbaşa istifadə edə bilərsiniz, alətə basmaqla düymə kursorlar mövqeyinə daxil ediləcək. Və ya bir söz və ya söz qrupunu qeyd edib formatlaşdırma düyməsini sıxa bilərsiniz.</string>
+    <string name="close">Bağla</string>
+    <string name="close_format_text">Siz həqiqətən mətn formatlama alətlər panelini bağlamaq istəyirsiniz? Parametrlərdə alətlər panelini yenidən aktivləşdirə bilərsiniz.</string>
+    <string name="pref_show_date_in_quotes_summary">Qeyd olunan mesajlarınızın tarixini və vaxtını göstərin.</string>
+    <string name="pref_show_date_in_quotes">Sitatların tarixini və vaxtını göstərin</string>
+    <string name="delete_avatar">Öz yazılarınızı silin</string>
 </resources>
