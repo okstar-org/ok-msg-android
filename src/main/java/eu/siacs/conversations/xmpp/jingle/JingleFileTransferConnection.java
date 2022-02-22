@@ -492,26 +492,32 @@ public class JingleFileTransferConnection extends AbstractJingleConnection imple
                 AbstractConnectionManager.Extension extension = AbstractConnectionManager.Extension.of(path);
                 if (VALID_IMAGE_EXTENSIONS.contains(extension.main)) {
                     message.setType(Message.TYPE_IMAGE);
+                    final String filename;
                     if (message.getStatus() == Message.STATUS_RECEIVED) {
-                        message.setRelativeFilePath(fileDateFormat.format(new Date(message.getTimeSent())) + "_" + message.getUuid().substring(0, 4) + "." + extension.main);
+                        filename = fileDateFormat.format(new Date(message.getTimeSent())) + "_" + message.getUuid().substring(0, 4) + "." + extension.main;
                     } else {
-                        message.setRelativeFilePath("Sent/" + fileDateFormat.format(new Date(message.getTimeSent())) + "_" + message.getUuid().substring(0, 4) + "." + extension.main);
+                        filename = "Sent/" + fileDateFormat.format(new Date(message.getTimeSent())) + "_" + message.getUuid().substring(0, 4) + "." + extension.main;
                     }
+                    xmppConnectionService.getFileBackend().setupRelativeFilePath(message, filename);
                 } else if (VALID_CRYPTO_EXTENSIONS.contains(extension.main)) {
                     if (VALID_IMAGE_EXTENSIONS.contains(extension.secondary)) {
                         message.setType(Message.TYPE_IMAGE);
+                        final String filename;
                         if (message.getStatus() == Message.STATUS_RECEIVED) {
-                            message.setRelativeFilePath(fileDateFormat.format(new Date(message.getTimeSent())) + "_" + message.getUuid().substring(0, 4) + "." + extension.secondary);
+                            filename = fileDateFormat.format(new Date(message.getTimeSent())) + "_" + message.getUuid().substring(0, 4) + "." + extension.secondary;
                         } else {
-                            message.setRelativeFilePath("Sent/" + fileDateFormat.format(new Date(message.getTimeSent())) + "_" + message.getUuid().substring(0, 4) + "." + extension.secondary);
+                            filename = "Sent/" + fileDateFormat.format(new Date(message.getTimeSent())) + "_" + message.getUuid().substring(0, 4) + "." + extension.secondary;
                         }
+                        xmppConnectionService.getFileBackend().setupRelativeFilePath(message, filename);
                     } else {
                         message.setType(Message.TYPE_FILE);
+                        final String filename;
                         if (message.getStatus() == Message.STATUS_RECEIVED) {
-                            message.setRelativeFilePath(fileDateFormat.format(new Date(message.getTimeSent())) + "_" + message.getUuid().substring(0, 4) + (extension.secondary != null ? ("." + extension.secondary) : ""));
+                            filename = fileDateFormat.format(new Date(message.getTimeSent())) + "_" + message.getUuid().substring(0, 4) + (extension.secondary != null ? ("." + extension.secondary) : "");
                         } else {
-                            message.setRelativeFilePath("Sent/" + fileDateFormat.format(new Date(message.getTimeSent())) + "_" + message.getUuid().substring(0, 4) + (extension.secondary != null ? ("." + extension.secondary) : ""));
+                            filename = "Sent/" + fileDateFormat.format(new Date(message.getTimeSent())) + "_" + message.getUuid().substring(0, 4) + (extension.secondary != null ? ("." + extension.secondary) : "");
                         }
+                        xmppConnectionService.getFileBackend().setupRelativeFilePath(message, filename);
                     }
                     // only for OTR compatibility
                     if (extension.main.equals("otr")) {
@@ -521,11 +527,13 @@ public class JingleFileTransferConnection extends AbstractJingleConnection imple
                     }
                 } else {
                     message.setType(Message.TYPE_FILE);
+                    final String filename;
                     if (message.getStatus() == Message.STATUS_RECEIVED) {
-                        message.setRelativeFilePath(fileDateFormat.format(new Date(message.getTimeSent())) + "_" + message.getUuid().substring(0, 4) + (extension.main != null ? ("." + extension.main) : ""));
+                        filename = fileDateFormat.format(new Date(message.getTimeSent())) + "_" + message.getUuid().substring(0, 4) + (extension.main != null ? ("." + extension.main) : "");
                     } else {
-                        message.setRelativeFilePath("Sent/" + fileDateFormat.format(new Date(message.getTimeSent())) + "_" + message.getUuid().substring(0, 4) + (extension.main != null ? ("." + extension.main) : ""));
+                        filename = "Sent/" + fileDateFormat.format(new Date(message.getTimeSent())) + "_" + message.getUuid().substring(0, 4) + (extension.main != null ? ("." + extension.main) : "");
                     }
+                    xmppConnectionService.getFileBackend().setupRelativeFilePath(message, filename);
                 }
                 long size = parseLong(fileSize, 0);
                 message.setBody(Long.toString(size));

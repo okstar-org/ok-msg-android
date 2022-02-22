@@ -3,13 +3,10 @@ package eu.siacs.conversations.ui.util;
 import android.content.ActivityNotFoundException;
 import android.content.Context;
 import android.content.Intent;
-import android.content.pm.PackageManager;
-import android.content.pm.ResolveInfo;
 import android.net.Uri;
 import android.util.Log;
 
 import java.io.File;
-import java.util.List;
 
 import eu.siacs.conversations.Config;
 import eu.siacs.conversations.R;
@@ -39,7 +36,8 @@ public class ViewUtil {
     }
 
     public static void view(Context context, File file, String mime) {
-        Uri uri;
+        Log.d(Config.LOGTAG, "viewing " + file.getAbsolutePath() + " " + mime);
+        final Uri uri;
         try {
             uri = FileBackend.getUriForFile(context, file);
         } catch (SecurityException e) {
@@ -49,35 +47,28 @@ public class ViewUtil {
         }
         // use internal viewer for images and videos
         if (mime.startsWith("image/")) {
-            Intent intent = new Intent(context, MediaViewerActivity.class);
+            final Intent intent = new Intent(context, MediaViewerActivity.class);
             intent.putExtra("image", Uri.fromFile(file));
             try {
                 context.startActivity(intent);
-                return;
             } catch (ActivityNotFoundException e) {
                 //ignored
             }
         } else if (mime.startsWith("video/")) {
-            Intent intent = new Intent(context, MediaViewerActivity.class);
+            final Intent intent = new Intent(context, MediaViewerActivity.class);
             intent.putExtra("video", Uri.fromFile(file));
             try {
                 context.startActivity(intent);
-                return;
             } catch (ActivityNotFoundException e) {
                 //ignored
             }
         } else {
-            Intent openIntent = new Intent(Intent.ACTION_VIEW);
+            final Intent openIntent = new Intent(Intent.ACTION_VIEW);
             openIntent.setDataAndType(uri, mime);
             openIntent.setFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION);
-            PackageManager manager = context.getPackageManager();
-            List<ResolveInfo> info = manager.queryIntentActivities(openIntent, 0);
-            if (info.size() == 0) {
-                openIntent.setDataAndType(uri, "*/*");
-            }
             try {
                 context.startActivity(openIntent);
-            } catch (ActivityNotFoundException e) {
+            } catch (final ActivityNotFoundException e) {
                 ToastCompat.makeText(context, R.string.no_application_found_to_open_file, ToastCompat.LENGTH_SHORT).show();
             }
         }
