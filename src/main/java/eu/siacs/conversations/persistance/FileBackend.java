@@ -543,7 +543,7 @@ public class FileBackend {
 
     public static String getConversationsDirectory(final Context context, final String type) {
         if (type.equalsIgnoreCase("null")) {
-            return getStorage(context, STORAGE_INDEX.get()) + APP_DIRECTORY + File.separator;
+            return getStorage(context, STORAGE_INDEX.get());
         } else {
             if (Compatibility.runsThirty()) {
                 return getAppMediaDirectory(context) + type + File.separator;
