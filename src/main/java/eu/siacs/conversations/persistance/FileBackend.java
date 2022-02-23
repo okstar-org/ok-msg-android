@@ -741,25 +741,15 @@ public class FileBackend {
         }
     }
 
-    private String getExtensionFromUri(Uri uri) {
-        String[] projection = {MediaStore.MediaColumns.DATA};
+    private String getExtensionFromUri(final Uri uri) {
+        final String[] projection = {MediaStore.MediaColumns.DATA};
         String filename = null;
-        Cursor cursor;
-        try {
-            cursor = mXmppConnectionService.getContentResolver().query(uri, projection, null, null, null);
-        } catch (IllegalArgumentException e) {
-            cursor = null;
-        }
-        if (cursor != null) {
-            try {
-                if (cursor.moveToFirst()) {
-                    filename = cursor.getString(0);
-                }
-            } catch (Exception e) {
-                filename = null;
-            } finally {
-                cursor.close();
+        try (final Cursor cursor = mXmppConnectionService.getContentResolver().query(uri, projection, null, null, null)) {
+            if (cursor != null && cursor.moveToFirst()) {
+                filename = cursor.getString(0);
             }
+        } catch (final SecurityException | IllegalArgumentException e) {
+            filename = null;
         }
         if (filename == null) {
             final List<String> segments = uri.getPathSegments();
@@ -767,7 +757,7 @@ public class FileBackend {
                 filename = segments.get(segments.size() - 1);
             }
         }
-        int pos = filename == null ? -1 : filename.lastIndexOf('.');
+        final int pos = filename == null ? -1 : filename.lastIndexOf('.');
         return pos > 0 ? filename.substring(pos + 1) : null;
     }
 
