@@ -1,6 +1,5 @@
 package eu.siacs.conversations.ui;
 
-import static eu.siacs.conversations.ui.SettingsActivity.USE_BUNDLED_EMOJIS;
 import static eu.siacs.conversations.ui.SettingsActivity.USE_INTERNAL_UPDATER;
 
 import android.Manifest;
@@ -85,7 +84,7 @@ import eu.siacs.conversations.entities.Message;
 import eu.siacs.conversations.entities.Presences;
 import eu.siacs.conversations.services.AvatarService;
 import eu.siacs.conversations.services.BarcodeProvider;
-import eu.siacs.conversations.services.EmojiService;
+import eu.siacs.conversations.services.EmojiInitializationService;
 import eu.siacs.conversations.services.QuickConversationsService;
 import eu.siacs.conversations.services.UpdateService;
 import eu.siacs.conversations.services.XmppConnectionService;
@@ -456,12 +455,8 @@ public abstract class XmppActivity extends ActionBarActivity {
         setTheme(this.mTheme);
         metrics = getResources().getDisplayMetrics();
         ExceptionHelper.init(getApplicationContext());
-        new EmojiService(this).init(getPreferences().getBoolean(USE_BUNDLED_EMOJIS, getResources().getBoolean(R.bool.use_bundled_emoji)));
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN_MR1) {
-            this.isCameraFeatureAvailable = getPackageManager().hasSystemFeature(PackageManager.FEATURE_CAMERA_ANY);
-        } else {
-            this.isCameraFeatureAvailable = getPackageManager().hasSystemFeature(PackageManager.FEATURE_CAMERA);
-        }
+        EmojiInitializationService.execute(this);
+        this.isCameraFeatureAvailable = getPackageManager().hasSystemFeature(PackageManager.FEATURE_CAMERA_ANY);
         if (isDarkTheme()) {
             mColorWarningButton = ContextCompat.getColor(this, R.color.warning_button_dark);
             mColorWarningText = ContextCompat.getColor(this, R.color.warning_button);

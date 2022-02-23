@@ -97,7 +97,6 @@ import eu.siacs.conversations.ui.util.IntroHelper;
 import eu.siacs.conversations.ui.util.PendingItem;
 import eu.siacs.conversations.ui.util.StyledAttributes;
 import eu.siacs.conversations.ui.util.UpdateHelper;
-import eu.siacs.conversations.utils.EmojiWrapper;
 import eu.siacs.conversations.utils.ExceptionHelper;
 import eu.siacs.conversations.utils.MenuDoubleTabUtil;
 import eu.siacs.conversations.utils.Namespace;
@@ -885,7 +884,7 @@ public class ConversationsActivity extends XmppActivity implements OnConversatio
                 actionBar.setDisplayShowCustomEnabled(true);
                 TextView abtitle = findViewById(android.R.id.text1);
                 TextView absubtitle = findViewById(android.R.id.text2);
-                abtitle.setText(EmojiWrapper.transform(conversation.getName()));
+                abtitle.setText(conversation.getName());
                 abtitle.setSelected(true);
                 if (conversation.getMode() == Conversation.MODE_SINGLE) {
                     if (!conversation.withSelf()) {
@@ -921,7 +920,7 @@ public class ConversationsActivity extends XmppActivity implements OnConversatio
                         if (userWithChatStates.size() > 0) {
                             if (userWithChatStates.size() == 1) {
                                 MucOptions.User user = userWithChatStates.get(0);
-                                absubtitle.setText(EmojiWrapper.transform(getString(R.string.contact_is_typing, UIHelper.getDisplayName(user))));
+                                absubtitle.setText(getString(R.string.contact_is_typing, UIHelper.getDisplayName(user)));
                                 absubtitle.setVisibility(View.VISIBLE);
                             } else {
                                 StringBuilder builder = new StringBuilder();
@@ -931,7 +930,7 @@ public class ConversationsActivity extends XmppActivity implements OnConversatio
                                     }
                                     builder.append(UIHelper.getDisplayName(user));
                                 }
-                                absubtitle.setText(EmojiWrapper.transform(getString(R.string.contacts_are_typing, builder.toString())));
+                                absubtitle.setText(getString(R.string.contacts_are_typing, builder.toString()));
                                 absubtitle.setVisibility(View.VISIBLE);
                             }
                         }

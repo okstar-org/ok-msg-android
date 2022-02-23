@@ -33,7 +33,6 @@ import eu.siacs.conversations.ui.ConversationFragment;
 import eu.siacs.conversations.ui.XmppActivity;
 import eu.siacs.conversations.ui.util.AvatarWorkerTask;
 import eu.siacs.conversations.ui.util.StyledAttributes;
-import eu.siacs.conversations.utils.EmojiWrapper;
 import eu.siacs.conversations.utils.IrregularUnicodeDetector;
 import eu.siacs.conversations.utils.StylingHelper;
 import eu.siacs.conversations.utils.UIHelper;
@@ -72,7 +71,7 @@ public class ConversationAdapter extends RecyclerView.Adapter<ConversationAdapte
         if (name instanceof Jid) {
             viewHolder.binding.conversationName.setText(IrregularUnicodeDetector.style(activity, (Jid) name));
         } else {
-            viewHolder.binding.conversationName.setText(EmojiWrapper.transform(name));
+            viewHolder.binding.conversationName.setText(name);
         }
 
         if (activity.xmppConnectionService.multipleAccounts() && activity.xmppConnectionService.showOwnAccounts()) {
@@ -119,7 +118,7 @@ public class ConversationAdapter extends RecyclerView.Adapter<ConversationAdapte
 
         if (draft != null) {
             viewHolder.binding.conversationLastmsgImg.setVisibility(View.GONE);
-            viewHolder.binding.conversationLastmsg.setText(EmojiWrapper.transform(replaceYoutube(activity.getApplicationContext(), draft.getMessage())));
+            viewHolder.binding.conversationLastmsg.setText(draft.getMessage());
             viewHolder.binding.senderName.setText(R.string.draft);
             viewHolder.binding.senderName.setVisibility(View.VISIBLE);
             viewHolder.binding.conversationLastmsg.setTypeface(null, Typeface.NORMAL);
@@ -163,11 +162,11 @@ public class ConversationAdapter extends RecyclerView.Adapter<ConversationAdapte
             final Pair<CharSequence, Boolean> preview = UIHelper.getMessagePreview(activity, message, viewHolder.binding.conversationLastmsg.getCurrentTextColor());
             if (showPreviewText) {
                 if (message.hasDeletedBody()) {
-                    viewHolder.binding.conversationLastmsg.setText(EmojiWrapper.transform(UIHelper.shorten(activity.getString(R.string.message_deleted))));
+                    viewHolder.binding.conversationLastmsg.setText(UIHelper.shorten(activity.getString(R.string.message_deleted)));
                 } else {
                     SpannableStringBuilder body = new SpannableStringBuilder(replaceYoutube(activity.getApplicationContext(), preview.first.toString()));
                     StylingHelper.format(body, viewHolder.binding.conversationLastmsg.getCurrentTextColor(), true);
-                    viewHolder.binding.conversationLastmsg.setText(EmojiWrapper.transform(UIHelper.shorten(body)));
+                    viewHolder.binding.conversationLastmsg.setText(UIHelper.shorten(body));
                 }
             } else {
                 viewHolder.binding.conversationLastmsgImg.setContentDescription(preview.first);

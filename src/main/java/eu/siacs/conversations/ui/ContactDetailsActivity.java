@@ -67,7 +67,6 @@ import eu.siacs.conversations.ui.util.CallManager;
 import eu.siacs.conversations.ui.util.GridManager;
 import eu.siacs.conversations.ui.util.JidDialog;
 import eu.siacs.conversations.utils.Compatibility;
-import eu.siacs.conversations.utils.EmojiWrapper;
 import eu.siacs.conversations.utils.Emoticons;
 import eu.siacs.conversations.utils.IrregularUnicodeDetector;
 import eu.siacs.conversations.utils.MenuDoubleTabUtil;
@@ -590,7 +589,7 @@ public class ContactDetailsActivity extends OmemoActivity implements OnAccountUp
                         builder.append("\n");
                     }
                 }
-                binding.statusMessage.setText(EmojiWrapper.transform(builder));
+                binding.statusMessage.setText(builder);
             }
             String resources = contact.getPresences().getMostAvailableResource();
             if (resources.length() == 0) {
