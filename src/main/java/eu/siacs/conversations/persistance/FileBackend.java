@@ -439,7 +439,7 @@ public class FileBackend {
         }
         final DownloadableFile file = getFileForPath(path, message.getMimeType());
         if (encrypted) {
-            return new DownloadableFile(getConversationsDirectory(mXmppConnectionService, FILES) + file.getName() + ".pgp");
+            return new DownloadableFile(mXmppConnectionService.getCacheDir(), String.format("%s.%s", file.getName(), "pgp"));
         } else {
             return file;
         }
@@ -664,15 +664,13 @@ public class FileBackend {
             }
             try {
                 ByteStreams.copy(is, os);
-            } catch (IOException e) {
-                throw new FileWriterException();
             } catch (Exception e) {
-                throw new FileWriterException();
+                throw new FileWriterException(file);
             }
             try {
                 os.flush();
             } catch (IOException e) {
-                throw new FileWriterException();
+                throw new FileWriterException(file);
             }
         } catch (final FileNotFoundException e) {
             cleanup(file);
