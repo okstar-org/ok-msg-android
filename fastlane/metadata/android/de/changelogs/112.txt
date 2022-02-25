@@ -1,0 +1,4 @@
+* Verbesserung der Leistung
+* verbesserte Strings
+* semi-transparente blaue Datums Bubble
+* mehrere Fixes

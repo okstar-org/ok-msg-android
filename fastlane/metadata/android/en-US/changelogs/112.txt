@@ -1,0 +1,4 @@
+* improve performance
+* improved strings
+* translucent blue date bubble 
+* several fixes
