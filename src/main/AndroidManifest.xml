@@ -72,8 +72,7 @@
 
         <service android:name=".services.XmppConnectionService" />
 
-        <receiver android:name=".services.EventReceiver"
-            android:exported="false">
+        <receiver android:name=".services.EventReceiver">
             <intent-filter>
                 <action android:name="android.intent.action.BOOT_COMPLETED" />
                 <action android:name="android.net.conn.CONNECTIVITY_CHANGE" />
@@ -83,7 +82,9 @@
             </intent-filter>
             <intent-filter>
                 <action android:name="android.intent.action.PACKAGE_REPLACED" />
-
+                <data
+                    android:path="${applicationId}"
+                    android:scheme="package" />
             </intent-filter>
             <intent-filter>
                 <action android:name="android.intent.action.PACKAGE_RESTARTED" />
@@ -92,7 +93,7 @@
                     android:scheme="package" />
             </intent-filter>
         </receiver>
-        <receiver android:name=".services.AlarmReceiver" />
+        <receiver android:name=".services.AlarmReceiver"></receiver>
 
         <activity
             android:name="de.monocles.chat.ui.StartUI"
@@ -100,8 +101,7 @@
             android:label="@string/app_name"
             android:launchMode="singleTask"
             android:theme="@style/SplashTheme"
-            android:windowSoftInputMode="stateHidden"
-            android:exported="true">
+            android:windowSoftInputMode="stateHidden">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
                 <category android:name="android.intent.category.LAUNCHER" />
@@ -121,8 +121,7 @@
             android:windowSoftInputMode="stateAlwaysHidden" />
         <activity
             android:name=".ui.UriHandlerActivity"
-            android:label="@string/app_name"
-            android:exported="true">
+            android:label="@string/app_name">
             <intent-filter>
                 <action android:name="android.intent.action.VIEW" />
 
@@ -138,7 +137,7 @@
                 <category android:name="android.intent.category.BROWSABLE" />
 
                 <data android:scheme="https" />
-                <data android:host="monocles.de" />
+                <data android:host="monocles.eu" />
                 <data android:pathPrefix="/i/" />
                 <data android:pathPrefix="/j/" />
             </intent-filter>
@@ -163,8 +162,7 @@
             android:name=".ui.StartConversationActivity"
             android:configChanges="orientation|screenSize"
             android:label="@string/title_activity_start_conversation"
-            android:launchMode="singleTop"
-            android:exported="true">
+            android:launchMode="singleTop">
             <intent-filter>
                 <action android:name="android.intent.action.VIEW" />
             </intent-filter>
@@ -184,8 +182,7 @@
         <activity
             android:name=".ui.ImportBackupActivity"
             android:label="@string/restore_backup"
-            android:launchMode="singleTask"
-            android:exported="true">
+            android:launchMode="singleTask">
             <intent-filter>
                 <action android:name="android.intent.action.VIEW" />
                 <category android:name="android.intent.category.DEFAULT" />
@@ -237,8 +234,7 @@
         </activity>
         <activity
             android:name=".ui.SettingsActivity"
-            android:label="@string/title_activity_settings"
-            android:exported="true">
+            android:label="@string/title_activity_settings">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
                 <category android:name="android.intent.category.NOTIFICATION_PREFERENCES" />
@@ -256,8 +252,7 @@
         <activity
             android:name=".ui.ChooseAccountForProfilePictureActivity"
             android:enabled="false"
-            android:label="@string/choose_account"
-            android:exported="false">
+            android:label="@string/choose_account">
             <intent-filter android:label="@string/set_profile_picture">
                 <action android:name="android.intent.action.ATTACH_DATA" />
                 <category android:name="android.intent.category.DEFAULT" />
@@ -294,14 +289,9 @@
             android:name=".ui.PublishGroupChatProfilePictureActivity"
             android:label="@string/group_chat_avatar" />
         <activity
-            android:name=".ui.VerifyOTRActivity"
-            android:label="@string/verify_otr"
-            android:windowSoftInputMode="stateHidden" />
-        <activity
             android:name=".ui.ShareWithActivity"
             android:label="@string/app_name"
-            android:launchMode="singleTop"
-            android:exported="true">
+            android:launchMode="singleTop">
             <intent-filter>
                 <action android:name="android.intent.action.SEND" />
                 <action android:name="android.intent.action.SEND_MULTIPLE" />
@@ -353,8 +343,7 @@
             android:name=".ui.AboutActivity"
             android:label="@string/title_activity_about"
             android:launchMode="singleTask"
-            android:parentActivityName=".ui.SettingsActivity"
-            android:exported="true">
+            android:parentActivityName=".ui.SettingsActivity">
             <intent-filter>
                 <action android:name="android.intent.action.VIEW" />
                 <category android:name="android.intent.category.PREFERENCE" />
@@ -367,8 +356,7 @@
             android:name=".ui.MemoryManagementActivity"
             android:label="@string/title_memory_management"
             android:launchMode="singleTask"
-            android:parentActivityName=".ui.SettingsActivity"
-            android:exported="true">
+            android:parentActivityName=".ui.SettingsActivity">
             <intent-filter>
                 <action android:name="android.intent.action.VIEW" />
                 <category android:name="android.intent.category.PREFERENCE" />
@@ -386,8 +374,7 @@
         <activity
             android:name=".ui.ShortcutActivity"
             android:label="@string/contact"
-            android:launchMode="singleTask"
-            android:exported="false">
+            android:launchMode="singleTask">
             <intent-filter>
                 <action android:name="android.intent.action.CREATE_SHORTCUT" />
             </intent-filter>
@@ -426,8 +413,7 @@
         <service android:name=".services.ImportBackupService" />
         <service
             android:name=".services.ContactChooserTargetService"
-            android:permission="android.permission.BIND_CHOOSER_TARGET_SERVICE"
-            android:exported="false">
+            android:permission="android.permission.BIND_CHOOSER_TARGET_SERVICE">
             <intent-filter>
                 <action android:name="android.service.chooser.ChooserTargetService" />
             </intent-filter>
