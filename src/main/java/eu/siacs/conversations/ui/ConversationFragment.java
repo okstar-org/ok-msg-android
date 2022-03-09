@@ -10,6 +10,7 @@ import static eu.siacs.conversations.ui.util.SoftKeyboardUtils.hideSoftKeyboard;
 import static eu.siacs.conversations.utils.PermissionUtils.allGranted;
 import static eu.siacs.conversations.utils.PermissionUtils.getFirstDenied;
 import static eu.siacs.conversations.utils.PermissionUtils.readGranted;
+import static eu.siacs.conversations.utils.StorageHelper.getConversationsDirectory;
 import static eu.siacs.conversations.xmpp.Patches.ENCRYPTION_EXCEPTIONS;
 
 import android.Manifest;
@@ -1464,9 +1465,9 @@ public class ConversationFragment extends XmppFragment implements EditMessage.Ke
                 cancelTransmission.setVisible(true);
             }
             if (m.isFileOrImage() && !fileDeleted && !cancelable) {
-                String path = m.getRelativeFilePath();
+                final String path = m.getRelativeFilePath();
                 Log.d(Config.LOGTAG, "Path = " + path);
-                if (path == null || !path.startsWith("/") || path.contains(FileBackend.getConversationsDirectory(this.activity, "null"))) {
+                if (path == null || !path.startsWith("/") || path.contains(getConversationsDirectory(this.activity, "null").getAbsolutePath())) {
                     deleteFile.setVisible(true);
                     deleteFile.setTitle(activity.getString(R.string.delete_x_file, UIHelper.getFileDescriptionString(activity, m)));
                 }

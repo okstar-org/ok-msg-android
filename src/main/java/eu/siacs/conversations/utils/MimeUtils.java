@@ -594,7 +594,7 @@ public final class MimeUtils {
         return null;
     }
 
-    private static String guessFromPath(final String path) {
+    public static String guessFromPath(final String path) {
         final int start = path.lastIndexOf('.') + 1;
         if (start < path.length()) {
             return MimeUtils.guessMimeTypeFromExtension(path.substring(start));

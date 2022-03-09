@@ -1,5 +1,7 @@
 package eu.siacs.conversations.ui;
 
+import static eu.siacs.conversations.utils.StorageHelper.getAppMediaDirectory;
+
 import android.content.Context;
 import android.content.Intent;
 import android.os.AsyncTask;
@@ -55,7 +57,10 @@ public class MemoryManagementPref extends Preference {
         @Override
         protected Void doInBackground(Void... params) {
             totalMemory = UIHelper.filesizeToString(FileBackend.getDiskSize());
-            mediaUsage = UIHelper.filesizeToString(FileBackend.getDirectorySize(new File(FileBackend.getAppMediaDirectory(mContext))));
+            mediaUsage = UIHelper.filesizeToString(FileBackend.getDirectorySize(new File(getAppMediaDirectory(mContext, FileBackend.AUDIOS)))
+                    + FileBackend.getDirectorySize(new File(getAppMediaDirectory(mContext, FileBackend.FILES)))
+                    + FileBackend.getDirectorySize(new File(getAppMediaDirectory(mContext, FileBackend.IMAGES)))
+                    + FileBackend.getDirectorySize(new File(getAppMediaDirectory(mContext, FileBackend.VIDEOS))));
             return null;
         }
 

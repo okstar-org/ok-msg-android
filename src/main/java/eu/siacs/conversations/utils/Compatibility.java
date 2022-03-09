@@ -63,6 +63,10 @@ public class Compatibility {
         return Build.VERSION.SDK_INT >= Build.VERSION_CODES.P;
     }
 
+    public static boolean runsTwentyNine() {
+        return Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q;
+    }
+
     public static boolean runsThirty() {
         return Build.VERSION.SDK_INT >= Build.VERSION_CODES.R;
     }

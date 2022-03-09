@@ -4,6 +4,7 @@ import static eu.siacs.conversations.Config.blabber;
 import static eu.siacs.conversations.http.HttpConnectionManager.getProxy;
 import static eu.siacs.conversations.services.XmppConnectionService.FDroid;
 import static eu.siacs.conversations.services.XmppConnectionService.PlayStore;
+import static eu.siacs.conversations.utils.StorageHelper.getAppUpdateDirectory;
 
 import android.Manifest;
 import android.app.ProgressDialog;
@@ -116,7 +117,7 @@ public class UpdaterActivity extends XmppActivity {
                 store = null;
             }
             //delete old downloaded localVersion files
-            File dir = new File(FileBackend.getAppUpdateDirectory());
+            File dir = new File(getAppUpdateDirectory());
             if (dir.isDirectory()) {
                 String[] children = dir.list();
                 for (String aChildren : children) {
@@ -303,7 +304,7 @@ public class UpdaterActivity extends XmppActivity {
             this.context = context;
         }
 
-        File dir = new File(FileBackend.getAppUpdateDirectory());
+        File dir = new File(getAppUpdateDirectory());
         File file = new File(dir, FileName);
 
         @Override

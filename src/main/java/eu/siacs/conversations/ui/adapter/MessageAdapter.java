@@ -936,7 +936,7 @@ public class MessageAdapter extends ArrayAdapter<Message> {
         viewHolder.richlinkview.setVisibility(View.GONE);
         viewHolder.transfer.setVisibility(View.GONE);
         final DownloadableFile file = activity.xmppConnectionService.getFileBackend().getFile(message);
-        if (!file.exists() && !message.isFileDeleted()) {
+        if (file != null && !file.exists() && !message.isFileDeleted()) {
             markFileDeleted(message);
             displayInfoMessage(viewHolder, activity.getString(R.string.file_deleted), darkBackground, message);
             ToastCompat.makeText(activity, R.string.file_deleted, ToastCompat.LENGTH_SHORT).show();

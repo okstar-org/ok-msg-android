@@ -1,5 +1,9 @@
 package eu.siacs.conversations.services;
 
+import static eu.siacs.conversations.persistance.FileBackend.AUDIOS;
+import static eu.siacs.conversations.persistance.FileBackend.FILES;
+import static eu.siacs.conversations.persistance.FileBackend.IMAGES;
+import static eu.siacs.conversations.persistance.FileBackend.VIDEOS;
 import static eu.siacs.conversations.ui.SettingsActivity.ALLOW_MESSAGE_CORRECTION;
 import static eu.siacs.conversations.ui.SettingsActivity.ALLOW_MESSAGE_RETRACTION;
 import static eu.siacs.conversations.ui.SettingsActivity.AUTOMATIC_ATTACHMENT_DELETION;
@@ -10,6 +14,7 @@ import static eu.siacs.conversations.ui.SettingsActivity.INDICATE_RECEIVED;
 import static eu.siacs.conversations.ui.SettingsActivity.SHOW_OWN_ACCOUNTS;
 import static eu.siacs.conversations.ui.SettingsActivity.USE_INNER_STORAGE;
 import static eu.siacs.conversations.utils.RichPreview.RICH_LINK_METADATA;
+import static eu.siacs.conversations.utils.StorageHelper.getAppMediaDirectory;
 
 import android.Manifest;
 import android.annotation.SuppressLint;
@@ -154,6 +159,7 @@ import eu.siacs.conversations.utils.ReplacingSerialSingleThreadExecutor;
 import eu.siacs.conversations.utils.ReplacingTaskManager;
 import eu.siacs.conversations.utils.Resolver;
 import eu.siacs.conversations.utils.SerialSingleThreadExecutor;
+import eu.siacs.conversations.utils.StorageHelper;
 import eu.siacs.conversations.utils.StringUtils;
 import eu.siacs.conversations.utils.TorServiceUtils;
 import eu.siacs.conversations.utils.TranscoderStrategies;
@@ -870,6 +876,11 @@ public class XmppConnectionService extends Service {
             expireOldFiles();
             deleteWebpreviewCache();
         }
+        // move files from /blabber.im/ --> /Android/data/ for Android >= 30
+        if (Compatibility.runsThirty() && (ContextCompat.checkSelfPermission(this, Manifest.permission.READ_EXTERNAL_STORAGE) == PackageManager.PERMISSION_GRANTED
+                && ContextCompat.checkSelfPermission(this, Manifest.permission.WRITE_EXTERNAL_STORAGE) == PackageManager.PERMISSION_GRANTED)) {
+            StorageHelper.migrateStorage(this);
+        }
         return START_STICKY;
     }
 
@@ -1493,7 +1504,7 @@ public class XmppConnectionService extends Service {
                 return;
             }
             final File file = fileBackend.getFileForPath(filePath.path);
-            if (filePath.setFileDeleted(!file.exists())) {
+            if (file != null && filePath.setFileDeleted(!file.exists())) {
                 changed.add(filePath);
             }
         }
@@ -5478,7 +5489,10 @@ public class XmppConnectionService extends Service {
         new Thread(() -> {
             long timestamp = getAutomaticAttachmentDeletionDate();
             if (timestamp > 0) {
-                getFileBackend().expireOldFiles(new File(FileBackend.getAppMediaDirectory(this)), timestamp);
+                getFileBackend().expireOldFiles(new File(getAppMediaDirectory(this, AUDIOS)), timestamp);
+                getFileBackend().expireOldFiles(new File(getAppMediaDirectory(this, FILES)), timestamp);
+                getFileBackend().expireOldFiles(new File(getAppMediaDirectory(this, IMAGES)), timestamp);
+                getFileBackend().expireOldFiles(new File(getAppMediaDirectory(this, VIDEOS)), timestamp);
                 updateConversationUi();
             }
         }).start();

@@ -22,6 +22,7 @@ import eu.siacs.conversations.entities.Account;
 import eu.siacs.conversations.entities.DownloadableFile;
 import eu.siacs.conversations.entities.Message;
 import eu.siacs.conversations.entities.Transferable;
+import eu.siacs.conversations.persistance.FileBackend;
 import eu.siacs.conversations.services.AbstractConnectionManager;
 import eu.siacs.conversations.services.XmppConnectionService;
 import eu.siacs.conversations.utils.CryptoHelper;
@@ -194,7 +195,7 @@ public class HttpUploadConnection implements Transferable, AbstractConnectionMan
                         get = slot.get.toString();
                 }
                 mXmppConnectionService.getFileBackend().updateFileParams(message, get);
-                mXmppConnectionService.getFileBackend().updateMediaScanner(file);
+                FileBackend.updateMediaScanner(mXmppConnectionService, file);
                 finish();
                 if (!message.isPrivateMessage()) {
                     message.setCounterpart(message.getConversation().getJid().asBareJid());

@@ -1,5 +1,7 @@
 package eu.siacs.conversations.ui;
 
+import static eu.siacs.conversations.utils.StorageHelper.getBackupDirectory;
+
 import android.app.FragmentManager;
 import android.content.DialogInterface;
 import android.content.Intent;
@@ -297,7 +299,7 @@ public class SettingsActivity extends XmppActivity implements
 
         final Preference createBackupPreference = mSettingsFragment.findPreference("create_backup");
         if (createBackupPreference != null) {
-            createBackupPreference.setSummary(getString(R.string.pref_create_backup_summary, FileBackend.getBackupDirectory(null)));
+            createBackupPreference.setSummary(getString(R.string.pref_create_backup_summary, getBackupDirectory(null)));
             createBackupPreference.setOnPreferenceClickListener(preference -> {
                 if (hasStoragePermission(REQUEST_CREATE_BACKUP)) {
                     createBackup(true);
@@ -619,7 +621,7 @@ public class SettingsActivity extends XmppActivity implements
         boolean success;
         ObjectInputStream input = null;
         try {
-            final File file = new File(FileBackend.getBackupDirectory(null) + "settings.dat");
+            final File file = new File(getBackupDirectory(null) + "settings.dat");
             input = new ObjectInputStream(new FileInputStream(file));
             SharedPreferences.Editor prefEdit = PreferenceManager.getDefaultSharedPreferences(getApplicationContext()).edit();
             prefEdit.clear();

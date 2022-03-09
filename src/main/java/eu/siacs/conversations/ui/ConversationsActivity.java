@@ -32,6 +32,7 @@ package eu.siacs.conversations.ui;
 import static eu.siacs.conversations.ui.ConversationFragment.REQUEST_DECRYPT_PGP;
 import static eu.siacs.conversations.ui.SettingsActivity.HIDE_MEMORY_WARNING;
 import static eu.siacs.conversations.ui.SettingsActivity.MIN_ANDROID_SDK21_SHOWN;
+import static eu.siacs.conversations.utils.StorageHelper.getAppMediaDirectory;
 
 import android.annotation.SuppressLint;
 import android.app.Activity;
@@ -372,7 +373,10 @@ public class ConversationsActivity extends XmppActivity implements OnConversatio
         protected Void doInBackground(Void... params) {
             try {
                 totalMemory = FileBackend.getDiskSize();
-                mediaUsage = FileBackend.getDirectorySize(new File(FileBackend.getAppMediaDirectory(activity)));
+                mediaUsage = FileBackend.getDirectorySize(new File(getAppMediaDirectory(activity, FileBackend.AUDIOS)))
+                        + FileBackend.getDirectorySize(new File(getAppMediaDirectory(activity, FileBackend.FILES)))
+                        + FileBackend.getDirectorySize(new File(getAppMediaDirectory(activity, FileBackend.IMAGES)))
+                        + FileBackend.getDirectorySize(new File(getAppMediaDirectory(activity, FileBackend.VIDEOS)));
                 relativeUsage = ((double) mediaUsage / (double) totalMemory);
                 try {
                     percentUsage = String.format(Locale.getDefault(),"%.2f", relativeUsage * 100) + " %";

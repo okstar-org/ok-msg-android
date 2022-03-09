@@ -4,6 +4,8 @@ import static eu.siacs.conversations.persistance.FileBackend.AUDIOS;
 import static eu.siacs.conversations.persistance.FileBackend.FILES;
 import static eu.siacs.conversations.persistance.FileBackend.IMAGES;
 import static eu.siacs.conversations.persistance.FileBackend.VIDEOS;
+import static eu.siacs.conversations.utils.StorageHelper.getAppMediaDirectory;
+import static eu.siacs.conversations.utils.StorageHelper.getConversationsDirectory;
 
 import android.content.Context;
 import android.os.AsyncTask;
@@ -74,19 +76,19 @@ public class MemoryManagementActivity extends XmppActivity {
         super.onStart();
         new getMemoryUsages(this).execute();
         delete_media.setOnClickListener(view -> {
-            deleteMedia(new File(FileBackend.getAppMediaDirectory(this)));
+            deleteMedia(new File(getAppMediaDirectory(this, null)));
         });
         delete_pictures.setOnClickListener(view -> {
-            deleteMedia(new File(FileBackend.getConversationsDirectory(this, IMAGES)));
+            deleteMedia(new File(getConversationsDirectory(this, IMAGES).getAbsolutePath()));
         });
         delete_videos.setOnClickListener(view -> {
-            deleteMedia(new File(FileBackend.getConversationsDirectory(this, VIDEOS)));
+            deleteMedia(new File(getConversationsDirectory(this, VIDEOS).getAbsolutePath()));
         });
         delete_files.setOnClickListener(view -> {
-            deleteMedia(new File(FileBackend.getConversationsDirectory(this, FILES)));
+            deleteMedia(new File(getConversationsDirectory(this, FILES).getAbsolutePath()));
         });
         delete_audios.setOnClickListener(view -> {
-            deleteMedia(new File(FileBackend.getConversationsDirectory(this, AUDIOS)));
+            deleteMedia(new File(getConversationsDirectory(this, AUDIOS).getAbsolutePath()));
         });
     }
 
@@ -139,11 +141,14 @@ public class MemoryManagementActivity extends XmppActivity {
         @Override
         protected Void doInBackground(Void... params) {
             totalMemory = UIHelper.filesizeToString(FileBackend.getDiskSize());
-            mediaUsage = UIHelper.filesizeToString(FileBackend.getDirectorySize(new File(FileBackend.getAppMediaDirectory(mContext))));
-            picturesUsage = UIHelper.filesizeToString(FileBackend.getDirectorySize(new File(FileBackend.getConversationsDirectory(mContext, IMAGES))));
-            videosUsage = UIHelper.filesizeToString(FileBackend.getDirectorySize(new File(FileBackend.getConversationsDirectory(mContext, VIDEOS))));
-            filesUsage = UIHelper.filesizeToString(FileBackend.getDirectorySize(new File(FileBackend.getConversationsDirectory(mContext, FILES))));
-            audiosUsage = UIHelper.filesizeToString(FileBackend.getDirectorySize(new File(FileBackend.getConversationsDirectory(mContext, AUDIOS))));
+            mediaUsage = UIHelper.filesizeToString(FileBackend.getDirectorySize(new File(getAppMediaDirectory(mContext, IMAGES)))
+                    + FileBackend.getDirectorySize(new File(getAppMediaDirectory(mContext, AUDIOS)))
+                    + FileBackend.getDirectorySize(new File(getAppMediaDirectory(mContext, VIDEOS)))
+                    + FileBackend.getDirectorySize(new File(getAppMediaDirectory(mContext, FILES))));
+            picturesUsage = UIHelper.filesizeToString(FileBackend.getDirectorySize(new File(getConversationsDirectory(mContext, IMAGES).getAbsolutePath())));
+            videosUsage = UIHelper.filesizeToString(FileBackend.getDirectorySize(new File(getConversationsDirectory(mContext, VIDEOS).getAbsolutePath())));
+            filesUsage = UIHelper.filesizeToString(FileBackend.getDirectorySize(new File(getConversationsDirectory(mContext, FILES).getAbsolutePath())));
+            audiosUsage = UIHelper.filesizeToString(FileBackend.getDirectorySize(new File(getConversationsDirectory(mContext, AUDIOS).getAbsolutePath())));
             return null;
         }
 
