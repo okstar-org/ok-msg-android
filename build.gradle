@@ -6,7 +6,7 @@ buildscript {
         mavenCentral()
     }
     dependencies {
-        classpath 'com.android.tools.build:gradle:7.1.1'
+        classpath 'com.android.tools.build:gradle:7.1.2'
     }
 }
 
@@ -105,7 +105,7 @@ android {
 
     defaultConfig {
         minSdkVersion 21
-        targetSdkVersion 30
+        targetSdkVersion 29
 
         //versionNameSuffix " beta_(2021-12-19)" // " beta_(XXXX-XX-XX)" // activate for beta versions
         versionCode 112
@@ -120,7 +120,7 @@ android {
         buildConfigField("String", "LOGTAG", '"monocles chat"')
         buildConfigField("String", "DOMAIN_LOCK", 'null')
         buildConfigField("boolean", "SHOW_INTRO", 'true')
-        buildConfigField("String", "UPDATE_URL", '"https://monocles.de/chat/update/"')
+        buildConfigField("String", "UPDATE_URL", '"https://monocles.eu/chat/update/"')
         resValue "string", "applicationId", applicationId
         resValue "string", "app_name", "monocles chat"
     }
