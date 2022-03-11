@@ -359,7 +359,7 @@ public class RtpSessionActivity extends XmppActivity implements XmppConnectionSe
             }
         } else if (asList(ACTION_MAKE_VIDEO_CALL, ACTION_MAKE_VOICE_CALL).contains(action)) {
             proposeJingleRtpSession(account, with, actionToMedia(action));
-            setWith(account.getRoster().getContact(with));
+            setWith(account.getRoster().getContact(with), null);
         } else {
             throw new IllegalStateException("received onNewIntent without sessionId");
         }
@@ -395,7 +395,7 @@ public class RtpSessionActivity extends XmppActivity implements XmppConnectionSe
             }
         } else if (asList(ACTION_MAKE_VIDEO_CALL, ACTION_MAKE_VOICE_CALL).contains(action)) {
             proposeJingleRtpSession(account, with, actionToMedia(action));
-            setWith(account.getRoster().getContact(with));
+            setWith(account.getRoster().getContact(with), null);
         } else if (Intent.ACTION_VIEW.equals(action)) {
             final String extraLastState = intent.getStringExtra(EXTRA_LAST_REPORTED_STATE);
             final RtpEndUserState state = extraLastState == null ? null : RtpEndUserState.valueOf(extraLastState);
@@ -407,7 +407,7 @@ public class RtpSessionActivity extends XmppActivity implements XmppConnectionSe
                 updateIncomingCallScreen(state);
                 invalidateOptionsMenu();
             }
-            setWith(account.getRoster().getContact(with));
+            setWith(account.getRoster().getContact(with), state);
             if (xmppConnectionService.getJingleConnectionManager().fireJingleRtpConnectionStateUpdates()) {
                 return;
             }
@@ -418,13 +418,19 @@ public class RtpSessionActivity extends XmppActivity implements XmppConnectionSe
             finish();
         }
     }
-    private void setWidth() {
-        setWith(getWith());
+    private void setWidth(final RtpEndUserState state) {
+        setWith(getWith(), state);
     }
 
-    private void setWith(final Contact contact) {
+    private void setWith(final Contact contact, final RtpEndUserState state) {
         binding.with.setText(contact.getDisplayName());
-        binding.withJid.setText(contact.getJid().asBareJid().toEscapedString());
+        if (Arrays.asList(RtpEndUserState.INCOMING_CALL, RtpEndUserState.ACCEPTING_CALL)
+                .contains(state)) {
+            binding.withJid.setText(contact.getJid().asBareJid().toEscapedString());
+            binding.withJid.setVisibility(View.VISIBLE);
+        } else {
+            binding.withJid.setVisibility(View.GONE);
+        }
     }
 
     private void proposeJingleRtpSession(final Account account, final Jid with, final Set<Media> media) {
@@ -608,7 +614,7 @@ public class RtpSessionActivity extends XmppActivity implements XmppConnectionSe
         if (JingleRtpConnection.STATES_SHOWING_ONGOING_CALL.contains(requireRtpConnection().getState())) {
             putScreenInCallMode();
         }
-        setWidth();
+        setWidth(currentState);
         updateVideoViews(currentState);
         updateStateDisplay(currentState, media);
         updateVerifiedShield(verified && STATES_SHOWING_SWITCH_TO_CHAT.contains(currentState));
@@ -624,7 +630,7 @@ public class RtpSessionActivity extends XmppActivity implements XmppConnectionSe
             finish();
             return;
         }
-        RtpEndUserState state = terminatedRtpSession.state;
+        final RtpEndUserState state = terminatedRtpSession.state;
         resetIntent(account, with, terminatedRtpSession.state, terminatedRtpSession.media);
         updateButtonConfiguration(state);
         updateStateDisplay(state);
@@ -632,7 +638,7 @@ public class RtpSessionActivity extends XmppActivity implements XmppConnectionSe
         updateCallDuration();
         updateVerifiedShield(false);
         invalidateOptionsMenu();
-        setWith(account.getRoster().getContact(with));
+        binding.with.setText(account.getRoster().getContact(with).getDisplayName());
     }
 
     private void reInitializeActivityWithRunningRtpSession(final Account account, Jid with, String sessionId) {
