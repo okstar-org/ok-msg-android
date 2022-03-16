@@ -6,7 +6,7 @@ buildscript {
         mavenCentral()
     }
     dependencies {
-        classpath 'com.android.tools.build:gradle:7.1.1'
+        classpath 'com.android.tools.build:gradle:7.1.2'
     }
 }
 
@@ -104,8 +104,8 @@ android {
         minSdkVersion 21
         targetSdkVersion 30
 
-        versionNameSuffix " beta_(2022-02-22)" // " beta_(XXXX-XX-XX)" // activate for beta versions
-        versionCode 334
+        versionNameSuffix " beta_(2022-03-16)" // " beta_(XXXX-XX-XX)" // activate for beta versions
+        versionCode 335
         versionName "3.1.0"
         //resConfigs "en"
 
