@@ -2008,7 +2008,7 @@ public class FileBackend {
         }
     }
 
-    public static boolean weOwnFile(Context context, Uri uri) {
+    public static boolean weOwnFile(final Uri uri) {
         if (uri == null || !ContentResolver.SCHEME_FILE.equals(uri.getScheme())) {
             return false;
         } else {
