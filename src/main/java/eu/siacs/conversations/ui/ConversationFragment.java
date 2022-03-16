@@ -1188,7 +1188,7 @@ public class ConversationFragment extends XmppFragment implements EditMessage.Ke
         final MenuItem menuTogglePinned = menu.findItem(R.id.action_toggle_pinned);
 
         if (conversation != null) {
-            if (conversation.getMode() == Conversation.MODE_MULTI || !activity.xmppConnectionService.hasInternetConnection()) {
+            if (conversation.getMode() == Conversation.MODE_MULTI || (activity.xmppConnectionService != null && !activity.xmppConnectionService.hasInternetConnection())) {
                 menuInviteContact.setVisible(conversation.getMucOptions().canInvite());
                 menuArchiveChat.setTitle(R.string.action_end_conversation_muc);
                 menuCall.setVisible(false);
