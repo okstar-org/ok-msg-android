@@ -1179,6 +1179,7 @@ public class ConversationFragment extends XmppFragment implements EditMessage.Ke
         final MenuItem menuSearchUpdates = menu.findItem(R.id.action_check_updates);
         final MenuItem menuArchiveChat = menu.findItem(R.id.action_archive_chat);
         final MenuItem menuGroupDetails = menu.findItem(R.id.action_group_details);
+        final MenuItem menuParticipants = menu.findItem(R.id.action_participants);
         final MenuItem menuContactDetails = menu.findItem(R.id.action_contact_details);
         final MenuItem menuCall = menu.findItem(R.id.action_call);
         final MenuItem menuOngoingCall = menu.findItem(R.id.action_ongoing_call);
@@ -1192,6 +1193,7 @@ public class ConversationFragment extends XmppFragment implements EditMessage.Ke
                 menuArchiveChat.setTitle(R.string.action_end_conversation_muc);
                 menuCall.setVisible(false);
                 menuOngoingCall.setVisible(false);
+                menuParticipants.setVisible(true);
             } else {
                 final XmppConnectionService service = activity == null ? null : activity.xmppConnectionService;
                 final Optional<OngoingRtpSession> ongoingRtpSession = service == null ? Optional.absent() : service.getJingleConnectionManager().getOngoingRtpConnection(conversation.getContact());
@@ -1205,6 +1207,7 @@ public class ConversationFragment extends XmppFragment implements EditMessage.Ke
                     menuCall.setVisible(rtpCapability != RtpCapability.Capability.NONE);
                     menuVideoCall.setVisible(rtpCapability == RtpCapability.Capability.VIDEO && cameraAvailable);
                 }
+                menuParticipants.setVisible(false);
                 menuInviteContact.setVisible(false);
                 menuArchiveChat.setTitle(R.string.action_end_conversation);
             }
@@ -1650,6 +1653,11 @@ public class ConversationFragment extends XmppFragment implements EditMessage.Ke
                 intent.setAction(ConferenceDetailsActivity.ACTION_VIEW_MUC);
                 intent.putExtra("uuid", conversation.getUuid());
                 startActivity(intent);
+                break;
+            case R.id.action_participants:
+                Intent intent1 = new Intent(activity, MucUsersActivity.class);
+                intent1.putExtra("uuid", conversation.getUuid());
+                startActivity(intent1);
                 break;
             case R.id.action_contact_details:
                 activity.switchToContactDetails(conversation.getContact());
