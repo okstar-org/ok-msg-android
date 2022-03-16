@@ -141,10 +141,7 @@ public class MemoryManagementActivity extends XmppActivity {
         @Override
         protected Void doInBackground(Void... params) {
             totalMemory = UIHelper.filesizeToString(FileBackend.getDiskSize());
-            mediaUsage = UIHelper.filesizeToString(FileBackend.getDirectorySize(new File(getAppMediaDirectory(mContext, IMAGES)))
-                    + FileBackend.getDirectorySize(new File(getAppMediaDirectory(mContext, AUDIOS)))
-                    + FileBackend.getDirectorySize(new File(getAppMediaDirectory(mContext, VIDEOS)))
-                    + FileBackend.getDirectorySize(new File(getAppMediaDirectory(mContext, FILES))));
+            mediaUsage = UIHelper.filesizeToString(FileBackend.getDirectorySize(new File(getAppMediaDirectory(mContext, null))));
             picturesUsage = UIHelper.filesizeToString(FileBackend.getDirectorySize(new File(getConversationsDirectory(mContext, IMAGES).getAbsolutePath())));
             videosUsage = UIHelper.filesizeToString(FileBackend.getDirectorySize(new File(getConversationsDirectory(mContext, VIDEOS).getAbsolutePath())));
             filesUsage = UIHelper.filesizeToString(FileBackend.getDirectorySize(new File(getConversationsDirectory(mContext, FILES).getAbsolutePath())));

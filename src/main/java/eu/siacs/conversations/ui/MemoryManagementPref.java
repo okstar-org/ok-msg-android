@@ -57,10 +57,7 @@ public class MemoryManagementPref extends Preference {
         @Override
         protected Void doInBackground(Void... params) {
             totalMemory = UIHelper.filesizeToString(FileBackend.getDiskSize());
-            mediaUsage = UIHelper.filesizeToString(FileBackend.getDirectorySize(new File(getAppMediaDirectory(mContext, FileBackend.AUDIOS)))
-                    + FileBackend.getDirectorySize(new File(getAppMediaDirectory(mContext, FileBackend.FILES)))
-                    + FileBackend.getDirectorySize(new File(getAppMediaDirectory(mContext, FileBackend.IMAGES)))
-                    + FileBackend.getDirectorySize(new File(getAppMediaDirectory(mContext, FileBackend.VIDEOS))));
+            mediaUsage = UIHelper.filesizeToString(FileBackend.getDirectorySize(new File(getAppMediaDirectory(mContext, null))));
             return null;
         }
 
