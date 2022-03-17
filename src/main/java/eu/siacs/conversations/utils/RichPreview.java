@@ -134,7 +134,7 @@ public class RichPreview {
     }
 
     private String resolveURL(String url, String part) {
-        if (Patterns.AUTOLINK_WEB_URL.matcher(part).matches() && !part.contains(" ")) {
+        if (Patterns.WEB_URL.matcher(part).matches() && !part.contains(" ")) {
             return part;
         } else {
             URI base_uri = null;
