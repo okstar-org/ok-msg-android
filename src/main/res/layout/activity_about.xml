@@ -74,6 +74,29 @@
                         android:textSize="?attr/TextSizeBody"
                         android:typeface="monospace" />
 
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:gravity="center_horizontal"
+                        android:paddingBottom="8dp">
+
+                        <Button
+                            android:id="@+id/donation_paypal"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_margin="4dp"
+                            android:backgroundTint="?attr/colorAccent"
+                            android:text="@string/paypal" />
+
+                        <Button
+                            android:id="@+id/donation_btc"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_margin="4dp"
+                            android:backgroundTint="?attr/colorAccent"
+                            android:text="@string/bitcoin" />
+                    </LinearLayout>
+
                     <Button
                         android:id="@+id/show_privacy_policy"
                         android:layout_width="wrap_content"

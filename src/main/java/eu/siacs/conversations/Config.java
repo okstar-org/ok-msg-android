@@ -65,6 +65,8 @@ public final class Config {
     public static final String INVITE_DOMAIN = blabber();
     public static final String termsOfUseURL = "https://kriztan.codeberg.page/termsofuse/";
     public static final String privacyURL = "https://kriztan.codeberg.page/privacy/";
+    public static final String btcURI = "bitcoin:bc1q5hlgndwnt575n797regwcpngs6uxyv9rhk60qa";
+    public static final String paypalURL = "https://paypal.me/christianschneppe";
     public static final String migrationURL = Locale.getDefault().getLanguage().equalsIgnoreCase("de") ? "https://blabber.im/anleitungen/Migration%20vom%20Pix-Art%20Messenger%20zu%20blabber.im%20(Android)%20_%20blabber.im.html" : "https://blabber.im/tutorials/Migration%20from%20Pix-Art%20Messenger%20to%20blabber.im%20(Android)%20_%20blabber.im.html";
 
     public static final String CHANGELOG_URL = "https://codeberg.org/kriztan/blabber.im/src/branch/master/CHANGELOG.md";

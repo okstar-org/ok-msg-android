@@ -57,6 +57,25 @@ public class AboutActivity extends XmppActivity {
                 ToastCompat.makeText(this, R.string.no_application_found_to_open_link, ToastCompat.LENGTH_SHORT).show();
             }
         });
+        Button paypalButton = findViewById(R.id.donation_paypal);
+        paypalButton.setOnClickListener(view -> {
+            try {
+                final Uri uri = Uri.parse(Config.paypalURL);
+                CustomTab.openTab(this, uri, isDarkTheme());
+            } catch (Exception e) {
+                ToastCompat.makeText(this, R.string.no_application_found_to_open_link, ToastCompat.LENGTH_SHORT).show();
+            }
+        });
+        Button bitcoinButton = findViewById(R.id.donation_btc);
+        bitcoinButton.setOnClickListener(view -> {
+            try {
+                final Uri uri = Uri.parse(Config.btcURI);
+                CustomTab.openTab(this, uri, isDarkTheme());
+            } catch (Exception e) {
+                this.copyTextToClipboard(Config.btcURI, R.string.bitcoin);
+                ToastCompat.makeText(this, R.string.btc_address_copied_to_clipboard, ToastCompat.LENGTH_SHORT).show();
+            }
+        });
     }
 
     @Override
