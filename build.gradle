@@ -104,8 +104,8 @@ android {
         minSdkVersion 21
         targetSdkVersion 30
 
-        versionNameSuffix " beta_(2022-03-16)" // " beta_(XXXX-XX-XX)" // activate for beta versions
-        versionCode 335
+        versionNameSuffix " beta_(2022-03-17)" // " beta_(XXXX-XX-XX)" // activate for beta versions
+        versionCode 336
         versionName "3.1.0"
         //resConfigs "en"
 
