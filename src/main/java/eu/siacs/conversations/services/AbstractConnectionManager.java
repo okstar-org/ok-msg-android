@@ -122,19 +122,19 @@ public class AbstractConnectionManager {
         final long defaultValue_mobile = this.getXmppConnectionService().getResources().getInteger(R.integer.auto_accept_filesize_mobile);
         final long defaultValue_roaming = this.getXmppConnectionService().getResources().getInteger(R.integer.auto_accept_filesize_roaming);
 
-        long config = 0;
+        String config = "0";
         if (mXmppConnectionService.isWIFI()) {
-            config = this.mXmppConnectionService.getPreferences().getLong(
-                    "auto_accept_file_size_wifi", defaultValue_wifi);
+            config = this.mXmppConnectionService.getPreferences().getString(
+                    "auto_accept_file_size_wifi", String.valueOf(defaultValue_wifi));
         } else if (mXmppConnectionService.isMobile()) {
-            config = this.mXmppConnectionService.getPreferences().getLong(
-                    "auto_accept_file_size_mobile", defaultValue_mobile);
+            config = this.mXmppConnectionService.getPreferences().getString(
+                    "auto_accept_file_size_mobile", String.valueOf(defaultValue_mobile));
         } else if (mXmppConnectionService.isMobileRoaming()) {
-            config = this.mXmppConnectionService.getPreferences().getLong(
-                    "auto_accept_file_size_roaming", defaultValue_roaming);
+            config = this.mXmppConnectionService.getPreferences().getString(
+                    "auto_accept_file_size_roaming", String.valueOf(defaultValue_roaming));
         }
         try {
-            return config <= 0 ? -1 : config;
+            return Long.parseLong(config) <= 0 ? -1 : Long.parseLong(config);
         } catch (NumberFormatException e) {
             return defaultValue_mobile;
         }

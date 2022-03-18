@@ -22,6 +22,7 @@ import android.app.Fragment;
 import android.app.FragmentManager;
 import android.app.PendingIntent;
 import android.content.ActivityNotFoundException;
+import android.content.ComponentName;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
@@ -143,6 +144,7 @@ import eu.siacs.conversations.ui.util.ShareUtil;
 import eu.siacs.conversations.ui.util.StyledAttributes;
 import eu.siacs.conversations.ui.util.ViewUtil;
 import eu.siacs.conversations.ui.widget.EditMessage;
+import eu.siacs.conversations.utils.CameraUtils;
 import eu.siacs.conversations.utils.Compatibility;
 import eu.siacs.conversations.utils.GeoHelper;
 import eu.siacs.conversations.utils.MenuDoubleTabUtil;
@@ -2077,12 +2079,30 @@ public class ConversationFragment extends XmppFragment implements EditMessage.Ke
                 intent.setAction(Intent.ACTION_GET_CONTENT);
                 break;
             case ATTACHMENT_CHOICE_RECORD_VIDEO:
+                if (Compatibility.runsThirty()) {
+                    final List<CameraUtils> cameraApps = CameraUtils.getCameraApps(activity);
+                    if (cameraApps.size() == 0) {
+                        ToastCompat.makeText(activity, R.string.no_application_found, ToastCompat.LENGTH_LONG).show();
+                    } else {
+                        final ComponentName correctComponent = cameraApps.get(0).componentNames.get(0);
+                        intent.setComponent(correctComponent);
+                    }
+                }
                 intent.setAction(MediaStore.ACTION_VIDEO_CAPTURE);
                 break;
             case ATTACHMENT_CHOICE_TAKE_PHOTO:
-                final Uri uri = activity.xmppConnectionService.getFileBackend().getTakePhotoUri();
-                pendingTakePhotoUri.push(uri);
-                intent.putExtra(MediaStore.EXTRA_OUTPUT, uri);
+                final Uri photoUri = activity.xmppConnectionService.getFileBackend().getTakePhotoUri();
+                pendingTakePhotoUri.push(photoUri);
+                if (Compatibility.runsThirty()) {
+                    final List<CameraUtils> cameraApps = CameraUtils.getCameraApps(activity);
+                    if (cameraApps.size() == 0) {
+                        ToastCompat.makeText(activity, R.string.no_application_found, ToastCompat.LENGTH_LONG).show();
+                    } else {
+                        final ComponentName correctComponent = cameraApps.get(0).componentNames.get(0);
+                        intent.setComponent(correctComponent);
+                    }
+                }
+                intent.putExtra(MediaStore.EXTRA_OUTPUT, photoUri);
                 intent.setFlags(Intent.FLAG_GRANT_WRITE_URI_PERMISSION & Intent.FLAG_GRANT_READ_URI_PERMISSION);
                 intent.setAction(MediaStore.ACTION_IMAGE_CAPTURE);
                 break;
