@@ -641,6 +641,7 @@
     <string name="contact_is_typing">%s schreibt…</string>
     <string name="one_participant">Ein Teilnehmer</string>
     <string name="more_participants">%d Teilnehmer</string>
+    <string name="participants">Teilnehmer</string>
     <string name="presence_offline">Offline</string>
     <string name="block_stranger">Unbekannten sperren</string>
     <string name="block_entire_domain">Gesamte Domain sperren</string>
@@ -1181,4 +1182,7 @@
     <string name="optimize_database">Optimiere Datenbank... bitte warten...</string>
     <string name="verifying_omemo_keys_trusted_source_account">Du bestätigst deinen eigenen OMEMO-Fingerabdruck. Dies ist nur dann sicher, wenn du den Link von einer vertrauenswürdigen Quelle hast, auf welcher nur du den Link veröffentlichen konntest.</string>
     <string name="continue_btn">Weiter</string>
+    <string name="paypal">PayPal</string>
+    <string name="bitcoin">Bitcoin</string>
+    <string name="btc_address_copied_to_clipboard">Bitcoin-Adresse wurde in die Zwischenablage kopiert</string>
 </resources>

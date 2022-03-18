@@ -243,6 +243,8 @@
     <string name="pref_security_settings">安全とデータ保護</string>
     <string name="pref_allow_message_correction">メッセージの修正を許可</string>
     <string name="pref_allow_message_correction_summary">あなたの連絡先が、メッセージを遡って編集することを許可する</string>
+    <string name="pref_allow_message_retraction">メッセージの撤回を許可</string>
+    <string name="pref_allow_message_retraction_summary">あなたの連絡先が、メッセージを遡って撤回することを許可する</string>
     <string name="pref_expert_options">上級者向け設定</string>
     <string name="title_activity_about">アプリ情報</string>
     <string name="pref_about_conversations_summary">ビルドとライセンスの情報</string>
@@ -1143,4 +1145,8 @@
     <string name="pref_show_date_in_quotes_summary">引用したメッセージの日付と時間を表示します。</string>
     <string name="pref_show_date_in_quotes">引用の日付と時間を表示</string>
     <string name="delete_avatar">所有するアバターを削除</string>
+    <string name="import_backup_description">Android 11から我々は、ストレージ上のファイルを一覧表示できなくなりました。あなたは通常は Documents/blabber.im/Database 内にあるバックアップパスへ、案内を試せます。</string>
+    <string name="optimize_database">データベースを最適化中… しばらくお待ちください…</string>
+    <string name="verifying_omemo_keys_trusted_source_account">あなたが所有するアカウントのOMEMO鍵を検証しようとしています。これは、あなたがこのリンクを公開した、信頼できるソースからこのリンクをたどった場合にのみ安全です。</string>
+    <string name="continue_btn">続行</string>
 </resources>

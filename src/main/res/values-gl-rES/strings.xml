@@ -1178,4 +1178,7 @@
     <string name="pref_show_date_in_quotes">Mostrar data e hora das consultas</string>
     <string name="delete_avatar">Borrar o avatar propio</string>
     <string name="import_backup_description">Desde Android 11 non podemos listar os arquivos no almacenamento. Vostede pode tratar de navegar a unha ruta de copia de seguridade, que polo xeral se atopa en Documents/blabber.im/Database.</string>
+    <string name="optimize_database">Optimizando a basa de datos... Por favor, espere...</string>
+    <string name="verifying_omemo_keys_trusted_source_account">Está a piques de verificar as claves OMEMO da súa propia conta. Isto só é seguro si seguiu este enlace desde unha fonte de confianza na que só vostede podería publicar este enlace.</string>
+    <string name="continue_btn">Continuar</string>
 </resources>

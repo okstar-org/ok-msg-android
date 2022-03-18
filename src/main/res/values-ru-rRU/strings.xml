@@ -661,6 +661,7 @@
     <string name="contact_is_typing">%s печатает…</string>
     <string name="one_participant">Один участник</string>
     <string name="more_participants">%d участников</string>
+    <string name="participants">Участники</string>
     <string name="presence_offline">Не в сети</string>
     <string name="block_stranger">Заблокировать незнакомца</string>
     <string name="block_entire_domain">Заблокировать весь домен</string>
@@ -1205,4 +1206,7 @@
     <string name="optimize_database">Оптимизация базы данных... Пожалуйста, ждите...</string>
     <string name="verifying_omemo_keys_trusted_source_account">Вы собираетесь проверить ключи OMEMO Вашей учетной записи. Это безопасно только в том случае, если Вы перешли по этой ссылке из надежного источника, где только Вы могли опубликовать эту ссылку.</string>
     <string name="continue_btn">Продолжить</string>
+    <string name="paypal">PayPal</string>
+    <string name="bitcoin">Bitcoin</string>
+    <string name="btc_address_copied_to_clipboard">BTC-адрес скопирован в буфер обмена</string>
 </resources>

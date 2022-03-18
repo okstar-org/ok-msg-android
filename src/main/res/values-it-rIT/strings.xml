@@ -641,6 +641,7 @@
     <string name="contact_is_typing">%s sta digitando...</string>
     <string name="one_participant">Un partecipante</string>
     <string name="more_participants">%d partecipanti</string>
+    <string name="participants">Partecipanti</string>
     <string name="presence_offline">Non in linea</string>
     <string name="block_stranger">Blocca sconosciuto</string>
     <string name="block_entire_domain">Blocca intero dominio</string>
@@ -1177,4 +1178,11 @@
     <string name="pref_show_date_in_quotes_summary">Mostra data e ora dei tuoi messaggi citati.</string>
     <string name="pref_show_date_in_quotes">Mostra data e ora delle citazioni</string>
     <string name="delete_avatar">Eliminare la propria immagine profilo</string>
+    <string name="import_backup_description">A partire da Android 11 non possiamo elencare i file in memoria. Puoi provare a navigare nel percorso di backup che normalmente è Documenti/blabber.im/Database.</string>
+    <string name="optimize_database">Ottimizzazione del database... Attendere prego...</string>
+    <string name="verifying_omemo_keys_trusted_source_account">Stai per verificare le chiavi OMEMO del tuo stesso account. Questo è sicuro solo se hai seguito questo collegamento da una sorgente fidata sulla quale tu solo avresti potuto pubblicare questo collegamento.</string>
+    <string name="continue_btn">Continua</string>
+    <string name="paypal">PayPal</string>
+    <string name="bitcoin">Bitcoin</string>
+    <string name="btc_address_copied_to_clipboard">Indirizzo Bitcoin copiato negli appunti</string>
 </resources>

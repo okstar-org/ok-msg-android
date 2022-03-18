@@ -1179,4 +1179,8 @@
     <string name="pref_show_date_in_quotes_summary">Qeyd olunan mesajlarınızın tarixini və vaxtını göstərin.</string>
     <string name="pref_show_date_in_quotes">Sitatların tarixini və vaxtını göstərin</string>
     <string name="delete_avatar">Öz yazılarınızı silin</string>
+    <string name="import_backup_description">Android 11-dən bəri yaddaşda olan faylları sadalaya bilmirik. Siz Documents/blabber.im/Database-də olan ehtiyat yoluna keçməyə cəhd edə bilərsiniz.</string>
+    <string name="optimize_database">Məlumat bazası optimallaşdırılır... Lütfən, gözləyin...</string>
+    <string name="verifying_omemo_keys_trusted_source_account">Siz öz hesabınızın OMEMO açarlarını yoxlamaq üzrəsiniz. Bu, yalnız bu linki etibarlı mənbədən izlədiyiniz halda təhlükəsizdir, burada yalnız bu linki dərc edə bilərsiniz.</string>
+    <string name="continue_btn">Davam et</string>
 </resources>

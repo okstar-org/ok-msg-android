@@ -132,6 +132,7 @@
     <string name="error_compressing_image">خطأ أثناء تحويل ملف الصورة</string>
     <string name="error_file_not_found">لم يُعثر على الملف</string>
     <string name="error_io_exception">خطأ إدخال/إخراج عام. ربما نفذت مساحة التخزين؟</string>
+    <string name="error_security_exception_during_image_copy">لم يُوفر التطبيق الذي استخدمته لاختيار الصورة أذون كافية لقراءتها.\n\n<small>استخدم مدير ملفات آخر لاختيار الصورة</small></string>
     <string name="account_status_unknown">مجهول</string>
     <string name="account_status_disabled">معطّل مؤقتا</string>
     <string name="account_status_online">متصل</string>

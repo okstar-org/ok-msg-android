@@ -651,6 +651,7 @@
     <string name="contact_is_typing">%s tastează...</string>
     <string name="one_participant">Un participant</string>
     <string name="more_participants">%d participanți</string>
+    <string name="participants">Participanți</string>
     <string name="presence_offline">Deconectat</string>
     <string name="block_stranger">Blocare contact necunoscut</string>
     <string name="block_entire_domain">Blocare tot domeniu</string>
@@ -1193,4 +1194,7 @@
     <string name="optimize_database">Optimizarea bazei de date... Vă rugăm să așteptați...</string>
     <string name="verifying_omemo_keys_trusted_source_account">Sunteți pe cale să verificați cheile OMEMO ale contului dumneavoastră. Acest lucru este sigur numai dacă ați urmat acest link dintr-o sursă de încredere, unde numai dumneavoastră ați fi putut publica acest link.</string>
     <string name="continue_btn">Continuați</string>
+    <string name="paypal">PayPal</string>
+    <string name="bitcoin">Bitcoin</string>
+    <string name="btc_address_copied_to_clipboard">Adresa Bitcoin copiată în clipboard</string>
 </resources>

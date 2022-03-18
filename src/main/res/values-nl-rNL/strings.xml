@@ -641,6 +641,7 @@
     <string name="contact_is_typing">%s is aan het typen…</string>
     <string name="one_participant">Eén deelnemer</string>
     <string name="more_participants">%d deelnemers</string>
+    <string name="participants">Deelnemers</string>
     <string name="presence_offline">Offline</string>
     <string name="block_stranger">Vreemde blokkeren</string>
     <string name="block_entire_domain">Volledig domein blokkeren</string>
@@ -1181,4 +1182,7 @@
     <string name="optimize_database">Database optimaliseren... Even geduld...</string>
     <string name="verifying_omemo_keys_trusted_source_account">Je staat op het punt de OMEMO-sleutels van je eigen account te verifiëren. Dit is enkel veilig als je de link hebt gevolgd vanaf een betrouwbare locatie, waarop alleen jij die link gepubliceerd kunt hebben.</string>
     <string name="continue_btn">Doorgaan</string>
+    <string name="paypal">PayPal</string>
+    <string name="bitcoin">Bitcoin</string>
+    <string name="btc_address_copied_to_clipboard">Bitcoin-adres gekopieerd naar het klembord</string>
 </resources>
