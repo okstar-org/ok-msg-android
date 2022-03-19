@@ -373,10 +373,7 @@ public class ConversationsActivity extends XmppActivity implements OnConversatio
         protected Void doInBackground(Void... params) {
             try {
                 totalMemory = FileBackend.getDiskSize();
-                mediaUsage = FileBackend.getDirectorySize(new File(getAppMediaDirectory(activity, FileBackend.AUDIOS)))
-                        + FileBackend.getDirectorySize(new File(getAppMediaDirectory(activity, FileBackend.FILES)))
-                        + FileBackend.getDirectorySize(new File(getAppMediaDirectory(activity, FileBackend.IMAGES)))
-                        + FileBackend.getDirectorySize(new File(getAppMediaDirectory(activity, FileBackend.VIDEOS)));
+                mediaUsage = FileBackend.getDirectorySize(new File(getAppMediaDirectory(activity, null)));
                 relativeUsage = ((double) mediaUsage / (double) totalMemory);
                 try {
                     percentUsage = String.format(Locale.getDefault(),"%.2f", relativeUsage * 100) + " %";
