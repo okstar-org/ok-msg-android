@@ -22,7 +22,6 @@ import eu.siacs.conversations.ui.SettingsActivity;
 import eu.siacs.conversations.ui.XmppActivity;
 import eu.siacs.conversations.ui.util.AvatarWorkerTask;
 import eu.siacs.conversations.ui.util.StyledAttributes;
-import eu.siacs.conversations.utils.EmojiWrapper;
 import eu.siacs.conversations.utils.IrregularUnicodeDetector;
 import eu.siacs.conversations.xmpp.Jid;
 
@@ -98,7 +97,7 @@ public class ListItemAdapter extends ArrayAdapter<ListItem> {
         } else {
             viewHolder.account.setVisibility(View.GONE);
         }
-        viewHolder.name.setText(EmojiWrapper.transform(item.getDisplayName()));
+        viewHolder.name.setText(item.getDisplayName());
         if (tags.size() != 0) {
             for (ListItem.Tag tag : tags) {
                 offline = tag.getOffline() == 1;

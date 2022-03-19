@@ -64,9 +64,8 @@ dependencies {
     implementation 'androidx.appcompat:appcompat:1.3.1' // 1.4.0 needs minCompileSdk 31
     implementation 'androidx.exifinterface:exifinterface:1.3.3'
     implementation 'androidx.legacy:legacy-support-v4:1.0.0'
-    implementation 'androidx.emoji:emoji:1.1.0'
-    gitImplementation 'androidx.emoji:emoji-appcompat:1.1.0'
-    gitImplementation 'androidx.emoji:emoji-bundled:1.1.0'
+    implementation "androidx.emoji2:emoji2:1.1.0-rc01"
+    gitImplementation "androidx.emoji2:emoji2-bundled:1.1.0-rc01"
     implementation 'androidx.recyclerview:recyclerview:1.2.1'
     implementation 'com.google.android.material:material:1.4.0'
     implementation 'androidx.cardview:cardview:1.0.0' // for compatibility
@@ -101,7 +100,7 @@ ext {
 android {
 
     //noinspection GradleCompatible
-    compileSdkVersion 30
+    compileSdkVersion 31
 
     defaultConfig {
         minSdkVersion 21

@@ -84,6 +84,7 @@ import eu.siacs.conversations.entities.Message;
 import eu.siacs.conversations.entities.Presences;
 import eu.siacs.conversations.services.AvatarService;
 import eu.siacs.conversations.services.BarcodeProvider;
+import eu.siacs.conversations.services.EmojiInitializationService;
 import eu.siacs.conversations.services.QuickConversationsService;
 import eu.siacs.conversations.services.UpdateService;
 import eu.siacs.conversations.services.XmppConnectionService;
@@ -454,6 +455,7 @@ public abstract class XmppActivity extends ActionBarActivity {
         setTheme(this.mTheme);
         metrics = getResources().getDisplayMetrics();
         ExceptionHelper.init(getApplicationContext());
+        EmojiInitializationService.execute(this);
         this.isCameraFeatureAvailable = getPackageManager().hasSystemFeature(PackageManager.FEATURE_CAMERA_ANY);
         if (isDarkTheme()) {
             mColorWarningButton = ContextCompat.getColor(this, R.color.warning_button_dark);
