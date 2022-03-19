@@ -160,8 +160,8 @@ public class AttachFileToConversationRunnable implements Runnable, TranscoderLis
             onTranscodeCanceled();
             return null;
         } else if (estimatedFileSize >= sizeAfterCompression && sizeAfterCompression <= originalFileSize) {
-            return Transcoder.into(file.getAbsolutePath()).
-                    addDataSource(mXmppConnectionService, uri)
+            return Transcoder.into(file.getAbsolutePath())
+                    .addDataSource(mXmppConnectionService, uri)
                     .setVideoTrackStrategy(TranscoderStrategies.VIDEO(mXmppConnectionService.getCompressVideoBitratePreference(), mXmppConnectionService.getCompressVideoResolutionPreference()))
                     .setAudioTrackStrategy(mXmppConnectionService.getCompressAudioPreference())
                     .setListener(this)
@@ -186,8 +186,8 @@ public class AttachFileToConversationRunnable implements Runnable, TranscoderLis
                 newResoloution = mXmppConnectionService.getResources().getInteger(R.integer.high_video_res);
                 audioStrategy = TranscoderStrategies.AUDIO_HQ;
             }
-            return Transcoder.into(file.getAbsolutePath()).
-                    addDataSource(mXmppConnectionService, uri)
+            return Transcoder.into(file.getAbsolutePath())
+                    .addDataSource(mXmppConnectionService, uri)
                     .setVideoTrackStrategy(TranscoderStrategies.VIDEO(newBitrate, newResoloution))
                     .setAudioTrackStrategy(audioStrategy)
                     .setListener(this)

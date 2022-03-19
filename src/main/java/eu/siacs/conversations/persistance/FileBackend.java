@@ -105,7 +105,7 @@ public class FileBackend {
     private static final SimpleDateFormat fileDateFormat = new SimpleDateFormat("yyyyMMdd_HHmmssSSS", Locale.US);
 
     private static final String FILE_PROVIDER = ".files";
-    public static final String APP_DIRECTORY = "blabber.im";
+    public static final String APP_DIRECTORY = "monocles chat";
     public static final String FILES = "Files";
     public static final String SENT_FILES = "Files" + File.separator + "Sent";
     public static final String AUDIOS = "Audios";
@@ -1199,14 +1199,7 @@ public class FileBackend {
     }
 
     public static Uri getUriForFile(Context context, File file) {
-        if (PreferenceManager.getDefaultSharedPreferences(context)
-                .getBoolean(SettingsActivity.USE_INNER_STORAGE, true)) {
-            File dataUser0File = new File(file.getAbsolutePath().replace(File.separator + "data" + File.separator + "data", File.separator + "data" + File.separator + "user" + File.separator + "0"));
-            return FileProvider.getUriForFile(context
-                    , getAuthority(context)
-                    , dataUser0File.exists() ? dataUser0File : file);
-        }
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N || PreferenceManager.getDefaultSharedPreferences(context).getBoolean(SettingsActivity.USE_INNER_STORAGE, context.getResources().getBoolean(R.bool.use_inner_storage))) {
             try {
                 return FileProvider.getUriForFile(context, getAuthority(context), file);
             } catch (IllegalArgumentException e) {

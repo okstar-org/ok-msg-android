@@ -876,7 +876,7 @@ public class XmppConnectionService extends Service {
             expireOldFiles();
             deleteWebpreviewCache();
         }
-        // move files from /blabber.im/ --> /Android/data/ for Android >= 30
+        // move files from /monocles chat/ --> /Android/data/ for Android >= 30
         if (Compatibility.runsThirty() && (ContextCompat.checkSelfPermission(this, Manifest.permission.READ_EXTERNAL_STORAGE) == PackageManager.PERMISSION_GRANTED
                 && ContextCompat.checkSelfPermission(this, Manifest.permission.WRITE_EXTERNAL_STORAGE) == PackageManager.PERMISSION_GRANTED)) {
             StorageHelper.migrateStorage(this);

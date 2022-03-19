@@ -47,23 +47,23 @@ public class StorageHelper {
     }
 
     public static String getGlobalPicturesPath() {
-        return Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_PICTURES) + File.separator + "blabber.im" + File.separator;
+        return Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_PICTURES) + File.separator + "monocles chat" + File.separator;
     }
 
     public static String getGlobalVideosPath() {
-        return Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_MOVIES) + File.separator + "blabber.im" + File.separator;
+        return Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_MOVIES) + File.separator + "monocles chat" + File.separator;
     }
 
     public static String getGlobalDocumentsPath() {
-        return Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOCUMENTS) + File.separator + "blabber.im" + File.separator;
+        return Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOCUMENTS) + File.separator + "monocles chat" + File.separator;
     }
 
     public static String getGlobalDownloadsPath() {
-        return Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS) + File.separator + "blabber.im" + File.separator;
+        return Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS) + File.separator + "monocles chat" + File.separator;
     }
 
     public static String getGlobalAudiosPath() {
-        return Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_MUSIC) + File.separator + "blabber.im" + File.separator;
+        return Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_MUSIC) + File.separator + "monocles chat" + File.separator;
     }
 
     public static String getAppUpdateDirectory() {
