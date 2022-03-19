@@ -108,7 +108,8 @@ public class AttachFileToConversationRunnable implements Runnable, TranscoderLis
         mXmppConnectionService.startForcingForegroundNotification();
         isCompressingVideo = conversation.getUuid();
         final SimpleDateFormat fileDateFormat = new SimpleDateFormat("yyyyMMdd_HHmmss", Locale.US);
-        message.setRelativeFilePath("Sent/" + fileDateFormat.format(new Date(message.getTimeSent())) + "_" + message.getUuid().substring(0, 4) + "_komp.mp4");
+        final String filename = "Sent/" + fileDateFormat.format(new Date(message.getTimeSent())) + "_" + message.getUuid().substring(0, 4) + "_komp";
+        mXmppConnectionService.getFileBackend().setupRelativeFilePath(message, String.format("%s.%s", filename, "mp4"));
         final DownloadableFile file = mXmppConnectionService.getFileBackend().getFile(message);
         if (Objects.requireNonNull(file.getParentFile()).mkdirs()) {
             Log.d(Config.LOGTAG, "created parent directory for video file");

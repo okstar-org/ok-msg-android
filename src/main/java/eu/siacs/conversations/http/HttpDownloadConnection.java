@@ -15,7 +15,6 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
 import java.text.SimpleDateFormat;
-import java.util.Date;
 import java.util.Locale;
 
 import javax.net.ssl.SSLHandshakeException;
@@ -101,22 +100,12 @@ public class HttpDownloadConnection implements Transferable {
             }
             final String ext = extension.getExtension();
             if (ext != null) {
-                if (message.getStatus() == Message.STATUS_RECEIVED) {
-                    message.setRelativeFilePath(String.format("%s.%s", fileDateFormat.format(new Date(message.getTimeSent())) + "_" + message.getUuid().substring(0, 4), ext));
-                } else {
-                    message.setRelativeFilePath("Sent/" + String.format("%s.%s", fileDateFormat.format(new Date(message.getTimeSent())) + "_" + message.getUuid().substring(0, 4), ext));
-                }
+                message.setRelativeFilePath(String.format("%s.%s", message.getUuid(), ext));
             } else if (Strings.isNullOrEmpty(message.getRelativeFilePath())) {
-                if (message.getStatus() == Message.STATUS_RECEIVED) {
-                    message.setRelativeFilePath(fileDateFormat.format(new Date(message.getTimeSent())) + "_" + message.getUuid().substring(0, 4));
-                } else {
-                    message.setRelativeFilePath("Sent/" + fileDateFormat.format(new Date(message.getTimeSent())) + "_" + message.getUuid().substring(0, 4));
-                }
+                message.setRelativeFilePath(message.getUuid());
             }
             setupFile();
-            if ((this.message.getEncryption() == Message.ENCRYPTION_OTR
-                    || this.message.getEncryption() == Message.ENCRYPTION_AXOLOTL)
-                    && this.file.getKey() == null) {
+            if (this.message.getEncryption() == Message.ENCRYPTION_AXOLOTL && this.file.getKey() == null) {
                 this.message.setEncryption(Message.ENCRYPTION_NONE);
             }
             //TODO add auth tag size to knownFileSize
@@ -345,7 +334,7 @@ public class HttpDownloadConnection implements Transferable {
                 if (Strings.isNullOrEmpty(extension.getExtension()) && contentType != null) {
                     final String fileExtension = MimeUtils.guessExtensionFromMimeType(contentType);
                     if (fileExtension != null) {
-                        message.setRelativeFilePath(String.format("%s.%s", message.getUuid(), fileExtension));
+                        mXmppConnectionService.getFileBackend().setupRelativeFilePath(message, String.format("%s.%s", message.getUuid(), fileExtension), contentType);
                         Log.d(Config.LOGTAG, "rewriting name after not finding extension in url but in content type");
                         setupFile();
                     }

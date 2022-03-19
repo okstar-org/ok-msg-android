@@ -46,6 +46,7 @@ import androidx.annotation.StringRes;
 import androidx.core.content.FileProvider;
 import androidx.exifinterface.media.ExifInterface;
 
+import com.google.common.base.Strings;
 import com.google.common.io.ByteStreams;
 
 import java.io.ByteArrayOutputStream;
@@ -104,7 +105,7 @@ public class FileBackend {
     private static final SimpleDateFormat fileDateFormat = new SimpleDateFormat("yyyyMMdd_HHmmssSSS", Locale.US);
 
     private static final String FILE_PROVIDER = ".files";
-    public static final String APP_DIRECTORY = "monocles chat";
+    public static final String APP_DIRECTORY = "blabber.im";
     public static final String FILES = "Files";
     public static final String SENT_FILES = "Files" + File.separator + "Sent";
     public static final String AUDIOS = "Audios";
@@ -405,7 +406,7 @@ public class FileBackend {
         return getFileForPath(path, MimeUtils.guessMimeTypeFromExtension(MimeUtils.extractRelevantExtension(path)));
     }
 
-    public DownloadableFile getFileForPath(String path, String mime) {
+    private DownloadableFile getFileForPath(String path, String mime) {
         DownloadableFile file = null;
         if (path.startsWith(File.separator)) {
             file = new DownloadableFile(path);
@@ -700,7 +701,7 @@ public class FileBackend {
             extension = "oga";
         }
         String filename = "Sent" + File.separator + fileDateFormat.format(new Date(message.getTimeSent())) + "_" + message.getUuid().substring(0, 4);
-        message.setRelativeFilePath(filename + "." + extension);
+        setupRelativeFilePath(message, String.format("%s.%s", filename, extension));
         copyFileToPrivateStorage(mXmppConnectionService.getFileBackend().getFile(message), uri);
     }
 
@@ -859,20 +860,51 @@ public class FileBackend {
     }
 
     public void copyImageToPrivateStorage(Message message, Uri image) throws FileCopyException, ImageCompressionException {
-        String filename = "Sent" + File.separator + fileDateFormat.format(new Date(message.getTimeSent())) + "_" + message.getUuid().substring(0, 4);
+        String filename;
+        String file = "Sent" + File.separator + fileDateFormat.format(new Date(message.getTimeSent())) + "_" + message.getUuid().substring(0, 4);
         switch (Config.IMAGE_FORMAT) {
             case JPEG:
-                message.setRelativeFilePath(filename + ".jpg");
+                filename = String.format("%s.%s", file, ".jpg");
                 break;
             case PNG:
-                message.setRelativeFilePath(filename + ".png");
+                filename = String.format("%s.%s", file, ".png");
                 break;
             case WEBP:
-                message.setRelativeFilePath(filename + ".webp");
+                filename = String.format("%s.%s", file, ".webp");
                 break;
+            default:
+                throw new IllegalStateException("Unknown image format");
         }
+        setupRelativeFilePath(message, filename);
         copyImageToPrivateStorage(getFile(message), image);
         updateFileParams(message);
+    }
+
+    public void setupRelativeFilePath(final Message message, final String filename) {
+        final String extension = MimeUtils.extractRelevantExtension(filename);
+        final String mime = MimeUtils.guessMimeTypeFromExtension(extension);
+        setupRelativeFilePath(message, filename, mime);
+    }
+
+    public File getStorageLocation(final String filename, final String mime) {
+        final File parentDirectory;
+        if (Strings.isNullOrEmpty(mime)) {
+            parentDirectory = getConversationsDirectory(mXmppConnectionService, FILES);
+        } else if (mime.startsWith("image/")) {
+            parentDirectory = getConversationsDirectory(mXmppConnectionService, IMAGES);
+        } else if (mime.startsWith("video/")) {
+            parentDirectory = getConversationsDirectory(mXmppConnectionService, VIDEOS);
+        } else if (mime.startsWith("audio/")) {
+            parentDirectory = getConversationsDirectory(mXmppConnectionService, AUDIOS);
+        } else {
+            parentDirectory = getConversationsDirectory(mXmppConnectionService, FILES);
+        }
+        return new File(parentDirectory, filename);
+    }
+
+    public void setupRelativeFilePath(final Message message, final String filename,  final String mime) {
+        final File file = getStorageLocation(filename, mime);
+        message.setRelativeFilePath(file.getAbsolutePath());
     }
 
     public void copyFile(File sourceFile, File destFile) throws IOException {
