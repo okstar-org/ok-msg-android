@@ -676,8 +676,8 @@ public class MessageAdapter extends ArrayAdapter<Message> {
                 displayRichLinkMessage(viewHolder, message, darkBackground);
             }
             MyLinkify.addLinks(body, true);
-            viewHolder.messageBody.setAutoLinkMask(0);
             viewHolder.messageBody.setText(body);
+            viewHolder.messageBody.setAutoLinkMask(0);
             viewHolder.messageBody.setMovementMethod(ClickableMovementMethod.getInstance());
         } else {
             viewHolder.messageBody.setText("");
@@ -1057,8 +1057,8 @@ public class MessageAdapter extends ArrayAdapter<Message> {
             body.setSpan(new ForegroundColorSpan(ThemeHelper.getMessageTextColorPrivate(activity)), 0, privateMarker.length(), Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
             body.setSpan(new StyleSpan(Typeface.BOLD), 0, privateMarker.length(), Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
             MyLinkify.addLinks(body, false);
-            viewHolder.messageBody.setAutoLinkMask(0);
             viewHolder.messageBody.setText(body);
+            viewHolder.messageBody.setAutoLinkMask(0);
             viewHolder.messageBody.setTextIsSelectable(true);
             viewHolder.messageBody.setMovementMethod(ClickableMovementMethod.getInstance());
         } else {
@@ -1066,8 +1066,8 @@ public class MessageAdapter extends ArrayAdapter<Message> {
                 viewHolder.messageBody.setVisibility(View.VISIBLE);
                 body = new SpannableStringBuilder(messageBody);
                 MyLinkify.addLinks(body, false);
-                viewHolder.messageBody.setAutoLinkMask(0);
                 viewHolder.messageBody.setText(body);
+                viewHolder.messageBody.setAutoLinkMask(0);
                 viewHolder.messageBody.setTextIsSelectable(true);
                 viewHolder.messageBody.setMovementMethod(ClickableMovementMethod.getInstance());
             } else {
