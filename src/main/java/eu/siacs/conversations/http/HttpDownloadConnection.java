@@ -142,7 +142,6 @@ public class HttpDownloadConnection implements Transferable {
     private void checkFileSize(final boolean interactive) {
         changeStatus(STATUS_WAITING);
         FileTransferExecutor.execute(new FileSizeChecker(interactive));
-        FileTransferExecutor.execute(new FileSizeChecker(interactive));
     }
 
     @Override
@@ -383,6 +382,7 @@ public class HttpDownloadConnection implements Transferable {
                     HttpDownloadConnection.this.acceptedAutomatically = false;
                     HttpDownloadConnection.this.mXmppConnectionService.getNotificationService().push(message);
                 }
+                changeStatus(STATUS_OFFER);
                 cancel();
             }
         }
