@@ -1370,6 +1370,7 @@ public class XmppConnectionService extends Service {
     @Override
     public void onCreate() {
         updateNotificationChannels();
+        cleanOldNotificationChannels();
         mChannelDiscoveryService.initializeMuclumbusService();
         mForceDuringOnCreate.set(Compatibility.runsAndTargetsTwentySix(this));
         toggleForegroundService();
@@ -1468,16 +1469,18 @@ public class XmppConnectionService extends Service {
     public void updateNotificationChannels() {
         if (Compatibility.runsTwentySix()) {
             new Thread(mNotificationService::updateChannels).start();
-            new Thread(() -> {
-                try {
-                    mNotificationService.cleanAllOldNotificationChannels(this);
-                } catch (Exception e) {
-                    e.printStackTrace();
-                }
-            }).start();
         }
     }
 
+    public void cleanOldNotificationChannels() {
+        new Thread(() -> {
+            try {
+                mNotificationService.cleanAllOldNotificationChannels(this);
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        }).start();
+    }
 
     private void setupPhoneStateListener() {
         final TelephonyManager telephonyManager = (TelephonyManager) getSystemService(Context.TELEPHONY_SERVICE);
