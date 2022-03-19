@@ -1200,4 +1200,5 @@
     <string name="optimize_database">Optimizing database... Please wait...</string>
     <string name="verifying_omemo_keys_trusted_source_account">You are about to verify the OMEMO keys of your own account. This is only secure if you followed this link from a trusted source where only you could have published this link.</string>
     <string name="continue_btn">Continue</string>
+    <string name="participants">Participants</string>
 </resources>
