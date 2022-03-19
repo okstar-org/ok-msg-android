@@ -1695,7 +1695,7 @@ public class FileBackend {
             page.close();
             pdfRenderer.close();
             return scalePdfDimensions(new Dimensions(height, width));
-        } catch (IOException e) {
+        } catch (Exception e) {
             Log.d(Config.LOGTAG, "unable to get dimensions for pdf document", e);
             return new Dimensions(0, 0);
         }
