@@ -65,8 +65,6 @@ public class WebRTCWrapper {
 
     private final ExecutorService executorService = Executors.newSingleThreadExecutor();
 
-    //we should probably keep this in sync with: https://github.com/signalapp/Signal-Android/blob/master/app/src/main/java/org/thoughtcrime/securesms/ApplicationContext.java#L296
-
     private static final Set<String> HARDWARE_AEC_BLACKLIST = new ImmutableSet.Builder<String>()
             .add("Pixel")
             .add("Pixel XL")
