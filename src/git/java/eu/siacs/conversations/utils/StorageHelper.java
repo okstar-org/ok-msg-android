@@ -16,7 +16,7 @@ public class StorageHelper {
         if (type.equalsIgnoreCase("null")) {
             return new File(getStorage(context, STORAGE_INDEX.get(), APP_DIRECTORY, type));
         } else {
-            return new File(getAppMediaDirectory(context, type) + APP_DIRECTORY + " " + type + File.separator);
+            return new File(getAppMediaDirectory(context, type) + APP_DIRECTORY + " " + type);
         }
     }
 

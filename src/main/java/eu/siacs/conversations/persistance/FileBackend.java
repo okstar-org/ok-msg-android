@@ -105,7 +105,7 @@ public class FileBackend {
     private static final SimpleDateFormat fileDateFormat = new SimpleDateFormat("yyyyMMdd_HHmmssSSS", Locale.US);
 
     private static final String FILE_PROVIDER = ".files";
-    public static final String APP_DIRECTORY = "blabber.im";
+    public static final String APP_DIRECTORY = "monocles chat";
     public static final String FILES = "Files";
     public static final String SENT_FILES = "Files" + File.separator + "Sent";
     public static final String AUDIOS = "Audios";
@@ -128,12 +128,12 @@ public class FileBackend {
     }
 
     private static void createNoMedia(Context context) {
-        final File nomedia_files = new File(getConversationsDirectory(context, FILES) + ".nomedia");
-        final File nomedia_audios = new File(getConversationsDirectory(context, AUDIOS) + ".nomedia");
-        final File nomedia_videos_sent = new File(getConversationsDirectory(context, SENT_VIDEOS) + ".nomedia");
-        final File nomedia_files_sent = new File(getConversationsDirectory(context, SENT_FILES) + ".nomedia");
-        final File nomedia_audios_sent = new File(getConversationsDirectory(context, SENT_AUDIOS) + ".nomedia");
-        final File nomedia_images_sent = new File(getConversationsDirectory(context, SENT_IMAGES) + ".nomedia");
+        final File nomedia_files = new File(getConversationsDirectory(context, FILES) + File.separator + ".nomedia");
+        final File nomedia_audios = new File(getConversationsDirectory(context, AUDIOS) + File.separator + ".nomedia");
+        final File nomedia_videos_sent = new File(getConversationsDirectory(context, SENT_VIDEOS) + File.separator + ".nomedia");
+        final File nomedia_files_sent = new File(getConversationsDirectory(context, SENT_FILES) + File.separator + ".nomedia");
+        final File nomedia_audios_sent = new File(getConversationsDirectory(context, SENT_AUDIOS) + File.separator + ".nomedia");
+        final File nomedia_images_sent = new File(getConversationsDirectory(context, SENT_IMAGES) + File.separator + ".nomedia");
         if (!nomedia_files.exists()) {
             try {
                 nomedia_files.createNewFile();
@@ -244,7 +244,7 @@ public class FileBackend {
                     }
                 }
             });
-            Log.d(Config.LOGTAG, "media scanner broadcasts file scan");
+            Log.d(Config.LOGTAG, "media scanner broadcasts file scan: " + file.getAbsolutePath());
             Intent intent = new Intent(Intent.ACTION_MEDIA_SCANNER_SCAN_FILE);
             intent.setData(Uri.fromFile(new File(file.getAbsolutePath())));
             mXmppConnectionService.sendBroadcast(intent);
@@ -412,13 +412,13 @@ public class FileBackend {
             file = new DownloadableFile(path);
         } else {
             if (mime != null && mime.startsWith("image")) {
-                file = new DownloadableFile(getConversationsDirectory(mXmppConnectionService, IMAGES) + path);
+                file = new DownloadableFile(getConversationsDirectory(mXmppConnectionService, IMAGES) + File.separator + path);
             } else if (mime != null && mime.startsWith("video")) {
-                file = new DownloadableFile(getConversationsDirectory(mXmppConnectionService, VIDEOS) + path);
+                file = new DownloadableFile(getConversationsDirectory(mXmppConnectionService, VIDEOS) + File.separator + path);
             } else if (mime != null && mime.startsWith("audio")) {
-                file = new DownloadableFile(getConversationsDirectory(mXmppConnectionService, AUDIOS) + path);
+                file = new DownloadableFile(getConversationsDirectory(mXmppConnectionService, AUDIOS) + File.separator + path);
             } else {
-                file = new DownloadableFile(getConversationsDirectory(mXmppConnectionService, FILES) + path);
+                file = new DownloadableFile(getConversationsDirectory(mXmppConnectionService, FILES) + File.separator + path);
             }
         }
         return file;

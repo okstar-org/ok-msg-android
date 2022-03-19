@@ -496,7 +496,7 @@ public class JingleFileTransferConnection extends AbstractJingleConnection imple
                     if (message.getStatus() == Message.STATUS_RECEIVED) {
                         filename = fileDateFormat.format(new Date(message.getTimeSent())) + "_" + message.getUuid().substring(0, 4) + "." + extension.main;
                     } else {
-                        filename = "Sent/" + fileDateFormat.format(new Date(message.getTimeSent())) + "_" + message.getUuid().substring(0, 4) + "." + extension.main;
+                        filename = "Sent" + File.separator + fileDateFormat.format(new Date(message.getTimeSent())) + "_" + message.getUuid().substring(0, 4) + "." + extension.main;
                     }
                     xmppConnectionService.getFileBackend().setupRelativeFilePath(message, filename);
                 } else if (VALID_CRYPTO_EXTENSIONS.contains(extension.main)) {
@@ -506,7 +506,7 @@ public class JingleFileTransferConnection extends AbstractJingleConnection imple
                         if (message.getStatus() == Message.STATUS_RECEIVED) {
                             filename = fileDateFormat.format(new Date(message.getTimeSent())) + "_" + message.getUuid().substring(0, 4) + "." + extension.secondary;
                         } else {
-                            filename = "Sent/" + fileDateFormat.format(new Date(message.getTimeSent())) + "_" + message.getUuid().substring(0, 4) + "." + extension.secondary;
+                            filename = "Sent" + File.separator + fileDateFormat.format(new Date(message.getTimeSent())) + "_" + message.getUuid().substring(0, 4) + "." + extension.secondary;
                         }
                         xmppConnectionService.getFileBackend().setupRelativeFilePath(message, filename);
                     } else {
@@ -515,7 +515,7 @@ public class JingleFileTransferConnection extends AbstractJingleConnection imple
                         if (message.getStatus() == Message.STATUS_RECEIVED) {
                             filename = fileDateFormat.format(new Date(message.getTimeSent())) + "_" + message.getUuid().substring(0, 4) + (extension.secondary != null ? ("." + extension.secondary) : "");
                         } else {
-                            filename = "Sent/" + fileDateFormat.format(new Date(message.getTimeSent())) + "_" + message.getUuid().substring(0, 4) + (extension.secondary != null ? ("." + extension.secondary) : "");
+                            filename = "Sent" + File.separator + fileDateFormat.format(new Date(message.getTimeSent())) + "_" + message.getUuid().substring(0, 4) + (extension.secondary != null ? ("." + extension.secondary) : "");
                         }
                         xmppConnectionService.getFileBackend().setupRelativeFilePath(message, filename);
                     }
@@ -531,7 +531,7 @@ public class JingleFileTransferConnection extends AbstractJingleConnection imple
                     if (message.getStatus() == Message.STATUS_RECEIVED) {
                         filename = fileDateFormat.format(new Date(message.getTimeSent())) + "_" + message.getUuid().substring(0, 4) + (extension.main != null ? ("." + extension.main) : "");
                     } else {
-                        filename = "Sent/" + fileDateFormat.format(new Date(message.getTimeSent())) + "_" + message.getUuid().substring(0, 4) + (extension.main != null ? ("." + extension.main) : "");
+                        filename = "Sent" + File.separator + fileDateFormat.format(new Date(message.getTimeSent())) + "_" + message.getUuid().substring(0, 4) + (extension.main != null ? ("." + extension.main) : "");
                     }
                     xmppConnectionService.getFileBackend().setupRelativeFilePath(message, filename);
                 }
