@@ -21,6 +21,7 @@ import android.app.Activity;
 import android.app.Fragment;
 import android.app.FragmentManager;
 import android.app.PendingIntent;
+import android.content.ActivityNotFoundException;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
@@ -2100,7 +2101,7 @@ public class ConversationFragment extends XmppFragment implements EditMessage.Ke
         if (context == null) {
             return;
         }
-        if (intent.resolveActivity(context.getPackageManager()) != null) {
+        try {
             Log.d(Config.LOGTAG, "Attachment: " + attachmentChoice);
             if (chooser) {
                 startActivityForResult(
@@ -2111,7 +2112,7 @@ public class ConversationFragment extends XmppFragment implements EditMessage.Ke
                 startActivityForResult(intent, attachmentChoice);
                 activity.overridePendingTransition(R.animator.fade_in, R.animator.fade_out);
             }
-        } else {
+        } catch (final ActivityNotFoundException e) {
             //ignore ToastCompat.makeText(context, R.string.no_application_found, ToastCompat.LENGTH_LONG).show();
         }
     }
