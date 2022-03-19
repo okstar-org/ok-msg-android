@@ -22,6 +22,7 @@ import java.util.List;
 import eu.siacs.conversations.Config;
 import eu.siacs.conversations.R;
 import eu.siacs.conversations.databinding.EnterJidDialogBinding;
+import eu.siacs.conversations.services.XmppConnectionService;
 import eu.siacs.conversations.ui.adapter.KnownHostsAdapter;
 import eu.siacs.conversations.ui.interfaces.OnBackendConnected;
 import eu.siacs.conversations.ui.util.DelayedHintHelper;
@@ -120,8 +121,8 @@ public class EnterJidDialog extends DialogFragment implements OnBackendConnected
         if (account == null) {
             StartConversationActivity.populateAccountSpinner(getActivity(), getArguments().getStringArrayList(ACCOUNTS_LIST_KEY), binding.account);
         } else {
-            ArrayAdapter<String> adapter = new ArrayAdapter<>(getActivity(),
-                    R.layout.simple_list_item,
+            ArrayAdapter<String> adapter = new ArrayAdapter<>(
+                    getActivity(), R.layout.simple_list_item,
                     new String[]{account});
             binding.account.setEnabled(false);
             adapter.setDropDownViewResource(R.layout.simple_list_item);
@@ -207,9 +208,13 @@ public class EnterJidDialog extends DialogFragment implements OnBackendConnected
     }
 
     private void refreshKnownHosts() {
-        Activity activity = getActivity();
+        final Activity activity = getActivity();
         if (activity instanceof XmppActivity) {
-            Collection<String> hosts = ((XmppActivity) activity).xmppConnectionService.getKnownHosts();
+            final XmppConnectionService service = ((XmppActivity) activity).xmppConnectionService;
+            if (service == null) {
+                return;
+            }
+            final Collection<String> hosts = service.getKnownHosts();
             this.knownHostsAdapter.refresh(hosts);
             this.whitelistedDomains = hosts;
         }
@@ -245,6 +250,7 @@ public class EnterJidDialog extends DialogFragment implements OnBackendConnected
             this.msg = msg;
         }
 
+        @NonNull
         public String toString() {
             return msg;
         }
