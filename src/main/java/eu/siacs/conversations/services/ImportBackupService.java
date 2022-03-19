@@ -1,6 +1,7 @@
 package eu.siacs.conversations.services;
 
 import static eu.siacs.conversations.services.NotificationService.IMPORT_BACKUP_NOTIFICATION_ID;
+import static eu.siacs.conversations.utils.StorageHelper.getBackupDirectory;
 
 import android.app.Notification;
 import android.app.NotificationManager;
@@ -54,7 +55,6 @@ import javax.crypto.BadPaddingException;
 import eu.siacs.conversations.Config;
 import eu.siacs.conversations.R;
 import eu.siacs.conversations.persistance.DatabaseBackend;
-import eu.siacs.conversations.persistance.FileBackend;
 import eu.siacs.conversations.ui.ManageAccountActivity;
 import eu.siacs.conversations.utils.BackupFileHeader;
 import eu.siacs.conversations.utils.SerialSingleThreadExecutor;
@@ -128,9 +128,14 @@ public class ImportBackupService extends Service {
         executor.execute(() -> {
             final List<Jid> accounts = mDatabaseBackend.getAccountJids(false);
             final ArrayList<BackupFile> backupFiles = new ArrayList<>();
-            final Set<String> apps = new HashSet<>(Arrays.asList(getString(R.string.app_name), "Conversations", "Quicksy", "Monocles Messenger"));
-            for (String app : apps) {
-                final File directory = new File(FileBackend.getBackupDirectory(app));
+            final Set<String> apps = new HashSet<>(Arrays.asList(getString(R.string.app_name), "Conversations", "Quicksy", "Pix-Art Messenger"));
+            final List<File> directories = new ArrayList<>();
+            for (final String app : apps) {
+                directories.add(new File(getBackupDirectory(app)));
+                //final File directory = new File(getBackupDirectory(app));
+            }
+            directories.add(new File(getBackupDirectory(null)));
+            for (final File directory : directories) {
                 if (!directory.exists() || !directory.isDirectory()) {
                     Log.d(Config.LOGTAG, "directory not found: " + directory.getAbsolutePath());
                     continue;
@@ -138,9 +143,7 @@ public class ImportBackupService extends Service {
                 Log.d(Config.LOGTAG, "directory found: " + directory.getAbsolutePath());
                 final File[] files = directory.listFiles();
                 if (files == null) {
-                    onBackupFilesLoaded.onBackupFilesLoaded(backupFiles);
-                    Log.d(Config.LOGTAG, "Backup files: null");
-                    return;
+                    continue;
                 }
                 for (final File file : files) {
                     if (file.isFile() && file.getName().endsWith(".ceb")) {
@@ -152,9 +155,7 @@ public class ImportBackupService extends Service {
                             } else {
                                 backupFiles.add(backupFile);
                             }
-                        } catch (IOException e) {
-                            Log.d(Config.LOGTAG, "unable to read backup file ", e);
-                        } catch (IllegalArgumentException e) {
+                        } catch (IOException | IllegalArgumentException e) {
                             Log.d(Config.LOGTAG, "unable to read backup file ", e);
                         }
                     }

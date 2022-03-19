@@ -23,6 +23,7 @@ import eu.siacs.conversations.entities.Conversation;
 import eu.siacs.conversations.entities.DownloadableFile;
 import eu.siacs.conversations.entities.Message;
 import eu.siacs.conversations.http.HttpConnectionManager;
+import eu.siacs.conversations.persistance.FileBackend;
 import eu.siacs.conversations.services.XmppConnectionService;
 import eu.siacs.conversations.utils.MimeUtils;
 
@@ -209,14 +210,14 @@ public class PgpDecryptionService {
                                 }
                             }
                             final String url = message.getFileParams().url;
-                            mXmppConnectionService.getFileBackend().updateFileParams(message, url.toString());
+                            mXmppConnectionService.getFileBackend().updateFileParams(message, url);
                             message.setEncryption(Message.ENCRYPTION_DECRYPTED);
                             mXmppConnectionService.updateMessage(message);
                             if (!inputFile.delete()) {
                                 Log.w(Config.LOGTAG, "unable to delete pgp encrypted source file " + inputFile.getAbsolutePath());
                             }
                             skipNotificationPush = true;
-                            mXmppConnectionService.getFileBackend().updateMediaScanner(outputFile, () -> notifyIfPending(message));
+                            FileBackend.updateMediaScanner(mXmppConnectionService, outputFile, () -> notifyIfPending(message));
                             break;
                         case OpenPgpApi.RESULT_CODE_USER_INTERACTION_REQUIRED:
                             synchronized (PgpDecryptionService.this) {

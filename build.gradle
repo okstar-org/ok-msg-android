@@ -105,7 +105,7 @@ android {
 
     defaultConfig {
         minSdkVersion 21
-        targetSdkVersion 29
+        targetSdkVersion 30
 
         //versionNameSuffix " beta_(2021-12-19)" // " beta_(XXXX-XX-XX)" // activate for beta versions
         versionCode 112

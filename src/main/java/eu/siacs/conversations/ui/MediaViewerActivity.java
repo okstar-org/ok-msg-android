@@ -1,5 +1,7 @@
 package eu.siacs.conversations.ui;
 
+import static eu.siacs.conversations.utils.StorageHelper.getConversationsDirectory;
+
 import android.content.ActivityNotFoundException;
 import android.content.Context;
 import android.content.Intent;
@@ -490,6 +492,6 @@ public class MediaViewerActivity extends XmppActivity implements AudioManager.On
     }
 
     private boolean isDeletableFile(File file) {
-        return (file == null || !file.toString().startsWith("/") || file.toString().contains(FileBackend.getConversationsDirectory(this, "null")));
+        return (file == null || !file.toString().startsWith("/") || file.toString().contains(getConversationsDirectory(this, "null").getAbsolutePath()));
     }
 }

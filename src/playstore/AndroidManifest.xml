@@ -3,6 +3,10 @@
     xmlns:tools="http://schemas.android.com/tools"
     package="eu.siacs.conversations">
 
+    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE"
+        tools:ignore="ScopedStorage" />
+
+
     <application tools:ignore="GoogleAppIndexingWarning">
 
         <meta-data

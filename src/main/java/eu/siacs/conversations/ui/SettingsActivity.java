@@ -1,5 +1,7 @@
 package eu.siacs.conversations.ui;
 
+import static eu.siacs.conversations.utils.StorageHelper.getBackupDirectory;
+
 import android.app.FragmentManager;
 import android.content.DialogInterface;
 import android.content.Intent;
@@ -85,7 +87,6 @@ public class SettingsActivity extends XmppActivity implements
     public static final String MAPPREVIEW_HOST = "mappreview_host";
     public static final String ALLOW_MESSAGE_CORRECTION = "allow_message_correction";
     public static final String ALLOW_MESSAGE_RETRACTION = "allow_message_retraction";
-    public static final String ENABLE_OTR_ENCRYPTION = "enable_otr_encryption";
     public static final String USE_UNICOLORED_CHATBG = "unicolored_chatbg";
     public static final String EASY_DOWNLOADER = "easy_downloader";
     public static final String MIN_ANDROID_SDK21_SHOWN = "min_android_sdk21_shown";
@@ -298,7 +299,7 @@ public class SettingsActivity extends XmppActivity implements
 
         final Preference createBackupPreference = mSettingsFragment.findPreference("create_backup");
         if (createBackupPreference != null) {
-            createBackupPreference.setSummary(getString(R.string.pref_create_backup_summary, FileBackend.getBackupDirectory(null)));
+            createBackupPreference.setSummary(getString(R.string.pref_create_backup_summary, getBackupDirectory(null)));
             createBackupPreference.setOnPreferenceClickListener(preference -> {
                 if (hasStoragePermission(REQUEST_CREATE_BACKUP)) {
                     createBackup(true);
@@ -620,7 +621,7 @@ public class SettingsActivity extends XmppActivity implements
         boolean success;
         ObjectInputStream input = null;
         try {
-            final File file = new File(FileBackend.getBackupDirectory(null) + "settings.dat");
+            final File file = new File(getBackupDirectory(null) + "settings.dat");
             input = new ObjectInputStream(new FileInputStream(file));
             SharedPreferences.Editor prefEdit = PreferenceManager.getDefaultSharedPreferences(getApplicationContext()).edit();
             prefEdit.clear();

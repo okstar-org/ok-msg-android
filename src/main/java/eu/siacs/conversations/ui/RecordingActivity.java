@@ -1,5 +1,8 @@
 package eu.siacs.conversations.ui;
 
+import static eu.siacs.conversations.persistance.FileBackend.SENT_AUDIOS;
+import static eu.siacs.conversations.utils.StorageHelper.getConversationsDirectory;
+
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
@@ -31,7 +34,6 @@ import java.util.concurrent.TimeUnit;
 import eu.siacs.conversations.Config;
 import eu.siacs.conversations.R;
 import eu.siacs.conversations.databinding.ActivityRecordingBinding;
-import eu.siacs.conversations.persistance.FileBackend;
 import eu.siacs.conversations.utils.ThemeHelper;
 import eu.siacs.conversations.utils.TimeFrameUtils;
 import me.drakeet.support.toast.ToastCompat;
@@ -179,19 +181,19 @@ public class RecordingActivity extends AppCompatActivity implements View.OnClick
     }
 
     private static File generateOutputFilename(Context context) {
-        SimpleDateFormat dateFormat = new SimpleDateFormat("yyyyMMdd_HHmmssSSS", Locale.US);
-        return new File(FileBackend.getConversationsDirectory(context, "Audios/Sent")
+        final SimpleDateFormat dateFormat = new SimpleDateFormat("yyyyMMdd_HHmmssSSS", Locale.US);
+        return new File(getConversationsDirectory(context, SENT_AUDIOS)
                 + dateFormat.format(new Date())
                 + ".m4a");
     }
 
     private void setupOutputFile() {
         mOutputFile = generateOutputFilename(this);
-        File parentDirectory = mOutputFile.getParentFile();
+        final File parentDirectory = mOutputFile.getParentFile();
         if (parentDirectory.mkdirs()) {
             Log.d(Config.LOGTAG, "created " + parentDirectory.getAbsolutePath());
         }
-        File noMedia = new File(parentDirectory, ".nomedia");
+        final File noMedia = new File(parentDirectory, ".nomedia");
         if (!noMedia.exists()) {
             try {
                 if (noMedia.createNewFile()) {

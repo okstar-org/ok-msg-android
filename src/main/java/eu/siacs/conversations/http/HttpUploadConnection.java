@@ -31,6 +31,7 @@ import okhttp3.OkHttpClient;
 import okhttp3.Request;
 import okhttp3.RequestBody;
 import okhttp3.Response;
+import eu.siacs.conversations.persistance.FileBackend;
 
 public class HttpUploadConnection implements Transferable, AbstractConnectionManager.ProgressListener {
 
@@ -194,7 +195,7 @@ public class HttpUploadConnection implements Transferable, AbstractConnectionMan
                         get = slot.get.toString();
                     }
                     mXmppConnectionService.getFileBackend().updateFileParams(message, get);
-                    mXmppConnectionService.getFileBackend().updateMediaScanner(file);
+                    FileBackend.updateMediaScanner(mXmppConnectionService, file);
                     finish();
                     if (!message.isPrivateMessage()) {
                         message.setCounterpart(message.getConversation().getJid().asBareJid());

@@ -153,6 +153,7 @@ public class HttpDownloadConnection implements Transferable {
     private void checkFileSize(final boolean interactive) {
         changeStatus(STATUS_WAITING);
         FileTransferExecutor.execute(new FileSizeChecker(interactive));
+        FileTransferExecutor.execute(new FileSizeChecker(interactive));
     }
 
     @Override
@@ -206,7 +207,7 @@ public class HttpDownloadConnection implements Transferable {
         mHttpConnectionManager.updateConversationUi(true);
         final boolean notifyAfterScan = notify;
         final DownloadableFile file = mXmppConnectionService.getFileBackend().getFile(message, true);
-        mXmppConnectionService.getFileBackend().updateMediaScanner(file, () -> {
+        FileBackend.updateMediaScanner(mXmppConnectionService, file, () -> {
             if (notifyAfterScan) {
                 mXmppConnectionService.getNotificationService().push(message);
             }
@@ -466,7 +467,7 @@ public class HttpDownloadConnection implements Transferable {
             } else {
                 url = mUrl.toString();
             }
-            mXmppConnectionService.getFileBackend().updateFileParams(message, url.toString());
+            mXmppConnectionService.getFileBackend().updateFileParams(message, url);
             mXmppConnectionService.updateMessage(message);
         }
 
