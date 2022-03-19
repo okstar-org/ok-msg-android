@@ -2749,10 +2749,10 @@ public class ConversationFragment extends XmppFragment implements EditMessage.Ke
     }
 
     private List<Uri> cleanUris(final List<Uri> uris) {
-        Iterator<Uri> iterator = uris.iterator();
+        final Iterator<Uri> iterator = uris.iterator();
         while (iterator.hasNext()) {
             final Uri uri = iterator.next();
-            if (FileBackend.weOwnFile(getActivity(), uri)) {
+            if (FileBackend.weOwnFile(uri)) {
                 iterator.remove();
                 ToastCompat.makeText(getActivity(), R.string.security_violation_not_attaching_file, ToastCompat.LENGTH_SHORT).show();
             }
