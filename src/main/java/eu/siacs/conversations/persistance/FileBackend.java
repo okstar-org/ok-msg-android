@@ -902,7 +902,7 @@ public class FileBackend {
         return new File(parentDirectory, filename);
     }
 
-    public void setupRelativeFilePath(final Message message, final String filename,  final String mime) {
+    public void setupRelativeFilePath(final Message message, final String filename, final String mime) {
         final File file = getStorageLocation(filename, mime);
         message.setRelativeFilePath(file.getAbsolutePath());
     }
@@ -1190,14 +1190,14 @@ public class FileBackend {
     }
 
     public Uri getTakePhotoUri() {
-        final String filename = String.format("IMG_%s.%s", fileDateFormat.format(new Date()),"jpg");
-        File file;
+        final String filename = String.format("IMG_%s.%s", fileDateFormat.format(new Date()), "jpg");
+        final File directory;
         if (STORAGE_INDEX.get() == 1) {
-            final File dcimCache = new File(mXmppConnectionService.getCacheDir(), "Camera");
-            file = new File(dcimCache, filename);
+            directory = new File(mXmppConnectionService.getCacheDir(), "Camera");
         } else {
-            file = new File(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DCIM), filename);
+            directory = new File(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DCIM), "Camera");
         }
+        final File file = new File(directory, filename);
         file.getParentFile().mkdirs();
         return getUriForFile(mXmppConnectionService, file);
     }
