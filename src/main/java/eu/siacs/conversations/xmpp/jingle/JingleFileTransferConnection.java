@@ -73,8 +73,8 @@ public class JingleFileTransferConnection extends AbstractJingleConnection imple
     private int mStatus = Transferable.STATUS_UNKNOWN;
     private Message message;
     private Jid responder;
-    private List<JingleCandidate> candidates = new ArrayList<>();
-    private ConcurrentHashMap<String, JingleSocks5Transport> connections = new ConcurrentHashMap<>();
+    private final List<JingleCandidate> candidates = new ArrayList<>();
+    private final ConcurrentHashMap<String, JingleSocks5Transport> connections = new ConcurrentHashMap<>();
 
     private String transportId;
     private FileTransferDescription description;
@@ -103,12 +103,12 @@ public class JingleFileTransferConnection extends AbstractJingleConnection imple
     private OutputStream mFileOutputStream;
     private InputStream mFileInputStream;
 
-    private OnIqPacketReceived responseListener = (account, packet) -> {
+    private final OnIqPacketReceived responseListener = (account, packet) -> {
         if (packet.getType() != IqPacket.TYPE.RESULT) {
             if (mJingleStatus != JINGLE_STATUS_FAILED && mJingleStatus != JINGLE_STATUS_FINISHED) {
                 fail(IqParser.extractErrorMessage(packet));
             } else {
-                Log.d(Config.LOGTAG, "ignoring late delivery of jingle packet to jingle session with status=" + mJingleStatus + ": " + packet.toString());
+                Log.d(Config.LOGTAG, "ignoring late delivery of jingle packet to jingle session with status=" + mJingleStatus + ": " + packet);
             }
         }
     };
@@ -136,7 +136,7 @@ public class JingleFileTransferConnection extends AbstractJingleConnection imple
                     if (message.getEncryption() == Message.ENCRYPTION_PGP) {
                         id.account.getPgpDecryptionService().decrypt(message, true);
                     } else {
-                        xmppConnectionService.getFileBackend().updateMediaScanner(file, () -> JingleFileTransferConnection.this.xmppConnectionService.getNotificationService().push(message));
+                        FileBackend.updateMediaScanner(xmppConnectionService, file, () -> JingleFileTransferConnection.this.xmppConnectionService.getNotificationService().push(message));
 
                     }
                     Log.d(Config.LOGTAG, "successfully transmitted file:" + file.getAbsolutePath() + " (" + CryptoHelper.bytesToHex(file.getSha1Sum()) + ")");
@@ -157,7 +157,7 @@ public class JingleFileTransferConnection extends AbstractJingleConnection imple
             }
             Log.d(Config.LOGTAG, "successfully transmitted file:" + file.getAbsolutePath() + " (" + CryptoHelper.bytesToHex(file.getSha1Sum()) + ")");
             if (message.getEncryption() != Message.ENCRYPTION_PGP) {
-                xmppConnectionService.getFileBackend().updateMediaScanner(file);
+                FileBackend.updateMediaScanner(xmppConnectionService, file);
             }
         }
 
@@ -167,7 +167,7 @@ public class JingleFileTransferConnection extends AbstractJingleConnection imple
             JingleFileTransferConnection.this.fail();
         }
     };
-    private OnTransportConnected onIbbTransportConnected = new OnTransportConnected() {
+    private final OnTransportConnected onIbbTransportConnected = new OnTransportConnected() {
         @Override
         public void failed() {
             Log.d(Config.LOGTAG, "ibb open failed");
@@ -180,7 +180,7 @@ public class JingleFileTransferConnection extends AbstractJingleConnection imple
             JingleFileTransferConnection.this.transport.send(file, onFileTransmissionStatusChanged);
         }
     };
-    private OnProxyActivated onProxyActivated = new OnProxyActivated() {
+    private final OnProxyActivated onProxyActivated = new OnProxyActivated() {
 
         @Override
         public void success() {
@@ -289,7 +289,7 @@ public class JingleFileTransferConnection extends AbstractJingleConnection imple
             if (transportInfo instanceof IbbTransportInfo) {
                 receiveFallbackToIbb(packet, (IbbTransportInfo) transportInfo);
             } else {
-                Log.d(Config.LOGTAG, "trying to fallback to something unknown" + packet.toString());
+                Log.d(Config.LOGTAG, "trying to fallback to something unknown" + packet);
                 respondToIq(packet, false);
             }
         } else if (action == JinglePacket.Action.TRANSPORT_ACCEPT) {
@@ -492,26 +492,32 @@ public class JingleFileTransferConnection extends AbstractJingleConnection imple
                 AbstractConnectionManager.Extension extension = AbstractConnectionManager.Extension.of(path);
                 if (VALID_IMAGE_EXTENSIONS.contains(extension.main)) {
                     message.setType(Message.TYPE_IMAGE);
+                    final String filename;
                     if (message.getStatus() == Message.STATUS_RECEIVED) {
-                        message.setRelativeFilePath(fileDateFormat.format(new Date(message.getTimeSent())) + "_" + message.getUuid().substring(0, 4) + "." + extension.main);
+                        filename = fileDateFormat.format(new Date(message.getTimeSent())) + "_" + message.getUuid().substring(0, 4) + "." + extension.main;
                     } else {
-                        message.setRelativeFilePath("Sent/" + fileDateFormat.format(new Date(message.getTimeSent())) + "_" + message.getUuid().substring(0, 4) + "." + extension.main);
+                        filename = "Sent" + File.separator + fileDateFormat.format(new Date(message.getTimeSent())) + "_" + message.getUuid().substring(0, 4) + "." + extension.main;
                     }
+                    xmppConnectionService.getFileBackend().setupRelativeFilePath(message, filename);
                 } else if (VALID_CRYPTO_EXTENSIONS.contains(extension.main)) {
                     if (VALID_IMAGE_EXTENSIONS.contains(extension.secondary)) {
                         message.setType(Message.TYPE_IMAGE);
+                        final String filename;
                         if (message.getStatus() == Message.STATUS_RECEIVED) {
-                            message.setRelativeFilePath(fileDateFormat.format(new Date(message.getTimeSent())) + "_" + message.getUuid().substring(0, 4) + "." + extension.secondary);
+                            filename = fileDateFormat.format(new Date(message.getTimeSent())) + "_" + message.getUuid().substring(0, 4) + "." + extension.secondary;
                         } else {
-                            message.setRelativeFilePath("Sent/" + fileDateFormat.format(new Date(message.getTimeSent())) + "_" + message.getUuid().substring(0, 4) + "." + extension.secondary);
+                            filename = "Sent" + File.separator + fileDateFormat.format(new Date(message.getTimeSent())) + "_" + message.getUuid().substring(0, 4) + "." + extension.secondary;
                         }
+                        xmppConnectionService.getFileBackend().setupRelativeFilePath(message, filename);
                     } else {
                         message.setType(Message.TYPE_FILE);
+                        final String filename;
                         if (message.getStatus() == Message.STATUS_RECEIVED) {
-                            message.setRelativeFilePath(fileDateFormat.format(new Date(message.getTimeSent())) + "_" + message.getUuid().substring(0, 4) + (extension.secondary != null ? ("." + extension.secondary) : ""));
+                            filename = fileDateFormat.format(new Date(message.getTimeSent())) + "_" + message.getUuid().substring(0, 4) + (extension.secondary != null ? ("." + extension.secondary) : "");
                         } else {
-                            message.setRelativeFilePath("Sent/" + fileDateFormat.format(new Date(message.getTimeSent())) + "_" + message.getUuid().substring(0, 4) + (extension.secondary != null ? ("." + extension.secondary) : ""));
+                            filename = "Sent" + File.separator + fileDateFormat.format(new Date(message.getTimeSent())) + "_" + message.getUuid().substring(0, 4) + (extension.secondary != null ? ("." + extension.secondary) : "");
                         }
+                        xmppConnectionService.getFileBackend().setupRelativeFilePath(message, filename);
                     }
                     // only for OTR compatibility
                     if (extension.main.equals("otr")) {
@@ -521,11 +527,13 @@ public class JingleFileTransferConnection extends AbstractJingleConnection imple
                     }
                 } else {
                     message.setType(Message.TYPE_FILE);
+                    final String filename;
                     if (message.getStatus() == Message.STATUS_RECEIVED) {
-                        message.setRelativeFilePath(fileDateFormat.format(new Date(message.getTimeSent())) + "_" + message.getUuid().substring(0, 4) + (extension.main != null ? ("." + extension.main) : ""));
+                        filename = fileDateFormat.format(new Date(message.getTimeSent())) + "_" + message.getUuid().substring(0, 4) + (extension.main != null ? ("." + extension.main) : "");
                     } else {
-                        message.setRelativeFilePath("Sent/" + fileDateFormat.format(new Date(message.getTimeSent())) + "_" + message.getUuid().substring(0, 4) + (extension.main != null ? ("." + extension.main) : ""));
+                        filename = "Sent" + File.separator + fileDateFormat.format(new Date(message.getTimeSent())) + "_" + message.getUuid().substring(0, 4) + (extension.main != null ? ("." + extension.main) : "");
                     }
+                    xmppConnectionService.getFileBackend().setupRelativeFilePath(message, filename);
                 }
                 long size = parseLong(fileSize, 0);
                 message.setBody(Long.toString(size));
@@ -870,7 +878,7 @@ public class JingleFileTransferConnection extends AbstractJingleConnection imple
                             .setContent(this.id.with.toEscapedString());
                     xmppConnectionService.sendIqPacket(this.id.account, activation, (account, response) -> {
                         if (response.getType() != IqPacket.TYPE.RESULT) {
-                            Log.d(Config.LOGTAG, id.account.getJid().asBareJid() + ": " + response.toString());
+                            Log.d(Config.LOGTAG, id.account.getJid().asBareJid() + ": " + response);
                             sendProxyError();
                             onProxyActivated.failed();
                         } else {

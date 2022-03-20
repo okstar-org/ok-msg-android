@@ -89,7 +89,6 @@ import eu.siacs.conversations.ui.util.ViewUtil;
 import eu.siacs.conversations.ui.widget.ClickableMovementMethod;
 import eu.siacs.conversations.ui.widget.RichLinkView;
 import eu.siacs.conversations.utils.CryptoHelper;
-import eu.siacs.conversations.utils.EmojiWrapper;
 import eu.siacs.conversations.utils.Emoticons;
 import eu.siacs.conversations.utils.GeoHelper;
 import eu.siacs.conversations.utils.MessageUtils;
@@ -474,7 +473,7 @@ public class MessageAdapter extends ArrayAdapter<Message> {
         final Spannable span = new SpannableString(body);
         final float size = Emoticons.isEmoji(body) ? 3.0f : 2.0f;
         span.setSpan(new RelativeSizeSpan(size), 0, body.length(), Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
-        viewHolder.messageBody.setText(EmojiWrapper.transform(span));
+        viewHolder.messageBody.setText(span);
     }
 
     private void displayXmppMessage(final ViewHolder viewHolder, final String body) {
@@ -677,8 +676,8 @@ public class MessageAdapter extends ArrayAdapter<Message> {
                 displayRichLinkMessage(viewHolder, message, darkBackground);
             }
             MyLinkify.addLinks(body, true);
+            viewHolder.messageBody.setText(body);
             viewHolder.messageBody.setAutoLinkMask(0);
-            viewHolder.messageBody.setText(EmojiWrapper.transform(body));
             viewHolder.messageBody.setMovementMethod(ClickableMovementMethod.getInstance());
         } else {
             viewHolder.messageBody.setText("");
@@ -936,7 +935,7 @@ public class MessageAdapter extends ArrayAdapter<Message> {
         viewHolder.richlinkview.setVisibility(View.GONE);
         viewHolder.transfer.setVisibility(View.GONE);
         final DownloadableFile file = activity.xmppConnectionService.getFileBackend().getFile(message);
-        if (!file.exists() && !message.isFileDeleted()) {
+        if (file != null && !file.exists() && !message.isFileDeleted()) {
             markFileDeleted(message);
             displayInfoMessage(viewHolder, activity.getString(R.string.file_deleted), darkBackground, message);
             ToastCompat.makeText(activity, R.string.file_deleted, ToastCompat.LENGTH_SHORT).show();
@@ -1058,8 +1057,8 @@ public class MessageAdapter extends ArrayAdapter<Message> {
             body.setSpan(new ForegroundColorSpan(ThemeHelper.getMessageTextColorPrivate(activity)), 0, privateMarker.length(), Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
             body.setSpan(new StyleSpan(Typeface.BOLD), 0, privateMarker.length(), Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
             MyLinkify.addLinks(body, false);
-            viewHolder.messageBody.setAutoLinkMask(0);
             viewHolder.messageBody.setText(body);
+            viewHolder.messageBody.setAutoLinkMask(0);
             viewHolder.messageBody.setTextIsSelectable(true);
             viewHolder.messageBody.setMovementMethod(ClickableMovementMethod.getInstance());
         } else {
@@ -1067,8 +1066,8 @@ public class MessageAdapter extends ArrayAdapter<Message> {
                 viewHolder.messageBody.setVisibility(View.VISIBLE);
                 body = new SpannableStringBuilder(messageBody);
                 MyLinkify.addLinks(body, false);
-                viewHolder.messageBody.setAutoLinkMask(0);
                 viewHolder.messageBody.setText(body);
+                viewHolder.messageBody.setAutoLinkMask(0);
                 viewHolder.messageBody.setTextIsSelectable(true);
                 viewHolder.messageBody.setMovementMethod(ClickableMovementMethod.getInstance());
             } else {
@@ -1196,7 +1195,6 @@ public class MessageAdapter extends ArrayAdapter<Message> {
                 viewHolder.status_message.setText(DateUtils.formatDateTime(activity, message.getTimeSent(), DateUtils.FORMAT_SHOW_DATE | DateUtils.FORMAT_SHOW_YEAR));
             }
             viewHolder.message_box.setBackgroundResource(darkBackground ? R.drawable.date_bubble_dark : R.drawable.date_bubble);
-            activity.setBubbleColor(viewHolder.message_box, StyledAttributes.getColor(activity, R.attr.colorAccentLight), -1);
             return view;
         } else if (type == RTP_SESSION) {
             final boolean isDarkTheme = activity.isDarkTheme();
@@ -1220,7 +1218,6 @@ public class MessageAdapter extends ArrayAdapter<Message> {
             viewHolder.indicatorReceived.setImageResource(RtpSessionStatus.getDrawable(received, rtpSessionStatus.successful, isDarkTheme));
             viewHolder.indicatorReceived.setAlpha(isDarkTheme ? 0.7f : 0.57f);
             viewHolder.message_box.setBackgroundResource(darkBackground ? R.drawable.date_bubble_dark : R.drawable.date_bubble);
-            activity.setBubbleColor(viewHolder.message_box, StyledAttributes.getColor(activity, R.attr.colorAccentLight), -1);
             return view;
         } else if (type == STATUS) {
             if ("LOAD_MORE".equals(message.getBody())) {
@@ -1231,7 +1228,7 @@ public class MessageAdapter extends ArrayAdapter<Message> {
             } else {
                 viewHolder.status_message.setVisibility(View.VISIBLE);
                 viewHolder.load_more_messages.setVisibility(View.GONE);
-                viewHolder.status_message.setText(EmojiWrapper.transform(message.getBody()));
+                viewHolder.status_message.setText(message.getBody());
                 boolean showAvatar;
                 if (conversation.getMode() == Conversation.MODE_SINGLE) {
                     showAvatar = true;
@@ -1285,9 +1282,8 @@ public class MessageAdapter extends ArrayAdapter<Message> {
                 }
                 if (checkFileExistence(message, view, viewHolder)) {
                     markFileExisting(message);
-                } else {
-                    displayInfoMessage(viewHolder, UIHelper.getMessagePreview(activity, message).first, darkBackground, message);
                 }
+                displayInfoMessage(viewHolder, UIHelper.getMessagePreview(activity, message).first, darkBackground, message);
             }
         } else if (message.isFileOrImage() && message.getEncryption() != Message.ENCRYPTION_PGP && message.getEncryption() != Message.ENCRYPTION_DECRYPTION_FAILED) {
             if (message.getFileParams().width > 0 && message.getFileParams().height > 0) {

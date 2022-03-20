@@ -1,8 +1,15 @@
 package eu.siacs.conversations.persistance;
 
+import static eu.siacs.conversations.utils.StorageHelper.getConversationsDirectory;
+import static eu.siacs.conversations.utils.StorageHelper.getGlobalAudiosPath;
+import static eu.siacs.conversations.utils.StorageHelper.getGlobalDocumentsPath;
+import static eu.siacs.conversations.utils.StorageHelper.getGlobalPicturesPath;
+import static eu.siacs.conversations.utils.StorageHelper.getGlobalVideosPath;
+
 import android.app.Activity;
 import android.content.ContentResolver;
 import android.content.Context;
+import android.content.Intent;
 import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
 import android.database.Cursor;
@@ -35,11 +42,11 @@ import android.util.DisplayMetrics;
 import android.util.Log;
 import android.util.LruCache;
 
-import androidx.annotation.Nullable;
 import androidx.annotation.StringRes;
 import androidx.core.content.FileProvider;
 import androidx.exifinterface.media.ExifInterface;
 
+import com.google.common.base.Strings;
 import com.google.common.io.ByteStreams;
 
 import java.io.ByteArrayOutputStream;
@@ -52,11 +59,11 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
-import java.io.UnsupportedEncodingException;
 import java.net.ServerSocket;
 import java.net.Socket;
 import java.net.URL;
 import java.nio.channels.FileChannel;
+import java.nio.charset.StandardCharsets;
 import java.security.DigestOutputStream;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
@@ -73,7 +80,6 @@ import java.util.Stack;
 import java.util.UUID;
 import java.util.concurrent.atomic.AtomicInteger;
 
-import eu.siacs.conversations.BuildConfig;
 import eu.siacs.conversations.Config;
 import eu.siacs.conversations.R;
 import eu.siacs.conversations.entities.Account;
@@ -83,7 +89,6 @@ import eu.siacs.conversations.services.AttachFileToConversationRunnable;
 import eu.siacs.conversations.services.XmppConnectionService;
 import eu.siacs.conversations.ui.SettingsActivity;
 import eu.siacs.conversations.ui.util.Attachment;
-import eu.siacs.conversations.utils.Compatibility;
 import eu.siacs.conversations.utils.CryptoHelper;
 import eu.siacs.conversations.utils.FileUtils;
 import eu.siacs.conversations.utils.FileWriterException;
@@ -100,15 +105,15 @@ public class FileBackend {
     private static final SimpleDateFormat fileDateFormat = new SimpleDateFormat("yyyyMMdd_HHmmssSSS", Locale.US);
 
     private static final String FILE_PROVIDER = ".files";
-    private static final String APP_DIRECTORY = "monocles chat";
+    public static final String APP_DIRECTORY = "monocles chat";
     public static final String FILES = "Files";
-    public static final String SENT_FILES = "Files/Sent";
+    public static final String SENT_FILES = "Files" + File.separator + "Sent";
     public static final String AUDIOS = "Audios";
-    public static final String SENT_AUDIOS = "Audios/Sent";
+    public static final String SENT_AUDIOS = "Audios" + File.separator + "Sent";
     public static final String IMAGES = "Images";
-    public static final String SENT_IMAGES = "Images/Sent";
+    public static final String SENT_IMAGES = "Images" + File.separator + "Sent";
     public static final String VIDEOS = "Videos";
-    public static final String SENT_VIDEOS = "Videos/Sent";
+    public static final String SENT_VIDEOS = "Videos" + File.separator + "Sent";
 
     public static final AtomicInteger STORAGE_INDEX = new AtomicInteger(0);
 
@@ -122,13 +127,13 @@ public class FileBackend {
         STORAGE_INDEX.set(checked ? 1 : 0);
     }
 
-    private void createNoMedia(Context context) {
-        final File nomedia_files = new File(getConversationsDirectory(context, FILES) + ".nomedia");
-        final File nomedia_audios = new File(getConversationsDirectory(context, AUDIOS) + ".nomedia");
-        final File nomedia_videos_sent = new File(getConversationsDirectory(context, SENT_VIDEOS) + ".nomedia");
-        final File nomedia_files_sent = new File(getConversationsDirectory(context, SENT_FILES) + ".nomedia");
-        final File nomedia_audios_sent = new File(getConversationsDirectory(context, SENT_AUDIOS) + ".nomedia");
-        final File nomedia_images_sent = new File(getConversationsDirectory(context, SENT_IMAGES) + ".nomedia");
+    private static void createNoMedia(Context context) {
+        final File nomedia_files = new File(getConversationsDirectory(context, FILES) + File.separator + ".nomedia");
+        final File nomedia_audios = new File(getConversationsDirectory(context, AUDIOS) + File.separator + ".nomedia");
+        final File nomedia_videos_sent = new File(getConversationsDirectory(context, SENT_VIDEOS) + File.separator + ".nomedia");
+        final File nomedia_files_sent = new File(getConversationsDirectory(context, SENT_FILES) + File.separator + ".nomedia");
+        final File nomedia_audios_sent = new File(getConversationsDirectory(context, SENT_AUDIOS) + File.separator + ".nomedia");
+        final File nomedia_images_sent = new File(getConversationsDirectory(context, SENT_IMAGES) + File.separator + ".nomedia");
         if (!nomedia_files.exists()) {
             try {
                 nomedia_files.createNewFile();
@@ -213,13 +218,14 @@ public class FileBackend {
         }
     }
 
-    public void updateMediaScanner(File file) {
-        updateMediaScanner(file, null);
+    public static void updateMediaScanner(XmppConnectionService mXmppConnectionService, File file) {
+        updateMediaScanner(mXmppConnectionService, file, null);
     }
 
-    public void updateMediaScanner(File file, final Runnable callback) {
-        if (file.getAbsolutePath().startsWith(getConversationsDirectory(mXmppConnectionService, IMAGES))
-                || file.getAbsolutePath().startsWith(getConversationsDirectory(mXmppConnectionService, VIDEOS))) {
+    public static void updateMediaScanner(XmppConnectionService mXmppConnectionService, File file, final Runnable callback) {
+        if ((file.getAbsolutePath().startsWith(getConversationsDirectory(mXmppConnectionService, IMAGES).getAbsolutePath())
+                || file.getAbsolutePath().startsWith(getConversationsDirectory(mXmppConnectionService, VIDEOS).getAbsolutePath()))
+                && !file.getAbsolutePath().toLowerCase(Locale.US).contains("sent")) {
             MediaScannerConnection.scanFile(mXmppConnectionService, new String[]{file.getAbsolutePath()}, null, new MediaScannerConnection.MediaScannerConnectionClient() {
                 @Override
                 public void onMediaScannerConnected() {
@@ -238,10 +244,10 @@ public class FileBackend {
                     }
                 }
             });
-            return;
-            /*Intent intent = new Intent(Intent.ACTION_MEDIA_SCANNER_SCAN_FILE);
-            intent.setData(Uri.fromFile(file));
-            mXmppConnectionService.sendBroadcast(intent);*/
+            Log.d(Config.LOGTAG, "media scanner broadcasts file scan: " + file.getAbsolutePath());
+            Intent intent = new Intent(Intent.ACTION_MEDIA_SCANNER_SCAN_FILE);
+            intent.setData(Uri.fromFile(new File(file.getAbsolutePath())));
+            mXmppConnectionService.sendBroadcast(intent);
         } else {
             createNoMedia(mXmppConnectionService);
         }
@@ -251,12 +257,7 @@ public class FileBackend {
     }
 
     public boolean deleteFile(File file) {
-        if (file.delete()) {
-            updateMediaScanner(file);
-            return true;
-        } else {
-            return false;
-        }
+        return file.delete();
     }
 
     public boolean deleteFile(Message message) {
@@ -405,19 +406,19 @@ public class FileBackend {
         return getFileForPath(path, MimeUtils.guessMimeTypeFromExtension(MimeUtils.extractRelevantExtension(path)));
     }
 
-    public DownloadableFile getFileForPath(String path, String mime) {
-        final DownloadableFile file;
-        if (path.startsWith("/")) {
+    private DownloadableFile getFileForPath(String path, String mime) {
+        DownloadableFile file = null;
+        if (path.startsWith(File.separator)) {
             file = new DownloadableFile(path);
         } else {
             if (mime != null && mime.startsWith("image")) {
-                file = new DownloadableFile(getConversationsDirectory(mXmppConnectionService, IMAGES) + path);
+                file = new DownloadableFile(getConversationsDirectory(mXmppConnectionService, IMAGES) + File.separator + path);
             } else if (mime != null && mime.startsWith("video")) {
-                file = new DownloadableFile(getConversationsDirectory(mXmppConnectionService, VIDEOS) + path);
+                file = new DownloadableFile(getConversationsDirectory(mXmppConnectionService, VIDEOS) + File.separator + path);
             } else if (mime != null && mime.startsWith("audio")) {
-                file = new DownloadableFile(getConversationsDirectory(mXmppConnectionService, AUDIOS) + path);
+                file = new DownloadableFile(getConversationsDirectory(mXmppConnectionService, AUDIOS) + File.separator + path);
             } else {
-                file = new DownloadableFile(getConversationsDirectory(mXmppConnectionService, FILES) + path);
+                file = new DownloadableFile(getConversationsDirectory(mXmppConnectionService, FILES) + File.separator + path);
             }
         }
         return file;
@@ -438,7 +439,7 @@ public class FileBackend {
         }
         final DownloadableFile file = getFileForPath(path, message.getMimeType());
         if (encrypted) {
-            return new DownloadableFile(getConversationsDirectory(mXmppConnectionService, FILES) + file.getName() + ".pgp");
+            return new DownloadableFile(mXmppConnectionService.getCacheDir(), String.format("%s.%s", file.getName(), "pgp"));
         } else {
             return file;
         }
@@ -531,7 +532,7 @@ public class FileBackend {
 
     public List<Attachment> convertToAttachments(final List<DatabaseBackend.FilePath> relativeFilePaths) {
         final List<Attachment> attachments = new ArrayList<>();
-        for (DatabaseBackend.FilePath relativeFilePath : relativeFilePaths) {
+        for (final DatabaseBackend.FilePath relativeFilePath : relativeFilePaths) {
             final String mime = MimeUtils.guessMimeTypeFromExtension(MimeUtils.extractRelevantExtension(relativeFilePath.path));
             final File file = getFileForPath(relativeFilePath.path, mime);
             if (file.exists()) {
@@ -541,65 +542,17 @@ public class FileBackend {
         return attachments;
     }
 
-    public static String getConversationsDirectory(final Context context, final String type) {
-        if (type.equalsIgnoreCase("null")) {
-            return getStorage(context, STORAGE_INDEX.get());
+    public static String getFileType(File file) {
+        String extension = MimeUtils.extractRelevantExtension(file.getAbsolutePath(), true);
+        String mime = MimeUtils.guessMimeTypeFromExtension(extension);
+        if (mime.toLowerCase(Locale.US).contains("image")) {
+            return IMAGES;
+        } else if (mime.toLowerCase(Locale.US).contains("video")) {
+            return VIDEOS;
+        } else if (mime.toLowerCase(Locale.US).contains("audio")) {
+            return AUDIOS;
         } else {
-            if (Compatibility.runsThirty()) {
-                return getAppMediaDirectory(context) + type + File.separator;
-            } else {
-                return getAppMediaDirectory(context) + APP_DIRECTORY + " " + type + File.separator;
-            }
-        }
-    }
-
-    public static String getAppMediaDirectory(final Context context) {
-        return getStorage(context, STORAGE_INDEX.get());
-    }
-
-    public static String getStorage(Context c, int index) {
-        if (index == 0) {
-            return getData(c);
-        } else {
-            return Environment.getDataDirectory() + File.separator + "data" + File.separator + BuildConfig.APPLICATION_ID + File.separator + "files" + File.separator;
-        }
-    };
-
-    private static String getData(Context context) {
-        if (Compatibility.runsThirty()) {
-            return context.getExternalFilesDir(null).getAbsolutePath() + File.separator;
-        } else {
-            return Environment.getExternalStorageDirectory().getAbsolutePath() + File.separator + APP_DIRECTORY + File.separator + "Media" + File.separator;
-        }
-    }
-
-    public static String getBackupDirectory(@Nullable String app) {
-        if (app != null && (app.equalsIgnoreCase("conversations") || app.equalsIgnoreCase("Quicksy"))) {
-            return Environment.getExternalStorageDirectory().getAbsolutePath() + "/" + app + "/Backup/";
-        } else if (app != null && (app.equalsIgnoreCase("Monocles Messenger"))) {
-            return Environment.getExternalStorageDirectory().getAbsolutePath() + File.separator + app + File.separator + "Database" + File.separator;
-        } else {
-            if (Compatibility.runsThirty()) {
-                return getGlobalDocumentsPath() + File.separator + "Database" + File.separator;
-            } else {
-                return Environment.getExternalStorageDirectory().getAbsolutePath() + File.separator + APP_DIRECTORY + File.separator + "Database" + File.separator;
-            }
-        }
-    }
-
-    public static String getAppLogsDirectory() {
-        if (Compatibility.runsThirty()) {
-            return getGlobalDocumentsPath() + File.separator + "Chats" + File.separator;
-        } else {
-            return Environment.getExternalStorageDirectory().getAbsolutePath() + File.separator + APP_DIRECTORY + File.separator + "Chats" + File.separator;
-        }
-    }
-
-    public static String getAppUpdateDirectory() {
-        if (Compatibility.runsThirty()) {
-            return getGlobalDownloadsPath() + File.separator + "Update" + File.separator;
-        } else {
-            return Environment.getExternalStorageDirectory().getAbsolutePath() + File.separator + APP_DIRECTORY + File.separator + "Update" + File.separator;
+            return FILES;
         }
     }
 
@@ -678,7 +631,7 @@ public class FileBackend {
             Log.d(Config.LOGTAG, "File path = null");
             return false;
         }
-        if (path.contains(getConversationsDirectory(mXmppConnectionService, "null"))) {
+        if (path.contains(getConversationsDirectory(mXmppConnectionService, "null").getAbsolutePath())) {
             Log.d(Config.LOGTAG, "File " + path + " is in our directory");
             return true;
         }
@@ -688,7 +641,7 @@ public class FileBackend {
 
     public static boolean isPathBlacklisted(String path) {
         Environment.getDataDirectory();
-        final String androidDataPath = Environment.getExternalStorageDirectory().getAbsolutePath() + "/Android/data/";
+        final String androidDataPath = Environment.getExternalStorageDirectory().getAbsolutePath() + File.separator + "Android" + File.separator + "data" + File.separator + "";
         return path.startsWith(androidDataPath);
     }
 
@@ -711,15 +664,13 @@ public class FileBackend {
             }
             try {
                 ByteStreams.copy(is, os);
-            } catch (IOException e) {
-                throw new FileWriterException();
             } catch (Exception e) {
-                throw new FileWriterException();
+                throw new FileWriterException(file);
             }
             try {
                 os.flush();
             } catch (IOException e) {
-                throw new FileWriterException();
+                throw new FileWriterException(file);
             }
         } catch (final FileNotFoundException e) {
             cleanup(file);
@@ -747,30 +698,56 @@ public class FileBackend {
         if ("ogg".equals(extension) && type != null && type.startsWith("audio/")) {
             extension = "oga";
         }
-        String filename = "Sent/" + fileDateFormat.format(new Date(message.getTimeSent())) + "_" + message.getUuid().substring(0, 4);
-        message.setRelativeFilePath(filename + "." + extension);
+        String filename = "Sent" + File.separator + fileDateFormat.format(new Date(message.getTimeSent())) + "_" + message.getUuid().substring(0, 4);
+        setupRelativeFilePath(message, String.format("%s.%s", filename, extension));
         copyFileToPrivateStorage(mXmppConnectionService.getFileBackend().getFile(message), uri);
     }
 
-    private String getExtensionFromUri(Uri uri) {
-        String[] projection = {MediaStore.MediaColumns.DATA};
-        String filename = null;
-        Cursor cursor;
-        try {
-            cursor = mXmppConnectionService.getContentResolver().query(uri, projection, null, null, null);
-        } catch (IllegalArgumentException e) {
-            cursor = null;
-        }
-        if (cursor != null) {
-            try {
-                if (cursor.moveToFirst()) {
-                    filename = cursor.getString(0);
-                }
-            } catch (Exception e) {
-                filename = null;
-            } finally {
-                cursor.close();
+    public static void moveDirectory(XmppConnectionService mXmppConnectionService, File sourceLocation, File targetLocation) throws Exception {
+        if (sourceLocation.isDirectory()) {
+            Log.d(Config.LOGTAG, "Migration: copy from " + sourceLocation.getAbsolutePath() + " to " + targetLocation.getAbsolutePath());
+            if (!targetLocation.exists()) {
+                targetLocation.mkdir();
+                Log.d(Config.LOGTAG, "Migration: creating target dir " + targetLocation.getAbsolutePath());
             }
+            String[] children = sourceLocation.list();
+            for (String child : children) {
+                try {
+                    Log.d(Config.LOGTAG, "Migration: iterating in dir " + child);
+                    moveDirectory(mXmppConnectionService, new File(sourceLocation, child), new File(targetLocation, child));
+                } finally {
+                    sourceLocation.delete();
+                }
+            }
+        } else {
+            try {
+                Log.d(Config.LOGTAG, "Migration: copy " + sourceLocation.getName() + " to target dir " + targetLocation.getAbsolutePath());
+                InputStream in = new FileInputStream(sourceLocation);
+                OutputStream out = new FileOutputStream(targetLocation);
+                // Copy the bits from instream to outstream
+                byte[] buf = new byte[1024];
+                int len;
+                while ((len = in.read(buf)) > 0) {
+                    out.write(buf, 0, len);
+                }
+                in.close();
+                out.close();
+            } finally {
+                updateMediaScanner(mXmppConnectionService, targetLocation);
+                sourceLocation.delete();
+            }
+        }
+    }
+
+    private String getExtensionFromUri(final Uri uri) {
+        final String[] projection = {MediaStore.MediaColumns.DATA};
+        String filename = null;
+        try (final Cursor cursor = mXmppConnectionService.getContentResolver().query(uri, projection, null, null, null)) {
+            if (cursor != null && cursor.moveToFirst()) {
+                filename = cursor.getString(0);
+            }
+        } catch (final SecurityException | IllegalArgumentException e) {
+            filename = null;
         }
         if (filename == null) {
             final List<String> segments = uri.getPathSegments();
@@ -778,7 +755,7 @@ public class FileBackend {
                 filename = segments.get(segments.size() - 1);
             }
         }
-        int pos = filename == null ? -1 : filename.lastIndexOf('.');
+        final int pos = filename == null ? -1 : filename.lastIndexOf('.');
         return pos > 0 ? filename.substring(pos + 1) : null;
     }
 
@@ -871,20 +848,51 @@ public class FileBackend {
     }
 
     public void copyImageToPrivateStorage(Message message, Uri image) throws FileCopyException, ImageCompressionException {
-        String filename = "Sent/" + fileDateFormat.format(new Date(message.getTimeSent())) + "_" + message.getUuid().substring(0, 4);
+        String filename;
+        String file = "Sent" + File.separator + fileDateFormat.format(new Date(message.getTimeSent())) + "_" + message.getUuid().substring(0, 4);
         switch (Config.IMAGE_FORMAT) {
             case JPEG:
-                message.setRelativeFilePath(filename + ".jpg");
+                filename = String.format("%s.%s", file, ".jpg");
                 break;
             case PNG:
-                message.setRelativeFilePath(filename + ".png");
+                filename = String.format("%s.%s", file, ".png");
                 break;
             case WEBP:
-                message.setRelativeFilePath(filename + ".webp");
+                filename = String.format("%s.%s", file, ".webp");
                 break;
+            default:
+                throw new IllegalStateException("Unknown image format");
         }
+        setupRelativeFilePath(message, filename);
         copyImageToPrivateStorage(getFile(message), image);
         updateFileParams(message);
+    }
+
+    public void setupRelativeFilePath(final Message message, final String filename) {
+        final String extension = MimeUtils.extractRelevantExtension(filename);
+        final String mime = MimeUtils.guessMimeTypeFromExtension(extension);
+        setupRelativeFilePath(message, filename, mime);
+    }
+
+    public File getStorageLocation(final String filename, final String mime) {
+        final File parentDirectory;
+        if (Strings.isNullOrEmpty(mime)) {
+            parentDirectory = getConversationsDirectory(mXmppConnectionService, FILES);
+        } else if (mime.startsWith("image/")) {
+            parentDirectory = getConversationsDirectory(mXmppConnectionService, IMAGES);
+        } else if (mime.startsWith("video/")) {
+            parentDirectory = getConversationsDirectory(mXmppConnectionService, VIDEOS);
+        } else if (mime.startsWith("audio/")) {
+            parentDirectory = getConversationsDirectory(mXmppConnectionService, AUDIOS);
+        } else {
+            parentDirectory = getConversationsDirectory(mXmppConnectionService, FILES);
+        }
+        return new File(parentDirectory, filename);
+    }
+
+    public void setupRelativeFilePath(final Message message, final String filename, final String mime) {
+        final File file = getStorageLocation(filename, mime);
+        message.setRelativeFilePath(file.getAbsolutePath());
     }
 
     public void copyFile(File sourceFile, File destFile) throws IOException {
@@ -910,8 +918,20 @@ public class FileBackend {
             if (destination != null) {
                 destination.close();
             }
-            updateMediaScanner(destFile);
+            updateMediaScanner(mXmppConnectionService, destFile);
         }
+    }
+
+    public static boolean copyStream(InputStream sourceFile, OutputStream destFile) throws IOException {
+        byte[] buf = new byte[4096];
+        int len;
+        while ((len = sourceFile.read(buf)) > 0) {
+            Thread.yield();
+            destFile.write(buf, 0, len);
+        }
+        destFile.close();
+        Log.d(Config.LOGTAG, "Copy stream from " + sourceFile + " to " + destFile);
+        return true;
     }
 
     public boolean unusualBounds(final Uri image) {
@@ -966,7 +986,7 @@ public class FileBackend {
         // If only the UUID were used, the first loaded thumbnail would be cached and the next loading
         // would get that thumbnail which would have the size of the first cached thumbnail
         // possibly leading to undesirable appearance of the displayed thumbnail.
-        final String key = message.getUuid() + String.valueOf(size);
+        final String key = message.getUuid() + size;
         final String uuid = message.getUuid();
         final LruCache<String, Bitmap> cache = mXmppConnectionService.getBitmapCache();
         Bitmap thumbnail = cache.get(key);
@@ -1154,11 +1174,18 @@ public class FileBackend {
     }
 
     private static String getTakeFromCameraPath() {
-        return Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DCIM) + "/Camera/";
+        return Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DCIM) + File.separator + "Camera" + File.separator;
     }
 
     public Uri getTakePhotoUri() {
-        File file = new File(getTakeFromCameraPath() + "IMG_" + fileDateFormat.format(new Date()) + ".jpg");
+        final String filename = String.format("IMG_%s.%s", fileDateFormat.format(new Date()), "jpg");
+        final File directory;
+        if (STORAGE_INDEX.get() == 1) {
+            directory = new File(mXmppConnectionService.getCacheDir(), "Camera");
+        } else {
+            directory = new File(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DCIM), "Camera");
+        }
+        final File file = new File(directory, filename);
         file.getParentFile().mkdirs();
         return getUriForFile(mXmppConnectionService, file);
     }
@@ -1172,14 +1199,7 @@ public class FileBackend {
     }
 
     public static Uri getUriForFile(Context context, File file) {
-        if (PreferenceManager.getDefaultSharedPreferences(context)
-                .getBoolean(SettingsActivity.USE_INNER_STORAGE, true)) {
-            File dataUser0File = new File(file.getAbsolutePath().replace("/data/data", "/data/user/0"));
-            return FileProvider.getUriForFile(context
-                    , getAuthority(context)
-                    , dataUser0File.exists() ? dataUser0File : file);
-        }
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N || PreferenceManager.getDefaultSharedPreferences(context).getBoolean(SettingsActivity.USE_INNER_STORAGE, context.getResources().getBoolean(R.bool.use_inner_storage))) {
             try {
                 return FileProvider.getUriForFile(context, getAuthority(context), file);
             } catch (IllegalArgumentException e) {
@@ -1275,7 +1295,7 @@ public class FileBackend {
             Log.d(Config.LOGTAG, "settled on char length " + chars + " with quality=" + quality);
             final Avatar avatar = new Avatar();
             avatar.sha1sum = CryptoHelper.bytesToHex(digest.digest());
-            avatar.image = new String(mByteArrayOutputStream.toByteArray());
+            avatar.image = mByteArrayOutputStream.toString();
             if (format.equals(Bitmap.CompressFormat.WEBP)) {
                 avatar.type = "image/webp";
             } else if (format.equals(Bitmap.CompressFormat.JPEG)) {
@@ -1319,7 +1339,7 @@ public class FileBackend {
             os.flush();
             os.close();
             avatar.sha1sum = CryptoHelper.bytesToHex(digest.digest());
-            avatar.image = new String(mByteArrayOutputStream.toByteArray());
+            avatar.image = mByteArrayOutputStream.toString();
             avatar.height = options.outHeight;
             avatar.width = options.outWidth;
             avatar.type = options.outMimeType;
@@ -1429,11 +1449,11 @@ public class FileBackend {
     }
 
     private File getHistoricAvatarPath() {
-        return new File(mXmppConnectionService.getFilesDir(), "/avatars/");
+        return new File(mXmppConnectionService.getFilesDir(), File.separator + "avatars" + File.separator);
     }
 
     public File getAvatarFile(String avatar) {
-        return new File(mXmppConnectionService.getCacheDir(), "/avatars/" + avatar);
+        return new File(mXmppConnectionService.getCacheDir(), File.separator + "avatars" + File.separator + avatar);
     }
 
     public Uri getAvatarUri(String avatar) {
@@ -1460,10 +1480,10 @@ public class FileBackend {
                 return cropCenterSquare(input, size);
             }
         } catch (FileNotFoundException e) {
-            Log.d(Config.LOGTAG, "unable to open file " + image.toString(), e);
+            Log.d(Config.LOGTAG, "unable to open file " + image, e);
             return null;
         } catch (SecurityException e) {
-            Log.d(Config.LOGTAG, "unable to open file " + image.toString(), e);
+            Log.d(Config.LOGTAG, "unable to open file " + image, e);
             return null;
         } finally {
             close(is);
@@ -1504,10 +1524,8 @@ public class FileBackend {
                 source.recycle();
             }
             return dest;
-        } catch (SecurityException e) {
+        } catch (SecurityException | FileNotFoundException e) {
             return null; //android 6.0 with revoked permissions for example
-        } catch (FileNotFoundException e) {
-            return null;
         } finally {
             close(is);
         }
@@ -1658,7 +1676,7 @@ public class FileBackend {
             page.close();
             pdfRenderer.close();
             return scalePdfDimensions(new Dimensions(height, width));
-        } catch (IOException e) {
+        } catch (Exception e) {
             Log.d(Config.LOGTAG, "unable to get dimensions for pdf document", e);
             return new Dimensions(0, 0);
         }
@@ -1720,14 +1738,9 @@ public class FileBackend {
                 }
                 builder.append(title);
             }
-            try {
-                final String s = builder.substring(0, Math.min(128, builder.length()));
-                final byte[] data = s.trim().getBytes("UTF-8");
-                return Base64.encodeToString(data, Base64.DEFAULT);
-            } catch (UnsupportedEncodingException e) {
-                e.printStackTrace();
-                return "";
-            }
+            final String s = builder.substring(0, Math.min(128, builder.length()));
+            final byte[] data = s.trim().getBytes(StandardCharsets.UTF_8);
+            return Base64.encodeToString(data, Base64.DEFAULT);
         } catch (Exception e) {
             e.printStackTrace();
             return "";
@@ -1753,13 +1766,8 @@ public class FileBackend {
             APKName = "";
         }
 
-        try {
-            byte[] data = APKName.getBytes("UTF-8");
-            APKName = Base64.encodeToString(data, Base64.DEFAULT);
-        } catch (UnsupportedEncodingException e) {
-            APKName = "";
-            e.printStackTrace();
-        }
+        byte[] data = APKName.getBytes(StandardCharsets.UTF_8);
+        APKName = Base64.encodeToString(data, Base64.DEFAULT);
         return APKName;
     }
 
@@ -1777,14 +1785,9 @@ public class FileBackend {
         } catch (IOException e) {
             e.printStackTrace();
         }
-        try {
-            byte[] data = VCardName.getBytes("UTF-8");
-            VCardName = Base64.encodeToString(data, Base64.DEFAULT);
+        byte[] data = VCardName.getBytes(StandardCharsets.UTF_8);
+        VCardName = Base64.encodeToString(data, Base64.DEFAULT);
 
-        } catch (UnsupportedEncodingException e) {
-            VCardName = "";
-            e.printStackTrace();
-        }
         return VCardName;
     }
 
@@ -1810,7 +1813,7 @@ public class FileBackend {
     }
 
     public Bitmap getPreviewForUri(Attachment attachment, int size, boolean cacheOnly) {
-        final String key = "attachment_" + attachment.getUuid().toString() + "_" + String.valueOf(size);
+        final String key = "attachment_" + attachment.getUuid().toString() + "_" + size;
         final LruCache<String, Bitmap> cache = mXmppConnectionService.getBitmapCache();
         Bitmap bitmap = cache.get(key);
         if (bitmap != null || cacheOnly) {
@@ -1942,7 +1945,7 @@ public class FileBackend {
 
 
     public static class FileCopyException extends Exception {
-        private int resId;
+        private final int resId;
 
         private FileCopyException(@StringRes int resId) {
             this.resId = resId;
@@ -1959,9 +1962,6 @@ public class FileBackend {
             return null;
         }
         Bitmap bm = cropCenter(getAvatarUri(avatar), size, size);
-        if (bm == null) {
-            return null;
-        }
         return bm;
     }
 
@@ -1999,7 +1999,7 @@ public class FileBackend {
         }
     }
 
-    public static boolean weOwnFile(Context context, Uri uri) {
+    public static boolean weOwnFile(final Uri uri) {
         if (uri == null || !ContentResolver.SCHEME_FILE.equals(uri.getScheme())) {
             return false;
         } else {
@@ -2066,27 +2066,6 @@ public class FileBackend {
         }
     }
 
-
-    public static String getGlobalPicturesPath() {
-        return Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_PICTURES) + "/monocles chat/";
-    }
-
-    public static String getGlobalVideosPath() {
-        return Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_MOVIES) + "/monocles chat/";
-    }
-
-    public static String getGlobalDocumentsPath() {
-        return Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOCUMENTS) + "/monocles chat/";
-    }
-
-    public static String getGlobalDownloadsPath() {
-        return Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS) + "/monocles chat/";
-    }
-
-    public static String getGlobalAudiosPath() {
-        return Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_MUSIC) + "/monocles chat/";
-    }
-
     public void saveFile(final Message message, final Activity activity) {
         new Thread(() -> {
             final DownloadableFile source = getFile(message);
@@ -2103,6 +2082,36 @@ public class FileBackend {
                 e.printStackTrace();
             }
         }).start();
+    }
+
+    public static void moveFile(String inputPath, String inputFile, String outputPath) {
+        Log.d(Config.LOGTAG, "Move " + inputPath + File.separator + inputFile + " to " + outputPath);
+        InputStream in = null;
+        OutputStream out = null;
+        try {
+            //create output directory if it doesn't exist
+            File dir = new File(outputPath);
+            if (!dir.exists()) {
+                dir.mkdirs();
+            }
+            in = new FileInputStream(inputPath + File.separator + inputFile);
+            out = new FileOutputStream(outputPath + File.separator + inputFile);
+            byte[] buffer = new byte[4096];
+            int read;
+            while ((read = in.read(buffer)) != -1) {
+                out.write(buffer, 0, read);
+            }
+            in.close();
+            in = null;
+            // write the output file
+            out.flush();
+            out.close();
+            out = null;
+            // delete the original file
+            new File(inputPath + File.separator + inputFile).delete();
+        } catch (Exception e) {
+            Log.e(Config.LOGTAG, e.getMessage());
+        }
     }
 
     public String getDestinationToSaveFile(Message message) {

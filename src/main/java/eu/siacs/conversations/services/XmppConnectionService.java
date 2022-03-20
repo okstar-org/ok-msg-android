@@ -1,5 +1,9 @@
 package eu.siacs.conversations.services;
 
+import static eu.siacs.conversations.persistance.FileBackend.AUDIOS;
+import static eu.siacs.conversations.persistance.FileBackend.FILES;
+import static eu.siacs.conversations.persistance.FileBackend.IMAGES;
+import static eu.siacs.conversations.persistance.FileBackend.VIDEOS;
 import static eu.siacs.conversations.ui.SettingsActivity.ALLOW_MESSAGE_CORRECTION;
 import static eu.siacs.conversations.ui.SettingsActivity.ALLOW_MESSAGE_RETRACTION;
 import static eu.siacs.conversations.ui.SettingsActivity.AUTOMATIC_ATTACHMENT_DELETION;
@@ -10,6 +14,7 @@ import static eu.siacs.conversations.ui.SettingsActivity.INDICATE_RECEIVED;
 import static eu.siacs.conversations.ui.SettingsActivity.SHOW_OWN_ACCOUNTS;
 import static eu.siacs.conversations.ui.SettingsActivity.USE_INNER_STORAGE;
 import static eu.siacs.conversations.utils.RichPreview.RICH_LINK_METADATA;
+import static eu.siacs.conversations.utils.StorageHelper.getAppMediaDirectory;
 
 import android.Manifest;
 import android.annotation.SuppressLint;
@@ -54,14 +59,6 @@ import android.util.DisplayMetrics;
 import android.util.Log;
 import android.util.LruCache;
 import android.util.Pair;
-import net.java.otr4j.OtrException;
-import net.java.otr4j.session.Session;
-import net.java.otr4j.session.SessionID;
-import net.java.otr4j.session.SessionImpl;
-import net.java.otr4j.session.SessionStatus;
-import eu.siacs.conversations.xmpp.jid.OtrJidHelper;
-import eu.siacs.conversations.xmpp.Jid;
-
 
 import androidx.annotation.BoolRes;
 import androidx.annotation.IntegerRes;
@@ -162,6 +159,7 @@ import eu.siacs.conversations.utils.ReplacingSerialSingleThreadExecutor;
 import eu.siacs.conversations.utils.ReplacingTaskManager;
 import eu.siacs.conversations.utils.Resolver;
 import eu.siacs.conversations.utils.SerialSingleThreadExecutor;
+import eu.siacs.conversations.utils.StorageHelper;
 import eu.siacs.conversations.utils.StringUtils;
 import eu.siacs.conversations.utils.TorServiceUtils;
 import eu.siacs.conversations.utils.TranscoderStrategies;
@@ -261,17 +259,8 @@ public class XmppConnectionService extends Service {
         Conversation conversation = find(getConversations(), contact);
         if (conversation != null) {
             if (online) {
-                conversation.endOtrIfNeeded();
                 if (contact.getPresences().size() == 1) {
                     sendUnsentMessages(conversation);
-                }
-            } else {
-                //check if the resource we are haveing a conversation with is still online
-                if (conversation.hasValidOtrSession()) {
-                    String otrResource = conversation.getOtrSession().getSessionID().getUserID();
-                    if (!(Arrays.asList(contact.getPresences().toResourceArray()).contains(otrResource))) {
-                        conversation.endOtrIfNeeded();
-                    }
                 }
             }
         }
@@ -453,9 +442,6 @@ public class XmppConnectionService extends Service {
                     if (conversation.getAccount() == account
                             && !pendingJoin
                             && !inProgressJoin) {
-                        if (!conversation.startOtrIfNeeded()) {
-                            Log.d(Config.LOGTAG, account.getJid().asBareJid() + ": couldn't start OTR with " + conversation.getContact().getJid() + " when needed");
-                        }
                         sendUnsentMessages(conversation);
                     }
                 }
@@ -890,6 +876,11 @@ public class XmppConnectionService extends Service {
             expireOldFiles();
             deleteWebpreviewCache();
         }
+        // move files from /monocles chat/ --> /Android/data/ for Android >= 30
+        if (Compatibility.runsThirty() && (ContextCompat.checkSelfPermission(this, Manifest.permission.READ_EXTERNAL_STORAGE) == PackageManager.PERMISSION_GRANTED
+                && ContextCompat.checkSelfPermission(this, Manifest.permission.WRITE_EXTERNAL_STORAGE) == PackageManager.PERMISSION_GRANTED)) {
+            StorageHelper.migrateStorage(this);
+        }
         return START_STICKY;
     }
 
@@ -1304,12 +1295,12 @@ public class XmppConnectionService extends Service {
     }
 
     public boolean hasInternetConnection() {
-        final ConnectivityManager cm = ContextCompat.getSystemService(this, ConnectivityManager.class);
+        final ConnectivityManager cm = (ConnectivityManager) getSystemService(Context.CONNECTIVITY_SERVICE);
         if (cm == null) {
             return true; //if internet connection can not be checked it is probably best to just try
         }
         try {
-            if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.Q) {
+            if (Compatibility.runsTwentyNine()) {
                 final Network activeNetwork = cm.getActiveNetwork();
                 final NetworkCapabilities capabilities = activeNetwork == null ? null : cm.getNetworkCapabilities(activeNetwork);
                 return capabilities != null && capabilities.hasCapability(NetworkCapabilities.NET_CAPABILITY_INTERNET);
@@ -1379,6 +1370,7 @@ public class XmppConnectionService extends Service {
     @Override
     public void onCreate() {
         updateNotificationChannels();
+        cleanOldNotificationChannels();
         mChannelDiscoveryService.initializeMuclumbusService();
         mForceDuringOnCreate.set(Compatibility.runsAndTargetsTwentySix(this));
         toggleForegroundService();
@@ -1477,16 +1469,18 @@ public class XmppConnectionService extends Service {
     public void updateNotificationChannels() {
         if (Compatibility.runsTwentySix()) {
             new Thread(mNotificationService::updateChannels).start();
-            new Thread(() -> {
-                try {
-                    mNotificationService.cleanAllOldNotificationChannels(this);
-                } catch (Exception e) {
-                    e.printStackTrace();
-                }
-            }).start();
         }
     }
 
+    public void cleanOldNotificationChannels() {
+        new Thread(() -> {
+            try {
+                mNotificationService.cleanAllOldNotificationChannels(this);
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        }).start();
+    }
 
     private void setupPhoneStateListener() {
         final TelephonyManager telephonyManager = (TelephonyManager) getSystemService(Context.TELEPHONY_SERVICE);
@@ -1513,7 +1507,7 @@ public class XmppConnectionService extends Service {
                 return;
             }
             final File file = fileBackend.getFileForPath(filePath.path);
-            if (filePath.setFileDeleted(!file.exists())) {
+            if (file != null && filePath.setFileDeleted(!file.exists())) {
                 changed.add(filePath);
             }
         }
@@ -1790,12 +1784,6 @@ public class XmppConnectionService extends Service {
             }
         }
 
-        if (!resend && message.getEncryption() != Message.ENCRYPTION_OTR) {
-            conversation.endOtrIfNeeded();
-            conversation.findUnsentMessagesWithEncryption(Message.ENCRYPTION_OTR,
-                    message1 -> markMessage(message1, Message.STATUS_SEND_FAILED));
-        }
-
         final boolean inProgressJoin = isJoinInProgress(conversation);
 
         if (account.isOnlineAndConnected() && !inProgressJoin) {
@@ -1825,30 +1813,6 @@ public class XmppConnectionService extends Service {
                         }
                     } else {
                         packet = mMessageGenerator.generatePgpChat(message);
-                    }
-                    break;
-                case Message.ENCRYPTION_OTR:
-                    SessionImpl otrSession = conversation.getOtrSession();
-                    if (otrSession != null && otrSession.getSessionStatus() == SessionStatus.ENCRYPTED) {
-                        try {
-                            message.setCounterpart(OtrJidHelper.fromSessionID(otrSession.getSessionID()));
-                        } catch (IllegalArgumentException e) {
-                            break;
-                        }
-                        if (message.needsUploading()) {
-                            mJingleConnectionManager.startJingleFileTransfer(message);
-                        } else {
-                            packet = mMessageGenerator.generateOtrChat(message);
-                        }
-                    } else if (otrSession == null) {
-                        if (message.fixCounterpart()) {
-                            conversation.startOtrSession(message.getCounterpart().getResource(), true);
-                        } else {
-                            Log.d(Config.LOGTAG, account.getJid().asBareJid() + ": could not fix counterpart for OTR message to contact " + message.getCounterpart());
-                            break;
-                        }
-                    } else {
-                        Log.d(Config.LOGTAG, account.getJid().asBareJid() + " OTR session with " + message.getContact() + " is in wrong state: " + otrSession.getSessionStatus().toString());
                     }
                     break;
                 case Message.ENCRYPTION_AXOLOTL:
@@ -1901,12 +1865,6 @@ public class XmppConnectionService extends Service {
                             message.setBody(decryptedBody);
                             message.setEncryption(Message.ENCRYPTION_DECRYPTED);
                         }
-                    }
-                    break;
-                case Message.ENCRYPTION_OTR:
-                    if (!conversation.hasValidOtrSession() && message.getCounterpart() != null) {
-                        Log.d(Config.LOGTAG, account.getJid().asBareJid() + ": create otr session without starting for " + message.getContact().getJid());
-                        conversation.startOtrSession(message.getCounterpart().getResource(), false);
                     }
                     break;
                 case Message.ENCRYPTION_AXOLOTL:
@@ -3813,12 +3771,6 @@ public class XmppConnectionService extends Service {
                     if (conversation.getAccount() == account) {
                         if (conversation.getMode() == Conversation.MODE_MULTI) {
                             leaveMuc(conversation, true);
-                        } else {
-                            if (conversation.endOtrIfNeeded()) {
-                                Log.d(Config.LOGTAG, account.getJid().asBareJid()
-                                        + ": ended otr session with "
-                                        + conversation.getJid());
-                            }
                         }
                     }
                 }
@@ -3875,66 +3827,6 @@ public class XmppConnectionService extends Service {
         }
         pushContactToServer(contact, preAuth);
     }
-
-    public void onOtrSessionEstablished(Conversation conversation) {
-        final Account account = conversation.getAccount();
-        final Session otrSession = conversation.getOtrSession();
-        Log.d(Config.LOGTAG,
-                account.getJid().asBareJid() + " otr session established with "
-                        + conversation.getJid() + "/"
-                        + otrSession.getSessionID().getUserID());
-        conversation.findUnsentMessagesWithEncryption(Message.ENCRYPTION_OTR, new Conversation.OnMessageFound() {
-
-            @Override
-            public void onMessageFound(Message message) {
-                SessionID id = otrSession.getSessionID();
-                try {
-                    message.setCounterpart(Jid.of(id.getAccountID() + "/" + id.getUserID()));
-                } catch (IllegalArgumentException e) {
-                    return;
-                }
-                if (message.needsUploading()) {
-                    mJingleConnectionManager.startJingleFileTransfer(message);
-                } else {
-                    MessagePacket outPacket = mMessageGenerator.generateOtrChat(message);
-                    if (outPacket != null) {
-                        mMessageGenerator.addDelay(outPacket, message.getTimeSent());
-                        message.setStatus(Message.STATUS_SEND);
-                        databaseBackend.updateMessage(message, false);
-                        sendMessagePacket(account, outPacket);
-                    }
-                }
-                updateConversationUi();
-            }
-        });
-    }
-
-    public boolean renewSymmetricKey(Conversation conversation) {
-        Account account = conversation.getAccount();
-        byte[] symmetricKey = new byte[32];
-        this.mRandom.nextBytes(symmetricKey);
-        Session otrSession = conversation.getOtrSession();
-        if (otrSession != null) {
-            MessagePacket packet = new MessagePacket();
-            packet.setType(MessagePacket.TYPE_CHAT);
-            packet.setFrom(account.getJid());
-            MessageGenerator.addMessageHints(packet);
-            packet.setAttribute("to", otrSession.getSessionID().getAccountID() + "/"
-                    + otrSession.getSessionID().getUserID());
-            try {
-                packet.setBody(otrSession
-                        .transformSending(CryptoHelper.FILETRANSFER
-                                + CryptoHelper.bytesToHex(symmetricKey))[0]);
-                sendMessagePacket(account, packet);
-                conversation.setSymmetricKey(symmetricKey);
-                return true;
-            } catch (OtrException e) {
-                return false;
-            }
-        }
-        return false;
-    }
-
 
     public void pushContactToServer(final Contact contact) {
         pushContactToServer(contact, null);
@@ -5312,10 +5204,7 @@ public class XmppConnectionService extends Service {
         boolean performedVerification = false;
         final AxolotlService axolotlService = contact.getAccount().getAxolotlService();
         for (XmppUri.Fingerprint fp : fingerprints) {
-            if (fp.type == XmppUri.FingerprintType.OTR) {
-                performedVerification |= contact.addOtrFingerprint(fp.fingerprint);
-                needsRosterWrite |= performedVerification;
-            } else if (fp.type == XmppUri.FingerprintType.OMEMO) {
+            if (fp.type == XmppUri.FingerprintType.OMEMO) {
                 String fingerprint = "05" + fp.fingerprint.replaceAll("\\s", "");
                 FingerprintStatus fingerprintStatus = axolotlService.getFingerprintTrust(fingerprint);
                 if (fingerprintStatus != null) {
@@ -5603,7 +5492,10 @@ public class XmppConnectionService extends Service {
         new Thread(() -> {
             long timestamp = getAutomaticAttachmentDeletionDate();
             if (timestamp > 0) {
-                getFileBackend().expireOldFiles(new File(FileBackend.getAppMediaDirectory(this)), timestamp);
+                getFileBackend().expireOldFiles(new File(getAppMediaDirectory(this, AUDIOS)), timestamp);
+                getFileBackend().expireOldFiles(new File(getAppMediaDirectory(this, FILES)), timestamp);
+                getFileBackend().expireOldFiles(new File(getAppMediaDirectory(this, IMAGES)), timestamp);
+                getFileBackend().expireOldFiles(new File(getAppMediaDirectory(this, VIDEOS)), timestamp);
                 updateConversationUi();
             }
         }).start();

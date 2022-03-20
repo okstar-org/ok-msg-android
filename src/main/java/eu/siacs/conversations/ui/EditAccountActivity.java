@@ -3,7 +3,6 @@ package eu.siacs.conversations.ui;
 import static eu.siacs.conversations.utils.PermissionUtils.allGranted;
 import static eu.siacs.conversations.utils.PermissionUtils.readGranted;
 
-import android.widget.CheckBox;
 import android.app.Activity;
 import android.app.PendingIntent;
 import android.content.ActivityNotFoundException;
@@ -27,6 +26,7 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.View.OnClickListener;
+import android.widget.CheckBox;
 import android.widget.CompoundButton.OnCheckedChangeListener;
 import android.widget.EditText;
 import android.widget.ImageView;
@@ -37,7 +37,6 @@ import androidx.annotation.NonNull;
 import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.widget.Toolbar;
-import androidx.core.content.ContextCompat;
 import androidx.databinding.DataBindingUtil;
 
 import com.google.android.material.textfield.TextInputLayout;
@@ -829,6 +828,7 @@ public class EditAccountActivity extends OmemoActivity implements OnAccountUpdat
             this.binding.accountRegisterNew.setVisibility(View.GONE);
         }
     }
+
     private void displayVerificationWarningDialog(final XmppUri xmppUri) {
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
         builder.setTitle(R.string.verify_omemo_keys);
@@ -1280,11 +1280,6 @@ public class EditAccountActivity extends OmemoActivity implements OnAccountUpdat
             } else {
                 this.binding.serverInfoExternalService.setText(R.string.server_info_unavailable);
             }
-            if (features.adhocinvite) {
-                this.binding.serverInfoAdhocInvite.setText(R.string.server_info_available);
-            } else {
-                this.binding.serverInfoAdhocInvite.setText(R.string.server_info_unavailable);
-            }
             if (EasyOnboardingInvite.hasAccountSupport(this.mAccount)) {
                 this.binding.serverInfoEasyInvite.setText(R.string.server_info_available);
             } else {
@@ -1334,25 +1329,6 @@ public class EditAccountActivity extends OmemoActivity implements OnAccountUpdat
                 this.binding.actionDeletePgp.setOnClickListener(delete);
             } else {
                 this.binding.pgpFingerprintBox.setVisibility(View.GONE);
-            }
-            final String otrFingerprint = this.mAccount.getOtrFingerprint();
-            if (otrFingerprint != null && Config.supportOtr()) {
-                if ("otr".equals(messageFingerprint)) {
-                    this.binding.otrFingerprintDesc.setTextColor(ContextCompat.getColor(this, R.color.accent));
-                }
-                this.binding.otrFingerprintBox.setVisibility(View.VISIBLE);
-                this.binding.otrFingerprint.setText(CryptoHelper.prettifyFingerprint(otrFingerprint));
-                this.binding.actionCopyToClipboard.setVisibility(View.VISIBLE);
-                this.binding.actionCopyToClipboard.setOnClickListener(v -> {
-                    if (copyTextToClipboard(CryptoHelper.prettifyFingerprint(otrFingerprint), R.string.otr_fingerprint)) {
-                        ToastCompat.makeText(
-                                EditAccountActivity.this,
-                                R.string.toast_message_otr_fingerprint,
-                                Toast.LENGTH_SHORT).show();
-                    }
-                });
-            } else {
-                this.binding.otrFingerprintBox.setVisibility(View.GONE);
             }
             final String ownAxolotlFingerprint = this.mAccount.getAxolotlService().getOwnFingerprint();
             if (ownAxolotlFingerprint != null && Config.supportOmemo()) {
@@ -1621,7 +1597,6 @@ public class EditAccountActivity extends OmemoActivity implements OnAccountUpdat
 
     @Override
     public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
-        super.onRequestPermissionsResult(requestCode, permissions, grantResults);
         if (grantResults.length > 0) {
             if (allGranted(grantResults)) {
                 switch (requestCode) {

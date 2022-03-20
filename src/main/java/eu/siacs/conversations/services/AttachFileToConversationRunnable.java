@@ -108,7 +108,8 @@ public class AttachFileToConversationRunnable implements Runnable, TranscoderLis
         mXmppConnectionService.startForcingForegroundNotification();
         isCompressingVideo = conversation.getUuid();
         final SimpleDateFormat fileDateFormat = new SimpleDateFormat("yyyyMMdd_HHmmss", Locale.US);
-        message.setRelativeFilePath("Sent/" + fileDateFormat.format(new Date(message.getTimeSent())) + "_" + message.getUuid().substring(0, 4) + "_komp.mp4");
+        final String filename = "Sent/" + fileDateFormat.format(new Date(message.getTimeSent())) + "_" + message.getUuid().substring(0, 4) + "_komp";
+        mXmppConnectionService.getFileBackend().setupRelativeFilePath(message, String.format("%s.%s", filename, "mp4"));
         final DownloadableFile file = mXmppConnectionService.getFileBackend().getFile(message);
         if (Objects.requireNonNull(file.getParentFile()).mkdirs()) {
             Log.d(Config.LOGTAG, "created parent directory for video file");
@@ -159,8 +160,8 @@ public class AttachFileToConversationRunnable implements Runnable, TranscoderLis
             onTranscodeCanceled();
             return null;
         } else if (estimatedFileSize >= sizeAfterCompression && sizeAfterCompression <= originalFileSize) {
-            return Transcoder.into(file.getAbsolutePath()).
-                    addDataSource(mXmppConnectionService, uri)
+            return Transcoder.into(file.getAbsolutePath())
+                    .addDataSource(mXmppConnectionService, uri)
                     .setVideoTrackStrategy(TranscoderStrategies.VIDEO(mXmppConnectionService.getCompressVideoBitratePreference(), mXmppConnectionService.getCompressVideoResolutionPreference()))
                     .setAudioTrackStrategy(mXmppConnectionService.getCompressAudioPreference())
                     .setListener(this)
@@ -185,8 +186,8 @@ public class AttachFileToConversationRunnable implements Runnable, TranscoderLis
                 newResoloution = mXmppConnectionService.getResources().getInteger(R.integer.high_video_res);
                 audioStrategy = TranscoderStrategies.AUDIO_HQ;
             }
-            return Transcoder.into(file.getAbsolutePath()).
-                    addDataSource(mXmppConnectionService, uri)
+            return Transcoder.into(file.getAbsolutePath())
+                    .addDataSource(mXmppConnectionService, uri)
                     .setVideoTrackStrategy(TranscoderStrategies.VIDEO(newBitrate, newResoloution))
                     .setAudioTrackStrategy(audioStrategy)
                     .setListener(this)

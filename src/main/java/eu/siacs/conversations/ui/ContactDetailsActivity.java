@@ -51,7 +51,6 @@ import eu.siacs.conversations.R;
 import eu.siacs.conversations.crypto.axolotl.AxolotlService;
 import eu.siacs.conversations.crypto.axolotl.FingerprintStatus;
 import eu.siacs.conversations.crypto.axolotl.XmppAxolotlSession;
-import eu.siacs.conversations.utils.CryptoHelper;
 import eu.siacs.conversations.databinding.ActivityContactDetailsBinding;
 import eu.siacs.conversations.entities.Account;
 import eu.siacs.conversations.entities.Contact;
@@ -68,7 +67,6 @@ import eu.siacs.conversations.ui.util.CallManager;
 import eu.siacs.conversations.ui.util.GridManager;
 import eu.siacs.conversations.ui.util.JidDialog;
 import eu.siacs.conversations.utils.Compatibility;
-import eu.siacs.conversations.utils.EmojiWrapper;
 import eu.siacs.conversations.utils.Emoticons;
 import eu.siacs.conversations.utils.IrregularUnicodeDetector;
 import eu.siacs.conversations.utils.MenuDoubleTabUtil;
@@ -591,7 +589,7 @@ public class ContactDetailsActivity extends OmemoActivity implements OnAccountUp
                         builder.append("\n");
                     }
                 }
-                binding.statusMessage.setText(EmojiWrapper.transform(builder));
+                binding.statusMessage.setText(builder);
             }
             String resources = contact.getPresences().getMostAvailableResource();
             if (resources.length() == 0) {
@@ -681,26 +679,6 @@ public class ContactDetailsActivity extends OmemoActivity implements OnAccountUp
         binding.detailsContactKeys.removeAllViews();
         boolean hasKeys = false;
         LayoutInflater inflater = (LayoutInflater) getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-        if (Config.supportOtr()) {
-            for (final String otrFingerprint : contact.getOtrFingerprints()) {
-                hasKeys = true;
-                View view = inflater.inflate(R.layout.contact_key, binding.detailsContactKeys, false);
-                TextView key = view.findViewById(R.id.key);
-                TextView keyType = view.findViewById(R.id.key_type);
-                ImageButton removeButton = view
-                        .findViewById(R.id.button_remove);
-                removeButton.setVisibility(View.VISIBLE);
-                key.setText(CryptoHelper.prettifyFingerprint(otrFingerprint));
-                if (otrFingerprint != null && otrFingerprint.equalsIgnoreCase(messageFingerprint)) {
-                    keyType.setText(R.string.otr_fingerprint_selected_message);
-                    keyType.setTextColor(ContextCompat.getColor(this, R.color.accent));
-                } else {
-                    keyType.setText(R.string.otr_fingerprint);
-                }
-                binding.detailsContactKeys.addView(view);
-                removeButton.setOnClickListener(v -> confirmToDeleteFingerprint(otrFingerprint));
-            }
-        }
         final AxolotlService axolotlService = contact.getAccount().getAxolotlService();
         if (Config.supportOmemo() && axolotlService != null) {
             final Collection<XmppAxolotlSession> sessions = axolotlService.findSessionsForContact(contact);
@@ -788,20 +766,6 @@ public class ContactDetailsActivity extends OmemoActivity implements OnAccountUp
                 ToastCompat.makeText(this, R.string.no_application_found_to_view_contact, ToastCompat.LENGTH_SHORT).show();
             }
         }
-    }
-    protected void confirmToDeleteFingerprint(final String fingerprint) {
-        final AlertDialog.Builder builder = new AlertDialog.Builder(this);
-        builder.setTitle(R.string.delete_fingerprint);
-        builder.setMessage(R.string.sure_delete_fingerprint);
-        builder.setNegativeButton(R.string.cancel, null);
-        builder.setPositiveButton(R.string.delete,
-                (dialog, which) -> {
-                    if (contact.deleteOtrFingerprint(fingerprint)) {
-                        populateView();
-                        xmppConnectionService.syncRosterToDisk(contact.getAccount());
-                    }
-                });
-        builder.create().show();
     }
 
     public void onBackendConnected() {

@@ -2,6 +2,8 @@ package eu.siacs.conversations.services;
 
 import static eu.siacs.conversations.services.NotificationService.EXPORT_BACKUP_NOTIFICATION_ID;
 import static eu.siacs.conversations.utils.Compatibility.runsTwentySix;
+import static eu.siacs.conversations.utils.StorageHelper.getAppLogsDirectory;
+import static eu.siacs.conversations.utils.StorageHelper.getBackupDirectory;
 
 import android.app.Notification;
 import android.app.NotificationManager;
@@ -265,11 +267,23 @@ public class ExportBackupService extends Service {
                     success = false;
                     files = Collections.emptyList();
                 }
+                try {
+                    if (ReadableLogsEnabled) {  // todo
+                        List<Conversation> conversations = mDatabaseBackend.getConversations(Conversation.STATUS_AVAILABLE);
+                        conversations.addAll(mDatabaseBackend.getConversations(Conversation.STATUS_ARCHIVED));
+                        for (Conversation conversation : conversations) {
+                            writeToFile(conversation);
+                            Log.d(Config.LOGTAG, "Exporting readable logs for " + conversation.getJid());
+                        }
+                    }
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
                 stopForeground(true);
                 RUNNING.set(false);
                 if (success) {
                     notifySuccess(files, notify);
-                    FileBackend.deleteOldBackups(new File(FileBackend.getBackupDirectory(null)), this.mAccounts);
+                    FileBackend.deleteOldBackups(new File(getBackupDirectory(null)), this.mAccounts);
                 } else {
                     notifyError();
                 }
@@ -286,15 +300,20 @@ public class ExportBackupService extends Service {
     private void messageExport(SQLiteDatabase db, String uuid, PrintWriter writer, Progress progress) {
         Cursor cursor;
         if (runsTwentySix()) {
-            // not select and create column Message.FILE_DELETED to be compareable with conversations
-            // in C Message.DELETED = Message.FILE_DELETED in PAM so do not select this column, too.
-            cursor = db.rawQuery("select messages." + String.join(", messages.", new String[]{
-                    Message.UUID, Message.CONVERSATION, Message.TIME_SENT, Message.COUNTERPART, Message.TRUE_COUNTERPART,
-                    Message.BODY, Message.ENCRYPTION, Message.STATUS, Message.TYPE, Message.RELATIVE_FILE_PATH,
-                    Message.SERVER_MSG_ID, Message.FINGERPRINT, Message.CARBON, Message.EDITED, Message.READ,
-                    Message.OOB, Message.ERROR_MESSAGE, Message.READ_BY_MARKERS, Message.MARKABLE,
-                    Message.REMOTE_MSG_ID, Message.CONVERSATION
-            }) + " from messages join conversations on conversations.uuid=messages.conversationUuid where conversations.accountUuid=?", new String[]{uuid});
+            try {
+                // not select and create column Message.FILE_DELETED to be compareable with conversations
+                // in C Message.DELETED = Message.FILE_DELETED in PAM so do not select this column, too.
+                cursor = db.rawQuery("select messages." + String.join(", messages.", new String[]{
+                        Message.UUID, Message.CONVERSATION, Message.TIME_SENT, Message.COUNTERPART, Message.TRUE_COUNTERPART,
+                        Message.BODY, Message.ENCRYPTION, Message.STATUS, Message.TYPE, Message.RELATIVE_FILE_PATH,
+                        Message.SERVER_MSG_ID, Message.FINGERPRINT, Message.CARBON, Message.EDITED, Message.READ,
+                        Message.OOB, Message.ERROR_MESSAGE, Message.READ_BY_MARKERS, Message.MARKABLE,
+                        Message.REMOTE_MSG_ID, Message.CONVERSATION
+                }) + " from messages join conversations on conversations.uuid=messages.conversationUuid where conversations.accountUuid=?", new String[]{uuid});
+            } catch (Exception e) {
+                e.printStackTrace();
+                cursor = null;
+            }
         } else {
             cursor = db.rawQuery("select messages.* from messages join conversations on conversations.uuid=messages.conversationUuid where conversations.accountUuid=?", new String[]{uuid});
         }
@@ -335,18 +354,9 @@ public class ExportBackupService extends Service {
         int count = 0;
         final int max = this.mAccounts.size();
         final SecureRandom secureRandom = new SecureRandom();
-        if (mAccounts.size() >= 1) {
-            if (ReadableLogsEnabled) {
-                List<Conversation> conversations = mDatabaseBackend.getConversations(Conversation.STATUS_AVAILABLE);
-                conversations.addAll(mDatabaseBackend.getConversations(Conversation.STATUS_ARCHIVED));
-                for (Conversation conversation : conversations) {
-                    writeToFile(conversation);
-                }
-            }
-            exportSettings();
-        }
         final List<File> files = new ArrayList<>();
         Log.d(Config.LOGTAG, "starting backup for " + max + " accounts");
+        Log.d(Config.LOGTAG, "backup settings " + exportSettings());
         for (final Account account : this.mAccounts) {
             try {
                 final String password = account.getPassword();
@@ -361,7 +371,7 @@ public class ExportBackupService extends Service {
                 secureRandom.nextBytes(salt);
                 final BackupFileHeader backupFileHeader = new BackupFileHeader(getString(R.string.app_name), account.getJid(), System.currentTimeMillis(), IV, salt);
                 final Progress progress = new Progress(mBuilder, max, count);
-                final File file = new File(FileBackend.getBackupDirectory(null) + account.getJid().asBareJid().toEscapedString() + "_" + ((new SimpleDateFormat("yyyy-MM-dd")).format(new Date())) + ".ceb");
+                final File file = new File(getBackupDirectory(null), account.getJid().asBareJid().toEscapedString() + "_" + ((new SimpleDateFormat("yyyy-MM-dd")).format(new Date())) + ".ceb");
                 files.add(file);
                 final File directory = file.getParentFile();
                 if (directory != null && directory.mkdirs()) {
@@ -407,7 +417,7 @@ public class ExportBackupService extends Service {
         boolean success = false;
         ObjectOutputStream output = null;
         try {
-            final File file = new File(FileBackend.getBackupDirectory(null) + "settings.dat");
+            final File file = new File(getBackupDirectory(null), "settings.dat");
             output = new ObjectOutputStream(new FileOutputStream(file));
             SharedPreferences pref = PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
             output.writeObject(pref.getAll());
@@ -439,7 +449,7 @@ public class ExportBackupService extends Service {
         if (!notify) {
             return;
         }
-        final String path = FileBackend.getBackupDirectory(null);
+        final String path = getBackupDirectory(null);
         PendingIntent openFolderIntent = null;
         for (Intent intent : getPossibleFileOpenIntents(this, path)) {
             if (intent.resolveActivityInfo(getPackageManager(), 0) != null) {
@@ -465,7 +475,7 @@ public class ExportBackupService extends Service {
         NotificationCompat.Builder mBuilder = new NotificationCompat.Builder(getBaseContext(), "backup");
         mBuilder.setContentTitle(getString(R.string.notification_backup_created_title))
                 .setContentText(getString(R.string.notification_backup_created_subtitle, path))
-                .setStyle(new NotificationCompat.BigTextStyle().bigText(getString(R.string.notification_backup_created_subtitle, FileBackend.getBackupDirectory(null))))
+                .setStyle(new NotificationCompat.BigTextStyle().bigText(getString(R.string.notification_backup_created_subtitle, getBackupDirectory(null))))
                 .setAutoCancel(true)
                 .setContentIntent(openFolderIntent)
                 .setSmallIcon(R.drawable.ic_archive_white_24dp);
@@ -476,12 +486,12 @@ public class ExportBackupService extends Service {
     }
 
     private void notifyError() {
-        final String path = FileBackend.getBackupDirectory(null);
+        final String path = getBackupDirectory(null);
 
         NotificationCompat.Builder mBuilder = new NotificationCompat.Builder(getBaseContext(), "backup");
         mBuilder.setContentTitle(getString(R.string.notification_backup_failed_title))
                 .setContentText(getString(R.string.notification_backup_failed_subtitle, path))
-                .setStyle(new NotificationCompat.BigTextStyle().bigText(getString(R.string.notification_backup_failed_subtitle, FileBackend.getBackupDirectory(null))))
+                .setStyle(new NotificationCompat.BigTextStyle().bigText(getString(R.string.notification_backup_failed_subtitle, getBackupDirectory(null))))
                 .setAutoCancel(true)
                 .setSmallIcon(R.drawable.ic_warning_white_24dp);
         notificationManager.notify(EXPORT_BACKUP_NOTIFICATION_ID, mBuilder.build());
@@ -490,9 +500,7 @@ public class ExportBackupService extends Service {
     private void writeToFile(Conversation conversation) {
         Jid accountJid = resolveAccountUuid(conversation.getAccountUuid());
         Jid contactJid = conversation.getJid();
-
-        String DIRECTORY_STRING_FORMAT = FileBackend.getAppLogsDirectory() + "%s";
-        File dir = new File(String.format(DIRECTORY_STRING_FORMAT, accountJid.asBareJid().toString()));
+        final File dir = new File(getAppLogsDirectory(), accountJid.asBareJid().toString());
         dir.mkdirs();
 
         BufferedWriter bw = null;
@@ -520,8 +528,7 @@ public class ExportBackupService extends Service {
                     }
                     if (jid != null) {
                         String body = message.hasFileOnRemoteHost() ? message.getFileParams().url.toString() : message.getBody();
-                        bw.write(String.format(MESSAGE_STRING_FORMAT, date, jid,
-                                body.replace("\\\n", "\\ \n").replace("\n", "\\ \n")));
+                        bw.write(String.format(MESSAGE_STRING_FORMAT, date, jid, body.replace("\\\n", "\\ \n").replace("\n", "\\ \n")));
                     }
                 }
             }

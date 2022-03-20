@@ -1,14 +1,7 @@
 package eu.siacs.conversations.ui;
 
-import static eu.siacs.conversations.ui.SettingsActivity.USE_BUNDLED_EMOJIS;
 import static eu.siacs.conversations.ui.SettingsActivity.USE_INTERNAL_UPDATER;
 
-import android.util.Pair;
-import net.java.otr4j.session.SessionID;
-import java.util.Collections;
-import java.util.Map;
-import java.util.concurrent.atomic.AtomicInteger;
-import eu.siacs.conversations.utils.CryptoHelper;
 import android.Manifest;
 import android.annotation.SuppressLint;
 import android.annotation.TargetApi;
@@ -91,7 +84,7 @@ import eu.siacs.conversations.entities.Message;
 import eu.siacs.conversations.entities.Presences;
 import eu.siacs.conversations.services.AvatarService;
 import eu.siacs.conversations.services.BarcodeProvider;
-import eu.siacs.conversations.services.EmojiService;
+import eu.siacs.conversations.services.EmojiInitializationService;
 import eu.siacs.conversations.services.QuickConversationsService;
 import eu.siacs.conversations.services.UpdateService;
 import eu.siacs.conversations.services.XmppConnectionService;
@@ -111,8 +104,6 @@ import eu.siacs.conversations.xmpp.OnUpdateBlocklist;
 import eu.siacs.conversations.xmpp.XmppConnection;
 import me.drakeet.support.toast.ToastCompat;
 import pl.droidsonroids.gif.GifDrawable;
-
-import static eu.siacs.conversations.ui.SettingsActivity.ENABLE_OTR_ENCRYPTION;
 
 public abstract class XmppActivity extends ActionBarActivity {
 
@@ -427,17 +418,7 @@ public abstract class XmppActivity extends ActionBarActivity {
 
     public void selectPresence(final Conversation conversation, final PresenceSelector.OnPresenceSelected listener) {
         final Contact contact = conversation.getContact();
-        if (conversation.hasValidOtrSession()) {
-            SessionID id = conversation.getOtrSession().getSessionID();
-            Jid jid;
-            try {
-                jid = Jid.of(id.getAccountID() + "/" + id.getUserID());
-            } catch (IllegalArgumentException e) {
-                jid = null;
-            }
-            conversation.setNextCounterpart(jid);
-            listener.onPresenceSelected();
-        } else if (contact.showInRoster() || contact.isSelf()) {
+        if (contact.showInRoster() || contact.isSelf()) {
             final Presences presences = contact.getPresences();
             if (presences.size() == 0) {
                 if (contact.isSelf()) {
@@ -474,12 +455,8 @@ public abstract class XmppActivity extends ActionBarActivity {
         setTheme(this.mTheme);
         metrics = getResources().getDisplayMetrics();
         ExceptionHelper.init(getApplicationContext());
-        new EmojiService(this).init(getPreferences().getBoolean(USE_BUNDLED_EMOJIS, getResources().getBoolean(R.bool.use_bundled_emoji)));
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN_MR1) {
-            this.isCameraFeatureAvailable = getPackageManager().hasSystemFeature(PackageManager.FEATURE_CAMERA_ANY);
-        } else {
-            this.isCameraFeatureAvailable = getPackageManager().hasSystemFeature(PackageManager.FEATURE_CAMERA);
-        }
+        EmojiInitializationService.execute(this);
+        this.isCameraFeatureAvailable = getPackageManager().hasSystemFeature(PackageManager.FEATURE_CAMERA_ANY);
         if (isDarkTheme()) {
             mColorWarningButton = ContextCompat.getColor(this, R.color.warning_button_dark);
             mColorWarningText = ContextCompat.getColor(this, R.color.warning_button);
@@ -507,9 +484,7 @@ public abstract class XmppActivity extends ActionBarActivity {
     public boolean unicoloredBG() {
         return getBooleanPreference("unicolored_chatbg", R.bool.use_unicolored_chatbg) || getPreferences().getString(SettingsActivity.THEME, getString(R.string.theme)).equals("black");
     }
-    public boolean enableOTR() {
-        return getBooleanPreference(ENABLE_OTR_ENCRYPTION, R.bool.enable_otr);
-    }
+
     public boolean showDateInQuotes() {
         return getBooleanPreference("show_date_in_quotes", R.bool.show_date_in_quotes);
     }
@@ -929,58 +904,7 @@ public abstract class XmppActivity extends ActionBarActivity {
         }
     }
 
-        private void showPresenceSelectionDialog(Presences presences, final Conversation conversation, final OnPresenceSelected listener) {
-            final Contact contact = conversation.getContact();
-            final AlertDialog.Builder builder = new AlertDialog.Builder(this);
-            builder.setTitle(getString(R.string.choose_presence));
-            final String[] resourceArray = presences.toResourceArray();
-            Pair<Map<String, String>, Map<String, String>> typeAndName = presences.toTypeAndNameMap();
-            final Map<String, String> resourceTypeMap = typeAndName.first;
-            final Map<String, String> resourceNameMap = typeAndName.second;
-            final String[] readableIdentities = new String[resourceArray.length];
-            final AtomicInteger selectedResource = new AtomicInteger(0);
-            for (int i = 0; i < resourceArray.length; ++i) {
-                String resource = resourceArray[i];
-                if (resource.equals(contact.getLastResource())) {
-                    selectedResource.set(i);
-                }
-                String type = resourceTypeMap.get(resource);
-                String name = resourceNameMap.get(resource);
-                if (type != null) {
-                    if (Collections.frequency(resourceTypeMap.values(), type) == 1) {
-                        readableIdentities[i] = PresenceSelector.translateType(this, type);
-                    } else if (name != null) {
-                        if (Collections.frequency(resourceNameMap.values(), name) == 1
-                                || CryptoHelper.UUID_PATTERN.matcher(resource).matches()) {
-                            readableIdentities[i] = PresenceSelector.translateType(this, type) + "  (" + name + ")";
-                        } else {
-                            readableIdentities[i] = PresenceSelector.translateType(this, type) + " (" + name + " / " + resource + ")";
-                        }
-                    } else {
-                        readableIdentities[i] = PresenceSelector.translateType(this, type) + " (" + resource + ")";
-                    }
-                } else {
-                    readableIdentities[i] = resource;
-                }
-            }
-            builder.setSingleChoiceItems(readableIdentities,
-                    selectedResource.get(),
-                    (dialog, which) -> selectedResource.set(which));
-            builder.setNegativeButton(R.string.cancel, null);
-            builder.setPositiveButton(R.string.ok, (dialog, which) -> {
-                try {
-                    Jid next = Jid.of(contact.getJid().getLocal(), contact.getJid().getDomain(), resourceArray[selectedResource.get()]);
-                    conversation.setNextCounterpart(next);
-                } catch (IllegalArgumentException e) {
-                    conversation.setNextCounterpart(null);
-                }
-                listener.onPresenceSelected();
-            });
-            builder.create().show();
-        }
-
-
-        protected void onActivityResult(int requestCode, int resultCode, final Intent data) {
+    protected void onActivityResult(int requestCode, int resultCode, final Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
         if (requestCode == REQUEST_INVITE_TO_CONVERSATION && resultCode == RESULT_OK) {
             mPendingConferenceInvite = ConferenceInvite.parse(data);

@@ -21,6 +21,10 @@ public class DownloadableFile extends File {
         super(path);
     }
 
+    public DownloadableFile(final File parent, final String file) {
+        super(parent, file);
+    }
+
     public long getSize() {
         return super.length();
     }

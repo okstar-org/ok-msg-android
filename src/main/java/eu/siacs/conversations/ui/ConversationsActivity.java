@@ -32,6 +32,7 @@ package eu.siacs.conversations.ui;
 import static eu.siacs.conversations.ui.ConversationFragment.REQUEST_DECRYPT_PGP;
 import static eu.siacs.conversations.ui.SettingsActivity.HIDE_MEMORY_WARNING;
 import static eu.siacs.conversations.ui.SettingsActivity.MIN_ANDROID_SDK21_SHOWN;
+import static eu.siacs.conversations.utils.StorageHelper.getAppMediaDirectory;
 
 import android.annotation.SuppressLint;
 import android.app.Activity;
@@ -57,15 +58,11 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.TextView;
-import android.widget.Toast;
-
-import net.java.otr4j.session.SessionStatus;
 
 import androidx.annotation.IdRes;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AlertDialog;
-import androidx.appcompat.widget.PopupMenu;
 import androidx.appcompat.widget.Toolbar;
 import androidx.databinding.DataBindingUtil;
 
@@ -100,7 +97,6 @@ import eu.siacs.conversations.ui.util.IntroHelper;
 import eu.siacs.conversations.ui.util.PendingItem;
 import eu.siacs.conversations.ui.util.StyledAttributes;
 import eu.siacs.conversations.ui.util.UpdateHelper;
-import eu.siacs.conversations.utils.EmojiWrapper;
 import eu.siacs.conversations.utils.ExceptionHelper;
 import eu.siacs.conversations.utils.MenuDoubleTabUtil;
 import eu.siacs.conversations.utils.Namespace;
@@ -376,7 +372,7 @@ public class ConversationsActivity extends XmppActivity implements OnConversatio
         protected Void doInBackground(Void... params) {
             try {
                 totalMemory = FileBackend.getDiskSize();
-                mediaUsage = FileBackend.getDirectorySize(new File(FileBackend.getAppMediaDirectory(activity)));
+                mediaUsage = FileBackend.getDirectorySize(new File(getAppMediaDirectory(activity, null)));
                 relativeUsage = ((double) mediaUsage / (double) totalMemory);
                 try {
                     percentUsage = String.format(Locale.getDefault(),"%.2f", relativeUsage * 100) + " %";
@@ -695,7 +691,6 @@ public class ConversationsActivity extends XmppActivity implements OnConversatio
         return false;
     }
 
-    @SuppressLint("NonConstantResourceId")
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         if (MenuDoubleTabUtil.shouldIgnoreTap()) {
@@ -889,7 +884,7 @@ public class ConversationsActivity extends XmppActivity implements OnConversatio
                 actionBar.setDisplayShowCustomEnabled(true);
                 TextView abtitle = findViewById(android.R.id.text1);
                 TextView absubtitle = findViewById(android.R.id.text2);
-                abtitle.setText(EmojiWrapper.transform(conversation.getName()));
+                abtitle.setText(conversation.getName());
                 abtitle.setSelected(true);
                 if (conversation.getMode() == Conversation.MODE_SINGLE) {
                     if (!conversation.withSelf()) {
@@ -925,7 +920,7 @@ public class ConversationsActivity extends XmppActivity implements OnConversatio
                         if (userWithChatStates.size() > 0) {
                             if (userWithChatStates.size() == 1) {
                                 MucOptions.User user = userWithChatStates.get(0);
-                                absubtitle.setText(EmojiWrapper.transform(getString(R.string.contact_is_typing, UIHelper.getDisplayName(user))));
+                                absubtitle.setText(getString(R.string.contact_is_typing, UIHelper.getDisplayName(user)));
                                 absubtitle.setVisibility(View.VISIBLE);
                             } else {
                                 StringBuilder builder = new StringBuilder();
@@ -935,7 +930,7 @@ public class ConversationsActivity extends XmppActivity implements OnConversatio
                                     }
                                     builder.append(UIHelper.getDisplayName(user));
                                 }
-                                absubtitle.setText(EmojiWrapper.transform(getString(R.string.contacts_are_typing, builder.toString())));
+                                absubtitle.setText(getString(R.string.contacts_are_typing, builder.toString()));
                                 absubtitle.setVisibility(View.VISIBLE);
                             }
                         }
@@ -979,32 +974,6 @@ public class ConversationsActivity extends XmppActivity implements OnConversatio
                 switchToContactDetails(contact);
             }
         }
-    }
-    public void verifyOtrSessionDialog(final Conversation conversation, View view) {
-        if (!conversation.hasValidOtrSession() || conversation.getOtrSession().getSessionStatus() != SessionStatus.ENCRYPTED) {
-            ToastCompat.makeText(this, R.string.otr_session_not_started, Toast.LENGTH_LONG).show();
-            return;
-        }
-        if (view == null) {
-            return;
-        }
-        PopupMenu popup = new PopupMenu(this, view);
-        popup.inflate(R.menu.verification_choices);
-        popup.setOnMenuItemClickListener(menuItem -> {
-            Intent intent = new Intent(ConversationsActivity.this, VerifyOTRActivity.class);
-            intent.setAction(VerifyOTRActivity.ACTION_VERIFY_CONTACT);
-            intent.putExtra("contact", conversation.getContact().getJid().asBareJid().toString());
-            intent.putExtra(EXTRA_ACCOUNT, conversation.getAccount().getJid().asBareJid().toString());
-            switch (menuItem.getItemId()) {
-                case R.id.ask_question:
-                    intent.putExtra("mode", VerifyOTRActivity.MODE_ASK_QUESTION);
-                    break;
-            }
-            startActivity(intent);
-            overridePendingTransition(R.animator.fade_in, R.animator.fade_out);
-            return true;
-        });
-        popup.show();
     }
 
     @Override

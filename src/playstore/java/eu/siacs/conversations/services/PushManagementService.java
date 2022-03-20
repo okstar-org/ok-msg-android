@@ -4,6 +4,7 @@ import android.util.Log;
 
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.GoogleApiAvailabilityLight;
+import com.google.firebase.FirebaseApp;
 import com.google.firebase.messaging.FirebaseMessaging;
 
 import eu.siacs.conversations.Config;
@@ -36,6 +37,7 @@ public class PushManagementService {
     }
 
     void registerPushTokenOnServer(final Account account) {
+        FirebaseApp.initializeApp(mXmppConnectionService);
         Log.d(Config.LOGTAG, account.getJid().asBareJid() + ": has push support");
         retrieveFcmInstanceToken(token -> {
             final String androidId = PhoneHelper.getAndroidId(mXmppConnectionService);

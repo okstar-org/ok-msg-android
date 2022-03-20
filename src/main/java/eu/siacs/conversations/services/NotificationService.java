@@ -67,7 +67,6 @@ import eu.siacs.conversations.ui.RtpSessionActivity;
 import eu.siacs.conversations.ui.TimePreference;
 import eu.siacs.conversations.utils.AccountUtils;
 import eu.siacs.conversations.utils.Compatibility;
-import eu.siacs.conversations.utils.EmojiWrapper;
 import eu.siacs.conversations.utils.GeoHelper;
 import eu.siacs.conversations.utils.ThemeHelper;
 import eu.siacs.conversations.utils.TorServiceUtils;
@@ -140,7 +139,8 @@ public class NotificationService {
 
     @RequiresApi(api = Build.VERSION_CODES.O)
     void updateChannels() {
-        mXmppConnectionService.mNotificationChannelExecutor.execute(this::initializeChannels);
+        //mXmppConnectionService.mNotificationChannelExecutor.execute(this::initializeChannels);
+        initializeChannels();
     }
 
     @RequiresApi(api = Build.VERSION_CODES.O)
@@ -1386,14 +1386,14 @@ public class NotificationService {
                 SpannableString styledString;
                 for (Message message : messages) {
                     final SpannableString name = UIHelper.getColoredUsername(mXmppConnectionService, message);
-                    styledString = new SpannableString(name + ": " + EmojiWrapper.transform(replaceYoutube(mXmppConnectionService, message.getBody())));
+                    styledString = new SpannableString(name + ": " + replaceYoutube(mXmppConnectionService, message.getBody()));
                     style.addLine(styledString);
                 }
                 builder.setStyle(style);
                 int count = messages.size();
                 if (count == 1) {
                     final SpannableString name = UIHelper.getColoredUsername(mXmppConnectionService, messages.get(0));
-                    styledString = new SpannableString(name + ": " + EmojiWrapper.transform(replaceYoutube(mXmppConnectionService, messages.get(0).getBody())));
+                    styledString = new SpannableString(name + ": " + replaceYoutube(mXmppConnectionService, messages.get(0).getBody()));
                     builder.setContentText(styledString);
                     builder.setTicker(styledString);
                 } else {
