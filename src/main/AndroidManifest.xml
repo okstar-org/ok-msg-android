@@ -63,6 +63,12 @@
         </intent>
         <!-- OpenKeyChain -->
         <package android:name="org.sufficientlysecure.keychain"/>
+        <intent>
+            <action android:name="eu.siacs.conversations.location.request"/>
+        </intent>
+        <intent>
+            <action android:name="eu.siacs.conversations.location.show"/>
+        </intent>
     </queries>
 
 
