@@ -17,7 +17,6 @@ allprojects {
         google()
         mavenCentral()
         maven { url "https://jitpack.io" }
-        maven { url "https://raw.github.com/abdularis/libwebrtc-android/repo/" }
     }
 }
 
@@ -25,7 +24,6 @@ repositories {
     google()
     mavenCentral()
     maven { url "https://jitpack.io" }
-    maven { url "https://raw.github.com/abdularis/libwebrtc-android/repo/" }
     jcenter()
 }
 
@@ -49,7 +47,7 @@ dependencies {
         exclude group: 'com.android.support', module: 'exifinterface'
     }
     implementation 'org.jitsi:org.otr4j:0.23'
-    implementation 'com.github.webrtc-sdk:android:93.4577.01'
+    implementation 'com.github.webrtc-sdk:android:97.4692.01'
     implementation 'org.bouncycastle:bcmail-jdk15on:1.64'
     implementation 'org.gnu.inet:libidn:1.15'
     implementation 'com.google.zxing:core:3.3.3' // > 3.3.x not working below SDK 24
