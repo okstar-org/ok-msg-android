@@ -98,7 +98,7 @@ public class UpdaterActivity extends XmppActivity {
         textView.setText(R.string.update_info);
         setSupportActionBar(findViewById(R.id.toolbar));
         configureActionBar(getSupportActionBar());
-        if (getIntent() != null && getIntent().getStringExtra("update").equals("PixArtMessenger_UpdateService")) {
+        if (getIntent() != null && getIntent().getStringExtra("update").equals("MonoclesMessenger_UpdateService")) {
             try {
                 appURI = getIntent().getStringExtra("url");
             } catch (Exception e) {
