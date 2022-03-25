@@ -1,5 +1,5 @@
 {
-  "version": 2,
+  "version": 3,
   "artifactType": {
     "type": "APK",
     "kind": "Directory"
@@ -10,9 +10,11 @@
     {
       "type": "SINGLE",
       "filters": [],
-      "versionCode": 100,
-      "versionName": "1.0",
-      "outputFile": "monocles chat-1.0-git-release.apk"
+      "attributes": [],
+      "versionCode": 112,
+      "versionName": "1.5.1",
+      "outputFile": "monocles chat-1.5.1null-git-release.apk"
     }
-  ]
+  ],
+  "elementType": "File"
 }
