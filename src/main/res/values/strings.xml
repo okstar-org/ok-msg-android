@@ -433,6 +433,7 @@
     <string name="update">update</string>
     <string name="no_update_available">No update available</string>
     <string name="download_started">Download started</string>
+    <string name="download_failed_invalid_file">Download failed: Invalid file</string>
     <string name="account_status_tor_unavailable">Tor network unavailable</string>
     <string name="account_status_bind_failure">Bind failure</string>
     <string name="account_status_host_unknown">Server not responsible for domain</string>

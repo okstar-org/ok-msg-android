@@ -117,11 +117,15 @@ public class HttpDownloadConnection implements Transferable {
             if (this.message.getEncryption() == Message.ENCRYPTION_AXOLOTL && this.file.getKey() == null) {
                 this.message.setEncryption(Message.ENCRYPTION_NONE);
             }
-            //TODO add auth tag size to knownFileSize
             final Long knownFileSize = message.getFileParams().size;
             Log.d(Config.LOGTAG, "knownFileSize: " + knownFileSize + ", body=" + message.getBody());
             if (knownFileSize != null && interactive) {
-                this.file.setExpectedSize(knownFileSize);
+                if (message.getEncryption() == Message.ENCRYPTION_AXOLOTL
+                        && this.file.getKey() != null) {
+                    this.file.setExpectedSize(knownFileSize + 16);
+                } else {
+                    this.file.setExpectedSize(knownFileSize);
+                }
                 download(true);
             } else {
                 checkFileSize(interactive);
@@ -235,6 +239,8 @@ public class HttpDownloadConnection implements Transferable {
             mXmppConnectionService.showErrorToastInUi(R.string.download_failed_could_not_connect);
         } else if (e instanceof FileWriterException) {
             mXmppConnectionService.showErrorToastInUi(R.string.download_failed_could_not_write_file);
+        } else if (e instanceof InvalidFileException) {
+            mXmppConnectionService.showErrorToastInUi(R.string.download_failed_invalid_file);
         } else {
             mXmppConnectionService.showErrorToastInUi(R.string.download_failed_file_not_found);
         }
@@ -448,8 +454,11 @@ public class HttpDownloadConnection implements Transferable {
                 transmitted += count;
                 try {
                     outputStream.write(buffer, 0, count);
-                } catch (IOException e) {
+                } catch (final IOException e) {
                     throw new FileWriterException(file);
+                }
+                if (transmitted > expected) {
+                    throw new InvalidFileException(String.format("File exceeds expected size of %d", expected));
                 }
                 updateProgress(Math.round(((double) transmitted / expected) * 100));
             }
@@ -477,5 +486,13 @@ public class HttpDownloadConnection implements Transferable {
         if (code < 200 || code >= 300) {
             throw new IOException(String.format(Locale.ENGLISH, "HTTP Status code was %d", code));
         }
+    }
+
+    private static class InvalidFileException extends IOException {
+
+        private InvalidFileException(final String message) {
+            super(message);
+        }
+
     }
 }
