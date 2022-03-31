@@ -287,7 +287,9 @@ public class MyLinkify {
         if (end < cs.length()) {
             // Reject strings that were probably matched only because they contain a dot followed by
             // by some known TLD (see also comment for WORD_BOUNDARY in Patterns.java)
-            return !isAlphabetic(cs.charAt(end - 1)) || !isAlphabetic(cs.charAt(end));
+            if (isAlphabetic(cs.charAt(end - 1)) && isAlphabetic(cs.charAt(end))) {
+                return false;
+            }
         }
         return true;
     };
@@ -317,7 +319,7 @@ public class MyLinkify {
 
     public static void addLinks(Editable body, boolean includeGeo) {
         Linkify.addLinks(body, Patterns.XMPP_PATTERN, "xmpp", XMPPURI_MATCH_FILTER, null);
-        Linkify.addLinks(body, Patterns.WEB_URL, "http", null, WEBURL_TRANSFORM_FILTER);
+        Linkify.addLinks(body, Patterns.AUTOLINK_WEB_URL, "http", WEBURL_MATCH_FILTER, WEBURL_TRANSFORM_FILTER);
         if (includeGeo) {
             Linkify.addLinks(body, GeoHelper.GEO_URI, "geo");
         }

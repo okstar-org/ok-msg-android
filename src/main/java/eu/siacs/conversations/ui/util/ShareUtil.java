@@ -123,7 +123,7 @@ public class ShareUtil {
                 return;
             }
         }
-        Matcher webUrlPatternMatcher = Patterns.WEB_URL.matcher(body);
+        Matcher webUrlPatternMatcher = Patterns.AUTOLINK_WEB_URL.matcher(body);
         if (webUrlPatternMatcher.find()) {
             String url = body.substring(webUrlPatternMatcher.start(), webUrlPatternMatcher.end());
             if (activity.copyTextToClipboard(url, R.string.web_address)) {

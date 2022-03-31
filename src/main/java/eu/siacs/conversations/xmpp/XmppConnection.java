@@ -521,7 +521,7 @@ public class XmppConnection implements Runnable {
                 if (Namespace.SASL.equals(failure.getNamespace())) {
                     final String text = failure.findChildContent("text");
                     if (failure.hasChild("account-disabled") && text != null) {
-                        Matcher matcher = Patterns.WEB_URL.matcher(text);
+                        Matcher matcher = Patterns.AUTOLINK_WEB_URL.matcher(text);
                         if (matcher.find()) {
                             final HttpUrl url;
                             try {
@@ -1050,7 +1050,7 @@ public class XmppConnection implements Runnable {
                 if (url != null) {
                     setAccountCreationFailed(url);
                 } else if (instructions != null) {
-                    final Matcher matcher = Patterns.WEB_URL.matcher(instructions);
+                    final Matcher matcher = Patterns.AUTOLINK_WEB_URL.matcher(instructions);
                     if (matcher.find()) {
                         setAccountCreationFailed(instructions.substring(matcher.start(), matcher.end()));
                     }
