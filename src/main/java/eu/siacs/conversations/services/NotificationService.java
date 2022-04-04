@@ -268,14 +268,18 @@ public class NotificationService {
     // create individual notification channels for selected chats
     @RequiresApi(api = Build.VERSION_CODES.O)
     private void createIndividualNotificationChannels(final NotificationManager notificationManager) {
-        final int chats = mXmppConnectionService.getConversations().size();
-        for (int i = 0; i < chats; i++) {
-            if (mXmppConnectionService.hasIndividualNotification(mXmppConnectionService.getConversations().get(i))) {
-                if (mXmppConnectionService.getConversations().get(i).getMode() == Conversation.MODE_SINGLE) {
-                    createCallNotificationChannels(notificationManager, i);
+        try {
+            final int chats = mXmppConnectionService.getConversations().size();
+            for (int i = 0; i < chats; i++) {
+                if (mXmppConnectionService.hasIndividualNotification(mXmppConnectionService.getConversations().get(i))) {
+                    if (mXmppConnectionService.getConversations().get(i).getMode() == Conversation.MODE_SINGLE) {
+                        createCallNotificationChannels(notificationManager, i);
+                    }
+                    createMessageNotificationChannels(notificationManager, i);
                 }
-                createMessageNotificationChannels(notificationManager, i);
             }
+        } catch (Exception e) {
+            e.printStackTrace();
         }
     }
 
@@ -463,16 +467,20 @@ public class NotificationService {
     // clean all individual notification settings
     @RequiresApi(api = Build.VERSION_CODES.O)
     public void cleanAllNotificationChannels(final Context context) {
-        final NotificationManager notificationManager = context.getSystemService(NotificationManager.class);
-        final int chats = mXmppConnectionService.getConversations().size();
-        for (int i = 0; i < chats; i++) {
-            if (mXmppConnectionService.hasIndividualNotification(mXmppConnectionService.getConversations().get(i))) {
-                final String uuid = mXmppConnectionService.getConversations().get(i).getUuid();
-                mXmppConnectionService.setIndividualNotificationPreference(mXmppConnectionService.getConversations().get(i), true);
-                cleanCallNotificationChannels(notificationManager, uuid);
-                cleanMessageNotificationChannels(notificationManager, uuid);
-                cleanNotificationGroup(notificationManager, uuid);
+        try {
+            final NotificationManager notificationManager = context.getSystemService(NotificationManager.class);
+            final int chats = mXmppConnectionService.getConversations().size();
+            for (int i = 0; i < chats; i++) {
+                if (mXmppConnectionService.hasIndividualNotification(mXmppConnectionService.getConversations().get(i))) {
+                    final String uuid = mXmppConnectionService.getConversations().get(i).getUuid();
+                    mXmppConnectionService.setIndividualNotificationPreference(mXmppConnectionService.getConversations().get(i), true);
+                    cleanCallNotificationChannels(notificationManager, uuid);
+                    cleanMessageNotificationChannels(notificationManager, uuid);
+                    cleanNotificationGroup(notificationManager, uuid);
+                }
             }
+        } catch (Exception e) {
+            e.printStackTrace();
         }
     }
 
