@@ -430,6 +430,7 @@
     <string name="update">aggiorna</string>
     <string name="no_update_available">Nessun aggiornamento disponibile</string>
     <string name="download_started">Scaricamento iniziato</string>
+    <string name="download_failed_invalid_file">Scaricamento fallito: file non valido</string>
     <string name="account_status_tor_unavailable">Rete Tor non disponibile</string>
     <string name="account_status_bind_failure">Bind fallito</string>
     <string name="account_status_host_unknown">Server non responsabile per il dominio</string>

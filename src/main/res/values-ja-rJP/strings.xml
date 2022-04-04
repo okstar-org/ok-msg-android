@@ -1149,4 +1149,7 @@
     <string name="optimize_database">データベースを最適化中… しばらくお待ちください…</string>
     <string name="verifying_omemo_keys_trusted_source_account">あなたが所有するアカウントのOMEMO鍵を検証しようとしています。これは、あなたがこのリンクを公開した、信頼できるソースからこのリンクをたどった場合にのみ安全です。</string>
     <string name="continue_btn">続行</string>
+    <string name="paypal">PayPal</string>
+    <string name="bitcoin">ビットコイン</string>
+    <string name="btc_address_copied_to_clipboard">ビットコインアドレスがクリップボードにコピーされました</string>
 </resources>

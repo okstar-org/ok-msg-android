@@ -430,6 +430,7 @@
     <string name="update">aktualisieren</string>
     <string name="no_update_available">Kein Update verfügbar</string>
     <string name="download_started">Download gestartet</string>
+    <string name="download_failed_invalid_file">Download fehlgeschlagen: Datei ungültig</string>
     <string name="account_status_tor_unavailable">Tor-Netzwerk nicht verfügbar</string>
     <string name="account_status_bind_failure">Bindungsfehler</string>
     <string name="account_status_host_unknown">Host unbekannt</string>

@@ -432,6 +432,7 @@
     <string name="update">actualizează</string>
     <string name="no_update_available">Nici o actualizare disponibilă</string>
     <string name="download_started">Descărcarea a început</string>
+    <string name="download_failed_invalid_file">Descărcarea a eșuat: Fișier invalid</string>
     <string name="account_status_tor_unavailable">Rețeaua Tor nu este disponibilă</string>
     <string name="account_status_bind_failure">Eroare de conexiune</string>
     <string name="account_status_host_unknown">Gazdă fără domeniu</string>

@@ -430,6 +430,7 @@
     <string name="update">update</string>
     <string name="no_update_available">Geen update beschikbaar</string>
     <string name="download_started">Download gestart</string>
+    <string name="download_failed_invalid_file">Downloaden mislukt: ongeldig bestand</string>
     <string name="account_status_tor_unavailable">Tor-netwerk niet beschikbaar</string>
     <string name="account_status_bind_failure">Bindingsfout</string>
     <string name="account_status_host_unknown">Server niet verantwoordelijk voor domein</string>

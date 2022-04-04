@@ -430,6 +430,7 @@
     <string name="update">Actualizar</string>
     <string name="no_update_available">No hay actualizaciones disponibles</string>
     <string name="download_started">Se ha iniciado la descarga</string>
+    <string name="download_failed_invalid_file">La descarga ha fallado: fichero no válido</string>
     <string name="account_status_tor_unavailable">Red Tor no disponible</string>
     <string name="account_status_bind_failure">Fallo de enlace</string>
     <string name="account_status_host_unknown">El servidor no es responsable del dominio</string>

@@ -641,6 +641,7 @@
     <string name="contact_is_typing">%s està escrivint...</string>
     <string name="one_participant">Un participant</string>
     <string name="more_participants">%d participants</string>
+    <string name="participants">Participants</string>
     <string name="presence_offline">Fora de línia</string>
     <string name="block_stranger">Bloquejar desconegut</string>
     <string name="block_entire_domain">Bloquejar el domini complet</string>
@@ -1181,4 +1182,7 @@
     <string name="optimize_database">Optimitzant la base de dades... Si us plau, esperi...</string>
     <string name="verifying_omemo_keys_trusted_source_account">Està a punt de verificar les claus OMEMO del seu propi compte. Això només és segur si ha seguit aquest enllaç des d\'una font de confiança en la qual només vostè podria haver publicat aquest enllaç.</string>
     <string name="continue_btn">Continuar</string>
+    <string name="paypal">PayPal</string>
+    <string name="bitcoin">Bitcoin</string>
+    <string name="btc_address_copied_to_clipboard">Direcció de Bitcoin copiada al porta-retalls</string>
 </resources>
