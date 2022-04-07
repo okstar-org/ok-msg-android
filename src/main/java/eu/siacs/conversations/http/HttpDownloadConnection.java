@@ -117,7 +117,12 @@ public class HttpDownloadConnection implements Transferable {
             if (this.message.getEncryption() == Message.ENCRYPTION_AXOLOTL && this.file.getKey() == null) {
                 this.message.setEncryption(Message.ENCRYPTION_NONE);
             }
-            final Long knownFileSize = message.getFileParams().size;
+            final Long knownFileSize;
+            if (message.getEncryption() == Message.ENCRYPTION_PGP || message.getEncryption() == Message.ENCRYPTION_DECRYPTED) {
+                knownFileSize = null;
+            } else {
+                knownFileSize = message.getFileParams().size;
+            }
             Log.d(Config.LOGTAG, "knownFileSize: " + knownFileSize + ", body=" + message.getBody());
             if (knownFileSize != null && interactive) {
                 if (message.getEncryption() == Message.ENCRYPTION_AXOLOTL
@@ -336,6 +341,7 @@ public class HttpDownloadConnection implements Transferable {
             );
             final Request request = new Request.Builder()
                     .url(URL.stripFragment(mUrl))
+                    .addHeader("Accept-Encoding", "identity")
                     .head()
                     .build();
             mostRecentCall = client.newCall(request);
@@ -361,11 +367,11 @@ public class HttpDownloadConnection implements Transferable {
                     throw new IOException("Server reported negative file size");
                 }
                 return size;
-            } catch (IOException e) {
+            } catch (final IOException e) {
                 Log.d(Config.LOGTAG, "io exception during HEAD " + e.getMessage());
                 throw e;
-            } catch (NumberFormatException e) {
-                throw new IOException();
+            } catch (final NumberFormatException e) {
+                throw new IOException(e);
             }
         }
 
