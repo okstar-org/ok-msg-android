@@ -969,7 +969,7 @@
     <string name="intro_desc_whats_xmpp">XMPP, also called jabber, is a decentralized communication network and works like e-mail. You need an address called Jabber-ID, a password and a messenger. More about this later.</string>
     <string name="intro_whats_xmpp">What is XMPP / Jabber / blabber.im?</string>
     <string name="intro_desc_optional_permissions">Permissions to read your address book are required to read Jabber-IDs (if any) from your contacts. Contacts are never shared, uploaded or copied.</string>
-    <string name="intro_desc_account2">You can create a new profile on blabber.im just by entering a nickname.</string>
+    <string name="intro_desc_account2">You can create a new profile just by entering a nickname and selecting a server.</string>
     <string name="open_join_dialog">Join public channel…</string>
     <string name="intro_optional_permissions">Optional permissions</string>
     <string name="intro_desc_optional_permissions2">Permissions for your location is needed if you would like to share your location.\nFor sharing voice messages it is required to get access to your microphone.</string>
