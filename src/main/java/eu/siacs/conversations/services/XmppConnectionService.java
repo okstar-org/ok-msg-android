@@ -17,6 +17,7 @@ import static eu.siacs.conversations.utils.RichPreview.RICH_LINK_METADATA;
 import static eu.siacs.conversations.utils.StorageHelper.getAppMediaDirectory;
 
 import android.Manifest;
+import androidx.annotation.RequiresApi;
 import android.annotation.SuppressLint;
 import android.annotation.TargetApi;
 import android.app.AlarmManager;
@@ -1370,7 +1371,9 @@ public class XmppConnectionService extends Service {
     @Override
     public void onCreate() {
         updateNotificationChannels();
-        cleanOldNotificationChannels();
+        if (Compatibility.runsTwentySix()) {
+            cleanOldNotificationChannels();
+        }
         mChannelDiscoveryService.initializeMuclumbusService();
         mForceDuringOnCreate.set(Compatibility.runsAndTargetsTwentySix(this));
         toggleForegroundService();
@@ -1471,7 +1474,7 @@ public class XmppConnectionService extends Service {
             new Thread(mNotificationService::updateChannels).start();
         }
     }
-
+    @RequiresApi(api = Build.VERSION_CODES.O)
     public void cleanOldNotificationChannels() {
         new Thread(() -> {
             try {
@@ -4547,11 +4550,15 @@ public class XmppConnectionService extends Service {
     }
 
     public void vibrate() {
-        final boolean vibrateInChat = getBooleanPreference("vibrate_in_chat", R.bool.vibrate_in_chat);
-        if (!isPhoneSilenced() && vibrateInChat) {
-            Log.d(Config.LOGTAG, "Notification: short vibrate");
-            Vibrator vibrator = (Vibrator) getSystemService(VIBRATOR_SERVICE);
-            vibrator.vibrate(100);
+        try {
+            final boolean vibrateInChat = getBooleanPreference("vibrate_in_chat", R.bool.vibrate_in_chat);
+            if (!isPhoneSilenced() && vibrateInChat) {
+                Log.d(Config.LOGTAG, "Notification: short vibrate");
+                Vibrator vibrator = (Vibrator) getSystemService(VIBRATOR_SERVICE);
+                vibrator.vibrate(100);
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
         }
     }
 

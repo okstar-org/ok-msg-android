@@ -496,10 +496,6 @@ public class NotificationService {
                     notificationManager.deleteNotificationChannel(channelID);
                 }
             }
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-        try {
             final int groups = notificationManager.getNotificationChannelGroups().size();
             for (int i2 = 0; i2 < groups; i2++) {
                 final String groupID = notificationManager.getNotificationChannelGroups().get(i2).getId();
