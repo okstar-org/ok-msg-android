@@ -112,19 +112,16 @@ public class StartUI extends PermissionsActivity
 
         @Override
         protected Void doInBackground(Void... params) {
-            DatabaseBackend mDatabaseBackend = DatabaseBackend.getInstance(getBaseContext());
-            Log.d(Config.LOGTAG, "Optimizing database");
-            final Stopwatch stopwatch = Stopwatch.createStarted();
-            try {
+            try (DatabaseBackend mDatabaseBackend = DatabaseBackend.getInstance(getBaseContext())) {
+                Log.d(Config.LOGTAG, "Optimizing database");
+                final Stopwatch stopwatch = Stopwatch.createStarted();
                 final SQLiteDatabase db = mDatabaseBackend.getWritableDatabase();
                 db.execSQL("ANALYZE");
-                db.execSQL("VACUUM");
+                //db.execSQL("VACUUM"); // todo should we do it?
                 db.execSQL("PRAGMA optimize");
                 Log.d(Config.LOGTAG, String.format("Optimized database in %s", stopwatch.stop()));
             } catch (Exception e) {
                 e.printStackTrace();
-            } finally {
-                mDatabaseBackend.close();
             }
             return null;
         }
