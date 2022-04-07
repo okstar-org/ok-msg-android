@@ -979,7 +979,7 @@
     <string name="intro_desc_whats_xmpp">XMPP, také známý jako Jabber, je decentralizovaná komunikační síť a funguje jako e-mail. Potřebujete adresu zvanou Jabber-ID, heslo a komunikátor. Více o tomto tématu později.</string>
     <string name="intro_whats_xmpp">Co je to XMPP / Jabber / blabber.im?</string>
     <string name="intro_desc_optional_permissions">Povolení přístupu k Vašim kontaktům je nezbytné k načtení Jabber-ID vašich kontaktů (pokud je mají). Vaše kontakty nejsou nikdy sdíleny, nahrávány na servery nebo kopírovány.</string>
-    <string name="intro_desc_account2">Můžete si vytvořit nový profil na blabber.im pouze zadáním uživatelského jména.</string>
+    <string name="intro_desc_account2">Můžete vytvořit nový profil zadáním uživatelského jména a výběrem serveru.</string>
     <string name="open_join_dialog">Připojit se k veřejné skupině…</string>
     <string name="intro_optional_permissions">Volitelná oprávnění</string>
     <string name="intro_desc_optional_permissions2">Povolení přístupu k Vaší poloze je nutné, pokud budete chtít svou polohu sdílet.\nPro odesílání hlasových zpráv je nutné povolit přístup k mikrofonu Vašeho zařízení.</string>

@@ -731,7 +731,6 @@
     <string name="notification_group_calls">مكالمات</string>
     <string name="rtp_state_connecting">يتصل</string>
     <string name="rtp_state_connected">متصل</string>
-    <string name="rtp_state_reconnecting">يعيد الاتصال</string>
     <string name="rtp_state_accepting_call">يقبل المكالمة</string>
     <string name="rtp_state_ending_call">ينهي المكالمة</string>
     <string name="rtp_state_finding_device">يستكشف الأجهزة</string>

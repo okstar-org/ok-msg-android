@@ -958,7 +958,6 @@ Nie spowoduje to usunięcia kopii wiadomości przechowywanych na innych urządze
     <string name="intro_desc_whats_xmpp">XMPP, nazywane również Jabberem, jest zdecentralizowaną platformą komunikacyjną działającą podobnie do poczty elektronicznej. Aby korzystać z XMPP potrzebujesz adresu zwanego Jabber-ID, hasła i komunikatora. Więcej o tym za chwilę.</string>
     <string name="intro_whats_xmpp">Czym jest XMPP / Jabber / blabber.im?</string>
     <string name="intro_desc_optional_permissions">Uprawnienie do czytania Twojej listy kontaktów jest wymagane dla dopasowywania ich do istnięjących adresów XMPP (Jabber ID). blabber.im nie dziel się nikim Twoimi kontaktami.</string>
-    <string name="intro_desc_account2">Możesz stworzyć nowy profil na blabber.im, wpisując pseudonim.</string>
     <string name="open_join_dialog">Dołącz do kanału publicznego…</string>
     <string name="intro_optional_permissions">Uprawnienia opcjonalne</string>
     <string name="intro_desc_optional_permissions2">blabber.im potrzebuje uprawnień do uzyskania Twojej lokalizacji w celu udostępniania przez Ciebie lokalizacji.\nW celu wysyłania wiadomości głosowych blabber.im potrzebuje uprawnień do korzystania z mikrofonu.</string>
@@ -1026,7 +1025,6 @@ Nie spowoduje to usunięcia kopii wiadomości przechowywanych na innych urządze
     <string name="microphone_unavailable">Mikrofon jest niedostępny</string>
     <string name="rtp_state_connecting">Łączenie</string>
     <string name="rtp_state_connected">Połączono</string>
-    <string name="rtp_state_reconnecting">Ponowne łączenie</string>
     <string name="rtp_state_accepting_call">Akceptowanie połączenia</string>
     <string name="rtp_state_ending_call">Kończenie połączenia</string>
     <string name="rtp_state_finding_device">Wyszukiwanie urządzeń</string>

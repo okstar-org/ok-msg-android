@@ -929,7 +929,6 @@
     <string name="intro_desc_whats_xmpp">XMPP，也叫 jabber，是一种去中心化的通讯网络（就像电子邮件一样）。您需要一个被称作 Jabber-ID 的地址，一个密码和一个客户端。之后我们有更多关于此的。</string>
     <string name="intro_whats_xmpp">什么是 XMPP / Jabber / blabber.im？</string>
     <string name="intro_desc_optional_permissions">读取通讯录的权限用于从您的通讯录中读取 Jabber-ID（如果有）。通讯录的内容不会被分享、上传或复制。</string>
-    <string name="intro_desc_account2">您可以在blabber.im 上创建一个新的个人资料，只需要输入一个昵称。</string>
     <string name="open_join_dialog">加入公共群聊</string>
     <string name="intro_optional_permissions">可选权限</string>
     <string name="intro_desc_optional_permissions2">如果要分享您的位置，需要获取位置的权限。\n如果要分享语言消息，需要麦克风的权限。</string>

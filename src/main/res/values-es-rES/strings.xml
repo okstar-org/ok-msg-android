@@ -965,7 +965,7 @@
     <string name="intro_desc_whats_xmpp">XMPP, también conocido como Jabber, es una red de comunicación descentralizada y funciona parecido al correo electrónico. Necesitar una dirección llamada Jabber-ID, una contraseña y un cliente. Más información más adelante.</string>
     <string name="intro_whats_xmpp">¿Qué es XMPP / Jabber / blabber.im?</string>
     <string name="intro_desc_optional_permissions">El permiso para leer tu libreta de direcciones es necesario para leer los Jabber-IDs (si hay alguno) desde tus contactos. Los contactos nunca se comparten, se suben o se copian.</string>
-    <string name="intro_desc_account2">Puedes crear un nuevo perfil en blabber.im solo entrando un alias.</string>
+    <string name="intro_desc_account2">Puedes crear un perfil nuevo simplemente escribiendo un alias y seleccionando un servidor.</string>
     <string name="open_join_dialog">Unirse a un canal público…</string>
     <string name="intro_optional_permissions">Permisos opcionales</string>
     <string name="intro_desc_optional_permissions2">El permiso para tu ubicación es necesario si quieres compartir tu ubicación.\nPara usar mensajes de voz se requiere tener acceso a tu micrófono.</string>
@@ -1035,7 +1035,6 @@
     <string name="microphone_unavailable">Tu micrófono no está disponible</string>
     <string name="rtp_state_connecting">Conectando</string>
     <string name="rtp_state_connected">Conectado</string>
-    <string name="rtp_state_reconnecting">Reconectando</string>
     <string name="rtp_state_accepting_call">Aceptando llamada</string>
     <string name="rtp_state_ending_call">Finalizando llamada</string>
     <string name="rtp_state_finding_device">Descubriendo dispositivos</string>

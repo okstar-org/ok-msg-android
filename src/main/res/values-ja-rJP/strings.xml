@@ -941,7 +941,6 @@
     <string name="intro_desc_whats_xmpp">jabberとも呼ばれるXMPPは、分権化された通信網で、電子メールのように動きます。Jabber-ID、パスワード及びメッセンジャーが必要です。これについては後ほど詳しくご紹介します。</string>
     <string name="intro_whats_xmpp">XMPP / Jabber / blabber.im とは？</string>
     <string name="intro_desc_optional_permissions">連絡先からJabber-ID（存在する場合）を読み取るためには、アドレス帳の読み取りに必要なアクセス権が必要です。連絡先が共有、アップロード、コピーされることはありません。</string>
-    <string name="intro_desc_account2">blabber.imでは、ニックネームを入力するだけで、新しいプロフィールを作成することができます。</string>
     <string name="open_join_dialog">公開談話室に参加…</string>
     <string name="intro_optional_permissions">追加の権限</string>
     <string name="intro_desc_optional_permissions2">位置情報を共有するには、位置情報のアクセス権が必要です。\n音声メッセージを共有するには、マイクにアクセスする必要があります。</string>
