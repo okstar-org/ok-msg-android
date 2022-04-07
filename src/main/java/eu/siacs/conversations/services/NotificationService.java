@@ -98,6 +98,8 @@ public class NotificationService {
 
     private static final String MESSAGES_GROUP = "eu.siacs.conversations.messages";
     private static final String MISSED_CALLS_GROUP = "eu.siacs.conversations.missed_calls";
+    private static final int MESSAGE_DAT = 70;
+    private static final long[] MESSAGE_PATTERN = {0, 3 * MESSAGE_DAT, MESSAGE_DAT, MESSAGE_DAT};
     private static final int NOTIFICATION_ID_MULTIPLIER = 1024 * 1024;
     public static final int NOTIFICATION_ID = 2 * NOTIFICATION_ID_MULTIPLIER;
     public static final int FOREGROUND_NOTIFICATION_ID = NOTIFICATION_ID_MULTIPLIER * 4;
@@ -331,9 +333,7 @@ public class NotificationService {
                     .setUsage(AudioAttributes.USAGE_NOTIFICATION_COMMUNICATION_INSTANT)
                     .build());
             messagesChannel.setLightColor(LED_COLOR);
-            final int dat = 70;
-            final long[] pattern = {0, 3 * dat, dat, dat};
-            messagesChannel.setVibrationPattern(pattern);
+            messagesChannel.setVibrationPattern(MESSAGE_PATTERN);
             messagesChannel.enableVibration(true);
             messagesChannel.enableLights(true);
             notificationManager.createNotificationChannelGroup(new NotificationChannelGroup(INDIVIDUAL_NOTIFICATION_PREFIX + name + uuid, name + " (" + jid + ")"));
@@ -358,9 +358,7 @@ public class NotificationService {
                     .setUsage(AudioAttributes.USAGE_NOTIFICATION_COMMUNICATION_INSTANT)
                     .build());
             messagesChannel.setLightColor(LED_COLOR);
-            final int dat = 70;
-            final long[] pattern = {0, 3 * dat, dat, dat};
-            messagesChannel.setVibrationPattern(pattern);
+            messagesChannel.setVibrationPattern(MESSAGE_PATTERN);
             messagesChannel.enableVibration(true);
             messagesChannel.enableLights(true);
             messagesChannel.setGroup("chats");
@@ -991,9 +989,7 @@ public class NotificationService {
         final boolean headsup = preferences.getBoolean("notification_headsup", resources.getBoolean(R.bool.headsup_notifications));
         if (notify && !quietHours) {
             if (vibrate) {
-                final int dat = 70;
-                final long[] pattern = {0, 3 * dat, dat, dat};
-                mBuilder.setVibrate(pattern);
+                mBuilder.setVibrate(MESSAGE_PATTERN);
             } else {
                 mBuilder.setVibrate(new long[]{0});
             }
