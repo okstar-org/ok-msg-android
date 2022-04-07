@@ -2,6 +2,7 @@ package eu.siacs.conversations.ui;
 
 import static eu.siacs.conversations.ui.SettingsActivity.USE_INTERNAL_UPDATER;
 
+import androidx.annotation.RequiresApi;
 import android.Manifest;
 import android.annotation.SuppressLint;
 import android.annotation.TargetApi;
@@ -522,9 +523,19 @@ public abstract class XmppActivity extends ActionBarActivity {
             final ConnectivityManager cm = (ConnectivityManager) getSystemService(Context.CONNECTIVITY_SERVICE);
             return cm != null
                     && cm.isActiveNetworkMetered()
-                    && cm.getRestrictBackgroundStatus() == ConnectivityManager.RESTRICT_BACKGROUND_STATUS_ENABLED;
+                    && getRestrictBackgroundStatus(cm) == ConnectivityManager.RESTRICT_BACKGROUND_STATUS_ENABLED;
         } else {
             return false;
+        }
+    }
+
+    @RequiresApi(api = Build.VERSION_CODES.N)
+    private static int getRestrictBackgroundStatus(@NonNull final ConnectivityManager connectivityManager) {
+        try {
+            return connectivityManager.getRestrictBackgroundStatus();
+        } catch (final Exception e) {
+            Log.d(Config.LOGTAG, "platform bug detected. Unable to get restrict background status", e);
+            return -1;
         }
     }
 
