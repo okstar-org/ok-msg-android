@@ -87,7 +87,7 @@ dependencies {
     implementation 'androidx.browser:browser:1.4.0'
     implementation 'com.otaliastudios:transcoder:0.9.1' // 0.10.4 seems to be buggy
     implementation project(':libs:AXML')
-    implementation 'com.github.webrtc-sdk:android:97.4692.01'
+    implementation fileTree(include: ['libwebrtc-m99.aar'], dir: 'libs')
 }
 
 ext {
