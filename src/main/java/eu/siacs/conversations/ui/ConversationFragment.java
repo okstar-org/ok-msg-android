@@ -1427,7 +1427,7 @@ public class ConversationFragment extends XmppFragment implements EditMessage.Ke
                 if (ShareUtil.containsXmppUri(body)) {
                     copyLink.setTitle(R.string.copy_jabber_id);
                     copyLink.setVisible(true);
-                } else if (Patterns.WEB_URL.matcher(body).find()) {
+                } else if (Patterns.AUTOLINK_WEB_URL.matcher(body).find()) {
                     copyLink.setVisible(true);
                 }
             }
