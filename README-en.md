@@ -39,11 +39,11 @@ There also is an Support-MUC where you can ask questions and get help with issue
 
 
 ## How can I support translations ?
-[![Crowdin](https://d322cqt584bo4o.cloudfront.net/pix-art-messenger/localized.svg)](https://crowdin.com/project/pix-art-messenger)
+[![Crowdin](https://d322cqt584bo4o.cloudfront.net/pix-art-messenger/localized.svg)](https://translate.pix-art.de)
 
-Translation of in-app text is organised via [crowdin.com](https://crowdin.com/project/pix-art-messenger). You can add new languages as locales and add and edit translations already existing.
+Translation of in-app text is organised via [crowdin.com](https://translate.pix-art.de). You can add new languages as locales and add and edit translations already existing.
 
-[Here is the project page on crowdin.com](https://crowdin.com/project/pix-art-messenger/invite?d=75l6j4k6k6k523f4j4m4e473u663d3m4p4t4q4)
+[Here is the project page on crowdin.com](https://translate.pix-art.de/project/pix-art-messenger/invite?d=75l6j4k6k6k553f4q4t4e453p403b3g4t4i4k4p4c3g4a3a313n4n443d3f4a3l4d4a3j4m44373f4o443f433n4d49323f4o4p4e463m40363p4h4n4l4q403n4d31393i4d4e373f483e4l4a3e4l44393r4e443j433i4p4a3s2o4i4h4n463u663d3m4p4t4q4)
 
 ## Help! I've encountered issues!
 The easiest way to get some help is to join our support-MUC (both English and German).  
