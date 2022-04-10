@@ -976,6 +976,7 @@
     <string name="intro_desc_whats_xmpp">XMPP, numit și Jabber, este o rețea de comunicare descentralizată și funcționează ca un e-mail. Aveți nevoie de o adresă numită Jabber-ID, o parolă și un mesager. Mai multe despre acest lucru mai târziu.</string>
     <string name="intro_whats_xmpp">Ce este XMPP / Jabber / blabber.im?</string>
     <string name="intro_desc_optional_permissions">Permisiunile de citire a agendei dvs. sunt necesare pentru a citi ID-urile Jabber (dacă există) de la contactele dumneavoastră. Contactele nu sunt niciodată partajate, încărcate sau copiate.</string>
+    <string name="intro_desc_account2">Puteți crea un profil nou doar introducând o poreclă și selectând un server.</string>
     <string name="open_join_dialog">Alătură-te unui canal public...</string>
     <string name="intro_optional_permissions">Permisiuni opționale</string>
     <string name="intro_desc_optional_permissions2">Permisiunile pentru locația dvs. sunt necesare dacă doriți să vă partajați locația.\nPentru partajarea mesajelor vocale este necesar să obțineți acces la microfonul dumneavoastră.</string>
@@ -1045,6 +1046,7 @@
     <string name="microphone_unavailable">Microfonul dumneavoastră nu este disponibil</string>
     <string name="rtp_state_connecting">Conectare</string>
     <string name="rtp_state_connected">Conectat</string>
+    <string name="rtp_state_reconnecting">Reconectare</string>
     <string name="rtp_state_accepting_call">Acceptare apel</string>
     <string name="rtp_state_ending_call">Se închide apelul</string>
     <string name="rtp_state_finding_device">Descoperirea dispozitivelor</string>

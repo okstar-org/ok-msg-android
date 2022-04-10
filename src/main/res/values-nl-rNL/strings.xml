@@ -1035,6 +1035,7 @@
     <string name="microphone_unavailable">De microfoon is niet beschikbaar</string>
     <string name="rtp_state_connecting">Verbinden</string>
     <string name="rtp_state_connected">Verbonden</string>
+    <string name="rtp_state_reconnecting">Opnieuw verbinden</string>
     <string name="rtp_state_accepting_call">Oproep accepteren</string>
     <string name="rtp_state_ending_call">Oproep beëindigen</string>
     <string name="rtp_state_finding_device">Apparaten ontdekken</string>

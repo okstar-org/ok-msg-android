@@ -1035,6 +1035,7 @@
     <string name="microphone_unavailable">Il tuo microfono non è disponibile</string>
     <string name="rtp_state_connecting">In connessione</string>
     <string name="rtp_state_connected">Connesso</string>
+    <string name="rtp_state_reconnecting">Riconnessione</string>
     <string name="rtp_state_accepting_call">Accettando la chiamata</string>
     <string name="rtp_state_ending_call">Terminando la chiamata</string>
     <string name="rtp_state_finding_device">Ricercando dispositivi</string>
