@@ -26,11 +26,11 @@ Google-Nutzer können dem Betaprogramm beitreten:
 Alternativ kannst du die Beta-Versionen auch direkt hier von Codeberg unter [Releases](https://codeberg.org/kriztan/blabber.im/releases/latest) herunterladen. Sie sind entsprechend gekennzeichnet.
 
 #### Wie kann ich bei der Übersetzung helfen?
-[![Crowdin](https://d322cqt584bo4o.cloudfront.net/pix-art-messenger/localized.svg)](https://crowdin.com/project/pix-art-messenger)
+[![Crowdin](https://d322cqt584bo4o.cloudfront.net/pix-art-messenger/localized.svg)](https://translate.pix-art.de)
 
-Übersetzungen werden bei [crowdin.com](https://crowdin.com/project/pix-art-messenger) geführt. Dort können Übersetzungen erstellt, geändert und ergänzt werden.
+Übersetzungen werden bei [crowdin.com](https://translate.pix-art.de) geführt. Dort können Übersetzungen erstellt, geändert und ergänzt werden.
 
-[Hier geht's zur Projektseite bei crowdin.com](https://crowdin.com/project/pix-art-messenger/invite?d=75l6j4k6k6k523f4j4m4e473u663d3m4p4t4q4)
+[Hier geht's zur Projektseite bei crowdin.com](https://translate.pix-art.de/project/pix-art-messenger/invite?d=75l6j4k6k6k553f4q4t4e453p403b3g4t4i4k4p4c3g4a3a313n4n443d3f4a3l4d4a3j4m44373f4o443f433n4d49323f4o4p4e463m40363p4h4n4l4q403n4d31393i4d4e373f483e4l4a3e4l44393r4e443j433i4p4a3s2o4i4h4n463u663d3m4p4t4q4)
 
 #### Ich habe Probleme, was soll ich tun?
 Am einfachsten ist es, wenn du unserer Support-Gruppe beitrittst, dort werden deine Probleme mit Sicherheit schnell gelöst. 
