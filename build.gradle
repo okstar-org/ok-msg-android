@@ -7,6 +7,7 @@ buildscript {
     }
     dependencies {
         classpath 'com.android.tools.build:gradle:7.1.2'
+        classpath 'com.google.gms:google-services:4.3.10'
     }
 }
 
@@ -96,17 +97,15 @@ ext {
 }
 
 android {
-
-    //noinspection GradleCompatible
     compileSdkVersion 31
 
     defaultConfig {
         minSdkVersion 21
         targetSdkVersion 30
 
-        //versionNameSuffix " beta_(2022-04-01)" // " beta_(XXXX-XX-XX)" // activate for beta versions
-        versionCode 338
-        versionName "3.1.0"
+        //versionNameSuffix " beta_(2022-04-06)" // " beta_(XXXX-XX-XX)" // activate for beta versions
+        versionCode 340
+        versionName "3.1.1"
         //resConfigs "en"
 
         archivesBaseName += "-$versionName"
@@ -149,6 +148,7 @@ android {
             applicationId "im.blabber.messenger"
             buildConfigField("boolean", "SHOW_MIGRATION_INFO", 'false')
             resValue "string", "applicationId", applicationId
+            apply plugin: 'com.google.gms.google-services'
         }
         git {
             dimension "distribution"
@@ -174,7 +174,8 @@ android {
                 minifyEnabled true
                 shrinkResources true
                 runProguard true
-                proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
+                //proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
+                proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
             }
 
             debug {
@@ -183,7 +184,8 @@ android {
                 minifyEnabled true
                 shrinkResources true
                 runProguard true
-                proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
+                //proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
+                proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
             }
 
         }

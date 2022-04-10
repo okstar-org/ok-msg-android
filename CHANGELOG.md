@@ -1,5 +1,12 @@
 ### Changelog
 
+#### Version 3.1.1
+* update WebRTC
+* fix crash ob older devices
+* use mod_push_appserver instead of p2 (blabber.im)
+* increase fast video upload to 15 MiB (without transcoding)
+* small bug fixes
+
 #### Version 3.1.0
 * remove Android 4 support
 * update WebRTC
