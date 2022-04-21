@@ -109,7 +109,7 @@ public final class Config {
 
     public static final boolean XEP_0392 = true; //enables XEP-0392 v0.6.0
 
-    public static final int VIDEO_FAST_UPLOAD_SIZE = 5 * 1024 * 1024;
+    public static final int VIDEO_FAST_UPLOAD_SIZE = 10 * 1024 * 1024;
 
     public static final int AVATAR_SIZE = 480;
     public static final Bitmap.CompressFormat AVATAR_FORMAT = Bitmap.CompressFormat.JPEG;
