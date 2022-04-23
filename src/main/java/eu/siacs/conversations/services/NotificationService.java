@@ -111,6 +111,7 @@ public class NotificationService {
     public static final int MISSED_CALL_NOTIFICATION_ID = NOTIFICATION_ID_MULTIPLIER * 14;
     public static final int IMPORT_BACKUP_NOTIFICATION_ID = NOTIFICATION_ID_MULTIPLIER * 16;
     public static final int EXPORT_BACKUP_NOTIFICATION_ID = NOTIFICATION_ID_MULTIPLIER * 18;
+    public static final int UPDATE_NOTIFICATION_ID = NOTIFICATION_ID_MULTIPLIER * 20;
     private final XmppConnectionService mXmppConnectionService;
     private final LinkedHashMap<String, ArrayList<Message>> notifications = new LinkedHashMap<>();
     private final LinkedHashMap<Conversational, MissedCallsInfo> mMissedCalls = new LinkedHashMap<>();
@@ -1772,7 +1773,7 @@ public class NotificationService {
     }
 
     public void AppUpdateServiceNotification(Notification notification) {
-        notify(FOREGROUND_NOTIFICATION_ID, notification);
+        notify(UPDATE_NOTIFICATION_ID, notification);
     }
 
     private void notify(String tag, int id, Notification notification) {

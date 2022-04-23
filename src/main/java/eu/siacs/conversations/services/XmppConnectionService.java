@@ -2592,7 +2592,7 @@ public class XmppConnectionService extends Service {
         getNotificationService().clear(conversation);
         conversation.setStatus(Conversation.STATUS_ARCHIVED);
         conversation.setNextMessage(null);
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+        if (Compatibility.runsTwentySix()) {
             try {
                 mNotificationService.cleanNotificationChannels(this, conversation.getUuid());
             } catch (Exception e) {
@@ -2780,7 +2780,7 @@ public class XmppConnectionService extends Service {
             for (final Conversation conversation : conversations) {
                 if (conversation.getAccount() == account) {
                     if (conversation.getMode() == Conversation.MODE_MULTI) {
-                        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+                        if (Compatibility.runsTwentySix()) {
                             try {
                                 mNotificationService.cleanNotificationChannels(this, conversation.getUuid());
                             } catch (Exception e) {
@@ -3449,7 +3449,7 @@ public class XmppConnectionService extends Service {
     }
 
     private void leaveMuc(Conversation conversation, boolean now) {
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+        if (Compatibility.runsTwentySix()) {
             try {
                 mNotificationService.cleanNotificationChannels(this, conversation.getUuid());
             } catch (Exception e) {
