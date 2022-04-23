@@ -2662,11 +2662,15 @@ public class ConversationFragment extends XmppFragment implements EditMessage.Ke
                         });
                 builder.setPositiveButton(getString(R.string.ok),
                         (dialog, which) -> {
-                            Intent intent = new Intent(getActivity(), ConferenceDetailsActivity.class);
-                            intent.setAction(ConferenceDetailsActivity.ACTION_VIEW_MUC);
-                            intent.putExtra("uuid", conversation.getUuid());
-                            startActivity(intent);
-                            activity.overridePendingTransition(R.animator.fade_in, R.animator.fade_out);
+                            try {
+                                Intent intent = new Intent(getActivity(), ConferenceDetailsActivity.class);
+                                intent.setAction(ConferenceDetailsActivity.ACTION_VIEW_MUC);
+                                intent.putExtra("uuid", conversation.getUuid());
+                                startActivity(intent);
+                                activity.overridePendingTransition(R.animator.fade_in, R.animator.fade_out);
+                            } catch (Exception e) {
+                                e.printStackTrace();
+                            }
                         });
                 builder.create().show();
             });
