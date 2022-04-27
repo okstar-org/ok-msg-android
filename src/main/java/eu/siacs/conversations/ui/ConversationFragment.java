@@ -1051,7 +1051,7 @@ public class ConversationFragment extends XmppFragment implements EditMessage.Ke
                 break;
             case REQUEST_INVITE_TO_CONVERSATION:
                 XmppActivity.ConferenceInvite invite = XmppActivity.ConferenceInvite.parse(data);
-                if (invite != null) {
+                if (invite != null && activity != null) {
                     if (invite.execute(activity)) {
                         activity.mToast = ToastCompat.makeText(activity, R.string.creating_conference, ToastCompat.LENGTH_LONG);
                         activity.mToast.show();
@@ -2808,6 +2808,9 @@ public class ConversationFragment extends XmppFragment implements EditMessage.Ke
     }
 
     private void updateSnackBar(final Conversation conversation) {
+        if (conversation == null) {
+            return;
+        }
         final Account account = conversation.getAccount();
         final XmppConnection connection = account.getXmppConnection();
         final int mode = conversation.getMode();
@@ -2882,7 +2885,7 @@ public class ConversationFragment extends XmppFragment implements EditMessage.Ke
             }
         } else if (account.hasPendingPgpIntent(conversation)) {
             showSnackbar(R.string.openpgp_messages_found, R.string.decrypt, clickToDecryptListener);
-        } else if (activity.warnUnecryptedChat()) {
+        } else if (activity != null && activity.warnUnecryptedChat()) {
             if (conversation.getNextEncryption() == Message.ENCRYPTION_NONE && conversation.isSingleOrPrivateAndNonAnonymous() && ((Config.supportOmemo() && Conversation.suitableForOmemoByDefault(conversation)) ||
                     (Config.supportOpenPgp() && account.isPgpDecryptionServiceConnected()))) {
                 if (ENCRYPTION_EXCEPTIONS.contains(conversation.getJid().toString()) || conversation.getJid().toString().equals(account.getJid().getDomain())) {
