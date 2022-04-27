@@ -1257,7 +1257,7 @@ public class NotificationService {
                     mBuilder.addAction(snoozeAction);
                     ++addedActionsCount;
                 }
-                if (addedActionsCount < 3 && mXmppConnectionService.webViewAvailable()) {
+                if (addedActionsCount < 3) {
                     final Message firstLocationMessage = getFirstLocationMessage(messages);
                     if (firstLocationMessage != null) {
                         final PendingIntent pendingShowLocationIntent = createShowLocationIntent(firstLocationMessage);

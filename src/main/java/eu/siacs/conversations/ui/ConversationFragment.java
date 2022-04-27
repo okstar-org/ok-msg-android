@@ -2118,11 +2118,7 @@ public class ConversationFragment extends XmppFragment implements EditMessage.Ke
                 intent.putExtra("ALTERNATIVE_CODEC", activity.xmppConnectionService.alternativeVoiceSettings());
                 break;
             case ATTACHMENT_CHOICE_LOCATION:
-                if (activity.xmppConnectionService.webViewAvailable()) {
-                    intent = new Intent(getActivity(), ShareLocationActivity.class);
-                } else {
-                    ToastCompat.makeText(activity, R.string.webview_not_available, ToastCompat.LENGTH_LONG).show();
-                }
+                intent = GeoHelper.getFetchIntent(activity);
                 break;
         }
         final Context context = getActivity();
