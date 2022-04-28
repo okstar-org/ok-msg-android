@@ -786,17 +786,17 @@ public class ConversationsActivity extends XmppActivity implements OnConversatio
                 pendingViewIntent.push(intent);
             }
         } else if (intent != null && ACTION_DESTROY_MUC.equals(intent.getAction())) {
-            final Bundle extras = intent.getExtras();
-            if (extras != null && extras.containsKey("MUC_UUID")) {
-                Log.d(Config.LOGTAG, "Get " + intent.getAction() + " intent for " + extras.getString("MUC_UUID"));
-                Conversation conversation = xmppConnectionService.findConversationByUuid(extras.getString("MUC_UUID"));
-                try {
+            try {
+                final Bundle extras = intent.getExtras();
+                if (extras != null && extras.containsKey("MUC_UUID")) {
+                    Log.d(Config.LOGTAG, "Get " + intent.getAction() + " intent for " + extras.getString("MUC_UUID"));
+                    Conversation conversation = xmppConnectionService.findConversationByUuid(extras.getString("MUC_UUID"));
                     ConversationsActivity.this.xmppConnectionService.clearConversationHistory(conversation);
                     xmppConnectionService.destroyRoom(conversation, ConversationsActivity.this);
                     endConversation(conversation);
-                } catch (Exception e) {
-                    e.printStackTrace();
                 }
+            } catch (Exception e) {
+                e.printStackTrace();
             }
         }
         setIntent(createLauncherIntent(this));
