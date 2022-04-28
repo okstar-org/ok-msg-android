@@ -221,17 +221,7 @@ public class ImportBackupActivity extends XmppActivity implements ServiceConnect
 
     @Override
     public void onBackupRestored() {
-        runOnUiThread(this::restart);
-    }
 
-    private void restart() {
-        Log.d(Config.LOGTAG, "Restarting " + getBaseContext().getPackageManager().getLaunchIntentForPackage(getBaseContext().getPackageName()));
-        Intent intent = getBaseContext().getPackageManager().getLaunchIntentForPackage(getBaseContext().getPackageName());
-        intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-        intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-        startActivity(intent);
-        overridePendingTransition(R.animator.fade_in, R.animator.fade_out);
-        System.exit(0);
     }
 
     @Override

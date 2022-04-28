@@ -1276,10 +1276,11 @@ public class MessageAdapter extends ArrayAdapter<Message> {
             } else if (transferable != null && transferable.getStatus() == Transferable.STATUS_OFFER_CHECK_FILESIZE) {
                 displayDownloadableMessage(viewHolder, message, activity.getString(R.string.check_x_filesize, UIHelper.getFileDescriptionString(activity, message)), darkBackground);
             } else {
+                /* todo why should we mark a file as deleted? --> causing strange side effects
                 if (!activity.xmppConnectionService.getFileBackend().getFile(message).exists() && !message.isFileDeleted()) {
                     markFileDeleted(message);
                     displayInfoMessage(viewHolder, activity.getString(R.string.file_deleted), darkBackground, message);
-                }
+                }*/
                 if (checkFileExistence(message, view, viewHolder)) {
                     markFileExisting(message);
                 }
@@ -1445,16 +1446,12 @@ public class MessageAdapter extends ArrayAdapter<Message> {
     }
 
     private void showLocation(Message message) {
-        if (activity.xmppConnectionService.webViewAvailable()) {
-            for (Intent intent : GeoHelper.createGeoIntentsFromMessage(this.getContext(), message)) {
-                if (intent.resolveActivity(getContext().getPackageManager()) != null) {
-                    getContext().startActivity(intent);
-                    activity.overridePendingTransition(R.animator.fade_in, R.animator.fade_out);
-                    return;
-                }
+        for (Intent intent : GeoHelper.createGeoIntentsFromMessage(this.getContext(), message)) {
+            if (intent.resolveActivity(getContext().getPackageManager()) != null) {
+                getContext().startActivity(intent);
+                activity.overridePendingTransition(R.animator.fade_in, R.animator.fade_out);
+                return;
             }
-        } else {
-            ToastCompat.makeText(activity, R.string.webview_not_available, ToastCompat.LENGTH_LONG).show();
         }
     }
 

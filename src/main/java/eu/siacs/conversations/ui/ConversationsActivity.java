@@ -58,6 +58,10 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.TextView;
+import android.widget.Toast;
+
+import net.java.otr4j.session.SessionStatus;
+import androidx.appcompat.widget.PopupMenu;
 
 import androidx.annotation.IdRes;
 import androidx.annotation.NonNull;
@@ -206,13 +210,17 @@ public class ConversationsActivity extends XmppActivity implements OnConversatio
             SharedPreferences.Editor editor = FirstStart.edit();
             editor.putLong(PREF_FIRST_START, FirstStartTime);
             editor.commit();
-            // restart
-            Intent restartintent = getBaseContext().getPackageManager().getLaunchIntentForPackage(getBaseContext().getPackageName());
-            restartintent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-            restartintent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-            startActivity(restartintent);
-            overridePendingTransition(R.animator.fade_in, R.animator.fade_out);
-            System.exit(0);
+            // restart if storage not accessable
+            if (FileBackend.getDiskSize() > 0) {
+                return;
+            } else {
+                Intent restartintent = getBaseContext().getPackageManager().getLaunchIntentForPackage(getBaseContext().getPackageName());
+                restartintent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                restartintent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                startActivity(restartintent);
+                overridePendingTransition(R.animator.fade_in, R.animator.fade_out);
+                System.exit(0);
+            }
         }
 
         if (useInternalUpdater()) {
@@ -782,17 +790,17 @@ public class ConversationsActivity extends XmppActivity implements OnConversatio
                 pendingViewIntent.push(intent);
             }
         } else if (intent != null && ACTION_DESTROY_MUC.equals(intent.getAction())) {
-            final Bundle extras = intent.getExtras();
-            if (extras != null && extras.containsKey("MUC_UUID")) {
-                Log.d(Config.LOGTAG, "Get " + intent.getAction() + " intent for " + extras.getString("MUC_UUID"));
-                Conversation conversation = xmppConnectionService.findConversationByUuid(extras.getString("MUC_UUID"));
-                try {
+            try {
+                final Bundle extras = intent.getExtras();
+                if (extras != null && extras.containsKey("MUC_UUID")) {
+                    Log.d(Config.LOGTAG, "Get " + intent.getAction() + " intent for " + extras.getString("MUC_UUID"));
+                    Conversation conversation = xmppConnectionService.findConversationByUuid(extras.getString("MUC_UUID"));
                     ConversationsActivity.this.xmppConnectionService.clearConversationHistory(conversation);
                     xmppConnectionService.destroyRoom(conversation, ConversationsActivity.this);
                     endConversation(conversation);
-                } catch (Exception e) {
-                    e.printStackTrace();
                 }
+            } catch (Exception e) {
+                e.printStackTrace();
             }
         }
         setIntent(createLauncherIntent(this));
@@ -975,7 +983,32 @@ public class ConversationsActivity extends XmppActivity implements OnConversatio
             }
         }
     }
-
+    public void verifyOtrSessionDialog(final Conversation conversation, View view) {
+        if (!conversation.hasValidOtrSession() || conversation.getOtrSession().getSessionStatus() != SessionStatus.ENCRYPTED) {
+            ToastCompat.makeText(this, R.string.otr_session_not_started, Toast.LENGTH_LONG).show();
+            return;
+        }
+        if (view == null) {
+            return;
+        }
+        PopupMenu popup = new PopupMenu(this, view);
+        popup.inflate(R.menu.verification_choices);
+        popup.setOnMenuItemClickListener(menuItem -> {
+            Intent intent = new Intent(ConversationsActivity.this, VerifyOTRActivity.class);
+            intent.setAction(VerifyOTRActivity.ACTION_VERIFY_CONTACT);
+            intent.putExtra("contact", conversation.getContact().getJid().asBareJid().toString());
+            intent.putExtra(EXTRA_ACCOUNT, conversation.getAccount().getJid().asBareJid().toString());
+            switch (menuItem.getItemId()) {
+                case R.id.ask_question:
+                    intent.putExtra("mode", VerifyOTRActivity.MODE_ASK_QUESTION);
+                    break;
+            }
+            startActivity(intent);
+            overridePendingTransition(R.animator.fade_in, R.animator.fade_out);
+            return true;
+        });
+        popup.show();
+    }
     @Override
     public void onConversationArchived(Conversation conversation) {
         if (performRedirectIfNecessary(conversation, false)) {

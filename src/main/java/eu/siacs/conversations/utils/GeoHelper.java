@@ -25,6 +25,7 @@ import eu.siacs.conversations.entities.Conversational;
 import eu.siacs.conversations.entities.Message;
 import eu.siacs.conversations.ui.SettingsActivity;
 import eu.siacs.conversations.ui.ShowLocationActivity;
+import eu.siacs.conversations.ui.ShareLocationActivity;
 
 public class GeoHelper {
 
@@ -75,6 +76,9 @@ public class GeoHelper {
             Log.d(Config.LOGTAG, "Could not use custom mappreview host and using blabber.im for mappreview " + e);
         }
         return false;
+    }
+    public static Intent getFetchIntent(Context context) {
+        return new Intent(context, ShareLocationActivity.class);
     }
 
     private static GeoPoint parseGeoPoint(String body) throws IllegalArgumentException {

@@ -180,6 +180,7 @@ public class IqGenerator extends AbstractGenerator {
         info.setAttribute("type", avatar.type);
         return publish("urn:xmpp:avatar:metadata", item, options);
     }
+
     public IqPacket deleteAvatar() {
         final Element item = new Element("item");
         item.addChild("metadata", "urn:xmpp:avatar:metadata");
@@ -461,16 +462,20 @@ public class IqGenerator extends AbstractGenerator {
         final IqPacket packet = new IqPacket(IqPacket.TYPE.SET);
         packet.setTo(appServer);
         final Element command = packet.addChild("command", Namespace.COMMANDS);
-        command.setAttribute("node", "register-push-fcm");
+        command.setAttribute("node", "v1-register-push");
         command.setAttribute("action", "execute");
         final Data data = new Data();
+        data.put("type", "fcm");
         data.put("token", token);
-        data.put("android-id", deviceId);
-        if (muc != null) {
+        data.put("node", deviceId);
+        data.put("FORM_TYPE", "https://github.com/tmolitor-stud-tu/mod_push_appserver/#v1-register-push");
+        // to do MUC not support
+        /*if (muc != null) {
             data.put("muc", muc.toEscapedString());
-        }
+        }*/
         data.submit();
         command.addChild(data);
+        Log.d(Config.LOGTAG, "Push packet " + packet);
         return packet;
     }
 
@@ -481,8 +486,11 @@ public class IqGenerator extends AbstractGenerator {
         command.setAttribute("node", "unregister-push-fcm");
         command.setAttribute("action", "execute");
         final Data data = new Data();
+        data.put("type", "fcm");
+        data.put("node", deviceId);
         data.put("channel", channel);
         data.put("android-id", deviceId);
+        data.put("FORM_TYPE", "https://github.com/tmolitor-stud-tu/mod_push_appserver/#v1-unregister-push");
         data.submit();
         command.addChild(data);
         return packet;

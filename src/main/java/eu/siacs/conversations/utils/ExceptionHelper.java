@@ -69,7 +69,7 @@ public class ExceptionHelper {
                 report.append("Device: ").append(deviceName).append('\n');
                 report.append("Android SDK: ").append(sdkVersion).append(" (").append(release).append(")").append('\n');
                 report.append("Version: ").append(packageInfo.versionName).append('\n');
-                report.append(String.format(Locale.ROOT, "Version: %s(%d)", BuildConfig.VERSION_NAME, BuildConfig.VERSION_CODE)).append('\n');
+                report.append(String.format(Locale.ROOT, "Version: %s(%d) ", BuildConfig.VERSION_NAME, BuildConfig.VERSION_CODE)).append('\n');
                 report.append("Last Update: ").append(DATE_FORMAT.format(new Date(packageInfo.lastUpdateTime))).append('\n');
                 Signature[] signatures = packageInfo.signatures;
                 if (signatures != null && signatures.length >= 1) {

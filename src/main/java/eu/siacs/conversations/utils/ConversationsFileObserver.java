@@ -131,7 +131,11 @@ public abstract class ConversationsFileObserver {
                     }
                     return;
                 }
-                ConversationsFileObserver.this.onEvent(event, file);
+                try {
+                    ConversationsFileObserver.this.onEvent(event, file);
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
             });
         }
     }

@@ -6,6 +6,7 @@ import android.util.Log;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.util.Objects;
 import java.io.BufferedReader;
 import java.io.InputStream;
 import java.io.InputStreamReader;
@@ -76,12 +77,12 @@ public class ProviderService extends AsyncTask<String, Object, Boolean> {
                     String ratingC2S = null;
                     String ratingS2S = null;
                     int ratingXmppComplianceTester = 0;
-                    final String provider = jsonObject.names().getString(i);
+                    final String provider = Objects.requireNonNull(jsonObject.names()).getString(i);
                     if (provider.length() > 0) {
-                        for (int ii = 0; ii < jsonObject.length(); ii++) {
-                            final JSONObject json = new JSONObject(jsonObject.get(provider).toString());
-                            String featureName = json.names().getString(ii);
-                            final JSONObject subjson = new JSONObject(json.get(json.names().getString(ii)).toString());
+                        final JSONObject json = new JSONObject(jsonObject.get(provider).toString());
+                        for (int ii = 0; ii < json.length(); ii++) {
+                            String featureName = Objects.requireNonNull(json.names()).getString(ii);
+                            final JSONObject subjson = new JSONObject(json.get(Objects.requireNonNull(json.names()).getString(ii)).toString());
                             if (featureName.equals("inBandRegistration")) {
                                 inBandRegistration = subjson.getBoolean("content");
                             }
