@@ -30,7 +30,10 @@ monocles chat has different presettings compared to blabber.im:
 * use inner storage (files are hidden then and not shown in the Gallery)
 * don't automatically download all atachments
 
+### OTR
 
+monocles chat supports OTR encryption! Though it's not easy to use OTR does have some advantages:
+<a href="https://en.wikipedia.org/wiki/Off-the-Record_Messaging#Implementation">https://en.wikipedia.org/wiki/Off-the-Record_Messaging#Implementation</a>
 
 ## Download
 monocles chat is available for install in the F-Droid
