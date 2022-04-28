@@ -22,6 +22,7 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 import eu.siacs.conversations.Config;
+import eu.siacs.conversations.crypto.axolotl.AxolotlService;
 import eu.siacs.conversations.crypto.axolotl.FingerprintStatus;
 import eu.siacs.conversations.http.URL;
 import eu.siacs.conversations.services.AvatarService;
@@ -1034,7 +1035,8 @@ public class Message extends AbstractEntity implements AvatarService.Avatarable 
     }
 
     public boolean isTrusted() {
-        FingerprintStatus s = conversation.getAccount().getAxolotlService().getFingerprintTrust(axolotlFingerprint);
+        final AxolotlService axolotlService = conversation.getAccount().getAxolotlService();
+        final FingerprintStatus s = axolotlService != null ? axolotlService.getFingerprintTrust(axolotlFingerprint) : null;
         return s != null && s.isTrusted();
     }
 
