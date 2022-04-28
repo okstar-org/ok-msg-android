@@ -46,6 +46,7 @@ import eu.siacs.conversations.Config;
 import eu.siacs.conversations.R;
 import eu.siacs.conversations.persistance.FileBackend;
 import eu.siacs.conversations.services.XmppConnectionService;
+import eu.siacs.conversations.xmpp.Jid;
 
 public class Resolver {
 
@@ -91,6 +92,9 @@ public class Resolver {
             return ipResult;
         }
         return happyEyeball(resolveNoSrvRecords(DNSName.from(hostname), port, true));
+    }
+    public static void checkDomain(final Jid jid) {
+        DNSName.from(jid.getDomain());
     }
 
     public static boolean invalidHostname(final String hostname) {
