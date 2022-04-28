@@ -1199,4 +1199,5 @@
     <string name="verifying_omemo_keys_trusted_source_account">Estás a punto de verificar las claves OMEMO de tu propia cuenta. Esto es únicamente seguro si has seguido este enlace desde un origen de confianza donde solo tú puedes haber este enlace.</string>
     <string name="continue_btn">Continuar</string>
     <string name="participants">Participantes</string>
+    <string name="download_failed_invalid_file">Descarga fallida: Fichero no válido</string>
 </resources>
