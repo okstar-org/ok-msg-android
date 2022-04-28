@@ -47,16 +47,16 @@ public class Compatibility {
         return Build.VERSION.SDK_INT < Build.VERSION_CODES.M || (ContextCompat.checkSelfPermission(context, android.Manifest.permission.WRITE_EXTERNAL_STORAGE) == PackageManager.PERMISSION_GRANTED && ContextCompat.checkSelfPermission(context, Manifest.permission.READ_EXTERNAL_STORAGE) == PackageManager.PERMISSION_GRANTED);
     }
 
-    public static boolean runsTwentySix() {
-        return Build.VERSION.SDK_INT >= Build.VERSION_CODES.O;
-    }
-
     public static boolean runsTwentyThree() {
         return Build.VERSION.SDK_INT >= Build.VERSION_CODES.M;
     }
 
     public static boolean runsTwentyFour() {
         return Build.VERSION.SDK_INT >= Build.VERSION_CODES.N;
+    }
+
+    public static boolean runsTwentySix() {
+        return Build.VERSION.SDK_INT >= Build.VERSION_CODES.O;
     }
 
     public static boolean runsTwentyEight() {
