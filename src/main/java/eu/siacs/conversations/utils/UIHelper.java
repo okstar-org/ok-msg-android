@@ -511,9 +511,6 @@ public class UIHelper {
     }
 
     public static String getFileDescriptionString(final Context context, final Message message) {
-        if (message.getType() == Message.TYPE_IMAGE) {
-            return context.getString(R.string.image);
-        }
         final String mime = message.getMimeType();
         if (mime == null) {
             return context.getString(R.string.file);
