@@ -206,13 +206,17 @@ public class ConversationsActivity extends XmppActivity implements OnConversatio
             SharedPreferences.Editor editor = FirstStart.edit();
             editor.putLong(PREF_FIRST_START, FirstStartTime);
             editor.commit();
-            // restart
-            Intent restartintent = getBaseContext().getPackageManager().getLaunchIntentForPackage(getBaseContext().getPackageName());
-            restartintent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-            restartintent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-            startActivity(restartintent);
-            overridePendingTransition(R.animator.fade_in, R.animator.fade_out);
-            System.exit(0);
+            // restart if storage not accessable
+            if (FileBackend.getDiskSize() > 0) {
+                return;
+            } else {
+                Intent restartintent = getBaseContext().getPackageManager().getLaunchIntentForPackage(getBaseContext().getPackageName());
+                restartintent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                restartintent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                startActivity(restartintent);
+                overridePendingTransition(R.animator.fade_in, R.animator.fade_out);
+                System.exit(0);
+            }
         }
 
         if (useInternalUpdater()) {
