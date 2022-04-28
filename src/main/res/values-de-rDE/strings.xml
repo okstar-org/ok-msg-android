@@ -1168,4 +1168,8 @@
     <string name="italic">kursiv</string>
     <string name="monospace">monospace</string>
     <string name="strikethrough">durchgestrichen</string>
+    <string name="pref_show_date_in_quotes_summary">Zeige Datum und Zeit von deiner zitierten Nachricht.</string>
+    <string name="pref_show_date_in_quotes">Zeige Datum und Zeit deines Zitates</string>
+    <string name="pref_showtextformatting_sum">Zeige Leiste zur Textformatierung im Chat wenn die Bildschirmtastatur angezeigt wird.</string>
+    <string name="pref_showtextformatting">Zeige Leiste zur Textformatierung</string>
 </resources>
