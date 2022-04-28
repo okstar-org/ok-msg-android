@@ -105,6 +105,13 @@ import eu.siacs.conversations.xmpp.OnUpdateBlocklist;
 import eu.siacs.conversations.xmpp.XmppConnection;
 import me.drakeet.support.toast.ToastCompat;
 import pl.droidsonroids.gif.GifDrawable;
+import android.util.Pair;
+import net.java.otr4j.session.SessionID;
+import java.util.Collections;
+import java.util.Map;
+import java.util.concurrent.atomic.AtomicInteger;
+import eu.siacs.conversations.utils.CryptoHelper;
+import static eu.siacs.conversations.ui.SettingsActivity.ENABLE_OTR_ENCRYPTION;
 
 public abstract class XmppActivity extends ActionBarActivity {
 
@@ -419,7 +426,17 @@ public abstract class XmppActivity extends ActionBarActivity {
 
     public void selectPresence(final Conversation conversation, final PresenceSelector.OnPresenceSelected listener) {
         final Contact contact = conversation.getContact();
-        if (contact.showInRoster() || contact.isSelf()) {
+        if (conversation.hasValidOtrSession()) {
+            SessionID id = conversation.getOtrSession().getSessionID();
+            Jid jid;
+            try {
+                jid = Jid.of(id.getAccountID() + "/" + id.getUserID());
+            } catch (IllegalArgumentException e) {
+                jid = null;
+            }
+            conversation.setNextCounterpart(jid);
+            listener.onPresenceSelected();
+        } else if (contact.showInRoster() || contact.isSelf()) {
             final Presences presences = contact.getPresences();
             if (presences.size() == 0) {
                 if (contact.isSelf()) {
@@ -485,7 +502,9 @@ public abstract class XmppActivity extends ActionBarActivity {
     public boolean unicoloredBG() {
         return getBooleanPreference("unicolored_chatbg", R.bool.use_unicolored_chatbg) || getPreferences().getString(SettingsActivity.THEME, getString(R.string.theme)).equals("black");
     }
-
+    public boolean enableOTR() {
+        return getBooleanPreference(ENABLE_OTR_ENCRYPTION, R.bool.enable_otr);
+    }
     public boolean showDateInQuotes() {
         return getBooleanPreference("show_date_in_quotes", R.bool.show_date_in_quotes);
     }

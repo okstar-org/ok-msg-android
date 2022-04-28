@@ -87,6 +87,7 @@ public class SettingsActivity extends XmppActivity implements
     public static final String MAPPREVIEW_HOST = "mappreview_host";
     public static final String ALLOW_MESSAGE_CORRECTION = "allow_message_correction";
     public static final String ALLOW_MESSAGE_RETRACTION = "allow_message_retraction";
+    public static final String ENABLE_OTR_ENCRYPTION = "enable_otr_encryption";
     public static final String USE_UNICOLORED_CHATBG = "unicolored_chatbg";
     public static final String EASY_DOWNLOADER = "easy_downloader";
     public static final String MIN_ANDROID_SDK21_SHOWN = "min_android_sdk21_shown";
