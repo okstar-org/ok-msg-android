@@ -311,7 +311,7 @@ public class WebRTCWrapper {
         rtcConfig.continualGatheringPolicy = PeerConnection.ContinualGatheringPolicy.GATHER_CONTINUALLY;
         rtcConfig.sdpSemantics = PeerConnection.SdpSemantics.UNIFIED_PLAN;
         rtcConfig.rtcpMuxPolicy = PeerConnection.RtcpMuxPolicy.NEGOTIATE;
-        //rtcConfig.enableImplicitRollback = true;
+        rtcConfig.enableImplicitRollback = true;
         return rtcConfig;
     }
 
@@ -320,7 +320,7 @@ public class WebRTCWrapper {
     }
 
     void restartIce() {
-        executorService.execute(() -> requirePeerConnection());
+        executorService.execute(() -> requirePeerConnection().restartIce());
     }
 
     public void setIsReadyToReceiveIceCandidates(final boolean ready) {
@@ -447,7 +447,20 @@ public class WebRTCWrapper {
     synchronized ListenableFuture<SessionDescription> setLocalDescription() {
         return Futures.transformAsync(getPeerConnectionFuture(), peerConnection -> {
             final SettableFuture<SessionDescription> future = SettableFuture.create();
+            peerConnection.setLocalDescription(new SetSdpObserver() {
+                @Override
+                public void onSetSuccess() {
+                    final SessionDescription description = peerConnection.getLocalDescription();
+                    Log.d(EXTENDED_LOGGING_TAG, "set local description:");
+                    logDescription(description);
+                    future.set(description);
+                }
 
+                @Override
+                public void onSetFailure(final String message) {
+                    future.setException(new FailureToSetDescriptionException(message));
+                }
+            });
             return future;
         }, MoreExecutors.directExecutor());
     }
