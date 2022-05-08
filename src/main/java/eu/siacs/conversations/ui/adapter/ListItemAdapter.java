@@ -17,6 +17,7 @@ import java.util.List;
 
 import eu.siacs.conversations.R;
 import eu.siacs.conversations.databinding.ContactBinding;
+import eu.siacs.conversations.entities.Account;
 import eu.siacs.conversations.entities.ListItem;
 import eu.siacs.conversations.ui.SettingsActivity;
 import eu.siacs.conversations.ui.XmppActivity;
@@ -61,6 +62,7 @@ public class ListItemAdapter extends ArrayAdapter<ListItem> {
     public View getView(int position, View view, ViewGroup parent) {
         LayoutInflater inflater = activity.getLayoutInflater();
         ListItem item = getItem(position);
+        Account account = item.getAccount();
         ViewHolder viewHolder;
         if (view == null) {
             ContactBinding binding = DataBindingUtil.inflate(inflater, R.layout.contact, parent, false);
@@ -93,7 +95,7 @@ public class ListItemAdapter extends ArrayAdapter<ListItem> {
         }
         if (activity.xmppConnectionService.multipleAccounts() && activity.xmppConnectionService.showOwnAccounts()) {
             viewHolder.account.setVisibility(View.VISIBLE);
-            viewHolder.account.setText(item.getAccount().getJid().asBareJid());
+            viewHolder.account.setText(account.getJid().asBareJid());
         } else {
             viewHolder.account.setVisibility(View.GONE);
         }
@@ -111,7 +113,7 @@ public class ListItemAdapter extends ArrayAdapter<ListItem> {
             viewHolder.avatar.setAlpha(INACTIVE_ALPHA);
             viewHolder.tags.setAlpha(INACTIVE_ALPHA);
         } else {
-            if (showPresenceColoredNames) {
+            if (showPresenceColoredNames && account.isOnlineAndConnected()) {
                 viewHolder.name.setTextColor(color != 0 ? color : StyledAttributes.getColor(activity, R.attr.text_Color_Main));
             } else {
                 viewHolder.name.setTextColor(StyledAttributes.getColor(activity, R.attr.text_Color_Main));
