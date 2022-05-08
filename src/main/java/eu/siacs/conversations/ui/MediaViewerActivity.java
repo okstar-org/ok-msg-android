@@ -32,13 +32,10 @@ import androidx.databinding.DataBindingUtil;
 
 import com.davemorrissey.labs.subscaleview.ImageSource;
 import com.davemorrissey.labs.subscaleview.SubsamplingScaleImageView;
+import com.google.android.exoplayer2.ExoPlayer;
+import com.google.android.exoplayer2.MediaItem;
 import com.google.android.exoplayer2.PlaybackException;
 import com.google.android.exoplayer2.Player;
-import com.google.android.exoplayer2.SimpleExoPlayer;
-import com.google.android.exoplayer2.source.MediaSource;
-import com.google.android.exoplayer2.source.ProgressiveMediaSource;
-import com.google.android.exoplayer2.upstream.DataSource;
-import com.google.android.exoplayer2.upstream.DefaultDataSourceFactory;
 import com.leinardi.android.speeddial.SpeedDialActionItem;
 
 import java.io.File;
@@ -55,7 +52,7 @@ import me.drakeet.support.toast.ToastCompat;
 public class MediaViewerActivity extends XmppActivity implements AudioManager.OnAudioFocusChangeListener {
 
     Integer oldOrientation;
-    SimpleExoPlayer player;
+    ExoPlayer player;
     Uri mFileUri;
     File mFile;
     int height = 0;
@@ -320,8 +317,7 @@ public class MediaViewerActivity extends XmppActivity implements AudioManager.On
                 rotateScreen(width, height, rotation);
             }
             binding.messageVideoView.setVisibility(View.VISIBLE);
-            player = new SimpleExoPlayer.Builder(this).build();
-            player.setPlayWhenReady(true);
+            player = new ExoPlayer.Builder(this).build();
             player.addListener(new Player.Listener() {
                 @Override
                 public void onPlayerError(PlaybackException error) {
@@ -330,9 +326,9 @@ public class MediaViewerActivity extends XmppActivity implements AudioManager.On
             });
             player.setRepeatMode(Player.REPEAT_MODE_OFF);
             binding.messageVideoView.setPlayer(player);
-            DataSource.Factory dataSourceFactory = new DefaultDataSourceFactory(this, System.getProperty("http.agent"));
-            MediaSource videoSource = new ProgressiveMediaSource.Factory(dataSourceFactory).createMediaSource(uri);
-            player.prepare(videoSource);
+            player.setMediaItem(MediaItem.fromUri(uri));
+            player.prepare();
+            player.setPlayWhenReady(true);
             requestAudioFocus();
             setVolumeControlStream(AudioManager.STREAM_MUSIC);
             binding.messageVideoView.setOnTouchListener((view, motionEvent) -> gestureDetector.onTouchEvent(motionEvent));
