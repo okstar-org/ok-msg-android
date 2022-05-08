@@ -1,5 +1,6 @@
 package eu.siacs.conversations.ui;
 
+import static eu.siacs.conversations.utils.CameraUtils.showCameraChooser;
 import static eu.siacs.conversations.utils.StorageHelper.getBackupDirectory;
 
 import android.app.FragmentManager;
@@ -42,6 +43,7 @@ import eu.siacs.conversations.persistance.FileBackend;
 import eu.siacs.conversations.services.ExportBackupService;
 import eu.siacs.conversations.services.MemorizingTrustManager;
 import eu.siacs.conversations.ui.util.StyledAttributes;
+import eu.siacs.conversations.utils.CameraUtils;
 import eu.siacs.conversations.utils.Compatibility;
 import eu.siacs.conversations.utils.ThemeHelper;
 import eu.siacs.conversations.utils.TimeFrameUtils;
@@ -91,6 +93,7 @@ public class SettingsActivity extends XmppActivity implements
     public static final String EASY_DOWNLOADER = "easy_downloader";
     public static final String MIN_ANDROID_SDK21_SHOWN = "min_android_sdk21_shown";
     public static final String INDIVIDUAL_NOTIFICATION_PREFIX = "individual_notification_set_";
+    public static final String CAMERA_CHOICE = "camera_choice";
     public static final String PAUSE_VOICE = "pause_voice_on_move_from_ear";
 
     public static final int REQUEST_CREATE_BACKUP = 0xbf8701;
@@ -332,6 +335,15 @@ public class SettingsActivity extends XmppActivity implements
             showIntroAgainPreference.setSummary(getString(R.string.pref_show_intro_summary));
             showIntroAgainPreference.setOnPreferenceClickListener(preference -> {
                 showIntroAgain();
+                return true;
+            });
+        }
+
+        final Preference cameraChooserPreference = mSettingsFragment.findPreference(CAMERA_CHOICE);
+        if (cameraChooserPreference != null) {
+            cameraChooserPreference.setOnPreferenceClickListener(preference -> {
+                final List<CameraUtils> cameraApps = CameraUtils.getCameraApps(this);
+                showCameraChooser(this, cameraApps);
                 return true;
             });
         }

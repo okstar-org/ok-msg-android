@@ -1191,4 +1191,6 @@
     <string name="paypal">PayPal</string>
     <string name="bitcoin">Bitcoin</string>
     <string name="btc_address_copied_to_clipboard">Bitcoin address copied to clipboard</string>
+    <string name="choose_camera_app">Choose camera app</string>
+    <string name="pref_choose_camera_summary">Choose a custom camera app</string>
 </resources>
