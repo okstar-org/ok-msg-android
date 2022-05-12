@@ -10,6 +10,8 @@ blabber.im ist ein Fork der offiziellen Android-App [Conversations](https://gith
 
 (Bilder wurden über http://freestockgallery.de bezogen)
 
+<a href="https://f-droid.org/app/de.pixart.messenger"><img src="https://f-droid.org/badge/get-it-on-de.png" alt="Jetzt bei F-Droid" height="100"></a>
+
 Du kannst den Messenger direkt hier von Codeberg unter [Releases](https://codeberg.org/kriztan/blabber.im/releases/latest) herunterladen.
 
 <a rel="me" href="https://kanoa.de/@blabber">blabber.im bei Mastodon</a> 
