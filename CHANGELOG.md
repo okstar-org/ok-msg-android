@@ -1,5 +1,8 @@
 ### Changelog
 
+#### Version 3.1.2
+* bug fixes
+
 #### Version 3.1.1
 * update WebRTC
 * fix crash ob older devices
