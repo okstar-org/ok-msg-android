@@ -999,8 +999,10 @@ public class ConversationFragment extends XmppFragment implements EditMessage.Ke
             this.binding.textinput.setHint(R.string.you_are_not_participating);
         } else {
             this.binding.textInputHint.setVisibility(View.GONE);
-            this.binding.textinput.setHint(UIHelper.getMessageHint(getActivity(), conversation));
-            getActivity().invalidateOptionsMenu();
+            if (getActivity() != null) {
+                this.binding.textinput.setHint(UIHelper.getMessageHint(getActivity(), conversation));
+                getActivity().invalidateOptionsMenu();
+            }
         }
     }
 
