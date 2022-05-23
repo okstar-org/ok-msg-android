@@ -1202,4 +1202,5 @@
     <string name="continue_btn">Continue</string>
     <string name="participants">Participants</string>
     <string name="download_failed_invalid_file">Download failed: Invalid file</string>
+    <string name="orbot_not_found">Orbot not found</string>
 </resources>
