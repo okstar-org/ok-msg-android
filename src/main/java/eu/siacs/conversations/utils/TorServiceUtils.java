@@ -41,6 +41,10 @@ public class TorServiceUtils {
     }
 
     public static void startOrbot(Activity activity, int requestCode) {
-        activity.startActivityForResult(LAUNCH_INTENT, requestCode);
+        try {
+            activity.startActivityForResult(LAUNCH_INTENT, requestCode);
+        } catch (ActivityNotFoundException e) {
+            ToastCompat.makeText(activity, R.string.orbot_not_found, ToastCompat.LENGTH_SHORT).show();
+        }
     }
 }
