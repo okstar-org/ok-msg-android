@@ -10,19 +10,15 @@ The changes aim to improve usability and ease transition from pre-installed and 
 (Images used were taken from http://freestockgallery.de)
 
 ## Download
-blabber.im is available for install in the F-Droid and Google-Play stores.
+blabber.im is available for install in the F-Droid.
 
-Alternatively release APKs are available via Codeberg: [Releases](https://codeberg.org/kriztan/blabber.im/releases/latest) 
+APKs are also available via Codeberg: [Releases](https://codeberg.org/kriztan/blabber.im/releases/latest) 
 
-<a href='https://play.google.com/store/apps/details?id=im.blabber.messenger'><img alt='Get it on Google Play' src='https://play.google.com/intl/en_us/badges/images/generic/en_badge_web_generic.png' height="100"/></a> <a href="https://f-droid.org/app/de.pixart.messenger"><img src="https://f-droid.org/badge/get-it-on.png" alt="Get it on F-Droid" height="100"></a>
+<a href="https://f-droid.org/app/de.pixart.messenger"><img src="https://f-droid.org/badge/get-it-on.png" alt="Get it on F-Droid" height="100"></a>
 
 #### blabber.im beta
 
-#### Google Play
-Google-Users can join the Google-Play beta program:
-[blabber.im beta](https://play.google.com/apps/testing/im.blabber.messenger)
-
-Alternatively beta-release APKs are available via Codeberg: [Releases](https://codeberg.org/kriztan/blabber.im/releases/latest)
+Beta-release APKs are available via Codeberg: [Releases](https://codeberg.org/kriztan/blabber.im/releases/latest)
 
 ## Social Media
 <a rel="me" href="https://kanoa.de/@blabber">blabber.im on Mastodon (German)</a>

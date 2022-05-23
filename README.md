@@ -10,20 +10,15 @@ blabber.im ist ein Fork der offiziellen Android-App [Conversations](https://gith
 
 (Bilder wurden über http://freestockgallery.de bezogen)
 
-Download ist hier möglich:
+<a href="https://f-droid.org/app/de.pixart.messenger"><img src="https://f-droid.org/badge/get-it-on-de.png" alt="Jetzt bei F-Droid" height="100"></a>
 
-<a href='https://play.google.com/store/apps/details?id=im.blabber.messenger'><img alt='Jeztz bei Google Play' src='https://play.google.com/intl/en_us/badges/images/generic/de_badge_web_generic.png' height="100"/></a> <a href="https://f-droid.org/app/de.pixart.messenger"><img src="https://f-droid.org/badge/get-it-on-de.png" alt="Jetzt bei F-Droid" height="100"></a>
-
-Alternativ kannst du den Messenger auch direkt hier von Codeberg unter [Releases](https://codeberg.org/kriztan/blabber.im/releases/latest) herunterladen.
+Du kannst den Messenger direkt hier von Codeberg unter [Releases](https://codeberg.org/kriztan/blabber.im/releases/latest) herunterladen.
 
 <a rel="me" href="https://kanoa.de/@blabber">blabber.im bei Mastodon</a> 
 
 #### blabber.im Beta-Versionen
 
-Google-Nutzer können dem Betaprogramm beitreten:
-[blabber.im beta](https://play.google.com/apps/testing/im.blabber.messenger)
-
-Alternativ kannst du die Beta-Versionen auch direkt hier von Codeberg unter [Releases](https://codeberg.org/kriztan/blabber.im/releases/latest) herunterladen. Sie sind entsprechend gekennzeichnet.
+Die Beta-Versionen kannst du ebenfalls direkt hier von Codeberg unter [Releases](https://codeberg.org/kriztan/blabber.im/releases/latest) herunterladen. Sie sind entsprechend gekennzeichnet.
 
 #### Wie kann ich bei der Übersetzung helfen?
 [![Crowdin](https://d322cqt584bo4o.cloudfront.net/pix-art-messenger/localized.svg)](https://translate.pix-art.de)
