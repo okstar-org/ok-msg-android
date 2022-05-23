@@ -39,6 +39,7 @@ import javax.net.ssl.HttpsURLConnection;
 import javax.net.ssl.SSLContext;
 import javax.net.ssl.SSLSocketFactory;
 
+import eu.siacs.conversations.BuildConfig;
 import eu.siacs.conversations.Config;
 import eu.siacs.conversations.R;
 import eu.siacs.conversations.http.NoSSLv3SocketFactory;
@@ -137,22 +138,10 @@ public class UpdaterActivity extends XmppActivity {
                         //ask for permissions on devices >= SDK 23
                         if (isStoragePermissionGranted() && isNetworkAvailable(getApplicationContext())) {
                             //start downloading the file using the download manager
-                            if (store != null && store.equalsIgnoreCase(PlayStore)) {
-                                Uri uri = Uri.parse("market://details?id=" + getString(R.string.applicationId));
-                                Intent marketIntent = new Intent(Intent.ACTION_VIEW, uri);
-                                PackageManager manager = getApplicationContext().getPackageManager();
-                                List<ResolveInfo> infos = manager.queryIntentActivities(marketIntent, 0);
-                                if (infos.size() > 0) {
-                                    startActivity(marketIntent);
-                                    overridePendingTransition(R.animator.fade_in, R.animator.fade_out);
-                                } else {
-                                    try {
-                                        uri = Uri.parse("https://" + monocles());
-                                        CustomTab.openTab(this, uri, isDarkTheme());
-                                    } catch (Exception e) {
-                                        ToastCompat.makeText(this, R.string.no_application_found_to_open_link, ToastCompat.LENGTH_SHORT).show();
-                                    }
-                                }
+                            if (store != null && store.equalsIgnoreCase(PlayStore) || BuildConfig.APPLICATION_ID.equals("im.blabber.messenger")) {
+                                ToastCompat.makeText(getApplicationContext(), getText(R.string.download_started), ToastCompat.LENGTH_LONG).show();
+                                downloadTask = new DownloadTask(UpdaterActivity.this);
+                                downloadTask.execute(appURI);
                             } else if (store != null && store.equalsIgnoreCase(FDroid)) {
                                 Uri uri = Uri.parse("https://f-droid.org/de/packages/" + getString(R.string.applicationId) + "/");
                                 Intent marketIntent = new Intent(Intent.ACTION_VIEW, uri);
