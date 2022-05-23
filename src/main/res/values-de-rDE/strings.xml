@@ -1174,4 +1174,6 @@
     <string name="pref_showtextformatting">Zeige Leiste zur Textformatierung</string>
     <string name="pref_enable_otr_summary">Aktiviere OTR Verschlüsselung für Nachrichten. Achtung: Die OTR Verschlüsseliung ist noch instabil. Bitte nutze sie nur, wenn Du genau weißt was Du machst.</string>
     <string name="orbot_not_found">Orbot nicht gefunden</string>
+    <string name="participants">Teilnehmer</string>
+    <string name="download_failed_invalid_file">Download fehlgeschlagen: Ungültige Datei</string>
 </resources>
