@@ -1200,4 +1200,5 @@
     <string name="continue_btn">Continuar</string>
     <string name="participants">Participantes</string>
     <string name="download_failed_invalid_file">Descarga fallida: Fichero no válido</string>
+    <string name="orbot_not_found">Orbot no encontrado</string>
 </resources>
