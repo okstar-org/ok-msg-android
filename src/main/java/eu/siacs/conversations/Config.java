@@ -57,7 +57,7 @@ public final class Config {
     public static final String LOGTAG = BuildConfig.LOGTAG;
 
     public static final Jid BUG_REPORTS = Jid.of("support@monocles.de");
-    public static final Uri HELP = Uri.parse("https://monocles.de/howto");
+    public static final Uri HELP = Uri.parse("https://monocles.wiki");
 
     public static final String inviteUserURL = "https://" + monocles() + "/i/";
     public static final String inviteMUCURL = "https://" + monocles() + "/j/";

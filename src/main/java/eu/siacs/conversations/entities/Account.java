@@ -665,6 +665,7 @@ public class Account extends AbstractEntity implements AvatarService.Avatarable 
         ONLINE(false),
         NO_INTERNET(false),
         UNAUTHORIZED,
+        TEMPORARY_AUTH_FAILURE,
         SERVER_NOT_FOUND,
         REGISTRATION_SUCCESSFUL(false),
         REGISTRATION_FAILED(true, false),
