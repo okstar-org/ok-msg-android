@@ -188,7 +188,7 @@ public class ConversationsActivity extends XmppActivity implements OnConversatio
             Log.d(Config.LOGTAG, "Device is running Android < SDK 23, no restart required: " + FirstStartTime);
         }
 
-        Intent intent = pendingViewIntent.pop();
+        final Intent intent = pendingViewIntent.pop();
         if (intent != null) {
             if (processViewIntent(intent)) {
                 if (binding.secondaryFragment != null) {
@@ -233,7 +233,7 @@ public class ConversationsActivity extends XmppActivity implements OnConversatio
             notifyFragmentOfBackendConnected(id);
         }
 
-        ActivityResult activityResult = postponedActivityResult.pop();
+        final ActivityResult activityResult = postponedActivityResult.pop();
         if (activityResult != null) {
             handleActivityResult(activityResult);
         }
