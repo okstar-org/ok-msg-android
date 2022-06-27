@@ -10,6 +10,7 @@ import java.util.List;
 import java.util.Locale;
 import java.util.Random;
 
+import eu.siacs.conversations.BuildConfig;
 import eu.siacs.conversations.crypto.XmppDomainVerifier;
 import eu.siacs.conversations.services.ProviderService;
 import eu.siacs.conversations.xmpp.Jid;
@@ -57,10 +58,10 @@ public final class Config {
     public static final String LOGTAG = BuildConfig.LOGTAG;
 
     public static final Jid BUG_REPORTS = Jid.of("support@monocles.de");
-    public static final Uri HELP = Uri.parse("https://monocles.de/howto");
+    public static final Uri HELP = Uri.parse("https://monocles.wiki");
 
-    public static final String inviteUserURL = "https://" + monocles() + "/i/";
-    public static final String inviteMUCURL = "https://" + monocles() + "/j/";
+    public static final String inviteUserURL = monocles() + "/i/";
+    public static final String inviteMUCURL = monocles() + "/j/";
     public static final String inviteHostURL = monocles(); // without http(s)
     public static final String INVITE_DOMAIN = monocles();
     public static final String termsOfUseURL = "https://monocles.de/impressum/";

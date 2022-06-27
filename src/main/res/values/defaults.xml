@@ -42,11 +42,11 @@
     <string name="invidious_host">monocles.live</string>
     <bool name="plain_text_logs">false</bool>
     <bool name="validate_hostname">false</bool>
-    <bool name="show_foreground_service">false</bool>
+    <bool name="show_foreground_service">true</bool>
     <bool name="warn_unencrypted_chat">true</bool>
     <bool name="hide_you_are_not_participating">false</bool>
     <bool name="use_bundled_emoji">true</bool>
-    <bool name="enable_multi_accounts">false</bool>
+    <bool name="enable_multi_accounts">true</bool>
     <bool name="show_qr_code_scan">true</bool>
     <bool name="show_individual_search_options">true</bool>
     <bool name="show_combined_search_options">false</bool>
@@ -96,7 +96,7 @@
     <bool name="easy_downloader">false</bool>
     <bool name="hide_memory_warning">false</bool>
     <bool name="pause_voice">false</bool>
-    <bool name="show_date_in_quotes">true</bool>
+    <bool name="show_date_in_quotes">false</bool>
     <integer name="individual_notification">0</integer>
 
     <!--
@@ -119,7 +119,7 @@
     </string-array>
 
     <string-array name="support_site">
-        <item>https://monocles.de/howto/</item>
+        <item>https://monocles.wiki</item>
         <item>https://www.jabber.de/support/</item>
         <item>https://dismail.de/contact.html</item>
         <item>https://www.draugr.de/kontakt/</item>

@@ -1176,4 +1176,5 @@
     <string name="orbot_not_found">Orbot nicht gefunden</string>
     <string name="participants">Teilnehmer</string>
     <string name="download_failed_invalid_file">Download fehlgeschlagen: Ungültige Datei</string>
+    <string name="account_status_temporary_auth_failure">Temporärer Authentifizierungsfehler</string>
 </resources>

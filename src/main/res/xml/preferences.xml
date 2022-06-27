@@ -8,7 +8,7 @@
         <intent
             android:action="android.intent.action.VIEW"
             android:targetClass="eu.siacs.conversations.ui.SettingsActivity"
-            android:targetPackage="@string/applicationId">
+            android:targetPackage="de.monocles.chat">
             <extra
                 android:name="page"
                 android:value="userinterface" />
@@ -129,7 +129,7 @@
         <intent
             android:action="android.intent.action.VIEW"
             android:targetClass="eu.siacs.conversations.ui.SettingsActivity"
-            android:targetPackage="@string/applicationId">
+            android:targetPackage="de.monocles.chat">
             <extra
                 android:name="page"
                 android:value="notifications" />
@@ -146,7 +146,7 @@
             <intent
                 android:action="android.intent.action.VIEW"
                 android:targetClass="eu.siacs.conversations.ui.SettingsActivity"
-                android:targetPackage="@string/applicationId">
+                android:targetPackage="de.monocles.chat">
                 <extra
                     android:name="page"
                     android:value="quiet_hours" />
@@ -218,7 +218,7 @@
         <intent
             android:action="android.intent.action.VIEW"
             android:targetClass="eu.siacs.conversations.ui.SettingsActivity"
-            android:targetPackage="@string/applicationId">
+            android:targetPackage="de.monocles.chat">
             <extra
                 android:name="page"
                 android:value="attachments" />
@@ -279,7 +279,7 @@
         <intent
             android:action="android.intent.action.VIEW"
             android:targetClass="eu.siacs.conversations.ui.SettingsActivity"
-            android:targetPackage="@string/applicationId">
+            android:targetPackage="de.monocles.chat">
             <extra
                 android:name="page"
                 android:value="presence" />
@@ -316,7 +316,7 @@
         <intent
             android:action="android.intent.action.VIEW"
             android:targetClass="eu.siacs.conversations.ui.SettingsActivity"
-            android:targetPackage="@string/applicationId">
+            android:targetPackage="de.monocles.chat">
             <extra
                 android:name="page"
                 android:value="security" />
@@ -453,7 +453,7 @@
         <intent
             android:action="android.intent.action.VIEW"
             android:targetClass="eu.siacs.conversations.ui.SettingsActivity"
-            android:targetPackage="@string/applicationId">
+            android:targetPackage="de.monocles.chat">
             <extra
                 android:name="page"
                 android:value="expert" />

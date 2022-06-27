@@ -53,6 +53,7 @@ import javax.net.ssl.SSLSocketFactory;
 import javax.net.ssl.X509KeyManager;
 import javax.net.ssl.X509TrustManager;
 
+import com.google.common.base.Strings;
 import eu.siacs.conversations.BuildConfig;
 import eu.siacs.conversations.Config;
 import eu.siacs.conversations.R;
@@ -519,19 +520,24 @@ public class XmppConnection implements Runnable {
             } else if (nextTag.isStart("failure")) {
                 final Element failure = tagReader.readElement(nextTag);
                 if (Namespace.SASL.equals(failure.getNamespace())) {
-                    final String text = failure.findChildContent("text");
-                    if (failure.hasChild("account-disabled") && text != null) {
-                        Matcher matcher = Patterns.AUTOLINK_WEB_URL.matcher(text);
+                    if (failure.hasChild("temporary-auth-failure")) {
+                        throw new StateChangingException(Account.State.TEMPORARY_AUTH_FAILURE);
+                    } else if (failure.hasChild("account-disabled")) {
+                        final String text = failure.findChildContent("text");
+                        if ( Strings.isNullOrEmpty(text)) {
+                            throw new StateChangingException(Account.State.UNAUTHORIZED);
+                        }
+                        final Matcher matcher = Patterns.AUTOLINK_WEB_URL.matcher(text);
                         if (matcher.find()) {
                             final HttpUrl url;
                             try {
                                 url = HttpUrl.get(text.substring(matcher.start(), matcher.end()));
-                                if (url.isHttps()) {
-                                    this.redirectionUrl = url;
-                                    throw new StateChangingException(Account.State.PAYMENT_REQUIRED);
-                                }
-                            } catch (IllegalArgumentException e) {
+                            } catch (final IllegalArgumentException e) {
                                 throw new StateChangingException(Account.State.UNAUTHORIZED);
+                            }
+                            if (url.isHttps()) {
+                                this.redirectionUrl = url;
+                                throw new StateChangingException(Account.State.PAYMENT_REQUIRED);
                             }
                         }
                     }
