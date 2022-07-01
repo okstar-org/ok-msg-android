@@ -1458,7 +1458,7 @@ public class NotificationService {
 
     private PendingIntent createShowLocationIntent(final Message message) {
         Iterable<Intent> intents = GeoHelper.createGeoIntentsFromMessage(mXmppConnectionService, message);
-        for (Intent intent : intents) {
+        for (final Intent intent : intents) {
             if (intent.resolveActivity(mXmppConnectionService.getPackageManager()) != null) {
                 return PendingIntent.getActivity(mXmppConnectionService, generateRequestCode(message.getConversation(), 18), intent, PendingIntent.FLAG_UPDATE_CURRENT);
             }
@@ -1657,6 +1657,7 @@ public class NotificationService {
         mBuilder.setWhen(0);
         mBuilder.setPriority(Notification.PRIORITY_MIN);
         mBuilder.setSmallIcon(connected > 0 ? R.drawable.ic_link_white_24dp : R.drawable.ic_link_off_white_24dp);
+        mBuilder.setLocalOnly(true);
         if (Compatibility.runsTwentySix()) {
             mBuilder.setChannelId(FOREGROUND_CHANNEL_ID);
         }
