@@ -1201,4 +1201,5 @@
     <string name="participants">Participantes</string>
     <string name="download_failed_invalid_file">Descarga fallida: Fichero no válido</string>
     <string name="orbot_not_found">Orbot no encontrado</string>
+    <string name="account_status_temporary_auth_failure">Fallo temporal de autentificación</string>
 </resources>
