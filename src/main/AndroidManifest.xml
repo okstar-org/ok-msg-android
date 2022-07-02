@@ -60,7 +60,6 @@
         <intent>
             <action android:name="android.intent.action.GET_CONTENT" />
         </intent>
-
         <!-- OpenKeyChain -->
         <package android:name="org.sufficientlysecure.keychain"/>
         <intent>
