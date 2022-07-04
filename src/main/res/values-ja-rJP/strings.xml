@@ -423,6 +423,7 @@
     <string name="update">更新</string>
     <string name="no_update_available">利用可能な更新はありません</string>
     <string name="download_started">ダウンロード開始</string>
+    <string name="download_failed_invalid_file">ダウンロード失敗: 無効なファイル</string>
     <string name="account_status_tor_unavailable">Torネットワークは利用不可能</string>
     <string name="account_status_bind_failure">バインド失敗</string>
     <string name="account_status_host_unknown">そのサーバーはこのドメインに責任を持ちません</string>
@@ -791,6 +792,7 @@
     <string name="already_drafting_message">あなたは既にメッセージを作成中です。</string>
     <string name="bad_key_for_encryption">暗号化の鍵が不正です。</string>
     <string name="delete_message_dialog">メッセージを削除</string>
+    <string name="delete_message_dialog_msg">このメッセージを削除しますか？\n\n<b>警告:</b> これは、他の端末またはサーバー上に保存されたメッセージのコピーを削除することを保証しません。</string>
     <string name="feature_not_implemented">実装されてない機能</string>
     <string name="device_does_not_support_unknown_source_op">お使いの端末では、提供元不明のアプリのインストールの許可をサポートしていません。</string>
     <string name="reject_request">要求を拒否</string>
@@ -1151,4 +1153,7 @@
     <string name="paypal">PayPal</string>
     <string name="bitcoin">ビットコイン</string>
     <string name="btc_address_copied_to_clipboard">ビットコインアドレスがクリップボードにコピーされました</string>
+    <string name="choose_camera_app">カメラアプリを選択</string>
+    <string name="pref_choose_camera_summary">カスタムカメラアプリを選択</string>
+    <string name="orbot_not_found">Orbotが見つかりません</string>
 </resources>

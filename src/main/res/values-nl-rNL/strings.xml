@@ -60,7 +60,7 @@
     <string name="block">Blokkeren</string>
     <string name="unblock">Deblokkeren</string>
     <string name="save">Opslaan</string>
-    <string name="ok">Oké</string>
+    <string name="ok">OK</string>
     <string name="crash_report_title">blabber.im is vastgelopen</string>
     <string name="crash_report_message">Door het versturen van crashrapportages help je de ontwikkeling van blabber.im.\n\n<b>Waarschuwing:</b> Deze app zal je XMPP-account gebruiken om de rapportage te versturen naar de ontwikkelaar.</string>
     <string name="send_now">Nu versturen</string>
@@ -378,9 +378,9 @@
     <string name="pref_enter_is_send_summary">Gebruik de Enter-toets om een bericht te versturen. Ctrl+Enter werkt altijd voor het versturen van een bericht, zelfs als deze optie is uitgeschakeld.</string>
     <string name="pref_display_enter_key">Enter-toets tonen</string>
     <string name="pref_display_enter_key_summary">Verander de Emoticon-toets in een Enter-toets</string>
-    <string name="audio">audio</string>
-    <string name="video">video</string>
-    <string name="image">afbeelding</string>
+    <string name="audio">Audio</string>
+    <string name="video">Video</string>
+    <string name="image">Afbeelding</string>
     <string name="pdf_document">PDF-document</string>
     <string name="apk">Android-applicatie</string>
     <string name="vcard">Contact</string>
@@ -738,7 +738,7 @@
     <string name="pref_theme_light">Licht</string>
     <string name="pref_theme_dark">Donker</string>
     <string name="pref_theme_auto">Automatisch</string>
-    <string name="pref_theme_options_summary">Kies het kleurenpalet</string>
+    <string name="pref_theme_options_summary">Kies de helderheid van het thema</string>
     <string name="pref_theme_options">Thema</string>
     <string name="chooce_account">Account kiezen</string>
     <string name="pref_font_size">Lettergrootte</string>
@@ -997,7 +997,7 @@
     <string name="pref_theme_color_options_summary">Kies het kleurenpalet</string>
     <string name="pref_theme_color_options">Themakleur</string>
     <string name="magic_create_text_on_x">Je bent uitgenodigd voor %1$s. Wij zullen je begeleiden bij het aanmaken van een account.\nAls je %1$s als provider kiest, kun je communiceren met gebruikers van andere providers door hen je volledige XMPP-adres te geven.</string>
-    <string name="account_status_regis_invalid_token">Ongeldig registratieteken</string>
+    <string name="account_status_regis_invalid_token">Ongeldig registratietoken</string>
     <string name="magic_create_text_fixed">Je bent uitgenodigd voor %1$s. Er is al een gebruikersnaam voor je gekozen. We zullen je begeleiden bij het aanmaken van een account.\nJe kunt met gebruikers van andere providers communiceren door hen je volledige XMPP-adres te geven.</string>
     <string name="your_server_invitation">Je serveruitnodiging</string>
     <string name="pref_use_unicolored_chatbg_summary">Gebruik een effen achtergrond in gesprekken.</string>
@@ -1121,9 +1121,9 @@
     <string name="using_inner_storage">Afgeschermde opslag gebruiken</string>
     <string name="delete_files_dialog">Bijlagen verwijderen</string>
     <string name="delete_files_dialog_msg">Alle %s verwijderen?</string>
-    <string name="audios">geluidsopnames</string>
+    <string name="audios">Geluidsopnames</string>
     <string name="images">afbeeldingen</string>
-    <string name="videos">video\'s</string>
+    <string name="videos">Video\'s</string>
     <string name="files">bestanden</string>
     <string name="all_media_files">mediabestanden</string>
     <string name="memory_warning">De app gebruikt %1$s (%2$s) van de interne opslag.\n\nJe kunt het automatisch verwijderen van bijlagen inschakelen of de opgeslagen media handmatig verwijderen.</string>
@@ -1186,4 +1186,7 @@
     <string name="paypal">PayPal</string>
     <string name="bitcoin">Bitcoin</string>
     <string name="btc_address_copied_to_clipboard">Bitcoin-adres gekopieerd naar het klembord</string>
+    <string name="choose_camera_app">Camera selecteren</string>
+    <string name="pref_choose_camera_summary">Kies een alternatieve camera-app</string>
+    <string name="orbot_not_found">Orbot niet gevonden</string>
 </resources>

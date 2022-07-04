@@ -430,6 +430,7 @@
     <string name="update">Actualizar</string>
     <string name="no_update_available">No hi ha actualizacions disponibles</string>
     <string name="download_started">S\'ha iniciat la descarrèga</string>
+    <string name="download_failed_invalid_file">La descàrrega ha fallat: Arxiu no vàlid</string>
     <string name="account_status_tor_unavailable">Red Tor no disponible</string>
     <string name="account_status_bind_failure">Error de enllaç</string>
     <string name="account_status_host_unknown">El servidor no és responsable del domini</string>
@@ -964,6 +965,7 @@
     <string name="intro_desc_whats_xmpp">XMPP, també anomenat Jabber, és una xarxa de comunicació descentralitzada i funciona com el correu electrònic. Es necessita una direcció anomenada Jabber-ANEU, una contrasenya i un missatger. Més endavant es parlarà d\'això.</string>
     <string name="intro_whats_xmpp">Què és XMPP / Jabber / blabber.im?</string>
     <string name="intro_desc_optional_permissions">Els permisos per a llegir la seva llibreta d\'adreces són necessaris per a llegir els Jabber-IDs (si n\'hi ha) dels seus contactes. Els contactes mai es comparteixen, carreguen o copien.</string>
+    <string name="intro_desc_account2">Pot crear un nou perfil simplement introduint un sobrenom i seleccionant un servidor.</string>
     <string name="open_join_dialog">Unir-se al canal públic…</string>
     <string name="intro_optional_permissions">Permisos opcionals</string>
     <string name="intro_desc_optional_permissions2">Es necessiten permisos per a la seva ubicació si desitja compartir la seva ubicació.\nPer a compartir missatges de veu és necessari obtenir accés al seu micròfon.</string>
@@ -1033,6 +1035,7 @@
     <string name="microphone_unavailable">El seu micròfon no està disponible</string>
     <string name="rtp_state_connecting">Connectant</string>
     <string name="rtp_state_connected">Connectat</string>
+    <string name="rtp_state_reconnecting">Reconnectant</string>
     <string name="rtp_state_accepting_call">Acceptar la trucada</string>
     <string name="rtp_state_ending_call">S\'està finalitzant la trucada</string>
     <string name="rtp_state_finding_device">Descobrint dispositius</string>
@@ -1183,4 +1186,7 @@
     <string name="paypal">PayPal</string>
     <string name="bitcoin">Bitcoin</string>
     <string name="btc_address_copied_to_clipboard">Direcció de Bitcoin copiada al porta-retalls</string>
+    <string name="choose_camera_app">Tria l\'aplicació de cambra</string>
+    <string name="pref_choose_camera_summary">Triar una aplicació de cambra personalitzada</string>
+    <string name="orbot_not_found">Orbot no trobat</string>
 </resources>

@@ -6,6 +6,7 @@
     <string name="action_end_conversation">Meninggalkan percakapan ini</string>
     <string name="action_contact_details">Rincian kontak</string>
     <string name="action_secure">Amankan percakapan</string>
+    <string name="action_add_new_account">Add agensi baru</string>
     <string name="action_add_phone_book">Tambah ke buku alamat</string>
     <string name="action_delete_contact">Hapus dari daftar</string>
     <string name="action_block_contact">Blokir kontak</string>
@@ -13,6 +14,7 @@
     <string name="action_block_domain">Blokir halaman</string>
     <string name="action_unblock_domain">Buka blokir halaman</string>
     <string name="title_activity_settings">Pengaturan</string>
+    <string name="conference_details">Pilihan obrolan grup</string>
     <string name="title_activity_choose_contact">Pilih kontak</string>
     <string name="title_activity_block_list">Daftar blokir</string>
     <string name="just_now">baru saja</string>
@@ -48,6 +50,8 @@
     <string name="block">Blok</string>
     <string name="unblock">Tidak diblok</string>
     <string name="save">Simpan</string>
+    <string name="crash_report_title">blabber.im terjadi kesalahan</string>
+    <string name="crash_report_message">Dengan mengirimkan riwayat anda membantu pengembangan Pix-Art Messenger yang sedang berlangsung\n<b>Peringatan:</b> Ini akan menggunakan akun XMPP Anda untuk mengirim riwayat ke pengembang.</string>
     <string name="send_now">Kirim Sekarang</string>
     <string name="send_never">Jangan tanya lagi</string>
     <string name="problem_connecting_to_account">Tidak dapat terhubung ke akun</string>
@@ -133,6 +137,7 @@
     <string name="unpublish_pgp_message">Yakin ingin menghapus kunci terbuka OpenPGP dari pemberitahuan anda?\nkontak anda tidak lagi dapat mengirimkan pesan terenkripsi OpenPGP.</string>
     <string name="openpgp_has_been_published">Kunci terbuka OpenPGP telah ditampilkan.</string>
     <string name="mgmt_account_are_you_sure">Apakah kamu yakin?</string>
+    <string name="mgmt_account_delete_confirm_message">Jika anda menghapus akun, semua obrolan anda akan menghilang.\n\nJika anda mengahpus akun anda diserver, Semua data akun anda akan terhapus diserver juga, Anda tidak akan bisa kembali login ke akun anda sampai anda mendaftarkan akun baru kembali.</string>
     <string name="attach_record_voice">Rekam suara</string>
     <string name="account_settings_jabber_id">Obrolan-Data diri</string>
     <string name="password">Kata sandi</string>
@@ -147,6 +152,7 @@
     <string name="server_info_stream_management">XEP-0198: Manajemen Aliran</string>
     <string name="server_info_http_upload">XEP-0363: Upload Berkas HTTP</string>
     <string name="server_info_push">XEP-0357: Dorong</string>
+    <string name="server_info_available">ya</string>
     <string name="missing_public_keys">Pengumuman kunci publik yang tidak ada</string>
     <string name="last_seen_min">1 menit yang lalu</string>
     <string name="last_seen_mins">%d menit yang lalu</string>
@@ -166,6 +172,7 @@
     <string name="done">Selesai</string>
     <string name="verify">Memeriksa</string>
     <string name="decrypt">Terdeskripsi</string>
+    <string name="bookmarks">obrolan multi pengguna</string>
     <string name="search">Pencarian</string>
     <string name="enter_contact">Masukkan kontak</string>
     <string name="delete_contact">Menghapus kontak</string>

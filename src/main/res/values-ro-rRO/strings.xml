@@ -1198,4 +1198,7 @@
     <string name="paypal">PayPal</string>
     <string name="bitcoin">Bitcoin</string>
     <string name="btc_address_copied_to_clipboard">Adresa Bitcoin copiată în clipboard</string>
+    <string name="choose_camera_app">Alegeți app aparat foto</string>
+    <string name="pref_choose_camera_summary">Alegeți un app de cameră personalizat</string>
+    <string name="orbot_not_found">Orbot nu a fost găsit</string>
 </resources>

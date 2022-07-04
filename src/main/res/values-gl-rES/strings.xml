@@ -430,6 +430,7 @@
     <string name="update">actualizar</string>
     <string name="no_update_available">Sen actualizacións dispoñibles</string>
     <string name="download_started">Descarga iniciada</string>
+    <string name="download_failed_invalid_file">A descarga fallou: Arquivo non válido</string>
     <string name="account_status_tor_unavailable">Sen acceso a rede Tor</string>
     <string name="account_status_bind_failure">Fallou a ligazón</string>
     <string name="account_status_host_unknown">O servidor non é responsable do dominio</string>
@@ -964,6 +965,7 @@
     <string name="intro_desc_whats_xmpp">XMPP, tamén chamado Jabber, é unha rede de comunicación descentralizada e funciona como o correo electrónico. Necesítase unha dirección chamada Jabber-IDE, un contrasinal e un mensaxeiro. Máis adiante falarase disto.</string>
     <string name="intro_whats_xmpp">Que é XMPP / Jabber / blabber.im?</string>
     <string name="intro_desc_optional_permissions">Os permisos para ler o seu caderno de direccións son necesarios para ler as Jabber-IDs (si hainos) dos seus contactos. Os contactos nunca se comparten, cargan ou copian.</string>
+    <string name="intro_desc_account2">Pode crear un novo perfil simplemente introducindo un alcume e seleccionando un servidor.</string>
     <string name="open_join_dialog">Unirse á canle pública…</string>
     <string name="intro_optional_permissions">Permisos opcionais</string>
     <string name="intro_desc_optional_permissions2">Os permisos para a súa localización son necesarios si desexa compartir a súa localización.\nPara compartir mensaxes de voz é necesario obter permiso de acceso ao seu micrófono.</string>
@@ -1033,6 +1035,7 @@
     <string name="microphone_unavailable">O seu micrófono non está dispoñible</string>
     <string name="rtp_state_connecting">Conectando</string>
     <string name="rtp_state_connected">Conectado</string>
+    <string name="rtp_state_reconnecting">Reconectando</string>
     <string name="rtp_state_accepting_call">Aceptando a chamada</string>
     <string name="rtp_state_ending_call">Finalizando a chamada</string>
     <string name="rtp_state_finding_device">Descubrindo dispositivos</string>
@@ -1183,4 +1186,7 @@
     <string name="paypal">PayPal</string>
     <string name="bitcoin">Bitcoin</string>
     <string name="btc_address_copied_to_clipboard">Enderezo Bitcoin copiado ao portapapeis</string>
+    <string name="choose_camera_app">Elixir a aplicación de cámara</string>
+    <string name="pref_choose_camera_summary">Elixir unha aplicación de cámara personalizada</string>
+    <string name="orbot_not_found">Orbot non atopado</string>
 </resources>

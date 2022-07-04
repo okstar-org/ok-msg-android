@@ -250,6 +250,8 @@
     <string name="pref_security_settings">Zabezpečení</string>
     <string name="pref_allow_message_correction">Povolit opravu zpráv</string>
     <string name="pref_allow_message_correction_summary">Povolí kontaktům zpětné upravování jejich zpráv</string>
+    <string name="pref_allow_message_retraction">Povolit odvolání zpráv</string>
+    <string name="pref_allow_message_retraction_summary">Povolí kontaktům zpětné odvolat jejich zprávy</string>
     <string name="pref_expert_options">Expertní nastavení</string>
     <string name="title_activity_about">O</string>
     <string name="pref_about_conversations_summary">Informace o sestavení a licenci</string>
@@ -1192,4 +1194,6 @@
     <string name="paypal">PayPal</string>
     <string name="bitcoin">Bitcoin</string>
     <string name="btc_address_copied_to_clipboard">Adresa BTC zkopírována do schránky</string>
+    <string name="choose_camera_app">Zvolit aplikaci fotoaparátu</string>
+    <string name="pref_choose_camera_summary">Zvolte, kterou aplikaci fotoaparátu použít</string>
 </resources>

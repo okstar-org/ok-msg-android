@@ -1186,4 +1186,7 @@
     <string name="paypal">PayPal</string>
     <string name="bitcoin">Bitcoin</string>
     <string name="btc_address_copied_to_clipboard">Indirizzo Bitcoin copiato negli appunti</string>
+    <string name="choose_camera_app">Scegli app fotocamera</string>
+    <string name="pref_choose_camera_summary">Scegli una app di fotocamera personalizzata</string>
+    <string name="orbot_not_found">Orbot non trovato</string>
 </resources>

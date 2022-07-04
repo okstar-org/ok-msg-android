@@ -1186,4 +1186,7 @@
     <string name="paypal">PayPal</string>
     <string name="bitcoin">Bitcoin</string>
     <string name="btc_address_copied_to_clipboard">Bitcoin-Adresse wurde in die Zwischenablage kopiert</string>
+    <string name="choose_camera_app">Kamera wählen</string>
+    <string name="pref_choose_camera_summary">Wähle eine Kamera-Anwendung aus</string>
+    <string name="orbot_not_found">Orbot not found</string>
 </resources>
