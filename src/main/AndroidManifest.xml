@@ -95,7 +95,8 @@
 
         <service android:name=".services.XmppConnectionService" />
 
-        <receiver android:name=".services.EventReceiver">
+        <receiver android:name=".services.EventReceiver"
+            android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.BOOT_COMPLETED" />
                 <action android:name="android.net.conn.CONNECTIVITY_CHANGE" />
@@ -124,7 +125,8 @@
             android:label="@string/app_name"
             android:launchMode="singleTask"
             android:theme="@style/SplashTheme"
-            android:windowSoftInputMode="stateHidden">
+            android:windowSoftInputMode="stateHidden"
+            android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
                 <category android:name="android.intent.category.LAUNCHER" />
@@ -144,7 +146,8 @@
             android:windowSoftInputMode="stateAlwaysHidden" />
         <activity
             android:name=".ui.UriHandlerActivity"
-            android:label="@string/app_name">
+            android:label="@string/app_name"
+            android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.VIEW" />
 
@@ -185,7 +188,8 @@
             android:name=".ui.StartConversationActivity"
             android:configChanges="orientation|screenSize"
             android:label="@string/title_activity_start_conversation"
-            android:launchMode="singleTop">
+            android:launchMode="singleTop"
+            android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.VIEW" />
             </intent-filter>
@@ -205,7 +209,8 @@
         <activity
             android:name=".ui.ImportBackupActivity"
             android:label="@string/restore_backup"
-            android:launchMode="singleTask">
+            android:launchMode="singleTask"
+            android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.VIEW" />
                 <category android:name="android.intent.category.DEFAULT" />
@@ -257,7 +262,8 @@
         </activity>
         <activity
             android:name=".ui.SettingsActivity"
-            android:label="@string/title_activity_settings">
+            android:label="@string/title_activity_settings"
+            android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
                 <category android:name="android.intent.category.NOTIFICATION_PREFERENCES" />
@@ -275,7 +281,8 @@
         <activity
             android:name=".ui.ChooseAccountForProfilePictureActivity"
             android:enabled="false"
-            android:label="@string/choose_account">
+            android:label="@string/choose_account"
+            android:exported="true">
             <intent-filter android:label="@string/set_profile_picture">
                 <action android:name="android.intent.action.ATTACH_DATA" />
                 <category android:name="android.intent.category.DEFAULT" />
@@ -318,7 +325,8 @@
         <activity
             android:name=".ui.ShareWithActivity"
             android:label="@string/app_name"
-            android:launchMode="singleTop">
+            android:launchMode="singleTop"
+            android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.SEND" />
                 <action android:name="android.intent.action.SEND_MULTIPLE" />
@@ -370,7 +378,8 @@
             android:name=".ui.AboutActivity"
             android:label="@string/title_activity_about"
             android:launchMode="singleTask"
-            android:parentActivityName=".ui.SettingsActivity">
+            android:parentActivityName=".ui.SettingsActivity"
+            android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.VIEW" />
                 <category android:name="android.intent.category.PREFERENCE" />
@@ -383,7 +392,8 @@
             android:name=".ui.MemoryManagementActivity"
             android:label="@string/title_memory_management"
             android:launchMode="singleTask"
-            android:parentActivityName=".ui.SettingsActivity">
+            android:parentActivityName=".ui.SettingsActivity"
+            android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.VIEW" />
                 <category android:name="android.intent.category.PREFERENCE" />
@@ -401,7 +411,8 @@
         <activity
             android:name=".ui.ShortcutActivity"
             android:label="@string/contact"
-            android:launchMode="singleTask">
+            android:launchMode="singleTask"
+            android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.CREATE_SHORTCUT" />
             </intent-filter>
@@ -440,7 +451,8 @@
         <service android:name=".services.ImportBackupService" />
         <service
             android:name=".services.ContactChooserTargetService"
-            android:permission="android.permission.BIND_CHOOSER_TARGET_SERVICE">
+            android:permission="android.permission.BIND_CHOOSER_TARGET_SERVICE"
+            android:exported="true">
             <intent-filter>
                 <action android:name="android.service.chooser.ChooserTargetService" />
             </intent-filter>
