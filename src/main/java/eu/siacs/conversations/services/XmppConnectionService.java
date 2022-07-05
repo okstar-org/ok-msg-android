@@ -15,6 +15,8 @@ import static eu.siacs.conversations.ui.SettingsActivity.SHOW_OWN_ACCOUNTS;
 import static eu.siacs.conversations.ui.SettingsActivity.USE_INNER_STORAGE;
 import static eu.siacs.conversations.utils.RichPreview.RICH_LINK_METADATA;
 import static eu.siacs.conversations.utils.StorageHelper.getAppMediaDirectory;
+import android.content.res.Resources;
+import android.os.Handler;
 
 import android.Manifest;
 import androidx.annotation.RequiresApi;
@@ -231,6 +233,7 @@ public class XmppConnectionService extends Service {
     private final SerialSingleThreadExecutor mNotificationExecutor = new SerialSingleThreadExecutor("NotificationExecutor");
     public final SerialSingleThreadExecutor mWebPreviewExecutor = new SerialSingleThreadExecutor("WebPreview");
     public final SerialSingleThreadExecutor mNotificationChannelExecutor = new SerialSingleThreadExecutor("updateNotificationChannels");
+    public final SerialSingleThreadExecutor mMessageResendTaskExecuter = new SerialSingleThreadExecutor("MessageResender");
     private final ReplacingTaskManager mRosterSyncTaskManager = new ReplacingTaskManager();
     private final IBinder mBinder = new XmppConnectionBinder();
     private final List<Conversation> conversations = new CopyOnWriteArrayList<>();
@@ -881,6 +884,7 @@ public class XmppConnectionService extends Service {
                     for (Conversation conversation : conversations) {
                         if (conversation.getAccount() == account && !account.pendingConferenceJoins.contains(conversation)) {
                             resendFailedFileMessages(conversation);
+                            resendFailedMessages(conversation);
                         }
                     }
                     final boolean lowTimeout = isInLowPingTimeoutMode(account);
@@ -911,7 +915,9 @@ public class XmppConnectionService extends Service {
             }
         }
     }
-
+    public int maxResendTime(){
+        return Integer.parseInt(getPreferences().getString(SettingsActivity.MAX_RESEND_TIME, getResources().getString(R.string.max_resend_time)));
+    }
     private void deleteWebpreviewCache() {
         new Thread(() -> {
             try {
@@ -1993,7 +1999,18 @@ public class XmppConnectionService extends Service {
         mDatabaseWriterExecutor.execute((runnable));
 
     }
-
+    private void resendFailedMessages(final Conversation conversation) {
+        final Runnable runnable = () -> {
+            conversation.findResendAbleFailedMessage(message -> {
+                if (message.increaseResendCount() < maxResendTime()) {
+                    Log.d(Config.LOGTAG, "Resend failed message " + message.getErrorMessage() + " at times " + message.getResendCount() + " bytes for " + conversation.getJid());
+                    // because it'll use a custom delay here, only the last time will delay the message.
+                    resendFailedMessages(message);
+                }
+            });
+        };
+        mMessageResendTaskExecuter.execute((runnable));
+    }
     private void resendFailedFileMessages(final Conversation conversation) {
         final Runnable runnable = () -> {
             conversation.findFailedMessagesWithFiles(message -> {
@@ -4563,7 +4580,24 @@ public class XmppConnectionService extends Service {
         updateConversationUi();
         if (oldStatus != status && status == Message.STATUS_SEND_FAILED) {
             mNotificationService.pushFailedDelivery(message);
+            // resend it
+            mMessageResendTaskExecuter.execute(() -> {
+                try {
+                    if (message.increaseResendCount() <= maxResendTime() / 2) {
+                        Thread.sleep(resendDelay());
+                        resendFailedMessages(message);
+                    }
+                }
+                catch (Exception ignore){
+                    // if system halt, give it up
+                    Log.w(Config.LOGTAG,"System Halt, so the message resend give up");
+                }
+            });
+
         }
+    }
+    private long resendDelay() {
+        return Long.parseLong(getPreferences().getString(SettingsActivity.RESEND_DELAY, getResources().getString(R.string.resend_delay)));
     }
 
     public SharedPreferences getPreferences() {

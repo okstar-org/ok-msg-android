@@ -277,7 +277,7 @@ public class MessageAdapter extends ArrayAdapter<Message> {
                 break;
             case Message.STATUS_SEND_FAILED:
                 DownloadableFile file = activity.xmppConnectionService.getFileBackend().getFile(message);
-                if (isResendable && file.exists()) {
+                if (isResendable && file.exists() || message.getResendCount() < activity.xmppConnectionService.maxResendTime()) {
                     info = getContext().getString(R.string.send_failed_resend);
                 } else {
                     final String errorMessage = message.getErrorMessage();

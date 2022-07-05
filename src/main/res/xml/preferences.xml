@@ -474,6 +474,20 @@
                     android:targetClass="com.huawei.systemmanager.optimize.process.ProtectActivity"
                     android:targetPackage="com.huawei.systemmanager" />
             </PreferenceScreen>
+            <EditTextPreference
+                android:defaultValue="@string/max_resend_time"
+                android:key="max_resend_time"
+                android:summary="@string/pref_max_resend_time_summary"
+                android:title="@string/pref_max_resend_time_title"
+                android:inputType="number"
+                />
+            <EditTextPreference
+                android:defaultValue="@string/resend_delay"
+                android:key="resend_delay"
+                android:summary="@string/pref_resend_delay_summary"
+                android:title="@string/pref_resend_delay_title"
+                android:inputType="number"
+                />
             <CheckBoxPreference
                 android:defaultValue="@bool/enable_multi_accounts"
                 android:key="enable_multi_accounts"
