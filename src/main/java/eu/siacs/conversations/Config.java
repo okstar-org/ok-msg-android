@@ -72,7 +72,7 @@ public final class Config {
     public static final String CHANGELOG_URL = "https://codeberg.org/kriztan/blabber.im/src/branch/master/CHANGELOG.md";
     public static final String GIT_URL = "https://codeberg.org/kriztan/blabber.im/";
 
-    public static final String PROVIDER_URL = "https://invent.kde.org/melvo/xmpp-providers/-/raw/master/providers.json"; // https://invent.kde.org/melvo/xmpp-providers
+    public static final String PROVIDER_URL = "https://data.xmpp.net/providers/v1/providers-A.json"; // https://invent.kde.org/melvo/xmpp-providers
 
     public static final String XMPP_IP = null; //BuildConfig.XMPP_IP; // set to null means disable
     public static final Integer[] XMPP_Ports = null; //BuildConfig.XMPP_Ports; // set to null means disable
