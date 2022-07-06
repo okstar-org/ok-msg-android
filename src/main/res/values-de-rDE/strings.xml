@@ -1158,6 +1158,7 @@
     <string name="action_copy_location">Standort kopieren</string>
     <string name="account_registrations_are_not_supported">Profilregistrierungen werden nicht unterstützt</string>
     <string name="no_xmpp_adddress_found">Keine XMPP-Adresse gefunden</string>
+    <string name="account_status_temporary_auth_failure">Vorübergehender Authentifizierungsfehler</string>
     <string name="pref_allowmergemessages">Nachrichten zusammenführen</string>
     <string name="pref_allowmergemessages_sum">Versuche Nachrichten zusammenzuführen, wenn sie von der gleichen JID stammen</string>
     <string name="show_edit_log">Nachrichtenverlauf</string>

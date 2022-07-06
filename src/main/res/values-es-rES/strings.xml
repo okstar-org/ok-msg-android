@@ -1158,6 +1158,7 @@
     <string name="action_copy_location">Copiar ubicación</string>
     <string name="account_registrations_are_not_supported">El registro de cuentas no está soportado</string>
     <string name="no_xmpp_adddress_found">Dirección XMPP no encontrada</string>
+    <string name="account_status_temporary_auth_failure">Fallo temporal de autenticación</string>
     <string name="pref_allowmergemessages">Fusionar mensajes</string>
     <string name="pref_allowmergemessages_sum">Intentar fusionar mensajes si vienen del mismo jid</string>
     <string name="show_edit_log">Historial de mensajes</string>

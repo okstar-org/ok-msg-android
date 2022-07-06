@@ -1158,6 +1158,7 @@
     <string name="action_copy_location">Locatie kopiëren</string>
     <string name="account_registrations_are_not_supported">Het is niet mogelijk om een nieuwe account te registreren</string>
     <string name="no_xmpp_adddress_found">Geen XMPP-adres gevonden</string>
+    <string name="account_status_temporary_auth_failure">Tijdelijke fout bij authenticatie</string>
     <string name="pref_allowmergemessages">Berichten samenvoegen</string>
     <string name="pref_allowmergemessages_sum">Probeer berichten van dezelfde afzender samen te voegen</string>
     <string name="show_edit_log">Berichtgeschiedenis</string>
