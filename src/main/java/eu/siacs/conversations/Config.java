@@ -112,7 +112,7 @@ public final class Config {
 
     public static final int VIDEO_FAST_UPLOAD_SIZE = 10 * 1024 * 1024;
 
-    public static final int AVATAR_SIZE = 480;
+    public static final int AVATAR_SIZE = 720;
     public static final Bitmap.CompressFormat AVATAR_FORMAT = Bitmap.CompressFormat.JPEG;
     public static final int AVATAR_CHAR_LIMIT = 9400;
 
