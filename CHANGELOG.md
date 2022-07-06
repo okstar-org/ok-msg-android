@@ -1,6 +1,9 @@
 ### Changelog
+#### Version 3.1.3
+* bug fixes
 
 #### Version 3.1.2
+* set camera app in preference screen (attachments)
 * bug fixes
 
 #### Version 3.1.1
