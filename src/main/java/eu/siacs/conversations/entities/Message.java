@@ -124,6 +124,7 @@ public class Message extends AbstractEntity implements AvatarService.Avatarable 
     private String errorMessage = null;
     private Set<ReadByMarker> readByMarkers = new CopyOnWriteArraySet<>();
     private String retractId = null;
+    protected int resendCount = 0;
 
     private Boolean isGeoUri = null;
     private Boolean isXmppUri = null;
@@ -1126,5 +1127,12 @@ public class Message extends AbstractEntity implements AvatarService.Avatarable 
         message.setTrueCounterpart(conversation.getMucOptions().getTrueCounterpart(counterpart));
         message.setType(isFile ? Message.TYPE_PRIVATE_FILE : Message.TYPE_PRIVATE);
         return true;
+    }
+
+    public int getResendCount(){
+        return resendCount;
+    }
+    public int increaseResendCount(){
+        return ++resendCount;
     }
 }

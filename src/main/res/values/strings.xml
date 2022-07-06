@@ -1204,4 +1204,8 @@
     <string name="download_failed_invalid_file">Download failed: Invalid file</string>
     <string name="orbot_not_found">Orbot not found</string>
     <string name="account_status_temporary_auth_failure">Temporary authentication failure</string>
+    <string name="pref_max_resend_time_title">Max Time of resend failed Message</string>
+    <string name="pref_max_resend_time_summary">When plain message send fail, the max time to resend it. when resend count bigger than half max time, message will be delay for traffic reason.</string>
+    <string name="pref_resend_delay_title">Resend Delay (MillsSecond)</string>
+    <string name="pref_resend_delay_summary">Resend Delay (MillsSecond), the time for delay resend.</string>
 </resources>

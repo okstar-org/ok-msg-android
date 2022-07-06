@@ -263,6 +263,19 @@ public class Conversation extends AbstractEntity implements Blockable, Comparabl
             onMessageFound.onMessageFound(result);
         }
     }
+    public void findResendAbleFailedMessage(OnMessageFound onMessageFound) {
+        final ArrayList<Message> results = new ArrayList<>();
+        synchronized (this.messages) {
+            for (final Message message : this.messages) {
+                if (message.getStatus() == Message.STATUS_SEND_FAILED && !message.isFileOrImage()) {
+                    results.add(message);
+                }
+            }
+        }
+        for (final Message result : results) {
+            onMessageFound.onMessageFound(result);
+        }
+    }
 
     public void findUnreadMessagesAndCalls(OnMessageFound onMessageFound) {
         final ArrayList<Message> results = new ArrayList<>();
@@ -1341,7 +1354,7 @@ public class Conversation extends AbstractEntity implements Blockable, Comparabl
                 && !contact.isOwnServer()
                 && !contact.showInContactList()
                 && !contact.isSelf()
-                && !Config.QUICKSY_DOMAIN.equals(contact.getJid().toEscapedString())
+                && !(Config.QUICKSY_DOMAIN.equals(contact.getJid().toEscapedString()) && (contact.getJid().isDomainJid()))
                 && sentMessagesCount() == 0;
     }
 

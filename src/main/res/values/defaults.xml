@@ -36,7 +36,7 @@
     <bool name="presence_colored_names">false</bool>
     <bool name="use_max_brightness">false</bool>
     <bool name="auto_rotate">false</bool>
-    <bool name="send_crashreport">true</bool>
+    <bool name="send_crashreport">false</bool>
     <bool name="use_invidious">false</bool>
     <bool name="use_inner_storage">true</bool>
     <string name="invidious_host">monocles.live</string>
@@ -93,6 +93,8 @@
     <integer name="low_video_res">360</integer>
     <integer name="mid_video_res">720</integer>
     <integer name="high_video_res">1080</integer>
+    <string name="max_resend_time">4</string>
+    <string name="resend_delay">500</string>
     <bool name="easy_downloader">false</bool>
     <bool name="hide_memory_warning">false</bool>
     <bool name="pause_voice">false</bool>
