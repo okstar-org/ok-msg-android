@@ -152,7 +152,7 @@ public final class Config {
 
     public static final boolean ENCRYPT_ON_HTTP_UPLOADED = true;
 
-    public static final boolean X509_VERIFICATION = true; //use x509 certificates to verify OMEMO keys
+    public static final boolean X509_VERIFICATION = false; //use x509 certificates to verify OMEMO keys
     public static final boolean REQUIRE_RTP_VERIFICATION = false; //require a/v calls to be verified with OMEMO
 
     public static final boolean ONLY_INTERNAL_STORAGE = false; //use internal storage instead of sdcard to save attachments
