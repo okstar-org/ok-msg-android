@@ -80,7 +80,7 @@ public final class Config {
 
     public static final String QUICKSY_DOMAIN = "quicksy.im";
     public static final String CHANNEL_DISCOVERY = "https://search.jabber.network";
-    public static final boolean DISALLOW_REGISTRATION_IN_UI = true; //hide the register checkbox
+    public static final boolean DISALLOW_REGISTRATION_IN_UI = false; //hide the register checkbox
     public static final boolean SHOW_INTRO = BuildConfig.SHOW_INTRO;
     public static final boolean SHOW_MIGRATION_INFO = BuildConfig.SHOW_MIGRATION_INFO;
 
