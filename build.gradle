@@ -70,6 +70,7 @@ dependencies {
     implementation 'com.davemorrissey.labs:subsampling-scale-image-view:3.10.0'
     implementation 'com.google.android.exoplayer:exoplayer-core:2.18.0'
     implementation 'com.google.android.exoplayer:exoplayer-ui:2.18.0'
+    implementation 'com.google.android.exoplayer:extension-mediasession:2.18.0'
     implementation 'com.wefika:flowlayout:0.4.1'
     implementation 'com.googlecode.ez-vcard:ez-vcard:0.10.5'
     implementation 'org.jxmpp:jxmpp-jid:1.0.3'
