@@ -73,7 +73,7 @@ dependencies {
     implementation 'pub.devrel:easypermissions:3.0.0' // version >= 3.0.0 needs android X libraries
     implementation 'com.wefika:flowlayout:0.4.1'
     implementation 'com.googlecode.ez-vcard:ez-vcard:0.10.5'
-    implementation 'org.jxmpp:jxmpp-jid:1.0.2'
+    implementation 'org.jxmpp:jxmpp-jid:1.0.3'
     implementation 'org.hsluv:hsluv:0.2'
     implementation 'org.conscrypt:conscrypt-android:2.5.2'
     implementation 'pl.droidsonroids.gif:android-gif-drawable:1.2.24'
@@ -81,7 +81,7 @@ dependencies {
     implementation 'org.osmdroid:osmdroid-android:6.1.11'
     implementation 'com.leinardi.android:speed-dial:3.2.0'
     implementation 'com.squareup.picasso:picasso:2.71828'
-    implementation 'com.squareup.okhttp3:okhttp:4.9.2'
+    implementation 'com.squareup.okhttp3:okhttp:4.9.3'
     implementation 'com.squareup.retrofit2:retrofit:2.9.0'
     implementation 'com.squareup.retrofit2:converter-gson:2.9.0'
     implementation 'com.google.guava:guava:31.0.1-android'
