@@ -100,11 +100,11 @@ ext {
 android {
     namespace 'eu.siacs.conversations'
     //noinspection GradleCompatible
-    compileSdkVersion 32
+    compileSdkVersion 31
 
     defaultConfig {
         minSdkVersion 21
-        targetSdkVersion 32
+        targetSdkVersion 30
 
         //versionNameSuffix " beta_(2021-12-19)" // " beta_(XXXX-XX-XX)" // activate for beta versions
         versionCode 116
