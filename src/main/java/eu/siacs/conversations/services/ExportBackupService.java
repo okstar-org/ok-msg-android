@@ -1,5 +1,6 @@
 package eu.siacs.conversations.services;
 
+import static eu.siacs.conversations.persistance.FileBackend.APP_DIRECTORY;
 import static eu.siacs.conversations.services.NotificationService.EXPORT_BACKUP_NOTIFICATION_ID;
 import static eu.siacs.conversations.utils.Compatibility.runsTwentySix;
 import static eu.siacs.conversations.utils.StorageHelper.getAppLogsDirectory;
@@ -17,6 +18,7 @@ import android.database.DatabaseUtils;
 import android.database.sqlite.SQLiteDatabase;
 import android.net.Uri;
 import android.os.Bundle;
+import android.os.Environment;
 import android.os.IBinder;
 import android.os.PowerManager;
 import android.preference.PreferenceManager;
@@ -417,7 +419,7 @@ public class ExportBackupService extends Service {
         boolean success = false;
         ObjectOutputStream output = null;
         try {
-            final File file = new File(getBackupDirectory(null), "settings.dat");
+            final File file = new File(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOCUMENTS) + File.separator + APP_DIRECTORY + File.separator + "Database" + File.separator, "settings.dat");
             output = new ObjectOutputStream(new FileOutputStream(file));
             SharedPreferences pref = PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
             output.writeObject(pref.getAll());

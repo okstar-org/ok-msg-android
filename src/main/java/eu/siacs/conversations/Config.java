@@ -112,7 +112,7 @@ public final class Config {
 
     public static final int VIDEO_FAST_UPLOAD_SIZE = 10 * 1024 * 1024;
 
-    public static final int AVATAR_SIZE = 480;
+    public static final int AVATAR_SIZE = 720;
     public static final Bitmap.CompressFormat AVATAR_FORMAT = Bitmap.CompressFormat.JPEG;
     public static final int AVATAR_CHAR_LIMIT = 9400;
 
@@ -150,7 +150,7 @@ public final class Config {
     public static final boolean BACKGROUND_STANZA_LOGGING = false; //log all stanzas that were received while the app is in background
     public static final boolean RESET_ATTEMPT_COUNT_ON_NETWORK_CHANGE = true; //setting to true might increase power consumption
 
-    public static final boolean ENCRYPT_ON_HTTP_UPLOADED = false;
+    public static final boolean ENCRYPT_ON_HTTP_UPLOADED = true;
 
     public static final boolean X509_VERIFICATION = false; //use x509 certificates to verify OMEMO keys
     public static final boolean REQUIRE_RTP_VERIFICATION = false; //require a/v calls to be verified with OMEMO

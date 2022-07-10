@@ -1,5 +1,6 @@
 package eu.siacs.conversations.ui;
 
+import static eu.siacs.conversations.persistance.FileBackend.APP_DIRECTORY;
 import static eu.siacs.conversations.utils.StorageHelper.getBackupDirectory;
 
 import android.app.FragmentManager;
@@ -11,6 +12,7 @@ import android.content.pm.PackageManager;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
+import android.os.Environment;
 import android.preference.CheckBoxPreference;
 import android.preference.ListPreference;
 import android.preference.Preference;
@@ -624,7 +626,7 @@ public class SettingsActivity extends XmppActivity implements
         boolean success;
         ObjectInputStream input = null;
         try {
-            final File file = new File(getBackupDirectory(null) + "settings.dat");
+            final File file = new File(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOCUMENTS) + File.separator + APP_DIRECTORY + File.separator + "Database" + File.separator, "settings.dat");
             input = new ObjectInputStream(new FileInputStream(file));
             SharedPreferences.Editor prefEdit = PreferenceManager.getDefaultSharedPreferences(getApplicationContext()).edit();
             prefEdit.clear();
