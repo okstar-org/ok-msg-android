@@ -35,6 +35,7 @@ import androidx.core.app.Person;
 import androidx.core.app.RemoteInput;
 import androidx.core.content.ContextCompat;
 import androidx.core.graphics.drawable.IconCompat;
+import static eu.siacs.conversations.utils.Compatibility.s;
 
 import com.google.common.collect.Iterables;
 
@@ -775,7 +776,10 @@ public class NotificationService {
         fullScreenIntent.putExtra(RtpSessionActivity.EXTRA_ACCOUNT, id.account.getJid().asBareJid().toEscapedString());
         fullScreenIntent.putExtra(RtpSessionActivity.EXTRA_WITH, id.with.toEscapedString());
         fullScreenIntent.putExtra(RtpSessionActivity.EXTRA_SESSION_ID, id.sessionId);
-        return PendingIntent.getActivity(mXmppConnectionService, requestCode, fullScreenIntent, PendingIntent.FLAG_UPDATE_CURRENT);
+        return PendingIntent.getActivity(mXmppConnectionService, requestCode, fullScreenIntent,
+                s()
+                ? PendingIntent.FLAG_IMMUTABLE | PendingIntent.FLAG_UPDATE_CURRENT
+                : PendingIntent.FLAG_UPDATE_CURRENT);
     }
 
     public void cancelIncomingCallNotification() {
@@ -1003,9 +1007,7 @@ public class NotificationService {
         } else {
             mBuilder.setLocalOnly(true);
         }
-        if (android.os.Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-            mBuilder.setCategory(Notification.CATEGORY_MESSAGE);
-        }
+        mBuilder.setCategory(Notification.CATEGORY_MESSAGE);
         mBuilder.setPriority(notify ? (headsup ? NotificationCompat.PRIORITY_HIGH : NotificationCompat.PRIORITY_DEFAULT) : NotificationCompat.PRIORITY_LOW);
         setNotificationColor(mBuilder);
         mBuilder.setDefaults(0);
@@ -1460,7 +1462,10 @@ public class NotificationService {
         Iterable<Intent> intents = GeoHelper.createGeoIntentsFromMessage(mXmppConnectionService, message);
         for (final Intent intent : intents) {
             if (intent.resolveActivity(mXmppConnectionService.getPackageManager()) != null) {
-                return PendingIntent.getActivity(mXmppConnectionService, generateRequestCode(message.getConversation(), 18), intent, PendingIntent.FLAG_UPDATE_CURRENT);
+                return PendingIntent.getActivity(mXmppConnectionService, generateRequestCode(message.getConversation(), 18), intent,
+                        s()
+                        ? PendingIntent.FLAG_MUTABLE | PendingIntent.FLAG_UPDATE_CURRENT
+                        : PendingIntent.FLAG_UPDATE_CURRENT);
             }
         }
         return null;
@@ -1475,12 +1480,16 @@ public class NotificationService {
             return PendingIntent.getActivity(mXmppConnectionService,
                     generateRequestCode(conversationUuid, 8),
                     viewConversationIntent,
-                    PendingIntent.FLAG_UPDATE_CURRENT);
+                    s()
+                            ? PendingIntent.FLAG_IMMUTABLE | PendingIntent.FLAG_UPDATE_CURRENT
+                            : PendingIntent.FLAG_UPDATE_CURRENT);
         } else {
             return PendingIntent.getActivity(mXmppConnectionService,
                     generateRequestCode(conversationUuid, 10),
                     viewConversationIntent,
-                    PendingIntent.FLAG_UPDATE_CURRENT);
+                    s()
+                            ? PendingIntent.FLAG_IMMUTABLE | PendingIntent.FLAG_UPDATE_CURRENT
+                            : PendingIntent.FLAG_UPDATE_CURRENT);
         }
     }
 
@@ -1505,10 +1514,20 @@ public class NotificationService {
         intent.setAction(XmppConnectionService.ACTION_CLEAR_MESSAGE_NOTIFICATION);
         if (conversation != null) {
             intent.putExtra("uuid", conversation.getUuid());
-            return PendingIntent.getService(mXmppConnectionService, generateRequestCode(conversation, 20), intent, 0);
+            return PendingIntent.getService(                    mXmppConnectionService,
+                    generateRequestCode(conversation, 20),
+                    intent,
+                    s()
+                            ? PendingIntent.FLAG_MUTABLE | PendingIntent.FLAG_UPDATE_CURRENT
+                            : PendingIntent.FLAG_UPDATE_CURRENT);
         }
-        return PendingIntent.getService(mXmppConnectionService, 0, intent, 0);
-    }
+        return PendingIntent.getService(
+                mXmppConnectionService,
+                0,
+                intent,
+                s()
+                        ? PendingIntent.FLAG_IMMUTABLE | PendingIntent.FLAG_UPDATE_CURRENT
+                        : PendingIntent.FLAG_UPDATE_CURRENT);    }
 
     private PendingIntent createMissedCallsDeleteIntent(final Conversational conversation) {
         final Intent intent = new Intent(mXmppConnectionService, XmppConnectionService.class);
@@ -1527,7 +1546,12 @@ public class NotificationService {
         intent.putExtra("dismiss_notification", dismissAfterReply);
         intent.putExtra("last_message_uuid", lastMessageUuid);
         final int id = generateRequestCode(conversation, dismissAfterReply ? 12 : 14);
-        return PendingIntent.getService(mXmppConnectionService, id, intent, PendingIntent.FLAG_UPDATE_CURRENT);
+        return PendingIntent.getService(                mXmppConnectionService,
+                id,
+                intent,
+                s()
+                        ? PendingIntent.FLAG_MUTABLE | PendingIntent.FLAG_UPDATE_CURRENT
+                        : PendingIntent.FLAG_UPDATE_CURRENT);
     }
 
     private PendingIntent createReadPendingIntent(Conversation conversation) {
@@ -1535,7 +1559,10 @@ public class NotificationService {
         intent.setAction(XmppConnectionService.ACTION_MARK_AS_READ);
         intent.putExtra("uuid", conversation.getUuid());
         intent.setPackage(mXmppConnectionService.getPackageName());
-        return PendingIntent.getService(mXmppConnectionService, generateRequestCode(conversation, 16), intent, PendingIntent.FLAG_UPDATE_CURRENT);
+        return PendingIntent.getService(mXmppConnectionService, generateRequestCode(conversation, 16), intent,
+                s()
+                ? PendingIntent.FLAG_MUTABLE | PendingIntent.FLAG_UPDATE_CURRENT
+                : PendingIntent.FLAG_UPDATE_CURRENT);
     }
 
     private PendingIntent createCallAction(String sessionId, final String action, int requestCode) {
@@ -1543,7 +1570,12 @@ public class NotificationService {
         intent.setAction(action);
         intent.setPackage(mXmppConnectionService.getPackageName());
         intent.putExtra(RtpSessionActivity.EXTRA_SESSION_ID, sessionId);
-        return PendingIntent.getService(mXmppConnectionService, requestCode, intent, PendingIntent.FLAG_UPDATE_CURRENT);
+        return PendingIntent.getService(                mXmppConnectionService,
+                requestCode,
+                intent,
+                s()
+                        ? PendingIntent.FLAG_MUTABLE | PendingIntent.FLAG_UPDATE_CURRENT
+                        : PendingIntent.FLAG_UPDATE_CURRENT);
     }
 
     private PendingIntent createSnoozeIntent(Conversation conversation) {
@@ -1551,19 +1583,34 @@ public class NotificationService {
         intent.setAction(XmppConnectionService.ACTION_SNOOZE);
         intent.putExtra("uuid", conversation.getUuid());
         intent.setPackage(mXmppConnectionService.getPackageName());
-        return PendingIntent.getService(mXmppConnectionService, generateRequestCode(conversation, 22), intent, PendingIntent.FLAG_UPDATE_CURRENT);
+        return PendingIntent.getService(mXmppConnectionService, generateRequestCode(conversation, 22), intent,
+                s()
+                ? PendingIntent.FLAG_MUTABLE | PendingIntent.FLAG_UPDATE_CURRENT
+                : PendingIntent.FLAG_UPDATE_CURRENT);
     }
 
     private PendingIntent createTryAgainIntent() {
         final Intent intent = new Intent(mXmppConnectionService, XmppConnectionService.class);
         intent.setAction(XmppConnectionService.ACTION_TRY_AGAIN);
-        return PendingIntent.getService(mXmppConnectionService, 45, intent, 0);
+        return PendingIntent.getService(
+                mXmppConnectionService,
+                45,
+                intent,
+                s()
+                        ? PendingIntent.FLAG_MUTABLE | PendingIntent.FLAG_UPDATE_CURRENT
+                        : PendingIntent.FLAG_UPDATE_CURRENT);
     }
 
     private PendingIntent createDismissErrorIntent() {
         final Intent intent = new Intent(mXmppConnectionService, XmppConnectionService.class);
         intent.setAction(XmppConnectionService.ACTION_DISMISS_ERROR_NOTIFICATIONS);
-        return PendingIntent.getService(mXmppConnectionService, 69, intent, 0);
+        return PendingIntent.getService(
+                mXmppConnectionService,
+                69,
+                intent,
+                s()
+                        ? PendingIntent.FLAG_MUTABLE | PendingIntent.FLAG_UPDATE_CURRENT
+                        : PendingIntent.FLAG_UPDATE_CURRENT);
     }
 
     private boolean wasHighlightedOrPrivate(final Message message) {
@@ -1721,15 +1768,9 @@ public class NotificationService {
             }
         }
         mBuilder.setDeleteIntent(createDismissErrorIntent());
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-            mBuilder.setVisibility(Notification.VISIBILITY_PRIVATE);
-            mBuilder.setSmallIcon(R.drawable.ic_warning_white_24dp);
-        } else {
-            mBuilder.setSmallIcon(R.drawable.ic_warning_white_24dp);
-        }
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT_WATCH) {
-            mBuilder.setLocalOnly(true);
-        }
+        mBuilder.setVisibility(Notification.VISIBILITY_PRIVATE);
+        mBuilder.setSmallIcon(R.drawable.ic_warning_white_24dp);
+        mBuilder.setLocalOnly(true);
         mBuilder.setPriority(Notification.PRIORITY_LOW);
         final Intent intent;
         if (AccountUtils.MANAGE_ACCOUNT_ACTIVITY != null) {
@@ -1739,7 +1780,12 @@ public class NotificationService {
             intent.putExtra("jid", errors.get(0).getJid().asBareJid().toEscapedString());
             intent.putExtra(EditAccountActivity.EXTRA_OPENED_FROM_NOTIFICATION, true);
         }
-        mBuilder.setContentIntent(PendingIntent.getActivity(mXmppConnectionService, 145, intent, PendingIntent.FLAG_UPDATE_CURRENT));
+        mBuilder.setContentIntent(PendingIntent.getActivity(                        mXmppConnectionService,
+                145,
+                intent,
+                s()
+                        ? PendingIntent.FLAG_IMMUTABLE | PendingIntent.FLAG_UPDATE_CURRENT
+                        : PendingIntent.FLAG_UPDATE_CURRENT));
         if (Compatibility.runsTwentySix()) {
             mBuilder.setChannelId(ERROR_CHANNEL_ID);
         }
