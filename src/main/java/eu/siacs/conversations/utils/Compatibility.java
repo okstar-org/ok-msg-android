@@ -71,6 +71,10 @@ public class Compatibility {
         return Build.VERSION.SDK_INT >= Build.VERSION_CODES.R;
     }
 
+    public static boolean s() {
+        return Build.VERSION.SDK_INT >= Build.VERSION_CODES.S;
+    }
+
     private static boolean getBooleanPreference(Context context, String name, @BoolRes int res) {
         return getPreferences(context).getBoolean(name, context.getResources().getBoolean(res));
     }
