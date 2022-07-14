@@ -107,8 +107,8 @@ android {
         targetSdkVersion 32
 
         //versionNameSuffix " beta_(2021-12-19)" // " beta_(XXXX-XX-XX)" // activate for beta versions
-        versionCode 116
-        versionName "1.5.5"
+        versionCode 117
+        versionName "1.5.6"
         //resConfigs "en"
 
         archivesBaseName += "-$versionName"
@@ -122,6 +122,8 @@ android {
         buildConfigField("String", "UPDATE_URL", '"https://monocles.eu/chat/update/"')
         resValue "string", "applicationId", applicationId
         resValue "string", "app_name", "monocles chat"
+        resValue "string", "short_app_name", "chat"
+
     }
 
     dataBinding {
