@@ -64,8 +64,9 @@
         <item name="android:textCursorDrawable">@drawable/white_cursor</item>
     </style>
 
-    <style name="Widget.Conversations.CheckBox" parent="Widget.Material3.CompoundButton.CheckBox">
+    <style name="Widget.Conversations.CheckBox" parent="Widget.MaterialComponents.CompoundButton.CheckBox">
         <item name="android:textSize">?TextSizeBody1</item>
+        <item name="buttonTint">@color/primary_monocles</item>
     </style>
 
     <style name="Widget.Conversations.RadioButton" parent="Widget.AppCompat.CompoundButton.RadioButton">
