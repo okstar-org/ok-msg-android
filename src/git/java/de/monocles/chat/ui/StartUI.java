@@ -23,7 +23,7 @@ public class StartUI extends AppCompatActivity {
         String PREF_FIRST_START = "FirstStart";
         SharedPreferences FirstStart = getApplicationContext().getSharedPreferences(PREF_FIRST_START, Context.MODE_PRIVATE);
         long FirstStartTime = FirstStart.getLong(PREF_FIRST_START, 0);
-        Log.d(Config.LOGTAG, "Permissions granted or not, Starting " + getString(R.string.app_name) + "(" + FirstStartTime + ")");
+        Log.d(Config.LOGTAG, "Starting " + getString(R.string.app_name) + "(" + FirstStartTime + ")");
         Intent intent = new Intent(this, ConversationsActivity.class);
         intent.putExtra(PREF_FIRST_START, FirstStartTime);
         startActivity(intent);
