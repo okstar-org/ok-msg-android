@@ -13,7 +13,7 @@
 
     <description xml:lang="en">monocles chat is fork of Conversations and Blabber.im and an open source XMPP/Jabber client for the Android platform</description>
 
-    <homepage rdf:resource="https://monocles.de/more/"/>
+    <homepage rdf:resource="https://monocles.eu/more/"/>
     <download-page rdf:resource="https://play.google.com/store/apps/details?id=de.monocles.chat"/>
     <bug-database rdf:resource="https://codeberg.org/Arne/monocles_chat/issues"/>
     <!-- See https://github.com/ewilderj/doap/issues/53 -->
