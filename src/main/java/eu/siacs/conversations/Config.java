@@ -213,7 +213,17 @@ public final class Config {
 
     public static class DOMAIN {
         public static final List<String> DOMAINS = Arrays.asList(
-                "monocles.de"
+                "monocles.de",
+                "monocles.eu",
+                "monocles.fr",
+                "monocl.es",
+                "monocles.es",
+                "monocles.se",
+                "monocles.uk",
+                "monocles.ch",
+                "monocles.jp",
+                "monocles.us",
+                "monocles.cn"
         );
 
         public static final List<String> BLACKLISTED_DOMAINS = Arrays.asList(

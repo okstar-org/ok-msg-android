@@ -7,7 +7,8 @@ buildscript {
     }
     dependencies {
         classpath 'com.android.tools.build:gradle:7.2.1'
-        classpath 'com.google.gms:google-services:4.3.13'    }
+       // classpath 'com.google.gms:google-services:4.3.13'
+    }
 }
 
 apply plugin: 'com.android.application'
@@ -45,7 +46,7 @@ dependencies {
         exclude group: 'com.android.support', module: 'appcompat-v7'
         exclude group: 'com.android.support', module: 'exifinterface'
     }
-    implementation 'com.github.webrtc-sdk:android:97.4692.01'
+    //implementation 'com.github.webrtc-sdk:android:97.4692.04'
     implementation 'org.jitsi:org.otr4j:0.23'
     implementation 'org.bouncycastle:bcmail-jdk15on:1.64'
     implementation 'org.gnu.inet:libidn:1.15'
@@ -89,7 +90,7 @@ dependencies {
     implementation 'androidx.browser:browser:1.4.0'
     implementation 'com.otaliastudios:transcoder:0.9.1' // 0.10.4 seems to be buggy
     implementation project(':libs:AXML')
-    implementation fileTree(include: ['libwebrtc-m99.aar'], dir: 'libs')
+    implementation fileTree(include: ['libwebrtc.aar'], dir: 'libs')
 }
 
 ext {
@@ -100,15 +101,15 @@ ext {
 android {
     namespace 'eu.siacs.conversations'
     //noinspection GradleCompatible
-    compileSdkVersion 31
+    compileSdkVersion 32
 
     defaultConfig {
         minSdkVersion 21
-        targetSdkVersion 30
+        targetSdkVersion 32
 
         //versionNameSuffix " beta_(2021-12-19)" // " beta_(XXXX-XX-XX)" // activate for beta versions
-        versionCode 116
-        versionName "1.5.5"
+        versionCode 119
+        versionName "1.5.8"
         //resConfigs "en"
 
         archivesBaseName += "-$versionName"
@@ -122,6 +123,8 @@ android {
         buildConfigField("String", "UPDATE_URL", '"https://monocles.eu/chat/update/"')
         resValue "string", "applicationId", applicationId
         resValue "string", "app_name", "monocles chat"
+        resValue "string", "short_app_name", "chat"
+
     }
 
     dataBinding {
