@@ -1206,4 +1206,7 @@
     <string name="pref_max_resend_time_summary">Cuando falla el envío de un mensaje simple, el tiempo máximo para reenviarlo. Cuando el reenvío cuenta más de la mitad del tiempo máximo, el mensaje se retrasará por motivos de tráfico.</string>
     <string name="pref_resend_delay_title">Retardo de reenvio (Milisegundos)</string>
     <string name="pref_resend_delay_summary">Retardo de reenvio (Milisegundos), tiempo de espera para reenvio.</string>
+    <string name="i_have_written">Escribí:</string>
+    <string name="title_activity_about_x">Acerca de %s</string>
+    <string name="x_has_written">%s escribió:</string>
 </resources>
