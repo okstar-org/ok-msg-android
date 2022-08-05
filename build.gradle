@@ -35,7 +35,7 @@ configurations {
 }
 
 dependencies {
-    playstoreImplementation('com.google.firebase:firebase-messaging:23.0.6') {
+    playstoreImplementation('com.google.firebase:firebase-messaging:23.0.7') {
         exclude group: 'com.google.firebase', module: 'firebase-core'
         exclude group: 'com.google.firebase', module: 'firebase-analytics'
         exclude group: 'com.google.firebase', module: 'firebase-measurement-connector'
@@ -90,7 +90,6 @@ dependencies {
     implementation 'androidx.browser:browser:1.4.0'
     implementation 'com.otaliastudios:transcoder:0.9.1' // 0.10.4 seems to be buggy
     implementation project(':libs:AXML')
-    //implementation fileTree(include: ['libwebrtc.aar'], dir: 'libs')
 }
 
 ext {
