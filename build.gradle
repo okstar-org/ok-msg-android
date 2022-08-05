@@ -46,7 +46,7 @@ dependencies {
         exclude group: 'com.android.support', module: 'appcompat-v7'
         exclude group: 'com.android.support', module: 'exifinterface'
     }
-    //implementation 'com.github.webrtc-sdk:android:97.4692.04'
+    implementation 'ch.threema:webrtc-android:100.0.0'
     implementation 'org.jitsi:org.otr4j:0.23'
     implementation 'org.bouncycastle:bcmail-jdk15on:1.64'
     implementation 'org.gnu.inet:libidn:1.15'
@@ -90,7 +90,7 @@ dependencies {
     implementation 'androidx.browser:browser:1.4.0'
     implementation 'com.otaliastudios:transcoder:0.9.1' // 0.10.4 seems to be buggy
     implementation project(':libs:AXML')
-    implementation fileTree(include: ['libwebrtc.aar'], dir: 'libs')
+    //implementation fileTree(include: ['libwebrtc.aar'], dir: 'libs')
 }
 
 ext {
