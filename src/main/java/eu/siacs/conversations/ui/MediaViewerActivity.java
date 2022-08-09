@@ -17,16 +17,19 @@ import android.graphics.BitmapFactory;
 import android.media.AudioManager;
 import android.media.MediaMetadataRetriever;
 import android.net.Uri;
+import android.os.Build;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
 import android.support.v4.media.session.MediaSessionCompat;
 import android.util.Log;
+import android.util.Rational;
 import android.view.GestureDetector;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.WindowManager;
 import android.webkit.MimeTypeMap;
 
+import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AlertDialog;
 import androidx.core.content.ContextCompat;
@@ -49,6 +52,7 @@ import eu.siacs.conversations.Config;
 import eu.siacs.conversations.R;
 import eu.siacs.conversations.databinding.ActivityMediaViewerBinding;
 import eu.siacs.conversations.persistance.FileBackend;
+import eu.siacs.conversations.ui.util.Rationals;
 import eu.siacs.conversations.utils.Compatibility;
 import eu.siacs.conversations.utils.MimeUtils;
 import me.drakeet.support.toast.ToastCompat;
@@ -61,6 +65,7 @@ public class MediaViewerActivity extends XmppActivity implements AudioManager.On
     File mFile;
     int height = 0;
     int width = 0;
+    Rational aspect;
     int rotation = 0;
     boolean isImage = false;
     boolean isVideo = false;
@@ -88,9 +93,16 @@ public class MediaViewerActivity extends XmppActivity implements AudioManager.On
         this.mTheme = findTheme();
         setTheme(this.mTheme);
         gestureDetector = new GestureDetector(this, new GestureDetector.SimpleOnGestureListener() {
+
             @Override
             public boolean onDown(MotionEvent e) {
-                //showFab();
+                if (isImage) {
+                    if (binding.speedDial.isShown()) {
+                        hideFAB();
+                    } else {
+                        showFAB();
+                    }
+                }
                 return super.onDown(e);
             }
         });
@@ -261,7 +273,6 @@ public class MediaViewerActivity extends XmppActivity implements AudioManager.On
             });
         }
         binding.speedDial.getMainFab().setSupportImageTintList(ColorStateList.valueOf(getResources().getColor(R.color.realwhite)));
-        //showFab();
     }
 
     private void DisplayImage(final File file, final Uri uri) {
@@ -272,8 +283,9 @@ public class MediaViewerActivity extends XmppActivity implements AudioManager.On
         BitmapFactory.decodeFile(new File(file.getPath()).getAbsolutePath(), options);
         height = options.outHeight;
         width = options.outWidth;
+        aspect = new Rational(width, height);
         rotation = getRotation(Uri.parse("file://" + file.getAbsolutePath()));
-        Log.d(Config.LOGTAG, "Image height: " + height + ", width: " + width + ", rotation: " + rotation);
+        Log.d(Config.LOGTAG, "Image height: " + height + ", width: " + width + ", rotation: " + rotation + " aspect: " + aspect);
         if (useAutoRotateScreen()) {
             rotateScreen(width, height, rotation);
         }
@@ -316,13 +328,28 @@ public class MediaViewerActivity extends XmppActivity implements AudioManager.On
             } catch (Exception e) {
                 rotation = 0;
             }
-            Log.d(Config.LOGTAG, "Video height: " + height + ", width: " + width + ", rotation: " + rotation);
+            aspect = new Rational(width, height);
+            Log.d(Config.LOGTAG, "Video height: " + height + ", width: " + width + ", rotation: " + rotation + ", aspect: " + aspect);
             if (useAutoRotateScreen()) {
                 rotateScreen(width, height, rotation);
             }
             binding.messageVideoView.setVisibility(View.VISIBLE);
             player = new ExoPlayer.Builder(this).build();
             player.addListener(new Player.Listener() {
+                @Override
+                public void onIsPlayingChanged(boolean isPlaying) {
+                    Player.Listener.super.onIsPlayingChanged(isPlaying);
+                    if (isPlaying) {
+                        hideFAB();
+                    } else {
+                        if (Compatibility.runsTwentyFour() && isInPictureInPictureMode()) {
+                            hideFAB();
+                        } else {
+                            showFAB();
+                        }
+                    }
+                }
+
                 @Override
                 public void onPlayerError(PlaybackException error) {
                     open();
@@ -339,23 +366,31 @@ public class MediaViewerActivity extends XmppActivity implements AudioManager.On
             session.setActive(true);
             requestAudioFocus();
             setVolumeControlStream(AudioManager.STREAM_MUSIC);
-            binding.messageVideoView.setOnTouchListener((view, motionEvent) -> gestureDetector.onTouchEvent(motionEvent));
+//            binding.messageVideoView.setOnTouchListener((view, motionEvent) -> gestureDetector.onTouchEvent(motionEvent));
         } catch (Exception e) {
             e.printStackTrace();
             open();
         }
     }
 
+    @RequiresApi(api = Build.VERSION_CODES.N)
     private void PIPVideo() {
-        if (Compatibility.runsTwentyFour() && getPackageManager().hasSystemFeature(PackageManager.FEATURE_PICTURE_IN_PICTURE)) {
+        try {
             binding.messageVideoView.hideController();
             binding.speedDial.setVisibility(View.GONE);
             if (Compatibility.runsTwentySix()) {
-                PictureInPictureParams.Builder params = new PictureInPictureParams.Builder();
-                this.enterPictureInPictureMode(params.build());
+                final Rational rational = new Rational(width, height);
+                final Rational clippedRational = Rationals.clip(rational);
+                final PictureInPictureParams params = new PictureInPictureParams.Builder()
+                        .setAspectRatio(clippedRational)
+                        .build();
+                this.enterPictureInPictureMode(params);
             } else {
                 this.enterPictureInPictureMode();
             }
+        } catch (final IllegalStateException e) {
+            // this sometimes happens on Samsung phones (possibly when Knox is enabled)
+            Log.w(Config.LOGTAG, "unable to enter picture in picture mode", e);
         }
     }
 
@@ -363,9 +398,9 @@ public class MediaViewerActivity extends XmppActivity implements AudioManager.On
     public void onPictureInPictureModeChanged(boolean isInPictureInPictureMode, Configuration newConfig) {
         if (isInPictureInPictureMode) {
             startPlayer();
-            binding.speedDial.setVisibility(View.GONE);
+            hideFAB();
         } else {
-            binding.speedDial.setVisibility(View.VISIBLE);
+            showFAB();
         }
     }
 
@@ -394,6 +429,7 @@ public class MediaViewerActivity extends XmppActivity implements AudioManager.On
         }
     }
 
+    @RequiresApi(api = Build.VERSION_CODES.N)
     @Override
     protected void onUserLeaveHint() {
         super.onUserLeaveHint();
@@ -430,6 +466,11 @@ public class MediaViewerActivity extends XmppActivity implements AudioManager.On
         if (player != null && isVideo && isPlaying()) {
             player.setPlayWhenReady(false);
             player.getPlaybackState();
+            if (Compatibility.runsTwentyFour() && isInPictureInPictureMode()) {
+                hideFAB();
+            } else {
+                showFAB();
+            }
         }
     }
 
@@ -437,6 +478,7 @@ public class MediaViewerActivity extends XmppActivity implements AudioManager.On
         if (player != null && isVideo && !isPlaying()) {
             player.setPlayWhenReady(true);
             player.getPlaybackState();
+            hideFAB();
         }
     }
 
@@ -446,9 +488,14 @@ public class MediaViewerActivity extends XmppActivity implements AudioManager.On
                 finishAndRemoveTask();
             }
             if (isPlaying()) {
-                player.stop(true);
+                player.stop();
             }
             player.release();
+            if (Compatibility.runsTwentyFour() && isInPictureInPictureMode()) {
+                hideFAB();
+            } else {
+                showFAB();
+            }
         }
     }
 
@@ -473,7 +520,9 @@ public class MediaViewerActivity extends XmppActivity implements AudioManager.On
         getWindow().setAttributes(layout);
         getWindow().addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
         if (!isPlaying()) {
-            startPlayer();
+            showFAB();
+        } else {
+            hideFAB();
         }
         super.onResume();
     }
@@ -537,5 +586,13 @@ public class MediaViewerActivity extends XmppActivity implements AudioManager.On
 
     private boolean isDeletableFile(File file) {
         return (file == null || !file.toString().startsWith("/") || file.toString().contains(getConversationsDirectory(this, "null").getAbsolutePath()));
+    }
+
+    private void showFAB() {
+        binding.speedDial.show();
+    }
+
+    private void hideFAB() {
+        binding.speedDial.hide();
     }
 }
