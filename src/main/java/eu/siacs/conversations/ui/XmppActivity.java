@@ -1415,7 +1415,7 @@ public abstract class XmppActivity extends ActionBarActivity {
 
     protected void openInstallFromUnknownSourcesDialogIfNeeded(boolean showToast) {
         String ShowToast;
-        if (showToast == true) {
+        if (showToast) {
             ShowToast = "true";
         } else {
             ShowToast = "false";

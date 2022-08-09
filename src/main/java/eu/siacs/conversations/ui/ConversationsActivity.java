@@ -1087,10 +1087,7 @@ public class ConversationsActivity extends XmppActivity implements OnConversatio
             editor.putLong("lastUpdateTime", lastUpdateTime);
             editor.apply();
             Log.d(Config.LOGTAG, "AppUpdater: CurrentTime: " + lastUpdateTime);
-            if (Store == null) {
-                Log.d(Config.LOGTAG, "AppUpdater started");
-                openInstallFromUnknownSourcesDialogIfNeeded(false);
-            }
+            openInstallFromUnknownSourcesDialogIfNeeded(false);
         } else {
             Log.d(Config.LOGTAG, "AppUpdater stopped");
         }
