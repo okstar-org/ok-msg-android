@@ -763,7 +763,7 @@ public class Conversation extends AbstractEntity implements Blockable, Comparabl
                     return contactJid.getLocal() != null ? contactJid.getLocal() : contactJid;
                 }
             }
-        } else if ((QuickConversationsService.isConversations() || !Config.QUICKSY_DOMAIN.equals(contactJid.getDomain())) && isWithStranger()) {
+        } else if ((QuickConversationsService.isConversations() || !JidHelper.isQuicksyDomain(contactJid.getDomain())) && isWithStranger()) {
             return contactJid;
         } else {
             return this.getContact().getDisplayName();
@@ -1354,7 +1354,7 @@ public class Conversation extends AbstractEntity implements Blockable, Comparabl
                 && !contact.isOwnServer()
                 && !contact.showInContactList()
                 && !contact.isSelf()
-                && !(Config.QUICKSY_DOMAIN.equals(contact.getJid().toEscapedString()) && (contact.getJid().isDomainJid()))
+                && !JidHelper.isQuicksyDomain(contact.getJid())
                 && sentMessagesCount() == 0;
     }
 
