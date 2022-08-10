@@ -1697,6 +1697,7 @@ public class XmppConnectionService extends Service {
         final Intent intent = new Intent(this, EventReceiver.class);
         intent.setAction(ACTION_POST_CONNECTIVITY_CHANGE);
         try {
+            //TODO add immutable flag
             final PendingIntent pendingIntent = PendingIntent.getBroadcast(this, 1, intent, 0);
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
                 alarmManager.setAndAllowWhileIdle(AlarmManager.ELAPSED_REALTIME_WAKEUP, triggerAtMillis, pendingIntent);
@@ -1745,7 +1746,8 @@ public class XmppConnectionService extends Service {
         final Intent intent = new Intent(this, EventReceiver.class);
         intent.setAction(ACTION_IDLE_PING);
         try {
-            PendingIntent pendingIntent = PendingIntent.getBroadcast(this, 0, intent, 0);
+            //TODO add immutable flag
+            final PendingIntent pendingIntent = PendingIntent.getBroadcast(this, 0, intent, 0);
             alarmManager.setAndAllowWhileIdle(AlarmManager.ELAPSED_REALTIME_WAKEUP, timeToWake, pendingIntent);
         } catch (RuntimeException e) {
             Log.d(Config.LOGTAG, "unable to schedule alarm for idle ping", e);
@@ -1758,7 +1760,7 @@ public class XmppConnectionService extends Service {
         connection.setOnStatusChangedListener(this.statusListener);
         connection.setOnPresencePacketReceivedListener(this.mPresenceParser);
         connection.setOnUnregisteredIqPacketReceivedListener(this.mIqParser);
-        connection.setOnJinglePacketReceivedListener(((a, jp) -> mJingleConnectionManager.deliverPacket(a, jp)));
+        connection.setOnJinglePacketReceivedListener((mJingleConnectionManager::deliverPacket));
         connection.setOnBindListener(this.mOnBindListener);
         connection.setOnMessageAcknowledgeListener(this.mOnMessageAcknowledgedListener);
         connection.addOnAdvancedStreamFeaturesAvailableListener(this.mMessageArchiveService);

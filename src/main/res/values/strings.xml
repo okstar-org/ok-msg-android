@@ -1213,4 +1213,6 @@
     <string name="x_has_written">%s wrote:</string>
     <string name="choose_camera_app">Choose camera app</string>
     <string name="pref_choose_camera_summary">Choose a custom camera app</string>
+    <string name="vector_graphic">vector graphic</string>
+    <string name="multimedia_file">multimedia file</string>
 </resources>
