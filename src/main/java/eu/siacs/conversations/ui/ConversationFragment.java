@@ -272,6 +272,7 @@ public class ConversationFragment extends XmppFragment implements EditMessage.Ke
     };
 
     private final OnClickListener meCommand = v -> Objects.requireNonNull(binding.textinput.getText()).insert(0, Message.ME_COMMAND + " ");
+    private final OnClickListener quote = v -> insertQuote();
     private final OnClickListener boldText = v -> insertFormatting("bold");
     private final OnClickListener italicText = v -> insertFormatting("italic");
     private final OnClickListener monospaceText = v -> insertFormatting("monospace");
@@ -352,6 +353,17 @@ public class ConversationFragment extends XmppFragment implements EditMessage.Ke
                     this.binding.textinput.getText().insert(this.binding.textinput.getSelectionStart(), (STRIKETHROUGH));
                 }
                 return;
+        }
+    }
+    private void insertQuote() {
+        int pos = 0;
+        if (this.binding.textinput.getSelectionStart() == this.binding.textinput.getSelectionEnd()) {
+            pos = this.binding.textinput.getSelectionStart();
+        }
+        if (pos == 0) {
+            Objects.requireNonNull(binding.textinput.getText()).insert(0, QuoteHelper.QUOTE_CHAR + " ");
+        } else {
+            Objects.requireNonNull(binding.textinput.getText()).insert(pos, System.getProperty("line.separator") + QuoteHelper.QUOTE_CHAR + " ");
         }
     }
 
@@ -3700,6 +3712,7 @@ public class ConversationFragment extends XmppFragment implements EditMessage.Ke
         this.binding.textformat.setVisibility(View.VISIBLE);
         this.binding.me.setEnabled(me);
         this.binding.me.setOnClickListener(meCommand);
+        this.binding.quote.setOnClickListener(quote);
         this.binding.bold.setOnClickListener(boldText);
         this.binding.italic.setOnClickListener(italicText);
         this.binding.monospace.setOnClickListener(monospaceText);
@@ -3708,6 +3721,7 @@ public class ConversationFragment extends XmppFragment implements EditMessage.Ke
         this.binding.close.setOnClickListener(close);
         if (Compatibility.runsTwentyEight()) {
             this.binding.me.setTooltipText(activity.getString(R.string.me));
+            this.binding.quote.setTooltipText(activity.getString(R.string.quote));
             this.binding.bold.setTooltipText(activity.getString(R.string.bold));
             this.binding.italic.setTooltipText(activity.getString(R.string.italic));
             this.binding.monospace.setTooltipText(activity.getString(R.string.monospace));
