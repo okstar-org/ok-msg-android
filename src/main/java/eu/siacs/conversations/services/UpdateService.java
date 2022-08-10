@@ -7,7 +7,7 @@ import android.os.AsyncTask;
 import android.os.Handler;
 import android.os.Looper;
 import android.util.Log;
-
+import static eu.siacs.conversations.utils.Compatibility.s;
 import static eu.siacs.conversations.http.HttpConnectionManager.getProxy;
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -46,11 +46,11 @@ public class UpdateService extends AsyncTask<String, Object, UpdateService.Wrapp
     protected Wrapper doInBackground(String... params) {
         StringBuilder jsonString = new StringBuilder();
         boolean UpdateAvailable = false;
-        boolean showNoUpdateToast = false;
+        boolean interactive = false;
         boolean isError = false;
 
         if (params[0].equals("true")) {
-            showNoUpdateToast = true;
+            interactive = true;
         }
         SSLContext sslcontext = null;
         SSLSocketFactory NoSSLv3Factory = null;
@@ -107,7 +107,11 @@ public class UpdateService extends AsyncTask<String, Object, UpdateService.Wrapp
                 if (checkVersion(version, ownVersion) >= 1) {
                     Log.d(Config.LOGTAG, "AppUpdater: Version " + ownVersion + " should be updated to " + version);
                     UpdateAvailable = true;
-                    showNotification(url, changelog, version, filesize, store);
+                    if (interactive) {
+                        showUpdateDialog(url, changelog);
+                    } else {
+                        showNotification(url, changelog, version, filesize, store);
+                    }
                 } else {
                     Log.d(Config.LOGTAG, "AppUpdater: Version " + ownVersion + " is up to date");
                     UpdateAvailable = false;
@@ -119,8 +123,17 @@ public class UpdateService extends AsyncTask<String, Object, UpdateService.Wrapp
         Wrapper w = new Wrapper();
         w.isError = isError;
         w.UpdateAvailable = UpdateAvailable;
-        w.NoUpdate = showNoUpdateToast;
+        w.show = interactive;
         return w;
+    }
+
+    private void showUpdateDialog(final String url, final String changelog) {
+        Intent intent = new Intent(context, UpdaterActivity.class);
+        intent.putExtra("update", "PixArtMessenger_UpdateService");
+        intent.putExtra("url", url);
+        intent.putExtra("changelog", changelog);
+        intent.putExtra("store", store);
+        context.startActivity(intent);
     }
 
     @Override
@@ -130,9 +143,7 @@ public class UpdateService extends AsyncTask<String, Object, UpdateService.Wrapp
             showToastMessage(true, true);
             return;
         }
-        if (!w.UpdateAvailable) {
-            showToastMessage(w.NoUpdate, false);
-        }
+        showToastMessage(w.show, false);
     }
 
     private void showToastMessage(boolean show, final boolean error) {
@@ -157,7 +168,9 @@ public class UpdateService extends AsyncTask<String, Object, UpdateService.Wrapp
         intent.putExtra("url", url);
         intent.putExtra("changelog", changelog);
         intent.putExtra("store", store);
-        PendingIntent pi = PendingIntent.getActivity(context, 0, intent, PendingIntent.FLAG_UPDATE_CURRENT);
+        PendingIntent pi = PendingIntent.getActivity(context, 0, intent, s()
+                ? PendingIntent.FLAG_IMMUTABLE | PendingIntent.FLAG_UPDATE_CURRENT
+                : PendingIntent.FLAG_UPDATE_CURRENT);
         getNotificationService.AppUpdateServiceNotification(getNotificationService.AppUpdateNotification(pi, version, filesize));
     }
 
@@ -221,7 +234,7 @@ public class UpdateService extends AsyncTask<String, Object, UpdateService.Wrapp
 
     class Wrapper {
         boolean UpdateAvailable = false;
-        boolean NoUpdate = false;
+        boolean show = false;
         boolean isError = false;
     }
 }
