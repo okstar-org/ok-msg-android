@@ -1,5 +1,7 @@
 package eu.siacs.conversations.utils;
 
+import static eu.siacs.conversations.ui.util.QuoteHelper.bodyContainsQuoteStart;
+
 import android.content.Context;
 import android.graphics.Typeface;
 import android.text.Spannable;
@@ -405,6 +407,9 @@ public class UIHelper {
     }
 
     public static CharSequence shorten(CharSequence input) {
+        if (bodyContainsQuoteStart(input)) {
+            input = input.toString().replaceAll(QuoteHelper.QUOTE_CHAR + " ", "| ");
+        }
         return input.length() > 256 ? StylingHelper.subSequence(input, 0, 256) : input;
     }
 
