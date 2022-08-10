@@ -12,10 +12,10 @@ import static eu.siacs.conversations.utils.PermissionUtils.getFirstDenied;
 import static eu.siacs.conversations.utils.PermissionUtils.readGranted;
 import static eu.siacs.conversations.utils.StorageHelper.getConversationsDirectory;
 import static eu.siacs.conversations.xmpp.Patches.ENCRYPTION_EXCEPTIONS;
-
+import com.google.common.collect.ImmutableList;
 import static eu.siacs.conversations.utils.CameraUtils.getCameraApp;
 import static eu.siacs.conversations.utils.CameraUtils.showCameraChooser;
-
+import eu.siacs.conversations.utils.PermissionUtils;
 import android.Manifest;
 import android.animation.Animator;
 import android.animation.AnimatorInflater;
@@ -1758,7 +1758,16 @@ public class ConversationFragment extends XmppFragment implements EditMessage.Ke
             Toast.makeText(activity, R.string.disable_tor_to_make_call, Toast.LENGTH_SHORT).show();
             return;
         }
-        if (hasPermissions(REQUEST_START_AUDIO_CALL, Manifest.permission.RECORD_AUDIO)) {
+        final List<String> permissions;
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.S) {
+            permissions =
+                    Arrays.asList(
+                            Manifest.permission.RECORD_AUDIO,
+                            Manifest.permission.BLUETOOTH_CONNECT);
+        } else {
+            permissions = Collections.singletonList(Manifest.permission.RECORD_AUDIO);
+        }
+        if (hasPermissions(REQUEST_START_AUDIO_CALL, permissions)) {
             triggerRtpSession(RtpSessionActivity.ACTION_MAKE_VOICE_CALL);
         }
     }
@@ -1961,8 +1970,10 @@ public class ConversationFragment extends XmppFragment implements EditMessage.Ke
 
     @Override
     public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
+        final PermissionUtils.PermissionResult permissionResult =
+                PermissionUtils.removeBluetoothConnect(permissions, grantResults);
         if (grantResults.length > 0) {
-            if (allGranted(grantResults)) {
+            if (allGranted(permissionResult.grantResults)) {
                 Activity mXmppActivity = getActivity();
                 switch (requestCode) {
                     case REQUEST_START_DOWNLOAD:
@@ -2096,17 +2107,13 @@ public class ConversationFragment extends XmppFragment implements EditMessage.Ke
         builder.create().show();
     }
 
-    private boolean hasPermissions(int requestCode, String... permissions) {
+    private boolean hasPermissions(int requestCode, List<String> permissions) {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
             final List<String> missingPermissions = new ArrayList<>();
             for (String permission : permissions) {
-                if (Config.ONLY_INTERNAL_STORAGE && permission.equals(Manifest.permission.WRITE_EXTERNAL_STORAGE) && permission.equals(Manifest.permission.READ_EXTERNAL_STORAGE)) {
+                if (Config.ONLY_INTERNAL_STORAGE
+                        && permission.equals(Manifest.permission.WRITE_EXTERNAL_STORAGE)) {
                     continue;
-                }
-                if (Compatibility.runsAndTargetsThirty(activity)) {
-                    if (Config.ONLY_INTERNAL_STORAGE && permission.equals(Manifest.permission.MANAGE_EXTERNAL_STORAGE)) {
-                        continue;
-                    }
                 }
                 if (activity.checkSelfPermission(permission) != PackageManager.PERMISSION_GRANTED) {
                     missingPermissions.add(permission);
@@ -2115,12 +2122,17 @@ public class ConversationFragment extends XmppFragment implements EditMessage.Ke
             if (missingPermissions.size() == 0) {
                 return true;
             } else {
-                requestPermissions(missingPermissions.toArray(new String[missingPermissions.size()]), requestCode);
+                requestPermissions(
+                        missingPermissions.toArray(new String[0]),
+                        requestCode);
                 return false;
             }
         } else {
             return true;
         }
+    }
+    private boolean hasPermissions(int requestCode, String... permissions) {
+        return hasPermissions(requestCode, ImmutableList.copyOf(permissions));
     }
 
     protected void invokeAttachFileIntent(final int attachmentChoice) {
