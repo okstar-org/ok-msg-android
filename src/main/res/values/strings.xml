@@ -1211,4 +1211,6 @@
     <string name="i_have_written">Ich wrote:</string>
     <string name="title_activity_about_x">About %s</string>
     <string name="x_has_written">%s wrote:</string>
+    <string name="choose_camera_app">Choose camera app</string>
+    <string name="pref_choose_camera_summary">Choose a custom camera app</string>
 </resources>

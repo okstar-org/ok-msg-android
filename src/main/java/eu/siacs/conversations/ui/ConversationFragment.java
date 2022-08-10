@@ -13,6 +13,9 @@ import static eu.siacs.conversations.utils.PermissionUtils.readGranted;
 import static eu.siacs.conversations.utils.StorageHelper.getConversationsDirectory;
 import static eu.siacs.conversations.xmpp.Patches.ENCRYPTION_EXCEPTIONS;
 
+import static eu.siacs.conversations.utils.CameraUtils.getCameraApp;
+import static eu.siacs.conversations.utils.CameraUtils.showCameraChooser;
+
 import android.Manifest;
 import android.animation.Animator;
 import android.animation.AnimatorInflater;
@@ -22,7 +25,6 @@ import android.app.Fragment;
 import android.app.FragmentManager;
 import android.app.PendingIntent;
 import android.content.ActivityNotFoundException;
-import android.content.ComponentName;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
@@ -2142,9 +2144,14 @@ public class ConversationFragment extends XmppFragment implements EditMessage.Ke
                     final List<CameraUtils> cameraApps = CameraUtils.getCameraApps(activity);
                     if (cameraApps.size() == 0) {
                         ToastCompat.makeText(activity, R.string.no_application_found, ToastCompat.LENGTH_LONG).show();
+                    } else if (cameraApps.size() == 1) {
+                        getCameraApp(cameraApps.get(0));
                     } else {
-                        final ComponentName correctComponent = cameraApps.get(0).componentNames.get(0);
-                        intent.setComponent(correctComponent);
+                        if (!activity.getPreferences().contains(SettingsActivity.CAMERA_CHOICE)) {
+                            showCameraChooser(activity, cameraApps);
+                        } else {
+                            intent.setComponent(getCameraApp(cameraApps.get(activity.getPreferences().getInt(SettingsActivity.CAMERA_CHOICE, 0))));
+                        }
                     }
                 }
                 intent.setAction(MediaStore.ACTION_VIDEO_CAPTURE);
@@ -2156,9 +2163,14 @@ public class ConversationFragment extends XmppFragment implements EditMessage.Ke
                     final List<CameraUtils> cameraApps = CameraUtils.getCameraApps(activity);
                     if (cameraApps.size() == 0) {
                         ToastCompat.makeText(activity, R.string.no_application_found, ToastCompat.LENGTH_LONG).show();
+                    } else if (cameraApps.size() == 1) {
+                        getCameraApp(cameraApps.get(0));
                     } else {
-                        final ComponentName correctComponent = cameraApps.get(0).componentNames.get(0);
-                        intent.setComponent(correctComponent);
+                        if (!activity.getPreferences().contains(SettingsActivity.CAMERA_CHOICE)) {
+                            showCameraChooser(activity, cameraApps);
+                        } else {
+                            intent.setComponent(getCameraApp(cameraApps.get(activity.getPreferences().getInt(SettingsActivity.CAMERA_CHOICE, 0))));
+                        }
                     }
                 }
                 intent.putExtra(MediaStore.EXTRA_OUTPUT, photoUri);
@@ -2196,7 +2208,14 @@ public class ConversationFragment extends XmppFragment implements EditMessage.Ke
                 activity.overridePendingTransition(R.animator.fade_in, R.animator.fade_out);
             }
         } catch (final ActivityNotFoundException e) {
-            //ignore ToastCompat.makeText(context, R.string.no_application_found, ToastCompat.LENGTH_LONG).show();
+
+            if (attachmentChoice == ATTACHMENT_CHOICE_RECORD_VIDEO
+                    || attachmentChoice == ATTACHMENT_CHOICE_TAKE_PHOTO
+                    || attachmentChoice == ATTACHMENT_CHOICE_CHOOSE_FILE
+                    || attachmentChoice == ATTACHMENT_CHOICE_CHOOSE_IMAGE
+                    || attachmentChoice == ATTACHMENT_CHOICE_CHOOSE_VIDEO){
+                ToastCompat.makeText(context, R.string.no_application_found, ToastCompat.LENGTH_LONG).show();
+            }
         }
     }
 

@@ -2,11 +2,27 @@ package eu.siacs.conversations.utils;
 
 import android.Manifest;
 import android.annotation.SuppressLint;
+import android.app.Activity;
+import android.app.Dialog;
 import android.content.ComponentName;
 import android.content.Context;
+import android.content.SharedPreferences;
+import android.content.pm.ApplicationInfo;
 import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
+import android.graphics.drawable.Drawable;
+import android.preference.PreferenceManager;
 import android.provider.MediaStore;
+import android.util.Log;
+import android.view.View;
+import android.view.ViewGroup;
+import android.widget.ArrayAdapter;
+import android.widget.ImageView;
+import android.widget.ListView;
+import android.widget.TextView;
+
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
@@ -20,6 +36,9 @@ import java.util.List;
 import java.util.zip.ZipEntry;
 import java.util.zip.ZipFile;
 
+import eu.siacs.conversations.Config;
+import eu.siacs.conversations.R;
+import eu.siacs.conversations.ui.SettingsActivity;
 import fr.xgouchet.axml.CompressedXmlParser;
 
 public class CameraUtils {
@@ -49,7 +68,11 @@ public class CameraUtils {
                 }
                 //Step 2c - Create CameraAppModel
                 CameraUtils cameraApp = new CameraUtils(somePackage, componentNames);
-                cameraApps.add(cameraApp);
+                //Step 3 - check if app is enabled
+                ApplicationInfo ai = context.getPackageManager().getApplicationInfo(cameraApp.packageInfo.packageName, 0);
+                if (ai.enabled) {
+                    cameraApps.add(cameraApp);
+                }
             } catch (Exception e) {
                 //ignore
             }
@@ -127,4 +150,72 @@ public class CameraUtils {
         }
         return componentNames;
     }
+
+    public static void showCameraChooser(final Activity activity, final List<CameraUtils> cameraAppModels) {
+        final Dialog dialog = new Dialog(activity);
+        dialog.setContentView(R.layout.dialog_camera_chooser);
+        dialog.setCancelable(true);
+        ListView listView = dialog.findViewById(R.id.chooserDialogListView);
+        listView.setAdapter(new CameraAppListViewAdapter(activity, cameraAppModels));
+        listView.setOnItemClickListener((parent, view, position, id) -> {
+            SharedPreferences p = PreferenceManager.getDefaultSharedPreferences(activity);
+            p.edit().putInt(SettingsActivity.CAMERA_CHOICE, position).apply();
+            dialog.dismiss();
+        });
+        dialog.show();
+    }
+
+    public static ComponentName getCameraApp(CameraUtils cameraApp) {
+        Log.d(Config.LOGTAG, "CameraApp " + cameraApp.componentNames.get(0));
+        return cameraApp.componentNames.get(0);
+    }
+
+    static class CameraAppListViewAdapter extends ArrayAdapter<CameraUtils> {
+        private Activity activity;
+        private PackageManager pm;
+
+        CameraAppListViewAdapter(Activity activity, List<CameraUtils> cameraApps) {
+            super(activity, R.layout.camera_chooser_item, cameraApps);
+            this.activity = activity;
+            this.pm = activity.getPackageManager();
+        }
+
+        @NonNull
+        @Override
+        public View getView(int position, @Nullable View convertView, @NonNull ViewGroup parent) {
+            //Get info
+            CameraUtils cameraApp = getItem(position);
+            ComponentName componentName = cameraApp.componentNames.get(0);
+            CharSequence appName = pm.getApplicationLabel(cameraApp.packageInfo.applicationInfo);
+            CharSequence appDesc = null; //cameraApp.componentNames.get(0).getShortClassName();
+            Drawable appIcon = null;
+            try {
+                appIcon = pm.getActivityIcon(componentName);
+            } catch (Exception e) {
+                //ignore
+            }
+
+            //Set UI
+            if (convertView == null) {
+                convertView = activity.getLayoutInflater().inflate(R.layout.camera_chooser_item, parent, false);
+            }
+            TextView firstLine = convertView.findViewById(R.id.firstLine);
+            firstLine.setText(appName);
+            TextView secondLine = convertView.findViewById(R.id.secondLine);
+            if (appDesc == null) {
+                secondLine.setVisibility(View.GONE);
+                secondLine.setText("");
+            } else {
+                secondLine.setVisibility(View.VISIBLE);
+                secondLine.setText(appDesc);
+            }
+            ImageView imageView = convertView.findViewById(R.id.icon);
+            imageView.setImageResource(R.drawable.ic_android_black_48dp); //reset
+            if (appIcon != null) {
+                imageView.setImageDrawable(appIcon);
+            }
+            return convertView;
+        }
+    }
+
 }
