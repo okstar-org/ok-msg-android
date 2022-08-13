@@ -92,7 +92,7 @@
     <string name="install">Installieren</string>
     <string name="offering">angeboten…</string>
     <string name="waiting">warten…</string>
-    <string name="create_monocles_account"><a href="https://ocean.monocles.de/apps/registration/">Bekomme einen monocles account!</a></string>
+    <string name="create_monocles_account"><a href="https://ocean.monocles.eu/apps/registration/">Bekomme einen monocles account!</a></string>
     <string name="no_pgp_key">Kein OpenPGP-Schlüssel gefunden</string>
     <string name="contact_has_no_pgp_key">monocles chat ist nicht in der Lage, deine Nachrichten zu verschlüsseln, weil dein Kontakt seinen Schlüssel nicht preisgibt.\n\n<small>Bitte deinen Kontakt darum, OpenPGP zu installieren.</small> </string>
     <string name="no_pgp_keys">Keine OpenPGP-Schlüssel gefunden</string>

@@ -1,5 +1,7 @@
 package eu.siacs.conversations.utils;
 
+import static eu.siacs.conversations.ui.util.QuoteHelper.bodyContainsQuoteStart;
+
 import android.content.Context;
 import android.graphics.Typeface;
 import android.text.Spannable;
@@ -405,6 +407,9 @@ public class UIHelper {
     }
 
     public static CharSequence shorten(CharSequence input) {
+        if (bodyContainsQuoteStart(input)) {
+            input = input.toString().replaceAll(QuoteHelper.QUOTE_CHAR + " ", "| ");
+        }
         return input.length() > 256 ? StylingHelper.subSequence(input, 0, 256) : input;
     }
 
@@ -512,8 +517,10 @@ public class UIHelper {
 
     public static String getFileDescriptionString(final Context context, final Message message) {
         final String mime = message.getMimeType();
-        if (mime == null) {
+        if (Strings.isNullOrEmpty(mime)) {
             return context.getString(R.string.file);
+        } else if (MimeUtils.AMBIGUOUS_CONTAINER_FORMATS.contains(mime)) {
+            return context.getString(R.string.multimedia_file);
         } else if (mime.startsWith("audio/")) {
             return context.getString(R.string.audio);
         } else if (mime.startsWith("video/")) {

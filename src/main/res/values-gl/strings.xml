@@ -510,7 +510,7 @@
     <string name="welcome_text">XMPP é un protocolo independente do proveedor. Pode utilizar este cliente con calquer servidor XMPP que escolla.\nPara a súa conveniencia facilitamos a creación de unha conta en conversations.im; un proveedor especialmente adaptado ao uso con Conversations.</string>
     <string name="magic_create_text">You can use monocles chat with every modern XMPP account or get a affordable and secure monocles account, hosted on the monocles server station and powered with regenerative energies!\n\n This includes:\n● two month encrypted temporary chat storage\n● e-mail with 1 GB end-to-end encrypted storage\n\n optionally: \n● 4 GB cloud storage (nextcloud)\n● calendar and contact sync\n● a secure conferencing tool \n● and more on https://monocles.eu/more/</string>
     <string name="your_full_jid_will_be">O seu chat address será: %s</string>
-    <string name="create_account"><a href="https://ocean.monocles.de/apps/registration/">Crear conta</a></string>
+    <string name="create_account"><a href="https://ocean.monocles.eu/apps/registration/">Crear conta</a></string>
     <string name="create_monocles_account">Get a monocles account!</string>
     <string name="welcome_existing_account">Teño unha conta</string>
     <string name="pick_your_username">Escolla un identificador</string>

@@ -20,11 +20,11 @@ import android.preference.PreferenceCategory;
 import android.preference.PreferenceManager;
 import android.preference.PreferenceScreen;
 import android.util.Log;
-
+import static eu.siacs.conversations.utils.CameraUtils.showCameraChooser;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AlertDialog;
 import androidx.core.content.ContextCompat;
-
+import eu.siacs.conversations.utils.CameraUtils;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
@@ -94,6 +94,7 @@ public class SettingsActivity extends XmppActivity implements
     public static final String EASY_DOWNLOADER = "easy_downloader";
     public static final String MIN_ANDROID_SDK21_SHOWN = "min_android_sdk21_shown";
     public static final String INDIVIDUAL_NOTIFICATION_PREFIX = "individual_notification_set_";
+    public static final String CAMERA_CHOICE = "camera_choice";
     public static final String PAUSE_VOICE = "pause_voice_on_move_from_ear";
     public static final String MAX_RESEND_TIME = "max_resend_time";
     public static final String RESEND_DELAY = "resend_delay";
@@ -337,6 +338,16 @@ public class SettingsActivity extends XmppActivity implements
             showIntroAgainPreference.setSummary(getString(R.string.pref_show_intro_summary));
             showIntroAgainPreference.setOnPreferenceClickListener(preference -> {
                 showIntroAgain();
+                return true;
+            });
+        }
+
+
+        final Preference cameraChooserPreference = mSettingsFragment.findPreference(CAMERA_CHOICE);
+        if (cameraChooserPreference != null) {
+            cameraChooserPreference.setOnPreferenceClickListener(preference -> {
+                final List<CameraUtils> cameraApps = CameraUtils.getCameraApps(this);
+                showCameraChooser(this, cameraApps);
                 return true;
             });
         }

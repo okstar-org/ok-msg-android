@@ -6,7 +6,7 @@ buildscript {
         mavenCentral()
     }
     dependencies {
-        classpath 'com.android.tools.build:gradle:7.2.1'
+        classpath 'com.android.tools.build:gradle:7.2.2'
        // classpath 'com.google.gms:google-services:4.3.13'
     }
 }
@@ -35,7 +35,7 @@ configurations {
 }
 
 dependencies {
-    playstoreImplementation('com.google.firebase:firebase-messaging:23.0.6') {
+    playstoreImplementation('com.google.firebase:firebase-messaging:23.0.7') {
         exclude group: 'com.google.firebase', module: 'firebase-core'
         exclude group: 'com.google.firebase', module: 'firebase-analytics'
         exclude group: 'com.google.firebase', module: 'firebase-measurement-connector'
@@ -46,7 +46,7 @@ dependencies {
         exclude group: 'com.android.support', module: 'appcompat-v7'
         exclude group: 'com.android.support', module: 'exifinterface'
     }
-    //implementation 'com.github.webrtc-sdk:android:97.4692.04'
+    implementation 'ch.threema:webrtc-android:100.0.0'
     implementation 'org.jitsi:org.otr4j:0.23'
     implementation 'org.bouncycastle:bcmail-jdk15on:1.64'
     implementation 'org.gnu.inet:libidn:1.15'
@@ -56,7 +56,7 @@ dependencies {
     implementation 'org.whispersystems:signal-protocol-android:2.6.2'
     implementation 'com.makeramen:roundedimageview:2.3.0'
     implementation 'jetty:javax.servlet:5.1.12'
-    implementation 'com.google.code.gson:gson:2.8.6'
+    implementation 'com.google.code.gson:gson:2.8.9'
     implementation 'androidx.multidex:multidex:2.0.1'
     implementation 'androidx.legacy:legacy-support-v13:1.0.0'
     implementation 'androidx.appcompat:appcompat:1.4.2'
@@ -68,9 +68,9 @@ dependencies {
     implementation 'com.google.android.material:material:1.6.1'
     implementation 'androidx.cardview:cardview:1.0.0' // for compatibility
     implementation 'com.davemorrissey.labs:subsampling-scale-image-view:3.10.0'
-    implementation 'com.google.android.exoplayer:exoplayer-core:2.18.0'
-    implementation 'com.google.android.exoplayer:exoplayer-ui:2.18.0'
-    implementation 'com.google.android.exoplayer:extension-mediasession:2.18.0'
+    implementation 'com.google.android.exoplayer:exoplayer-core:2.18.1'
+    implementation 'com.google.android.exoplayer:exoplayer-ui:2.18.1'
+    implementation 'com.google.android.exoplayer:extension-mediasession:2.18.1'
     implementation 'pub.devrel:easypermissions:3.0.0' // version >= 3.0.0 needs android X libraries
     implementation 'com.wefika:flowlayout:0.4.1'
     implementation 'com.googlecode.ez-vcard:ez-vcard:0.10.5'
@@ -90,7 +90,6 @@ dependencies {
     implementation 'androidx.browser:browser:1.4.0'
     implementation 'com.otaliastudios:transcoder:0.9.1' // 0.10.4 seems to be buggy
     implementation project(':libs:AXML')
-    implementation fileTree(include: ['libwebrtc.aar'], dir: 'libs')
 }
 
 ext {
@@ -108,8 +107,8 @@ android {
         targetSdkVersion 32
 
         //versionNameSuffix " beta_(2021-12-19)" // " beta_(XXXX-XX-XX)" // activate for beta versions
-        versionCode 119
-        versionName "1.5.8"
+        versionCode 121
+        versionName "1.5.10"
         //resConfigs "en"
 
         archivesBaseName += "-$versionName"

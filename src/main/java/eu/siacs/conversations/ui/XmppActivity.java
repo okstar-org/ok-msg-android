@@ -1413,12 +1413,13 @@ public abstract class XmppActivity extends ActionBarActivity {
         return installFromUnknownSource;
     }
 
-    protected void openInstallFromUnknownSourcesDialogIfNeeded(boolean showToast) {
-        String ShowToast;
-        if (showToast == true) {
-            ShowToast = "true";
+    protected void openInstallFromUnknownSourcesDialogIfNeeded(boolean interactive) {
+        // Interactive = true --> show toast or dialog
+        String beInteractive;
+        if (interactive) {
+            beInteractive = "true";
         } else {
-            ShowToast = "false";
+            beInteractive = "false";
         }
         if (!installFromUnknownSourceAllowed() && xmppConnectionService.installedFrom() == null) {
             final AlertDialog.Builder builder = new AlertDialog.Builder(this);
@@ -1440,14 +1441,14 @@ public abstract class XmppActivity extends ActionBarActivity {
                     ToastCompat.makeText(XmppActivity.this, R.string.device_does_not_support_unknown_source_op, ToastCompat.LENGTH_SHORT).show();
                 } finally {
                     UpdateService task = new UpdateService(this, xmppConnectionService.installedFrom(), xmppConnectionService);
-                    task.executeOnExecutor(UpdateService.THREAD_POOL_EXECUTOR, ShowToast);
+                    task.executeOnExecutor(UpdateService.THREAD_POOL_EXECUTOR, beInteractive);
                     Log.d(Config.LOGTAG, "AppUpdater started");
                 }
             });
             builder.create().show();
         } else {
             UpdateService task = new UpdateService(this, xmppConnectionService.installedFrom(), xmppConnectionService);
-            task.executeOnExecutor(UpdateService.THREAD_POOL_EXECUTOR, ShowToast);
+            task.executeOnExecutor(UpdateService.THREAD_POOL_EXECUTOR, beInteractive);
             Log.d(Config.LOGTAG, "AppUpdater started");
         }
     }

@@ -1593,6 +1593,7 @@ public class FileBackend {
         DownloadableFile file = getFile(message);
         final String mime = file.getMimeType();
         final boolean privateMessage = message.isPrivateMessage();
+        final boolean ambiguous = MimeUtils.AMBIGUOUS_CONTAINER_FORMATS.contains(mime);
         final boolean image = message.getType() == Message.TYPE_IMAGE || (mime != null && mime.startsWith("image/"));
         final boolean isGif = image & (mime != null && mime.equalsIgnoreCase("image/gif"));
         final boolean video = mime != null && mime.startsWith("video/");
@@ -1610,7 +1611,25 @@ public class FileBackend {
             body.append(url); // 1
         }
         body.append('|').append(file.getSize()); // 2
-        if (image || video || pdf) {
+        if (ambiguous) {
+            try {
+                final Dimensions dimensions = getVideoDimensions(file);
+                if (dimensions.valid()) {
+                    Log.d(Config.LOGTAG, "ambiguous file " + mime + " is video");
+                    body.append('|')
+                            .append(dimensions.width).append('|') // 3
+                            .append(dimensions.height); // 4
+                } else {
+                    Log.d(Config.LOGTAG, "ambiguous file " + mime + " is audio");
+                    body.append("|0|0|").append(getMediaRuntime(file, false)) // 5
+                            .append('|').append(getAudioTitleArtist(file)); // 6
+                }
+            } catch (final NotAVideoFile e) {
+                Log.d(Config.LOGTAG, "ambiguous file " + mime + " is audio");
+                body.append("|0|0|").append(getMediaRuntime(file, false)) // 5
+                        .append('|').append(getAudioTitleArtist(file)); // 6
+            }
+        } else if (image || video || pdf) {
             try {
                 final Dimensions dimensions;
                 if (video) {
@@ -1688,11 +1707,11 @@ public class FileBackend {
         message.setBody(body.toString());
     }
 
-    public int getMediaRuntime(File file, boolean isGif) {
+    public int getMediaRuntime(final File file, final boolean isGif) {
         if (isGif) {
             try {
                 final InputStream inputStream = mXmppConnectionService.getContentResolver().openInputStream(getUriForFile(mXmppConnectionService, file));
-                Movie movie = Movie.decodeStream(inputStream);
+                final Movie movie = Movie.decodeStream(inputStream);
                 int duration = movie.duration();
                 close(inputStream);
                 return duration;
@@ -1702,10 +1721,14 @@ public class FileBackend {
             }
         } else {
             try {
-                MediaMetadataRetriever mediaMetadataRetriever = new MediaMetadataRetriever();
+                final MediaMetadataRetriever mediaMetadataRetriever = new MediaMetadataRetriever();
                 mediaMetadataRetriever.setDataSource(file.toString());
-                return Integer.parseInt(mediaMetadataRetriever.extractMetadata(MediaMetadataRetriever.METADATA_KEY_DURATION));
-            } catch (RuntimeException e) {
+                final String value = mediaMetadataRetriever.extractMetadata(MediaMetadataRetriever.METADATA_KEY_DURATION);
+                if (Strings.isNullOrEmpty(value)) {
+                    return 0;
+                }
+                return Integer.parseInt(value);
+            } catch (NumberFormatException e) {
                 return 0;
             }
         }

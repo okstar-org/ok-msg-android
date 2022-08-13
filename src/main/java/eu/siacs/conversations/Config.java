@@ -49,7 +49,7 @@ public final class Config {
 
     public static String monocles() {
         //if (Locale.getDefault().getLanguage().equalsIgnoreCase("de")) {
-        return "https://ocean.monocles.de/apps/registration/";
+        return "https://ocean.monocles.eu/apps/registration/";
         /*} else {
             return "blabber.im/en.html";
         }*/
@@ -78,7 +78,7 @@ public final class Config {
     public static final String DOMAIN_LOCK = BuildConfig.DOMAIN_LOCK; //only allow account creation for this domain
     public static final String MAGIC_CREATE_DOMAIN = DOMAIN.getRandomServer();
 
-    public static final String QUICKSY_DOMAIN = "quicksy.im";
+    public static final Jid QUICKSY_DOMAIN = Jid.of("quicksy.im");
     public static final String CHANNEL_DISCOVERY = "https://search.jabber.network";
     public static final boolean DISALLOW_REGISTRATION_IN_UI = false; //hide the register checkbox
     public static final boolean SHOW_INTRO = BuildConfig.SHOW_INTRO;

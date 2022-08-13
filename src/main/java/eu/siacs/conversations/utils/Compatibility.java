@@ -43,6 +43,10 @@ public class Compatibility {
             "remove_all_individual_notifications"
     );
 
+    private static final List<String> UNUSED_SETTINGS_PRE_THIRTY = Arrays.asList(
+            SettingsActivity.CAMERA_CHOICE
+    );
+
     public static boolean hasStoragePermission(Context context) {
         return Build.VERSION.SDK_INT < Build.VERSION_CODES.M || (ContextCompat.checkSelfPermission(context, android.Manifest.permission.WRITE_EXTERNAL_STORAGE) == PackageManager.PERMISSION_GRANTED && ContextCompat.checkSelfPermission(context, Manifest.permission.READ_EXTERNAL_STORAGE) == PackageManager.PERMISSION_GRANTED);
     }
@@ -136,7 +140,8 @@ public class Compatibility {
 
     public static void removeUnusedPreferences(SettingsFragment settingsFragment) {
         List<PreferenceScreen> screens = Arrays.asList(
-                (PreferenceScreen) settingsFragment.findPreference("notifications"));
+                (PreferenceScreen) settingsFragment.findPreference("notifications"),
+                (PreferenceScreen) settingsFragment.findPreference("attachments"));
         List<PreferenceCategory> categories = Arrays.asList(
                 (PreferenceCategory) settingsFragment.findPreference("general"));
         for (String key : (runsTwentySix() ? UNUSED_SETTINGS_POST_TWENTYSIX : UNUSED_SETTINGS_PRE_TWENTYSIX)) {
@@ -158,6 +163,23 @@ public class Compatibility {
             if (targetsTwentySix(settingsFragment.getContext())) {
                 Preference preference = settingsFragment.findPreference(SettingsActivity.SHOW_FOREGROUND_SERVICE);
                 if (preference != null) {
+                    for (PreferenceCategory category : categories) {
+                        if (category != null) {
+                            category.removePreference(preference);
+                        }
+                    }
+                }
+            }
+        }
+        if (!Compatibility.runsThirty()) {
+            for (String key : UNUSED_SETTINGS_PRE_THIRTY) {
+                Preference preference = settingsFragment.findPreference(key);
+                if (preference != null) {
+                    for (PreferenceScreen screen : screens) {
+                        if (screen != null) {
+                            screen.removePreference(preference);
+                        }
+                    }
                     for (PreferenceCategory category : categories) {
                         if (category != null) {
                             category.removePreference(preference);

@@ -12,7 +12,10 @@ import static eu.siacs.conversations.utils.PermissionUtils.getFirstDenied;
 import static eu.siacs.conversations.utils.PermissionUtils.readGranted;
 import static eu.siacs.conversations.utils.StorageHelper.getConversationsDirectory;
 import static eu.siacs.conversations.xmpp.Patches.ENCRYPTION_EXCEPTIONS;
-
+import com.google.common.collect.ImmutableList;
+import static eu.siacs.conversations.utils.CameraUtils.getCameraApp;
+import static eu.siacs.conversations.utils.CameraUtils.showCameraChooser;
+import eu.siacs.conversations.utils.PermissionUtils;
 import android.Manifest;
 import android.animation.Animator;
 import android.animation.AnimatorInflater;
@@ -22,7 +25,6 @@ import android.app.Fragment;
 import android.app.FragmentManager;
 import android.app.PendingIntent;
 import android.content.ActivityNotFoundException;
-import android.content.ComponentName;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
@@ -272,6 +274,7 @@ public class ConversationFragment extends XmppFragment implements EditMessage.Ke
     };
 
     private final OnClickListener meCommand = v -> Objects.requireNonNull(binding.textinput.getText()).insert(0, Message.ME_COMMAND + " ");
+    private final OnClickListener quote = v -> insertQuote();
     private final OnClickListener boldText = v -> insertFormatting("bold");
     private final OnClickListener italicText = v -> insertFormatting("italic");
     private final OnClickListener monospaceText = v -> insertFormatting("monospace");
@@ -352,6 +355,17 @@ public class ConversationFragment extends XmppFragment implements EditMessage.Ke
                     this.binding.textinput.getText().insert(this.binding.textinput.getSelectionStart(), (STRIKETHROUGH));
                 }
                 return;
+        }
+    }
+    private void insertQuote() {
+        int pos = 0;
+        if (this.binding.textinput.getSelectionStart() == this.binding.textinput.getSelectionEnd()) {
+            pos = this.binding.textinput.getSelectionStart();
+        }
+        if (pos == 0) {
+            Objects.requireNonNull(binding.textinput.getText()).insert(0, QuoteHelper.QUOTE_CHAR + " ");
+        } else {
+            Objects.requireNonNull(binding.textinput.getText()).insert(pos, System.getProperty("line.separator") + QuoteHelper.QUOTE_CHAR + " ");
         }
     }
 
@@ -1744,7 +1758,16 @@ public class ConversationFragment extends XmppFragment implements EditMessage.Ke
             Toast.makeText(activity, R.string.disable_tor_to_make_call, Toast.LENGTH_SHORT).show();
             return;
         }
-        if (hasPermissions(REQUEST_START_AUDIO_CALL, Manifest.permission.RECORD_AUDIO)) {
+        final List<String> permissions;
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.S) {
+            permissions =
+                    Arrays.asList(
+                            Manifest.permission.RECORD_AUDIO,
+                            Manifest.permission.BLUETOOTH_CONNECT);
+        } else {
+            permissions = Collections.singletonList(Manifest.permission.RECORD_AUDIO);
+        }
+        if (hasPermissions(REQUEST_START_AUDIO_CALL, permissions)) {
             triggerRtpSession(RtpSessionActivity.ACTION_MAKE_VOICE_CALL);
         }
     }
@@ -1947,8 +1970,10 @@ public class ConversationFragment extends XmppFragment implements EditMessage.Ke
 
     @Override
     public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
+        final PermissionUtils.PermissionResult permissionResult =
+                PermissionUtils.removeBluetoothConnect(permissions, grantResults);
         if (grantResults.length > 0) {
-            if (allGranted(grantResults)) {
+            if (allGranted(permissionResult.grantResults)) {
                 Activity mXmppActivity = getActivity();
                 switch (requestCode) {
                     case REQUEST_START_DOWNLOAD:
@@ -2082,17 +2107,13 @@ public class ConversationFragment extends XmppFragment implements EditMessage.Ke
         builder.create().show();
     }
 
-    private boolean hasPermissions(int requestCode, String... permissions) {
+    private boolean hasPermissions(int requestCode, List<String> permissions) {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
             final List<String> missingPermissions = new ArrayList<>();
             for (String permission : permissions) {
-                if (Config.ONLY_INTERNAL_STORAGE && permission.equals(Manifest.permission.WRITE_EXTERNAL_STORAGE) && permission.equals(Manifest.permission.READ_EXTERNAL_STORAGE)) {
+                if (Config.ONLY_INTERNAL_STORAGE
+                        && permission.equals(Manifest.permission.WRITE_EXTERNAL_STORAGE)) {
                     continue;
-                }
-                if (Compatibility.runsAndTargetsThirty(activity)) {
-                    if (Config.ONLY_INTERNAL_STORAGE && permission.equals(Manifest.permission.MANAGE_EXTERNAL_STORAGE)) {
-                        continue;
-                    }
                 }
                 if (activity.checkSelfPermission(permission) != PackageManager.PERMISSION_GRANTED) {
                     missingPermissions.add(permission);
@@ -2101,12 +2122,17 @@ public class ConversationFragment extends XmppFragment implements EditMessage.Ke
             if (missingPermissions.size() == 0) {
                 return true;
             } else {
-                requestPermissions(missingPermissions.toArray(new String[missingPermissions.size()]), requestCode);
+                requestPermissions(
+                        missingPermissions.toArray(new String[0]),
+                        requestCode);
                 return false;
             }
         } else {
             return true;
         }
+    }
+    private boolean hasPermissions(int requestCode, String... permissions) {
+        return hasPermissions(requestCode, ImmutableList.copyOf(permissions));
     }
 
     protected void invokeAttachFileIntent(final int attachmentChoice) {
@@ -2130,9 +2156,14 @@ public class ConversationFragment extends XmppFragment implements EditMessage.Ke
                     final List<CameraUtils> cameraApps = CameraUtils.getCameraApps(activity);
                     if (cameraApps.size() == 0) {
                         ToastCompat.makeText(activity, R.string.no_application_found, ToastCompat.LENGTH_LONG).show();
+                    } else if (cameraApps.size() == 1) {
+                        getCameraApp(cameraApps.get(0));
                     } else {
-                        final ComponentName correctComponent = cameraApps.get(0).componentNames.get(0);
-                        intent.setComponent(correctComponent);
+                        if (!activity.getPreferences().contains(SettingsActivity.CAMERA_CHOICE)) {
+                            showCameraChooser(activity, cameraApps);
+                        } else {
+                            intent.setComponent(getCameraApp(cameraApps.get(activity.getPreferences().getInt(SettingsActivity.CAMERA_CHOICE, 0))));
+                        }
                     }
                 }
                 intent.setAction(MediaStore.ACTION_VIDEO_CAPTURE);
@@ -2144,9 +2175,14 @@ public class ConversationFragment extends XmppFragment implements EditMessage.Ke
                     final List<CameraUtils> cameraApps = CameraUtils.getCameraApps(activity);
                     if (cameraApps.size() == 0) {
                         ToastCompat.makeText(activity, R.string.no_application_found, ToastCompat.LENGTH_LONG).show();
+                    } else if (cameraApps.size() == 1) {
+                        getCameraApp(cameraApps.get(0));
                     } else {
-                        final ComponentName correctComponent = cameraApps.get(0).componentNames.get(0);
-                        intent.setComponent(correctComponent);
+                        if (!activity.getPreferences().contains(SettingsActivity.CAMERA_CHOICE)) {
+                            showCameraChooser(activity, cameraApps);
+                        } else {
+                            intent.setComponent(getCameraApp(cameraApps.get(activity.getPreferences().getInt(SettingsActivity.CAMERA_CHOICE, 0))));
+                        }
                     }
                 }
                 intent.putExtra(MediaStore.EXTRA_OUTPUT, photoUri);
@@ -2184,7 +2220,14 @@ public class ConversationFragment extends XmppFragment implements EditMessage.Ke
                 activity.overridePendingTransition(R.animator.fade_in, R.animator.fade_out);
             }
         } catch (final ActivityNotFoundException e) {
-            //ignore ToastCompat.makeText(context, R.string.no_application_found, ToastCompat.LENGTH_LONG).show();
+
+            if (attachmentChoice == ATTACHMENT_CHOICE_RECORD_VIDEO
+                    || attachmentChoice == ATTACHMENT_CHOICE_TAKE_PHOTO
+                    || attachmentChoice == ATTACHMENT_CHOICE_CHOOSE_FILE
+                    || attachmentChoice == ATTACHMENT_CHOICE_CHOOSE_IMAGE
+                    || attachmentChoice == ATTACHMENT_CHOICE_CHOOSE_VIDEO){
+                ToastCompat.makeText(context, R.string.no_application_found, ToastCompat.LENGTH_LONG).show();
+            }
         }
     }
 
@@ -3700,6 +3743,7 @@ public class ConversationFragment extends XmppFragment implements EditMessage.Ke
         this.binding.textformat.setVisibility(View.VISIBLE);
         this.binding.me.setEnabled(me);
         this.binding.me.setOnClickListener(meCommand);
+        this.binding.quote.setOnClickListener(quote);
         this.binding.bold.setOnClickListener(boldText);
         this.binding.italic.setOnClickListener(italicText);
         this.binding.monospace.setOnClickListener(monospaceText);
@@ -3708,6 +3752,7 @@ public class ConversationFragment extends XmppFragment implements EditMessage.Ke
         this.binding.close.setOnClickListener(close);
         if (Compatibility.runsTwentyEight()) {
             this.binding.me.setTooltipText(activity.getString(R.string.me));
+            this.binding.quote.setTooltipText(activity.getString(R.string.quote));
             this.binding.bold.setTooltipText(activity.getString(R.string.bold));
             this.binding.italic.setTooltipText(activity.getString(R.string.italic));
             this.binding.monospace.setTooltipText(activity.getString(R.string.monospace));

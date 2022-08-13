@@ -57,6 +57,7 @@ import eu.siacs.conversations.services.XmppConnectionService;
 import eu.siacs.conversations.ui.util.AvatarWorkerTask;
 import eu.siacs.conversations.ui.util.MainThreadExecutor;
 import eu.siacs.conversations.ui.util.Rationals;
+import eu.siacs.conversations.utils.Compatibility;
 import eu.siacs.conversations.utils.Namespace;
 import eu.siacs.conversations.utils.PermissionUtils;
 import eu.siacs.conversations.utils.TimeFrameUtils;
@@ -185,8 +186,8 @@ public class RtpSessionActivity extends XmppActivity
     private boolean isSwitchToConversationVisible() {
         final JingleRtpConnection connection =
                 this.rtpConnectionReference != null ? this.rtpConnectionReference.get() : null;
-        return connection != null
-                && STATES_SHOWING_SWITCH_TO_CHAT.contains(connection.getEndUserState());
+
+        return connection != null && !connection.getMedia().contains(Media.VIDEO);
     }
 
     private void switchToConversation() {
@@ -259,14 +260,16 @@ public class RtpSessionActivity extends XmppActivity
     }
 
     private void requestPermissionsAndAcceptCall() {
-        final List<String> permissions;
+        final ImmutableList.Builder<String> permissions = ImmutableList.builder();
         if (getMedia().contains(Media.VIDEO)) {
-            permissions =
-                    ImmutableList.of(Manifest.permission.CAMERA, Manifest.permission.RECORD_AUDIO);
+            permissions.add(Manifest.permission.CAMERA).add(Manifest.permission.RECORD_AUDIO);
         } else {
-            permissions = ImmutableList.of(Manifest.permission.RECORD_AUDIO);
+            permissions.add(Manifest.permission.RECORD_AUDIO);
         }
-        if (PermissionUtils.hasPermission(this, permissions, REQUEST_ACCEPT_CALL)) {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.S) {
+            permissions.add(Manifest.permission.BLUETOOTH_CONNECT);
+        }
+        if (PermissionUtils.hasPermission(this, permissions.build(), REQUEST_ACCEPT_CALL)) {
             putScreenInCallMode();
             checkRecorderAndAcceptCall();
         }
@@ -474,13 +477,16 @@ public class RtpSessionActivity extends XmppActivity
     public void onRequestPermissionsResult(
             int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
         super.onRequestPermissionsResult(requestCode, permissions, grantResults);
-        if (PermissionUtils.allGranted(grantResults)) {
+        final PermissionUtils.PermissionResult permissionResult =
+                PermissionUtils.removeBluetoothConnect(permissions, grantResults);
+        if (PermissionUtils.allGranted(permissionResult.grantResults)) {
             if (requestCode == REQUEST_ACCEPT_CALL) {
                 checkRecorderAndAcceptCall();
             }
         } else {
             @StringRes int res;
-            final String firstDenied = getFirstDenied(grantResults, permissions);
+            final String firstDenied =
+                    getFirstDenied(permissionResult.grantResults, permissionResult.permissions);
             if (Manifest.permission.RECORD_AUDIO.equals(firstDenied)) {
                 res = R.string.no_microphone_permission;
             } else if (Manifest.permission.CAMERA.equals(firstDenied)) {
@@ -569,16 +575,17 @@ public class RtpSessionActivity extends XmppActivity
         return false;
     }
 
-    @RequiresApi(api = Build.VERSION_CODES.O)
+    @RequiresApi(api = Build.VERSION_CODES.N)
     private void startPictureInPicture() {
         try {
-            final Rational rational = this.binding.remoteVideo.getAspectRatio();
-            final Rational clippedRational = Rationals.clip(rational);
-            Log.d(
-                    Config.LOGTAG,
-                    "suggested rational " + rational + ". clipped to " + clippedRational);
-            enterPictureInPictureMode(
-                    new PictureInPictureParams.Builder().setAspectRatio(clippedRational).build());
+            if (Compatibility.runsTwentySix()) {
+                final Rational rational = this.binding.remoteVideo.getAspectRatio();
+                final Rational clippedRational = Rationals.clip(rational);
+                Log.d(Config.LOGTAG, "suggested rational " + rational + ". clipped to " + clippedRational);
+                enterPictureInPictureMode(new PictureInPictureParams.Builder().setAspectRatio(clippedRational).build());
+            } else {
+                this.enterPictureInPictureMode();
+            }
         } catch (final IllegalStateException e) {
             // this sometimes happens on Samsung phones (possibly when Knox is enabled)
             Log.w(Config.LOGTAG, "unable to enter picture in picture mode", e);
@@ -613,9 +620,9 @@ public class RtpSessionActivity extends XmppActivity
             final JingleRtpConnection rtpConnection = requireRtpConnection();
             return rtpConnection.getMedia().contains(Media.VIDEO)
                     && Arrays.asList(
-                    RtpEndUserState.ACCEPTING_CALL,
-                    RtpEndUserState.CONNECTING,
-                    RtpEndUserState.CONNECTED)
+                            RtpEndUserState.ACCEPTING_CALL,
+                            RtpEndUserState.CONNECTING,
+                            RtpEndUserState.CONNECTED)
                     .contains(rtpConnection.getEndUserState());
         } catch (final IllegalStateException e) {
             return false;
@@ -981,9 +988,9 @@ public class RtpSessionActivity extends XmppActivity
                                 "could not switch camera",
                                 Throwables.getRootCause(throwable));
                         ToastCompat.makeText(
-                                RtpSessionActivity.this,
-                                R.string.could_not_switch_camera,
-                                ToastCompat.LENGTH_LONG)
+                                        RtpSessionActivity.this,
+                                        R.string.could_not_switch_camera,
+                                        ToastCompat.LENGTH_LONG)
                                 .show();
                     }
                 },
@@ -1044,9 +1051,9 @@ public class RtpSessionActivity extends XmppActivity
                 binding.appBarLayout.setVisibility(View.GONE);
                 binding.pipPlaceholder.setVisibility(View.VISIBLE);
                 if (Arrays.asList(
-                        RtpEndUserState.APPLICATION_ERROR,
-                        RtpEndUserState.CONNECTIVITY_ERROR,
-                        RtpEndUserState.SECURITY_ERROR)
+                                RtpEndUserState.APPLICATION_ERROR,
+                                RtpEndUserState.CONNECTIVITY_ERROR,
+                                RtpEndUserState.SECURITY_ERROR)
                         .contains(state)) {
                     binding.pipWarning.setVisibility(View.VISIBLE);
                     binding.pipWaiting.setVisibility(View.GONE);

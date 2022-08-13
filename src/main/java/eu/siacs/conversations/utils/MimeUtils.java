@@ -20,7 +20,7 @@ import android.database.Cursor;
 import android.net.Uri;
 import android.provider.OpenableColumns;
 import android.util.Log;
-
+import com.google.common.collect.ImmutableList;
 import com.google.common.base.Strings;
 
 import java.io.File;
@@ -43,6 +43,12 @@ import eu.siacs.conversations.services.ExportBackupService;
  * Used to implement java.net.URLConnection and android.webkit.MimeTypeMap.
  */
 public final class MimeUtils {
+    public static final List<String> AMBIGUOUS_CONTAINER_FORMATS = ImmutableList.of(
+            "application/ogg",
+            "video/3gpp", // .3gp files can contain audio, video or both
+            "video/3gpp2"
+    );
+
     private static final Map<String, String> mimeTypeToExtensionMap = new HashMap<>();
     private static final Map<String, String> extensionToMimeTypeMap = new HashMap<>();
 
@@ -229,7 +235,12 @@ public final class MimeUtils {
         add("application/x-xcf", "xcf");
         add("application/x-xfig", "fig");
         add("application/xhtml+xml", "xhtml");
+        add("video/3gpp", "3gpp");
+        add("video/3gpp", "3gp");
+        add("video/3gpp2", "3gpp2");
+        add("video/3gpp2", "3g2");
         add("audio/3gpp", "3gpp");
+        add("audio/3gpp", "3gp");
         add("audio/aac", "aac");
         add("audio/aac-adts", "aac");
         add("audio/amr", "amr");
@@ -370,10 +381,6 @@ public final class MimeUtils {
         add("text/x-tex", "cls");
         add("text/x-vcalendar", "vcs");
         add("text/x-vcard", "vcf");
-        add("video/3gpp", "3gpp");
-        add("video/3gpp", "3gp");
-        add("video/3gpp2", "3gpp2");
-        add("video/3gpp2", "3g2");
         add("video/avi", "avi");
         add("video/dl", "dl");
         add("video/dv", "dif");

@@ -21,9 +21,9 @@ import android.content.Intent;
 import android.content.IntentFilter;
 import android.content.pm.PackageManager;
 import android.media.AudioManager;
+import android.os.Build;
 import android.os.Handler;
 import android.os.Looper;
-import android.os.Build;
 import android.util.Log;
 
 import androidx.annotation.Nullable;
@@ -67,7 +67,6 @@ public class AppRTCBluetoothManager {
                 }
             };
 
-
     protected AppRTCBluetoothManager(Context context, AppRTCAudioManager audioManager) {
         Log.d(Config.LOGTAG, "ctor");
         ThreadUtils.checkIsOnMainThread();
@@ -103,7 +102,6 @@ public class AppRTCBluetoothManager {
      */
     public void start() {
         ThreadUtils.checkIsOnMainThread();
-
         if (bluetoothState != State.UNINITIALIZED) {
             Log.w(Config.LOGTAG, "Invalid BT state");
             return;
@@ -232,7 +230,7 @@ public class AppRTCBluetoothManager {
         ThreadUtils.checkIsOnMainThread();
         Log.d(
                 Config.LOGTAG,
-                "stopScoAudio done: BT state=" + bluetoothState + ", " + "SCO is on: " + isScoOn());
+                "stopScoAudio: BT state=" + bluetoothState + ", " + "SCO is on: " + isScoOn());
         if (bluetoothState != State.SCO_CONNECTING && bluetoothState != State.SCO_CONNECTED) {
             return;
         }
@@ -240,8 +238,9 @@ public class AppRTCBluetoothManager {
         audioManager.stopBluetoothSco();
         audioManager.setBluetoothScoOn(false);
         bluetoothState = State.SCO_DISCONNECTING;
-        Log.d(Config.LOGTAG, "stopScoAudio done: BT state=" + bluetoothState + ", "
-                + "SCO is on: " + isScoOn());
+        Log.d(
+                Config.LOGTAG,
+                "stopScoAudio done: BT state=" + bluetoothState + ", " + "SCO is on: " + isScoOn());
     }
 
     /**

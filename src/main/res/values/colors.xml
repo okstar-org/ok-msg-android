@@ -128,7 +128,7 @@
     <color name="notavailable">#fff44336</color> <!-- red 500 -->
     <color name="warning_button">#ffcdd2</color>  <!-- red 100 -->
     <color name="warning_button_dark">#ffC62828</color> <!-- red 800 -->
-    <color name="transparent">#00ffffff</color>
+
     <!-- scanner -->
     <color name="scan_result_dots">#ff4caf50</color>
 </resources>

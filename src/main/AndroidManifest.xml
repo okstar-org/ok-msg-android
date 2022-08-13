@@ -3,6 +3,7 @@
     xmlns:tools="http://schemas.android.com/tools">
 
     <uses-permission android:name="android.permission.BLUETOOTH_CONNECT" />
+    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
     <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
     <uses-permission android:name="android.permission.READ_CONTACTS" />
     <uses-permission android:name="android.permission.READ_PROFILE" />
@@ -356,7 +357,7 @@
             android:configChanges="screenSize|smallestScreenSize|screenLayout|orientation"
             android:launchMode="singleInstance"
             android:supportsPictureInPicture="true"
-            android:theme="@style/ConversationsTheme.Dialog" />
+            android:theme="@style/ConversationsTheme.FullScreen" />
         <activity
             android:name=".ui.ShareLocationActivity"
             android:label="@string/share_location"

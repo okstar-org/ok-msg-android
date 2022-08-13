@@ -48,8 +48,6 @@ public class ViewUtil {
         // use internal viewer for images and videos
         if (mime.startsWith("image/")) {
             final Intent intent = new Intent(context, MediaViewerActivity.class);
-            intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-            intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK);
             intent.putExtra("image", Uri.fromFile(file));
             try {
                 context.startActivity(intent);
@@ -58,8 +56,6 @@ public class ViewUtil {
             }
         } else if (mime.startsWith("video/")) {
             final Intent intent = new Intent(context, MediaViewerActivity.class);
-            intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-            intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK);
             intent.putExtra("video", Uri.fromFile(file));
             try {
                 context.startActivity(intent);

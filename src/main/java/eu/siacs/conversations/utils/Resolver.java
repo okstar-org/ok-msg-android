@@ -93,6 +93,7 @@ public class Resolver {
         }
         return happyEyeball(resolveNoSrvRecords(DNSName.from(hostname), port, true));
     }
+
     public static void checkDomain(final Jid jid) {
         DNSName.from(jid.getDomain());
     }

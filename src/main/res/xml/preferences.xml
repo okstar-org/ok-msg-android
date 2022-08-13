@@ -271,6 +271,11 @@
         <eu.siacs.conversations.ui.MemoryManagementPref
             android:summary="@string/pref_memory_management_summary"
             android:title="@string/title_memory_management" />
+        <Preference
+            android:key="camera_choice"
+            android:summary="@string/pref_choose_camera_summary"
+            android:title="@string/choose_camera_app" />
+
     </PreferenceScreen>
     <!--status-->
     <PreferenceScreen
@@ -383,13 +388,13 @@
             android:title="@string/pref_show_links_inside" />
         <CheckBoxPreference
             android:defaultValue="@bool/show_maps_inside"
-            android:key="show_maps_inside"
             android:disableDependentsState="false"
+            android:key="show_maps_inside"
             android:summary="@string/pref_show_mappreview_inside_summary"
             android:title="@string/pref_show_mappreview_inside" />
         <EditTextPreference
-            android:dependency="show_maps_inside"
             android:defaultValue="@string/mappreview_url"
+            android:dependency="show_maps_inside"
             android:key="mappreview_host"
             android:summary="@string/pref_mappreview_host_summary"
             android:title="@string/pref_mappreview_host" />
@@ -422,8 +427,8 @@
             android:summary="@string/pref_use_invidious_summary"
             android:title="@string/pref_use_invidious" />
         <EditTextPreference
-            android:dependency="use_invidious"
             android:defaultValue="@string/invidious_host"
+            android:dependency="use_invidious"
             android:key="invidious_host"
             android:summary="@string/pref_invidious_host_summary"
             android:title="@string/pref_invidious_host" />
