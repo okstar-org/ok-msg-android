@@ -1090,7 +1090,7 @@
     <string name="add_contact_or_create_or_join_group_chat">Añadir contacto, crear o unirse a un grupo, o descubrir canales</string>
     <plurals name="some_messages_could_not_be_delivered">
         <item quantity="one">No se ha podido entregar un mensaje</item>
-        <item quantity="other">Algunos mensaje no han podio ser entregados</item>
+        <item quantity="other">Algunos mensaje no han podido ser entregados</item>
     </plurals>
     <string name="failed_deliveries">Entregas fallidas</string>
     <string name="missed_calls_channel_name">Llamadas perdidas</string>
@@ -1209,4 +1209,8 @@
     <string name="i_have_written">Escribí:</string>
     <string name="title_activity_about_x">Acerca de %s</string>
     <string name="x_has_written">%s escribió:</string>
+    <string name="choose_camera_app">Elegir aplicación de cámara</string>
+    <string name="pref_choose_camera_summary">Elegir aplicación personalizada de cámara</string>
+    <string name="vector_graphic">gráfico vectorial</string>
+    <string name="multimedia_file">fichero multimedia</string>
 </resources>
