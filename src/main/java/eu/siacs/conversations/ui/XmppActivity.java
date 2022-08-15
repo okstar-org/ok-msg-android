@@ -639,6 +639,13 @@ public abstract class XmppActivity extends ActionBarActivity {
         overridePendingTransition(R.animator.fade_in, R.animator.fade_out);
         finish();
     }
+    public void switchToMUCDetails(Conversation conversation) {
+        Intent intent = new Intent(this, ConferenceDetailsActivity.class);
+        intent.setAction(ConferenceDetailsActivity.ACTION_VIEW_MUC);
+        intent.putExtra("uuid", conversation.getUuid());
+        startActivity(intent);
+        overridePendingTransition(R.animator.fade_in, R.animator.fade_out);
+    }
 
     public void switchToContactDetails(Contact contact) {
         switchToContactDetails(contact, null);

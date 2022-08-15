@@ -99,6 +99,10 @@ import java.util.Set;
 import java.util.UUID;
 import java.util.concurrent.atomic.AtomicBoolean;
 
+import eu.siacs.conversations.utils.TimeFrameUtils;
+import eu.siacs.conversations.xmpp.jingle.AbstractJingleConnection;
+import eu.siacs.conversations.xmpp.jingle.JingleConnectionManager;
+import eu.siacs.conversations.xmpp.jingle.Media;
 import eu.siacs.conversations.Config;
 import eu.siacs.conversations.R;
 import eu.siacs.conversations.crypto.axolotl.AxolotlService;
@@ -1694,15 +1698,13 @@ public class ConversationFragment extends XmppFragment implements EditMessage.Ke
                 clearHistoryDialog(conversation);
                 break;
             case R.id.action_group_details:
-                Intent intent = new Intent(activity, ConferenceDetailsActivity.class);
-                intent.setAction(ConferenceDetailsActivity.ACTION_VIEW_MUC);
-                intent.putExtra("uuid", conversation.getUuid());
-                startActivity(intent);
+                activity.switchToMUCDetails(conversation);
                 break;
             case R.id.action_participants:
                 Intent intent1 = new Intent(activity, MucUsersActivity.class);
                 intent1.putExtra("uuid", conversation.getUuid());
                 startActivity(intent1);
+                activity.overridePendingTransition(R.animator.fade_in, R.animator.fade_out);
                 break;
             case R.id.action_contact_details:
                 activity.switchToContactDetails(conversation.getContact());
@@ -1734,6 +1736,12 @@ public class ConversationFragment extends XmppFragment implements EditMessage.Ke
             case R.id.action_toggle_pinned:
                 togglePinned();
                 break;
+            case R.id.action_mute:
+                muteConversationDialog(conversation);
+                break;
+            case R.id.action_unmute:
+                unmuteConversation(conversation);
+                break;
             default:
                 break;
         }
@@ -1744,6 +1752,27 @@ public class ConversationFragment extends XmppFragment implements EditMessage.Ke
         final Intent intent = new Intent(getActivity(), SearchActivity.class);
         intent.putExtra(SearchActivity.EXTRA_CONVERSATION_UUID, conversation.getUuid());
         startActivity(intent);
+    }
+    private void returnToOngoingCall() {
+        final Optional<OngoingRtpSession> ongoingRtpSession = activity.xmppConnectionService.getJingleConnectionManager().getOngoingRtpConnection(conversation.getContact());
+        if (ongoingRtpSession.isPresent()) {
+            final OngoingRtpSession id = ongoingRtpSession.get();
+            final Intent intent = new Intent(activity, RtpSessionActivity.class);
+            intent.putExtra(RtpSessionActivity.EXTRA_ACCOUNT, id.getAccount().getJid().asBareJid().toEscapedString());
+            intent.putExtra(RtpSessionActivity.EXTRA_WITH, id.getWith().toEscapedString());
+            if (id instanceof AbstractJingleConnection.Id) {
+                intent.setAction(Intent.ACTION_VIEW);
+                intent.putExtra(RtpSessionActivity.EXTRA_SESSION_ID, id.getSessionId());
+            } else if (id instanceof JingleConnectionManager.RtpSessionProposal) {
+                if (((JingleConnectionManager.RtpSessionProposal) id).media.contains(Media.VIDEO)) {
+                    intent.setAction(RtpSessionActivity.ACTION_MAKE_VIDEO_CALL);
+                } else {
+                    intent.setAction(RtpSessionActivity.ACTION_MAKE_VOICE_CALL);
+                }
+            }
+            activity.startActivity(intent);
+        }
+
     }
 
     private void togglePinned() {
@@ -2106,6 +2135,33 @@ public class ConversationFragment extends XmppFragment implements EditMessage.Ke
         });
         builder.create().show();
     }
+    protected void muteConversationDialog(final Conversation conversation) {
+        final AlertDialog.Builder builder = new AlertDialog.Builder(activity);
+        builder.setTitle(R.string.disable_notifications);
+        final int[] durations = activity.getResources().getIntArray(R.array.mute_options_durations);
+        final CharSequence[] labels = new CharSequence[durations.length];
+        for (int i = 0; i < durations.length; ++i) {
+            if (durations[i] == -1) {
+                labels[i] = activity.getString(R.string.until_further_notice);
+            } else {
+                labels[i] = TimeFrameUtils.resolve(activity, 1000L * durations[i]);
+            }
+        }
+        builder.setItems(labels, (dialog, which) -> {
+            final long till;
+            if (durations[which] == -1) {
+                till = Long.MAX_VALUE;
+            } else {
+                till = System.currentTimeMillis() + (durations[which] * 1000L);
+            }
+            conversation.setMutedTill(till);
+            activity.xmppConnectionService.updateConversation(conversation);
+            activity.onConversationsListItemUpdated();
+            refresh();
+            activity.invalidateOptionsMenu();
+        });
+        builder.create().show();
+    }
 
     private boolean hasPermissions(int requestCode, List<String> permissions) {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
@@ -2134,7 +2190,13 @@ public class ConversationFragment extends XmppFragment implements EditMessage.Ke
     private boolean hasPermissions(int requestCode, String... permissions) {
         return hasPermissions(requestCode, ImmutableList.copyOf(permissions));
     }
-
+    public void unmuteConversation(final Conversation conversation) {
+        conversation.setMutedTill(0);
+        this.activity.xmppConnectionService.updateConversation(conversation);
+        this.activity.onConversationsListItemUpdated();
+        refresh();
+        this.activity.invalidateOptionsMenu();
+    }
     protected void invokeAttachFileIntent(final int attachmentChoice) {
         Intent intent = new Intent();
         boolean chooser = false;
