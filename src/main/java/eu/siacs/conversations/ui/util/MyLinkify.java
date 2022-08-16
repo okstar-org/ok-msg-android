@@ -55,7 +55,7 @@ import java.util.regex.Pattern;
 import eu.siacs.conversations.Config;
 import eu.siacs.conversations.R;
 import eu.siacs.conversations.entities.Account;
-import eu.siacs.conversations.entities.Contact;
+import eu.siacs.conversations.entities.ListItem;
 import eu.siacs.conversations.entities.Roster;
 import eu.siacs.conversations.ui.SettingsActivity;
 import eu.siacs.conversations.ui.text.FixedURLSpan;
@@ -339,11 +339,13 @@ public class MyLinkify {
             Uri uri = Uri.parse(urlspan.getURL());
             if ("xmpp".equals(uri.getScheme())) {
                 try {
-                    Contact contact = roster.getContact(Jid.of(uri.getSchemeSpecificPart()));
+                    Jid jid = new XmppUri(uri).getJid();
+                    ListItem item = account.getBookmark(jid);
+                    if (item == null) item = roster.getContact(jid);
                     body.replace(
                         body.getSpanStart(urlspan),
                         body.getSpanEnd(urlspan),
-                        contact.getDisplayName()
+                        item.getDisplayName()
                     );
                 } catch (final IllegalArgumentException e) { /* bad JID */ }
             }
