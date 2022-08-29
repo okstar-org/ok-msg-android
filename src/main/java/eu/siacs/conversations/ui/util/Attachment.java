@@ -36,6 +36,7 @@ import android.net.Uri;
 import android.os.Parcel;
 import android.os.Parcelable;
 import android.util.Log;
+import org.jetbrains.annotations.NotNull;
 
 import com.google.common.base.MoreObjects;
 
@@ -90,6 +91,7 @@ public class Attachment implements Parcelable {
         return type;
     }
 
+    @NotNull
     @Override
     public String toString() {
         return MoreObjects.toStringHelper(this)
