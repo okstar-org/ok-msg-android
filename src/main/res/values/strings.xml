@@ -1215,4 +1215,8 @@
     <string name="pref_choose_camera_summary">Choose a custom camera app</string>
     <string name="vector_graphic">vector graphic</string>
     <string name="multimedia_file">multimedia file</string>
+    <string name="title_undo_swipe_out_group_chat">Undo removing group chat</string>
+    <string name="title_undo_swipe_out_channel">Undo removing channel</string>
+    <string name="title_undo_swipe_out_conversation">Undo removing chat</string>
+    <string name="undo">Undo</string>
 </resources>
