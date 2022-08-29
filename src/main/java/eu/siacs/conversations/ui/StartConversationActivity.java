@@ -838,11 +838,15 @@ public class StartConversationActivity extends XmppActivity implements XmppConne
 
     @Override
     protected void onBackendConnected() {
-        xmppConnectionService.getQuickConversationsService().considerSyncBackground(false);
+
+        if (Build.VERSION.SDK_INT < Build.VERSION_CODES.M || checkSelfPermission(Manifest.permission.READ_CONTACTS) == PackageManager.PERMISSION_GRANTED) {
+            xmppConnectionService.getQuickConversationsService().considerSyncBackground(false);
+        }
         if (mPostponedActivityResult != null) {
             onActivityResult(mPostponedActivityResult.first, RESULT_OK, mPostponedActivityResult.second);
             this.mPostponedActivityResult = null;
         }
+        this.mActivatedAccounts.clear();
         this.mActivatedAccounts.addAll(AccountUtils.getEnabledAccounts(xmppConnectionService));
         configureHomeButton();
         Intent intent = pendingViewIntent.pop();
