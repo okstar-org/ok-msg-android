@@ -180,21 +180,20 @@ public class FileBackend {
 
     public static Uri getMediaUri(Context context, File file) {
         final String filePath = file.getAbsolutePath();
-        final Cursor cursor;
-        try {
+        try (final Cursor
             cursor = context.getContentResolver().query(
                     MediaStore.Images.Media.EXTERNAL_CONTENT_URI,
                     new String[]{MediaStore.Images.Media._ID},
                     MediaStore.Images.Media.DATA + "=? ",
-                    new String[]{filePath}, null);
-        } catch (SecurityException e) {
-            return null;
-        }
-        if (cursor != null && cursor.moveToFirst()) {
-            final int id = cursor.getInt(cursor.getColumnIndex(MediaStore.MediaColumns._ID));
-            cursor.close();
+                new String[]{filePath}, null)) {
+            if (cursor != null && cursor.moveToFirst()) {
+                final int id =
+                        cursor.getInt(cursor.getColumnIndexOrThrow(MediaStore.MediaColumns._ID));
             return Uri.withAppendedPath(MediaStore.Images.Media.EXTERNAL_CONTENT_URI, String.valueOf(id));
-        } else {
+            } else {
+                return null;
+            }
+        } catch (final Exception e) {
             return null;
         }
     }
@@ -1589,18 +1588,17 @@ public class FileBackend {
         updateFileParams(message, null);
     }
 
-    public void updateFileParams(Message message, String url) {
-        DownloadableFile file = getFile(message);
+    public void updateFileParams(final Message message, final String url) {
+        final boolean encrypted =
+                message.getEncryption() == Message.ENCRYPTION_PGP
+                        || message.getEncryption() == Message.ENCRYPTION_DECRYPTED;
+        final DownloadableFile file = getFile(message);
         final String mime = file.getMimeType();
-        final boolean privateMessage = message.isPrivateMessage();
-        final boolean ambiguous = MimeUtils.AMBIGUOUS_CONTAINER_FORMATS.contains(mime);
-        final boolean image = message.getType() == Message.TYPE_IMAGE || (mime != null && mime.startsWith("image/"));
+        final boolean image =
+                message.getType() == Message.TYPE_IMAGE
+                        || (mime != null && mime.startsWith("image/"));
         final boolean isGif = image & (mime != null && mime.equalsIgnoreCase("image/gif"));
-        final boolean video = mime != null && mime.startsWith("video/");
-        final boolean audio = mime != null && mime.startsWith("audio/");
-        final boolean vcard = mime != null && mime.contains("vcard");
-        final boolean apk = mime != null && mime.equals("application/vnd.android.package-archive");
-        final boolean pdf = "application/pdf".equals(mime);
+        final boolean privateMessage = message.isPrivateMessage();
         /* file params:
          1  |    2     |   3   |    4    |    5    |     6           |
                        | image/video/pdf | a/v/gif | vcard/apk/audio |
@@ -1610,67 +1608,80 @@ public class FileBackend {
         if (url != null) {
             body.append(url); // 1
         }
-        body.append('|').append(file.getSize()); // 2
-        if (ambiguous) {
-            try {
-                final Dimensions dimensions = getVideoDimensions(file);
-                if (dimensions.valid()) {
-                    Log.d(Config.LOGTAG, "ambiguous file " + mime + " is video");
-                    body.append('|')
-                            .append(dimensions.width).append('|') // 3
-                            .append(dimensions.height); // 4
-                } else {
+        if (encrypted && !file.exists()) {
+            Log.d(Config.LOGTAG, "skipping updateFileParams because file is encrypted");
+            final DownloadableFile encryptedFile = getFile(message, false);
+            body.append('|').append(encryptedFile.getSize()); // 2
+        } else {
+            Log.d(Config.LOGTAG, "running updateFileParams");
+            final boolean ambiguous = MimeUtils.AMBIGUOUS_CONTAINER_FORMATS.contains(mime);
+            final boolean video = mime != null && mime.startsWith("video/");
+            final boolean audio = mime != null && mime.startsWith("audio/");
+            final boolean vcard = mime != null && mime.contains("vcard");
+            final boolean apk = mime != null && mime.equals("application/vnd.android.package-archive");
+            final boolean pdf = "application/pdf".equals(mime);
+            body.append('|').append(file.getSize()); // 2
+            if (ambiguous) {
+                try {
+                    final Dimensions dimensions = getVideoDimensions(file);
+                    if (dimensions.valid()) {
+                        Log.d(Config.LOGTAG, "ambiguous file " + mime + " is video");
+                        body.append('|')
+                                .append(dimensions.width).append('|') // 3
+                                .append(dimensions.height); // 4
+                    } else {
+                        Log.d(Config.LOGTAG, "ambiguous file " + mime + " is audio");
+                        body.append("|0|0|").append(getMediaRuntime(file, false)) // 5
+                                .append('|').append(getAudioTitleArtist(file)); // 6
+                    }
+                } catch (final NotAVideoFile e) {
                     Log.d(Config.LOGTAG, "ambiguous file " + mime + " is audio");
                     body.append("|0|0|").append(getMediaRuntime(file, false)) // 5
                             .append('|').append(getAudioTitleArtist(file)); // 6
                 }
-            } catch (final NotAVideoFile e) {
-                Log.d(Config.LOGTAG, "ambiguous file " + mime + " is audio");
-                body.append("|0|0|").append(getMediaRuntime(file, false)) // 5
-                        .append('|').append(getAudioTitleArtist(file)); // 6
-            }
-        } else if (image || video || pdf) {
-            try {
-                final Dimensions dimensions;
-                if (video) {
-                    dimensions = getVideoDimensions(file);
-                } else if (pdf) {
-                    dimensions = getPDFDimensions(file);
-                } else {
-                    dimensions = getImageDimensions(file);
-                }
-                if (dimensions.valid()) {
-                    body.append('|')
-                            .append(dimensions.width) // 3
-                            .append('|')
-                            .append(dimensions.height); // 4
-                    if (isGif || video) {
-                        body.append("|").append(getMediaRuntime(file, isGif)); // 5
+            } else if (image || video || pdf) {
+                try {
+                    final Dimensions dimensions;
+                    if (video) {
+                        dimensions = getVideoDimensions(file);
+                    } else if (pdf) {
+                        dimensions = getPDFDimensions(file);
+                    } else {
+                        dimensions = getImageDimensions(file);
+                    }
+                    if (dimensions.valid()) {
+                        body.append('|')
+                                .append(dimensions.width) // 3
+                                .append('|')
+                                .append(dimensions.height); // 4
+                        if (isGif || video) {
+                            body.append("|").append(getMediaRuntime(file, isGif)); // 5
+                        }
+                    }
+                } catch (Exception notAVideoFile) {
+                    Log.d(Config.LOGTAG, "file with mime type " + file.getMimeType() + " was not a video file, trying to handle it as audio file");
+                    try {
+                        body.append("|0|0|")  // 3, 4
+                                .append(getMediaRuntime(file, false)) // 5
+                                .append('|')
+                                .append(getAudioTitleArtist(file)); // 6
+                    } catch (Exception e) {
+                        Log.d(Config.LOGTAG, "file with mime type " + file.getMimeType() + " was neither a video file nor an audio file");
+                        //fall threw
                     }
                 }
-            } catch (NotAVideoFile notAVideoFile) {
-                Log.d(Config.LOGTAG, "file with mime type " + file.getMimeType() + " was not a video file, trying to handle it as audio file");
-                try {
-                    body.append("|0|0|")  // 3, 4
-                            .append(getMediaRuntime(file, false)) // 5
-                            .append('|')
-                            .append(getAudioTitleArtist(file)); // 6
-                } catch (Exception e) {
-                    Log.d(Config.LOGTAG, "file with mime type " + file.getMimeType() + " was neither a video file nor an audio file");
-                    //fall threw
-                }
+            } else if (audio) {
+                body.append("|0|0|") // 3, 4
+                        .append(getMediaRuntime(file, false)) // 5
+                        .append('|')
+                        .append(getAudioTitleArtist(file)); // 6
+            } else if (vcard) {
+                body.append("|0|0|0|") // 3, 4, 5
+                        .append(getVCard(file)); // 6
+            } else if (apk) {
+                body.append("|0|0|0|") // 3, 4, 5
+                        .append(getAPK(file, mXmppConnectionService.getApplicationContext())); // 6
             }
-        } else if (audio) {
-            body.append("|0|0|") // 3, 4
-                    .append(getMediaRuntime(file, false)) // 5
-                    .append('|')
-                    .append(getAudioTitleArtist(file)); // 6
-        } else if (vcard) {
-            body.append("|0|0|0|") // 3, 4, 5
-                    .append(getVCard(file)); // 6
-        } else if (apk) {
-            body.append("|0|0|0|") // 3, 4, 5
-                    .append(getAPK(file, mXmppConnectionService.getApplicationContext())); // 6
         }
         message.setBody(body.toString());
         message.setFileDeleted(false);
@@ -1723,12 +1734,14 @@ public class FileBackend {
             try {
                 final MediaMetadataRetriever mediaMetadataRetriever = new MediaMetadataRetriever();
                 mediaMetadataRetriever.setDataSource(file.toString());
-                final String value = mediaMetadataRetriever.extractMetadata(MediaMetadataRetriever.METADATA_KEY_DURATION);
+                final String value =
+                        mediaMetadataRetriever.extractMetadata(
+                                MediaMetadataRetriever.METADATA_KEY_DURATION);
                 if (Strings.isNullOrEmpty(value)) {
                     return 0;
                 }
                 return Integer.parseInt(value);
-            } catch (NumberFormatException e) {
+            } catch (final IllegalArgumentException e) {
                 return 0;
             }
         }

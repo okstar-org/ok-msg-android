@@ -59,6 +59,7 @@ import eu.siacs.conversations.ui.ManageAccountActivity;
 import eu.siacs.conversations.utils.BackupFileHeader;
 import eu.siacs.conversations.utils.SerialSingleThreadExecutor;
 import eu.siacs.conversations.xmpp.Jid;
+import static eu.siacs.conversations.utils.Compatibility.s;
 
 public class ImportBackupService extends Service {
 
@@ -306,7 +307,9 @@ public class ImportBackupService extends Service {
         mBuilder.setContentTitle(getString(R.string.notification_restored_backup_title))
                 .setContentText(getString(R.string.notification_restored_backup_subtitle))
                 .setAutoCancel(true)
-                .setContentIntent(PendingIntent.getActivity(this, 145, new Intent(this, ManageAccountActivity.class), PendingIntent.FLAG_UPDATE_CURRENT))
+                .setContentIntent(PendingIntent.getActivity(this, 145, new Intent(this, ManageAccountActivity.class), s()
+                        ? PendingIntent.FLAG_IMMUTABLE | PendingIntent.FLAG_UPDATE_CURRENT
+                        : PendingIntent.FLAG_UPDATE_CURRENT))
                 .setSmallIcon(R.drawable.ic_unarchive_white_24dp);
         notificationManager.notify(IMPORT_BACKUP_NOTIFICATION_ID, mBuilder.build());
     }

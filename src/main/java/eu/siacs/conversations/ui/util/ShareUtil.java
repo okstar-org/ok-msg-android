@@ -44,6 +44,9 @@ import eu.siacs.conversations.utils.Patterns;
 import eu.siacs.conversations.utils.XmppUri;
 import eu.siacs.conversations.xmpp.Jid;
 import me.drakeet.support.toast.ToastCompat;
+import android.net.Uri;
+import android.text.SpannableStringBuilder;
+import android.text.style.URLSpan;
 
 public class ShareUtil {
 
@@ -108,26 +111,25 @@ public class ShareUtil {
         }
     }
 
-    public static void copyLinkToClipboard(XmppActivity activity, Message message) {
-        String body = message.getMergedBody().toString();
-        Matcher xmppPatternMatcher = Patterns.XMPP_PATTERN.matcher(body);
-        if (xmppPatternMatcher.find()) {
-            try {
-                Jid jid = new XmppUri(body.substring(xmppPatternMatcher.start(), xmppPatternMatcher.end())).getJid();
-                if (activity.copyTextToClipboard(jid.asBareJid().toString(), R.string.account_settings_jabber_id)) {
-                    ToastCompat.makeText(activity, R.string.jabber_id_copied_to_clipboard, ToastCompat.LENGTH_SHORT).show();
+    public static void copyLinkToClipboard(final XmppActivity activity, final Message message) {
+        final SpannableStringBuilder body = message.getMergedBody();
+        MyLinkify.addLinks(body, true);
+        for (final URLSpan urlspan : body.getSpans(0, body.length() - 1, URLSpan.class)) {
+            final Uri uri = Uri.parse(urlspan.getURL());
+            if ("xmpp".equals(uri.getScheme())) {
+                try {
+                    final Jid jid = new XmppUri(uri).getJid();
+                    if (activity.copyTextToClipboard(jid.asBareJid().toString(), R.string.account_settings_jabber_id)) {
+                        ToastCompat.makeText(activity, R.string.jabber_id_copied_to_clipboard, ToastCompat.LENGTH_SHORT).show();
+                    }
+                    return;
+                } catch (final Exception e) {
+                    return;
                 }
-                return;
-            } catch (Exception e) {
-                e.printStackTrace();
-                return;
-            }
-        }
-        Matcher webUrlPatternMatcher = Patterns.AUTOLINK_WEB_URL.matcher(body);
-        if (webUrlPatternMatcher.find()) {
-            String url = body.substring(webUrlPatternMatcher.start(), webUrlPatternMatcher.end());
-            if (activity.copyTextToClipboard(url, R.string.web_address)) {
-                ToastCompat.makeText(activity, R.string.url_copied_to_clipboard, ToastCompat.LENGTH_SHORT).show();
+            } else {
+                if (activity.copyTextToClipboard(urlspan.getURL(), R.string.web_address)) {
+                    ToastCompat.makeText(activity, R.string.url_copied_to_clipboard, ToastCompat.LENGTH_SHORT).show();
+                }
             }
         }
     }
