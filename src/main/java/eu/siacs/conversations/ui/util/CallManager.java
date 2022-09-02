@@ -30,9 +30,6 @@ import eu.siacs.conversations.xmpp.jingle.OngoingRtpSession;
 import eu.siacs.conversations.xmpp.jingle.RtpCapability;
 import me.drakeet.support.toast.ToastCompat;
 
-import static eu.siacs.conversations.ui.ConversationFragment.REQUEST_START_AUDIO_CALL;
-import static eu.siacs.conversations.ui.ConversationFragment.REQUEST_START_VIDEO_CALL;
-
 public class CallManager {
 
     public static void checkPermissionAndTriggerAudioCall(XmppActivity activity, Conversation conversation) {
