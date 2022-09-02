@@ -147,6 +147,7 @@
     <string name="account_status_tls_error_domain">Domain not verifiable</string>
     <string name="account_status_policy_violation">Policy violation</string>
     <string name="account_status_incompatible_server">Incompatible server</string>
+    <string name="account_status_incompatible_client">Incompatible client</string>
     <string name="account_status_stream_error">Stream error</string>
     <string name="encryption_choice_unencrypted">Unencrypted</string>
     <string name="encryption_choice_otr">OTR</string>
