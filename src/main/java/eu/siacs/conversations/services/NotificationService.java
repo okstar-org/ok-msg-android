@@ -26,7 +26,7 @@ import android.text.style.ForegroundColorSpan;
 import android.text.style.StyleSpan;
 import android.util.DisplayMetrics;
 import android.util.Log;
-
+import com.google.common.base.Joiner;
 import androidx.annotation.RequiresApi;
 import androidx.core.app.NotificationCompat;
 import androidx.core.app.NotificationCompat.BigPictureStyle;
@@ -1056,18 +1056,14 @@ public class NotificationService {
         final Builder builder =
                 new NotificationCompat.Builder(mXmppConnectionService, MISSED_CALLS_CHANNEL_ID);
         int totalCalls = 0;
-        final StringBuilder names = new StringBuilder();
+        final List<String> names = new ArrayList<>();
         long lastTime = 0;
-        for (Map.Entry<Conversational, MissedCallsInfo> entry : mMissedCalls.entrySet()) {
+        for (final Map.Entry<Conversational, MissedCallsInfo> entry : mMissedCalls.entrySet()) {
             final Conversational conversation = entry.getKey();
             final MissedCallsInfo missedCallsInfo = entry.getValue();
-            names.append(conversation.getContact().getDisplayName());
-            names.append(", ");
+            names.add(conversation.getContact().getDisplayName());
             totalCalls += missedCallsInfo.getNumberOfCalls();
             lastTime = Math.max(lastTime, missedCallsInfo.getLastTime());
-        }
-        if (names.length() >= 2) {
-            names.delete(names.length() - 2, names.length());
         }
         final String title =
                 (totalCalls == 1)
@@ -1082,7 +1078,7 @@ public class NotificationService {
         builder.setContentTitle(title);
         builder.setTicker(title);
         if (!publicVersion) {
-            builder.setContentText(names.toString());
+            builder.setContentText(Joiner.on(", ").join(names));
         }
         builder.setSmallIcon(R.drawable.ic_missed_call_notification);
         builder.setGroupSummary(true);
@@ -1165,11 +1161,13 @@ public class NotificationService {
         Builder mBuilder = null;
         final NotificationCompat.InboxStyle style = new NotificationCompat.InboxStyle();
         style.setBigContentTitle(mXmppConnectionService.getResources().getQuantityString(R.plurals.x_unread_conversations, notifications.size(), notifications.size()));
-        final StringBuilder names = new StringBuilder();
+        final List<String> names = new ArrayList<>();
         Conversation conversation = null;
         for (final ArrayList<Message> messages : notifications.values()) {
-            if (messages.size() > 0) {
-                conversation = (Conversation) messages.get(0).getConversation();
+            if (messages.isEmpty()) {
+                continue;
+            }
+            conversation = (Conversation) messages.get(0).getConversation();
                 if (quietHours) {
                     mBuilder = new Builder(mXmppConnectionService, QUIET_HOURS_CHANNEL_ID);
                 } else if (notify) {
@@ -1194,17 +1192,12 @@ public class NotificationService {
                     styledString.setSpan(new StyleSpan(Typeface.BOLD), 0, name.length(), 0);
                     style.addLine(styledString);
                 }
-                names.append(name);
-                names.append(", ");
-            }
-        }
-        if (names.length() >= 2) {
-            names.delete(names.length() - 2, names.length());
+            names.add(name);
         }
         final String contentTitle = mXmppConnectionService.getResources().getQuantityString(R.plurals.x_unread_conversations, notifications.size(), notifications.size());
         mBuilder.setContentTitle(contentTitle);
         mBuilder.setTicker(contentTitle);
-        mBuilder.setContentText(names.toString());
+        mBuilder.setContentText(Joiner.on(", ").join(names));
         mBuilder.setStyle(style);
         if (conversation != null) {
             mBuilder.setContentIntent(createOpenConversationsIntent());
