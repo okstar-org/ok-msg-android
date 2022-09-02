@@ -103,7 +103,7 @@ import eu.siacs.conversations.ui.util.StyledAttributes;
 import eu.siacs.conversations.ui.util.UpdateHelper;
 import eu.siacs.conversations.utils.ExceptionHelper;
 import eu.siacs.conversations.utils.MenuDoubleTabUtil;
-import eu.siacs.conversations.utils.Namespace;
+import eu.siacs.conversations.xml.Namespace;
 import eu.siacs.conversations.utils.SignupUtils;
 import eu.siacs.conversations.utils.UIHelper;
 import eu.siacs.conversations.utils.XmppUri;

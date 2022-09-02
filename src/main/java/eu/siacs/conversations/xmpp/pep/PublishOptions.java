@@ -2,7 +2,7 @@ package eu.siacs.conversations.xmpp.pep;
 
 import android.os.Bundle;
 
-import eu.siacs.conversations.utils.Namespace;
+import eu.siacs.conversations.xml.Namespace;
 import eu.siacs.conversations.xml.Element;
 import eu.siacs.conversations.xmpp.stanzas.IqPacket;
 

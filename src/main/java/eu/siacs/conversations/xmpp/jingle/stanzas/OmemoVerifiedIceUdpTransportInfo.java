@@ -1,7 +1,7 @@
 package eu.siacs.conversations.xmpp.jingle.stanzas;
 
 
-import eu.siacs.conversations.utils.Namespace;
+import eu.siacs.conversations.xml.Namespace;
 
 public class OmemoVerifiedIceUdpTransportInfo extends IceUdpTransportInfo {
 

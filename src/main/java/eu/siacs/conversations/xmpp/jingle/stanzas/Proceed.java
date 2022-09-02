@@ -3,7 +3,7 @@ package eu.siacs.conversations.xmpp.jingle.stanzas;
 import com.google.common.base.Preconditions;
 import com.google.common.primitives.Ints;
 
-import eu.siacs.conversations.utils.Namespace;
+import eu.siacs.conversations.xml.Namespace;
 import eu.siacs.conversations.xml.Element;
 
 

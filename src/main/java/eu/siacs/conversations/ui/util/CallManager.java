@@ -10,6 +10,10 @@ import com.google.common.base.Optional;
 import java.util.ArrayList;
 import java.util.List;
 
+import static eu.siacs.conversations.ui.ConversationFragment.REQUEST_START_AUDIO_CALL;
+import static eu.siacs.conversations.ui.ConversationFragment.REQUEST_START_VIDEO_CALL;
+
+
 import eu.siacs.conversations.Config;
 import eu.siacs.conversations.R;
 import eu.siacs.conversations.entities.Account;
@@ -17,7 +21,7 @@ import eu.siacs.conversations.entities.Contact;
 import eu.siacs.conversations.entities.Conversation;
 import eu.siacs.conversations.ui.RtpSessionActivity;
 import eu.siacs.conversations.ui.XmppActivity;
-import eu.siacs.conversations.utils.Namespace;
+import eu.siacs.conversations.xml.Namespace;
 import eu.siacs.conversations.xmpp.Jid;
 import eu.siacs.conversations.xmpp.jingle.AbstractJingleConnection;
 import eu.siacs.conversations.xmpp.jingle.JingleConnectionManager;
