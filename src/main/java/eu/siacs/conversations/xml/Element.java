@@ -133,9 +133,8 @@ public class Element {
         return this;
     }
 
-    public Element removeAttribute(String name) {
+    public void removeAttribute(final String name) {
         this.attributes.remove(name);
-        return this;
     }
 
     public Element setAttributes(Hashtable<String, String> attributes) {
@@ -171,21 +170,21 @@ public class Element {
     public String toString() {
         final StringBuilder elementOutput = new StringBuilder();
         if ((content == null) && (children.size() == 0)) {
-            Tag emptyTag = Tag.empty(name);
-            emptyTag.setAtttributes(this.attributes);
-            elementOutput.append(emptyTag.toString());
+            final Tag emptyTag = Tag.empty(name);
+            emptyTag.setAttributes(this.attributes);
+            elementOutput.append(emptyTag);
         } else {
-            Tag startTag = Tag.start(name);
-            startTag.setAtttributes(this.attributes);
+            final Tag startTag = Tag.start(name);
+            startTag.setAttributes(this.attributes);
             elementOutput.append(startTag);
             if (content != null) {
                 elementOutput.append(XmlHelper.encodeEntities(content));
             } else {
-                for (Element child : children) {
+                for (final Element child : children) {
                     elementOutput.append(child.toString());
                 }
             }
-            Tag endTag = Tag.end(name);
+            final Tag endTag = Tag.end(name);
             elementOutput.append(endTag);
         }
         return elementOutput.toString();

@@ -78,7 +78,7 @@ import eu.siacs.conversations.services.MessageArchiveService;
 import eu.siacs.conversations.services.NotificationService;
 import eu.siacs.conversations.services.XmppConnectionService;
 import eu.siacs.conversations.utils.CryptoHelper;
-import eu.siacs.conversations.utils.Namespace;
+import eu.siacs.conversations.xml.Namespace;
 import eu.siacs.conversations.utils.Patterns;
 import eu.siacs.conversations.utils.Resolver;
 import eu.siacs.conversations.utils.SSLSocketHelper;
@@ -495,130 +495,106 @@ public class XmppConnection implements Runnable {
                 processStreamError(nextTag);
             } else if (nextTag.isStart("features")) {
                 processStreamFeatures(nextTag);
-            } else if (nextTag.isStart("proceed")) {
+            } else if (nextTag.isStart("proceed", Namespace.TLS)) {
                 switchOverToTls();
             } else if (nextTag.isStart("success")) {
-                final String challenge = tagReader.readElement(nextTag).getContent();
-                try {
-                    saslMechanism.getResponse(challenge);
-                } catch (final SaslMechanism.AuthenticationException e) {
-                    Log.e(Config.LOGTAG, String.valueOf(e));
-                    throw new StateChangingException(Account.State.UNAUTHORIZED);
+                final Element success = tagReader.readElement(nextTag);
+                if (processSuccess(success)) {
+                    break;
                 }
-                Log.d(Config.LOGTAG, account.getJid().asBareJid().toString() + ": logged in");
-                account.setKey(Account.PINNED_MECHANISM_KEY,
-                        String.valueOf(saslMechanism.getPriority()));
-                tagReader.reset();
-                sendStartStream();
-                final Tag tag = tagReader.readTag();
-                if (tag != null && tag.isStart("stream")) {
-                    processStream();
-                } else {
-                    throw new StateChangingException(Account.State.STREAM_OPENING_ERROR);
-                }
-                break;
+
+            } else if (nextTag.isStart("failure", Namespace.TLS)) {
+                throw new StateChangingException(Account.State.TLS_ERROR);
             } else if (nextTag.isStart("failure")) {
                 final Element failure = tagReader.readElement(nextTag);
-                if (Namespace.SASL.equals(failure.getNamespace())) {
-                    if (failure.hasChild("temporary-auth-failure")) {
-                        throw new StateChangingException(Account.State.TEMPORARY_AUTH_FAILURE);
-                    } else if (failure.hasChild("account-disabled")) {
-                        final String text = failure.findChildContent("text");
-                        if ( Strings.isNullOrEmpty(text)) {
-                            throw new StateChangingException(Account.State.UNAUTHORIZED);
-                        }
-                        final Matcher matcher = Patterns.AUTOLINK_WEB_URL.matcher(text);
-                        if (matcher.find()) {
-                            final HttpUrl url;
-                            try {
-                                url = HttpUrl.get(text.substring(matcher.start(), matcher.end()));
-                            } catch (final IllegalArgumentException e) {
-                                throw new StateChangingException(Account.State.UNAUTHORIZED);
-                            }
-                            if (url.isHttps()) {
-                                this.redirectionUrl = url;
-                                throw new StateChangingException(Account.State.PAYMENT_REQUIRED);
-                            }
-                        }
-                    }
-                    throw new StateChangingException(Account.State.UNAUTHORIZED);
-                } else if (Namespace.TLS.equals(failure.getNamespace())) {
-                    throw new StateChangingException(Account.State.TLS_ERROR);
-                } else {
+                final SaslMechanism.Version version;
+                try {
+                    version = SaslMechanism.Version.of(failure);
+                } catch (final IllegalArgumentException e) {
                     throw new StateChangingException(Account.State.INCOMPATIBLE_SERVER);
                 }
+                Log.d(Config.LOGTAG, account.getJid().asBareJid() + ": login failure " + version);
+                if (failure.hasChild("temporary-auth-failure")) {
+                    throw new StateChangingException(Account.State.TEMPORARY_AUTH_FAILURE);
+                } else if (failure.hasChild("account-disabled")) {
+                    final String text = failure.findChildContent("text");
+                    if (Strings.isNullOrEmpty(text)) {
+                        throw new StateChangingException(Account.State.UNAUTHORIZED);
+                    }
+                    final Matcher matcher = Patterns.AUTOLINK_WEB_URL.matcher(text);
+                    if (matcher.find()) {
+                        final HttpUrl url;
+                        try {
+                            url = HttpUrl.get(text.substring(matcher.start(), matcher.end()));
+                        } catch (final IllegalArgumentException e) {
+                            throw new StateChangingException(Account.State.UNAUTHORIZED);
+                        }
+                        if (url.isHttps()) {
+                            this.redirectionUrl = url;
+                            throw new StateChangingException(Account.State.PAYMENT_REQUIRED);
+                        }
+                    }
+                }
+                throw new StateChangingException(Account.State.UNAUTHORIZED);
+            } else if (nextTag.isStart("continue", Namespace.SASL_2)) {
+                throw new StateChangingException(Account.State.INCOMPATIBLE_CLIENT);
             } else if (nextTag.isStart("challenge")) {
-                final String challenge = tagReader.readElement(nextTag).getContent();
-                final Element response = new Element("response", Namespace.SASL);
+                final Element challenge = tagReader.readElement(nextTag);
+                final SaslMechanism.Version version;
                 try {
-                    response.setContent(saslMechanism.getResponse(challenge));
+                    version = SaslMechanism.Version.of(challenge);
+                } catch (final IllegalArgumentException e) {
+                    throw new StateChangingException(Account.State.INCOMPATIBLE_SERVER);
+                }
+                final Element response;
+                if (version == SaslMechanism.Version.SASL) {
+                    response = new Element("response", Namespace.SASL);
+                } else if (version == SaslMechanism.Version.SASL_2) {
+                    response = new Element("response", Namespace.SASL_2);
+                } else {
+                    throw new AssertionError("Missing implementation for " + version);
+                }
+                try {
+                    response.setContent(saslMechanism.getResponse(challenge.getContent()));
                 } catch (final SaslMechanism.AuthenticationException e) {
                     // TODO: Send auth abort tag.
                     Log.e(Config.LOGTAG, e.toString());
+                    throw new StateChangingException(Account.State.UNAUTHORIZED);
                 }
                 tagWriter.writeElement(response);
             } else if (nextTag.isStart("enabled")) {
                 final Element enabled = tagReader.readElement(nextTag);
-                if ("true".equals(enabled.getAttribute("resume"))) {
+                if (enabled.getAttributeAsBoolean("resume")) {
                     this.streamId = enabled.getAttribute("id");
-                    Log.d(Config.LOGTAG, account.getJid().asBareJid().toString()
-                            + ": stream management(" + smVersion
-                            + ") enabled (resumable)");
+                    Log.d(
+                            Config.LOGTAG,
+                            account.getJid().asBareJid().toString()
+                                    + ": stream management("
+                                    + smVersion
+                                    + ") enabled (resumable)");
                 } else {
-                    Log.d(Config.LOGTAG, account.getJid().asBareJid().toString()
-                            + ": stream management(" + smVersion + ") enabled");
+                    Log.d(
+                            Config.LOGTAG,
+                            account.getJid().asBareJid().toString()
+                                    + ": stream management("
+                                    + smVersion
+                                    + ") enabled");
                 }
                 this.stanzasReceived = 0;
                 this.inSmacksSession = true;
                 final RequestPacket r = new RequestPacket(smVersion);
                 tagWriter.writeStanzaAsync(r);
             } else if (nextTag.isStart("resumed")) {
-                this.inSmacksSession = true;
-                this.isBound = true;
-                this.tagWriter.writeStanzaAsync(new RequestPacket(smVersion));
-                lastPacketReceived = SystemClock.elapsedRealtime();
                 final Element resumed = tagReader.readElement(nextTag);
-                final String h = resumed.getAttribute("h");
-                try {
-                    ArrayList<AbstractAcknowledgeableStanza> failedStanzas = new ArrayList<>();
-                    final boolean acknowledgedMessages;
-                    synchronized (this.mStanzaQueue) {
-                        final int serverCount = Integer.parseInt(h);
-                        if (serverCount < stanzasSent) {
-                            Log.d(Config.LOGTAG, account.getJid().asBareJid().toString()
-                                    + ": session resumed with lost packages");
-                            stanzasSent = serverCount;
-                        } else {
-                            Log.d(Config.LOGTAG, account.getJid().asBareJid().toString() + ": session resumed");
-                        }
-                        acknowledgedMessages = acknowledgeStanzaUpTo(serverCount);
-                        for (int i = 0; i < this.mStanzaQueue.size(); ++i) {
-                            failedStanzas.add(mStanzaQueue.valueAt(i));
-                        }
-                        mStanzaQueue.clear();
-                    }
-                    if (acknowledgedMessages) {
-                        mXmppConnectionService.updateConversationUi();
-                    }
-                    Log.d(Config.LOGTAG, "resending " + failedStanzas.size() + " stanzas");
-                    for (AbstractAcknowledgeableStanza packet : failedStanzas) {
-                        if (packet instanceof MessagePacket) {
-                            MessagePacket message = (MessagePacket) packet;
-                            mXmppConnectionService.markMessage(account,
-                                    message.getTo().asBareJid(),
-                                    message.getId(),
-                                    Message.STATUS_UNSEND);
-                        }
-                        sendPacket(packet);
-                    }
-                } catch (final NumberFormatException ignored) {
-                }
-                Log.d(Config.LOGTAG, account.getJid().asBareJid() + ": online with resource " + account.getResource());
-                changeStatus(Account.State.ONLINE);
+                processResumed(resumed);
             } else if (nextTag.isStart("r")) {
                 tagReader.readElement(nextTag);
                 if (Config.EXTENDED_SM_LOGGING) {
-                    Log.d(Config.LOGTAG, account.getJid().asBareJid() + ": acknowledging stanza #" + this.stanzasReceived);
+                    Log.d(
+                            Config.LOGTAG,
+                            account.getJid().asBareJid()
+                                    + ": acknowledging stanza #"
+                                    + this.stanzasReceived);
                 }
                 final AckPacket ack = new AckPacket(this.stanzasReceived, smVersion);
                 tagWriter.writeStanzaAsync(ack);
@@ -628,10 +604,19 @@ public class XmppConnection implements Runnable {
                     if (mWaitingForSmCatchup.compareAndSet(true, false)) {
                         final int messageCount = mSmCatchupMessageCounter.get();
                         final int pendingIQs = packetCallbacks.size();
-                        Log.d(Config.LOGTAG, account.getJid().asBareJid() + ": SM catchup complete (messages=" + messageCount + ", pending IQs=" + pendingIQs + ")");
+                        Log.d(
+                                Config.LOGTAG,
+                                account.getJid().asBareJid()
+                                        + ": SM catchup complete (messages="
+                                        + messageCount
+                                        + ", pending IQs="
+                                        + pendingIQs
+                                        + ")");
                         accountUiNeedsRefresh = true;
                         if (messageCount > 0) {
-                            mXmppConnectionService.getNotificationService().finishBacklog(true, account);
+                            mXmppConnectionService
+                                    .getNotificationService()
+                                    .finishBacklog(true, account);
                         }
                     }
                 }
@@ -652,27 +637,14 @@ public class XmppConnection implements Runnable {
                 } catch (NumberFormatException e) {
                     Log.d(Config.LOGTAG, account.getJid().asBareJid() + ": server send ack without sequence number");
                 } catch (NullPointerException e) {
-                    Log.d(Config.LOGTAG, account.getJid().asBareJid() + ": server send ack without sequence number");
+                    Log.d(
+                            Config.LOGTAG,
+                            account.getJid().asBareJid()
+                                    + ": server send ack without sequence number");
                 }
             } else if (nextTag.isStart("failed")) {
-                Element failed = tagReader.readElement(nextTag);
-                try {
-                    final int serverCount = Integer.parseInt(failed.getAttribute("h"));
-                    Log.d(Config.LOGTAG, account.getJid().asBareJid() + ": resumption failed but server acknowledged stanza #" + serverCount);
-                    final boolean acknowledgedMessages;
-                    synchronized (this.mStanzaQueue) {
-                        acknowledgedMessages = acknowledgeStanzaUpTo(serverCount);
-                    }
-                    if (acknowledgedMessages) {
-                        mXmppConnectionService.updateConversationUi();
-                    }
-                } catch (NumberFormatException e) {
-                    Log.d(Config.LOGTAG, account.getJid().asBareJid() + ": resumption failed");
-                } catch (NullPointerException e) {
-                    Log.d(Config.LOGTAG, account.getJid().asBareJid() + ": resumption failed");
-                }
-                resetStreamId();
-                sendBindRequest();
+                final Element failed = tagReader.readElement(nextTag);
+                processFailed(failed, true);
             } else if (nextTag.isStart("iq")) {
                 processIq(nextTag);
             } else if (nextTag.isStart("message")) {
@@ -684,6 +656,170 @@ public class XmppConnection implements Runnable {
         }
         if (nextTag != null && nextTag.isEnd("stream")) {
             streamCountDownLatch.countDown();
+        }
+    }
+
+    private boolean processSuccess(final Element success) throws IOException, XmlPullParserException {
+        final SaslMechanism.Version version;
+        try {
+            version = SaslMechanism.Version.of(success);
+        } catch (final IllegalArgumentException e) {
+            throw new StateChangingException(Account.State.INCOMPATIBLE_SERVER);
+        }
+        final String challenge;
+        if (version == SaslMechanism.Version.SASL) {
+            challenge = success.getContent();
+        } else if (version == SaslMechanism.Version.SASL_2) {
+            challenge = success.findChildContent("additional-data");
+        } else {
+            throw new AssertionError("Missing implementation for " + version);
+        }
+        try {
+            saslMechanism.getResponse(challenge);
+        } catch (final SaslMechanism.AuthenticationException e) {
+            Log.e(Config.LOGTAG, String.valueOf(e));
+            throw new StateChangingException(Account.State.UNAUTHORIZED);
+        }
+        Log.d(
+                Config.LOGTAG,
+                account.getJid().asBareJid().toString()
+                        + ": logged in (using "
+                        + version
+                        + ")");
+        account.setKey(
+                Account.PINNED_MECHANISM_KEY, String.valueOf(saslMechanism.getPriority()));
+        if (version == SaslMechanism.Version.SASL_2) {
+            final String authorizationIdentifier =
+                    success.findChildContent("authorization-identifier");
+            final Jid authorizationJid;
+            try {
+                authorizationJid = Strings.isNullOrEmpty(authorizationIdentifier) ? null : Jid.ofEscaped(authorizationIdentifier);
+            } catch (final IllegalArgumentException e) {
+                Log.d(Config.LOGTAG,account.getJid().asBareJid()+": SASL 2.0 authorization identifier was not a valid jid");
+                throw new StateChangingException(Account.State.BIND_FAILURE);
+            }
+            if (authorizationJid == null) {
+                throw new StateChangingException(Account.State.BIND_FAILURE);
+            }
+            Log.d(
+                    Config.LOGTAG,
+                    account.getJid().asBareJid()
+                            + ": SASL 2.0 authorization identifier was "
+                            + authorizationJid);
+            if (!account.getJid().getDomain().equals(authorizationJid.getDomain())) {
+                Log.d(Config.LOGTAG, account.getJid().asBareJid() + ": server tried to re-assign domain to " + authorizationJid.getDomain());
+                throw new StateChangingError(Account.State.BIND_FAILURE);
+            }
+            if (authorizationJid.isFullJid() && account.setJid(authorizationJid)) {
+                Log.d(Config.LOGTAG, account.getJid().asBareJid() + ": jid changed during SASL 2.0. updating database");
+                mXmppConnectionService.databaseBackend.updateAccount(account);
+            }
+            final Element resumed = success.findChild("resumed", "urn:xmpp:sm:3");
+            final Element failed = success.findChild("failed", "urn:xmpp:sm:3");
+            if (resumed != null && streamId != null) {
+                processResumed(resumed);
+            } else if (failed != null) {
+                processFailed(failed, false); // wait for new stream features
+            }
+        }
+        if (version == SaslMechanism.Version.SASL) {
+            tagReader.reset();
+            sendStartStream();
+            final Tag tag = tagReader.readTag();
+            if (tag != null && tag.isStart("stream")) {
+                processStream();
+                return true;
+            } else {
+                throw new StateChangingException(Account.State.STREAM_OPENING_ERROR);
+            }
+        } else {
+            return false;
+        }
+    }
+
+    private void processResumed(final Element resumed) throws StateChangingException {
+        this.inSmacksSession = true;
+        this.isBound = true;
+        this.tagWriter.writeStanzaAsync(new RequestPacket(smVersion));
+        lastPacketReceived = SystemClock.elapsedRealtime();
+        final String h = resumed.getAttribute("h");
+        if (h == null) {
+            resetStreamId();
+            throw new StateChangingException(Account.State.INCOMPATIBLE_SERVER);
+        }
+        final int serverCount;
+        try {
+            serverCount = Integer.parseInt(h);
+        } catch (final NumberFormatException e) {
+            resetStreamId();
+            throw new StateChangingException(Account.State.INCOMPATIBLE_SERVER);
+        }
+        final ArrayList<AbstractAcknowledgeableStanza> failedStanzas = new ArrayList<>();
+        final boolean acknowledgedMessages;
+        synchronized (this.mStanzaQueue) {
+            if (serverCount < stanzasSent) {
+                Log.d(
+                        Config.LOGTAG,
+                        account.getJid().asBareJid() + ": session resumed with lost packages");
+                stanzasSent = serverCount;
+            } else {
+                Log.d(Config.LOGTAG, account.getJid().asBareJid() + ": session resumed");
+            }
+            acknowledgedMessages = acknowledgeStanzaUpTo(serverCount);
+            for (int i = 0; i < this.mStanzaQueue.size(); ++i) {
+                failedStanzas.add(mStanzaQueue.valueAt(i));
+            }
+            mStanzaQueue.clear();
+        }
+        if (acknowledgedMessages) {
+            mXmppConnectionService.updateConversationUi();
+        }
+        Log.d(
+                Config.LOGTAG,
+                account.getJid().asBareJid() + ": resending " + failedStanzas.size() + " stanzas");
+        for (final AbstractAcknowledgeableStanza packet : failedStanzas) {
+            if (packet instanceof MessagePacket) {
+                MessagePacket message = (MessagePacket) packet;
+                mXmppConnectionService.markMessage(
+                        account,
+                        message.getTo().asBareJid(),
+                        message.getId(),
+                        Message.STATUS_UNSEND);
+            }
+            sendPacket(packet);
+        }
+        Log.d(
+                Config.LOGTAG,
+                account.getJid().asBareJid() + ": online with resource " + account.getResource());
+        changeStatus(Account.State.ONLINE);
+    }
+    private void processFailed(final Element failed, final boolean sendBindRequest) {
+        final int serverCount;
+        try {
+            serverCount = Integer.parseInt(failed.getAttribute("h"));
+        } catch (final NumberFormatException | NullPointerException e) {
+            Log.d(Config.LOGTAG, account.getJid().asBareJid() + ": resumption failed");
+            resetStreamId();
+            if (sendBindRequest) {
+                sendBindRequest();
+            }
+            return;
+        }
+        Log.d(
+                Config.LOGTAG,
+                account.getJid().asBareJid()
+                        + ": resumption failed but server acknowledged stanza #"
+                        + serverCount);
+        final boolean acknowledgedMessages;
+        synchronized (this.mStanzaQueue) {
+            acknowledgedMessages = acknowledgeStanzaUpTo(serverCount);
+        }
+        if (acknowledgedMessages) {
+            mXmppConnectionService.updateConversationUi();
+        }
+        resetStreamId();
+        if (sendBindRequest) {
+            sendBindRequest();
         }
     }
 
@@ -888,42 +1024,70 @@ public class XmppConnection implements Runnable {
 
     private void processStreamFeatures(final Tag currentTag) throws IOException {
         this.streamFeatures = tagReader.readElement(currentTag);
-        final boolean isSecure = features.encryptionEnabled || Config.ALLOW_NON_TLS_CONNECTIONS || account.isOnion();
+        final boolean isSecure =
+                features.encryptionEnabled || Config.ALLOW_NON_TLS_CONNECTIONS || account.isOnion();
         final boolean needsBinding = !isBound && !account.isOptionSet(Account.OPTION_REGISTER);
-        if (this.streamFeatures.hasChild("starttls") && !features.encryptionEnabled) {
+        if (this.streamFeatures.hasChild("starttls", Namespace.TLS)
+                && !features.encryptionEnabled) {
             sendStartTLS();
-        } else if (this.streamFeatures.hasChild("register") && account.isOptionSet(Account.OPTION_REGISTER)) {
+        } else if (this.streamFeatures.hasChild("register", Namespace.REGISTER_STREAM_FEATURE)
+                && account.isOptionSet(Account.OPTION_REGISTER)) {
             if (isSecure) {
                 register();
             } else {
-                Log.d(Config.LOGTAG, account.getJid().asBareJid() + ": unable to find STARTTLS for registration process " + XmlHelper.printElementNames(this.streamFeatures));
+                Log.d(
+                        Config.LOGTAG,
+                        account.getJid().asBareJid()
+                                + ": unable to find STARTTLS for registration process "
+                                + XmlHelper.printElementNames(this.streamFeatures));
                 throw new StateChangingException(Account.State.INCOMPATIBLE_SERVER);
             }
-        } else if (!this.streamFeatures.hasChild("register") && account.isOptionSet(Account.OPTION_REGISTER)) {
+        } else if (!this.streamFeatures.hasChild("register", Namespace.REGISTER_STREAM_FEATURE)
+                && account.isOptionSet(Account.OPTION_REGISTER)) {
             throw new StateChangingException(Account.State.REGISTRATION_NOT_SUPPORTED);
-        } else if (this.streamFeatures.hasChild("mechanisms") && shouldAuthenticate && isSecure) {
-            authenticate();
-        } else if (this.streamFeatures.hasChild("sm", "urn:xmpp:sm:" + smVersion) && streamId != null) {
+        } else if (this.streamFeatures.hasChild("mechanisms", Namespace.SASL_2)
+                && shouldAuthenticate
+                && isSecure) {
+            authenticate(SaslMechanism.Version.SASL_2);
+        } else if (this.streamFeatures.hasChild("mechanisms", Namespace.SASL)
+                && shouldAuthenticate
+                && isSecure) {
+            authenticate(SaslMechanism.Version.SASL);
+        } else if (this.streamFeatures.hasChild("sm", "urn:xmpp:sm:" + smVersion)
+                && streamId != null) {
             if (Config.EXTENDED_SM_LOGGING) {
-                Log.d(Config.LOGTAG, account.getJid().asBareJid() + ": resuming after stanza #" + stanzasReceived);
+                Log.d(
+                        Config.LOGTAG,
+                        account.getJid().asBareJid()
+                                + ": resuming after stanza #"
+                                + stanzasReceived);
             }
             final ResumePacket resume = new ResumePacket(this.streamId, stanzasReceived, smVersion);
             this.mSmCatchupMessageCounter.set(0);
             this.mWaitingForSmCatchup.set(true);
             this.tagWriter.writeStanzaAsync(resume);
         } else if (needsBinding) {
-            if (this.streamFeatures.hasChild("bind") && isSecure) {
+            if (this.streamFeatures.hasChild("bind", Namespace.BIND) && isSecure) {
                 sendBindRequest();
             } else {
-                Log.d(Config.LOGTAG, account.getJid().asBareJid() + ": unable to find bind feature " + XmlHelper.printElementNames(this.streamFeatures));
+                Log.d(
+                        Config.LOGTAG,
+                        account.getJid().asBareJid()
+                                + ": unable to find bind feature "
+                                + XmlHelper.printElementNames(this.streamFeatures));
                 throw new StateChangingException(Account.State.INCOMPATIBLE_SERVER);
             }
+        } else {
+            Log.d(
+                    Config.LOGTAG,
+                    account.getJid().asBareJid()
+                            + ": received NOP stream features "
+                            + this.streamFeatures);
         }
     }
 
-    private void authenticate() throws IOException {
+    private void authenticate(final SaslMechanism.Version version) throws IOException {
         final List<String> mechanisms = extractMechanisms(streamFeatures.findChild("mechanisms"));
-        final Element auth = new Element("auth", Namespace.SASL);
         if (mechanisms.contains(External.MECHANISM) && account.getPrivateKeyAlias() != null) {
             saslMechanism = new External(tagWriter, account, mXmppConnectionService.getRNG());
         } else if (mechanisms.contains(ScramSha512.MECHANISM)) {
@@ -939,28 +1103,47 @@ public class XmppConnection implements Runnable {
         } else if (mechanisms.contains(Anonymous.MECHANISM)) {
             saslMechanism = new Anonymous(tagWriter, account, mXmppConnectionService.getRNG());
         }
-        if (saslMechanism != null) {
-            final int pinnedMechanism = account.getKeyAsInt(Account.PINNED_MECHANISM_KEY, -1);
-            if (pinnedMechanism > saslMechanism.getPriority()) {
-                Log.e(Config.LOGTAG, "Auth failed. Authentication mechanism " + saslMechanism.getMechanism() +
-                        " has lower priority (" + saslMechanism.getPriority() +
-                        ") than pinned priority (" + pinnedMechanism +
-                        "). Possible downgrade attack?");
-                throw new StateChangingException(Account.State.DOWNGRADE_ATTACK);
-            }
-            Log.d(Config.LOGTAG, account.getJid().toString() + ": Authenticating with " + saslMechanism.getMechanism());
-            auth.setAttribute("mechanism", saslMechanism.getMechanism());
-            if (!saslMechanism.getClientFirstMessage().isEmpty()) {
-                auth.setContent(saslMechanism.getClientFirstMessage());
-            }
-            tagWriter.writeElement(auth);
-        } else {
+        if (saslMechanism == null) {
             Log.d(Config.LOGTAG, account.getJid().asBareJid() + ": unable to find supported SASL mechanism in " + mechanisms);
             throw new StateChangingException(Account.State.INCOMPATIBLE_SERVER);
         }
+        final int pinnedMechanism = account.getKeyAsInt(Account.PINNED_MECHANISM_KEY, -1);
+        if (pinnedMechanism > saslMechanism.getPriority()) {
+            Log.e(Config.LOGTAG, "Auth failed. Authentication mechanism " + saslMechanism.getMechanism() +
+                    " has lower priority (" + saslMechanism.getPriority() +
+                    ") than pinned priority (" + pinnedMechanism +
+                    "). Possible downgrade attack?");
+            throw new StateChangingException(Account.State.DOWNGRADE_ATTACK);
+        }
+        final String firstMessage = saslMechanism.getClientFirstMessage();
+        final Element authenticate;
+        if (version == SaslMechanism.Version.SASL) {
+            authenticate = new Element("auth", Namespace.SASL);
+            if (!Strings.isNullOrEmpty(firstMessage)) {
+                authenticate.setContent(firstMessage);
+            }
+        } else if (version == SaslMechanism.Version.SASL_2) {
+            authenticate = new Element("authenticate", Namespace.SASL_2);
+            if (!Strings.isNullOrEmpty(firstMessage)) {
+                authenticate.addChild("initial-response").setContent(firstMessage);
+            }
+            final Element inline = this.streamFeatures.findChild("inline", Namespace.SASL_2);
+            final boolean inlineStreamManagement = inline != null && inline.hasChild("sm", "urn:xmpp:sm:3");
+            if (inlineStreamManagement && streamId != null) {
+                final ResumePacket resume = new ResumePacket(this.streamId, stanzasReceived, smVersion);
+                this.mSmCatchupMessageCounter.set(0);
+                this.mWaitingForSmCatchup.set(true);
+                authenticate.addChild(resume);
+            }
+        } else {
+            throw new AssertionError("Missing implementation for " + version);
+        }
+        Log.d(Config.LOGTAG, account.getJid().toString() + ": Authenticating with "+version+ "/" + saslMechanism.getMechanism());
+        authenticate.setAttribute("mechanism", saslMechanism.getMechanism());
+        tagWriter.writeElement(authenticate);
     }
 
-    private List<String> extractMechanisms(final Element stream) {
+    private static List<String> extractMechanisms(final Element stream) {
         final ArrayList<String> mechanisms = new ArrayList<>(stream
                 .getChildren().size());
         for (final Element child : stream.getChildren()) {
@@ -1158,7 +1341,7 @@ public class XmppConnection implements Runnable {
                     Log.d(Config.LOGTAG, account.getJid() + ": disconnecting because of bind failure. (no jid)");
                 }
             } else {
-                Log.d(Config.LOGTAG, account.getJid() + ": disconnecting because of bind failure (" + packet.toString());
+                Log.d(Config.LOGTAG, account.getJid() + ": disconnecting because of bind failure (" + packet);
             }
             final Element error = packet.findChild("error");
             if (packet.getType() == IqPacket.TYPE.ERROR && error != null && error.hasChild("conflict")) {
@@ -1497,7 +1680,7 @@ public class XmppConnection implements Runnable {
                 features.carbonsEnabled = true;
             } else {
                 Log.d(Config.LOGTAG, account.getJid().asBareJid()
-                        + ": error enableing carbons " + packet.toString());
+                        + ": could not enable carbons " + packet);
             }
         });
     }
@@ -1522,7 +1705,7 @@ public class XmppConnection implements Runnable {
             }
             throw new StateChangingException(Account.State.POLICY_VIOLATION);
         } else {
-            Log.d(Config.LOGTAG, account.getJid().asBareJid() + ": stream error " + streamError.toString());
+            Log.d(Config.LOGTAG, account.getJid().asBareJid() + ": stream error " + streamError);
             throw new StateChangingException(Account.State.STREAM_ERROR);
         }
     }
@@ -1887,8 +2070,8 @@ public class XmppConnection implements Runnable {
             Log.d(Config.LOGTAG, "getting certificate chain");
             try {
                 return KeyChain.getCertificateChain(mXmppConnectionService, alias);
-            } catch (Exception e) {
-                Log.d(Config.LOGTAG, e.getMessage());
+            } catch (final Exception e) {
+                Log.d(Config.LOGTAG, "could not get certificate chain", e);
                 return new X509Certificate[0];
             }
         }

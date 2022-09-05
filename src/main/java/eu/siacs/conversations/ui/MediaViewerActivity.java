@@ -378,15 +378,17 @@ public class MediaViewerActivity extends XmppActivity implements AudioManager.On
         try {
             binding.messageVideoView.hideController();
             binding.speedDial.setVisibility(View.GONE);
-            if (Compatibility.runsTwentySix()) {
-                final Rational rational = new Rational(width, height);
-                final Rational clippedRational = Rationals.clip(rational);
-                final PictureInPictureParams params = new PictureInPictureParams.Builder()
-                        .setAspectRatio(clippedRational)
-                        .build();
-                this.enterPictureInPictureMode(params);
-            } else {
-                this.enterPictureInPictureMode();
+            if (supportsPIP()) {
+                if (Compatibility.runsTwentySix()) {
+                    final Rational rational = new Rational(width, height);
+                    final Rational clippedRational = Rationals.clip(rational);
+                    final PictureInPictureParams params = new PictureInPictureParams.Builder()
+                            .setAspectRatio(clippedRational)
+                            .build();
+                    this.enterPictureInPictureMode(params);
+                } else {
+                    this.enterPictureInPictureMode();
+                }
             }
         } catch (final IllegalStateException e) {
             // this sometimes happens on Samsung phones (possibly when Knox is enabled)
@@ -422,7 +424,7 @@ public class MediaViewerActivity extends XmppActivity implements AudioManager.On
 
     @Override
     public void onBackPressed() {
-        if (isVideo && isPlaying() && Compatibility.runsTwentyFour() && getPackageManager().hasSystemFeature(PackageManager.FEATURE_PICTURE_IN_PICTURE)) {
+        if (isVideo && isPlaying() && supportsPIP()) {
             PIPVideo();
         } else {
             super.onBackPressed();
@@ -484,7 +486,7 @@ public class MediaViewerActivity extends XmppActivity implements AudioManager.On
 
     private void stopPlayer() {
         if (player != null && isVideo) {
-            if ((Compatibility.runsTwentyFour()) && getPackageManager().hasSystemFeature(PackageManager.FEATURE_PICTURE_IN_PICTURE)) {
+            if (supportsPIP()) {
                 finishAndRemoveTask();
             }
             if (isPlaying()) {
@@ -594,5 +596,13 @@ public class MediaViewerActivity extends XmppActivity implements AudioManager.On
 
     private void hideFAB() {
         binding.speedDial.hide();
+    }
+
+    private boolean supportsPIP() {
+        if (Compatibility.runsTwentyFour()) {
+            return this.getPackageManager().hasSystemFeature(PackageManager.FEATURE_PICTURE_IN_PICTURE);
+        } else {
+            return false;
+        }
     }
 }

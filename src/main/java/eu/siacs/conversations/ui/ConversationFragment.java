@@ -152,7 +152,7 @@ import eu.siacs.conversations.utils.GeoHelper;
 import eu.siacs.conversations.utils.MenuDoubleTabUtil;
 import eu.siacs.conversations.utils.MessageUtils;
 import eu.siacs.conversations.utils.MimeUtils;
-import eu.siacs.conversations.utils.Namespace;
+import eu.siacs.conversations.xml.Namespace;
 import eu.siacs.conversations.utils.NickValidityChecker;
 import eu.siacs.conversations.utils.Patterns;
 import eu.siacs.conversations.utils.QuickLoader;
@@ -2954,6 +2954,9 @@ public class ConversationFragment extends XmppFragment implements EditMessage.Ke
                     break;
                 case KICKED:
                     showSnackbar(R.string.conference_kicked, R.string.join, joinMuc);
+                    break;
+                case TECHNICAL_PROBLEMS:
+                    showSnackbar(R.string.conference_technical_problems, R.string.try_again, joinMuc);
                     break;
                 case UNKNOWN:
                     showSnackbar(R.string.conference_unknown_error, R.string.join, joinMuc);

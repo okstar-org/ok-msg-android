@@ -16,6 +16,7 @@
     <string name="title_activity_manage_accounts">Manage accounts</string>
     <string name="title_activity_settings">Settings</string>
     <string name="conference_details">Group chat details</string>
+    <string name="conference_technical_problems">You left this group chat due to technical reasons</string>
     <string name="contact_details">Contact details</string>
     <string name="title_activity_sharewith">Share with conversation</string>
     <string name="title_activity_start_conversation">Start conversation</string>
@@ -146,6 +147,7 @@
     <string name="account_status_tls_error_domain">Domain not verifiable</string>
     <string name="account_status_policy_violation">Policy violation</string>
     <string name="account_status_incompatible_server">Incompatible server</string>
+    <string name="account_status_incompatible_client">Incompatible client</string>
     <string name="account_status_stream_error">Stream error</string>
     <string name="encryption_choice_unencrypted">Unencrypted</string>
     <string name="encryption_choice_otr">OTR</string>

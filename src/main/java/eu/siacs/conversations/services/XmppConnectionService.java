@@ -75,7 +75,7 @@ import androidx.annotation.BoolRes;
 import androidx.annotation.IntegerRes;
 import androidx.core.app.RemoteInput;
 import androidx.core.content.ContextCompat;
-
+import androidx.annotation.NonNull;
 import com.google.common.base.Objects;
 import com.google.common.base.Strings;
 import com.otaliastudios.transcoder.strategy.DefaultAudioStrategy;
@@ -163,7 +163,7 @@ import eu.siacs.conversations.utils.CryptoHelper;
 import eu.siacs.conversations.utils.EasyOnboardingInvite;
 import eu.siacs.conversations.utils.ExceptionHelper;
 import eu.siacs.conversations.utils.MimeUtils;
-import eu.siacs.conversations.utils.Namespace;
+import eu.siacs.conversations.xml.Namespace;
 import eu.siacs.conversations.utils.PhoneHelper;
 import eu.siacs.conversations.utils.QuickLoader;
 import eu.siacs.conversations.utils.ReplacingSerialSingleThreadExecutor;
@@ -2320,7 +2320,7 @@ public class XmppConnectionService extends Service {
                         restoreMessages(conversation);
                     }
                 }
-                mNotificationService.finishBacklog(false);
+                mNotificationService.finishBacklog();
                 restoredFromDatabaseLatch.countDown();
                 final long diffMessageRestore = SystemClock.elapsedRealtime() - startMessageRestore;
                 Log.d(Config.LOGTAG, "finished restoring messages in " + diffMessageRestore + "ms");
@@ -3445,6 +3445,71 @@ public class XmppConnectionService extends Service {
         }
     }
 
+    public void deleteAvatar(final Account account) {
+        final AtomicBoolean executed = new AtomicBoolean(false);
+        final Runnable onDeleted =
+                () -> {
+                    if (executed.compareAndSet(false, true)) {
+                        account.setAvatar(null);
+                        databaseBackend.updateAccount(account);
+                        getAvatarService().clear(account);
+                        updateAccountUi();
+                    }
+                };
+        deleteVcardAvatar(account, onDeleted);
+        deletePepNode(account, Namespace.AVATAR_DATA);
+        deletePepNode(account, Namespace.AVATAR_METADATA, onDeleted);
+    }
+
+    public void deletePepNode(final Account account, final String node) {
+        deletePepNode(account, node, null);
+    }
+
+    private void deletePepNode(final Account account, final String node, final Runnable runnable) {
+        final IqPacket request = mIqGenerator.deleteNode(node);
+        sendIqPacket(account, request, (a, packet) -> {
+            if (packet.getType() == IqPacket.TYPE.RESULT) {
+                Log.d(Config.LOGTAG, a.getJid().asBareJid() + ": successfully deleted pep node " + node);
+                if (runnable != null) {
+                    runnable.run();
+                }
+            } else {
+                Log.d(Config.LOGTAG, a.getJid().asBareJid() + ": failed to delete " + packet);
+            }
+        });
+    }
+
+    private void deleteVcardAvatar(final Account account, @NonNull final Runnable runnable) {
+        final IqPacket retrieveVcard = mIqGenerator.retrieveVcardAvatar(account.getJid().asBareJid());
+        sendIqPacket(account, retrieveVcard, (a, response) -> {
+            if (response.getType() != IqPacket.TYPE.RESULT) {
+                Log.d(Config.LOGTAG, a.getJid().asBareJid() + ": no vCard set. nothing to do");
+                return;
+            }
+            final Element vcard = response.findChild("vCard", "vcard-temp");
+            if (vcard == null) {
+                Log.d(Config.LOGTAG, a.getJid().asBareJid() + ": no vCard set. nothing to do");
+                return;
+            }
+            Element photo = vcard.findChild("PHOTO");
+            if (photo == null) {
+                photo = vcard.addChild("PHOTO");
+            }
+            photo.clearChildren();
+            IqPacket publication = new IqPacket(IqPacket.TYPE.SET);
+            publication.setTo(a.getJid().asBareJid());
+            publication.addChild(vcard);
+            sendIqPacket(account, publication, (a1, publicationResponse) -> {
+                if (publicationResponse.getType() == IqPacket.TYPE.RESULT) {
+                    Log.d(Config.LOGTAG, a1.getJid().asBareJid() + ": successfully deleted vcard avatar");
+                    runnable.run();
+                } else {
+                    Log.d(Config.LOGTAG, "failed to publish vcard " + publicationResponse.getErrorCondition());
+                }
+            });
+        });
+    }
+
     private boolean hasEnabledAccounts() {
         if (this.accounts == null) {
             return false; // set to false if accounts could not be fetched - used for notifications
@@ -4101,7 +4166,7 @@ public class XmppConnectionService extends Service {
                 if (result.getType() == IqPacket.TYPE.RESULT) {
                     publishAvatarMetadata(account, avatar, options, true, callback);
                 } else if (retry && PublishOptions.preconditionNotMet(result)) {
-                    pushNodeConfiguration(account, "urn:xmpp:avatar:data", options, new OnConfigurationPushed() {
+                    pushNodeConfiguration(account, Namespace.AVATAR_DATA, options, new OnConfigurationPushed() {
                         @Override
                         public void onPushSucceeded() {
                             Log.d(Config.LOGTAG, account.getJid().asBareJid() + ": changed node configuration for avatar node");
@@ -4125,33 +4190,6 @@ public class XmppConnectionService extends Service {
         });
     }
 
-    public void deleteAvatar(Account account) {
-        Log.d(Config.LOGTAG, account.getJid().asBareJid() + ": deleting avatar");
-        IqPacket packet = this.mIqGenerator.deleteAvatar();
-        this.sendIqPacket(account, packet, new OnIqPacketReceived() {
-
-            @Override
-            public void onIqPacketReceived(Account account, IqPacket result) {
-                if (result.getType() == IqPacket.TYPE.RESULT) {
-                    Log.d(Config.LOGTAG, account.getJid().asBareJid() + ": avatar deletion succeed");
-                    if (account.getAvatar() != null) {
-                        if (getFileBackend().deleteAvatar(getFileBackend().getAvatarFile(account.getAvatar()))) {
-                            getAvatarService().clear(account);
-                            databaseBackend.updateAccount(account);
-                            notifyAccountAvatarHasChanged(account);
-                            Log.d(Config.LOGTAG, account.getJid().asBareJid() + ": local avatar cache deletion succeed");
-                        }
-                    }
-                    //todo callback
-                } else {
-                    Element error = result.findChild("error");
-                    Log.d(Config.LOGTAG, account.getJid().asBareJid() + ": avatar deletion failed " + (error != null ? error.toString() : ""));
-                    // todo callback
-                }
-            }
-        });
-    }
-
     public void publishAvatarMetadata(Account account, final Avatar avatar, final Bundle options, final boolean retry, final OnAvatarPublication callback) {
         final IqPacket packet = XmppConnectionService.this.mIqGenerator.publishAvatarMetadata(avatar, options);
         sendIqPacket(account, packet, new OnIqPacketReceived() {
@@ -4168,7 +4206,7 @@ public class XmppConnectionService extends Service {
                         callback.onAvatarPublicationSucceeded();
                     }
                 } else if (retry && PublishOptions.preconditionNotMet(result)) {
-                    pushNodeConfiguration(account, "urn:xmpp:avatar:metadata", options, new OnConfigurationPushed() {
+                    pushNodeConfiguration(account, Namespace.AVATAR_METADATA, options, new OnConfigurationPushed() {
                         @Override
                         public void onPushSucceeded() {
                             Log.d(Config.LOGTAG, account.getJid().asBareJid() + ": changed node configuration for avatar meta data node");

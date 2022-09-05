@@ -14,7 +14,7 @@ import android.view.View.OnLongClickListener;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
-
+import androidx.annotation.NonNull;
 import androidx.annotation.StringRes;
 
 import com.theartofdev.edmodo.cropper.CropImage;
@@ -82,11 +82,6 @@ public class PublishProfilePictureActivity extends XmppActivity implements XmppC
             togglePublishButton(true, R.string.publish);
         });
     }
-    @Override
-    public boolean onCreateOptionsMenu(final Menu menu) {
-        getMenuInflater().inflate(R.menu.activity_publish_avatar, menu);
-        return super.onCreateOptionsMenu(menu);
-    }
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -106,18 +101,25 @@ public class PublishProfilePictureActivity extends XmppActivity implements XmppC
                 xmppConnectionService.publishAvatar(account, avatarUri, this);
             }
         });
-        this.cancelButton.setOnClickListener(v -> {
-            if (mInitialAccountSetup) {
-                final Intent intent = new Intent(getApplicationContext(), StartConversationActivity.class);
-                if (xmppConnectionService != null && xmppConnectionService.getAccounts().size() == 1) {
-                    intent.putExtra("init", true);
-                }
-                StartConversationActivity.addInviteUri(intent, getIntent());
-                intent.putExtra(EXTRA_ACCOUNT, account.getJid().asBareJid().toEscapedString());
-                startActivity(intent);
-            }
-            finish();
-        });
+        this.cancelButton.setOnClickListener(
+                v -> {
+                    if (mInitialAccountSetup) {
+                        final Intent intent =
+                                new Intent(
+                                        getApplicationContext(), StartConversationActivity.class);
+                        if (xmppConnectionService != null
+                                && xmppConnectionService.getAccounts().size() == 1) {
+                            intent.putExtra("init", true);
+                        }
+                        StartConversationActivity.addInviteUri(intent, getIntent());
+                        if (account != null) {
+                            intent.putExtra(
+                                    EXTRA_ACCOUNT, account.getJid().asBareJid().toEscapedString());
+                        }
+                        startActivity(intent);
+                    }
+                    finish();
+                });
         this.avatar.setOnClickListener(v -> chooseAvatar(this));
         this.defaultUri = PhoneHelper.getProfilePictureUri(getApplicationContext());
         if (savedInstanceState != null) {
@@ -127,7 +129,25 @@ public class PublishProfilePictureActivity extends XmppActivity implements XmppC
     }
 
     @Override
-    public void onSaveInstanceState(Bundle outState) {
+    public boolean onCreateOptionsMenu(@NonNull final Menu menu) {
+        getMenuInflater().inflate(R.menu.activity_publish_avatar, menu);
+        return true;
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(final MenuItem item) {
+        if (item.getItemId() == R.id.action_delete_avatar) {
+            if (xmppConnectionService != null && account != null) {
+                xmppConnectionService.deleteAvatar(account);
+            }
+            return true;
+        } else {
+            return super.onOptionsItemSelected(item);
+        }
+    }
+
+    @Override
+    public void onSaveInstanceState(@NonNull Bundle outState) {
         if (this.avatarUri != null) {
             outState.putParcelable("uri", this.avatarUri);
         }
@@ -282,17 +302,6 @@ public class PublishProfilePictureActivity extends XmppActivity implements XmppC
     @Override
     public void onAccountUpdate() {
         refreshUi();
-    }
-    public boolean onOptionsItemSelected(final MenuItem item) {
-        switch (item.getItemId()) {
-            case R.id.action_delete_avatar:
-                if (account != null) {
-                    xmppConnectionService.deleteAvatar(account);
-                    finish();
-                }
-                break;
-        }
-        return super.onOptionsItemSelected(item);
     }
 
 }

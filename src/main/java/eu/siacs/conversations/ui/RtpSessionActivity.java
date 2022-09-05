@@ -26,6 +26,7 @@ import androidx.annotation.NonNull;
 import androidx.annotation.RequiresApi;
 import androidx.annotation.StringRes;
 import androidx.databinding.DataBindingUtil;
+import androidx.annotation.Nullable;
 
 import com.google.common.base.Optional;
 import com.google.common.base.Preconditions;
@@ -35,7 +36,6 @@ import com.google.common.collect.ImmutableSet;
 import com.google.common.util.concurrent.FutureCallback;
 import com.google.common.util.concurrent.Futures;
 
-import org.checkerframework.checker.nullness.compatqual.NullableDecl;
 import org.webrtc.RendererCommon;
 import org.webrtc.SurfaceViewRenderer;
 import org.webrtc.VideoTrack;
@@ -58,7 +58,7 @@ import eu.siacs.conversations.ui.util.AvatarWorkerTask;
 import eu.siacs.conversations.ui.util.MainThreadExecutor;
 import eu.siacs.conversations.ui.util.Rationals;
 import eu.siacs.conversations.utils.Compatibility;
-import eu.siacs.conversations.utils.Namespace;
+import eu.siacs.conversations.xml.Namespace;
 import eu.siacs.conversations.utils.PermissionUtils;
 import eu.siacs.conversations.utils.TimeFrameUtils;
 import eu.siacs.conversations.xmpp.Jid;
@@ -977,7 +977,7 @@ public class RtpSessionActivity extends XmppActivity
                 requireRtpConnection().switchCamera(),
                 new FutureCallback<Boolean>() {
                     @Override
-                    public void onSuccess(@NullableDecl Boolean isFrontCamera) {
+                    public void onSuccess(@Nullable Boolean isFrontCamera) {
                         binding.localVideo.setMirror(isFrontCamera);
                     }
 

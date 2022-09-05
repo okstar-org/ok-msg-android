@@ -54,7 +54,7 @@ import eu.siacs.conversations.entities.Message;
 import eu.siacs.conversations.parser.IqParser;
 import eu.siacs.conversations.services.XmppConnectionService;
 import eu.siacs.conversations.utils.CryptoHelper;
-import eu.siacs.conversations.utils.Namespace;
+import eu.siacs.conversations.xml.Namespace;
 import eu.siacs.conversations.utils.SerialSingleThreadExecutor;
 import eu.siacs.conversations.xml.Element;
 import eu.siacs.conversations.xmpp.Jid;
@@ -708,11 +708,11 @@ public class AxolotlService implements OnAdvancedStreamFeaturesLoaded {
     }
 
     public void deleteOmemoIdentity() {
-        final String node = AxolotlService.PEP_BUNDLES + ":" + getOwnDeviceId();
-        final IqPacket deleteBundleNode = mXmppConnectionService.getIqGenerator().deleteNode(node);
-        mXmppConnectionService.sendIqPacket(account, deleteBundleNode, null);
+        mXmppConnectionService.deletePepNode(
+                account, AxolotlService.PEP_BUNDLES + ":" + getOwnDeviceId());
         final Set<Integer> ownDeviceIds = getOwnDeviceIds();
-        publishDeviceIdsAndRefineAccessModel(ownDeviceIds == null ? Collections.emptySet() : ownDeviceIds);
+        publishDeviceIdsAndRefineAccessModel(
+                ownDeviceIds == null ? Collections.emptySet() : ownDeviceIds);
     }
 
     public List<Jid> getCryptoTargets(Conversation conversation) {

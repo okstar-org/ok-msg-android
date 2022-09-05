@@ -45,7 +45,7 @@ import eu.siacs.conversations.http.HttpConnectionManager;
 import eu.siacs.conversations.services.MessageArchiveService;
 import eu.siacs.conversations.services.XmppConnectionService;
 import eu.siacs.conversations.utils.CryptoHelper;
-import eu.siacs.conversations.utils.Namespace;
+import eu.siacs.conversations.xml.Namespace;
 import eu.siacs.conversations.xml.Element;
 import eu.siacs.conversations.xml.LocalizedContent;
 import eu.siacs.conversations.xmpp.InvalidJid;
@@ -54,7 +54,6 @@ import eu.siacs.conversations.xmpp.OnMessagePacketReceived;
 import eu.siacs.conversations.xmpp.chatstate.ChatState;
 import eu.siacs.conversations.xmpp.jingle.JingleConnectionManager;
 import eu.siacs.conversations.xmpp.jingle.JingleRtpConnection;
-import eu.siacs.conversations.xmpp.pep.Avatar;
 import eu.siacs.conversations.xmpp.stanzas.MessagePacket;
 
 
@@ -297,36 +296,7 @@ public class MessageParser extends AbstractParser implements OnMessagePacketRece
     private void parseEvent(final Element event, final Jid from, final Account account) {
         final Element items = event.findChild("items");
         final String node = items == null ? null : items.getAttribute("node");
-        if ("urn:xmpp:avatar:metadata".equals(node)) {
-            Avatar avatar = Avatar.parseMetadata(items);
-            if (avatar != null) {
-                avatar.owner = from.asBareJid();
-                if (mXmppConnectionService.getFileBackend().isAvatarCached(avatar)) {
-                    if (account.getJid().asBareJid().equals(from)) {
-                        if (account.setAvatar(avatar.getFilename())) {
-                            mXmppConnectionService.databaseBackend.updateAccount(account);
-                            mXmppConnectionService.notifyAccountAvatarHasChanged(account);
-                        }
-                        mXmppConnectionService.getAvatarService().clear(account);
-                        mXmppConnectionService.updateConversationUi();
-                        mXmppConnectionService.updateAccountUi();
-                    } else {
-                        final Contact contact = account.getRoster().getContact(from);
-                        contact.setAvatar(avatar);
-                        mXmppConnectionService.syncRoster(account);
-                        mXmppConnectionService.getAvatarService().clear(contact);
-                        mXmppConnectionService.updateConversationUi();
-                        mXmppConnectionService.updateRosterUi();
-                    }
-                } else if (mXmppConnectionService.isDataSaverDisabled()) {
-                    mXmppConnectionService.fetchAvatar(account, avatar);
-                }
-            } else {
-                final Contact c = account.getRoster().getContact(from);
-                mXmppConnectionService.getAvatarService().clear(c);
-                mXmppConnectionService.getFileBackend().deleteAvatar(c.getAvatarFilename());
-            }
-        } else if (Namespace.NICK.equals(node)) {
+        if (Namespace.NICK.equals(node)) {
             final Element i = items.findChild("item");
             final String nick = i == null ? null : i.findChildContent("nick", Namespace.NICK);
             if (nick != null) {
@@ -382,6 +352,8 @@ public class MessageParser extends AbstractParser implements OnMessagePacketRece
         } else if (Namespace.BOOKMARKS2.equals(node) && account.getJid().asBareJid().equals(from)) {
             account.setBookmarks(Collections.emptyMap());
             Log.d(Config.LOGTAG, account.getJid().asBareJid() + ": deleted bookmarks node");
+        } else if (Namespace.AVATAR_METADATA.equals(node) && account.getJid().asBareJid().equals(from)) {
+            Log.d(Config.LOGTAG, account.getJid().asBareJid() + ": deleted avatar metadata node");
         }
     }
 

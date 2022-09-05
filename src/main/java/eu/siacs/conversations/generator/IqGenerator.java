@@ -29,7 +29,7 @@ import eu.siacs.conversations.entities.Conversation;
 import eu.siacs.conversations.entities.DownloadableFile;
 import eu.siacs.conversations.services.MessageArchiveService;
 import eu.siacs.conversations.services.XmppConnectionService;
-import eu.siacs.conversations.utils.Namespace;
+import eu.siacs.conversations.xml.Namespace;
 import eu.siacs.conversations.xml.Element;
 import eu.siacs.conversations.xmpp.Jid;
 import eu.siacs.conversations.xmpp.forms.Data;
@@ -136,8 +136,8 @@ public class IqGenerator extends AbstractGenerator {
         return publish(Namespace.NICK, item);
     }
 
-    public IqPacket deleteNode(String node) {
-        IqPacket packet = new IqPacket(IqPacket.TYPE.SET);
+    public IqPacket deleteNode(final String node) {
+        final IqPacket packet = new IqPacket(IqPacket.TYPE.SET);
         final Element pubsub = packet.addChild("pubsub", Namespace.PUBSUB_OWNER);
         pubsub.addChild("delete").setAttribute("node", node);
         return packet;
@@ -156,9 +156,9 @@ public class IqGenerator extends AbstractGenerator {
     public IqPacket publishAvatar(Avatar avatar, Bundle options) {
         final Element item = new Element("item");
         item.setAttribute("id", avatar.sha1sum);
-        final Element data = item.addChild("data", "urn:xmpp:avatar:data");
+        final Element data = item.addChild("data", Namespace.AVATAR_DATA);
         data.setContent(avatar.image);
-        return publish("urn:xmpp:avatar:data", item, options);
+        return publish(Namespace.AVATAR_DATA, item, options);
     }
 
     public IqPacket publishElement(final String namespace, final Element element, String id, final Bundle options) {
@@ -172,26 +172,26 @@ public class IqGenerator extends AbstractGenerator {
         final Element item = new Element("item");
         item.setAttribute("id", avatar.sha1sum);
         final Element metadata = item
-                .addChild("metadata", "urn:xmpp:avatar:metadata");
+                .addChild("metadata", Namespace.AVATAR_DATA);
         final Element info = metadata.addChild("info");
         info.setAttribute("bytes", avatar.size);
         info.setAttribute("id", avatar.sha1sum);
         info.setAttribute("height", avatar.height);
         info.setAttribute("width", avatar.height);
         info.setAttribute("type", avatar.type);
-        return publish("urn:xmpp:avatar:metadata", item, options);
+        return publish(Namespace.AVATAR_DATA, item, options);
     }
 
     public IqPacket deleteAvatar() {
         final Element item = new Element("item");
-        item.addChild("metadata", "urn:xmpp:avatar:metadata");
-        return publish("urn:xmpp:avatar:metadata", item);
+        item.addChild("metadata", Namespace.AVATAR_DATA);
+        return publish(Namespace.AVATAR_DATA, item);
     }
 
     public IqPacket retrievePepAvatar(final Avatar avatar) {
         final Element item = new Element("item");
         item.setAttribute("id", avatar.sha1sum);
-        final IqPacket packet = retrieve("urn:xmpp:avatar:data", item);
+        final IqPacket packet = retrieve(Namespace.AVATAR_DATA, item);
         packet.setTo(avatar.owner);
         return packet;
     }
@@ -202,9 +202,15 @@ public class IqGenerator extends AbstractGenerator {
         packet.addChild("vCard", "vcard-temp");
         return packet;
     }
+    public IqPacket retrieveVcardAvatar(final Jid to) {
+        final IqPacket packet = new IqPacket(IqPacket.TYPE.GET);
+        packet.setTo(to);
+        packet.addChild("vCard", "vcard-temp");
+        return packet;
+    }
 
     public IqPacket retrieveAvatarMetaData(final Jid to) {
-        final IqPacket packet = retrieve("urn:xmpp:avatar:metadata", null);
+        final IqPacket packet = retrieve(Namespace.AVATAR_DATA, null);
         if (to != null) {
             packet.setTo(to);
         }

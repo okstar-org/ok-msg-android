@@ -4,12 +4,13 @@ import static eu.siacs.conversations.http.HttpConnectionManager.FileTransferExec
 
 import android.util.Log;
 
+import androidx.annotation.Nullable;
+
 import com.google.common.util.concurrent.FutureCallback;
 import com.google.common.util.concurrent.Futures;
 import com.google.common.util.concurrent.ListenableFuture;
 import com.google.common.util.concurrent.MoreExecutors;
 
-import org.checkerframework.checker.nullness.compatqual.NullableDecl;
 import org.jetbrains.annotations.NotNull;
 
 import java.io.IOException;
@@ -22,6 +23,7 @@ import eu.siacs.conversations.entities.Account;
 import eu.siacs.conversations.entities.DownloadableFile;
 import eu.siacs.conversations.entities.Message;
 import eu.siacs.conversations.entities.Transferable;
+import eu.siacs.conversations.persistance.FileBackend;
 import eu.siacs.conversations.services.AbstractConnectionManager;
 import eu.siacs.conversations.services.XmppConnectionService;
 import eu.siacs.conversations.utils.CryptoHelper;
@@ -31,7 +33,6 @@ import okhttp3.OkHttpClient;
 import okhttp3.Request;
 import okhttp3.RequestBody;
 import okhttp3.Response;
-import eu.siacs.conversations.persistance.FileBackend;
 
 public class HttpUploadConnection implements Transferable, AbstractConnectionManager.ProgressListener {
 
@@ -136,7 +137,7 @@ public class HttpUploadConnection implements Transferable, AbstractConnectionMan
         this.slotFuture = new SlotRequester(mXmppConnectionService).request(method, account, file, mime);
         Futures.addCallback(this.slotFuture, new FutureCallback<SlotRequester.Slot>() {
             @Override
-            public void onSuccess(@NullableDecl SlotRequester.Slot result) {
+            public void onSuccess(@Nullable SlotRequester.Slot result) {
                 changeStatus(STATUS_WAITING);
                 FileTransferExecutor.execute(() -> {
                     changeStatus(STATUS_UPLOADING);

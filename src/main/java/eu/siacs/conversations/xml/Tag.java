@@ -1,7 +1,7 @@
 package eu.siacs.conversations.xml;
 
 import java.util.Hashtable;
-import java.util.Iterator;
+import org.jetbrains.annotations.NotNull;
 import java.util.Map.Entry;
 import java.util.Set;
 
@@ -42,29 +42,31 @@ public class Tag {
         return name;
     }
 
-    public String getAttribute(String attrName) {
+    public String getAttribute(final String attrName) {
         return this.attributes.get(attrName);
     }
 
-    public Tag setAttribute(String attrName, String attrValue) {
+    public Tag setAttribute(final String attrName, final String attrValue) {
         this.attributes.put(attrName, attrValue);
         return this;
     }
 
-    public Tag setAtttributes(Hashtable<String, String> attributes) {
+    public void setAttributes(final Hashtable<String, String> attributes) {
         this.attributes = attributes;
-        return this;
     }
 
-    public boolean isStart(String needle) {
-        if (needle == null)
+    public boolean isStart(final String needle) {
+        if (needle == null) {
             return false;
+        }
         return (this.type == START) && (needle.equals(this.name));
+    }
+    public boolean isStart(final String name, final String namespace) {
+        return isStart(name) && namespace != null && namespace.equals(this.getAttribute("xmlns"));
     }
 
     public boolean isEnd(String needle) {
-        if (needle == null)
-            return false;
+        if (needle == null) return false;
         return (this.type == END) && (needle.equals(this.name));
     }
 
@@ -72,18 +74,17 @@ public class Tag {
         return (this.type == NO);
     }
 
+    @NotNull
     public String toString() {
-        StringBuilder tagOutput = new StringBuilder();
+        final StringBuilder tagOutput = new StringBuilder();
         tagOutput.append('<');
         if (type == END) {
             tagOutput.append('/');
         }
         tagOutput.append(name);
         if (type != END) {
-            Set<Entry<String, String>> attributeSet = attributes.entrySet();
-            Iterator<Entry<String, String>> it = attributeSet.iterator();
-            while (it.hasNext()) {
-                Entry<String, String> entry = it.next();
+            final Set<Entry<String, String>> attributeSet = attributes.entrySet();
+            for (final Entry<String, String> entry : attributeSet) {
                 tagOutput.append(' ');
                 tagOutput.append(entry.getKey());
                 tagOutput.append("=\"");

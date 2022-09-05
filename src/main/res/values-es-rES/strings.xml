@@ -1213,4 +1213,8 @@
     <string name="pref_choose_camera_summary">Elegir aplicación personalizada de cámara</string>
     <string name="vector_graphic">gráfico vectorial</string>
     <string name="multimedia_file">fichero multimedia</string>
+    <string name="title_undo_swipe_out_group_chat">Deshacer eliminación de grupo</string>
+    <string name="title_undo_swipe_out_channel">Deshacer eliminación de canal</string>
+    <string name="title_undo_swipe_out_conversation">Deshacer eliminación de chat</string>
+    <string name="undo">Deshacer</string>
 </resources>

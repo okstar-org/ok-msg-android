@@ -5,7 +5,7 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Locale;
-
+import eu.siacs.conversations.xml.Namespace;
 import eu.siacs.conversations.entities.Account;
 import eu.siacs.conversations.entities.Contact;
 import eu.siacs.conversations.entities.Conversation;
@@ -95,7 +95,7 @@ public abstract class AbstractParser {
         if (item == null) {
             return null;
         }
-        return item.findChildContent("data", "urn:xmpp:avatar:data");
+        return item.findChildContent("data", Namespace.AVATAR_DATA);
     }
 
     public static MucOptions.User parseItem(Conversation conference, Element item) {
