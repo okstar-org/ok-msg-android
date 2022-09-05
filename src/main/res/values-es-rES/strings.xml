@@ -16,6 +16,7 @@
     <string name="title_activity_manage_accounts">Gestionar cuentas</string>
     <string name="title_activity_settings">Ajustes</string>
     <string name="conference_details">Detalles del grupo de chat</string>
+    <string name="conference_technical_problems">Has dejado este grupo debido a razones técnicas</string>
     <string name="contact_details">Detalles del contacto</string>
     <string name="title_activity_sharewith">Compartir con conversación</string>
     <string name="title_activity_start_conversation">Iniciar conversación</string>
@@ -145,6 +146,7 @@
     <string name="account_status_tls_error_domain">Dominio no verificable</string>
     <string name="account_status_policy_violation">Violación de política</string>
     <string name="account_status_incompatible_server">Servidor incompatible</string>
+    <string name="account_status_incompatible_client">Cliente incompatible</string>
     <string name="account_status_stream_error">Error de flujo</string>
     <string name="encryption_choice_unencrypted">Sin cifrado</string>
     <string name="encryption_choice_otr">OTR</string>
