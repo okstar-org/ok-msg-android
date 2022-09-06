@@ -1,5 +1,7 @@
 package eu.siacs.conversations.xmpp;
 
+import static eu.siacs.conversations.utils.Random.SECURE_RANDOM;
+
 import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
@@ -9,7 +11,6 @@ import android.util.Base64;
 import android.util.Log;
 import android.util.Pair;
 import android.util.SparseArray;
-import static eu.siacs.conversations.utils.Random.SECURE_RANDOM;
 
 import androidx.annotation.NonNull;
 
@@ -122,24 +123,24 @@ public class XmppConnection implements Runnable {
                                     "The password is too weak", "Please use a longer password.");
                     Element error = packet.findChild("error");
                     Account.State state = Account.State.REGISTRATION_FAILED;
-                    deleteAccount(account);
-                    if (error != null) {
-                        if (error.hasChild("text")) {
-                            errorMessage = error.findChildContent("text");
-                            Log.d(Config.LOGTAG, "Error creating account : " + error.findChildContent("text"));
-                        }
-                        if (error.hasChild("conflict")) {
-                            state = Account.State.REGISTRATION_CONFLICT;
-                        } else if (error.hasChild("resource-constraint")
-                                && "wait".equals(error.getAttribute("type"))) {
-                            state = Account.State.REGISTRATION_PLEASE_WAIT;
-                        } else if (error.hasChild("not-acceptable")
-                                && PASSWORD_TOO_WEAK_MSGS.contains(
-                                error.findChildContent("text"))) {
-                            state = Account.State.REGISTRATION_PASSWORD_TOO_WEAK;
-                        }
+            deleteAccount(account);
+                if (error != null) {
+                    if (error.hasChild("text")) {
+                        errorMessage = error.findChildContent("text");
+                        Log.d(Config.LOGTAG, "Error creating account : " + error.findChildContent("text"));
                     }
-                    Log.d(Config.LOGTAG, "Delete account because of error " + error);
+                    if (error.hasChild("conflict")) {
+                        state = Account.State.REGISTRATION_CONFLICT;
+                    } else if (error.hasChild("resource-constraint")
+                            && "wait".equals(error.getAttribute("type"))) {
+                        state = Account.State.REGISTRATION_PLEASE_WAIT;
+                    } else if (error.hasChild("not-acceptable")
+                                && PASSWORD_TOO_WEAK_MSGS.contains(
+                                        error.findChildContent("text"))) {
+                        state = Account.State.REGISTRATION_PASSWORD_TOO_WEAK;
+                    }
+                }
+                Log.d(Config.LOGTAG, "Delete account because of error " + error);
                     throw new StateChangingError(state);
                 }
             };
@@ -393,9 +394,9 @@ public class XmppConnection implements Runnable {
                     throw new UnknownHostException();
                 }
                 if (Thread.currentThread().isInterrupted()) {
-                    Log.d(
-                            Config.LOGTAG,
-                            account.getJid().asBareJid() + ": Thread was interrupted");
+                        Log.d(
+                                Config.LOGTAG,
+                                account.getJid().asBareJid() + ": Thread was interrupted");
                     return;
                 }
                 try {
@@ -415,11 +416,11 @@ public class XmppConnection implements Runnable {
                     localSocket.setSoTimeout(Config.SOCKET_TIMEOUT * 1000);
                     if (startXmpp(localSocket)) {
                         localSocket.setSoTimeout(
-                                0); // reset to 0; once the connection is established we don’t
-                        // want this
+                                    0); // reset to 0; once the connection is established we don’t
+                            // want this
                         if (!hardcoded && !results.equals(storedBackupResult)) {
                             mXmppConnectionService.databaseBackend.saveResolverResult(
-                                    domain, results);
+                                        domain, results);
                         }
                         // successfully connected to server that speaks xmpp
                     } else {
@@ -429,20 +430,20 @@ public class XmppConnection implements Runnable {
                 } catch (final StateChangingException e) {
                     throw e;
                 } catch (InterruptedException e) {
-                    Log.d(
-                            Config.LOGTAG,
-                            account.getJid().asBareJid()
-                                    + ": thread was interrupted before beginning stream");
+                        Log.d(
+                                Config.LOGTAG,
+                                account.getJid().asBareJid()
+                                        + ": thread was interrupted before beginning stream");
                     return;
                 } catch (final Throwable e) {
                     Log.d(
-                            Config.LOGTAG,
-                            account.getJid().asBareJid().toString()
-                                    + ": "
-                                    + e.getMessage()
-                                    + "("
-                                    + e.getClass().getName()
-                                    + ")");
+                                Config.LOGTAG,
+                                account.getJid().asBareJid().toString()
+                                        + ": "
+                                        + e.getMessage()
+                                        + "("
+                                        + e.getClass().getName()
+                                        + ")");
                     throw new UnknownHostException();
                 }
             }
@@ -521,9 +522,9 @@ public class XmppConnection implements Runnable {
         sc.init(
                 keyManager,
                 new X509TrustManager[] {
-                        mInteractive
-                                ? trustManager.getInteractive(domain)
-                                : trustManager.getNonInteractive(domain)
+                    mInteractive
+                            ? trustManager.getInteractive(domain)
+                            : trustManager.getNonInteractive(domain)
                 },
                 SECURE_RANDOM);
         return sc.getSocketFactory();
@@ -1135,10 +1136,10 @@ public class XmppConnection implements Runnable {
         final InetAddress address = socket.getInetAddress();
         final SSLSocket sslSocket;
         try {
-            sslSocket =
-                    (SSLSocket)
-                            sslSocketFactory.createSocket(
-                                    socket, address.getHostAddress(), socket.getPort(), true);
+          sslSocket =
+                (SSLSocket)
+                        sslSocketFactory.createSocket(
+                                socket, address.getHostAddress(), socket.getPort(), true);
         } catch (Exception e) {
             throw new StateChangingException(Account.State.TLS_ERROR);
         }
@@ -1233,6 +1234,7 @@ public class XmppConnection implements Runnable {
         final Collection<String> mechanisms = Collections2.transform(element.getChildren(), c -> c == null ? null : c.getContent());
         final SaslMechanism.Factory factory = new SaslMechanism.Factory(account);
         this.saslMechanism = factory.of(mechanisms);
+
         if (saslMechanism == null) {
             Log.d(
                     Config.LOGTAG,
@@ -1530,8 +1532,8 @@ public class XmppConnection implements Runnable {
                                 }
                                 if (streamFeatures.hasChild("session")
                                         && !streamFeatures
-                                        .findChild("session")
-                                        .hasChild("optional")) {
+                                                .findChild("session")
+                                                .hasChild("optional")) {
                                     sendStartSession();
                                 } else {
                                     final boolean waitForDisco = enableStreamManagement();
@@ -1667,7 +1669,7 @@ public class XmppConnection implements Runnable {
         mPendingServiceDiscoveries.set(0);
         if (!waitForDisco
                 || Patches.DISCO_EXCEPTIONS.contains(
-                account.getJid().getDomain().toEscapedString())) {
+                        account.getJid().getDomain().toEscapedString())) {
             Log.d(
                     Config.LOGTAG,
                     account.getJid().asBareJid() + ": do not wait for service discovery");
@@ -1734,7 +1736,7 @@ public class XmppConnection implements Runnable {
                         }
                         if (advancedStreamFeaturesLoaded
                                 && (jid.equals(account.getDomain())
-                                || jid.equals(account.getJid().asBareJid()))) {
+                                        || jid.equals(account.getJid().asBareJid()))) {
                             enableAdvancedStreamFeatures();
                         }
                     } else if (packet.getType() == IqPacket.TYPE.ERROR) {
@@ -2502,7 +2504,7 @@ public class XmppConnection implements Runnable {
         public boolean sm() {
             return streamId != null
                     || (connection.streamFeatures != null
-                    && connection.streamFeatures.hasChild("sm"));
+                            && connection.streamFeatures.hasChild("sm"));
         }
 
         public boolean csi() {
@@ -2522,7 +2524,7 @@ public class XmppConnection implements Runnable {
                 ServiceDiscoveryResult info = disco.get(account.getJid().asBareJid());
                 return info != null
                         && info.getFeatures()
-                        .contains("http://jabber.org/protocol/pubsub#persistent-items");
+                                .contains("http://jabber.org/protocol/pubsub#persistent-items");
             }
         }
 

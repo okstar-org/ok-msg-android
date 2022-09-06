@@ -1,10 +1,12 @@
 package eu.siacs.conversations.crypto.sasl;
 
-import java.util.Collection;
 import com.google.common.base.Strings;
+
+import java.util.Collection;
+
+import eu.siacs.conversations.entities.Account;
 import eu.siacs.conversations.xml.Element;
 import eu.siacs.conversations.xml.Namespace;
-import eu.siacs.conversations.entities.Account;
 
 public abstract class SaslMechanism {
 
@@ -56,7 +58,6 @@ public abstract class SaslMechanism {
         }
     }
 
-
     public static class AuthenticationException extends Exception {
         public AuthenticationException(final String message) {
             super(message);
@@ -82,14 +83,14 @@ public abstract class SaslMechanism {
     }
 
     public static final class Factory {
-        private final Account account;
 
+        private final Account account;
 
         public Factory(final Account account) {
             this.account = account;
         }
 
-        public SaslMechanism of(final Collection<String> mechanisms) {
+        public SaslMechanism of(final Collection<String> mechanisms, final Collection<ChannelBinding> bindings) {
             if (mechanisms.contains(External.MECHANISM) && account.getPrivateKeyAlias() != null) {
                 return new External(account);
             } else if (mechanisms.contains(ScramSha512.MECHANISM)) {
