@@ -90,6 +90,10 @@ public final class Config {
 
     public static final boolean FORCE_ORBOT = false; // always use TOR
 
+
+    public static final boolean SASL_2_ENABLED = false;
+
+    //Notification settings
     public static final boolean HIDE_MESSAGE_TEXT_IN_NOTIFICATION = false;
 
     public static final boolean ALWAYS_NOTIFY_BY_DEFAULT = false;
