@@ -2272,64 +2272,68 @@ public class XmppConnectionService extends Service {
 
     private void restoreFromDatabase() {
         synchronized (this.conversations) {
-            final Map<String, Account> accountLookupTable = new Hashtable<>();
-            for (Account account : this.accounts) {
-                accountLookupTable.put(account.getUuid(), account);
-            }
-            Log.d(Config.LOGTAG, "restoring conversations...");
-            final long startTimeConversationsRestore = SystemClock.elapsedRealtime();
-            this.conversations.addAll(databaseBackend.getConversations(Conversation.STATUS_AVAILABLE));
-            for (Iterator<Conversation> iterator = conversations.listIterator(); iterator.hasNext(); ) {
-                Conversation conversation = iterator.next();
-                Account account = accountLookupTable.get(conversation.getAccountUuid());
-                if (account != null) {
-                    conversation.setAccount(account);
-                } else {
-                    Log.e(Config.LOGTAG, "unable to restore Conversations with " + conversation.getJid());
-                    iterator.remove();
+            try {
+                final Map<String, Account> accountLookupTable = new Hashtable<>();
+                for (Account account : this.accounts) {
+                    accountLookupTable.put(account.getUuid(), account);
                 }
-            }
-            long diffConversationsRestore = SystemClock.elapsedRealtime() - startTimeConversationsRestore;
-            Log.d(Config.LOGTAG, "finished restoring conversations in " + diffConversationsRestore + "ms");
-            Runnable runnable = () -> {
-                if (DatabaseBackend.requiresMessageIndexRebuild()) {
-                    DatabaseBackend.getInstance(this).rebuildMessagesIndex();
-                }
-                final long deletionDate = getAutomaticMessageDeletionDate();
-                mLastExpiryRun.set(SystemClock.elapsedRealtime());
-                if (deletionDate > 0) {
-                    Log.d(Config.LOGTAG, "deleting messages that are older than " + AbstractGenerator.getTimestamp(deletionDate));
-                    expireOldMessages(deletionDate, false);
-                }
-                Log.d(Config.LOGTAG, "restoring roster...");
-                for (Account account : accounts) {
-                    databaseBackend.readRoster(account.getRoster());
-                    account.initAccountServices(XmppConnectionService.this); //roster needs to be loaded at this stage
-                }
-                getBitmapCache().evictAll();
-                loadPhoneContacts();
-                Log.d(Config.LOGTAG, "restoring messages...");
-                final long startMessageRestore = SystemClock.elapsedRealtime();
-                final Conversation quickLoad = QuickLoader.get(this.conversations);
-                if (quickLoad != null) {
-
-                    restoreMessages(quickLoad);
-                    updateConversationUi();
-                    final long diffMessageRestore = SystemClock.elapsedRealtime() - startMessageRestore;
-                    Log.d(Config.LOGTAG, "quickly restored " + quickLoad.getName() + " after " + diffMessageRestore + "ms");
-                }
-                for (Conversation conversation : this.conversations) {
-                    if (quickLoad != conversation) {
-                        restoreMessages(conversation);
+                Log.d(Config.LOGTAG, "restoring conversations...");
+                final long startTimeConversationsRestore = SystemClock.elapsedRealtime();
+                this.conversations.addAll(databaseBackend.getConversations(Conversation.STATUS_AVAILABLE));
+                for (Iterator<Conversation> iterator = this.conversations.listIterator(); iterator.hasNext(); ) {
+                    Conversation conversation = iterator.next();
+                    Account account = accountLookupTable.get(conversation.getAccountUuid());
+                    if (account != null) {
+                        conversation.setAccount(account);
+                    } else {
+                        Log.e(Config.LOGTAG, "unable to restore Conversations with " + conversation.getJid());
+                        iterator.remove();
                     }
                 }
-                mNotificationService.finishBacklog();
-                restoredFromDatabaseLatch.countDown();
-                final long diffMessageRestore = SystemClock.elapsedRealtime() - startMessageRestore;
-                Log.d(Config.LOGTAG, "finished restoring messages in " + diffMessageRestore + "ms");
-                updateConversationUi();
-            };
-            mDatabaseReaderExecutor.execute(runnable); //will contain one write command (expiry) but that's fine
+                long diffConversationsRestore = SystemClock.elapsedRealtime() - startTimeConversationsRestore;
+                Log.d(Config.LOGTAG, "finished restoring conversations in " + diffConversationsRestore + "ms");
+                Runnable runnable = () -> {
+                    if (DatabaseBackend.requiresMessageIndexRebuild()) {
+                        DatabaseBackend.getInstance(this).rebuildMessagesIndex();
+                    }
+                    final long deletionDate = getAutomaticMessageDeletionDate();
+                    mLastExpiryRun.set(SystemClock.elapsedRealtime());
+                    if (deletionDate > 0) {
+                        Log.d(Config.LOGTAG, "deleting messages that are older than " + AbstractGenerator.getTimestamp(deletionDate));
+                        expireOldMessages(deletionDate, false);
+                    }
+                    Log.d(Config.LOGTAG, "restoring roster...");
+                    for (Account account : accounts) {
+                        databaseBackend.readRoster(account.getRoster());
+                        account.initAccountServices(XmppConnectionService.this); //roster needs to be loaded at this stage
+                    }
+                    getBitmapCache().evictAll();
+                    loadPhoneContacts();
+                    Log.d(Config.LOGTAG, "restoring messages...");
+                    final long startMessageRestore = SystemClock.elapsedRealtime();
+                    final Conversation quickLoad = QuickLoader.get(this.conversations);
+                    if (quickLoad != null) {
+
+                        restoreMessages(quickLoad);
+                        updateConversationUi();
+                        final long diffMessageRestore = SystemClock.elapsedRealtime() - startMessageRestore;
+                        Log.d(Config.LOGTAG, "quickly restored " + quickLoad.getName() + " after " + diffMessageRestore + "ms");
+                    }
+                    for (Conversation conversation : this.conversations) {
+                        if (quickLoad != conversation) {
+                            restoreMessages(conversation);
+                        }
+                    }
+                    mNotificationService.finishBacklog();
+                    restoredFromDatabaseLatch.countDown();
+                    final long diffMessageRestore = SystemClock.elapsedRealtime() - startMessageRestore;
+                    Log.d(Config.LOGTAG, "finished restoring messages in " + diffMessageRestore + "ms");
+                    updateConversationUi();
+                };
+                mDatabaseReaderExecutor.execute(runnable); //will contain one write command (expiry) but that's fine
+            } catch (Exception e) {
+                Log.d(Config.LOGTAG, "error restoring messages: " + e);
+            }
         }
     }
 
