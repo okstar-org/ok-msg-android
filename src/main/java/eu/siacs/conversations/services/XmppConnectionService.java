@@ -5085,7 +5085,6 @@ public class XmppConnectionService extends Service {
         for (Account account : getAccounts()) {
             if (account.isOnlineAndConnected() && mPushManagementService.available(account)) {
                 mPushManagementService.registerPushTokenOnServer(account);
-                //TODO renew mucs
             }
         }
     }
