@@ -1,11 +1,11 @@
 package eu.siacs.conversations.ui;
 
+import android.app.Activity;
 import android.content.ActivityNotFoundException;
 import android.content.ClipData;
 import android.content.ClipboardManager;
-import android.content.ComponentName;
-import android.content.Context;
 import android.content.Intent;
+import android.content.pm.ActivityInfo;
 import android.location.Address;
 import android.location.Geocoder;
 import android.location.Location;
@@ -22,6 +22,7 @@ import androidx.annotation.NonNull;
 import androidx.appcompat.widget.Toolbar;
 import androidx.databinding.DataBindingUtil;
 
+import org.jetbrains.annotations.NotNull;
 import org.osmdroid.util.GeoPoint;
 
 import java.lang.ref.WeakReference;
@@ -37,13 +38,11 @@ import eu.siacs.conversations.ui.widget.MyLocation;
 import eu.siacs.conversations.utils.LocationProvider;
 import me.drakeet.support.toast.ToastCompat;
 
-
 public class ShowLocationActivity extends LocationActivity implements LocationListener {
 
     private GeoPoint loc = LocationProvider.FALLBACK;
     private ActivityShowLocationBinding binding;
     private String name;
-
 
     private Uri createGeoUri() {
         return Uri.parse("geo:" + this.loc.getLatitude() + "," + this.loc.getLongitude());
@@ -85,9 +84,10 @@ public class ShowLocationActivity extends LocationActivity implements LocationLi
     }
 
     @Override
-    public void onRequestPermissionsResult(final int requestCode,
-                                           @NonNull final String[] permissions,
-                                           @NonNull final int[] grantResults) {
+    public void onRequestPermissionsResult(
+            final int requestCode,
+            @NonNull final String[] permissions,
+            @NonNull final int[] grantResults) {
         super.onRequestPermissionsResult(requestCode, permissions, grantResults);
         updateUi();
     }
@@ -98,7 +98,7 @@ public class ShowLocationActivity extends LocationActivity implements LocationLi
     }
 
     @Override
-    public boolean onCreateOptionsMenu(final Menu menu) {
+    public boolean onCreateOptionsMenu(@NotNull final Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.
         getMenuInflater().inflate(R.menu.menu_show_location, menu);
         updateUi();
@@ -147,11 +147,14 @@ public class ShowLocationActivity extends LocationActivity implements LocationLi
     public boolean onOptionsItemSelected(final MenuItem item) {
         switch (item.getItemId()) {
             case R.id.action_copy_location:
-                final ClipboardManager clipboard = (ClipboardManager) getSystemService(CLIPBOARD_SERVICE);
+                final ClipboardManager clipboard =
+                        (ClipboardManager) getSystemService(CLIPBOARD_SERVICE);
                 if (clipboard != null) {
-                    final ClipData clip = ClipData.newPlainText("location", createGeoUri().toString());
+                    final ClipData clip =
+                            ClipData.newPlainText("location", createGeoUri().toString());
                     clipboard.setPrimaryClip(clip);
-                    ToastCompat.makeText(this, R.string.url_copied_to_clipboard, ToastCompat.LENGTH_SHORT).show();
+                    ToastCompat.makeText(this, R.string.url_copied_to_clipboard, ToastCompat.LENGTH_SHORT)
+                            .show();
                 }
                 return true;
             case R.id.action_share_location:
@@ -163,7 +166,11 @@ public class ShowLocationActivity extends LocationActivity implements LocationLi
                     startActivity(Intent.createChooser(shareIntent, getText(R.string.share_with)));
                 } catch (final ActivityNotFoundException e) {
                     //This should happen only on faulty androids because normally chooser is always available
-                    ToastCompat.makeText(this, R.string.no_application_found_to_open_file, ToastCompat.LENGTH_SHORT).show();
+                    ToastCompat.makeText(
+                                    this,
+                                    R.string.no_application_found_to_open_file,
+                                    ToastCompat.LENGTH_SHORT)
+                            .show();
                 }
                 return true;
         }
@@ -171,21 +178,29 @@ public class ShowLocationActivity extends LocationActivity implements LocationLi
     }
 
     private void startNavigation() {
-        startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse(
-                "google.navigation:q=" +
-                        this.loc.getLatitude() + "," + this.loc.getLongitude()
-        )));
+        final Intent intent = getStartNavigationIntent();
+        startActivity(intent);
+    }
+
+    private Intent getStartNavigationIntent() {
+        return new Intent(
+                Intent.ACTION_VIEW,
+                Uri.parse(
+                        "google.navigation:q="
+                                + this.loc.getLatitude()
+                                + ","
+                                + this.loc.getLongitude()));
     }
 
     @Override
     protected void updateUi() {
-        final Intent i = new Intent(Intent.ACTION_VIEW, Uri.parse("google.navigation:q=0,0"));
-        final ComponentName component = i.resolveActivity(getPackageManager());
-        this.binding.fab.setVisibility(component == null ? View.GONE : View.VISIBLE);
+        final Intent intent = getStartNavigationIntent();
+        final ActivityInfo activityInfo = intent.resolveActivityInfo(getPackageManager(), 0);
+        this.binding.fab.setVisibility(activityInfo == null ? View.GONE : View.VISIBLE);
     }
 
     @Override
-    public void onLocationChanged(final Location location) {
+    public void onLocationChanged(@NotNull final Location location) {
         if (LocationHelper.isBetterLocation(location, this.myLoc)) {
             this.myLoc = location;
             updateLocationMarkers();
@@ -194,12 +209,10 @@ public class ShowLocationActivity extends LocationActivity implements LocationLi
 
     @Override
     public void onStatusChanged(final String provider, final int status, final Bundle extras) {
-
     }
 
     @Override
     public void onProviderEnabled(final String provider) {
-
     }
 
     @Override
@@ -207,7 +220,7 @@ public class ShowLocationActivity extends LocationActivity implements LocationLi
 
     }
 
-    private static String getAddress(final Context context, final GeoPoint location, final String name) {
+    private static String getAddress(final Activity context, final GeoPoint location, final String name) {
         final double longitude = location.getLongitude();
         final double latitude = location.getLatitude();
         String address = "";
