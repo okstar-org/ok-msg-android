@@ -1135,4 +1135,73 @@ public class Message extends AbstractEntity implements AvatarService.Avatarable 
     public int increaseResendCount(){
         return ++resendCount;
     }
+
+
+    /**
+     * Checks whether message should show an avatar next to it. Mainly used to hide the avatar
+     * when succeeding messages have the same author. Thus it defaults to true.
+     *
+     * @return boolean
+     */
+    public boolean isAvatarable() {
+        if (this.next() == null) {
+            return true;
+        }
+        Message next = this.next();
+
+        // same status (particularly sent vs received)
+        if (this.getStatus() == next.getStatus()) {
+            // same user
+            if (this.getAvatarName().equals(next.getAvatarName())) {
+                // same encryption
+                if (this.getEncryption() != next.getEncryption()) {
+                    return true;
+                }
+                // same day
+                if (!UIHelper.sameDay(this.getTimeSent(), next.getTimeSent())){
+                    return true;
+                }
+                // if merged, ask merged
+                if (next.wasMergedIntoPrevious()) {
+                    return next.isAvatarable();
+                }
+                return false;
+            }
+        }
+        return true;
+    }
+
+    /**
+     * Checks whether message should show a username next to it. Mainly used to hide the username
+     * when succeeding messages have the same author. Thus it defaults to true.
+     *
+     * @return boolean
+     */
+    public boolean showUsername() {
+        if (this.prev() == null) {
+            return true;
+        }
+        Message prev = this.prev();
+
+        // same status (particularly sent vs received)
+        if (this.getStatus() == prev.getStatus()) {
+            // same user
+            if (this.getAvatarName().equals(prev.getAvatarName())) {
+                // same encryption
+                if (this.getEncryption() != prev.getEncryption()) {
+                    return true;
+                }
+                // same day
+                if (!UIHelper.sameDay(this.getTimeSent(), prev.getTimeSent())){
+                    return true;
+                }
+                // if merged, ask merged
+                if (prev.wasMergedIntoPrevious()) {
+                    return prev.isAvatarable();
+                }
+                return false;
+            }
+        }
+        return true;
+    }
 }

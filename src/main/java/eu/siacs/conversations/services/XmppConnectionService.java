@@ -4090,6 +4090,7 @@ public class XmppConnectionService extends Service {
             final Avatar avatar = getFileBackend().getPepAvatar(image, size, format);
             if (avatar != null) {
                 if (!getFileBackend().save(avatar)) {
+                    Log.d(Config.LOGTAG, "unable to save avatar");
                     callback.onAvatarPublicationFailed(R.string.error_saving_avatar);
                     return;
                 }
@@ -4108,7 +4109,7 @@ public class XmppConnectionService extends Service {
             final Avatar avatar = getFileBackend().getPepAvatar(image, size, format);
             if (avatar != null) {
                 if (!getFileBackend().save(avatar)) {
-                    Log.d(Config.LOGTAG, "unable to save vcard");
+                    Log.d(Config.LOGTAG, "unable to save vcard avatar");
                     callback.onAvatarPublicationFailed(R.string.error_saving_avatar);
                     return;
                 }

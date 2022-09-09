@@ -310,12 +310,7 @@ public class MessageAdapter extends ArrayAdapter<Message> {
             default:
                 if (multiReceived) {
                     final int shadowSize = 10;
-                    viewHolder.username.setVisibility(View.VISIBLE);
-                    viewHolder.username.setText(UIHelper.getColoredUsername(activity.xmppConnectionService, message));
-                    if (activity.xmppConnectionService.colored_muc_names() && ThemeHelper.showColoredUsernameBackGround(activity, darkBackground)) {
-                        viewHolder.username.setPadding(4, 2, 4, 2);
-                        viewHolder.username.setBackground(ContextCompat.getDrawable(activity, R.drawable.duration_background));
-                    }
+                    showUsername(viewHolder, message, darkBackground);
                 }
                 if (singleReceived) {
                     viewHolder.username.setVisibility(View.GONE);
@@ -408,6 +403,21 @@ public class MessageAdapter extends ArrayAdapter<Message> {
             } else {
                 viewHolder.time.setText(formattedTime + bodyLanguageInfo);
             }
+        }
+    }
+    private void showUsername(ViewHolder viewHolder, Message message, boolean darkBackground) {
+        if (message.showUsername()) {
+            viewHolder.username.setVisibility(View.VISIBLE);
+        } else {
+            viewHolder.username.setVisibility(View.GONE);
+        }
+        viewHolder.username.setText(UIHelper.getColoredUsername(activity.xmppConnectionService, message));
+        if (activity.xmppConnectionService.colored_muc_names() && ThemeHelper.showColoredUsernameBackGround(activity, darkBackground)) {
+            viewHolder.username.setPadding(4, 2, 4, 2);
+            viewHolder.username.setBackground(ContextCompat.getDrawable(activity, R.drawable.duration_background));
+        } else {
+            viewHolder.username.setPadding(4, 2, 4, 2);
+            viewHolder.username.setBackground(null);
         }
     }
 
@@ -1390,7 +1400,25 @@ public class MessageAdapter extends ArrayAdapter<Message> {
             setBubbleBackgroundColor(viewHolder.message_box, type, message.isPrivateMessage(), isInValidSession);
         }
         displayStatus(viewHolder, message, type, darkBackground);
+        showAvatar(viewHolder, message, view);
         return view;
+    }
+    private void showAvatar(ViewHolder viewHolder, Message message, View view) {
+        if (message.isAvatarable()) {
+            viewHolder.contact_picture.setVisibility(View.VISIBLE);
+            int left = ThemeHelper.dp2Px(getContext(), 8);
+            int top = ThemeHelper.dp2Px(getContext(), 0);
+            int right = ThemeHelper.dp2Px(getContext(), 8);
+            int bottom = ThemeHelper.dp2Px(getContext(), 16);
+            view.setPadding(left, top, right, bottom);
+        } else {
+            viewHolder.contact_picture.setVisibility(View.INVISIBLE);
+            int left = ThemeHelper.dp2Px(getContext(), 8);
+            int top = ThemeHelper.dp2Px(getContext(), 1);
+            int right = ThemeHelper.dp2Px(getContext(), 8);
+            int bottom = ThemeHelper.dp2Px(getContext(), 1);
+            view.setPadding(left, top, right, bottom);
+        }
     }
 
     private static class markFileExistingFinisher implements Runnable {
