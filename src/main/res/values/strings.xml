@@ -1221,4 +1221,5 @@
     <string name="title_undo_swipe_out_channel">Undo removing channel</string>
     <string name="title_undo_swipe_out_conversation">Undo removing chat</string>
     <string name="undo">Undo</string>
+    <string name="audio_video_disabled_tor">Calls are disabled when using Tor</string>
 </resources>
