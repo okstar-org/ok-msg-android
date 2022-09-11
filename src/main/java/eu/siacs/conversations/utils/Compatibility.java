@@ -15,6 +15,9 @@ import android.preference.PreferenceCategory;
 import android.preference.PreferenceManager;
 import android.preference.PreferenceScreen;
 import android.util.Log;
+import android.net.ConnectivityManager;
+import androidx.annotation.NonNull;
+import androidx.annotation.RequiresApi;
 
 import androidx.annotation.BoolRes;
 import androidx.core.content.ContextCompat;
@@ -207,5 +210,19 @@ public class Compatibility {
     public static boolean hasFeatureCamera(final Context context) {
         final PackageManager packageManager = context.getPackageManager();
         return packageManager.hasSystemFeature(PackageManager.FEATURE_CAMERA_ANY);
+    }
+
+    @RequiresApi(api = Build.VERSION_CODES.N)
+    public static int getRestrictBackgroundStatus(
+            @NonNull final ConnectivityManager connectivityManager) {
+        try {
+            return connectivityManager.getRestrictBackgroundStatus();
+        } catch (final Exception e) {
+            Log.d(
+                    Config.LOGTAG,
+                    "platform bug detected. Unable to get restrict background status",
+                    e);
+            return ConnectivityManager.RESTRICT_BACKGROUND_STATUS_DISABLED;
+        }
     }
 }
