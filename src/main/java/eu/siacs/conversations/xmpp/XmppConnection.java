@@ -829,7 +829,7 @@ public class XmppConnection implements Runnable {
         this.stanzasReceived = 0;
         this.inSmacksSession = true;
         final RequestPacket r = new RequestPacket();
-        // tagWriter.writeStanzaAsync(r);
+        tagWriter.writeStanzaAsync(r);
     }
 
     private void processResumed(final Element resumed) throws StateChangingException {
@@ -1199,7 +1199,8 @@ public class XmppConnection implements Runnable {
                 && isSecure) {
             authenticate(SaslMechanism.Version.SASL);
         } else if (this.streamFeatures.hasChild("sm", Namespace.STREAM_MANAGEMENT)
-                && streamId != null) {
+                && streamId != null
+                && !inSmacksSession) {
             if (Config.EXTENDED_SM_LOGGING) {
                 Log.d(
                         Config.LOGTAG,
@@ -1227,7 +1228,7 @@ public class XmppConnection implements Runnable {
                     Config.LOGTAG,
                     account.getJid().asBareJid()
                             + ": received NOP stream features "
-                            + this.streamFeatures);
+                            + XmlHelper.printElementNames(this.streamFeatures));
         }
     }
 
@@ -1314,7 +1315,6 @@ public class XmppConnection implements Runnable {
                         + "/"
                         + saslMechanism.getMechanism());
         authenticate.setAttribute("mechanism", saslMechanism.getMechanism());
-        Log.d(Config.LOGTAG, "authenticate " + authenticate);
         tagWriter.writeElement(authenticate);
     }
 
@@ -1329,7 +1329,7 @@ public class XmppConnection implements Runnable {
             features.addChild("enable", Namespace.CARBONS);
         }
         if (bindFeatures.contains(Namespace.STREAM_MANAGEMENT)) {
-            features.addChild("enable", Namespace.STREAM_MANAGEMENT);
+            features.addChild(new EnablePacket());
         }
         return bind;
     }
@@ -2469,8 +2469,8 @@ public class XmppConnection implements Runnable {
 
         private boolean hasDiscoFeature(final Jid server, final String feature) {
             synchronized (XmppConnection.this.disco) {
-                return connection.disco.containsKey(server)
-                        && connection.disco.get(server).getFeatures().contains(feature);
+                final ServiceDiscoveryResult sdr = connection.disco.get(server);
+                return sdr != null && sdr.getFeatures().contains(feature);
             }
         }
 
