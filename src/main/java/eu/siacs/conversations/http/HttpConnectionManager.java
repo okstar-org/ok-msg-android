@@ -4,6 +4,7 @@ import android.os.Build;
 import android.util.Log;
 
 import org.apache.http.conn.ssl.StrictHostnameVerifier;
+import static eu.siacs.conversations.utils.Random.SECURE_RANDOM;
 
 import java.io.IOException;
 import java.io.InputStream;
@@ -145,7 +146,7 @@ public class HttpConnectionManager extends AbstractConnectionManager {
             trustManager = mXmppConnectionService.getMemorizingTrustManager().getNonInteractive();
         }
         try {
-            final SSLSocketFactory sf = new TLSSocketFactory(new X509TrustManager[]{trustManager}, mXmppConnectionService.getRNG());
+            final SSLSocketFactory sf = new TLSSocketFactory(new X509TrustManager[]{trustManager}, SECURE_RANDOM);
             builder.sslSocketFactory(sf, trustManager);
             builder.hostnameVerifier(new StrictHostnameVerifier());
         } catch (final KeyManagementException ignored) {

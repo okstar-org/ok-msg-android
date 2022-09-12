@@ -14,6 +14,7 @@ import static eu.siacs.conversations.ui.SettingsActivity.INDICATE_RECEIVED;
 import static eu.siacs.conversations.ui.SettingsActivity.SHOW_OWN_ACCOUNTS;
 import static eu.siacs.conversations.ui.SettingsActivity.USE_INNER_STORAGE;
 import static eu.siacs.conversations.utils.RichPreview.RICH_LINK_METADATA;
+import static eu.siacs.conversations.utils.Random.SECURE_RANDOM;
 import static eu.siacs.conversations.utils.StorageHelper.getAppMediaDirectory;
 import android.content.res.Resources;
 import android.os.Handler;
@@ -43,6 +44,7 @@ import android.net.Network;
 import android.net.NetworkCapabilities;
 import android.net.NetworkInfo;
 import android.net.Uri;
+import java.security.SecureRandom;
 import android.os.Binder;
 import android.os.Build;
 import android.os.Bundle;
@@ -86,7 +88,6 @@ import org.openintents.openpgp.util.OpenPgpApi;
 import org.openintents.openpgp.util.OpenPgpServiceConnection;
 
 import java.io.File;
-import java.security.SecureRandom;
 import java.security.Security;
 import java.security.cert.CertificateException;
 import java.security.cert.X509Certificate;
@@ -493,7 +494,7 @@ public class XmppConnectionService extends Service {
                     Log.d(Config.LOGTAG, account.getJid().asBareJid() + ": went into offline state during low ping mode. reconnecting now");
                     reconnectAccount(account, true, false);
                 } else {
-                    int timeToReconnect = mRandom.nextInt(10) + 2;
+                    final int timeToReconnect = SECURE_RANDOM.nextInt(10) + 2;
                     scheduleWakeUpCall(timeToReconnect, account.getUuid().hashCode());
                 }
             } else if (account.getStatus() == Account.State.REGISTRATION_SUCCESSFUL) {
@@ -3690,7 +3691,7 @@ public class XmppConnectionService extends Service {
                     }
                     return false;
                 }
-                final Jid jid = Jid.of(CryptoHelper.pronounceable(getRNG()), server, null);
+                final Jid jid = Jid.of(CryptoHelper.pronounceable(), server, null);
                 final Conversation conversation = findOrCreateConversation(account, jid, true, false, true);
                 joinMuc(conversation, new OnConferenceJoined() {
                     @Override
@@ -4942,10 +4943,6 @@ public class XmppConnectionService extends Service {
             final MessagePacket packet = mMessageGenerator.confirm(markable);
             this.sendMessagePacket(account, packet);
         }
-    }
-
-    public SecureRandom getRNG() {
-        return this.mRandom;
     }
 
     public MemorizingTrustManager getMemorizingTrustManager() {
