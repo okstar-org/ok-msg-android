@@ -4,6 +4,8 @@ import com.google.common.base.Strings;
 
 import java.util.Collection;
 
+import javax.net.ssl.SSLSocket;
+
 import eu.siacs.conversations.entities.Account;
 import eu.siacs.conversations.xml.Element;
 import eu.siacs.conversations.xml.Namespace;
@@ -39,7 +41,8 @@ public abstract class SaslMechanism {
         return "";
     }
 
-    public String getResponse(final String challenge) throws AuthenticationException {
+    public String getResponse(final String challenge, final SSLSocket sslSocket)
+            throws AuthenticationException {
         return "";
     }
 
