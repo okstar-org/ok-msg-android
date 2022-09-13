@@ -1414,7 +1414,7 @@ public class MessageAdapter extends ArrayAdapter<Message> {
         } else {
             viewHolder.contact_picture.setVisibility(View.INVISIBLE);
             int left = ThemeHelper.dp2Px(getContext(), 8);
-            int top = ThemeHelper.dp2Px(getContext(), 1);
+            int top = ThemeHelper.dp2Px(getContext(), 0);
             int right = ThemeHelper.dp2Px(getContext(), 8);
             int bottom = ThemeHelper.dp2Px(getContext(), 1);
             view.setPadding(left, top, right, bottom);
