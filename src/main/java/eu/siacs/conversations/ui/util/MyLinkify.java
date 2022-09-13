@@ -320,6 +320,7 @@ public class MyLinkify {
     public static void addLinks(Editable body, boolean includeGeo) {
         Linkify.addLinks(body, Patterns.XMPP_PATTERN, "xmpp", XMPPURI_MATCH_FILTER, null);
         Linkify.addLinks(body, Patterns.AUTOLINK_WEB_URL, "http", WEBURL_MATCH_FILTER, WEBURL_TRANSFORM_FILTER);
+        Linkify.addLinks(body, Patterns.PHONE, "tel:", Linkify.sPhoneNumberMatchFilter, Linkify.sPhoneNumberTransformFilter);
         if (includeGeo) {
             Linkify.addLinks(body, GeoHelper.GEO_URI, "geo");
         }
