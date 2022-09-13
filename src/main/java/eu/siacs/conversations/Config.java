@@ -90,6 +90,10 @@ public final class Config {
 
     public static final boolean FORCE_ORBOT = false; // always use TOR
 
+
+    public static final boolean SASL_2_ENABLED = false;
+
+    //Notification settings
     public static final boolean HIDE_MESSAGE_TEXT_IN_NOTIFICATION = false;
 
     public static final boolean ALWAYS_NOTIFY_BY_DEFAULT = false;
@@ -260,5 +264,5 @@ public final class Config {
     // How deep nested quotes should be displayed. '2' means one quote nested in another.
     public static final int QUOTE_MAX_DEPTH = 7;
     // How deep nested quotes should be created on quoting a message.
-    public static final int QUOTING_MAX_DEPTH = 1;
+    public static final int QUOTING_MAX_DEPTH = 2;
 }

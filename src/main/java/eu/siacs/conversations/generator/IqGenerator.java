@@ -4,6 +4,7 @@ package eu.siacs.conversations.generator;
 import android.os.Bundle;
 import android.util.Base64;
 import android.util.Log;
+import static eu.siacs.conversations.ui.SettingsActivity.PERSISTENT_ROOM;
 
 import org.whispersystems.libsignal.IdentityKey;
 import org.whispersystems.libsignal.ecc.ECPublicKey;
@@ -37,9 +38,11 @@ import eu.siacs.conversations.xmpp.pep.Avatar;
 import eu.siacs.conversations.xmpp.stanzas.IqPacket;
 
 public class IqGenerator extends AbstractGenerator {
+    private static XmppConnectionService xmppConnectionService;
 
     public IqGenerator(final XmppConnectionService service) {
         super(service);
+        xmppConnectionService = service;
     }
 
     public IqPacket discoResponse(final Account account, final IqPacket request) {
@@ -535,7 +538,11 @@ public class IqGenerator extends AbstractGenerator {
 
     public static Bundle defaultGroupChatConfiguration() {
         Bundle options = new Bundle();
-        options.putString("muc#roomconfig_persistentroom", "1");
+        if (persistentRoom()) {
+            options.putString("muc#roomconfig_persistentroom", "1");
+        } else {
+            options.putString("muc#roomconfig_persistentroom", "0");
+        }
         options.putString("muc#roomconfig_membersonly", "1");
         options.putString("muc#roomconfig_publicroom", "0");
         options.putString("muc#roomconfig_whois", "anyone");
@@ -549,7 +556,11 @@ public class IqGenerator extends AbstractGenerator {
 
     public static Bundle defaultChannelConfiguration() {
         Bundle options = new Bundle();
-        options.putString("muc#roomconfig_persistentroom", "1");
+        if (persistentRoom()) {
+            options.putString("muc#roomconfig_persistentroom", "1");
+        } else {
+            options.putString("muc#roomconfig_persistentroom", "0");
+        }
         options.putString("muc#roomconfig_membersonly", "0");
         options.putString("muc#roomconfig_publicroom", "1");
         options.putString("muc#roomconfig_whois", "moderators");
@@ -592,5 +603,8 @@ public class IqGenerator extends AbstractGenerator {
         packet.setTo(jid);
         packet.addChild("query", Namespace.DISCO_INFO);
         return packet;
+    }
+    private static boolean persistentRoom() {
+        return xmppConnectionService.getBooleanPreference(PERSISTENT_ROOM, R.bool.enable_persistent_rooms);
     }
 }

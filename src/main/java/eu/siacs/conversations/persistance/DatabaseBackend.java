@@ -33,6 +33,8 @@ import java.security.cert.CertificateException;
 import java.security.cert.CertificateFactory;
 import java.security.cert.X509Certificate;
 import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Iterator;
@@ -68,6 +70,14 @@ public class DatabaseBackend extends SQLiteOpenHelper {
     public static final int DATABASE_VERSION = 56; // = Conversations DATABASE_VERSION + 7
     private static boolean requiresMessageIndexRebuild = false;
     private static DatabaseBackend instance = null;
+    private static final List<String> DB_PRAGMAS = Collections.unmodifiableList(Arrays.asList(
+            "synchronous", "journal_mode",
+            "wal_checkpoint", "wal_autocheckpoint", "journal_size_limit",
+            "page_count", "page_size", "max_page_count", "freelist_count",
+            "cache_size", "cache_spill",
+            "soft_heap_limit", "hard_heap_limit", "mmap_size",
+            "foreign_keys", "auto_vacuum"
+    ));
 
     private static final String CREATE_CONTATCS_STATEMENT = "create table "
             + Contact.TABLENAME + "(" + Contact.ACCOUNT + " TEXT, "
@@ -216,6 +226,37 @@ public class DatabaseBackend extends SQLiteOpenHelper {
     public void onConfigure(SQLiteDatabase db) {
         final long start = SystemClock.elapsedRealtime();
         db.execSQL("PRAGMA foreign_keys=ON");
+
+        // https://www.sqlite.org/pragma.html#pragma_auto_vacuum
+        // https://android.googlesource.com/platform/external/sqlite.git/+/6ab557bdc070f11db30ede0696888efd19800475%5E!/
+        boolean sqlite_auto_vacuum = false;
+        String mode = (sqlite_auto_vacuum ? "FULL" : "INCREMENTAL");
+        Log.d(Config.LOGTAG, "Set PRAGMA auto_vacuum = " + mode);
+        try (Cursor cursor = db.rawQuery("PRAGMA auto_vacuum = " + mode + ";", null)) {
+            cursor.moveToNext(); // required
+        }
+
+        // https://sqlite.org/pragma.html#pragma_synchronous
+        boolean sqlite_sync_extra = true;
+        String sync = (sqlite_sync_extra ? "EXTRA" : "NORMAL");
+        Log.d(Config.LOGTAG, "Set PRAGMA synchronous = " + sync);
+        try (Cursor cursor = db.rawQuery("PRAGMA synchronous = " + sync + ";", null)) {
+            cursor.moveToNext(); // required
+        }
+
+        // Prevent long running operations from getting an exclusive lock
+        // https://www.sqlite.org/pragma.html#pragma_cache_spill
+        Log.d(Config.LOGTAG, "Set PRAGMA cache_spill=0");
+        try (Cursor cursor = db.rawQuery("PRAGMA cache_spill=0;", null)) {
+            cursor.moveToNext(); // required
+        }
+
+        // https://www.sqlite.org/pragma.html
+        for (String pragma : DB_PRAGMAS)
+            try (Cursor cursor = db.rawQuery("PRAGMA " + pragma + ";", null)) {
+                Log.d(Config.LOGTAG, "Get PRAGMA " + pragma + "=" + (cursor.moveToNext() ? cursor.getString(0) : "?"));
+            }
+
         db.rawQuery("PRAGMA secure_delete=ON", null).close();
         Log.d(Config.LOGTAG, "configure the DB in " + (SystemClock.elapsedRealtime() - start) + "ms");
     }

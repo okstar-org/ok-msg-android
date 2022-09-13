@@ -17,7 +17,6 @@ import androidx.appcompat.app.AlertDialog;
 import androidx.databinding.DataBindingUtil;
 import androidx.fragment.app.DialogFragment;
 
-import java.security.SecureRandom;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
@@ -44,7 +43,6 @@ public class CreatePublicChannelDialog extends DialogFragment implements OnBacke
     private boolean jidWasModified = false;
     private boolean nameEntered = false;
     private boolean skipTetxWatcher = false;
-    private static final SecureRandom RANDOM = new SecureRandom();
 
     public static CreatePublicChannelDialog newInstance(List<String> accounts, boolean multipleAccounts) {
         CreatePublicChannelDialog dialog = new CreatePublicChannelDialog();
@@ -167,7 +165,7 @@ public class CreatePublicChannelDialog extends DialogFragment implements OnBacke
             try {
                 return Jid.of(localpart, domain, null).toEscapedString();
             } catch (IllegalArgumentException e) {
-                return Jid.of(CryptoHelper.pronounceable(RANDOM), domain, null).toEscapedString();
+                return Jid.of(CryptoHelper.pronounceable(), domain, null).toEscapedString();
             }
         }
     }

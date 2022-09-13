@@ -100,6 +100,7 @@
     <bool name="pause_voice">false</bool>
     <bool name="show_date_in_quotes">false</bool>
     <integer name="individual_notification">0</integer>
+    <bool name="enable_persistent_rooms">true</bool>
 
     <!--
     <string-array name="domains">
