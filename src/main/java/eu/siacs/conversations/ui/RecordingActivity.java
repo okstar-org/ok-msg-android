@@ -25,6 +25,7 @@ import androidx.databinding.DataBindingUtil;
 
 import java.io.File;
 import java.io.IOException;
+import java.lang.ref.WeakReference;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.Locale;
@@ -164,19 +165,41 @@ public class RecordingActivity extends AppCompatActivity implements View.OnClick
             }
         }
         if (saveFile) {
-            new Thread(() -> {
-                try {
-                    if (!outputFileWrittenLatch.await(2, TimeUnit.SECONDS)) {
-                        Log.d(Config.LOGTAG, "time out waiting for output file to be written");
-                    }
-                } catch (InterruptedException e) {
-                    Log.d(Config.LOGTAG, "interrupted while waiting for output file to be written", e);
+            new Thread(new Finisher(outputFileWrittenLatch, mOutputFile, this)).start();
+        }
+    }
+
+    private static class Finisher implements Runnable {
+
+        private final CountDownLatch latch;
+        private final File outputFile;
+        private final WeakReference<Activity> activityReference;
+
+        private Finisher(CountDownLatch latch, File outputFile, Activity activity) {
+            this.latch = latch;
+            this.outputFile = outputFile;
+            this.activityReference = new WeakReference<>(activity);
+        }
+
+        @Override
+        public void run() {
+            try {
+                if (!latch.await(5, TimeUnit.SECONDS)) {
+                    Log.d(Config.LOGTAG, "time out waiting for output file to be written");
                 }
-                runOnUiThread(() -> {
-                    setResult(Activity.RESULT_OK, new Intent().setData(Uri.fromFile(mOutputFile)));
-                    finish();
-                });
-            }).start();
+            } catch (InterruptedException e) {
+                Log.d(Config.LOGTAG, "interrupted while waiting for output file to be written", e);
+            }
+            final Activity activity = activityReference.get();
+            if (activity == null) {
+                return;
+            }
+            activity.runOnUiThread(
+                    () -> {
+                        activity.setResult(
+                                Activity.RESULT_OK, new Intent().setData(Uri.fromFile(outputFile)));
+                        activity.finish();
+                    });
         }
     }
 

@@ -59,6 +59,7 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
+import java.lang.ref.WeakReference;
 import java.net.ServerSocket;
 import java.net.Socket;
 import java.net.URL;
@@ -429,16 +430,19 @@ public class FileBackend {
     }
 
     public DownloadableFile getFile(Message message, boolean decrypted) {
-        final boolean encrypted = !decrypted
-                && (message.getEncryption() == Message.ENCRYPTION_PGP
-                || message.getEncryption() == Message.ENCRYPTION_DECRYPTED);
+        final boolean encrypted =
+                !decrypted
+                        && (message.getEncryption() == Message.ENCRYPTION_PGP
+                        || message.getEncryption() == Message.ENCRYPTION_DECRYPTED);
         String path = message.getRelativeFilePath();
         if (path == null) {
             path = fileDateFormat.format(new Date(message.getTimeSent())) + "_" + message.getUuid().substring(0, 4);
         }
         final DownloadableFile file = getFileForPath(path, message.getMimeType());
         if (encrypted) {
-            return new DownloadableFile(mXmppConnectionService.getCacheDir(), String.format("%s.%s", file.getName(), "pgp"));
+            return new DownloadableFile(
+                    mXmppConnectionService.getCacheDir(),
+                    String.format("%s.%s", file.getName(), "pgp"));
         } else {
             return file;
         }
@@ -2103,21 +2107,44 @@ public class FileBackend {
     }
 
     public void saveFile(final Message message, final Activity activity) {
-        new Thread(() -> {
-            final DownloadableFile source = getFile(message);
-            final File destination = new File(getDestinationToSaveFile(message));
-            try {
-                activity.runOnUiThread(() -> {
-                    ToastCompat.makeText(activity, activity.getString(R.string.copy_file_to, destination), ToastCompat.LENGTH_SHORT).show();
-                });
-                copyFile(source, destination);
-                activity.runOnUiThread(() -> {
-                    ToastCompat.makeText(activity, activity.getString(R.string.file_copied_to, destination), ToastCompat.LENGTH_SHORT).show();
-                });
-            } catch (IOException e) {
-                e.printStackTrace();
+        new Thread(new SaveFileFinisher(getFile(message), new File(getDestinationToSaveFile(message)), activity, this)).start();
+    }
+
+    private static class SaveFileFinisher implements Runnable {
+
+        private final DownloadableFile source;
+        private final File destination;
+        private final WeakReference<Activity> activityReference;
+        private final FileBackend fileBackend;
+
+        private SaveFileFinisher(DownloadableFile source, File destination, Activity activity, FileBackend fileBackend) {
+            this.source = source;
+            this.destination = destination;
+            this.activityReference = new WeakReference<>(activity);
+            this.fileBackend = fileBackend;
+        }
+
+        @Override
+        public void run() {
+            final Activity activity = activityReference.get();
+            if (activity == null) {
+                return;
             }
-        }).start();
+            activity.runOnUiThread(
+                    () -> {
+                        try {
+                            activity.runOnUiThread(() -> {
+                                ToastCompat.makeText(activity, activity.getString(R.string.copy_file_to, destination), ToastCompat.LENGTH_SHORT).show();
+                            });
+                            fileBackend.copyFile(source, destination);
+                            activity.runOnUiThread(() -> {
+                                ToastCompat.makeText(activity, activity.getString(R.string.file_copied_to, destination), ToastCompat.LENGTH_SHORT).show();
+                            });
+                        } catch (IOException e) {
+                            e.printStackTrace();
+                        }
+                    });
+        }
     }
 
     public static void moveFile(String inputPath, String inputFile, String outputPath) {

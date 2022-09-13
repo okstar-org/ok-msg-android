@@ -56,6 +56,7 @@ import com.google.common.base.Strings;
 import com.squareup.picasso.Picasso;
 
 import java.io.UnsupportedEncodingException;
+import java.lang.ref.WeakReference;
 import java.net.URI;
 import java.util.List;
 import java.util.Locale;
@@ -937,7 +938,7 @@ public class MessageAdapter extends ArrayAdapter<Message> {
         viewHolder.transfer.setVisibility(View.GONE);
         final DownloadableFile file = activity.xmppConnectionService.getFileBackend().getFile(message);
         if (file != null && !file.exists() && !message.isFileDeleted()) {
-            markFileDeleted(message);
+            new Thread(new markFileDeletedFinisher(message, activity)).start();
             displayInfoMessage(viewHolder, activity.getString(R.string.file_deleted), darkBackground, message);
             ToastCompat.makeText(activity, R.string.file_deleted, ToastCompat.LENGTH_SHORT).show();
             return;
@@ -1283,11 +1284,11 @@ public class MessageAdapter extends ArrayAdapter<Message> {
             } else {
                 /* todo why should we mark a file as deleted? --> causing strange side effects
                 if (!activity.xmppConnectionService.getFileBackend().getFile(message).exists() && !message.isFileDeleted()) {
-                    markFileDeleted(message);
+                    new Thread(new markFileDeletedFinisher(message, activity)).start();
                     displayInfoMessage(viewHolder, activity.getString(R.string.file_deleted), darkBackground, message);
                 }*/
                 if (checkFileExistence(message, view, viewHolder)) {
-                    markFileExisting(message);
+                    new Thread(new markFileExistingFinisher(message, activity)).start();
                 }
                 displayInfoMessage(viewHolder, UIHelper.getMessagePreview(activity, message).first, darkBackground, message);
             }
@@ -1392,22 +1393,54 @@ public class MessageAdapter extends ArrayAdapter<Message> {
         return view;
     }
 
-    private void markFileExisting(Message message) {
-        new Thread(() -> {
-            Log.d(Config.LOGTAG, "Found and restored orphaned file " + message.getRelativeFilePath());
-            message.setFileDeleted(false);
-            activity.xmppConnectionService.updateMessage(message, false);
-            activity.xmppConnectionService.updateConversation((Conversation) message.getConversation());
-        }).start();
+    private static class markFileExistingFinisher implements Runnable {
+        private final Message message;
+        private final WeakReference<XmppActivity> activityReference;
+
+        private markFileExistingFinisher(Message message, XmppActivity activity) {
+            this.message = message;
+            this.activityReference = new WeakReference<>(activity);
+        }
+
+        @Override
+        public void run() {
+            final XmppActivity activity = activityReference.get();
+            if (activity == null) {
+                return;
+            }
+            activity.runOnUiThread(
+                    () -> {
+                        Log.d(Config.LOGTAG, "Found and restored orphaned file " + message.getRelativeFilePath());
+                        message.setFileDeleted(false);
+                        activity.xmppConnectionService.updateMessage(message, false);
+                        activity.xmppConnectionService.updateConversation((Conversation) message.getConversation());
+                    });
+        }
     }
 
-    private void markFileDeleted(Message message) {
-        new Thread(() -> {
-            Log.d(Config.LOGTAG, "Mark file deleted " + message.getRelativeFilePath());
-            message.setFileDeleted(true);
-            activity.xmppConnectionService.updateMessage(message, false);
-            activity.xmppConnectionService.updateConversation((Conversation) message.getConversation());
-        }).start();
+    private static class markFileDeletedFinisher implements Runnable {
+        private final Message message;
+        private final WeakReference<XmppActivity> activityReference;
+
+        private markFileDeletedFinisher(Message message, XmppActivity activity) {
+            this.message = message;
+            this.activityReference = new WeakReference<>(activity);
+        }
+
+        @Override
+        public void run() {
+            final XmppActivity activity = activityReference.get();
+            if (activity == null) {
+                return;
+            }
+            activity.runOnUiThread(
+                    () -> {
+                        Log.d(Config.LOGTAG, "Mark file deleted " + message.getRelativeFilePath());
+                        message.setFileDeleted(true);
+                        activity.xmppConnectionService.updateMessage(message, false);
+                        activity.xmppConnectionService.updateConversation((Conversation) message.getConversation());
+                    });
+        }
     }
 
     private boolean checkFileExistence(Message message, View view, ViewHolder viewHolder) {

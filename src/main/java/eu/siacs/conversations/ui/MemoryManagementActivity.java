@@ -7,6 +7,7 @@ import static eu.siacs.conversations.persistance.FileBackend.VIDEOS;
 import static eu.siacs.conversations.utils.StorageHelper.getAppMediaDirectory;
 import static eu.siacs.conversations.utils.StorageHelper.getConversationsDirectory;
 
+import android.app.Activity;
 import android.content.Context;
 import android.os.AsyncTask;
 import android.os.Bundle;
@@ -16,9 +17,11 @@ import android.widget.TextView;
 import androidx.appcompat.app.AlertDialog;
 
 import java.io.File;
+import java.lang.ref.WeakReference;
 
 import eu.siacs.conversations.R;
 import eu.siacs.conversations.persistance.FileBackend;
+import eu.siacs.conversations.services.XmppConnectionService;
 import eu.siacs.conversations.utils.ThemeHelper;
 import eu.siacs.conversations.utils.UIHelper;
 
@@ -111,13 +114,32 @@ public class MemoryManagementActivity extends XmppActivity {
         builder.setTitle(R.string.delete_files_dialog);
         builder.setMessage(getResources().getString(R.string.delete_files_dialog_msg, file));
         builder.setPositiveButton(R.string.confirm, (dialog, which) -> {
-            Thread t = new Thread(() -> {
-                xmppConnectionService.getFileBackend().deleteFilesInDir(dir);
-                runOnUiThread(() -> new getMemoryUsages(this).execute());
-            });
-            t.start();
+            new Thread(new deleteFilesInDirFinisher(dir, this, xmppConnectionService)).start();
         });
         builder.create().show();
+    }
+
+    private static class deleteFilesInDirFinisher implements Runnable {
+
+        private final File dir;
+        private final WeakReference<Activity> activityReference;
+        private final XmppConnectionService service;
+
+        private deleteFilesInDirFinisher(File dir, Activity activity, XmppConnectionService service) {
+            this.dir = dir;
+            this.activityReference = new WeakReference<>(activity);
+            this.service = service;
+        }
+
+        @Override
+        public void run() {
+            final Activity activity = activityReference.get();
+            if (activity == null) {
+                return;
+            }
+            service.getFileBackend().deleteFilesInDir(dir);
+            activity.runOnUiThread(() -> new getMemoryUsages(activity).execute());
+        }
     }
 
     static class getMemoryUsages extends AsyncTask<Void, Void, Void> {
