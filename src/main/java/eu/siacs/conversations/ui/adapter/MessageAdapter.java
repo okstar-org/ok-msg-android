@@ -124,19 +124,19 @@ public class MessageAdapter extends ArrayAdapter<Message> {
     private boolean mPlayGifInside = false;
     private boolean mShowLinksInside = false;
     private boolean mShowMapsInside = false;
-    private boolean mForceNames = false;
+    private final boolean mForceNames;
 
-    public MessageAdapter(XmppActivity activity, List<Message> messages) {
+    public MessageAdapter(final XmppActivity activity, final List<Message> messages, final boolean forceNames) {
         super(activity, 0, messages);
         this.activity = activity;
         this.audioPlayer = new AudioPlayer(this);
         metrics = getContext().getResources().getDisplayMetrics();
         updatePreferences();
+        this.mForceNames = forceNames;
     }
 
-    public MessageAdapter(XmppActivity activity, List<Message> messages, boolean forceNames) {
-        this(activity, messages);
-        mForceNames = forceNames;
+    public MessageAdapter(final XmppActivity activity, final List<Message> messages) {
+        this(activity, messages, false);
     }
 
     private static void resetClickListener(View... views) {
