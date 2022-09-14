@@ -905,7 +905,7 @@
     <string name="pref_show_mappreview_inside_summary">Mostrar previsualizaciones de mapas directamente en la vista de chat, se establecerá una conexión con servidor monocles chat.</string>
     <string name="pref_show_mappreview_inside">Mostrar previsualizaciones de localizaciones en el chat</string>
     <string name="pref_use_internal_updater_summary">Permitir que la aplicación busque actualizaciones una vez al día</string>
-    <string name="pref_use_internal_updater">buscar actualizaciones</string>
+    <string name="pref_use_internal_updater">Buscar actualizaciones</string>
     <string name="attach">Adjuntar</string>
     <string name="delete_from_server">Eliminar en el servidor</string>
     <string name="go_online_to_delete">Tienes que activar y/o ir en línea con la cuenta que quieres eliminar del servidor.</string>
