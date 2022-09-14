@@ -29,6 +29,9 @@
 
 package eu.siacs.conversations.ui;
 
+import static eu.siacs.conversations.ui.util.SoftKeyboardUtils.hideSoftKeyboard;
+import static eu.siacs.conversations.ui.util.SoftKeyboardUtils.showKeyboard;
+
 import android.content.Intent;
 import android.os.Bundle;
 import android.text.Editable;
@@ -72,9 +75,6 @@ import eu.siacs.conversations.utils.FtsUtils;
 import eu.siacs.conversations.utils.MessageUtils;
 import eu.siacs.conversations.utils.UIHelper;
 
-import static eu.siacs.conversations.ui.util.SoftKeyboardUtils.hideSoftKeyboard;
-import static eu.siacs.conversations.ui.util.SoftKeyboardUtils.showKeyboard;
-
 public class SearchActivity extends XmppActivity implements TextWatcher, OnSearchResultsAvailable, MessageAdapter.OnContactPictureClicked {
 
     private static final String EXTRA_SEARCH_TERM = "search-term";
@@ -100,7 +100,7 @@ public class SearchActivity extends XmppActivity implements TextWatcher, OnSearc
         this.binding = DataBindingUtil.setContentView(this, R.layout.activity_search);
         setSupportActionBar((Toolbar) this.binding.toolbar);
         configureActionBar(getSupportActionBar());
-        this.messageListAdapter = new MessageAdapter(this, this.messages);
+		this.messageListAdapter = new MessageAdapter(this, this.messages, uuid == null);
         this.messageListAdapter.setOnContactPictureClicked(this);
         this.binding.searchResults.setAdapter(messageListAdapter);
         registerForContextMenu(this.binding.searchResults);

@@ -124,6 +124,7 @@ public class MessageAdapter extends ArrayAdapter<Message> {
     private boolean mPlayGifInside = false;
     private boolean mShowLinksInside = false;
     private boolean mShowMapsInside = false;
+    private boolean mForceNames = false;
 
     public MessageAdapter(XmppActivity activity, List<Message> messages) {
         super(activity, 0, messages);
@@ -131,6 +132,11 @@ public class MessageAdapter extends ArrayAdapter<Message> {
         this.audioPlayer = new AudioPlayer(this);
         metrics = getContext().getResources().getDisplayMetrics();
         updatePreferences();
+    }
+
+    public MessageAdapter(XmppActivity activity, List<Message> messages, boolean forceNames) {
+        this(activity, messages);
+        mForceNames = forceNames;
     }
 
     private static void resetClickListener(View... views) {
@@ -308,11 +314,10 @@ public class MessageAdapter extends ArrayAdapter<Message> {
                 error = true;
                 break;
             default:
-                if (multiReceived) {
+                if (mForceNames || multiReceived) {
                     final int shadowSize = 10;
                     showUsername(viewHolder, message, darkBackground);
-                }
-                if (singleReceived) {
+                } else if (singleReceived) {
                     viewHolder.username.setVisibility(View.GONE);
                 }
                 break;
@@ -406,12 +411,15 @@ public class MessageAdapter extends ArrayAdapter<Message> {
         }
     }
     private void showUsername(ViewHolder viewHolder, Message message, boolean darkBackground) {
-        if (message.showUsername()) {
+        if (message == null || viewHolder == null) {
+            return;
+        }
+        viewHolder.username.setText(UIHelper.getColoredUsername(activity.xmppConnectionService, message));
+        if (message.showUsername() || mForceNames) {
             viewHolder.username.setVisibility(View.VISIBLE);
         } else {
             viewHolder.username.setVisibility(View.GONE);
         }
-        viewHolder.username.setText(UIHelper.getColoredUsername(activity.xmppConnectionService, message));
         if (activity.xmppConnectionService.colored_muc_names() && ThemeHelper.showColoredUsernameBackGround(activity, darkBackground)) {
             viewHolder.username.setPadding(4, 2, 4, 2);
             viewHolder.username.setBackground(ContextCompat.getDrawable(activity, R.drawable.duration_background));
@@ -1135,6 +1143,7 @@ public class MessageAdapter extends ArrayAdapter<Message> {
                     view = activity.getLayoutInflater().inflate(R.layout.message_sent, parent, false);
                     viewHolder.message_box = view.findViewById(R.id.message_box);
                     viewHolder.contact_picture = view.findViewById(R.id.message_photo);
+                    viewHolder.username = view.findViewById(R.id.username);
                     viewHolder.audioPlayer = view.findViewById(R.id.audio_player);
                     viewHolder.download_button = view.findViewById(R.id.download_button);
                     viewHolder.resend_button = view.findViewById(R.id.resend_button);
