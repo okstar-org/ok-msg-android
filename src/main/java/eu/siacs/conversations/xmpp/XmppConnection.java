@@ -5,6 +5,7 @@ import static eu.siacs.conversations.utils.Random.SECURE_RANDOM;
 import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.os.Build;
 import android.os.SystemClock;
 import android.security.KeyChain;
 import android.util.Base64;
@@ -79,6 +80,7 @@ import eu.siacs.conversations.services.NotificationService;
 import eu.siacs.conversations.services.XmppConnectionService;
 import eu.siacs.conversations.utils.CryptoHelper;
 import eu.siacs.conversations.utils.Patterns;
+import eu.siacs.conversations.utils.PhoneHelper;
 import eu.siacs.conversations.utils.Resolver;
 import eu.siacs.conversations.utils.SSLSocketHelper;
 import eu.siacs.conversations.utils.SocksSocketFactory;
@@ -1302,6 +1304,14 @@ public class XmppConnection implements Runnable {
             if (!Strings.isNullOrEmpty(firstMessage)) {
                 authenticate.addChild("initial-response").setContent(firstMessage);
             }
+            final Element userAgent = authenticate.addChild("user-agent");
+            userAgent.setAttribute("id", account.getUuid());
+            userAgent.addChild("software").setContent(mXmppConnectionService.getString(R.string.app_name));
+            if (!PhoneHelper.isEmulator()) {
+                userAgent
+                        .addChild("device")
+                        .setContent(String.format("%s %s", Build.MANUFACTURER, Build.MODEL));
+            }
             final Element inline = this.streamFeatures.findChild("inline", Namespace.SASL_2);
             final boolean inlineStreamManagement =
                     inline != null && inline.hasChild("sm", "urn:xmpp:sm:3");
@@ -1340,9 +1350,7 @@ public class XmppConnection implements Runnable {
     private Element generateBindRequest(final Collection<String> bindFeatures) {
         Log.d(Config.LOGTAG, "inline bind features: " + bindFeatures);
         final Element bind = new Element("bind", Namespace.BIND2);
-        final Element clientId = bind.addChild("client-id");
-        clientId.setAttribute("tag", mXmppConnectionService.getString(R.string.app_name));
-        clientId.setContent(account.getUuid());
+        bind.addChild("tag").setContent(mXmppConnectionService.getString(R.string.app_name));
         final Element features = bind.addChild("features");
         if (bindFeatures.contains(Namespace.CARBONS)) {
             features.addChild("enable", Namespace.CARBONS);
@@ -1351,10 +1359,6 @@ public class XmppConnection implements Runnable {
             features.addChild(new EnablePacket());
         }
         return bind;
-    }
-
-    private static Collection<String> extractMechanisms(final Element stream) {
-        return Collections2.transform(stream.getChildren(), c -> c == null ? null : c.getContent());
     }
 
     private void register() {
