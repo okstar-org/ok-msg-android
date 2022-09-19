@@ -674,12 +674,8 @@ public class StartConversationActivity extends XmppActivity implements XmppConne
         }
         MenuItem qrCodeScanMenuItem = menu.findItem(R.id.action_scan_qr_code);
         qrCodeScanMenuItem.setVisible(isCameraFeatureAvailable());
-        if (QuickConversationsService.isQuicksy()) {
-            menuHideOffline.setVisible(false);
-        } else {
-            menuHideOffline.setVisible(true);
-            menuHideOffline.setChecked(this.mHideOfflineContacts);
-        }
+        menuHideOffline.setVisible(true);
+        menuHideOffline.setChecked(this.mHideOfflineContacts);
         mMenuSearchView = menu.findItem(R.id.action_search);
         mMenuSearchView.setOnActionExpandListener(mOnActionExpandListener);
         View mSearchView = mMenuSearchView.getActionView();
@@ -715,6 +711,7 @@ public class StartConversationActivity extends XmppActivity implements XmppConne
                     filter(mSearchEditText.getText().toString());
                 }
                 invalidateOptionsMenu();
+                return true;
         }
         return super.onOptionsItemSelected(item);
     }
@@ -979,7 +976,8 @@ public class StartConversationActivity extends XmppActivity implements XmppConne
             if (account.getStatus() != Account.State.DISABLED) {
                 for (Contact contact : account.getRoster().getContacts()) {
                     Presence.Status s = contact.getShownStatus();
-                    if (contact.showInContactList() && contact.match(this, needle)
+                    if (contact.showInContactList()
+                            && contact.match(this, needle)
                             && (!this.mHideOfflineContacts
                             || (needle != null && !needle.trim().isEmpty())
                             || s.compareTo(Presence.Status.OFFLINE) < 0)) {
