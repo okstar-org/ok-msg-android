@@ -68,6 +68,8 @@ public final class MucDetailsContextMenuHelper {
         MenuItem title = menu.findItem(R.id.title);
         MenuItem showAvatar = menu.findItem(R.id.action_show_avatar);
         showAvatar.setVisible(user != null);
+        MenuItem showMucContactDetails = menu.findItem(R.id.action_muc_contact_details);
+        showMucContactDetails.setVisible(user != null && user.getRealJid() == null);
         if (forceContextMenu && username != null) {
             SpannableStringBuilder menuTitle = new SpannableStringBuilder(username);
             menuTitle.setSpan(new ForegroundColorSpan(titleColor), 0, menuTitle.length(), 0);
@@ -182,6 +184,11 @@ public final class MucDetailsContextMenuHelper {
                     activity.switchToContactDetails(contact, fingerprint);
                 }
                 return true;
+            case R.id.action_muc_contact_details:
+                if (user != null) {
+                    activity.switchToMucContactDetails(user);
+                }
+                return true;
             case R.id.start_conversation:
                 startConversation(user, activity);
                 return true;
@@ -217,7 +224,7 @@ public final class MucDetailsContextMenuHelper {
                         return true;
                     }
                 }
-                activity.privateMsgInMuc(conversation, user.getName());
+                activity.privateMsgInMuc(conversation, user.getAvatarName());
                 return true;
             case R.id.invite:
                 if (user.getAffiliation().ranks(MucOptions.Affiliation.MEMBER)) {

@@ -323,6 +323,10 @@
             android:label="@string/contact_details"
             android:windowSoftInputMode="stateHidden" />
         <activity
+            android:name=".ui.ConferenceContactDetailsActivity"
+            android:label="@string/contact_details"
+            android:windowSoftInputMode="stateHidden" />
+        <activity
             android:name=".ui.PublishProfilePictureActivity"
             android:label="@string/mgmt_account_publish_avatar"
             android:windowSoftInputMode="stateHidden" />
