@@ -1220,4 +1220,6 @@
     <string name="title_undo_swipe_out_conversation">Deshacer eliminación de chat</string>
     <string name="undo">Deshacer</string>
     <string name="audio_video_disabled_tor">Las llamadas están deshabilitadas cuando se usa Tor</string>
+    <string name="pref_enable_persistent_rooms_summary">Hacer los grupos y canales públicos persistentes y no eliminarlos del servidor después de que el último usuario lo abandone.</string>
+    <string name="pref_enable_persistent_rooms_title">Grupos persistentes</string>
 </resources>
