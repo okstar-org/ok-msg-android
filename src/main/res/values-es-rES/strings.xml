@@ -239,6 +239,7 @@
     <string name="server_info_session_established">Inicio sesión actual</string>
     <string name="skip">Omitir</string>
     <string name="disable_notifications">Deshabilitar notificaciones</string>
+    <string name="enable_notifications">Habilitar notificaciones</string>
     <string name="enable">Habilitar</string>
     <string name="conference_requires_password">El chat de grupo requiere contraseña</string>
     <string name="enter_password">Introduce la contraseña</string>
