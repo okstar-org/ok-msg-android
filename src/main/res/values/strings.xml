@@ -240,6 +240,7 @@
     <string name="server_info_session_established">Current session established</string>
     <string name="skip">Skip</string>
     <string name="disable_notifications">Disable notifications</string>
+    <string name="enable_notifications">Enable notifications</string>
     <string name="enable">Enable</string>
     <string name="conference_requires_password">Group chat requires password</string>
     <string name="enter_password">Enter password</string>

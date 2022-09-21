@@ -81,16 +81,8 @@
         android:id="@+id/audio_player"
         android:layout_width="@dimen/audio_player_width"
         android:layout_height="wrap_content"
+        android:orientation="vertical"
         android:visibility="gone">
-
-        <ImageButton
-            android:id="@+id/play_pause"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_centerVertical="true"
-            android:alpha="?attr/icon_alpha"
-            android:background="?android:selectableItemBackground"
-            android:paddingTop="16dp" />
 
         <TextView
             android:id="@+id/runtime"
@@ -108,16 +100,29 @@
             android:textColor="@color/realwhite"
             android:textSize="12sp" />
 
-        <SeekBar
-            android:id="@+id/progress"
+        <RelativeLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_below="@+id/runtime"
-            android:layout_centerVertical="true"
-            android:layout_toEndOf="@+id/play_pause"
-            android:layout_toRightOf="@+id/play_pause"
-            android:paddingTop="16dp"
-            android:progress="100" />
+            android:layout_marginTop="-16dp">
+
+            <ImageButton
+                android:id="@+id/play_pause"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerVertical="true"
+                android:alpha="?attr/icon_alpha"
+                android:padding="@dimen/image_button_padding"
+                android:background="?android:selectableItemBackground" />
+
+            <SeekBar
+                android:id="@+id/progress"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_centerVertical="true"
+                android:layout_toEndOf="@+id/play_pause"
+                android:progress="100" />
+        </RelativeLayout>
     </RelativeLayout>
 
     <RelativeLayout

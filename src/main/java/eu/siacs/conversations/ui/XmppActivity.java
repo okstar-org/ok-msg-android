@@ -82,6 +82,7 @@ import eu.siacs.conversations.entities.Account;
 import eu.siacs.conversations.entities.Contact;
 import eu.siacs.conversations.entities.Conversation;
 import eu.siacs.conversations.entities.Message;
+import eu.siacs.conversations.entities.MucOptions;
 import eu.siacs.conversations.entities.Presences;
 import eu.siacs.conversations.services.AvatarService;
 import eu.siacs.conversations.services.BarcodeProvider;
@@ -638,6 +639,13 @@ public abstract class XmppActivity extends ActionBarActivity {
         overridePendingTransition(R.animator.fade_in, R.animator.fade_out);
         finish();
     }
+    public void switchToMUCDetails(Conversation conversation) {
+        Intent intent = new Intent(this, ConferenceDetailsActivity.class);
+        intent.setAction(ConferenceDetailsActivity.ACTION_VIEW_MUC);
+        intent.putExtra("uuid", conversation.getUuid());
+        startActivity(intent);
+        overridePendingTransition(R.animator.fade_in, R.animator.fade_out);
+    }
 
     public void switchToContactDetails(Contact contact) {
         switchToContactDetails(contact, null);
@@ -649,6 +657,15 @@ public abstract class XmppActivity extends ActionBarActivity {
         intent.putExtra(EXTRA_ACCOUNT, contact.getAccount().getJid().asBareJid().toEscapedString());
         intent.putExtra("contact", contact.getJid().toEscapedString());
         intent.putExtra("fingerprint", messageFingerprint);
+        startActivity(intent);
+        overridePendingTransition(R.animator.fade_in, R.animator.fade_out);
+    }
+
+    public void switchToMucContactDetails(MucOptions.User user) {
+        Intent intent = new Intent(this, ConferenceContactDetailsActivity.class);
+        intent.setAction(ContactDetailsActivity.ACTION_VIEW_CONTACT);
+        intent.putExtra(EXTRA_ACCOUNT, user.getAccount().getJid().asBareJid().toEscapedString());
+        intent.putExtra("user", user.getFullJid().toEscapedString());
         startActivity(intent);
         overridePendingTransition(R.animator.fade_in, R.animator.fade_out);
     }

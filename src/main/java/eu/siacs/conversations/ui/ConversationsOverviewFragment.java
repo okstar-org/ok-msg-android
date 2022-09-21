@@ -59,7 +59,13 @@ import eu.siacs.conversations.ui.interfaces.OnConversationArchived;
 import eu.siacs.conversations.ui.util.StyledAttributes;
 import eu.siacs.conversations.utils.EasyOnboardingInvite;
 import eu.siacs.conversations.utils.ThemeHelper;
-
+import android.view.ContextMenu;
+import android.widget.AdapterView.AdapterContextMenuInfo;
+import com.google.common.base.Optional;
+import eu.siacs.conversations.entities.Contact;
+import eu.siacs.conversations.entities.MucOptions;
+import eu.siacs.conversations.services.XmppConnectionService;
+import eu.siacs.conversations.xmpp.jingle.OngoingRtpSession;
 import androidx.databinding.DataBindingUtil;
 import androidx.recyclerview.widget.LinearLayoutManager;
 
@@ -307,6 +313,7 @@ public class ConversationsOverviewFragment extends XmppFragment {
         });
         this.binding.list.setAdapter(this.conversationsAdapter);
         this.binding.list.setLayoutManager(new LinearLayoutManager(getActivity(), LinearLayoutManager.VERTICAL, false));
+        registerForContextMenu(this.binding.list);
         this.touchHelper = new ItemTouchHelper(this.callback);
         this.touchHelper.attachToRecyclerView(this.binding.list);
         return binding.getRoot();
@@ -315,6 +322,77 @@ public class ConversationsOverviewFragment extends XmppFragment {
     @Override
     public void onCreateOptionsMenu(Menu menu, MenuInflater menuInflater) {
         menuInflater.inflate(R.menu.fragment_conversations_overview, menu);
+    }
+
+    @Override
+    public void onCreateContextMenu(ContextMenu menu, View view, ContextMenu.ContextMenuInfo menuInfo) {
+        activity.getMenuInflater().inflate(R.menu.conversations, menu);
+        final XmppActivity activity = XmppActivity.find(view);
+        final Object tag = view.getTag();
+        Conversation conversation = conversations.get(((AdapterContextMenuInfo) menuInfo).position);
+        String name;
+        if (tag instanceof MucOptions.User && activity != null) {
+            activity.getMenuInflater().inflate(R.menu.muc_details_context, menu);
+            final MucOptions.User user = (MucOptions.User) tag;
+            final Contact contact = user.getContact();
+            if (contact != null && contact.showInContactList()) {
+                name = contact.getDisplayName();
+            } else if (user.getRealJid() != null) {
+                name = user.getRealJid().asBareJid().toEscapedString();
+            } else {
+                name = user.getName();
+            }
+        } else {
+            name = conversation.getAvatarName();
+        }
+        menu.setHeaderTitle(name);
+        final MenuItem menuMucDetails = menu.findItem(R.id.action_group_details);
+        final MenuItem menuContactDetails = menu.findItem(R.id.action_contact_details);
+        final MenuItem menuMute = menu.findItem(R.id.action_mute);
+        final MenuItem menuUnmute = menu.findItem(R.id.action_unmute);
+        final MenuItem menuOngoingCall = menu.findItem(R.id.action_ongoing_call);
+        final MenuItem menuTogglePinned = menu.findItem(R.id.action_toggle_pinned);
+
+        if (conversation != null) {
+            if (conversation.getMode() == Conversation.MODE_MULTI) {
+                menuContactDetails.setVisible(false);
+                menuMucDetails.setTitle(conversation.getMucOptions().isPrivateAndNonAnonymous() ? R.string.conference_details : R.string.channel_details);
+                menuOngoingCall.setVisible(false);
+            } else {
+                final XmppConnectionService service = activity == null ? null : activity.xmppConnectionService;
+                final Optional<OngoingRtpSession> ongoingRtpSession = service == null ? Optional.absent() : service.getJingleConnectionManager().getOngoingRtpConnection(conversation.getContact());
+                if (ongoingRtpSession.isPresent()) {
+                    menuOngoingCall.setVisible(true);
+                } else {
+                    menuOngoingCall.setVisible(false);
+                }
+                menuContactDetails.setVisible(!conversation.withSelf());
+                menuMucDetails.setVisible(false);
+            }
+            if (conversation.isMuted()) {
+                menuMute.setVisible(false);
+            } else {
+                menuUnmute.setVisible(false);
+            }
+            if (conversation.getBooleanAttribute(Conversation.ATTRIBUTE_PINNED_ON_TOP, false)) {
+                menuTogglePinned.setTitle(R.string.remove_from_favorites);
+            } else {
+                menuTogglePinned.setTitle(R.string.add_to_favorites);
+            }
+        }
+        super.onCreateContextMenu(menu, view, menuInfo);
+    }
+
+    @Override
+    public boolean onContextItemSelected(MenuItem item) {
+        Conversation conversation = conversations.get(((AdapterContextMenuInfo) item.getMenuInfo()).position);
+        ConversationFragment fragment = new ConversationFragment();
+        fragment.setHasOptionsMenu(false);
+        fragment.onAttach(activity);
+        fragment.reInit(conversation, null);
+        boolean r = fragment.onOptionsItemSelected(item);
+        refresh();
+        return r;
     }
 
     @Override

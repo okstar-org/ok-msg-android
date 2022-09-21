@@ -158,7 +158,7 @@ public class EditAccountActivity extends OmemoActivity implements OnAccountUpdat
                 return;
             }
             if (inNeedOfSaslAccept()) {
-                mAccount.setKey(Account.PINNED_MECHANISM_KEY, String.valueOf(-1));
+                mAccount.resetPinnedMechanism();
                 if (!xmppConnectionService.updateAccount(mAccount)) {
                     ToastCompat.makeText(EditAccountActivity.this, R.string.unable_to_update_account, ToastCompat.LENGTH_SHORT).show();
                 }
@@ -368,7 +368,7 @@ public class EditAccountActivity extends OmemoActivity implements OnAccountUpdat
             } else {
                 preset = jid.getDomain();
             }
-            final Intent intent = SignupUtils.getTokenRegistrationIntent(this, preset, mAccount.getKey(Account.PRE_AUTH_REGISTRATION_TOKEN), register);
+            final Intent intent = SignupUtils.getTokenRegistrationIntent(this, preset, mAccount.getKey(Account.KEY_PRE_AUTH_REGISTRATION_TOKEN), register);
             StartConversationActivity.addInviteUri(intent, getIntent());
             startActivity(intent);
             return;
@@ -1018,7 +1018,7 @@ public class EditAccountActivity extends OmemoActivity implements OnAccountUpdat
     }
 
     private boolean inNeedOfSaslAccept() {
-        return mAccount != null && mAccount.getLastErrorStatus() == Account.State.DOWNGRADE_ATTACK && mAccount.getKeyAsInt(Account.PINNED_MECHANISM_KEY, -1) >= 0 && !accountInfoEdited();
+        return mAccount != null && mAccount.getLastErrorStatus() == Account.State.DOWNGRADE_ATTACK && mAccount.getPinnedMechanismPriority() >= 0 && !accountInfoEdited();
     }
 
     private void publishOpenPGPPublicKey(Account account) {

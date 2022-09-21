@@ -2227,7 +2227,7 @@ public class XmppConnectionService extends Service {
         IqPacket iqPacket = new IqPacket(IqPacket.TYPE.SET);
         Element query = iqPacket.query("jabber:iq:private");
         Element storage = query.addChild("storage", "storage:bookmarks");
-        for (Bookmark bookmark : account.getBookmarks()) {
+        for (final Bookmark bookmark : account.getBookmarks()) {
             storage.addChild(bookmark);
         }
         sendIqPacket(account, iqPacket, mDefaultIqHandler);
@@ -2235,8 +2235,8 @@ public class XmppConnectionService extends Service {
 
     private void pushBookmarksPep(Account account) {
         Log.d(Config.LOGTAG, account.getJid().asBareJid() + ": pushing bookmarks via pep");
-        Element storage = new Element("storage", "storage:bookmarks");
-        for (Bookmark bookmark : account.getBookmarks()) {
+        final Element storage = new Element("storage", "storage:bookmarks");
+        for (final Bookmark bookmark : account.getBookmarks()) {
             storage.addChild(bookmark);
         }
         pushNodeAndEnforcePublishOptions(account, Namespace.BOOKMARKS, storage, "current", PublishOptions.persistentWhitelistAccess());
@@ -4090,6 +4090,7 @@ public class XmppConnectionService extends Service {
             final Avatar avatar = getFileBackend().getPepAvatar(image, size, format);
             if (avatar != null) {
                 if (!getFileBackend().save(avatar)) {
+                    Log.d(Config.LOGTAG, "unable to save avatar");
                     callback.onAvatarPublicationFailed(R.string.error_saving_avatar);
                     return;
                 }
@@ -4108,7 +4109,7 @@ public class XmppConnectionService extends Service {
             final Avatar avatar = getFileBackend().getPepAvatar(image, size, format);
             if (avatar != null) {
                 if (!getFileBackend().save(avatar)) {
-                    Log.d(Config.LOGTAG, "unable to save vcard");
+                    Log.d(Config.LOGTAG, "unable to save vcard avatar");
                     callback.onAvatarPublicationFailed(R.string.error_saving_avatar);
                     return;
                 }
@@ -4749,7 +4750,8 @@ public class XmppConnectionService extends Service {
     }
 
     public boolean allowMergeMessages() {
-        return getBooleanPreference("allowmergemessages", R.bool.allowmergemessages);
+        return false;
+        //return getBooleanPreference("allowmergemessages", R.bool.allowmergemessages);
     }
 
     public boolean showTextFormatting() {
@@ -5007,7 +5009,7 @@ public class XmppConnectionService extends Service {
         for (final Account account : accounts) {
             if (account.getXmppConnection() != null) {
                 mucServers.addAll(account.getXmppConnection().getMucServers());
-                for (Bookmark bookmark : account.getBookmarks()) {
+                for (final Bookmark bookmark : account.getBookmarks()) {
                     final Jid jid = bookmark.getJid();
                     final String s = jid == null ? null : jid.getDomain().toEscapedString();
                     if (s != null) {

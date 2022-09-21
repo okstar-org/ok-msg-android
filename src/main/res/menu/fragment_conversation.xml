@@ -102,6 +102,18 @@
         android:title="@string/invite_contact"
         app:showAsAction="never" />
     <item
+        android:id="@+id/action_mute"
+        android:orderInCategory="20"
+        android:title="@string/disable_notifications"
+        android:visible="false"
+        app:showAsAction="never" />
+    <item
+        android:id="@+id/action_unmute"
+        android:orderInCategory="21"
+        android:title="@string/enable_notifications"
+        android:visible="false"
+        app:showAsAction="never" />
+    <item
         android:id="@+id/action_search"
         android:icon="?attr/icon_search"
         android:orderInCategory="48"

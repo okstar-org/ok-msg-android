@@ -5,6 +5,7 @@ import static eu.siacs.conversations.utils.Random.SECURE_RANDOM;
 import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.os.Build;
 import android.os.SystemClock;
 import android.security.KeyChain;
 import android.util.Base64;
@@ -79,6 +80,7 @@ import eu.siacs.conversations.services.NotificationService;
 import eu.siacs.conversations.services.XmppConnectionService;
 import eu.siacs.conversations.utils.CryptoHelper;
 import eu.siacs.conversations.utils.Patterns;
+import eu.siacs.conversations.utils.PhoneHelper;
 import eu.siacs.conversations.utils.Resolver;
 import eu.siacs.conversations.utils.SSLSocketHelper;
 import eu.siacs.conversations.utils.SocksSocketFactory;
@@ -727,8 +729,7 @@ public class XmppConnection implements Runnable {
         Log.d(
                 Config.LOGTAG,
                 account.getJid().asBareJid().toString() + ": logged in (using " + version + ")");
-        // TODO store mechanism name
-        account.setKey(Account.PINNED_MECHANISM_KEY, String.valueOf(saslMechanism.getPriority()));
+        account.setPinnedMechanism(saslMechanism);
         if (version == SaslMechanism.Version.SASL_2) {
             final String authorizationIdentifier =
                     success.findChildContent("authorization-identifier");
@@ -1198,7 +1199,7 @@ public class XmppConnection implements Runnable {
                 && account.isOptionSet(Account.OPTION_REGISTER)) {
             throw new StateChangingException(Account.State.REGISTRATION_NOT_SUPPORTED);
         } else if (Config.SASL_2_ENABLED
-                && this.streamFeatures.hasChild("mechanisms", Namespace.SASL_2)
+                && this.streamFeatures.hasChild("authentication", Namespace.SASL_2)
                 && shouldAuthenticate
                 && isSecure) {
             authenticate(SaslMechanism.Version.SASL_2);
@@ -1241,8 +1242,12 @@ public class XmppConnection implements Runnable {
     }
 
     private void authenticate(final SaslMechanism.Version version) throws IOException {
-        final Element element =
-                this.streamFeatures.findChild("mechanisms", SaslMechanism.namespace(version));
+        final Element element;
+        if (version == SaslMechanism.Version.SASL) {
+            element = this.streamFeatures.findChild("mechanisms", Namespace.SASL);
+        } else {
+            element = this.streamFeatures.findChild("authentication", Namespace.SASL_2);
+        }
         final Collection<String> mechanisms =
                 Collections2.transform(
                         Collections2.filter(
@@ -1274,7 +1279,7 @@ public class XmppConnection implements Runnable {
                             + mechanisms);
             throw new StateChangingException(Account.State.INCOMPATIBLE_SERVER);
         }
-        final int pinnedMechanism = account.getKeyAsInt(Account.PINNED_MECHANISM_KEY, -1);
+        final int pinnedMechanism = account.getPinnedMechanismPriority();
         if (pinnedMechanism > saslMechanism.getPriority()) {
             Log.e(
                     Config.LOGTAG,
@@ -1298,6 +1303,14 @@ public class XmppConnection implements Runnable {
             authenticate = new Element("authenticate", Namespace.SASL_2);
             if (!Strings.isNullOrEmpty(firstMessage)) {
                 authenticate.addChild("initial-response").setContent(firstMessage);
+            }
+            final Element userAgent = authenticate.addChild("user-agent");
+            userAgent.setAttribute("id", account.getUuid());
+            userAgent.addChild("software").setContent(mXmppConnectionService.getString(R.string.app_name));
+            if (!PhoneHelper.isEmulator()) {
+                userAgent
+                        .addChild("device")
+                        .setContent(String.format("%s %s", Build.MANUFACTURER, Build.MODEL));
             }
             final Element inline = this.streamFeatures.findChild("inline", Namespace.SASL_2);
             final boolean inlineStreamManagement =
@@ -1337,9 +1350,7 @@ public class XmppConnection implements Runnable {
     private Element generateBindRequest(final Collection<String> bindFeatures) {
         Log.d(Config.LOGTAG, "inline bind features: " + bindFeatures);
         final Element bind = new Element("bind", Namespace.BIND2);
-        final Element clientId = bind.addChild("client-id");
-        clientId.setAttribute("tag", mXmppConnectionService.getString(R.string.app_name));
-        clientId.setContent(account.getUuid());
+        bind.addChild("tag").setContent(mXmppConnectionService.getString(R.string.app_name));
         final Element features = bind.addChild("features");
         if (bindFeatures.contains(Namespace.CARBONS)) {
             features.addChild("enable", Namespace.CARBONS);
@@ -1350,12 +1361,8 @@ public class XmppConnection implements Runnable {
         return bind;
     }
 
-    private static Collection<String> extractMechanisms(final Element stream) {
-        return Collections2.transform(stream.getChildren(), c -> c == null ? null : c.getContent());
-    }
-
     private void register() {
-        final String preAuth = account.getKey(Account.PRE_AUTH_REGISTRATION_TOKEN);
+        final String preAuth = account.getKey(Account.KEY_PRE_AUTH_REGISTRATION_TOKEN);
         if (preAuth != null && features.invite()) {
             final IqPacket preAuthRequest = new IqPacket(IqPacket.TYPE.SET);
             preAuthRequest.addChild("preauth", Namespace.PARS).setAttribute("token", preAuth);

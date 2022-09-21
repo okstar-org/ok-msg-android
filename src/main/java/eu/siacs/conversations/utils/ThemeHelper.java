@@ -560,4 +560,16 @@ public class ThemeHelper {
                 return dark ? true : false;
         }
     }
+
+    /**
+     * Calculate pixels relative to density.
+     *
+     * @param context from which to calculate the density
+     * @param dp      density pixels
+     * @return pixels (dp)
+     */
+    public static int dp2Px(Context context, int dp) {
+        float scale = context.getResources().getDisplayMetrics().density;
+        return (int) (dp * scale + 0.5f);
+    }
 }

@@ -5,6 +5,7 @@ import static eu.siacs.conversations.utils.PermissionUtils.getFirstDenied;
 
 import android.Manifest;
 import android.annotation.SuppressLint;
+import android.app.Activity;
 import android.app.PictureInPictureParams;
 import android.content.ActivityNotFoundException;
 import android.content.Context;
@@ -285,10 +286,19 @@ public class RtpSessionActivity extends XmppActivity
     }
 
     private void checkMicrophoneAvailabilityAsync() {
-        new Thread(this::checkMicrophoneAvailability).start();
+        new Thread(new MicrophoneAvailabilityCheck(this)).start();
     }
 
-    private void checkMicrophoneAvailability() {
+    private static class MicrophoneAvailabilityCheck implements Runnable {
+
+        private final WeakReference<Activity> activityReference;
+
+        private MicrophoneAvailabilityCheck(final Activity activity) {
+            this.activityReference = new WeakReference<>(activity);
+        }
+
+        @Override
+        public void run() {
         new Thread(() -> {
             final long start = SystemClock.elapsedRealtime();
             final boolean isMicrophoneAvailable = AppRTCAudioManager.isMicrophoneAvailable();
@@ -297,8 +307,16 @@ public class RtpSessionActivity extends XmppActivity
             if (isMicrophoneAvailable) {
                 return;
             }
-            runOnUiThread(() -> ToastCompat.makeText(this, R.string.microphone_unavailable, ToastCompat.LENGTH_LONG).show());
+            final Activity activity = activityReference.get();
+            if (activity == null) {
+                return;
+            }
+            activity.runOnUiThread(() -> ToastCompat.makeText(
+                                            activity,
+                                            R.string.microphone_unavailable,
+                                            ToastCompat.LENGTH_LONG).show());
         }).start();
+        }
     }
 
     private void putScreenInCallMode() {

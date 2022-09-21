@@ -67,7 +67,7 @@ import eu.siacs.conversations.xmpp.mam.MamReference;
 public class DatabaseBackend extends SQLiteOpenHelper {
 
     public static final String DATABASE_NAME = "history";
-    public static final int DATABASE_VERSION = 56; // = Conversations DATABASE_VERSION + 7
+    public static final int DATABASE_VERSION = 57; // = Conversations DATABASE_VERSION + 7
     private static boolean requiresMessageIndexRebuild = false;
     private static DatabaseBackend instance = null;
     private static final List<String> DB_PRAGMAS = Collections.unmodifiableList(Arrays.asList(
@@ -276,6 +276,8 @@ public class DatabaseBackend extends SQLiteOpenHelper {
                 + Account.KEYS + " TEXT, "
                 + Account.HOSTNAME + " TEXT, "
                 + Account.RESOURCE + " TEXT,"
+                + Account.PINNED_MECHANISM + " TEXT,"
+                + Account.PINNED_CHANNEL_BINDING + " TEXT,"
                 + Account.PORT + " NUMBER DEFAULT 5222)");
         db.execSQL("create table " + Conversation.TABLENAME + " ("
                 + Conversation.UUID + " TEXT PRIMARY KEY, " + Conversation.NAME
@@ -674,6 +676,11 @@ public class DatabaseBackend extends SQLiteOpenHelper {
             db.endTransaction();
             requiresMessageIndexRebuild = true;
         }
+        if (oldVersion < 57 && newVersion >= 57) {
+            db.execSQL("ALTER TABLE " + Account.TABLENAME + " ADD COLUMN " + Account.PINNED_MECHANISM + " TEXT");
+            db.execSQL("ALTER TABLE " + Account.TABLENAME + " ADD COLUMN " + Account.PINNED_CHANNEL_BINDING + " TEXT");
+
+        }
     }
 
     private boolean isColumnExisting(SQLiteDatabase db, String TableName, String ColumnName) {
@@ -1070,20 +1077,19 @@ public class DatabaseBackend extends SQLiteOpenHelper {
                 contactJid.asBareJid().toString() + "/%",
                 contactJid.asBareJid().toString()
         };
-        Cursor cursor = db.query(Conversation.TABLENAME, null,
+        try(final Cursor cursor = db.query(Conversation.TABLENAME, null,
                 Conversation.ACCOUNT + "=? AND (" + Conversation.CONTACTJID
-                        + " like ? OR " + Conversation.CONTACTJID + "=?)", selectionArgs, null, null, null);
-        if (cursor.getCount() == 0) {
-            cursor.close();
-            return null;
+                        + " like ? OR " + Conversation.CONTACTJID + "=?)", selectionArgs, null, null, null)) {
+            if (cursor.getCount() == 0) {
+                return null;
+            }
+            cursor.moveToFirst();
+            final Conversation conversation = Conversation.fromCursor(cursor);
+            if (conversation.getJid() instanceof InvalidJid) {
+                return null;
+            }
+            return conversation;
         }
-        cursor.moveToFirst();
-        Conversation conversation = Conversation.fromCursor(cursor);
-        cursor.close();
-        if (conversation.getJid() instanceof InvalidJid) {
-            return null;
-        }
-        return conversation;
     }
 
     public void updateConversation(final Conversation conversation) {
@@ -1099,34 +1105,28 @@ public class DatabaseBackend extends SQLiteOpenHelper {
     }
 
     public List<Jid> getAccountJids(final boolean enabledOnly) {
-        SQLiteDatabase db = this.getReadableDatabase();
+        final SQLiteDatabase db = this.getReadableDatabase();
         final List<Jid> jids = new ArrayList<>();
         final String[] columns = new String[]{Account.USERNAME, Account.SERVER};
-        String where = enabledOnly ? "not options & (1 <<1)" : null;
-        Cursor cursor = db.query(Account.TABLENAME, columns, where, null, null, null, null);
-        try {
-            while (cursor.moveToNext()) {
+        final String where = enabledOnly ? "not options & (1 <<1)" : null;
+        try (final Cursor cursor = db.query(Account.TABLENAME, columns, where, null, null, null, null)) {
+            while (cursor != null && cursor.moveToNext()) {
                 jids.add(Jid.of(cursor.getString(0), cursor.getString(1), null));
             }
+        } catch (final Exception e) {
             return jids;
-        } catch (Exception e) {
-            return jids;
-        } finally {
-            if (cursor != null) {
-                cursor.close();
-            }
         }
+        return jids;
     }
 
 
     private List<Account> getAccounts(SQLiteDatabase db) {
-        List<Account> list = new ArrayList<>();
-        try (Cursor cursor = db.query(Account.TABLENAME, null, null, null, null,
-                null, null)) {
-            while (cursor.moveToNext()) {
+        final List<Account> list = new ArrayList<>();
+        try (final Cursor cursor = db.query(Account.TABLENAME, null, null, null, null, null, null)) {
+            while (cursor != null && cursor.moveToNext()) {
                 list.add(Account.fromCursor(cursor));
             }
-        } catch (Exception e) {
+        } catch (final Exception e) {
             e.printStackTrace();
         }
         return list;
@@ -1164,14 +1164,14 @@ public class DatabaseBackend extends SQLiteOpenHelper {
     }
 
     public void readRoster(Roster roster) {
-        SQLiteDatabase db = this.getReadableDatabase();
-        Cursor cursor;
-        String[] args = {roster.getAccount().getUuid()};
-        cursor = db.query(Contact.TABLENAME, null, Contact.ACCOUNT + "=?", args, null, null, null);
-        while (cursor.moveToNext()) {
-            roster.initContact(Contact.fromCursor(cursor));
+        final SQLiteDatabase db = this.getReadableDatabase();
+        final String[] args = {roster.getAccount().getUuid()};
+        try (final Cursor cursor =
+                db.query(Contact.TABLENAME, null, Contact.ACCOUNT + "=?", args, null, null, null)) {
+            while (cursor.moveToNext()) {
+                roster.initContact(Contact.fromCursor(cursor));
+            }
         }
-        cursor.close();
     }
 
     public void writeRoster(final Roster roster) {

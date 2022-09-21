@@ -155,7 +155,8 @@ public class MucOptions {
     }
 
     public boolean canInvite() {
-        return !membersOnly() || self.getRole().ranks(Role.MODERATOR) || allowInvites();
+        final boolean hasPermission = !membersOnly() || self.getRole().ranks(Role.MODERATOR) || allowInvites();
+        return hasPermission && online();
     }
 
     public boolean allowInvites() {
@@ -168,7 +169,7 @@ public class MucOptions {
     }
 
     public boolean participantsCanChangeSubject() {
-        final Field field = getRoomInfoForm().getFieldByName("muc#roominfo_changesubject");
+        final Field field = getRoomInfoForm().getFieldByName("muc#roomconfig_changesubject");
         return field != null && "1".equals(field.getValue());
     }
 

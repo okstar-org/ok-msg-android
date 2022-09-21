@@ -56,6 +56,7 @@ import com.google.common.base.Strings;
 import com.squareup.picasso.Picasso;
 
 import java.io.UnsupportedEncodingException;
+import java.lang.ref.WeakReference;
 import java.net.URI;
 import java.util.List;
 import java.util.Locale;
@@ -123,13 +124,19 @@ public class MessageAdapter extends ArrayAdapter<Message> {
     private boolean mPlayGifInside = false;
     private boolean mShowLinksInside = false;
     private boolean mShowMapsInside = false;
+    private final boolean mForceNames;
 
-    public MessageAdapter(XmppActivity activity, List<Message> messages) {
+    public MessageAdapter(final XmppActivity activity, final List<Message> messages, final boolean forceNames) {
         super(activity, 0, messages);
         this.activity = activity;
         this.audioPlayer = new AudioPlayer(this);
         metrics = getContext().getResources().getDisplayMetrics();
         updatePreferences();
+        this.mForceNames = forceNames;
+    }
+
+    public MessageAdapter(final XmppActivity activity, final List<Message> messages) {
+        this(activity, messages, false);
     }
 
     private static void resetClickListener(View... views) {
@@ -307,16 +314,10 @@ public class MessageAdapter extends ArrayAdapter<Message> {
                 error = true;
                 break;
             default:
-                if (multiReceived) {
+                if (mForceNames || multiReceived) {
                     final int shadowSize = 10;
-                    viewHolder.username.setVisibility(View.VISIBLE);
-                    viewHolder.username.setText(UIHelper.getColoredUsername(activity.xmppConnectionService, message));
-                    if (activity.xmppConnectionService.colored_muc_names() && ThemeHelper.showColoredUsernameBackGround(activity, darkBackground)) {
-                        viewHolder.username.setPadding(4, 2, 4, 2);
-                        viewHolder.username.setBackground(ContextCompat.getDrawable(activity, R.drawable.duration_background));
-                    }
-                }
-                if (singleReceived) {
+                    showUsername(viewHolder, message, darkBackground);
+                } else if (singleReceived) {
                     viewHolder.username.setVisibility(View.GONE);
                 }
                 break;
@@ -407,6 +408,24 @@ public class MessageAdapter extends ArrayAdapter<Message> {
             } else {
                 viewHolder.time.setText(formattedTime + bodyLanguageInfo);
             }
+        }
+    }
+    private void showUsername(ViewHolder viewHolder, Message message, boolean darkBackground) {
+        if (message == null || viewHolder == null) {
+            return;
+        }
+        viewHolder.username.setText(UIHelper.getColoredUsername(activity.xmppConnectionService, message));
+        if (message.showUsername() || mForceNames) {
+            viewHolder.username.setVisibility(View.VISIBLE);
+        } else {
+            viewHolder.username.setVisibility(View.GONE);
+        }
+        if (activity.xmppConnectionService.colored_muc_names() && ThemeHelper.showColoredUsernameBackGround(activity, darkBackground)) {
+            viewHolder.username.setPadding(4, 2, 4, 2);
+            viewHolder.username.setBackground(ContextCompat.getDrawable(activity, R.drawable.duration_background));
+        } else {
+            viewHolder.username.setPadding(4, 2, 4, 2);
+            viewHolder.username.setBackground(null);
         }
     }
 
@@ -937,7 +956,7 @@ public class MessageAdapter extends ArrayAdapter<Message> {
         viewHolder.transfer.setVisibility(View.GONE);
         final DownloadableFile file = activity.xmppConnectionService.getFileBackend().getFile(message);
         if (file != null && !file.exists() && !message.isFileDeleted()) {
-            markFileDeleted(message);
+            new Thread(new markFileDeletedFinisher(message, activity)).start();
             displayInfoMessage(viewHolder, activity.getString(R.string.file_deleted), darkBackground, message);
             ToastCompat.makeText(activity, R.string.file_deleted, ToastCompat.LENGTH_SHORT).show();
             return;
@@ -1124,6 +1143,7 @@ public class MessageAdapter extends ArrayAdapter<Message> {
                     view = activity.getLayoutInflater().inflate(R.layout.message_sent, parent, false);
                     viewHolder.message_box = view.findViewById(R.id.message_box);
                     viewHolder.contact_picture = view.findViewById(R.id.message_photo);
+                    viewHolder.username = view.findViewById(R.id.username);
                     viewHolder.audioPlayer = view.findViewById(R.id.audio_player);
                     viewHolder.download_button = view.findViewById(R.id.download_button);
                     viewHolder.resend_button = view.findViewById(R.id.resend_button);
@@ -1283,11 +1303,11 @@ public class MessageAdapter extends ArrayAdapter<Message> {
             } else {
                 /* todo why should we mark a file as deleted? --> causing strange side effects
                 if (!activity.xmppConnectionService.getFileBackend().getFile(message).exists() && !message.isFileDeleted()) {
-                    markFileDeleted(message);
+                    new Thread(new markFileDeletedFinisher(message, activity)).start();
                     displayInfoMessage(viewHolder, activity.getString(R.string.file_deleted), darkBackground, message);
                 }*/
                 if (checkFileExistence(message, view, viewHolder)) {
-                    markFileExisting(message);
+                    new Thread(new markFileExistingFinisher(message, activity)).start();
                 }
                 displayInfoMessage(viewHolder, UIHelper.getMessagePreview(activity, message).first, darkBackground, message);
             }
@@ -1389,25 +1409,75 @@ public class MessageAdapter extends ArrayAdapter<Message> {
             setBubbleBackgroundColor(viewHolder.message_box, type, message.isPrivateMessage(), isInValidSession);
         }
         displayStatus(viewHolder, message, type, darkBackground);
+        showAvatar(viewHolder, message, view);
         return view;
     }
-
-    private void markFileExisting(Message message) {
-        new Thread(() -> {
-            Log.d(Config.LOGTAG, "Found and restored orphaned file " + message.getRelativeFilePath());
-            message.setFileDeleted(false);
-            activity.xmppConnectionService.updateMessage(message, false);
-            activity.xmppConnectionService.updateConversation((Conversation) message.getConversation());
-        }).start();
+    private void showAvatar(ViewHolder viewHolder, Message message, View view) {
+        if (message.isAvatarable()) {
+            viewHolder.contact_picture.setVisibility(View.VISIBLE);
+            int left = ThemeHelper.dp2Px(getContext(), 8);
+            int top = ThemeHelper.dp2Px(getContext(), 0);
+            int right = ThemeHelper.dp2Px(getContext(), 8);
+            int bottom = ThemeHelper.dp2Px(getContext(), 16);
+            view.setPadding(left, top, right, bottom);
+        } else {
+            viewHolder.contact_picture.setVisibility(View.INVISIBLE);
+            int left = ThemeHelper.dp2Px(getContext(), 8);
+            int top = ThemeHelper.dp2Px(getContext(), 0);
+            int right = ThemeHelper.dp2Px(getContext(), 8);
+            int bottom = ThemeHelper.dp2Px(getContext(), 1);
+            view.setPadding(left, top, right, bottom);
+        }
     }
 
-    private void markFileDeleted(Message message) {
-        new Thread(() -> {
-            Log.d(Config.LOGTAG, "Mark file deleted " + message.getRelativeFilePath());
-            message.setFileDeleted(true);
-            activity.xmppConnectionService.updateMessage(message, false);
-            activity.xmppConnectionService.updateConversation((Conversation) message.getConversation());
-        }).start();
+    private static class markFileExistingFinisher implements Runnable {
+        private final Message message;
+        private final WeakReference<XmppActivity> activityReference;
+
+        private markFileExistingFinisher(Message message, XmppActivity activity) {
+            this.message = message;
+            this.activityReference = new WeakReference<>(activity);
+        }
+
+        @Override
+        public void run() {
+            final XmppActivity activity = activityReference.get();
+            if (activity == null) {
+                return;
+            }
+            activity.runOnUiThread(
+                    () -> {
+                        Log.d(Config.LOGTAG, "Found and restored orphaned file " + message.getRelativeFilePath());
+                        message.setFileDeleted(false);
+                        activity.xmppConnectionService.updateMessage(message, false);
+                        activity.xmppConnectionService.updateConversation((Conversation) message.getConversation());
+                    });
+        }
+    }
+
+    private static class markFileDeletedFinisher implements Runnable {
+        private final Message message;
+        private final WeakReference<XmppActivity> activityReference;
+
+        private markFileDeletedFinisher(Message message, XmppActivity activity) {
+            this.message = message;
+            this.activityReference = new WeakReference<>(activity);
+        }
+
+        @Override
+        public void run() {
+            final XmppActivity activity = activityReference.get();
+            if (activity == null) {
+                return;
+            }
+            activity.runOnUiThread(
+                    () -> {
+                        Log.d(Config.LOGTAG, "Mark file deleted " + message.getRelativeFilePath());
+                        message.setFileDeleted(true);
+                        activity.xmppConnectionService.updateMessage(message, false);
+                        activity.xmppConnectionService.updateConversation((Conversation) message.getConversation());
+                    });
+        }
     }
 
     private boolean checkFileExistence(Message message, View view, ViewHolder viewHolder) {

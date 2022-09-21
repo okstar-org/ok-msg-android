@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
@@ -55,6 +56,16 @@
             android:orientation="vertical"
             android:padding="2dp">
 
+            <TextView
+                android:id="@+id/username"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_vertical"
+                android:gravity="center_vertical"
+                android:text="@string/user"
+                android:textAppearance="@style/TextAppearance.Conversations.Caption"
+                android:visibility="gone"/>
+
             <include
                 android:id="@+id/message_content"
                 layout="@layout/message_content" />
@@ -82,7 +93,8 @@
                     android:accessibilityTraversalBefore="@id/message_content"
                     android:gravity="center_vertical"
                     android:text="@string/sending"
-                    android:textAppearance="@style/TextAppearance.Conversations.Caption" />
+                    android:textAppearance="@style/TextAppearance.Conversations.Caption"
+                    tools:ignore="UnusedAttribute" />
 
                 <ImageView
                     android:id="@+id/security_indicator"

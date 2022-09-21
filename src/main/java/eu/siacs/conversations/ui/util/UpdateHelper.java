@@ -13,6 +13,7 @@ import android.util.Log;
 import androidx.appcompat.app.AlertDialog;
 
 import java.io.File;
+import java.lang.ref.WeakReference;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
@@ -40,7 +41,24 @@ public class UpdateHelper {
     private static final File PAM_VideosDirectory = new File(Environment.getExternalStorageDirectory().getAbsolutePath() + "/Monocles Messenger/Media/Monocles Messenger Videos/");
 
     public static void showPopup(Activity activity) {
-        Thread t = new Thread(() -> {
+        new Thread(new showPopupFinisher(activity)).start();
+    }
+
+    private static class showPopupFinisher implements Runnable {
+
+        private final WeakReference<Activity> activityReference;
+
+        private showPopupFinisher(Activity activity) {
+
+            this.activityReference = new WeakReference<>(activity);
+        }
+
+        @Override
+        public void run() {
+            final Activity activity = activityReference.get();
+            if (activity == null) {
+                return;
+            }
             updateInstalled(activity);
             final SharedPreferences getPrefs = PreferenceManager.getDefaultSharedPreferences(activity.getBaseContext());
             final String Message = "message_shown_" + monocles_message;
@@ -60,8 +78,7 @@ public class UpdateHelper {
                 Log.d(Config.LOGTAG, "UpdateHelper: new installed monocles chat");
                 showNewInstalledDialog(activity);
             }
-        });
-        t.start();
+        }
     }
 
     private static void showNewInstalledDialog(Activity activity) {

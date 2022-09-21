@@ -456,6 +456,7 @@ public class ConversationAdapter
         private ConversationViewHolder(ConversationListRowBinding binding) {
             super(binding.getRoot());
             this.binding = binding;
+            binding.getRoot().setLongClickable(true);
         }
     }
 

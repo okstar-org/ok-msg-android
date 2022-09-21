@@ -141,7 +141,7 @@ public class AudioPlayer implements View.OnClickListener, MediaPlayer.OnCompleti
             return;
         }
         initializeProximityWakeLock(playPause.getContext());
-        final RelativeLayout audioPlayer = (RelativeLayout) playPause.getParent();
+        final RelativeLayout audioPlayer = (RelativeLayout) playPause.getParent().getParent();
         final ViewHolder viewHolder = ViewHolder.get(audioPlayer);
         final Message message = (Message) audioPlayer.getTag();
         if (startStop(viewHolder, message)) {

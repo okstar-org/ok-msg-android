@@ -6,6 +6,7 @@ import android.os.SystemClock;
 import android.util.Log;
 
 import com.google.common.base.Strings;
+import com.google.common.collect.ImmutableList;
 
 import net.java.otr4j.crypto.OtrCryptoEngineImpl;
 import net.java.otr4j.crypto.OtrCryptoException;
@@ -39,6 +40,9 @@ import eu.siacs.conversations.utils.XmppUri;
 import eu.siacs.conversations.xmpp.Jid;
 import eu.siacs.conversations.xmpp.XmppConnection;
 import eu.siacs.conversations.xmpp.jingle.RtpCapability;
+import eu.siacs.conversations.crypto.sasl.ChannelBinding;
+import eu.siacs.conversations.crypto.sasl.SaslMechanism;
+import eu.siacs.conversations.crypto.sasl.ScramPlusMechanism;
 
 public class Account extends AbstractEntity implements AvatarService.Avatarable {
 
@@ -57,9 +61,8 @@ public class Account extends AbstractEntity implements AvatarService.Avatarable 
     public static final String STATUS = "status";
     public static final String STATUS_MESSAGE = "status_message";
     public static final String RESOURCE = "resource";
-
-    public static final String PINNED_MECHANISM_KEY = "pinned_mechanism";
-    public static final String PRE_AUTH_REGISTRATION_TOKEN = "pre_auth_registration";
+    public static final String PINNED_MECHANISM = "pinned_mechanism";
+    public static final String PINNED_CHANNEL_BINDING = "pinned_channel_binding";
 
     public static final int OPTION_USETLS = 0;
     public static final int OPTION_DISABLED = 1;
@@ -73,6 +76,10 @@ public class Account extends AbstractEntity implements AvatarService.Avatarable 
     public static final int OPTION_FIXED_USERNAME = 9;
     private static final String KEY_PGP_SIGNATURE = "pgp_signature";
     private static final String KEY_PGP_ID = "pgp_id";
+    private static final String KEY_PINNED_MECHANISM = "pinned_mechanism";
+    public static final String KEY_PRE_AUTH_REGISTRATION_TOKEN = "pre_auth_registration";
+
+
     protected final JSONObject keys;
     private final Roster roster = new Roster(this);
     private final Collection<Jid> blocklist = new CopyOnWriteArraySet<>();
@@ -99,18 +106,20 @@ public class Account extends AbstractEntity implements AvatarService.Avatarable 
     private long mEndGracePeriod = 0L;
     private String otrFingerprint;
     private final Map<Jid, Bookmark> bookmarks = new HashMap<>();
-    private Presence.Status presenceStatus = Presence.Status.ONLINE;
-    private String presenceStatusMessage = null;
+    private Presence.Status presenceStatus;
+    private String presenceStatusMessage;
+    private String pinnedMechanism;
+    private String pinnedChannelBinding;
 
     public Account(final Jid jid, final String password) {
         this(java.util.UUID.randomUUID().toString(), jid,
-                password, 0, null, "", null, null, null, 5222, Presence.Status.ONLINE, null);
+                password, 0, null, "", null, null, null, 5222, Presence.Status.ONLINE, null, null, null);
     }
 
     private Account(final String uuid, final Jid jid,
                     final String password, final int options, final String rosterVersion, final String keys,
                     final String avatar, String displayName, String hostname, int port,
-                    final Presence.Status status, String statusMessage) {
+                    final Presence.Status status, String statusMessage, final String pinnedMechanism, final String pinnedChannelBinding) {
         this.uuid = uuid;
         this.jid = jid;
         this.password = password;
@@ -129,36 +138,40 @@ public class Account extends AbstractEntity implements AvatarService.Avatarable 
         this.port = port;
         this.presenceStatus = status;
         this.presenceStatusMessage = statusMessage;
+        this.pinnedMechanism = pinnedMechanism;
+        this.pinnedChannelBinding = pinnedChannelBinding;
     }
 
     public static Account fromCursor(final Cursor cursor) {
         final Jid jid;
         try {
-            String resource = cursor.getString(cursor.getColumnIndex(RESOURCE));
+            final String resource = cursor.getString(cursor.getColumnIndexOrThrow(RESOURCE));
             jid = Jid.of(
-                    cursor.getString(cursor.getColumnIndex(USERNAME)),
-                    cursor.getString(cursor.getColumnIndex(SERVER)),
+                    cursor.getString(cursor.getColumnIndexOrThrow(USERNAME)),
+                    cursor.getString(cursor.getColumnIndexOrThrow(SERVER)),
                     resource == null || resource.trim().isEmpty() ? null : resource);
-        } catch (final IllegalArgumentException ignored) {
-            Log.d(Config.LOGTAG, cursor.getString(cursor.getColumnIndex(USERNAME)) + "@" + cursor.getString(cursor.getColumnIndex(SERVER)));
-            throw new AssertionError(ignored);
+        } catch (final IllegalArgumentException e) {
+            Log.d(Config.LOGTAG, cursor.getString(cursor.getColumnIndexOrThrow(USERNAME)) + "@" + cursor.getString(cursor.getColumnIndexOrThrow(SERVER)));
+            throw new AssertionError(e);
         }
-        return new Account(cursor.getString(cursor.getColumnIndex(UUID)),
+        return new Account(cursor.getString(cursor.getColumnIndexOrThrow(UUID)),
                 jid,
-                cursor.getString(cursor.getColumnIndex(PASSWORD)),
-                cursor.getInt(cursor.getColumnIndex(OPTIONS)),
-                cursor.getString(cursor.getColumnIndex(ROSTERVERSION)),
-                cursor.getString(cursor.getColumnIndex(KEYS)),
-                cursor.getString(cursor.getColumnIndex(AVATAR)),
-                cursor.getString(cursor.getColumnIndex(DISPLAY_NAME)),
-                cursor.getString(cursor.getColumnIndex(HOSTNAME)),
-                cursor.getInt(cursor.getColumnIndex(PORT)),
-                Presence.Status.fromShowString(cursor.getString(cursor.getColumnIndex(STATUS))),
-                cursor.getString(cursor.getColumnIndex(STATUS_MESSAGE)));
+                cursor.getString(cursor.getColumnIndexOrThrow(PASSWORD)),
+                cursor.getInt(cursor.getColumnIndexOrThrow(OPTIONS)),
+                cursor.getString(cursor.getColumnIndexOrThrow(ROSTERVERSION)),
+                cursor.getString(cursor.getColumnIndexOrThrow(KEYS)),
+                cursor.getString(cursor.getColumnIndexOrThrow(AVATAR)),
+                cursor.getString(cursor.getColumnIndexOrThrow(DISPLAY_NAME)),
+                cursor.getString(cursor.getColumnIndexOrThrow(HOSTNAME)),
+                cursor.getInt(cursor.getColumnIndexOrThrow(PORT)),
+                Presence.Status.fromShowString(cursor.getString(cursor.getColumnIndexOrThrow(STATUS))),
+                cursor.getString(cursor.getColumnIndexOrThrow(STATUS_MESSAGE)),
+                cursor.getString(cursor.getColumnIndexOrThrow(PINNED_MECHANISM)),
+                cursor.getString(cursor.getColumnIndexOrThrow(PINNED_CHANNEL_BINDING)));
     }
 
-    public boolean httpUploadAvailable(long filesize) {
-        return xmppConnection != null && xmppConnection.getFeatures().httpUpload(filesize);
+    public boolean httpUploadAvailable(long size) {
+        return xmppConnection != null && xmppConnection.getFeatures().httpUpload(size);
     }
 
     public boolean httpUploadAvailable() {
@@ -297,6 +310,37 @@ public class Account extends AbstractEntity implements AvatarService.Avatarable 
             this.lastErrorStatus = status;
         }
     }
+    public void setPinnedMechanism(final SaslMechanism mechanism) {
+        this.pinnedMechanism = mechanism.getMechanism();
+        if (mechanism instanceof ScramPlusMechanism) {
+            this.pinnedChannelBinding = ((ScramPlusMechanism) mechanism).getChannelBinding().toString();
+        }
+    }
+
+    public void resetPinnedMechanism() {
+        this.pinnedMechanism = null;
+        this.pinnedChannelBinding = null;
+        setKey(Account.KEY_PINNED_MECHANISM, String.valueOf(-1));
+    }
+
+    public int getPinnedMechanismPriority() {
+        final int fallback = getKeyAsInt(KEY_PINNED_MECHANISM, -1);
+        if (Strings.isNullOrEmpty(this.pinnedMechanism)) {
+            return fallback;
+        }
+        final SaslMechanism saslMechanism = getPinnedMechanism();
+        if (saslMechanism == null) {
+            return fallback;
+        } else {
+            return saslMechanism.getPriority();
+        }
+    }
+
+    public SaslMechanism getPinnedMechanism() {
+        final String mechanism = Strings.nullToEmpty(this.pinnedMechanism);
+        final ChannelBinding channelBinding = ChannelBinding.get(this.pinnedChannelBinding);
+        return new SaslMechanism.Factory(this).of(mechanism, channelBinding);
+    }
 
     public State getTrueStatus() {
         return this.status;
@@ -370,8 +414,8 @@ public class Account extends AbstractEntity implements AvatarService.Avatarable 
         }
     }
 
-    public boolean setPrivateKeyAlias(String alias) {
-        return setKey("private_key_alias", alias);
+    public void setPrivateKeyAlias(final String alias) {
+        setKey("private_key_alias", alias);
     }
 
     public String getPrivateKeyAlias() {
@@ -397,6 +441,8 @@ public class Account extends AbstractEntity implements AvatarService.Avatarable 
         values.put(STATUS, presenceStatus.toShowString());
         values.put(STATUS_MESSAGE, presenceStatusMessage);
         values.put(RESOURCE, jid.getResource());
+        values.put(PINNED_MECHANISM, pinnedMechanism);
+        values.put(PINNED_CHANNEL_BINDING, pinnedChannelBinding);
         return values;
     }
 
@@ -522,17 +568,19 @@ public class Account extends AbstractEntity implements AvatarService.Avatarable 
     }
 
     public Collection<Bookmark> getBookmarks() {
-        return this.bookmarks.values();
+        synchronized (this.bookmarks) {
+            return ImmutableList.copyOf(this.bookmarks.values());
+        }
     }
 
-    public void setBookmarks(Map<Jid, Bookmark> bookmarks) {
+    public void setBookmarks(final Map<Jid, Bookmark> bookmarks) {
         synchronized (this.bookmarks) {
             this.bookmarks.clear();
             this.bookmarks.putAll(bookmarks);
         }
     }
 
-    public void putBookmark(Bookmark bookmark) {
+    public void putBookmark(final Bookmark bookmark) {
         synchronized (this.bookmarks) {
             this.bookmarks.put(bookmark.getJid(), bookmark);
         }
