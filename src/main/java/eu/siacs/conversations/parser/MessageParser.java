@@ -491,7 +491,6 @@ public class MessageParser extends AbstractParser implements OnMessagePacketRece
         if (timestamp == null) {
             timestamp = AbstractParser.parseTimestamp(original, AbstractParser.parseTimestamp(packet));
         }
-
         final Element mucUserElement = packet.findChild("x", Namespace.MUC_USER);
         final String pgpEncrypted = packet.findChildContent("x", "jabber:x:encrypted");
         final Element replaceElement = packet.findChild("replace", "urn:xmpp:message-correct:0");
@@ -502,8 +501,7 @@ public class MessageParser extends AbstractParser implements OnMessagePacketRece
         final Element applyToElement = packet.findChild("apply-to", "urn:xmpp:fasten:0");
         final String retractId = applyToElement != null && applyToElement.findChild("retract", "urn:xmpp:message-retract:0") != null ? applyToElement.getAttribute("id") : null;
 
-        if (packet.getBody()==null && retractId != null)
-        {   //It's RECOMMENDED that you include a Fallback Indication (XEP-0428) [6] tag with fallback text in the <body/>, so that older clients can still indicate the intent to retract and so that older servers will archive the retraction.
+        if (packet.getBody() == null && retractId != null) {   //It's RECOMMENDED that you include a Fallback Indication (XEP-0428) [6] tag with fallback text in the <body/>, so that older clients can still indicate the intent to retract and so that older servers will archive the retraction.
             //Otherwhise the following code will not execute the retraction, because it searchs for body content!
             packet.setBody("This person attempted to retract a previous message, but it's unsupported by your client.");
         }
@@ -567,9 +565,11 @@ public class MessageParser extends AbstractParser implements OnMessagePacketRece
             final boolean conversationIsProbablyMuc = isTypeGroupChat || mucUserElement != null || account.getXmppConnection().getMucServersWithholdAccount().contains(counterpart.getDomain().toEscapedString());
             final Conversation conversation = mXmppConnectionService.findOrCreateConversation(account, counterpart.asBareJid(), conversationIsProbablyMuc, false, query, false);
             final boolean conversationMultiMode = conversation.getMode() == Conversation.MODE_MULTI;
+
             if (serverMsgId == null) {
                 serverMsgId = extractStanzaId(packet, isTypeGroupChat, conversation);
             }
+
             if (selfAddressed) {
                 if (mXmppConnectionService.markMessage(conversation, remoteMsgId, Message.STATUS_SEND_RECEIVED, serverMsgId)) {
                     return;
@@ -579,6 +579,7 @@ public class MessageParser extends AbstractParser implements OnMessagePacketRece
                     return;
                 }
             }
+
             if (isTypeGroupChat) {
                 if (conversation.getMucOptions().isSelf(counterpart)) {
                     status = Message.STATUS_SEND_RECEIVED;
@@ -635,6 +636,7 @@ public class MessageParser extends AbstractParser implements OnMessagePacketRece
                     fallbacksBySourceId = Collections.emptySet();
                     origin = from;
                 }
+
                 final boolean liveMessage = query == null && !isTypeGroupChat && mucUserElement == null;
                 final boolean checkedForDuplicates = liveMessage || (serverMsgId != null && remoteMsgId != null && !conversation.possibleDuplicate(serverMsgId, remoteMsgId));
 
@@ -795,7 +797,7 @@ public class MessageParser extends AbstractParser implements OnMessagePacketRece
                     final boolean duplicate = conversation.hasDuplicateMessage(message);
                     List<Account> lAcc = mXmppConnectionService.getAccounts();
                     boolean activeSelf = false;
-                    if (message.getTrueCounterpart()!=null) {
+                    if (message.getTrueCounterpart() != null) {
                         for (Account a : lAcc) {
                             if (a.getJid() != null && a.isOnlineAndConnected() && a.getJid().asBareJid().equals(message.getTrueCounterpart().asBareJid())) {
                                 activeSelf = true;
@@ -803,7 +805,7 @@ public class MessageParser extends AbstractParser implements OnMessagePacketRece
                             }
                         }
                     }
-                    if (fingerprintsMatch && ((trueCountersMatch || !conversationMultiMode || mucUserMatches || (isCarbon&&activeSelf) && !duplicate) || conversationMultiMode)) {
+                    if (fingerprintsMatch && ((trueCountersMatch || !conversationMultiMode || mucUserMatches || (isCarbon && activeSelf) && !duplicate) || conversationMultiMode)) {
                         Log.d(Config.LOGTAG, "retracted message '" + retractedMessage.getBody() + "' with '" + message.getBody() + "'");
                         synchronized (retractedMessage) {
 
@@ -842,8 +844,7 @@ public class MessageParser extends AbstractParser implements OnMessagePacketRece
                     } else {
                         Log.d(Config.LOGTAG, account.getJid().asBareJid() + ": received message retraction but checks are not valid");
                     }
-                }
-                else {
+                } else {
                     //we deleted a carbon from ourself and the dialog allready removed it from ui
                     message.setMessageDeleted(true);
                     message.setRetractId(retractId);
@@ -969,9 +970,11 @@ public class MessageParser extends AbstractParser implements OnMessagePacketRece
                     return;
                 }
             }
+
             if (query == null && extractChatState(mXmppConnectionService.find(account, counterpart.asBareJid()), isTypeGroupChat, packet)) {
                 mXmppConnectionService.updateConversationUi();
             }
+
             if (isTypeGroupChat) {
                 if (packet.hasChild("subject")) { //TODO usually we would want to check for lack of body; however some servers do set a body :(
                     if (conversation != null && conversation.getMode() == Conversation.MODE_MULTI) {
@@ -1121,7 +1124,6 @@ public class MessageParser extends AbstractParser implements OnMessagePacketRece
                 }
             }
         }
-
 
         Element received = packet.findChild("received", "urn:xmpp:chat-markers:0");
         if (received == null) {
@@ -1309,12 +1311,13 @@ public class MessageParser extends AbstractParser implements OnMessagePacketRece
             if (jid != null) {
                 Conversation conversation = mXmppConnectionService.findOrCreateConversation(account, jid, true, false);
                 if (conversation.getMucOptions().online()) {
-                    Log.d(Config.LOGTAG, account.getJid().asBareJid() + ": received invite to " + jid + " but muc is considered to be online");
+                    Log.d(Config.LOGTAG, account.getJid().asBareJid() + ": received invite to " + jid + ", but muc is considered to be online");
                     mXmppConnectionService.mucSelfPingAndRejoin(conversation);
                 } else {
                     conversation.getMucOptions().setPassword(password);
                     mXmppConnectionService.databaseBackend.updateConversation(conversation);
                     final Contact contact = inviter != null ? account.getRoster().getContactFromContactList(inviter) : null;
+                    Log.d(Config.LOGTAG, account.getJid().asBareJid() + ": received invite to " + jid + " from " + (contact != null ? contact.getJid().asBareJid() : null));
                     mXmppConnectionService.joinMuc(conversation, contact != null && contact.mutualPresenceSubscription());
                     mXmppConnectionService.updateConversationUi();
                     if (body != null) {
