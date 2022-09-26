@@ -424,6 +424,10 @@ public class ExportBackupService extends Service {
         ObjectOutputStream output = null;
         try {
             final File file = new File(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOCUMENTS) + File.separator + APP_DIRECTORY + File.separator + "Database" + File.separator, "settings.dat");
+            final File directory = file.getParentFile();
+            if (directory != null && directory.mkdirs()) {
+                Log.d(Config.LOGTAG, "created backup directory " + directory.getAbsolutePath());
+            }
             output = new ObjectOutputStream(new FileOutputStream(file));
             SharedPreferences pref = PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
             output.writeObject(pref.getAll());
@@ -475,7 +479,7 @@ public class ExportBackupService extends Service {
                 uris.add(FileBackend.getUriForFile(this, file));
             }
             intent.putParcelableArrayListExtra(Intent.EXTRA_STREAM, uris);
-            intent.setFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION);
+            intent.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION);
             intent.setType(MIME_TYPE);
             final Intent chooser = Intent.createChooser(intent, getString(R.string.share_backup_files));
             shareFilesIntent = PendingIntent.getActivity(this, 190, chooser, s()
