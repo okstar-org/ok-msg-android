@@ -111,24 +111,61 @@ public class MyLinkify {
     // https://github.com/M66B/FairEmail/blob/master/app/src/main/java/eu/faircode/email/UriHelper.java
     // https://github.com/newhouse/url-tracking-stripper
     private static final List<String> PARANOID_QUERY = Collections.unmodifiableList(Arrays.asList(
+            // own paramaters
+            "feed_id",
+            "sd",
+            "ncid",
+            "ref",
+            "ref_",
+            "sfnsn", // Facebook
+            "s", "fs", // Facebook, may produce false positives
+            "utm_source", "utm_medium", "utm_term", "utm_campaign", "utm_content", "utm_name", // Google
+            "utm_cid", "utm_reader", "utm_viz_id", "utm_pubreferrer", "utm_swu", // Google
+            "_hsmi", // Hubspot
+            "mkt_tok", // Marketo
+            "sr_share", // SimpleReach
+            "nr_email_referer",
+            "t_ref", // Bild Zeitung
+            "oft_id", "oft_k", "oft_lk", "oft_d", "oft_c", "oft_ck", "oft_ids", "oft_sk", // ofsys.com
+            "ss_email_id", // Squarespace Newsletter tracker
+            "bsft_uid", "bsft_clkid", // Blueshift Mail Tracker
+            // end of own paramaters
+
             // https://en.wikipedia.org/wiki/UTM_parameters
             "awt_a", // AWeber
             "awt_l", // AWeber
             "awt_m", // AWeber
 
             "icid", // Adobe
+            "ef_id", // https://experienceleague.adobe.com/docs/advertising-cloud/integrations/analytics/mc/mc-ids.html
+            "_ga", // Google Analytics
             "gclid", // Google
             "gclsrc", // Google ads
             "dclid", // DoubleClick (Google)
             "fbclid", // Facebook
             "igshid", // Instagram
+            "msclkid", // https://help.ads.microsoft.com/apex/index/3/en/60000
 
             "mc_cid", // MailChimp
             "mc_eid", // MailChimp
 
             "zanpid", // Zanox (Awin)
 
-            "kclickid" // https://support.freespee.com/hc/en-us/articles/202577831-Kenshoo-integration
+            "kclickid", // https://support.freespee.com/hc/en-us/articles/202577831-Kenshoo-integration
+
+            // https://github.com/brave/brave-core/blob/master/browser/net/brave_site_hacks_network_delegate_helper.cc
+            "oly_anon_id", "oly_enc_id", // https://training.omeda.com/knowledge-base/olytics-product-outline/
+            "_openstat", // https://yandex.com/support/direct/statistics/url-tags.html
+            "vero_conv", "vero_id", // https://help.getvero.com/cloud/articles/what-is-vero_id/
+            "wickedid", // https://help.wickedreports.com/how-to-manually-tag-a-facebook-ad-with-wickedid
+            "yclid", // https://ads-help.yahoo.co.jp/yahooads/ss/articledetail?lan=en&aid=20442
+            "__s", // https://ads-help.yahoo.co.jp/yahooads/ss/articledetail?lan=en&aid=20442
+            "rb_clickid", // Russian
+            "s_cid", // https://help.goacoustic.com/hc/en-us/articles/360043311613-Track-lead-sources
+            "ml_subscriber", "ml_subscriber_hash", // https://www.mailerlite.com/help/how-to-integrate-your-forms-to-a-wix-website
+            "twclid", // https://business.twitter.com/en/blog/performance-advertising-on-twitter.html
+            "gbraid", "wbraid", // https://support.google.com/google-ads/answer/10417364
+            "_hsenc", "__hssc", "__hstc", "__hsfp", "hsCtaTracking" // https://knowledge.hubspot.com/reports/what-cookies-does-hubspot-set-in-a-visitor-s-browser
     ));
 
     // https://github.com/snarfed/granary/blob/master/granary/facebook.py#L1789
@@ -142,9 +179,9 @@ public class MyLinkify {
     ));
 
     public static SpannableString removeTrackingParameter(Uri uri) {
-        if (uri.isOpaque())
+        if (uri.isOpaque()) {
             return new SpannableString(uri.toString());
-
+        }
         boolean changed = false;
         Uri url;
         Uri.Builder builder;
@@ -179,6 +216,14 @@ public class MyLinkify {
             }
             changed = (result != null);
             url = (result == null ? uri : result);
+        } else if ("https".equals(uri.getScheme()) &&
+                uri.getHost() != null &&
+                uri.getHost().startsWith("www.google.") &&
+                uri.getQueryParameter("url") != null) {
+            // Google non-com redirects
+            Uri result = Uri.parse(uri.getQueryParameter("url"));
+            changed = (result != null);
+            url = (result == null ? uri : result);
         } else if (uri.getQueryParameterNames().size() == 1) {
             // Sophos Email Appliance
             Uri result = null;
@@ -195,8 +240,21 @@ public class MyLinkify {
                 }
             changed = (result != null);
             url = (result == null ? uri : result);
-        } else
+        } else if (uri.getQueryParameter("redirectUrl") != null) {
+            // https://.../link-tracker?redirectUrl=<base64>&sig=...&iat=...&a=...&account=...&email=...&s=...&i=...
+            try {
+                byte[] bytes = Base64.decode(uri.getQueryParameter("redirectUrl"), 0);
+                String u = URLDecoder.decode(new String(bytes), StandardCharsets.UTF_8.name());
+                Uri result = Uri.parse(u);
+                changed = (result != null);
+                url = (result == null ? uri : result);
+            } catch (Throwable ex) {
+                ex.printStackTrace();
+                url = uri;
+            }
+        } else {
             url = uri;
+        }
         if (url.isOpaque()) {
             return new SpannableString(uri.toString());
         }
@@ -221,9 +279,9 @@ public class MyLinkify {
                             FACEBOOK_WHITELIST_PATH.contains(path) &&
                             !FACEBOOK_WHITELIST_QUERY.contains(lkey)) ||
                     ("store.steampowered.com".equals(host) &&
-                            "snr".equals(lkey)))
+                            "snr".equals(lkey))) {
                 changed = true;
-            else if (!TextUtils.isEmpty(key))
+            } else if (!TextUtils.isEmpty(key)) {
                 for (String value : url.getQueryParameters(key)) {
                     Log.d(Config.LOGTAG, "Query " + key + "=" + value);
                     Uri suri = Uri.parse(value);
@@ -236,6 +294,7 @@ public class MyLinkify {
                     }
                     builder.appendQueryParameter(key, value);
                 }
+            }
             first = false;
         }
         return (changed ? new SpannableString(builder.build().toString()) : new SpannableString(uri.toString()));
