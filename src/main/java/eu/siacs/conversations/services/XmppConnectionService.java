@@ -5501,7 +5501,9 @@ public class XmppConnectionService extends Service {
         if (!Config.ExportLogs || force) {
             Log.d(Config.LOGTAG, "Cancel scheduled automatic export");
             Intent intent = new Intent(this, AlarmReceiver.class);
-            final PendingIntent ScheduleExportIntent = PendingIntent.getBroadcast(this, AlarmReceiver.SCHEDULE_ALARM_REQUEST_CODE, intent, PendingIntent.FLAG_UPDATE_CURRENT);
+            final PendingIntent ScheduleExportIntent = PendingIntent.getBroadcast(this, AlarmReceiver.SCHEDULE_ALARM_REQUEST_CODE, intent, s()
+                    ? PendingIntent.FLAG_IMMUTABLE | PendingIntent.FLAG_UPDATE_CURRENT
+                    : PendingIntent.FLAG_UPDATE_CURRENT);
             ((AlarmManager) this.getSystemService(ALARM_SERVICE)).cancel(ScheduleExportIntent);
         }
     }
