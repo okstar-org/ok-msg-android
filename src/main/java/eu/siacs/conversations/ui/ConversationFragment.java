@@ -1678,17 +1678,15 @@ public class ConversationFragment extends XmppFragment implements EditMessage.Ke
                 if (conversation.getMode() == Conversation.MODE_SINGLE) {
                     activity.xmppConnectionService.archiveConversation(conversation);
                 } else {
-                    activity.runOnUiThread(() -> {
-                        final AlertDialog.Builder builder = new AlertDialog.Builder(activity);
-                        builder.setTitle(activity.getString(R.string.action_end_conversation_muc));
-                        builder.setMessage(activity.getString(R.string.leave_conference_warning));
-                        builder.setNegativeButton(activity.getString(R.string.cancel), null);
-                        builder.setPositiveButton(activity.getString(R.string.action_end_conversation_muc),
-                                (dialog, which) -> {
-                                    activity.xmppConnectionService.archiveConversation(conversation);
-                                });
-                        builder.create().show();
-                    });
+                    final AlertDialog.Builder builder = new AlertDialog.Builder(activity);
+                    builder.setTitle(activity.getString(R.string.action_end_conversation_muc));
+                    builder.setMessage(activity.getString(R.string.leave_conference_warning));
+                    builder.setNegativeButton(activity.getString(R.string.cancel), null);
+                    builder.setPositiveButton(activity.getString(R.string.action_end_conversation_muc),
+                            (dialog, which) -> {
+                                activity.xmppConnectionService.archiveConversation(conversation);
+                            });
+                    builder.create().show();
                 }
                 break;
             case R.id.action_invite:
