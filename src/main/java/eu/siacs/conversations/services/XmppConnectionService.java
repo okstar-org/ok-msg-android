@@ -23,6 +23,7 @@ import android.Manifest;
 import androidx.annotation.RequiresApi;
 import android.annotation.SuppressLint;
 import android.annotation.TargetApi;
+import android.app.ActivityManager;
 import android.app.AlarmManager;
 import android.app.KeyguardManager;
 import android.app.Notification;
@@ -1417,8 +1418,11 @@ public class XmppConnectionService extends Service {
         Resolver.init(this);
         this.mRandom = new SecureRandom();
         updateMemorizingTrustmanager();
-        final int maxMemory = (int) (Runtime.getRuntime().maxMemory() / 1024);
-        final int cacheSize = maxMemory / 8;
+        final int DEFAULT_CACHE_SIZE_PROPORTION = 8;
+        ActivityManager manager = (ActivityManager) this.getSystemService(Context.ACTIVITY_SERVICE);
+        int memoryClass = manager.getMemoryClass();
+        int memoryClassInKilobytes = memoryClass * 1024;
+        int cacheSize = memoryClassInKilobytes / DEFAULT_CACHE_SIZE_PROPORTION;
         this.mBitmapCache = new LruCache<String, Bitmap>(cacheSize) {
             @Override
             protected int sizeOf(final String key, final Bitmap bitmap) {
