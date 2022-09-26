@@ -288,6 +288,7 @@ public class UpdaterActivity extends XmppActivity {
         private PowerManager.WakeLock mWakeLock;
         private long startTime = 0;
         private boolean mUseTor;
+        private boolean mUseI2P;
 
         DownloadTask(Context context) {
             this.context = context;
@@ -307,6 +308,7 @@ public class UpdaterActivity extends XmppActivity {
                 mWakeLock = pm.newWakeLock(PowerManager.SCREEN_DIM_WAKE_LOCK, getClass().getName());
                 mWakeLock.acquire();
                 mUseTor = xmppConnectionService != null && xmppConnectionService.useTorToConnect();
+                mUseI2P = xmppConnectionService != null && xmppConnectionService.useI2PToConnect();
             }
             mProgressDialog.show();
         }
@@ -342,9 +344,10 @@ public class UpdaterActivity extends XmppActivity {
                 Log.d(Config.LOGTAG, "AppUpdater: download update from url: " + sUrl[0] + " to file name: " + file.toString());
 
                 URL url = new URL(sUrl[0]);
-
-                if (mUseTor) {
-                    connection = (HttpsURLConnection) url.openConnection(getProxy());
+                if (mUseTor && !mUseI2P) {
+                    connection = (HttpsURLConnection) url.openConnection(getProxy(false));
+                } else if (mUseI2P) {
+                    connection = (HttpsURLConnection) url.openConnection(getProxy(true));
                 } else {
                     connection = (HttpsURLConnection) url.openConnection();
                 }
