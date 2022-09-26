@@ -22,6 +22,7 @@
 
                 <com.makeramen.roundedimageview.RoundedImageView
                     android:id="@+id/conversation_image"
+                    android:src="@drawable/ic_person_white_48dp"
                     android:layout_width="56dp"
                     android:layout_height="56dp"
                     android:layout_alignParentStart="true"
@@ -29,6 +30,17 @@
                     android:padding="1dp"
                     android:scaleType="centerCrop"
                     app:riv_corner_radius="@dimen/rounded_image_border" />
+
+                <ImageView
+                    android:id="@+id/user_active_indicator"
+                    android:layout_width="15dp"
+                    android:layout_height="15dp"
+                    android:layout_alignBottom="@+id/conversation_image"
+                    android:layout_alignEnd="@+id/conversation_image"
+                    android:layout_marginBottom="0dp"
+                    android:layout_marginEnd="0dp"
+                    android:visibility="visible"
+                    android:src="@drawable/active_indicator" />
 
                 <RelativeLayout
                     android:id="@+id/message"
