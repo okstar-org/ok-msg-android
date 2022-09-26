@@ -913,7 +913,7 @@ public class XmppConnectionService extends Service {
 
     private void handleOrbotStartedEvent() {
         for (final Account account : accounts) {
-            if (account.getStatus() == Account.State.TOR_NOT_AVAILABLE) {
+            if (account.getStatus() == Account.State.TOR_NOT_AVAILABLE || account.getStatus() == Account.State.I2P_NOT_AVAILABLE) {
                 reconnectAccount(account, true, false);
             }
         }
@@ -4723,6 +4723,10 @@ public class XmppConnectionService extends Service {
 
     public boolean useTorToConnect() {
         return QuickConversationsService.isConversations() && getBooleanPreference("use_tor", R.bool.use_tor);
+    }
+
+    public boolean useI2PToConnect() {
+        return QuickConversationsService.isConversations() && getBooleanPreference("use_i2p", R.bool.use_i2p);
     }
 
     public boolean showExtendedConnectionOptions() {

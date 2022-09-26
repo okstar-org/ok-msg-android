@@ -304,6 +304,7 @@ public class XmppConnection implements Runnable {
             shouldAuthenticate = !account.isOptionSet(Account.OPTION_REGISTER);
             this.changeStatus(Account.State.CONNECTING);
             final boolean useTor = mXmppConnectionService.useTorToConnect() || account.isOnion();
+            final boolean useI2P = mXmppConnectionService.useI2PToConnect() || account.isI2P();
             final boolean extended = mXmppConnectionService.showExtendedConnectionOptions();
             if (Config.XMPP_IP != null && Config.XMPP_Ports != null) {
                 Integer[] XMPP_Port = Config.XMPP_Ports;
@@ -323,7 +324,7 @@ public class XmppConnection implements Runnable {
                 } catch (Exception e) {
                     throw new IOException(e.getMessage());
                 }
-            } else if (useTor) {
+            } else if (useTor && !useI2P) {
                 String destination;
                 if (account.getHostname().isEmpty() || account.isOnion()) {
                     destination = account.getServer();
@@ -358,6 +359,43 @@ public class XmppConnection implements Runnable {
                     return;
                 } catch (final Exception e) {
                     throw new IOException("Could not start stream", e);
+                }
+           } else if (useI2P) {
+                String destination;
+                if (account.getHostname().isEmpty() || account.isI2P()) {
+                    destination = account.getServer();
+                } else {
+                    destination = account.getHostname();
+                    this.verifiedHostname = destination;
+                }
+
+                final int port = account.getPort();
+                final boolean directTls = Resolver.useDirectTls(port);
+
+                Log.d(
+                        Config.LOGTAG,
+                        account.getJid().asBareJid()
+                                + ": connect to "
+                                + destination
+                                + " via I2P. directTls="
+                                + directTls);
+                localSocket = SocksSocketFactory.createSocketOverI2P(destination, port);
+
+                if (directTls) {
+                    localSocket = upgradeSocketToTls(localSocket);
+                    features.encryptionEnabled = true;
+                }
+
+                try {
+                    startXmpp(localSocket);
+                } catch (InterruptedException e) {
+                    Log.d(
+                            Config.LOGTAG,
+                            account.getJid().asBareJid()
+                                    + ": thread was interrupted before beginning stream");
+                    return;
+                } catch (Exception e) {
+                    throw new IOException(e.getMessage());
                 }
             } else {
                 final String domain = account.getServer();
@@ -463,7 +501,11 @@ public class XmppConnection implements Runnable {
                 | SocksSocketFactory.HostNotFoundException e) {
             this.changeStatus(Account.State.SERVER_NOT_FOUND);
         } catch (final SocksSocketFactory.SocksProxyNotFoundException e) {
-            this.changeStatus(Account.State.TOR_NOT_AVAILABLE);
+            if (!account.isI2P()) {
+                this.changeStatus(Account.State.TOR_NOT_AVAILABLE);
+            } else {
+                this.changeStatus(Account.State.I2P_NOT_AVAILABLE);
+            }
         } catch (final IOException e) {
             Log.d(Config.LOGTAG, account.getJid().asBareJid().toString() + ": " + e.getMessage());
             this.changeStatus(Account.State.OFFLINE);
@@ -1210,7 +1252,7 @@ public class XmppConnection implements Runnable {
     private void processStreamFeatures(final Tag currentTag) throws IOException {
         this.streamFeatures = tagReader.readElement(currentTag);
         final boolean isSecure =
-                features.encryptionEnabled || Config.ALLOW_NON_TLS_CONNECTIONS || account.isOnion();
+                features.encryptionEnabled || Config.ALLOW_NON_TLS_CONNECTIONS || account.isOnion() || account.isI2P();
         final boolean needsBinding = !isBound && !account.isOptionSet(Account.OPTION_REGISTER);
         if (this.quickStartInProgress) {
             if (this.streamFeatures.hasChild("authentication", Namespace.SASL_2)) {
@@ -1503,13 +1545,15 @@ public class XmppConnection implements Runnable {
                         } else {
                             final boolean useTor =
                                     mXmppConnectionService.useTorToConnect() || account.isOnion();
+                            final boolean useI2P =
+                                    mXmppConnectionService.useI2PToConnect() || account.isI2P();
                             try {
                                 final String url = data.getValue("url");
                                 final String fallbackUrl = data.getValue("captcha-fallback-url");
                                 if (url != null) {
-                                    is = HttpConnectionManager.open(url, useTor);
+                                    is = HttpConnectionManager.open(url, useTor, useI2P);
                                 } else if (fallbackUrl != null) {
-                                    is = HttpConnectionManager.open(fallbackUrl, useTor);
+                                    is = HttpConnectionManager.open(fallbackUrl, useTor, useI2P);
                                 } else {
                                     is = null;
                                 }

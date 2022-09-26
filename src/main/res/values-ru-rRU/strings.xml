@@ -436,6 +436,7 @@
     <string name="no_update_available">Нет доступных обновлений</string>
     <string name="download_started">Загрузка начата</string>
     <string name="account_status_tor_unavailable">Сеть Tor недоступна</string>
+    <string name="account_status_i2p_unavailable">Сеть I2P недоступна</string>
     <string name="account_status_bind_failure">Неудачная связка</string>
     <string name="account_status_host_unknown">Сервер не отвечает за домен</string>
     <string name="server_info_broken">Поломано</string>
@@ -669,6 +670,8 @@
     <string name="pref_use_auto_rotate">Поворот в полноэкранном режиме</string>
     <string name="pref_use_tor">Подключиться через Tor</string>
     <string name="pref_use_tor_summary">Направлять все соединения через сеть Tor.</string>
+    <string name="pref_use_i2p">Соединение через I2P</string>
+    <string name="pref_use_i2p_summary">Направить все соединения через сеть I2P. Требуется I2P клиент</string>
     <string name="pref_connection_options">Настройки соединения</string>
     <string name="image_low">низкое (720p)</string>
     <string name="image_mid">среднее (1920p)</string>
@@ -1075,6 +1078,7 @@
     <string name="outgoing_call_time">%s ·исходящий звонок</string>
     <string name="outgoing_call">Исходящий звонок</string>
     <string name="disable_tor_to_make_call">Отключите Tor для совершения звонков</string>
+    <string name="no_i2p_calls">Звонки через I2P недоступны</string>
     <string name="help">Помощь</string>
     <string name="switch_to_conversation">Перейти к чату</string>
     <string name="only_one_call_at_a_time">У вас может быть только один звонок за один раз.</string>

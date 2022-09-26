@@ -149,6 +149,7 @@ public class EditAccountActivity extends OmemoActivity implements OnAccountUpdat
 
             XmppConnection connection = mAccount == null ? null : mAccount.getXmppConnection();
             final boolean startOrbot = mAccount != null && mAccount.getStatus() == Account.State.TOR_NOT_AVAILABLE;
+            final boolean startI2P = mAccount != null && mAccount.getStatus() == Account.State.I2P_NOT_AVAILABLE;
             if (startOrbot) {
                 if (TorServiceUtils.isOrbotInstalled(EditAccountActivity.this)) {
                     TorServiceUtils.startOrbot(EditAccountActivity.this, REQUEST_ORBOT);
@@ -157,6 +158,11 @@ public class EditAccountActivity extends OmemoActivity implements OnAccountUpdat
                 }
                 return;
             }
+
+            if (startI2P) {
+                return; // just exit
+            }
+
             if (inNeedOfSaslAccept()) {
                 mAccount.resetPinnedMechanism();
                 if (!xmppConnectionService.updateAccount(mAccount)) {
@@ -307,6 +313,7 @@ public class EditAccountActivity extends OmemoActivity implements OnAccountUpdat
     private boolean mSavedInstanceInit = false;
     private XmppUri pendingUri = null;
     private boolean mUseTor;
+    private boolean mUseI2P;
     private ActivityEditAccountBinding binding;
 
     public void refreshUiReal() {
@@ -824,7 +831,8 @@ public class EditAccountActivity extends OmemoActivity implements OnAccountUpdat
         }
         SharedPreferences preferences = getPreferences();
         mUseTor = QuickConversationsService.isConversations() && preferences.getBoolean("use_tor", getResources().getBoolean(R.bool.use_tor));
-        this.mShowOptions = mUseTor || (QuickConversationsService.isConversations() && preferences.getBoolean("show_connection_options", getResources().getBoolean(R.bool.show_connection_options)));
+        mUseI2P = QuickConversationsService.isConversations() && preferences.getBoolean("use_i2p", getResources().getBoolean(R.bool.use_i2p));
+        this.mShowOptions = mUseTor || mUseI2P || (QuickConversationsService.isConversations() && preferences.getBoolean("show_connection_options", getResources().getBoolean(R.bool.show_connection_options)));
         this.binding.namePort.setVisibility(mShowOptions ? View.VISIBLE : View.GONE);
         if (mForceRegister != null) {
             this.binding.accountRegisterNew.setVisibility(View.GONE);
