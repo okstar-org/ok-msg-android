@@ -1,5 +1,7 @@
 package eu.siacs.conversations.ui;
 
+import static eu.siacs.conversations.ui.util.IntroHelper.SaveIntroShown;
+
 import android.content.Intent;
 import android.os.Bundle;
 
@@ -11,8 +13,6 @@ import com.github.appintro.AppIntroFragment;
 import com.github.appintro.model.SliderPage;
 
 import eu.siacs.conversations.R;
-
-import static eu.siacs.conversations.ui.util.IntroHelper.SaveIntroShown;
 
 public class IntroActivity extends AppIntro2 {
     public static final String ACTIVITY = "activity";
@@ -57,14 +57,14 @@ public class IntroActivity extends AppIntro2 {
                 welcome.setDescription(getString(R.string.intro_desc_main));
                 welcome.setImageDrawable(R.drawable.logo_800);
                 welcome.setBackgroundColor(backgroundColor);
-                addSlide(AppIntroFragment.newInstance(welcome));
+                addSlide(AppIntroFragment.createInstance(welcome));
 
                 SliderPage privacy = new SliderPage();
                 privacy.setTitle(getString(R.string.intro_privacy));
                 privacy.setDescription(getString(R.string.intro_desc_privacy));
                 privacy.setImageDrawable(R.drawable.intro_security_icon);
                 privacy.setBackgroundColor(backgroundColor);
-                addSlide(AppIntroFragment.newInstance(privacy));
+                addSlide(AppIntroFragment.createInstance(privacy));
 
 
                 SliderPage xmpp = new SliderPage();
@@ -72,28 +72,28 @@ public class IntroActivity extends AppIntro2 {
                 xmpp.setDescription(getString(R.string.intro_desc_whats_xmpp));
                 xmpp.setImageDrawable(R.drawable.intro_xmpp_icon);
                 xmpp.setBackgroundColor(backgroundColor);
-                addSlide(AppIntroFragment.newInstance(xmpp));
+                addSlide(AppIntroFragment.createInstance(xmpp));
 
                 SliderPage permissions = new SliderPage();
                 permissions.setTitle(getString(R.string.intro_required_permissions));
                 permissions.setDescription(getString(R.string.intro_desc_required_permissions));
                 permissions.setImageDrawable(R.drawable.intro_memory_icon);
                 permissions.setBackgroundColor(backgroundColor);
-                addSlide(AppIntroFragment.newInstance(permissions));
+                addSlide(AppIntroFragment.createInstance(permissions));
 
                 SliderPage permissions2 = new SliderPage();
                 permissions2.setTitle(getString(R.string.intro_optional_permissions));
                 permissions2.setDescription(getString(R.string.intro_desc_optional_permissions));
                 permissions2.setImageDrawable(R.drawable.intro_contacts_icon);
                 permissions2.setBackgroundColor(backgroundColor);
-                addSlide(AppIntroFragment.newInstance(permissions2));
+                addSlide(AppIntroFragment.createInstance(permissions2));
 
                 SliderPage permissions3 = new SliderPage();
                 permissions3.setTitle(getString(R.string.intro_optional_permissions));
                 permissions3.setDescription(getString(R.string.intro_desc_optional_permissions2));
                 permissions3.setImageDrawable(R.drawable.intro_location_icon);
                 permissions3.setBackgroundColor(backgroundColor);
-                addSlide(AppIntroFragment.newInstance(permissions3));
+                addSlide(AppIntroFragment.createInstance(permissions3));
                 break;
             case WELCOME_ACTIVITY:
                 SliderPage account = new SliderPage();
@@ -101,21 +101,21 @@ public class IntroActivity extends AppIntro2 {
                 account.setDescription(getString(R.string.intro_desc_account));
                 account.setImageDrawable(R.drawable.intro_account_icon);
                 account.setBackgroundColor(backgroundColor);
-                addSlide(AppIntroFragment.newInstance(account));
+                addSlide(AppIntroFragment.createInstance(account));
 
                 SliderPage account2 = new SliderPage();
                 account2.setTitle(getString(R.string.intro_account));
                 account2.setDescription(getString(R.string.intro_desc_account2));
                 account2.setImageDrawable(R.drawable.intro_account_icon);
                 account2.setBackgroundColor(backgroundColor);
-                addSlide(AppIntroFragment.newInstance(account2));
+                addSlide(AppIntroFragment.createInstance(account2));
 
                 SliderPage account3 = new SliderPage();
                 account3.setTitle(getString(R.string.intro_account));
                 account3.setDescription(getString(R.string.intro_desc_account3));
                 account3.setImageDrawable(R.drawable.intro_account_icon);
                 account3.setBackgroundColor(backgroundColor);
-                addSlide(AppIntroFragment.newInstance(account3));
+                addSlide(AppIntroFragment.createInstance(account3));
                 break;
             case START_CONVERSATION_ACTIVITY:
                 SliderPage startChatting = new SliderPage();
@@ -123,21 +123,21 @@ public class IntroActivity extends AppIntro2 {
                 startChatting.setDescription(getString(R.string.intro_desc_start_chatting));
                 startChatting.setImageDrawable(R.drawable.intro_start_chat_icon);
                 startChatting.setBackgroundColor(backgroundColor);
-                addSlide(AppIntroFragment.newInstance(startChatting));
+                addSlide(AppIntroFragment.createInstance(startChatting));
 
                 SliderPage startChatting2 = new SliderPage();
                 startChatting2.setTitle(getString(R.string.intro_start_chatting));
                 startChatting2.setDescription(getString(R.string.intro_desc_start_chatting2));
                 startChatting2.setImageDrawable(R.drawable.intro_start_chat_icon);
                 startChatting2.setBackgroundColor(backgroundColor);
-                addSlide(AppIntroFragment.newInstance(startChatting2));
+                addSlide(AppIntroFragment.createInstance(startChatting2));
 
                 SliderPage startChatting3 = new SliderPage();
                 startChatting3.setTitle(getString(R.string.intro_start_chatting));
                 startChatting3.setDescription(getString(R.string.intro_desc_start_chatting3));
                 startChatting3.setImageDrawable(R.drawable.intro_start_chat_icon);
                 startChatting3.setBackgroundColor(backgroundColor);
-                addSlide(AppIntroFragment.newInstance(startChatting3));
+                addSlide(AppIntroFragment.createInstance(startChatting3));
                 break;
             case CONVERSATIONS_ACTIVITY:
                 SliderPage openChat = new SliderPage();
@@ -145,14 +145,14 @@ public class IntroActivity extends AppIntro2 {
                 openChat.setDescription(getString(R.string.intro_desc_open_chat));
                 openChat.setImageDrawable(R.drawable.intro_start_chat_icon);
                 openChat.setBackgroundColor(backgroundColor);
-                addSlide(AppIntroFragment.newInstance(openChat));
+                addSlide(AppIntroFragment.createInstance(openChat));
 
                 SliderPage chatDetails = new SliderPage();
                 chatDetails.setTitle(getString(R.string.intro_chat_details));
                 chatDetails.setDescription(getString(R.string.intro_desc_chat_details));
                 chatDetails.setImageDrawable(R.drawable.intro_account_details_icon);
                 chatDetails.setBackgroundColor(backgroundColor);
-                addSlide(AppIntroFragment.newInstance(chatDetails));
+                addSlide(AppIntroFragment.createInstance(chatDetails));
 
                 if (mode_multi) {
                     SliderPage highlightUser = new SliderPage();
@@ -160,7 +160,7 @@ public class IntroActivity extends AppIntro2 {
                     highlightUser.setDescription(getString(R.string.intro_desc_highlight_user));
                     highlightUser.setImageDrawable(R.drawable.intro_account_details_icon);
                     highlightUser.setBackgroundColor(backgroundColor);
-                    addSlide(AppIntroFragment.newInstance(highlightUser));
+                    addSlide(AppIntroFragment.createInstance(highlightUser));
                 }
                 break;
             case CONTACT_DETAILS_ACTIVITY:
@@ -170,7 +170,7 @@ public class IntroActivity extends AppIntro2 {
                 openChatDetails.setDescription(getString(R.string.intro_desc_open_chat_details));
                 openChatDetails.setImageDrawable(R.drawable.intro_account_details_icon);
                 openChatDetails.setBackgroundColor(backgroundColor);
-                addSlide(AppIntroFragment.newInstance(openChatDetails));
+                addSlide(AppIntroFragment.createInstance(openChatDetails));
         }
     }
 
