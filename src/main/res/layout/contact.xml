@@ -17,6 +17,17 @@
             android:scaleType="centerCrop"
             app:riv_corner_radius="@dimen/rounded_image_border" />
 
+        <ImageView
+            android:id="@+id/user_active_indicator"
+            android:layout_width="10dp"
+            android:layout_height="10dp"
+            android:layout_alignBottom="@+id/contact_photo"
+            android:layout_alignEnd="@+id/contact_photo"
+            android:layout_marginBottom="0dp"
+            android:layout_marginEnd="0dp"
+            android:visibility="gone"
+            android:src="@drawable/active_indicator" />
+
         <LinearLayout
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"

@@ -188,14 +188,19 @@ public class Contact implements ListItem, Blockable {
     public List<Tag> getTags(Context context) {
         final ArrayList<Tag> tags = new ArrayList<>();
         for (final String group : getGroups(true)) {
-            tags.add(new Tag(group, UIHelper.getColorForName(group), 0, account));
+            tags.add(new Tag(group, UIHelper.getColorForName(group), 0, account, isActive()));
         }
         Presence.Status status = getShownStatus();
-        tags.add(UIHelper.getTagForStatus(context, status, account));
+        tags.add(UIHelper.getTagForStatus(context, status, account, isActive()));
         if (isBlocked()) {
-            tags.add(new Tag(context.getString(R.string.blocked), 0xff2e2f3b, 0, account));
+            tags.add(new Tag(context.getString(R.string.blocked), 0xff2e2f3b, 0, account, isActive()));
         }
         return tags;
+    }
+
+    @Override
+    public boolean getActive() {
+        return isActive();
     }
 
     public boolean match(Context context, String needle) {

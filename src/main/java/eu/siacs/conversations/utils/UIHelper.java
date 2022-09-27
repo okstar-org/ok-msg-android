@@ -639,20 +639,20 @@ public class UIHelper {
         return LOCATION_QUESTIONS.contains(body);
     }
 
-    public static ListItem.Tag getTagForStatus(Context context, Presence.Status status, Account account) {
+    public static ListItem.Tag getTagForStatus(Context context, Presence.Status status, Account account, boolean isActive) {
         switch (status) {
             case CHAT:
-                return new ListItem.Tag(context.getString(R.string.presence_chat), 0xff259b24, 0, account);
+                return new ListItem.Tag(context.getString(R.string.presence_chat), 0xff259b24, 0, account, isActive);
             case AWAY:
-                return new ListItem.Tag(context.getString(R.string.presence_away), 0xffff9800, 0, account);
+                return new ListItem.Tag(context.getString(R.string.presence_away), 0xffff9800, 0, account, isActive);
             case XA:
-                return new ListItem.Tag(context.getString(R.string.presence_xa), 0xfff44336, 0, account);
+                return new ListItem.Tag(context.getString(R.string.presence_xa), 0xfff44336, 0, account, isActive);
             case DND:
-                return new ListItem.Tag(context.getString(R.string.presence_dnd), 0xfff44336, 0, account);
+                return new ListItem.Tag(context.getString(R.string.presence_dnd), 0xfff44336, 0, account, isActive);
             case OFFLINE:
-                return new ListItem.Tag(context.getString(R.string.presence_offline), 0xff808080, 1, account);
+                return new ListItem.Tag(context.getString(R.string.presence_offline), 0xff808080, 1, account, isActive);
             default:
-                return new ListItem.Tag(context.getString(R.string.presence_online), 0xff259b24, 0, account);
+                return new ListItem.Tag(context.getString(R.string.presence_online), 0xff259b24, 0, account, isActive);
         }
     }
 

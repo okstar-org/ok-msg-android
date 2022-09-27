@@ -161,10 +161,15 @@ public class Bookmark extends Element implements ListItem {
         for (Element element : getChildren()) {
             if (element.getName().equals("group") && element.getContent() != null) {
                 String group = element.getContent();
-                tags.add(new Tag(group, UIHelper.getColorForName(group, true), 0, account));
+                tags.add(new Tag(group, UIHelper.getColorForName(group, true), 0, account, false));
             }
         }
         return tags;
+    }
+
+    @Override
+    public boolean getActive() {
+        return false;
     }
 
     public String getNick() {

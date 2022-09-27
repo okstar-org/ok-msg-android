@@ -122,6 +122,11 @@ public class ListItemAdapter extends ArrayAdapter<ListItem> {
             viewHolder.tags.setAlpha(ACTIVE_ALPHA);
         }
         AvatarWorkerTask.loadAvatar(item, viewHolder.avatar, R.dimen.avatar);
+        if (item.getActive()) {
+            viewHolder.activeIndicator.setVisibility(View.VISIBLE);
+        } else {
+            viewHolder.activeIndicator.setVisibility(View.GONE);
+        }
         return view;
     }
 
@@ -139,6 +144,7 @@ public class ListItemAdapter extends ArrayAdapter<ListItem> {
         private TextView account;
         private ImageView avatar;
         private FlowLayout tags;
+        private ImageView activeIndicator;
 
         private ViewHolder() {
         }
@@ -150,6 +156,7 @@ public class ListItemAdapter extends ArrayAdapter<ListItem> {
             viewHolder.account = binding.account;
             viewHolder.avatar = binding.contactPhoto;
             viewHolder.tags = binding.tags;
+            viewHolder.activeIndicator = binding.userActiveIndicator;
             binding.getRoot().setTag(viewHolder);
             return viewHolder;
         }
