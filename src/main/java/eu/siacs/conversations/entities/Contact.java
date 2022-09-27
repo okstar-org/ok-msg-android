@@ -590,7 +590,7 @@ public class Contact implements ListItem, Blockable {
     }
 
     public boolean isActive() {
-        return this.mActive;
+        return this.mActive && account.isOnlineAndConnected();
     }
 
     public boolean setLastseen(long timestamp) {
