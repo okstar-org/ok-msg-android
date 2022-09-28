@@ -301,8 +301,8 @@ public class UIHelper {
                     return new Pair<>(context.getString(R.string.checking_x,
                             getFileDescriptionString(context, message)), true);
                 case Transferable.STATUS_DOWNLOADING:
-                    return new Pair<>(context.getString(R.string.receiving_file,
-                            getFileDescriptionString(context, message)), true);
+                    return new Pair<>(context.getString(R.string.receiving_file_x,
+                            getFileDescriptionString(context, message), message.getTransferable().getProgress()), true);
                 case Transferable.STATUS_OFFER:
                 case Transferable.STATUS_OFFER_CHECK_FILESIZE:
                     return new Pair<>(context.getString(R.string.x_file_offered_for_download,
@@ -316,8 +316,8 @@ public class UIHelper {
                         return new Pair<>(context.getString(R.string.offering_x_file,
                                 getFileDescriptionString(context, message)), true);
                     } else {
-                        return new Pair<>(context.getString(R.string.sending_x_file,
-                                getFileDescriptionString(context, message)), true);
+                        return new Pair<>(context.getString(R.string.sending_x_file_x,
+                                getFileDescriptionString(context, message), message.getTransferable().getProgress()), true);
                     }
                 default:
                     return new Pair<>("", false);
