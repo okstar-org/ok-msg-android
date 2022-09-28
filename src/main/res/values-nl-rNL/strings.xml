@@ -307,6 +307,7 @@
     <string name="notification_restored_backup_subtitle">Vergeet niet om het account in te schakelen.</string>
     <string name="choose_file">Bestand kiezen</string>
     <string name="receiving_file">%1$s ontvangen</string>
+    <string name="receiving_file_x">Ontvangen %1$s (%2$s \%%)</string>
     <string name="download_x_file">%s downloaden</string>
     <string name="delete_x_file">%s verwijderen</string>
     <string name="file">bestand</string>
@@ -387,6 +388,7 @@
     <string name="vcard">Contact</string>
     <string name="avatar_has_been_published">Avatar is gepubliceerd!</string>
     <string name="sending_x_file">Bezig met versturen van %s</string>
+    <string name="sending_x_file_x">Versturen %1$s (%2$s \%%)</string>
     <string name="offering_x_file">Bezig met aanbieden van %s</string>
     <string name="hide_offline">Offline contacten verbergen</string>
     <string name="is_typing">is aan het typen…</string>
@@ -600,6 +602,7 @@
     <string name="hide_inactive_devices">Verberg inactief</string>
     <string name="reply">Beantwoorden</string>
     <string name="transcoding_video">Video wordt gecomprimeerd</string>
+    <string name="transcoding_video_x">Video comprimeren (%s \%%)</string>
     <string name="not_fetching_history_retention_period">Berichten worden niet opgehaald wegens lokale bewaarperiode.</string>
     <plurals name="seconds">
         <item quantity="one">%d seconde</item>

@@ -237,6 +237,7 @@
     <string name="server_info_session_established">Session établie</string>
     <string name="skip">Passer</string>
     <string name="disable_notifications">Désactiver les notifications</string>
+    <string name="enable_notifications">Activer les notifications</string>
     <string name="enable">Activer</string>
     <string name="conference_requires_password">Ce groupe de discussion requiert un mot de passe</string>
     <string name="enter_password">Entrer le mot de passe</string>
