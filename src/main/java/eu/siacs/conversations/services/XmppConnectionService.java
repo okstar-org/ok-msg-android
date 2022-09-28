@@ -234,7 +234,7 @@ public class XmppConnectionService extends Service {
     private final SerialSingleThreadExecutor mDatabaseWriterExecutor = new SerialSingleThreadExecutor("DatabaseWriter");
     private final SerialSingleThreadExecutor mDatabaseReaderExecutor = new SerialSingleThreadExecutor("DatabaseReader");
     private final SerialSingleThreadExecutor mNotificationExecutor = new SerialSingleThreadExecutor("NotificationExecutor");
-    public final SerialSingleThreadExecutor mWebPreviewExecutor = new SerialSingleThreadExecutor("WebPreview");
+    public final Executor mWebPreviewExecutor = Executors.newFixedThreadPool(3);
     public final SerialSingleThreadExecutor mNotificationChannelExecutor = new SerialSingleThreadExecutor("updateNotificationChannels");
     public final SerialSingleThreadExecutor mMessageResendTaskExecuter = new SerialSingleThreadExecutor("MessageResender");
     private final ReplacingTaskManager mRosterSyncTaskManager = new ReplacingTaskManager();
