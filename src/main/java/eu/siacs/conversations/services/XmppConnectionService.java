@@ -1083,6 +1083,11 @@ public class XmppConnectionService extends Service {
                 public void userInputRequired(PendingIntent pi, Message object) {
 
                 }
+
+                @Override
+                public void progress(int progress) {
+
+                }
             });
         } else {
             sendMessage(message);

@@ -189,6 +189,11 @@ public class StartConversationActivity extends XmppActivity implements XmppConne
         public void userInputRequired(PendingIntent pi, Conversation object) {
 
         }
+
+        @Override
+        public void progress(int progress) {
+
+        }
     };
 
     private ActivityStartConversationBinding binding;
@@ -1155,6 +1160,11 @@ public class StartConversationActivity extends XmppActivity implements XmppConne
 
             @Override
             public void userInputRequired(PendingIntent pi, Conversation object) {
+
+            }
+
+            @Override
+            public void progress(int progress) {
 
             }
         });

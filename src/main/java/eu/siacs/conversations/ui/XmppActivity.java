@@ -189,6 +189,11 @@ public abstract class XmppActivity extends ActionBarActivity {
         public void userInputRequired(PendingIntent pi, Conversation object) {
 
         }
+
+        @Override
+        public void progress(int progress) {
+
+        }
     };
 
     public boolean mSkipBackgroundBinding = false;
@@ -733,6 +738,11 @@ public abstract class XmppActivity extends ActionBarActivity {
                 }
 
                 @Override
+                public void progress(int progress) {
+
+                }
+
+                @Override
                 public void success(String signature) {
                     account.setPgpSignature(signature);
                     xmppConnectionService.databaseBackend.updateAccount(account);
@@ -791,6 +801,11 @@ public abstract class XmppActivity extends ActionBarActivity {
                             REQUEST_CHOOSE_PGP_ID, null, 0, 0, 0);
                 } catch (final SendIntentException ignored) {
                 }
+            }
+
+            @Override
+            public void progress(int progress) {
+
             }
         });
     }

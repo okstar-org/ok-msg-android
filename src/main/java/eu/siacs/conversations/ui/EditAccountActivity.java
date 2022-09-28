@@ -401,6 +401,11 @@ public class EditAccountActivity extends OmemoActivity implements OnAccountUpdat
         }
 
         @Override
+        public void progress(int progress) {
+
+        }
+
+        @Override
         public void success(final Avatar avatar) {
             finishInitialSetup(avatar);
         }
@@ -1114,6 +1119,11 @@ public class EditAccountActivity extends OmemoActivity implements OnAccountUpdat
                     startIntentSenderForResult(pi.getIntentSender(), REQUEST_CHANGE_STATUS, null, 0, 0, 0);
                 } catch (final IntentSender.SendIntentException ignored) {
                 }
+            }
+
+            @Override
+            public void progress(int progress) {
+
             }
         });
     }

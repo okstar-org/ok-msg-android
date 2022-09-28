@@ -867,6 +867,11 @@ public class ConversationFragment extends XmppFragment implements EditMessage.Ke
             public void userInputRequired(PendingIntent pi, Message object) {
 
             }
+
+            @Override
+            public void progress(int progress) {
+
+            }
         });
     }
 
@@ -901,6 +906,12 @@ public class ConversationFragment extends XmppFragment implements EditMessage.Ke
             public void userInputRequired(PendingIntent pi, Message message) {
                 hidePrepareFileToast(prepareFileToast);
             }
+
+            @Override
+            public void progress(int progress) {
+                hidePrepareFileToast(prepareFileToast);
+                updateSnackBar(conversation);
+            }
         });
     }
 
@@ -921,6 +932,11 @@ public class ConversationFragment extends XmppFragment implements EditMessage.Ke
                     @Override
                     public void userInputRequired(PendingIntent pi, Message object) {
                         hidePrepareFileToast(prepareFileToast);
+                    }
+
+                    @Override
+                    public void progress(int progress) {
+
                     }
 
                     @Override
@@ -1967,6 +1983,11 @@ public class ConversationFragment extends XmppFragment implements EditMessage.Ke
                                 @Override
                                 public void userInputRequired(PendingIntent pi, Contact contact) {
                                     startPendingIntent(pi, attachmentChoice);
+                                }
+
+                                @Override
+                                public void progress(int progress) {
+
                                 }
 
                                 @Override
@@ -3095,8 +3116,11 @@ public class ConversationFragment extends XmppFragment implements EditMessage.Ke
             } else {
                 hideSnackbar();
             }
-        } else if (conversation.getUuid().equalsIgnoreCase(AttachFileToConversationRunnable.isCompressingVideo)) {
-            showSnackbar(R.string.transcoding_video, 0, null);
+        } else if (conversation.getUuid().equalsIgnoreCase(AttachFileToConversationRunnable.isCompressingVideo[0])) {
+            Activity activity = getActivity();
+            if (activity != null) {
+                showSnackbar(getString(R.string.transcoding_video_x, AttachFileToConversationRunnable.isCompressingVideo[1]), 0, null);
+            }
         } else {
             hideSnackbar();
         }
@@ -3147,7 +3171,6 @@ public class ConversationFragment extends XmppFragment implements EditMessage.Ke
         synchronized (this.messageList) {
             if (this.conversation != null) {
                 conversation.populateWithMessages(ConversationFragment.this.messageList);
-                updateSnackBar(conversation);
                 updateStatusMessages();
                 if (conversation.unreadCount() > 0) {
                     binding.unreadCountCustomView.setVisibility(View.VISIBLE);
@@ -3339,6 +3362,18 @@ public class ConversationFragment extends XmppFragment implements EditMessage.Ke
         }
     }
 
+    protected void showSnackbar(final String message, final int action, final OnClickListener clickListener) {
+        this.binding.snackbar.setVisibility(View.VISIBLE);
+        this.binding.snackbar.setOnClickListener(null);
+        this.binding.snackbarMessage.setText(message);
+        this.binding.snackbarMessage.setOnClickListener(null);
+        this.binding.snackbarAction.setVisibility(clickListener == null ? View.GONE : View.VISIBLE);
+        if (action != 0) {
+            this.binding.snackbarAction.setText(action);
+        }
+        this.binding.snackbarAction.setOnClickListener(clickListener);
+    }
+
     protected void showSnackbar(final int message, final int action, final OnClickListener clickListener) {
         showSnackbar(message, action, clickListener, null);
     }
@@ -3387,6 +3422,11 @@ public class ConversationFragment extends XmppFragment implements EditMessage.Ke
                             @Override
                             public void userInputRequired(PendingIntent pi, Contact contact) {
                                 startPendingIntent(pi, REQUEST_ENCRYPT_MESSAGE);
+                            }
+
+                            @Override
+                            public void progress(int progress) {
+
                             }
 
                             @Override
@@ -3445,6 +3485,11 @@ public class ConversationFragment extends XmppFragment implements EditMessage.Ke
                     @Override
                     public void userInputRequired(PendingIntent pi, Message message) {
                         startPendingIntent(pi, REQUEST_SEND_MESSAGE);
+                    }
+
+                    @Override
+                    public void progress(int progress) {
+
                     }
 
                     @Override

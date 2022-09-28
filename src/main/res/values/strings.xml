@@ -606,6 +606,7 @@
     <string name="hide_inactive_devices">Hide inactive</string>
     <string name="reply">Reply</string>
     <string name="transcoding_video">Compressing video</string>
+    <string name="transcoding_video_x">Compressing video (%s \%%)</string>
     <string name="not_fetching_history_retention_period">Not fetching messages due to local retention period.</string>
     <plurals name="seconds">
         <item quantity="one">%d second</item>

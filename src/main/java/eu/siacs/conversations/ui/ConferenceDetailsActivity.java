@@ -111,6 +111,11 @@ public class ConferenceDetailsActivity extends XmppActivity implements OnConvers
         public void userInputRequired(PendingIntent pi, Conversation object) {
 
         }
+
+        @Override
+        public void progress(int progress) {
+
+        }
     };
 
     public static void open(final Activity activity, final Conversation conversation) {
