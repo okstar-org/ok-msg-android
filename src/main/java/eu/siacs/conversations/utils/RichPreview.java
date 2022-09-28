@@ -3,7 +3,6 @@ package eu.siacs.conversations.utils;
 import static eu.siacs.conversations.ui.util.MyLinkify.getYoutubeImageUrl;
 import static eu.siacs.conversations.ui.util.MyLinkify.isYoutubeUrl;
 
-import android.content.Context;
 import android.os.AsyncTask;
 import android.view.View;
 
@@ -21,6 +20,7 @@ import java.io.InputStreamReader;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.io.UnsupportedEncodingException;
+import java.lang.ref.WeakReference;
 import java.net.URI;
 import java.net.URISyntaxException;
 import java.net.URLEncoder;
@@ -40,34 +40,38 @@ public class RichPreview {
     private ResponseListener responseListener;
     private String url;
     private String filename;
-    private Context context;
+    private XmppConnectionService xmppConnectionService;
 
     public RichPreview(ResponseListener responseListener) {
         this.responseListener = responseListener;
         metaData = new MetaData();
     }
 
-    public void getPreview(final String url, final String filename, final Context context, final XmppConnectionService mXmppConnectionService) {
+    public void getPreview(final String url, final String filename, final XmppConnectionService xmppConnectionService) {
         this.url = url;
         this.filename = filename;
-        this.context = context;
-        mXmppConnectionService.mWebPreviewExecutor.execute(() -> {
-            new getData(mXmppConnectionService).execute();
+        this.xmppConnectionService = xmppConnectionService;
+
+        xmppConnectionService.mWebPreviewExecutor.execute(() -> {
+            new getData(xmppConnectionService).execute();
         });
     }
 
-    private class getData extends AsyncTask<Void, Void, Void> {
-        XmppConnectionService service;
+    private class getData extends AsyncTask<Void, Void, Void>{
+
+        WeakReference<XmppConnectionService> xmppConnectionServiceWeakReference;
+        XmppConnectionService xmppConnectionService;
 
         getData(XmppConnectionService xmppConnectionService) {
-            this.service = xmppConnectionService;
+            this.xmppConnectionServiceWeakReference = new WeakReference<>(xmppConnectionService);
+            this.xmppConnectionService = this.xmppConnectionServiceWeakReference.get();
         }
 
         @Override
         protected Void doInBackground(Void... params) {
             FileInputStream fis = null;
             ObjectInputStream is = null;
-            final File file = new File(context.getCacheDir(), RICH_LINK_METADATA + File.separator + filename);
+            final File file = new File(xmppConnectionService.getCacheDir(), RICH_LINK_METADATA + File.separator + filename);
             try {
                 fis = new FileInputStream(file);
                 InputStreamReader isr = new InputStreamReader(fis);
@@ -106,10 +110,10 @@ public class RichPreview {
                         metaData.setFavicon(json.getString("favicon"));
                     }
                 } else {
-                    retrieveMeta(url, context, service);
+                    retrieveMeta(url, xmppConnectionService);
                 }
             } catch (Exception e) {
-                retrieveMeta(url, context, service);
+                retrieveMeta(url, xmppConnectionService);
                 e.printStackTrace();
             } finally {
                 try {
@@ -152,8 +156,8 @@ public class RichPreview {
         }
     }
 
-    private void saveMeta(MetaData metaData, Context context, final XmppConnectionService xmppConnectionService) {
-        final File file = new File(context.getCacheDir(), RICH_LINK_METADATA + File.separator + filename);
+    private void saveMeta(MetaData metaData, final XmppConnectionService xmppConnectionService) {
+        final File file = new File(xmppConnectionService.getCacheDir(), RICH_LINK_METADATA + File.separator + filename);
         file.getParentFile().mkdirs();
         FileOutputStream fos = null;
         ObjectOutputStream oos = null;
@@ -185,7 +189,7 @@ public class RichPreview {
         }
     }
 
-    private void retrieveMeta(String url, Context context, XmppConnectionService xmppConnectionService) {
+    private void retrieveMeta(String url, XmppConnectionService xmppConnectionService) {
         Document doc = null;
         try {
             doc = Jsoup.connect(url)
@@ -301,7 +305,7 @@ public class RichPreview {
                 metaData.setUrl(uri != null ? uri.getHost() : null);
             }
         }
-        saveMeta(metaData, context, xmppConnectionService);
+        saveMeta(metaData, xmppConnectionService);
     }
 
     public interface ResponseListener {

@@ -195,7 +195,7 @@ public class RichLinkView extends RelativeLayout {
                     viewListener.onError(e);
                 }
             });
-            richPreview.getPreview(url, filename, context, mXmppConnectionService);
+            richPreview.getPreview(url, filename, mXmppConnectionService);
         } else {
             main_url = url;
             meta = data;
