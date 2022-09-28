@@ -520,6 +520,16 @@ public class ConversationFragment extends XmppFragment implements EditMessage.Ke
         }
         hideSnackbar();
     }
+    private void disableMessageEncryption() {
+        if (conversation.isSingleOrPrivateAndNonAnonymous()) {
+            conversation.setNextEncryption(Message.ENCRYPTION_NONE);
+            activity.xmppConnectionService.updateConversation(conversation);
+            activity.refreshUi();
+        }
+        hideSnackbar();
+    }
+
+
 
     private final OnClickListener mAllowPresenceSubscription = new OnClickListener() {
         @Override
@@ -2303,9 +2313,21 @@ public class ConversationFragment extends XmppFragment implements EditMessage.Ke
     public void onResume() {
         super.onResume();
         updateChatBG();
+        disableEncrpytionForExceptions();
         binding.messagesView.post(this::fireReadEvent);
     }
+    private void disableEncrpytionForExceptions() {
+        if (isEncryptionDisabledException()) {
+            disableMessageEncryption();
+        }
+    }
 
+    private boolean isEncryptionDisabledException() {
+        if (conversation != null) {
+            return ENCRYPTION_EXCEPTIONS.contains(conversation.getJid().toString());
+        }
+        return false;
+    }
     private void fireReadEvent() {
         if (activity != null && this.conversation != null) {
             String uuid = getLastVisibleMessageUuid();
@@ -2655,6 +2677,7 @@ public class ConversationFragment extends XmppFragment implements EditMessage.Ke
     public void onStart() {
         super.onStart();
         updateChatBG();
+        disableEncrpytionForExceptions();
         if (this.reInitRequiredOnStart && this.conversation != null) {
             final Bundle extras = pendingExtras.pop();
             reInit(this.conversation, extras != null);
@@ -3064,7 +3087,7 @@ public class ConversationFragment extends XmppFragment implements EditMessage.Ke
             if (conversation.getNextEncryption() == Message.ENCRYPTION_NONE && conversation.isSingleOrPrivateAndNonAnonymous() && ((Config.supportOmemo() && Conversation.suitableForOmemoByDefault(conversation)) ||
                     (Config.supportOpenPgp() && account.isPgpDecryptionServiceConnected()) || (
                     mode == Conversation.MODE_SINGLE && Config.supportOtr()))) {
-                if (ENCRYPTION_EXCEPTIONS.contains(conversation.getJid().toString()) || conversation.getJid().toString().equals(account.getJid().getDomain())) {
+                if (isEncryptionDisabledException() || conversation.getJid().toString().equals(account.getJid().getDomain())) {
                     hideSnackbar();
                 } else {
                     showSnackbar(R.string.conversation_unencrypted_hint, R.string.ok, showUnencryptionHintDialog);
@@ -3109,6 +3132,7 @@ public class ConversationFragment extends XmppFragment implements EditMessage.Ke
             return;
         }
         updateChatBG();
+        disableEncrpytionForExceptions();
         if (this.conversation != null && this.activity != null && this.activity.xmppConnectionService != null) {
             if (!activity.xmppConnectionService.isConversationStillOpen(this.conversation)) {
                 activity.onConversationArchived(this.conversation);
