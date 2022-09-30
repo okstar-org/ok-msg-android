@@ -23,6 +23,7 @@ import android.Manifest;
 import androidx.annotation.RequiresApi;
 import android.annotation.SuppressLint;
 import android.annotation.TargetApi;
+import android.app.ActivityManager;
 import android.app.AlarmManager;
 import android.app.KeyguardManager;
 import android.app.Notification;
@@ -233,7 +234,7 @@ public class XmppConnectionService extends Service {
     private final SerialSingleThreadExecutor mDatabaseWriterExecutor = new SerialSingleThreadExecutor("DatabaseWriter");
     private final SerialSingleThreadExecutor mDatabaseReaderExecutor = new SerialSingleThreadExecutor("DatabaseReader");
     private final SerialSingleThreadExecutor mNotificationExecutor = new SerialSingleThreadExecutor("NotificationExecutor");
-    public final SerialSingleThreadExecutor mWebPreviewExecutor = new SerialSingleThreadExecutor("WebPreview");
+    public final Executor mWebPreviewExecutor = Executors.newFixedThreadPool(3);
     public final SerialSingleThreadExecutor mNotificationChannelExecutor = new SerialSingleThreadExecutor("updateNotificationChannels");
     public final SerialSingleThreadExecutor mMessageResendTaskExecuter = new SerialSingleThreadExecutor("MessageResender");
     private final ReplacingTaskManager mRosterSyncTaskManager = new ReplacingTaskManager();
@@ -912,7 +913,7 @@ public class XmppConnectionService extends Service {
 
     private void handleOrbotStartedEvent() {
         for (final Account account : accounts) {
-            if (account.getStatus() == Account.State.TOR_NOT_AVAILABLE) {
+            if (account.getStatus() == Account.State.TOR_NOT_AVAILABLE || account.getStatus() == Account.State.I2P_NOT_AVAILABLE) {
                 reconnectAccount(account, true, false);
             }
         }
@@ -1080,6 +1081,11 @@ public class XmppConnectionService extends Service {
 
                 @Override
                 public void userInputRequired(PendingIntent pi, Message object) {
+
+                }
+
+                @Override
+                public void progress(int progress) {
 
                 }
             });
@@ -1417,8 +1423,11 @@ public class XmppConnectionService extends Service {
         Resolver.init(this);
         this.mRandom = new SecureRandom();
         updateMemorizingTrustmanager();
-        final int maxMemory = (int) (Runtime.getRuntime().maxMemory() / 1024);
-        final int cacheSize = maxMemory / 8;
+        final int DEFAULT_CACHE_SIZE_PROPORTION = 8;
+        ActivityManager manager = (ActivityManager) this.getSystemService(Context.ACTIVITY_SERVICE);
+        int memoryClass = manager.getMemoryClass();
+        int memoryClassInKilobytes = memoryClass * 1024;
+        int cacheSize = memoryClassInKilobytes / DEFAULT_CACHE_SIZE_PROPORTION;
         this.mBitmapCache = new LruCache<String, Bitmap>(cacheSize) {
             @Override
             protected int sizeOf(final String key, final Bitmap bitmap) {
@@ -2303,7 +2312,7 @@ public class XmppConnectionService extends Service {
                         expireOldMessages(deletionDate, false);
                     }
                     Log.d(Config.LOGTAG, "restoring roster...");
-                    for (Account account : accounts) {
+                for (final Account account : accounts) {
                         databaseBackend.readRoster(account.getRoster());
                         account.initAccountServices(XmppConnectionService.this); //roster needs to be loaded at this stage
                     }
@@ -2345,11 +2354,11 @@ public class XmppConnectionService extends Service {
 
     public void loadPhoneContacts() {
         mContactMergerExecutor.execute(() -> {
-            Map<Jid, JabberIdContact> contacts = JabberIdContact.load(this);
+            final Map<Jid, JabberIdContact> contacts = JabberIdContact.load(this);
             Log.d(Config.LOGTAG, "start merging phone contacts with roster");
-            for (Account account : accounts) {
-                List<Contact> withSystemAccounts = account.getRoster().getWithSystemAccounts(JabberIdContact.class);
-                for (JabberIdContact jidContact : contacts.values()) {
+            for (final Account account : accounts) {
+                final List<Contact> withSystemAccounts = account.getRoster().getWithSystemAccounts(JabberIdContact.class);
+                for (final JabberIdContact jidContact : contacts.values()) {
                     final Contact contact = account.getRoster().getContact(jidContact.getJid());
                     boolean needsCacheClean = contact.setPhoneContact(jidContact);
                     if (needsCacheClean) {
@@ -2357,7 +2366,7 @@ public class XmppConnectionService extends Service {
                     }
                     withSystemAccounts.remove(contact);
                 }
-                for (Contact contact : withSystemAccounts) {
+                for (final Contact contact : withSystemAccounts) {
                     boolean needsCacheClean = contact.unsetPhoneContact(JabberIdContact.class);
                     if (needsCacheClean) {
                         getAvatarService().clear(contact);
@@ -4721,6 +4730,10 @@ public class XmppConnectionService extends Service {
         return QuickConversationsService.isConversations() && getBooleanPreference("use_tor", R.bool.use_tor);
     }
 
+    public boolean useI2PToConnect() {
+        return QuickConversationsService.isConversations() && getBooleanPreference("use_i2p", R.bool.use_i2p);
+    }
+
     public boolean showExtendedConnectionOptions() {
         return QuickConversationsService.isConversations() && getBooleanPreference("show_connection_options", R.bool.show_connection_options);
     }
@@ -5501,7 +5514,9 @@ public class XmppConnectionService extends Service {
         if (!Config.ExportLogs || force) {
             Log.d(Config.LOGTAG, "Cancel scheduled automatic export");
             Intent intent = new Intent(this, AlarmReceiver.class);
-            final PendingIntent ScheduleExportIntent = PendingIntent.getBroadcast(this, AlarmReceiver.SCHEDULE_ALARM_REQUEST_CODE, intent, PendingIntent.FLAG_UPDATE_CURRENT);
+            final PendingIntent ScheduleExportIntent = PendingIntent.getBroadcast(this, AlarmReceiver.SCHEDULE_ALARM_REQUEST_CODE, intent, s()
+                    ? PendingIntent.FLAG_IMMUTABLE | PendingIntent.FLAG_UPDATE_CURRENT
+                    : PendingIntent.FLAG_UPDATE_CURRENT);
             ((AlarmManager) this.getSystemService(ALARM_SERVICE)).cancel(ScheduleExportIntent);
         }
     }

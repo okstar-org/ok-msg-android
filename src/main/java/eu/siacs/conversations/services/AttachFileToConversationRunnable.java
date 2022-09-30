@@ -49,7 +49,7 @@ public class AttachFileToConversationRunnable implements Runnable, TranscoderLis
     private final boolean isVideoMessage;
     private final long originalFileSize;
     private int currentProgress = -1;
-    public static String isCompressingVideo = null;
+    public static String[] isCompressingVideo = new String[]{null,"0"};
 
     public AttachFileToConversationRunnable(XmppConnectionService xmppConnectionService, Uri uri, String type, Message message, Conversation conversation, UiCallback<Message> callback, long maxUploadSize) {
         this.uri = uri;
@@ -106,7 +106,7 @@ public class AttachFileToConversationRunnable implements Runnable, TranscoderLis
     private void processAsVideo() throws Exception {
         Log.d(Config.LOGTAG, "processing file as video");
         mXmppConnectionService.startForcingForegroundNotification();
-        isCompressingVideo = conversation.getUuid();
+        isCompressingVideo = new String[]{conversation.getUuid(),"0"};
         final SimpleDateFormat fileDateFormat = new SimpleDateFormat("yyyyMMdd_HHmmss", Locale.US);
         final String filename = "Sent/" + fileDateFormat.format(new Date(message.getTimeSent())) + "_" + message.getUuid().substring(0, 4) + "_komp";
         mXmppConnectionService.getFileBackend().setupRelativeFilePath(message, String.format("%s.%s", filename, "mp4"));
@@ -124,12 +124,12 @@ public class AttachFileToConversationRunnable implements Runnable, TranscoderLis
             future.get();
         } catch (InterruptedException e) {
             mXmppConnectionService.stopForcingForegroundNotification();
-            isCompressingVideo = null;
+            isCompressingVideo = new String[]{null,"0"};;
             throw new AssertionError(e);
         } catch (ExecutionException e) {
             if (e.getCause() instanceof Error) {
                 mXmppConnectionService.stopForcingForegroundNotification();
-                isCompressingVideo = null;
+                isCompressingVideo = new String[]{null,"0"};;
                 processAsFile();
             } else {
                 Log.d(Config.LOGTAG, "ignoring execution exception. Should get handled by onTranscodeFailed() instead", e);
@@ -208,14 +208,15 @@ public class AttachFileToConversationRunnable implements Runnable, TranscoderLis
         if (p > currentProgress) {
             currentProgress = p;
             mXmppConnectionService.getNotificationService().updateFileAddingNotification(p, message);
-            isCompressingVideo = conversation.getUuid();
+            callback.progress(currentProgress);
+            isCompressingVideo = new String[]{conversation.getUuid(), String.valueOf(currentProgress)};
         }
     }
 
     @Override
     public void onTranscodeCompleted(int successCode) {
         mXmppConnectionService.stopForcingForegroundNotification();
-        isCompressingVideo = null;
+        isCompressingVideo = new String[]{null,"100"};
         final File file = mXmppConnectionService.getFileBackend().getFile(message);
         long convertedFileSize = mXmppConnectionService.getFileBackend().getFile(message).getSize();
         Log.d(Config.LOGTAG, "originalFileSize = " + originalFileSize + " convertedFileSize = " + convertedFileSize);
@@ -240,14 +241,14 @@ public class AttachFileToConversationRunnable implements Runnable, TranscoderLis
     @Override
     public void onTranscodeCanceled() {
         mXmppConnectionService.stopForcingForegroundNotification();
-        isCompressingVideo = null;
+        isCompressingVideo = new String[]{null,"0"};
         processAsFile();
     }
 
     @Override
     public void onTranscodeFailed(@NonNull @NotNull Throwable exception) {
         mXmppConnectionService.stopForcingForegroundNotification();
-        isCompressingVideo = null;
+        isCompressingVideo = new String[]{null,"0"};
         Log.d(Config.LOGTAG, "video transcoding failed", exception);
         processAsFile();
     }

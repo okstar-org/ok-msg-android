@@ -18,17 +18,21 @@ public interface ListItem extends Comparable<ListItem>, AvatarService.Avatarable
 
     List<Tag> getTags(Context context);
 
+    boolean getActive();
+
     final class Tag {
         private final String name;
         private final int color;
         private final int offline;
         private final Account account;
+        private final boolean active;
 
-        public Tag(final String name, final int color, final int offline, final Account account) {
+        public Tag(final String name, final int color, final int offline, final Account account, final boolean active) {
             this.name = name;
             this.color = color;
             this.offline = offline;
             this.account = account;
+            this.active = active;
         }
 
         public int getColor() {
@@ -45,6 +49,10 @@ public interface ListItem extends Comparable<ListItem>, AvatarService.Avatarable
 
         public Account getAccount() {
             return this.account;
+        }
+
+        public boolean getActive() {
+            return this.active;
         }
     }
 

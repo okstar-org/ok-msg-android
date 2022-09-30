@@ -520,6 +520,16 @@ public class ConversationFragment extends XmppFragment implements EditMessage.Ke
         }
         hideSnackbar();
     }
+    private void disableMessageEncryption() {
+        if (conversation.isSingleOrPrivateAndNonAnonymous()) {
+            conversation.setNextEncryption(Message.ENCRYPTION_NONE);
+            activity.xmppConnectionService.updateConversation(conversation);
+            activity.refreshUi();
+        }
+        hideSnackbar();
+    }
+
+
 
     private final OnClickListener mAllowPresenceSubscription = new OnClickListener() {
         @Override
@@ -857,6 +867,11 @@ public class ConversationFragment extends XmppFragment implements EditMessage.Ke
             public void userInputRequired(PendingIntent pi, Message object) {
 
             }
+
+            @Override
+            public void progress(int progress) {
+
+            }
         });
     }
 
@@ -891,6 +906,12 @@ public class ConversationFragment extends XmppFragment implements EditMessage.Ke
             public void userInputRequired(PendingIntent pi, Message message) {
                 hidePrepareFileToast(prepareFileToast);
             }
+
+            @Override
+            public void progress(int progress) {
+                hidePrepareFileToast(prepareFileToast);
+                updateSnackBar(conversation);
+            }
         });
     }
 
@@ -911,6 +932,11 @@ public class ConversationFragment extends XmppFragment implements EditMessage.Ke
                     @Override
                     public void userInputRequired(PendingIntent pi, Message object) {
                         hidePrepareFileToast(prepareFileToast);
+                    }
+
+                    @Override
+                    public void progress(int progress) {
+
                     }
 
                     @Override
@@ -1678,17 +1704,15 @@ public class ConversationFragment extends XmppFragment implements EditMessage.Ke
                 if (conversation.getMode() == Conversation.MODE_SINGLE) {
                     activity.xmppConnectionService.archiveConversation(conversation);
                 } else {
-                    activity.runOnUiThread(() -> {
-                        final AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
-                        builder.setTitle(getString(R.string.action_end_conversation_muc));
-                        builder.setMessage(getString(R.string.leave_conference_warning));
-                        builder.setNegativeButton(getString(R.string.cancel), null);
-                        builder.setPositiveButton(getString(R.string.action_end_conversation_muc),
-                                (dialog, which) -> {
-                                    activity.xmppConnectionService.archiveConversation(conversation);
-                                });
-                        builder.create().show();
-                    });
+                    final AlertDialog.Builder builder = new AlertDialog.Builder(activity);
+                    builder.setTitle(activity.getString(R.string.action_end_conversation_muc));
+                    builder.setMessage(activity.getString(R.string.leave_conference_warning));
+                    builder.setNegativeButton(activity.getString(R.string.cancel), null);
+                    builder.setPositiveButton(activity.getString(R.string.action_end_conversation_muc),
+                            (dialog, which) -> {
+                                activity.xmppConnectionService.archiveConversation(conversation);
+                            });
+                    builder.create().show();
                 }
                 break;
             case R.id.action_invite:
@@ -1787,6 +1811,10 @@ public class ConversationFragment extends XmppFragment implements EditMessage.Ke
             Toast.makeText(activity, R.string.disable_tor_to_make_call, Toast.LENGTH_SHORT).show();
             return;
         }
+        if (activity.mUseI2P || conversation.getAccount().isI2P()) {
+            Toast.makeText(activity, R.string.no_i2p_calls, Toast.LENGTH_SHORT).show();
+            return;
+        }
         final List<String> permissions;
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.S) {
             permissions =
@@ -1804,6 +1832,10 @@ public class ConversationFragment extends XmppFragment implements EditMessage.Ke
     private void checkPermissionAndTriggerVideoCall() {
         if (activity.mUseTor || conversation.getAccount().isOnion()) {
             Toast.makeText(activity, R.string.disable_tor_to_make_call, Toast.LENGTH_SHORT).show();
+            return;
+        }
+        if (activity.mUseI2P || conversation.getAccount().isI2P()) {
+            Toast.makeText(activity, R.string.no_i2p_calls, Toast.LENGTH_SHORT).show();
             return;
         }
         if (hasPermissions(REQUEST_START_VIDEO_CALL, Manifest.permission.RECORD_AUDIO, Manifest.permission.CAMERA)) {
@@ -1951,6 +1983,11 @@ public class ConversationFragment extends XmppFragment implements EditMessage.Ke
                                 @Override
                                 public void userInputRequired(PendingIntent pi, Contact contact) {
                                     startPendingIntent(pi, attachmentChoice);
+                                }
+
+                                @Override
+                                public void progress(int progress) {
+
                                 }
 
                                 @Override
@@ -2297,9 +2334,21 @@ public class ConversationFragment extends XmppFragment implements EditMessage.Ke
     public void onResume() {
         super.onResume();
         updateChatBG();
+        disableEncrpytionForExceptions();
         binding.messagesView.post(this::fireReadEvent);
     }
+    private void disableEncrpytionForExceptions() {
+        if (isEncryptionDisabledException()) {
+            disableMessageEncryption();
+        }
+    }
 
+    private boolean isEncryptionDisabledException() {
+        if (conversation != null) {
+            return ENCRYPTION_EXCEPTIONS.contains(conversation.getJid().toString());
+        }
+        return false;
+    }
     private void fireReadEvent() {
         if (activity != null && this.conversation != null) {
             String uuid = getLastVisibleMessageUuid();
@@ -2649,6 +2698,7 @@ public class ConversationFragment extends XmppFragment implements EditMessage.Ke
     public void onStart() {
         super.onStart();
         updateChatBG();
+        disableEncrpytionForExceptions();
         if (this.reInitRequiredOnStart && this.conversation != null) {
             final Bundle extras = pendingExtras.pop();
             reInit(this.conversation, extras != null);
@@ -3058,7 +3108,7 @@ public class ConversationFragment extends XmppFragment implements EditMessage.Ke
             if (conversation.getNextEncryption() == Message.ENCRYPTION_NONE && conversation.isSingleOrPrivateAndNonAnonymous() && ((Config.supportOmemo() && Conversation.suitableForOmemoByDefault(conversation)) ||
                     (Config.supportOpenPgp() && account.isPgpDecryptionServiceConnected()) || (
                     mode == Conversation.MODE_SINGLE && Config.supportOtr()))) {
-                if (ENCRYPTION_EXCEPTIONS.contains(conversation.getJid().toString()) || conversation.getJid().toString().equals(account.getJid().getDomain())) {
+                if (isEncryptionDisabledException() || conversation.getJid().toString().equals(account.getJid().getDomain())) {
                     hideSnackbar();
                 } else {
                     showSnackbar(R.string.conversation_unencrypted_hint, R.string.ok, showUnencryptionHintDialog);
@@ -3066,8 +3116,11 @@ public class ConversationFragment extends XmppFragment implements EditMessage.Ke
             } else {
                 hideSnackbar();
             }
-        } else if (conversation.getUuid().equalsIgnoreCase(AttachFileToConversationRunnable.isCompressingVideo)) {
-            showSnackbar(R.string.transcoding_video, 0, null);
+        } else if (conversation.getUuid().equalsIgnoreCase(AttachFileToConversationRunnable.isCompressingVideo[0])) {
+            Activity activity = getActivity();
+            if (activity != null) {
+                showSnackbar(getString(R.string.transcoding_video_x, AttachFileToConversationRunnable.isCompressingVideo[1]), 0, null);
+            }
         } else {
             hideSnackbar();
         }
@@ -3103,6 +3156,7 @@ public class ConversationFragment extends XmppFragment implements EditMessage.Ke
             return;
         }
         updateChatBG();
+        disableEncrpytionForExceptions();
         if (this.conversation != null && this.activity != null && this.activity.xmppConnectionService != null) {
             if (!activity.xmppConnectionService.isConversationStillOpen(this.conversation)) {
                 activity.onConversationArchived(this.conversation);
@@ -3117,7 +3171,6 @@ public class ConversationFragment extends XmppFragment implements EditMessage.Ke
         synchronized (this.messageList) {
             if (this.conversation != null) {
                 conversation.populateWithMessages(ConversationFragment.this.messageList);
-                updateSnackBar(conversation);
                 updateStatusMessages();
                 if (conversation.unreadCount() > 0) {
                     binding.unreadCountCustomView.setVisibility(View.VISIBLE);
@@ -3309,6 +3362,18 @@ public class ConversationFragment extends XmppFragment implements EditMessage.Ke
         }
     }
 
+    protected void showSnackbar(final String message, final int action, final OnClickListener clickListener) {
+        this.binding.snackbar.setVisibility(View.VISIBLE);
+        this.binding.snackbar.setOnClickListener(null);
+        this.binding.snackbarMessage.setText(message);
+        this.binding.snackbarMessage.setOnClickListener(null);
+        this.binding.snackbarAction.setVisibility(clickListener == null ? View.GONE : View.VISIBLE);
+        if (action != 0) {
+            this.binding.snackbarAction.setText(action);
+        }
+        this.binding.snackbarAction.setOnClickListener(clickListener);
+    }
+
     protected void showSnackbar(final int message, final int action, final OnClickListener clickListener) {
         showSnackbar(message, action, clickListener, null);
     }
@@ -3357,6 +3422,11 @@ public class ConversationFragment extends XmppFragment implements EditMessage.Ke
                             @Override
                             public void userInputRequired(PendingIntent pi, Contact contact) {
                                 startPendingIntent(pi, REQUEST_ENCRYPT_MESSAGE);
+                            }
+
+                            @Override
+                            public void progress(int progress) {
+
                             }
 
                             @Override
@@ -3415,6 +3485,11 @@ public class ConversationFragment extends XmppFragment implements EditMessage.Ke
                     @Override
                     public void userInputRequired(PendingIntent pi, Message message) {
                         startPendingIntent(pi, REQUEST_SEND_MESSAGE);
+                    }
+
+                    @Override
+                    public void progress(int progress) {
+
                     }
 
                     @Override

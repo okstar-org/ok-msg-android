@@ -40,6 +40,7 @@ import eu.siacs.conversations.entities.Presence;
 import eu.siacs.conversations.entities.RtpSessionStatus;
 import eu.siacs.conversations.entities.Transferable;
 import eu.siacs.conversations.services.ExportBackupService;
+import eu.siacs.conversations.ui.util.MyLinkify;
 import eu.siacs.conversations.services.XmppConnectionService;
 import eu.siacs.conversations.ui.util.MyLinkify;
 import eu.siacs.conversations.ui.util.QuoteHelper;
@@ -300,8 +301,8 @@ public class UIHelper {
                     return new Pair<>(context.getString(R.string.checking_x,
                             getFileDescriptionString(context, message)), true);
                 case Transferable.STATUS_DOWNLOADING:
-                    return new Pair<>(context.getString(R.string.receiving_file,
-                            getFileDescriptionString(context, message)), true);
+                    return new Pair<>(context.getString(R.string.receiving_file_x,
+                            getFileDescriptionString(context, message), message.getTransferable().getProgress()), true);
                 case Transferable.STATUS_OFFER:
                 case Transferable.STATUS_OFFER_CHECK_FILESIZE:
                     return new Pair<>(context.getString(R.string.x_file_offered_for_download,
@@ -315,8 +316,8 @@ public class UIHelper {
                         return new Pair<>(context.getString(R.string.offering_x_file,
                                 getFileDescriptionString(context, message)), true);
                     } else {
-                        return new Pair<>(context.getString(R.string.sending_x_file,
-                                getFileDescriptionString(context, message)), true);
+                        return new Pair<>(context.getString(R.string.sending_x_file_x,
+                                getFileDescriptionString(context, message), message.getTransferable().getProgress()), true);
                     }
                 default:
                     return new Pair<>("", false);
@@ -359,6 +360,7 @@ public class UIHelper {
                 if (textColor != 0) {
                     StylingHelper.format(styledBody, 0, styledBody.length() - 1, textColor, true);
                 }
+                MyLinkify.addLinks(styledBody, message.getConversation().getAccount());
                 SpannableStringBuilder builder = new SpannableStringBuilder();
                 for (CharSequence l : CharSequenceUtils.split(styledBody, '\n')) {
                     if (l.length() > 0) {
@@ -637,20 +639,20 @@ public class UIHelper {
         return LOCATION_QUESTIONS.contains(body);
     }
 
-    public static ListItem.Tag getTagForStatus(Context context, Presence.Status status, Account account) {
+    public static ListItem.Tag getTagForStatus(Context context, Presence.Status status, Account account, boolean isActive) {
         switch (status) {
             case CHAT:
-                return new ListItem.Tag(context.getString(R.string.presence_chat), 0xff259b24, 0, account);
+                return new ListItem.Tag(context.getString(R.string.presence_chat), 0xff259b24, 0, account, isActive);
             case AWAY:
-                return new ListItem.Tag(context.getString(R.string.presence_away), 0xffff9800, 0, account);
+                return new ListItem.Tag(context.getString(R.string.presence_away), 0xffff9800, 0, account, isActive);
             case XA:
-                return new ListItem.Tag(context.getString(R.string.presence_xa), 0xfff44336, 0, account);
+                return new ListItem.Tag(context.getString(R.string.presence_xa), 0xfff44336, 0, account, isActive);
             case DND:
-                return new ListItem.Tag(context.getString(R.string.presence_dnd), 0xfff44336, 0, account);
+                return new ListItem.Tag(context.getString(R.string.presence_dnd), 0xfff44336, 0, account, isActive);
             case OFFLINE:
-                return new ListItem.Tag(context.getString(R.string.presence_offline), 0xff808080, 1, account);
+                return new ListItem.Tag(context.getString(R.string.presence_offline), 0xff808080, 1, account, isActive);
             default:
-                return new ListItem.Tag(context.getString(R.string.presence_online), 0xff259b24, 0, account);
+                return new ListItem.Tag(context.getString(R.string.presence_online), 0xff259b24, 0, account, isActive);
         }
     }
 

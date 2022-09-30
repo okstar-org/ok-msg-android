@@ -31,6 +31,7 @@ import me.drakeet.support.toast.ToastCompat;
 
 public class UpdateService extends AsyncTask<String, Object, UpdateService.Wrapper> {
     private boolean mUseTor;
+    private boolean mUseI2P;
     private Context context;
     private String store;
     private NotificationService getNotificationService;
@@ -39,6 +40,7 @@ public class UpdateService extends AsyncTask<String, Object, UpdateService.Wrapp
         this.context = context;
         this.store = Store;
         this.mUseTor = mXmppConnectionService.useTorToConnect();
+        this.mUseI2P = mXmppConnectionService.useI2PToConnect();
         this.getNotificationService = mXmppConnectionService.getNotificationService();
     }
 
@@ -67,8 +69,10 @@ public class UpdateService extends AsyncTask<String, Object, UpdateService.Wrapp
         HttpsURLConnection connection = null;
         try {
             URL url = new URL(Config.UPDATE_URL);
-            if (mUseTor) {
-                connection = (HttpsURLConnection) url.openConnection(getProxy());
+            if (mUseTor && !mUseI2P) {
+                connection = (HttpsURLConnection) url.openConnection(getProxy(false));
+            } else if (mUseI2P) {
+                connection = (HttpsURLConnection) url.openConnection(getProxy(true));
             } else {
                 connection = (HttpsURLConnection) url.openConnection();
             }

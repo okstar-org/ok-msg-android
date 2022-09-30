@@ -144,8 +144,8 @@ public class NotificationService {
 
     @RequiresApi(api = Build.VERSION_CODES.O)
     void updateChannels() {
-        //mXmppConnectionService.mNotificationChannelExecutor.execute(this::initializeChannels);
-        initializeChannels();
+        mXmppConnectionService.mNotificationChannelExecutor.execute(this::initializeChannels);
+        //initializeChannels();
     }
 
     @RequiresApi(api = Build.VERSION_CODES.O)

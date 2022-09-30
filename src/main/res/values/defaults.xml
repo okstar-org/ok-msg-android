@@ -26,6 +26,7 @@
     <bool name="autojoin">true</bool>
     <bool name="indicate_received">true</bool>
     <bool name="use_tor">false</bool>
+    <bool name="use_i2p">false</bool>
     <bool name="show_connection_options">false</bool>
     <bool name="last_activity">true</bool>
     <bool name="dont_trust_system_cas">false</bool>

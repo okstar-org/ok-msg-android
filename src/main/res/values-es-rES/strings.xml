@@ -239,6 +239,7 @@
     <string name="server_info_session_established">Inicio sesión actual</string>
     <string name="skip">Omitir</string>
     <string name="disable_notifications">Deshabilitar notificaciones</string>
+    <string name="enable_notifications">Habilitar notificaciones</string>
     <string name="enable">Habilitar</string>
     <string name="conference_requires_password">El chat de grupo requiere contraseña</string>
     <string name="enter_password">Introduce la contraseña</string>
@@ -309,6 +310,7 @@
     <string name="notification_restored_backup_subtitle">No olvides habilitar la cuenta.</string>
     <string name="choose_file">Seleccionar archivo</string>
     <string name="receiving_file">Recibiendo %1$s</string>
+    <string name="receiving_file_x">Recibiendo %1$s (%2$s \%%)</string>
     <string name="download_x_file">Descargar %s</string>
     <string name="delete_x_file">Eliminar %s</string>
     <string name="file">archivo</string>
@@ -389,6 +391,7 @@
     <string name="vcard">Contacto</string>
     <string name="avatar_has_been_published">¡La imagen de perfil ha sido publicada!</string>
     <string name="sending_x_file">Enviando %s</string>
+    <string name="sending_x_file_x">Enviando %1$s (%2$s \%%)</string>
     <string name="offering_x_file">Ofreciendo %s</string>
     <string name="hide_offline">Ocultar desconectados</string>
     <string name="is_typing">está escribiendo...</string>
@@ -602,6 +605,7 @@
     <string name="hide_inactive_devices">Ocultar desconectados</string>
     <string name="reply">Responder</string>
     <string name="transcoding_video">Comprimiendo video</string>
+    <string name="transcoding_video_x">Comprimiendo vídeo (%s \%%)</string>
     <string name="not_fetching_history_retention_period">No buscar mensajes más antiguos que el establecido en el marco de tiempo.</string>
     <plurals name="seconds">
         <item quantity="one">%d segundo</item>

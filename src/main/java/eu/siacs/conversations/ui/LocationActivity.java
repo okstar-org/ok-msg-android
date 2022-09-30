@@ -95,8 +95,10 @@ public abstract class LocationActivity extends XmppActivity implements LocationL
         final IConfigurationProvider config = Configuration.getInstance();
         config.load(ctx, getPreferences());
         //config.setUserAgentValue(BuildConfig.APPLICATION_ID + "/" + BuildConfig.VERSION_CODE);
-        if (QuickConversationsService.isConversations() && getBooleanPreference("use_tor", R.bool.use_tor)) {
-            config.setHttpProxy(HttpConnectionManager.getProxy());
+        final boolean useTor = QuickConversationsService.isConversations() && getBooleanPreference("use_tor", R.bool.use_tor);
+        final boolean useI2P = QuickConversationsService.isConversations() && getBooleanPreference("use_i2p", R.bool.use_i2p);
+        if (useTor || useI2P) {
+            config.setHttpProxy(HttpConnectionManager.getProxy(useI2P));
         }
     }
 

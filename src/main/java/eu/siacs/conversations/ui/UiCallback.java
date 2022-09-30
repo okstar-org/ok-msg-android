@@ -8,4 +8,6 @@ public interface UiCallback<T> {
     void error(int errorCode, T object);
 
     void userInputRequired(PendingIntent pi, T object);
+
+    void progress(int progress);
 }

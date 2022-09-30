@@ -27,7 +27,7 @@
     <string name="minute_ago">1 min ago</string>
     <string name="minutes_ago">%d mins ago</string>
     <plurals name="x_unread_conversations">
-        <item quantity="one">%d unread conversation</item>
+      <item quantity="one">%d unread conversation</item>
         <item quantity="other">%d unread conversations</item>
 
     </plurals>
@@ -312,6 +312,7 @@
     <string name="notification_restored_backup_subtitle">Do not forget to enable the account.</string>
     <string name="choose_file">Choose file</string>
     <string name="receiving_file">Receiving %1$s</string>
+    <string name="receiving_file_x">Receiving %1$s (%2$s \%%)</string>
     <string name="download_x_file">Download %s</string>
     <string name="delete_x_file">Delete %s</string>
     <string name="file">file</string>
@@ -392,6 +393,7 @@
     <string name="vcard">Contact</string>
     <string name="avatar_has_been_published">Avatar has been published!</string>
     <string name="sending_x_file">Sending %s</string>
+    <string name="sending_x_file_x">Sending %1$s (%2$s \%%)</string>
     <string name="offering_x_file">Offering %s</string>
     <string name="hide_offline">Hide offline</string>
     <string name="is_typing">is typing…</string>
@@ -437,6 +439,7 @@
     <string name="no_update_available">No update available</string>
     <string name="download_started">Download started</string>
     <string name="account_status_tor_unavailable">Tor network unavailable</string>
+    <string name="account_status_i2p_unavailable">I2P network unavailable</string>
     <string name="account_status_bind_failure">Bind failure</string>
     <string name="account_status_host_unknown">Server not responsible for domain</string>
     <string name="server_info_broken">Broken</string>
@@ -605,6 +608,7 @@
     <string name="hide_inactive_devices">Hide inactive</string>
     <string name="reply">Reply</string>
     <string name="transcoding_video">Compressing video</string>
+    <string name="transcoding_video_x">Compressing video (%s \%%)</string>
     <string name="not_fetching_history_retention_period">Not fetching messages due to local retention period.</string>
     <plurals name="seconds">
         <item quantity="one">%d second</item>
@@ -654,6 +658,8 @@
     <string name="pref_use_auto_rotate">Rotate media in fullscreen</string>
     <string name="pref_use_tor">Connect via Tor</string>
     <string name="pref_use_tor_summary">Tunnel all connections through the Tor network.</string>
+    <string name="pref_use_i2p">Connect via I2P</string>
+    <string name="pref_use_i2p_summary">Tunnel all connections through the I2P network. Requires I2P client</string>
     <string name="pref_connection_options">Connection options</string>
     <string name="image_low">Low (720p)</string>
     <string name="image_mid">Medium (1920p)</string>
@@ -1072,6 +1078,7 @@
     <string name="outgoing_call_time">%s · Outgoing call</string>
     <string name="outgoing_call">Outgoing call</string>
     <string name="disable_tor_to_make_call">Disable Tor to make calls</string>
+    <string name="no_i2p_calls">Calls can’t be done via I2P</string>
     <string name="help">Help</string>
     <string name="switch_to_conversation">Switch to conversation</string>
     <string name="only_one_call_at_a_time">You can only have one call at a time.</string>

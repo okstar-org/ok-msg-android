@@ -142,6 +142,7 @@ public abstract class XmppActivity extends ActionBarActivity {
     protected int mTheme;
     protected boolean mUsingEnterKey = false;
     public boolean mUseTor = false;
+    public boolean mUseI2P = false;
 
     protected Toast mToast;
     protected Runnable onOpenPGPKeyPublished = () -> ToastCompat.makeText(XmppActivity.this, R.string.openpgp_has_been_published, ToastCompat.LENGTH_SHORT).show();
@@ -186,6 +187,11 @@ public abstract class XmppActivity extends ActionBarActivity {
 
         @Override
         public void userInputRequired(PendingIntent pi, Conversation object) {
+
+        }
+
+        @Override
+        public void progress(int progress) {
 
         }
     };
@@ -262,6 +268,7 @@ public abstract class XmppActivity extends ActionBarActivity {
         }
         this.mUsingEnterKey = usingEnterKey();
         this.mUseTor = useTor();
+        this.mUseI2P = useI2P();
     }
 
     public void connectToBackend() {
@@ -571,6 +578,10 @@ public abstract class XmppActivity extends ActionBarActivity {
         return QuickConversationsService.isConversations() && getBooleanPreference("use_tor", R.bool.use_tor);
     }
 
+    private boolean useI2P() {
+        return QuickConversationsService.isConversations() && getBooleanPreference("use_i2p", R.bool.use_i2p);
+    }
+
     public SharedPreferences getPreferences() {
         return PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
     }
@@ -727,6 +738,11 @@ public abstract class XmppActivity extends ActionBarActivity {
                 }
 
                 @Override
+                public void progress(int progress) {
+
+                }
+
+                @Override
                 public void success(String signature) {
                     account.setPgpSignature(signature);
                     xmppConnectionService.databaseBackend.updateAccount(account);
@@ -785,6 +801,11 @@ public abstract class XmppActivity extends ActionBarActivity {
                             REQUEST_CHOOSE_PGP_ID, null, 0, 0, 0);
                 } catch (final SendIntentException ignored) {
                 }
+            }
+
+            @Override
+            public void progress(int progress) {
+
             }
         });
     }

@@ -670,8 +670,8 @@ public class Message extends AbstractEntity implements AvatarService.Avatarable 
 
     public boolean mergeable(final Message message) {
         try {
-            boolean mergeAllowed = conversation.getAccount().getXmppConnection().getXmppConnectionService().allowMergeMessages();
-            return mergeAllowed && message != null &&
+            boolean mergeAllowed = this.conversation.getAccount().getXmppConnection().getXmppConnectionService().allowMergeMessages();
+            return mergeAllowed && (message != null &&
                     (message.getType() == Message.TYPE_TEXT &&
                             this.getTransferable() == null &&
                             message.getTransferable() == null &&
@@ -707,7 +707,7 @@ public class Message extends AbstractEntity implements AvatarService.Avatarable 
                             UIHelper.sameDay(message.getTimeSent(), this.getTimeSent()) &&
                             this.getReadByMarkers().equals(message.getReadByMarkers()) &&
                             !this.conversation.getJid().asBareJid().equals(Config.BUG_REPORTS)
-                    );
+                    ));
         } catch (Exception e) {
             e.printStackTrace();
         }

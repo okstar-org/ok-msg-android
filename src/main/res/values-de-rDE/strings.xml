@@ -308,6 +308,7 @@
     <string name="notification_restored_backup_subtitle">Vergiss nicht, das Konto zu aktivieren.</string>
     <string name="choose_file">Datei auswählen</string>
     <string name="receiving_file">Empfange %1$s</string>
+    <string name="receiving_file_x">Empfange %1$s (%2$s \%%)</string>
     <string name="download_x_file">%s herunterladen</string>
     <string name="delete_x_file">%s löschen</string>
     <string name="file">Datei</string>
@@ -388,6 +389,7 @@
     <string name="vcard">Kontakt</string>
     <string name="avatar_has_been_published">Kontobild wurde gespeichert</string>
     <string name="sending_x_file">%s wird gesendet</string>
+    <string name="sending_x_file_x">%1$s wird gesendet (%2$s \%%)</string>
     <string name="offering_x_file">%s wird angeboten</string>
     <string name="hide_offline">Offline verstecken</string>
     <string name="is_typing">schreibt…</string>
@@ -601,6 +603,7 @@
     <string name="hide_inactive_devices">Verberge Inaktive</string>
     <string name="reply">Antworten</string>
     <string name="transcoding_video">Video wird komprimiert</string>
+    <string name="transcoding_video_x">Video wird komprimiert (%s \%%)</string>
     <string name="not_fetching_history_retention_period">Nachrichten werden aufgrund der eingestellten lokalen Speicherfrist nicht abgerufen.</string>
     <plurals name="seconds">
         <item quantity="one">%d Sekunde</item>
