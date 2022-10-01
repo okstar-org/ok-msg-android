@@ -172,6 +172,34 @@ public class ThemeHelper {
                             return R.style.ConversationsTheme_Grey;
                         }
                 }
+
+            case "White":
+                switch (fontSize) {
+                    case "medium":
+                        if (black) {
+                            return R.style.ConversationsTheme_White_Black_Medium;
+                        } else if (dark) {
+                            return R.style.ConversationsTheme_White_Dark_Medium;
+                        } else {
+                            return R.style.ConversationsTheme_White_Medium;
+                        }
+                    case "large":
+                        if (black) {
+                            return R.style.ConversationsTheme_White_Black_Large;
+                        } else if (dark) {
+                            return R.style.ConversationsTheme_White_Dark_Large;
+                        } else {
+                            return R.style.ConversationsTheme_White_Large;
+                        }
+                    default:
+                        if (black) {
+                            return R.style.ConversationsTheme_White_Black;
+                        } else if (dark) {
+                            return R.style.ConversationsTheme_White_Dark;
+                        } else {
+                            return R.style.ConversationsTheme_White;
+                        }
+                }
             case "pink":
                 switch (fontSize) {
                     case "medium":
@@ -346,6 +374,34 @@ public class ThemeHelper {
                             return R.style.ConversationsTheme_Grey_Dialog;
                         }
                 }
+
+            case "White":
+                switch (fontSize) {
+                    case "medium":
+                        if (black) {
+                            return R.style.ConversationsTheme_White_Black_Dialog_Medium;
+                        } else if (dark) {
+                            return R.style.ConversationsTheme_White_Dark_Dialog_Medium;
+                        } else {
+                            return R.style.ConversationsTheme_White_Dialog_Medium;
+                        }
+                    case "large":
+                        if (black) {
+                            return R.style.ConversationsTheme_White_Black_Dialog_Large;
+                        } else if (dark) {
+                            return R.style.ConversationsTheme_White_Dark_Dialog_Large;
+                        } else {
+                            return R.style.ConversationsTheme_White_Dialog_Large;
+                        }
+                    default:
+                        if (black) {
+                            return R.style.ConversationsTheme_White_Black_Dialog;
+                        } else if (dark) {
+                            return R.style.ConversationsTheme_White_Dark_Dialog;
+                        } else {
+                            return R.style.ConversationsTheme_White_Dialog;
+                        }
+                }
             case "pink":
                 switch (fontSize) {
                     case "medium":
@@ -414,6 +470,13 @@ public class ThemeHelper {
             case R.style.ConversationsTheme_Grey_Black:
             case R.style.ConversationsTheme_Grey_Black_Large:
             case R.style.ConversationsTheme_Grey_Black_Medium:
+                //White
+            case R.style.ConversationsTheme_White_Dark:
+            case R.style.ConversationsTheme_White_Dark_Large:
+            case R.style.ConversationsTheme_White_Dark_Medium:
+            case R.style.ConversationsTheme_White_Black:
+            case R.style.ConversationsTheme_White_Black_Large:
+            case R.style.ConversationsTheme_White_Black_Medium:
                 //pink
             case R.style.ConversationsTheme_Pink_Dark:
             case R.style.ConversationsTheme_Pink_Dark_Large:
@@ -447,6 +510,8 @@ public class ThemeHelper {
                 return dark ? ContextCompat.getColorStateList(context, R.color.white70) : ContextCompat.getColorStateList(context, R.color.darkorange);
             case "grey":
                 return dark ? ContextCompat.getColorStateList(context, R.color.white70) : ContextCompat.getColorStateList(context, R.color.darkgrey);
+            case "White":
+                return dark ? ContextCompat.getColorStateList(context, R.color.white70) : ContextCompat.getColorStateList(context, R.color.darkWhite);
             case "pink":
                 return dark ? ContextCompat.getColorStateList(context, R.color.white70) : ContextCompat.getColorStateList(context, R.color.darkpink);
             default:
@@ -471,6 +536,8 @@ public class ThemeHelper {
                 return R.color.primary_orange;
             case "grey":
                 return R.color.primary_grey;
+            case "White":
+                return R.color.primary_White;
             case "pink":
                 return R.color.primary_pink;
             default:
@@ -506,6 +573,8 @@ public class ThemeHelper {
                 return dark ? getMessageTextColor(context, dark, false) : ContextCompat.getColor(context, R.color.darkorange);
             case "grey":
                 return dark ? getMessageTextColor(context, dark, false) : ContextCompat.getColor(context, R.color.darkgrey);
+            case "White":
+                return dark ? getMessageTextColor(context, dark, false) : ContextCompat.getColor(context, R.color.darkWhite);
             case "pink":
                 return dark ? getMessageTextColor(context, dark, false) : ContextCompat.getColor(context, R.color.darkpink);
             default:
@@ -553,6 +622,8 @@ public class ThemeHelper {
             case "orange":
                 return dark ? true : false;
             case "grey":
+                return dark ? false : false;
+            case "White":
                 return dark ? false : false;
             case "pink":
                 return dark ? true : false;
