@@ -22,9 +22,10 @@ public final class Config {
 
     private static final int UNENCRYPTED = 1;
     private static final int OPENPGP = 2;
+    private static final int OTR = 4;
     private static final int OMEMO = 8;
 
-    private static final int ENCRYPTION_MASK = UNENCRYPTED | OPENPGP | OMEMO;
+    private static final int ENCRYPTION_MASK = UNENCRYPTED | OPENPGP | OTR | OMEMO;
 
     public static boolean supportUnencrypted() {
         return (ENCRYPTION_MASK & UNENCRYPTED) != 0;
@@ -33,6 +34,11 @@ public final class Config {
     public static boolean supportOpenPgp() {
         return (ENCRYPTION_MASK & OPENPGP) != 0;
     }
+
+    public static boolean supportOtr() {
+        return (ENCRYPTION_MASK & OTR) != 0;
+    }
+
 
     public static boolean supportOmemo() {
         return (ENCRYPTION_MASK & OMEMO) != 0;
@@ -115,7 +121,7 @@ public final class Config {
 
     public static final int VIDEO_FAST_UPLOAD_SIZE = 10 * 1024 * 1024;
 
-    public static final int AVATAR_SIZE = 720;
+    public static final int AVATAR_SIZE = 480;
     public static final Bitmap.CompressFormat AVATAR_FORMAT = Bitmap.CompressFormat.JPEG;
     public static final int AVATAR_CHAR_LIMIT = 9400;
 
