@@ -69,8 +69,8 @@ public final class Config {
     public static final String inviteMUCURL = monocles() + "/j/";
     public static final String inviteHostURL = monocles(); // without http(s)
     public static final String INVITE_DOMAIN = monocles();
-    public static final String termsOfUseURL = "https://monocles.de/impressum/";
-    public static final String privacyURL = "https://monocles.de/impressum/";
+    public static final String termsOfUseURL = "https://monocles.eu/legal-privacy/";
+    public static final String privacyURL = "https://monocles.eu/legal-privacy/";
     public static final String migrationURL = Locale.getDefault().getLanguage().equalsIgnoreCase("de") ? "https://codeberg.org/Arne/monocles_chat" : "https://codeberg.org/Arne/monocles_chat";
 
     public static final String CHANGELOG_URL = "https://codeberg.org/Arne/monocles_chat/src/branch/master/CHANGELOG.md";
