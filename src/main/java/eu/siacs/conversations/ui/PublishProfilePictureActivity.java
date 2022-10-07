@@ -14,6 +14,7 @@ import android.view.View.OnLongClickListener;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
+
 import androidx.annotation.NonNull;
 import androidx.annotation.StringRes;
 
@@ -155,7 +156,6 @@ public class PublishProfilePictureActivity extends XmppActivity implements XmppC
         super.onSaveInstanceState(outState);
     }
 
-
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
@@ -256,7 +256,6 @@ public class PublishProfilePictureActivity extends XmppActivity implements XmppC
                 Log.d(Config.LOGTAG, "unable to load avatar into image view", e);
             }
         }
-
         if (bm == null) {
             togglePublishButton(false, R.string.publish);
             this.hintOrWarning.setVisibility(View.VISIBLE);

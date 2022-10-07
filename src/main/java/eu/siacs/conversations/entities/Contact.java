@@ -1,5 +1,6 @@
 package eu.siacs.conversations.entities;
 
+import android.annotation.SuppressLint;
 import android.content.ContentValues;
 import android.content.Context;
 import android.database.Cursor;
@@ -109,6 +110,7 @@ public class Contact implements ListItem, Blockable {
         this.keys = new JSONObject();
     }
 
+    @SuppressLint("Range")
     public static Contact fromCursor(final Cursor cursor) {
         final Jid jid;
         try {

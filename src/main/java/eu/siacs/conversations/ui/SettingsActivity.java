@@ -396,6 +396,14 @@ public class SettingsActivity extends XmppActivity implements OnSharedPreference
             deleteOmemoPreference.setOnPreferenceClickListener(
                     preference -> deleteOmemoIdentities());
         }
+        if (Config.omemoOnly()) {
+            final PreferenceScreen securityScreen =
+                    (PreferenceScreen) mSettingsFragment.findPreference("security");
+            final Preference omemoPreference = mSettingsFragment.findPreference(OMEMO_SETTING);
+            if (omemoPreference != null) {
+                securityScreen.removePreference(omemoPreference);
+            }
+        }
 
         PreferenceScreen ExpertPreferenceScreen = (PreferenceScreen) mSettingsFragment.findPreference("expert");
         final Preference useBundledEmojis = mSettingsFragment.findPreference("use_bundled_emoji");
@@ -477,26 +485,25 @@ public class SettingsActivity extends XmppActivity implements OnSharedPreference
     }
 
     private void changeOmemoSettingSummary() {
-        ListPreference omemoPreference =
+        final ListPreference omemoPreference =
                 (ListPreference) mSettingsFragment.findPreference(OMEMO_SETTING);
-        if (omemoPreference != null) {
-            String value = omemoPreference.getValue();
-            switch (value) {
-                case "always":
-                    omemoPreference.setSummary(R.string.pref_omemo_setting_summary_always);
-                    break;
-                case "default_on":
-                    omemoPreference.setSummary(R.string.pref_omemo_setting_summary_default_on);
-                    break;
-                case "default_off":
-                    omemoPreference.setSummary(R.string.pref_omemo_setting_summary_default_off);
-                    break;
+        if (omemoPreference == null) {
+            return;
+        }
+        final String value = omemoPreference.getValue();
+        switch (value) {
+            case "always":
+                omemoPreference.setSummary(R.string.pref_omemo_setting_summary_always);
+                break;
+            case "default_on":
+                omemoPreference.setSummary(R.string.pref_omemo_setting_summary_default_on);
+                break;
+            case "default_off":
+                omemoPreference.setSummary(R.string.pref_omemo_setting_summary_default_off);
+                break;
                 case "always_off":
                     omemoPreference.setSummary(R.string.pref_omemo_setting_summary_always_off);
                     break;
-            }
-        } else {
-            Log.d(Config.LOGTAG, "unable to find preference named " + OMEMO_SETTING);
         }
     }
 

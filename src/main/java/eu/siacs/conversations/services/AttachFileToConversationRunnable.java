@@ -208,8 +208,9 @@ public class AttachFileToConversationRunnable implements Runnable, TranscoderLis
         if (p > currentProgress) {
             currentProgress = p;
             mXmppConnectionService.getNotificationService().updateFileAddingNotification(p, message);
-            callback.progress(currentProgress);
             isCompressingVideo = new String[]{conversation.getUuid(), String.valueOf(currentProgress)};
+            callback.progress(currentProgress);
+            mXmppConnectionService.getHttpConnectionManager().updateConversationUi(false);
         }
     }
 

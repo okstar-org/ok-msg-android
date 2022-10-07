@@ -6,6 +6,7 @@ import static eu.siacs.conversations.utils.StorageHelper.getGlobalDocumentsPath;
 import static eu.siacs.conversations.utils.StorageHelper.getGlobalPicturesPath;
 import static eu.siacs.conversations.utils.StorageHelper.getGlobalVideosPath;
 
+import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.content.ContentResolver;
 import android.content.Context;
@@ -452,7 +453,7 @@ public class FileBackend {
         try {
             final Cursor cursor = context.getContentResolver().query(uri, null, null, null, null);
             if (cursor != null && cursor.moveToFirst()) {
-                long size = cursor.getLong(cursor.getColumnIndex(OpenableColumns.SIZE));
+                @SuppressLint("Range") long size = cursor.getLong(cursor.getColumnIndex(OpenableColumns.SIZE));
                 cursor.close();
                 return size;
             } else {

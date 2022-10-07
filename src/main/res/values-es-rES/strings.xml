@@ -437,6 +437,7 @@
     <string name="no_update_available">No hay actualizaciones disponibles</string>
     <string name="download_started">Se ha iniciado la descarga</string>
     <string name="account_status_tor_unavailable">Red Tor no disponible</string>
+    <string name="account_status_i2p_unavailable">Red I2P no disponible</string>
     <string name="account_status_bind_failure">Fallo de enlace</string>
     <string name="account_status_host_unknown">El servidor no es responsable del dominio</string>
     <string name="server_info_broken">Error</string>
@@ -655,6 +656,8 @@
     <string name="pref_use_auto_rotate">Girar multimedia en pantalla completa</string>
     <string name="pref_use_tor">Conectar via Tor</string>
     <string name="pref_use_tor_summary">Todas las conexiones se realizan a través de la red TOR. Requiere Orbot</string>
+    <string name="pref_use_i2p">Conectar via I2P</string>
+    <string name="pref_use_i2p_summary">Todas las conexiones por tunel por red I2P. Requiere cliente I2P</string>
     <string name="pref_connection_options">Conexión</string>
     <string name="image_low">baja (720p)</string>
     <string name="image_mid">medio (1920p)</string>
@@ -1075,6 +1078,7 @@
     <string name="outgoing_call_time">%s · Llamada en curso</string>
     <string name="outgoing_call">Llamada en curso</string>
     <string name="disable_tor_to_make_call">Deshabilita Tor para hacer llamadas</string>
+    <string name="no_i2p_calls">No se pueden hacer llamadas via I2P</string>
     <string name="help">Ayuda</string>
     <string name="switch_to_conversation">Cambiar a conversación</string>
     <string name="only_one_call_at_a_time">Solo puedes estar en una llamada a la vez.</string>

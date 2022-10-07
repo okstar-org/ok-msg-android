@@ -39,8 +39,13 @@ public final class Config {
         return (ENCRYPTION_MASK & OTR) != 0;
     }
 
+
     public static boolean supportOmemo() {
         return (ENCRYPTION_MASK & OMEMO) != 0;
+    }
+
+    public static boolean omemoOnly() {
+        return !multipleEncryptionChoices() && supportOmemo();
     }
 
     public static boolean multipleEncryptionChoices() {
@@ -64,8 +69,8 @@ public final class Config {
     public static final String inviteMUCURL = monocles() + "/j/";
     public static final String inviteHostURL = monocles(); // without http(s)
     public static final String INVITE_DOMAIN = monocles();
-    public static final String termsOfUseURL = "https://monocles.de/impressum/";
-    public static final String privacyURL = "https://monocles.de/impressum/";
+    public static final String termsOfUseURL = "https://monocles.eu/legal-privacy/";
+    public static final String privacyURL = "https://monocles.eu/legal-privacy/";
     public static final String migrationURL = Locale.getDefault().getLanguage().equalsIgnoreCase("de") ? "https://codeberg.org/Arne/monocles_chat" : "https://codeberg.org/Arne/monocles_chat";
 
     public static final String CHANGELOG_URL = "https://codeberg.org/Arne/monocles_chat/src/branch/master/CHANGELOG.md";
@@ -116,7 +121,7 @@ public final class Config {
 
     public static final int VIDEO_FAST_UPLOAD_SIZE = 10 * 1024 * 1024;
 
-    public static final int AVATAR_SIZE = 720;
+    public static final int AVATAR_SIZE = 480;
     public static final Bitmap.CompressFormat AVATAR_FORMAT = Bitmap.CompressFormat.JPEG;
     public static final int AVATAR_CHAR_LIMIT = 9400;
 

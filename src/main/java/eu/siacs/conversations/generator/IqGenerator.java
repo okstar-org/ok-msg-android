@@ -1,10 +1,11 @@
 package eu.siacs.conversations.generator;
 
 
+import static eu.siacs.conversations.ui.SettingsActivity.PERSISTENT_ROOM;
+
 import android.os.Bundle;
 import android.util.Base64;
 import android.util.Log;
-import static eu.siacs.conversations.ui.SettingsActivity.PERSISTENT_ROOM;
 
 import org.whispersystems.libsignal.IdentityKey;
 import org.whispersystems.libsignal.ecc.ECPublicKey;
@@ -30,14 +31,15 @@ import eu.siacs.conversations.entities.Conversation;
 import eu.siacs.conversations.entities.DownloadableFile;
 import eu.siacs.conversations.services.MessageArchiveService;
 import eu.siacs.conversations.services.XmppConnectionService;
-import eu.siacs.conversations.xml.Namespace;
 import eu.siacs.conversations.xml.Element;
+import eu.siacs.conversations.xml.Namespace;
 import eu.siacs.conversations.xmpp.Jid;
 import eu.siacs.conversations.xmpp.forms.Data;
 import eu.siacs.conversations.xmpp.pep.Avatar;
 import eu.siacs.conversations.xmpp.stanzas.IqPacket;
 
 public class IqGenerator extends AbstractGenerator {
+
     private static XmppConnectionService xmppConnectionService;
 
     public IqGenerator(final XmppConnectionService service) {
@@ -205,6 +207,7 @@ public class IqGenerator extends AbstractGenerator {
         packet.addChild("vCard", "vcard-temp");
         return packet;
     }
+
     public IqPacket retrieveVcardAvatar(final Jid to) {
         final IqPacket packet = new IqPacket(IqPacket.TYPE.GET);
         packet.setTo(to);
@@ -604,6 +607,7 @@ public class IqGenerator extends AbstractGenerator {
         packet.addChild("query", Namespace.DISCO_INFO);
         return packet;
     }
+
     private static boolean persistentRoom() {
         return xmppConnectionService.getBooleanPreference(PERSISTENT_ROOM, R.bool.enable_persistent_rooms);
     }
