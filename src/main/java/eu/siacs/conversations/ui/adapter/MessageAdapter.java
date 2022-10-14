@@ -1,5 +1,7 @@
 package eu.siacs.conversations.ui.adapter;
 
+import eu.siacs.conversations.ui.widget.ClickableMovementMethod;
+import me.saket.bettermovementmethod.BetterLinkMovementMethod;
 import static android.view.ViewGroup.LayoutParams.WRAP_CONTENT;
 import static eu.siacs.conversations.entities.Message.DELETED_MESSAGE_BODY;
 import static eu.siacs.conversations.entities.Message.DELETED_MESSAGE_BODY_OLD;
@@ -11,6 +13,7 @@ import static eu.siacs.conversations.ui.SettingsActivity.SHOW_MAPS_INSIDE;
 import static eu.siacs.conversations.ui.util.MyLinkify.removeTrackingParameter;
 import static eu.siacs.conversations.ui.util.MyLinkify.removeTrailingBracket;
 import static eu.siacs.conversations.ui.util.MyLinkify.replaceYoutube;
+import eu.siacs.conversations.ui.util.ShareUtil;
 
 import android.Manifest;
 import android.annotation.SuppressLint;
@@ -35,6 +38,7 @@ import android.text.style.StyleSpan;
 import android.util.Base64;
 import android.util.DisplayMetrics;
 import android.util.Log;
+import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.WindowManager;
@@ -88,7 +92,6 @@ import eu.siacs.conversations.ui.util.MyLinkify;
 import eu.siacs.conversations.ui.util.QuoteHelper;
 import eu.siacs.conversations.ui.util.StyledAttributes;
 import eu.siacs.conversations.ui.util.ViewUtil;
-import eu.siacs.conversations.ui.widget.ClickableMovementMethod;
 import eu.siacs.conversations.ui.widget.RichLinkView;
 import eu.siacs.conversations.utils.CryptoHelper;
 import eu.siacs.conversations.utils.Emoticons;
@@ -698,7 +701,13 @@ public class MessageAdapter extends ArrayAdapter<Message> {
             MyLinkify.addLinks(body, message.getConversation().getAccount());
             viewHolder.messageBody.setText(body);
             viewHolder.messageBody.setAutoLinkMask(0);
-            viewHolder.messageBody.setMovementMethod(ClickableMovementMethod.getInstance());
+            BetterLinkMovementMethod method = BetterLinkMovementMethod.newInstance();
+            method.setOnLinkLongClickListener((tv, url) -> {
+                tv.dispatchTouchEvent(MotionEvent.obtain(0, 0, MotionEvent.ACTION_CANCEL, 0f, 0f, 0));
+                ShareUtil.copyLinkToClipboard(activity, url);
+                return true;
+            });
+            viewHolder.messageBody.setMovementMethod(method);
         } else {
             viewHolder.messageBody.setText("");
             viewHolder.messageBody.setTextIsSelectable(false);
