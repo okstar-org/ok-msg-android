@@ -43,35 +43,35 @@ public class StorageHelper {
     }
 
     private static String getData(Context context, String APP_DIRECTORY, String type) {
-        return Environment.getExternalStorageDirectory().getAbsolutePath() + File.separator + APP_DIRECTORY + File.separator + "Media" + File.separator;
+        return Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOCUMENTS) + File.separator + APP_DIRECTORY + File.separator + "Media" + File.separator;
     }
 
     public static String getGlobalPicturesPath() {
-        return Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_PICTURES) + File.separator + "monocles chat" + File.separator;
+        return Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOCUMENTS) + File.separator + APP_DIRECTORY + File.separator + "pictures" + File.separator;
     }
 
     public static String getGlobalVideosPath() {
-        return Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_MOVIES) + File.separator + "monocles chat" + File.separator;
+        return Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOCUMENTS) + File.separator + APP_DIRECTORY + File.separator + "videos" + File.separator;
     }
 
     public static String getGlobalDocumentsPath() {
-        return Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOCUMENTS) + File.separator + "monocles chat" + File.separator;
+        return Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOCUMENTS) + File.separator + APP_DIRECTORY + File.separator + "documents" + File.separator;
     }
 
     public static String getGlobalDownloadsPath() {
-        return Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS) + File.separator + "monocles chat" + File.separator;
+        return Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOCUMENTS) + File.separator + APP_DIRECTORY + File.separator + "downloads" + File.separator;
     }
 
     public static String getGlobalAudiosPath() {
-        return Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_MUSIC) + File.separator + "monocles chat" + File.separator;
+        return Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOCUMENTS) + File.separator + APP_DIRECTORY + File.separator + "audios" + File.separator;
     }
 
     public static String getAppUpdateDirectory() {
-        return Environment.getExternalStorageDirectory().getAbsolutePath() + File.separator + APP_DIRECTORY + File.separator + "Update" + File.separator;
+        return Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOCUMENTS) + File.separator + APP_DIRECTORY + File.separator + "Update" + File.separator;
     }
 
     public static String getAppLogsDirectory() {
-        return Environment.getExternalStorageDirectory().getAbsolutePath() + File.separator + APP_DIRECTORY + File.separator + "Chats" + File.separator;
+        return Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOCUMENTS) + File.separator + APP_DIRECTORY + File.separator + "Chats" + File.separator;
     }
 
     public static void migrateStorage(Context c) {
