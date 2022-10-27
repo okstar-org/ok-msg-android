@@ -51,7 +51,8 @@
                 android:layout_gravity="center_vertical"
                 android:gravity="center_vertical"
                 android:text="@string/user"
-                android:textAppearance="@style/TextAppearance.Conversations.Body1" />
+                android:textSize="15dp"
+                android:textAppearance="@style/TextAppearance.Conversations.Caption" />
 
             <include
                 android:id="@+id/message_content"
