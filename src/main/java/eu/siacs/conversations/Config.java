@@ -76,8 +76,8 @@ public final class Config {
     public static final String CHANGELOG_URL = "https://codeberg.org/Arne/monocles_chat/src/branch/master/CHANGELOG.md";
     public static final String GIT_URL = "https://codeberg.org/Arne/monocles_chat";
 
-    public static final String PROVIDER_URL = "https://invent.kde.org/melvo/xmpp-providers/-/raw/master/providers.json"; // https://invent.kde.org/melvo/xmpp-providers
-
+    public static final String PROVIDER_URL = ""; // https://invent.kde.org/melvo/xmpp-providers
+    //or https://invent.kde.org/melvo/xmpp-providers/-/raw/master/providers.json
     public static final String XMPP_IP = null; //BuildConfig.XMPP_IP; // set to null means disable
     public static final Integer[] XMPP_Ports = null; //BuildConfig.XMPP_Ports; // set to null means disable
     public static final String DOMAIN_LOCK = BuildConfig.DOMAIN_LOCK; //only allow account creation for this domain
