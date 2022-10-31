@@ -94,8 +94,8 @@
     <integer name="low_video_res">360</integer>
     <integer name="mid_video_res">720</integer>
     <integer name="high_video_res">1080</integer>
-    <string name="max_resend_time">4</string>
-    <string name="resend_delay">500</string>
+    <string name="max_resend_time">0</string>
+    <string name="resend_delay">0</string>
     <bool name="easy_downloader">false</bool>
     <bool name="hide_memory_warning">false</bool>
     <bool name="pause_voice">false</bool>
