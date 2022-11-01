@@ -1016,6 +1016,7 @@
     <string name="pref_theme_orange">Naranja</string>
     <string name="pref_theme_monocles">monocles chat</string>
     <string name="pref_theme_grey">Gris</string>
+    <string name="pref_theme_White">Blanco</string>
     <string name="pref_theme_pink">Rosa</string>
     <string name="pref_theme_black">Negro (AMOLED)</string>
     <string name="pref_theme_color_options_summary">Selecciona la paleta de color del tema</string>
