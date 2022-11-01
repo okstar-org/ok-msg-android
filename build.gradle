@@ -46,8 +46,7 @@ dependencies {
         exclude group: 'com.android.support', module: 'appcompat-v7'
         exclude group: 'com.android.support', module: 'exifinterface'
     }
-    //implementation 'ch.threema:webrtc-android:100.0.0'
-    implementation 'com.dafruits:webrtc:105.0.1'
+    implementation 'ch.threema:webrtc-android:100.0.0'
     implementation 'org.jitsi:org.otr4j:0.23'
     implementation 'org.bouncycastle:bcmail-jdk15on:1.64'
     implementation 'org.gnu.inet:libidn:1.15'
@@ -108,8 +107,8 @@ android {
         targetSdkVersion 32
 
         //versionNameSuffix " beta_(2021-12-19)" // " beta_(XXXX-XX-XX)" // activate for beta versions
-        versionCode 123
-        versionName "1.5.12"
+        versionCode 125
+        versionName "1.5.14"
         //resConfigs "en"
 
         archivesBaseName += "-$versionName"

@@ -72,7 +72,6 @@ import net.java.otr4j.session.SessionImpl;
 import net.java.otr4j.session.SessionStatus;
 import eu.siacs.conversations.xmpp.jid.OtrJidHelper;
 import eu.siacs.conversations.xmpp.Jid;
-import android.telephony.TelephonyCallback;
 
 import androidx.annotation.BoolRes;
 import androidx.annotation.IntegerRes;
@@ -3241,7 +3240,6 @@ public class XmppConnectionService extends Service {
             }
         });
     }
-
     public void joinMuc(Conversation conversation) {
         joinMuc(conversation, null, false);
     }
@@ -3485,12 +3483,12 @@ public class XmppConnectionService extends Service {
         final IqPacket request = mIqGenerator.deleteNode(node);
         sendIqPacket(account, request, (a, packet) -> {
             if (packet.getType() == IqPacket.TYPE.RESULT) {
-                Log.d(Config.LOGTAG, a.getJid().asBareJid() + ": successfully deleted pep node " + node);
+                Log.d(Config.LOGTAG,a.getJid().asBareJid()+": successfully deleted pep node "+node);
                 if (runnable != null) {
                     runnable.run();
                 }
             } else {
-                Log.d(Config.LOGTAG, a.getJid().asBareJid() + ": failed to delete " + packet);
+                Log.d(Config.LOGTAG,a.getJid().asBareJid()+": failed to delete "+ packet);
             }
         });
     }
@@ -3499,12 +3497,12 @@ public class XmppConnectionService extends Service {
         final IqPacket retrieveVcard = mIqGenerator.retrieveVcardAvatar(account.getJid().asBareJid());
         sendIqPacket(account, retrieveVcard, (a, response) -> {
             if (response.getType() != IqPacket.TYPE.RESULT) {
-                Log.d(Config.LOGTAG, a.getJid().asBareJid() + ": no vCard set. nothing to do");
+                Log.d(Config.LOGTAG,a.getJid().asBareJid()+": no vCard set. nothing to do");
                 return;
             }
             final Element vcard = response.findChild("vCard", "vcard-temp");
             if (vcard == null) {
-                Log.d(Config.LOGTAG, a.getJid().asBareJid() + ": no vCard set. nothing to do");
+                Log.d(Config.LOGTAG,a.getJid().asBareJid()+": no vCard set. nothing to do");
                 return;
             }
             Element photo = vcard.findChild("PHOTO");
@@ -3517,7 +3515,7 @@ public class XmppConnectionService extends Service {
             publication.addChild(vcard);
             sendIqPacket(account, publication, (a1, publicationResponse) -> {
                 if (publicationResponse.getType() == IqPacket.TYPE.RESULT) {
-                    Log.d(Config.LOGTAG, a1.getJid().asBareJid() + ": successfully deleted vcard avatar");
+                    Log.d(Config.LOGTAG,a1.getJid().asBareJid()+": successfully deleted vcard avatar");
                     runnable.run();
                 } else {
                     Log.d(Config.LOGTAG, "failed to publish vcard " + publicationResponse.getErrorCondition());
@@ -3525,6 +3523,7 @@ public class XmppConnectionService extends Service {
             });
         });
     }
+
 
     private boolean hasEnabledAccounts() {
         if (this.accounts == null) {

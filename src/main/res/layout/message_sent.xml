@@ -63,6 +63,7 @@
                 android:layout_gravity="center_vertical"
                 android:gravity="center_vertical"
                 android:text="@string/user"
+                android:textSize="15dp"
                 android:textAppearance="@style/TextAppearance.Conversations.Caption"
                 android:visibility="gone"/>
 

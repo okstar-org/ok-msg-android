@@ -177,14 +177,14 @@ public class IqGenerator extends AbstractGenerator {
         final Element item = new Element("item");
         item.setAttribute("id", avatar.sha1sum);
         final Element metadata = item
-                .addChild("metadata", Namespace.AVATAR_DATA);
+                .addChild("metadata", Namespace.AVATAR_METADATA);
         final Element info = metadata.addChild("info");
         info.setAttribute("bytes", avatar.size);
         info.setAttribute("id", avatar.sha1sum);
         info.setAttribute("height", avatar.height);
         info.setAttribute("width", avatar.height);
         info.setAttribute("type", avatar.type);
-        return publish(Namespace.AVATAR_DATA, item, options);
+        return publish(Namespace.AVATAR_METADATA, item, options);
     }
 
     public IqPacket deleteAvatar() {
@@ -214,6 +214,7 @@ public class IqGenerator extends AbstractGenerator {
         packet.addChild("vCard", "vcard-temp");
         return packet;
     }
+
 
     public IqPacket retrieveAvatarMetaData(final Jid to) {
         final IqPacket packet = retrieve(Namespace.AVATAR_DATA, null);

@@ -128,8 +128,6 @@ public class PublishProfilePictureActivity extends XmppActivity implements XmppC
             this.handledExternalUri.set(savedInstanceState.getBoolean("handle_external_uri", false));
         }
     }
-
-    @Override
     public boolean onCreateOptionsMenu(@NonNull final Menu menu) {
         getMenuInflater().inflate(R.menu.activity_publish_avatar, menu);
         return true;

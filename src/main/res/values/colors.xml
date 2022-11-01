@@ -32,6 +32,15 @@
     <color name="accent_light_grey">#1a7f7f7f</color>
     <color name="accent_light_grey_disabled">#1a000000</color>
 
+    <!-- White theme -->
+    <color name="primary_White">#ffffffff</color>
+    <color name="primary_dark_White">#ffffffff</color>
+    <color name="primary_White_dark">#ff323232</color>
+    <color name="primary_dark_White_dark">#ff191919</color>
+    <color name="accent_White">#ff000000</color>
+    <color name="accent_light_White">#ffffffff</color>
+    <color name="accent_light_White_disabled">#1a000000</color>
+
     <!-- black theme -->
     <color name="primary_black">#ff000000</color>
     <color name="primary_dark_black">#ff000000</color>
@@ -80,6 +89,12 @@
     <color name="lightgrey2">#ffeaeaea</color> <!-- light theme me -->
     <color name="middlegrey">#ff5b5b5b</color> <!-- dark theme other -->
     <color name="darkgrey">#ff444444</color> <!-- dark theme me -->
+
+    <!-- White theme -->
+    <color name="lightWhite">#ffffffff</color> <!-- light theme other -->
+    <color name="lightWhite2">#ffffffff</color> <!-- light theme me -->
+    <color name="middleWhite">#ffffffff</color> <!-- dark theme other -->
+    <color name="darkWhite">#ff000000</color> <!-- dark theme me -->
 
     <!-- black theme -->
     <color name="middleblack">#ff323232</color> <!-- dark theme other -->

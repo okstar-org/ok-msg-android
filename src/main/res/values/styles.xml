@@ -50,7 +50,7 @@
         <item name="colorControlNormal">?attr/colorAccent</item>
     </style>
 
-    <style name="Widget.Conversations.TextInputLayout.OutlinedBox" parent="Widget.Material3.TextInputLayout.OutlinedBox">
+    <style name="Widget.Conversations.TextInputLayout.OutlinedBox" parent="Widget.MaterialComponents.TextInputLayout.OutlinedBox">
         <item name="boxStrokeColor">@color/text_input_stroke_color</item>
         <item name="android:textColorHint">@color/text_input_stroke_color</item>
         <item name="hintTextColor">@color/text_input_stroke_color</item>
@@ -66,30 +66,29 @@
 
     <style name="Widget.Conversations.CheckBox" parent="Widget.MaterialComponents.CompoundButton.CheckBox">
         <item name="android:textSize">?TextSizeBody1</item>
-        <item name="buttonTint">@color/primary_monocles</item>
     </style>
 
     <style name="Widget.Conversations.RadioButton" parent="Widget.AppCompat.CompoundButton.RadioButton">
         <item name="android:textSize">?TextSizeBody1</item>
     </style>
 
-    <style name="Widget.Conversations.Button.Borderless" parent="@style/Widget.Material3.Button.TextButton">
+    <style name="Widget.Conversations.Button.Borderless" parent="@style/Widget.MaterialComponents.Button.TextButton">
         <item name="android:textSize">?TextSizeBody2</item>
         <item name="android:textColor">@color/button_state_color</item>
     </style>
 
-    <style name="Widget.Conversations.Button.Outline" parent="@style/Widget.Material3.Button.OutlinedButton">
+    <style name="Widget.Conversations.Button.Outline" parent="@style/Widget.MaterialComponents.Button.OutlinedButton">
         <item name="android:textSize">?TextSizeBody2</item>
         <item name="strokeColor">?attr/colorAccent</item>
         <item name="android:textColor">@color/button_state_color</item>
     </style>
 
-    <style name="Widget.Conversations.Button" parent="@style/Widget.Material3.Button">
+    <style name="Widget.Conversations.Button" parent="@style/Widget.MaterialComponents.Button">
         <item name="android:textSize">?TextSizeBody2</item>
         <item name="android:textColor">@color/button_state_color</item>
     </style>
 
-    <style name="Widget.Conversations.Button.Dialog" parent="@style/Widget.Material3.Button.TextButton">
+    <style name="Widget.Conversations.Button.Dialog" parent="@style/Widget.MaterialComponents.Button.TextButton">
         <item name="android:textSize">?TextSizeBody2</item>
         <item name="android:textColor">@color/button_state_color</item>
     </style>
@@ -175,7 +174,7 @@
         <item name="android:textColor">@color/white70</item>
     </style>
 
-    <style name="Conversations.Dialog" parent="ThemeOverlay.Material3.Dialog.Alert">
+    <style name="Conversations.Dialog" parent="ThemeOverlay.MaterialComponents.Dialog.Alert">
         <item name="android:buttonStyle">@style/Widget.Conversations.Button.Borderless</item>
     </style>
 

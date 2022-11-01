@@ -995,6 +995,7 @@
     <string name="pref_theme_orange">Orange</string>
     <string name="pref_theme_monocles">monocles chat</string>
     <string name="pref_theme_grey">Grau</string>
+    <string name="pref_theme_White">Weiß</string>
     <string name="pref_theme_pink">Rosa</string>
     <string name="pref_theme_black">Schwarz (AMOLED)</string>
     <string name="pref_theme_color_options_summary">Wähle das Farbschema</string>
@@ -1180,4 +1181,10 @@
     <string name="participants">Teilnehmer</string>
     <string name="download_failed_invalid_file">Download fehlgeschlagen: Ungültige Datei</string>
     <string name="account_status_temporary_auth_failure">Temporärer Authentifizierungsfehler</string>
+    <string name="pref_max_resend_time_title">Maximale Zeit zum Wiederversand einer Nachricht</string>
+    <string name="pref_max_resend_time_summary">Die Maximale Zeit zum Wiederversand einer Nachricht, wenn dessen Versand fehlgeschlagen ist. Wenn der Wiederversand größer als die halbe maximale Zeit. Wenn die Anzahl der erneut gesendeten Nachrichten größer als die Hälfte der maximalen Zeit ist, wird die Nachricht aus Datenverkehrsgründen verzögert.</string>
+    <string name="pref_resend_delay_title">Verzögerung des Wiederversands (Millisekunden)</string>
+    <string name="pref_resend_delay_summary">Verzögerung des Wiederversands (Millisekunden), die Zeit der Verzögerung für den Wiederversand einer Nachricht.</string>
+    <string name="pref_enable_persistent_rooms_summary">Mache Chaträume und öffentliche Chaträume persistent und lösche sie nicht von dem Server nachdem der letzte Nutzer den Chatraum verlassen hat.</string>
+    <string name="pref_enable_persistent_rooms_title">Persistente Chat Räume</string>
 </resources>
