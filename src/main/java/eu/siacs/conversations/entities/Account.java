@@ -17,6 +17,7 @@ import java.util.Locale;
 import eu.siacs.conversations.crypto.sasl.HashedToken;
 import eu.siacs.conversations.crypto.sasl.HashedTokenSha256;
 import eu.siacs.conversations.crypto.sasl.HashedTokenSha512;
+import eu.siacs.conversations.crypto.sasl.ChannelBindingMechanism;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -363,9 +364,9 @@ public class Account extends AbstractEntity implements AvatarService.Avatarable 
     }
     public void setPinnedMechanism(final SaslMechanism mechanism) {
         this.pinnedMechanism = mechanism.getMechanism();
-        if (mechanism instanceof ScramPlusMechanism) {
+        if (mechanism instanceof ChannelBindingMechanism) {
             this.pinnedChannelBinding =
-                    ((ScramPlusMechanism) mechanism).getChannelBinding().toString();
+                    ((ChannelBindingMechanism) mechanism).getChannelBinding().toString();
         } else {
             this.pinnedChannelBinding = null;
         }
@@ -400,7 +401,7 @@ public class Account extends AbstractEntity implements AvatarService.Avatarable 
         final ChannelBinding channelBinding = ChannelBinding.get(this.pinnedChannelBinding);
         return new SaslMechanism.Factory(this).of(mechanism, channelBinding);
     }
-    private HashedToken getFastMechanism() {
+    public HashedToken getFastMechanism() {
         final HashedToken.Mechanism fastMechanism = HashedToken.Mechanism.ofOrNull(this.fastMechanism);
         final String token = this.fastToken;
         if (fastMechanism == null || Strings.isNullOrEmpty(token)) {
