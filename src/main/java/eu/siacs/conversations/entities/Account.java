@@ -376,6 +376,11 @@ public class Account extends AbstractEntity implements AvatarService.Avatarable 
         this.fastToken = token;
     }
 
+    public void resetFastToken() {
+        this.fastMechanism = null;
+        this.fastToken = null;
+    }
+
 
     public void resetPinnedMechanism() {
         this.pinnedMechanism = null;
