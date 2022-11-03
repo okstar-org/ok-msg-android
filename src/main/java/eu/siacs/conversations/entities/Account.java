@@ -115,6 +115,8 @@ public class Account extends AbstractEntity implements AvatarService.Avatarable 
     private String presenceStatusMessage;
     private String pinnedMechanism;
     private String pinnedChannelBinding;
+    private String fastMechanism;
+    private String fastToken;
 
     public Account(final Jid jid, final String password) {
         this(

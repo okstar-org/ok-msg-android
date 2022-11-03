@@ -67,7 +67,7 @@ import eu.siacs.conversations.xmpp.mam.MamReference;
 public class DatabaseBackend extends SQLiteOpenHelper {
 
     public static final String DATABASE_NAME = "history";
-    public static final int DATABASE_VERSION = 57; // = Conversations DATABASE_VERSION + 7
+    public static final int DATABASE_VERSION = 58; // = Conversations DATABASE_VERSION + 7
     private static boolean requiresMessageIndexRebuild = false;
     private static DatabaseBackend instance = null;
     private static final List<String> DB_PRAGMAS = Collections.unmodifiableList(Arrays.asList(
@@ -278,6 +278,8 @@ public class DatabaseBackend extends SQLiteOpenHelper {
                 + Account.RESOURCE + " TEXT,"
                 + Account.PINNED_MECHANISM + " TEXT,"
                 + Account.PINNED_CHANNEL_BINDING + " TEXT,"
+                + Account.FAST_MECHANISM + " TEXT,"
+                + Account.FAST_TOKEN + " TEXT,"
                 + Account.PORT + " NUMBER DEFAULT 5222)");
         db.execSQL("create table " + Conversation.TABLENAME + " ("
                 + Conversation.UUID + " TEXT PRIMARY KEY, " + Conversation.NAME
@@ -679,7 +681,10 @@ public class DatabaseBackend extends SQLiteOpenHelper {
         if (oldVersion < 57 && newVersion >= 57) {
             db.execSQL("ALTER TABLE " + Account.TABLENAME + " ADD COLUMN " + Account.PINNED_MECHANISM + " TEXT");
             db.execSQL("ALTER TABLE " + Account.TABLENAME + " ADD COLUMN " + Account.PINNED_CHANNEL_BINDING + " TEXT");
-
+        }
+        if (oldVersion < 51 && newVersion >= 51) {
+            db.execSQL("ALTER TABLE " + Account.TABLENAME + " ADD COLUMN " + Account.FAST_MECHANISM + " TEXT");
+            db.execSQL("ALTER TABLE " + Account.TABLENAME + " ADD COLUMN " + Account.FAST_TOKEN + " TEXT");
         }
     }
 
