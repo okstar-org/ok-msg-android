@@ -33,7 +33,8 @@
     <dimen name="scan_dot_size">8dp</dimen>
 
     <dimen name="background_image_opacity">0.12</dimen>
-    <dimen name="rounded_image_border">30dp</dimen>
+    <dimen name="rounded_image_border">5dp</dimen>
+    <dimen name="rounded_avatar_border">30dp</dimen>
     <dimen name="avatar">48dp</dimen>
     <dimen name="avatar_on_conversation_overview">56dp</dimen>
     <dimen name="avatar_on_status_message">32dp</dimen>
