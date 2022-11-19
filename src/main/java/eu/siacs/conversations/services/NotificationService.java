@@ -1069,12 +1069,17 @@ public class NotificationService {
                 (totalCalls == 1)
                         ? mXmppConnectionService.getString(R.string.missed_call)
                         : (mMissedCalls.size() == 1)
-                        ? mXmppConnectionService.getString(
-                        R.string.n_missed_calls, totalCalls)
-                        : mXmppConnectionService.getString(
-                        R.string.n_missed_calls_from_m_contacts,
-                        totalCalls,
-                        mMissedCalls.size());
+                        ? mXmppConnectionService
+                        .getResources()
+                        .getQuantityString(
+                                R.plurals.n_missed_calls, totalCalls, totalCalls)
+                        : mXmppConnectionService
+                        .getResources()
+                        .getQuantityString(
+                                R.plurals.n_missed_calls_from_m_contacts,
+                                mMissedCalls.size(),
+                                totalCalls,
+                                mMissedCalls.size());
         builder.setContentTitle(title);
         builder.setTicker(title);
         if (!publicVersion) {
@@ -1109,21 +1114,25 @@ public class NotificationService {
         final String title =
                 (info.getNumberOfCalls() == 1)
                         ? mXmppConnectionService.getString(R.string.missed_call)
-                        : mXmppConnectionService.getString(
-                        R.string.n_missed_calls, info.getNumberOfCalls());
+                        : mXmppConnectionService
+                        .getResources()
+                        .getQuantityString(
+                                R.plurals.n_missed_calls,
+                                info.getNumberOfCalls(),
+                                info.getNumberOfCalls());
         builder.setContentTitle(title);
         final String name = conversation.getContact().getDisplayName();
         if (publicVersion) {
             builder.setTicker(title);
         } else {
-            if (info.getNumberOfCalls() == 1) {
-                builder.setTicker(
-                        mXmppConnectionService.getString(R.string.missed_call_from_x, name));
-            } else {
-                builder.setTicker(
-                        mXmppConnectionService.getString(
-                                R.string.n_missed_calls_from_x, info.getNumberOfCalls(), name));
-            }
+            builder.setTicker(
+                    mXmppConnectionService
+                            .getResources()
+                            .getQuantityString(
+                                    R.plurals.n_missed_calls_from_x,
+                                    info.getNumberOfCalls(),
+                                    info.getNumberOfCalls(),
+                                    name));
             builder.setContentText(name);
         }
         builder.setSmallIcon(R.drawable.ic_missed_call_notification);

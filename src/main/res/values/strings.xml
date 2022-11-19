@@ -1105,10 +1105,18 @@
     </plurals>
     <string name="failed_deliveries">Failed deliveries</string>
     <string name="missed_calls_channel_name">Missed calls</string>
-    <string name="missed_call_from_x">Missed call from %s</string>
-    <string name="n_missed_calls_from_x">%1$d missed calls from %2$s</string>
-    <string name="n_missed_calls">%d missed calls</string>
-    <string name="n_missed_calls_from_m_contacts">%1$d missed calls from %2$d contacts</string>
+    <plurals name="n_missed_calls_from_x">
+        <item quantity="one">%1$d missed call from %2$s</item>
+        <item quantity="other">%1$d missed calls from %2$s</item>
+    </plurals>
+    <plurals name="n_missed_calls">
+        <item quantity="one">%d missed call</item>
+        <item quantity="other">%d missed calls</item>
+    </plurals>
+    <plurals name="n_missed_calls_from_m_contacts">
+        <item quantity="one">%1$d missed calls from %2$d contact</item>
+        <item quantity="other">%1$d missed calls from %2$d contacts</item>
+    </plurals>
     <string name="pref_invidious_host_summary">Use a custom invidious host</string>
     <string name="pref_invidious_host">Invidious host</string>
     <string name="updated_to_monocles">We have successfully updated Monocles Messenger to monocles chat\n\nThe cooperation of the two projects monocles chat and Monocles Messenger was expanded in November 2020. In the future, the Android app Monocles Messenger will be continued under the name monocles chat.\n\nWhat you can expect:\n- Range of functions remains the same\n- Support chat rooms are merged\n- Colors and logos are adapted to monocles\n- App is still available for free in F-Droid Store\n\nYour monocles Team</string>
