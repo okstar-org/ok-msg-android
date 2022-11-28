@@ -4,7 +4,6 @@ import com.google.common.collect.ImmutableSet;
 
 import java.util.Locale;
 import java.util.Set;
-
 import javax.annotation.Nonnull;
 
 public enum Media {

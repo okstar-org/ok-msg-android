@@ -4,7 +4,7 @@ import android.content.Context;
 import android.media.AudioManager;
 import android.media.ToneGenerator;
 import android.util.Log;
-
+import java.util.Arrays;
 import java.util.Set;
 import java.util.concurrent.ScheduledFuture;
 import java.util.concurrent.TimeUnit;
@@ -19,6 +19,7 @@ class ToneManager {
     private final Context context;
 
     private ToneState state = null;
+    private RtpEndUserState endUserState = null;
     private ScheduledFuture<?> currentTone;
     private ScheduledFuture<?> currentResetFuture;
     private boolean appRtcAudioManagerHasControl = false;
@@ -51,7 +52,11 @@ class ToneManager {
                 return ToneState.ENDING_CALL;
             }
         }
-        if (state == RtpEndUserState.CONNECTED || state == RtpEndUserState.RECONNECTING) {
+        if (Arrays.asList(
+                        RtpEndUserState.CONNECTED,
+                        RtpEndUserState.RECONNECTING,
+                        RtpEndUserState.INCOMING_CONTENT_ADD)
+                .contains(state)) {
             if (media.contains(Media.VIDEO)) {
                 return ToneState.NULL;
             } else {
@@ -62,14 +67,19 @@ class ToneManager {
     }
 
     void transition(final RtpEndUserState state, final Set<Media> media) {
-        transition(of(true, state, media), media);
+        transition(state, of(true, state, media), media);
     }
 
     void transition(final boolean isInitiator, final RtpEndUserState state, final Set<Media> media) {
-        transition(of(isInitiator, state, media), media);
+        transition(state, of(isInitiator, state, media), media);
     }
 
-    private synchronized void transition(ToneState state, final Set<Media> media) {
+    private synchronized void transition(final RtpEndUserState endUserState, final ToneState state, final Set<Media> media) {
+        final RtpEndUserState normalizeEndUserState = normalize(endUserState);
+        if (this.endUserState == normalizeEndUserState) {
+            return;
+        }
+        this.endUserState = normalizeEndUserState;
         if (this.state == state) {
             return;
         }
@@ -104,6 +114,19 @@ class ToneManager {
         }
         this.state = state;
     }
+
+    private static RtpEndUserState normalize(final RtpEndUserState endUserState) {
+        if (Arrays.asList(
+                        RtpEndUserState.CONNECTED,
+                        RtpEndUserState.RECONNECTING,
+                        RtpEndUserState.INCOMING_CONTENT_ADD)
+                .contains(endUserState)) {
+            return RtpEndUserState.CONNECTED;
+        } else {
+            return endUserState;
+        }
+    }
+
 
     void setAppRtcAudioManagerHasControl(final boolean appRtcAudioManagerHasControl) {
         this.appRtcAudioManagerHasControl = appRtcAudioManagerHasControl;

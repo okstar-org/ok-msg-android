@@ -107,13 +107,13 @@ android {
         minSdkVersion 21
         targetSdkVersion 32
 
-        //versionNameSuffix " beta_(2022-11-23)" // " beta_(XXXX-XX-XX)" // activate for beta versions
+        //versionNameSuffix " beta_(2022-11-29)" // " beta_(XXXX-XX-XX)" // activate for beta versions
         versionCode 125
         versionName "1.5.14"
         //resConfigs "en"
 
         archivesBaseName += "-$versionName"
-        archivesBaseName += "$versionNameSuffix"  // activate for beta versions
+        //archivesBaseName += "$versionNameSuffix"  // activate for beta versions
         applicationId "de.monocles.chat"
         multiDexEnabled true
 

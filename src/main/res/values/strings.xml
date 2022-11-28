@@ -1068,6 +1068,8 @@
     <string name="rtp_state_declined_or_busy">Busy</string>
     <string name="rtp_state_connectivity_error">Unable to connect call</string>
     <string name="rtp_state_connectivity_lost_error">Connection lost</string>
+    <string name="rtp_state_content_add_video">Switch to video call?</string>
+    <string name="rtp_state_content_add">Add additional tracks?</string>
     <string name="rtp_state_retracted">Retracted call</string>
     <string name="rtp_state_application_failure">Application failure</string>
     <string name="rtp_state_security_error">Verification problem</string>
@@ -1241,4 +1243,6 @@
     <string name="audio_video_disabled_tor">Calls are disabled when using Tor</string>
     <string name="pref_enable_persistent_rooms_summary">Make group chats and public channels persistent and do not delete them from the server after the last user left the chat.</string>
     <string name="pref_enable_persistent_rooms_title">Persistent group chats</string>
+    <string name="switch_to_video">Switch to video</string>
+    <string name="reject_switch_to_video">Reject switch to video request</string>
 </resources>
