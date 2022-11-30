@@ -1068,6 +1068,8 @@
     <string name="rtp_state_declined_or_busy">Ocupado</string>
     <string name="rtp_state_connectivity_error">No se puede conectar</string>
     <string name="rtp_state_connectivity_lost_error">Conexión perdida</string>
+    <string name="rtp_state_content_add_video">¿Cambiar a vídeo llamada?</string>
+    <string name="rtp_state_content_add">¿Añadir pistas adicionales?</string>
     <string name="rtp_state_retracted">Llamada retirada</string>
     <string name="rtp_state_application_failure">Fallo en la aplicación</string>
     <string name="rtp_state_security_error">Problema con la verificación</string>
@@ -1231,4 +1233,6 @@
     <string name="audio_video_disabled_tor">Las llamadas están deshabilitadas cuando se usa Tor</string>
     <string name="pref_enable_persistent_rooms_summary">Hacer los grupos y canales públicos persistentes y no eliminarlos del servidor después de que el último usuario lo abandone.</string>
     <string name="pref_enable_persistent_rooms_title">Grupos persistentes</string>
+    <string name="switch_to_video">Cambiar a vídeo</string>
+    <string name="reject_switch_to_video">Rechazar peticiones de cambio a vídeo</string>
 </resources>
