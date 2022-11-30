@@ -1475,7 +1475,6 @@ public class ConversationFragment extends XmppFragment implements EditMessage.Ke
             menu.setHeaderTitle(R.string.message_options);
             MenuItem openWith = menu.findItem(R.id.open_with);
             MenuItem copyMessage = menu.findItem(R.id.copy_message);
-            MenuItem copyLink = menu.findItem(R.id.copy_link);
             MenuItem quoteMessage = menu.findItem(R.id.quote_message);
             MenuItem retryDecryption = menu.findItem(R.id.retry_decryption);
             MenuItem correctMessage = menu.findItem(R.id.correct_message);
@@ -1495,13 +1494,6 @@ public class ConversationFragment extends XmppFragment implements EditMessage.Ke
             deleteMessage.setVisible(true);
             if (!m.isFileOrImage() && !encrypted && !m.isGeoUri() && !m.treatAsDownloadable() && !unInitiatedButKnownSize && t == null && !m.isMessageDeleted()) {
                 copyMessage.setVisible(true);
-                String body = m.getMergedBody().toString();
-                if (ShareUtil.containsXmppUri(body)) {
-                    copyLink.setTitle(R.string.copy_jabber_id);
-                    copyLink.setVisible(true);
-                } else if (Patterns.AUTOLINK_WEB_URL.matcher(body).find()) {
-                    copyLink.setVisible(true);
-                }
             }
             if (!encrypted && !unInitiatedButKnownSize && t == null) {
                 quoteMessage.setVisible(!showError && QuoteHelper.isMessageQuoteable(m));
@@ -1592,9 +1584,6 @@ public class ConversationFragment extends XmppFragment implements EditMessage.Ke
                 return true;
             case R.id.copy_message:
                 ShareUtil.copyToClipboard(activity, selectedMessage);
-                return true;
-            case R.id.copy_link:
-                ShareUtil.copyLinkToClipboard(activity, selectedMessage);
                 return true;
             case R.id.quote_message:
                 if (conversation.getMode() == Conversation.MODE_MULTI) {

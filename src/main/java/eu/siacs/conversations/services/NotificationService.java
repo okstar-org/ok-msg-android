@@ -15,6 +15,7 @@ import android.content.res.Resources;
 import android.graphics.Bitmap;
 import android.graphics.Typeface;
 import android.media.AudioAttributes;
+import android.media.Ringtone;
 import android.media.RingtoneManager;
 import android.net.Uri;
 import android.os.Build;
@@ -50,6 +51,7 @@ import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
+import java.util.concurrent.ScheduledFuture;
 import java.util.concurrent.atomic.AtomicInteger;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -121,6 +123,10 @@ public class NotificationService {
     private Conversation mOpenConversation;
     private boolean mIsInForeground;
     private long mLastNotification;
+
+    private static final String INCOMING_CALLS_NOTIFICATION_CHANNEL = "incoming_calls_channel";
+    private Ringtone currentlyPlayingRingtone = null;
+    private ScheduledFuture<?> vibrationFuture;
 
     NotificationService(final XmppConnectionService service) {
         this.mXmppConnectionService = service;
@@ -788,7 +794,25 @@ public class NotificationService {
     }
 
     public void cancelIncomingCallNotification() {
+        stopSoundAndVibration();
         cancel(INCOMING_CALL_NOTIFICATION_ID);
+    }
+
+    public boolean stopSoundAndVibration() {
+        int stopped = 0;
+        if (this.currentlyPlayingRingtone != null) {
+            if (this.currentlyPlayingRingtone.isPlaying()) {
+                Log.d(Config.LOGTAG, "stop playing ring tone");
+                ++stopped;
+            }
+            this.currentlyPlayingRingtone.stop();
+        }
+        if (this.vibrationFuture != null && !this.vibrationFuture.isCancelled()) {
+            Log.d(Config.LOGTAG, "stop vibration");
+            this.vibrationFuture.cancel(true);
+            ++stopped;
+        }
+        return stopped > 0;
     }
 
     public static void cancelIncomingCallNotification(final Context context) {
@@ -1069,12 +1093,17 @@ public class NotificationService {
                 (totalCalls == 1)
                         ? mXmppConnectionService.getString(R.string.missed_call)
                         : (mMissedCalls.size() == 1)
-                        ? mXmppConnectionService.getString(
-                        R.string.n_missed_calls, totalCalls)
-                        : mXmppConnectionService.getString(
-                        R.string.n_missed_calls_from_m_contacts,
-                        totalCalls,
-                        mMissedCalls.size());
+                        ? mXmppConnectionService
+                        .getResources()
+                        .getQuantityString(
+                                R.plurals.n_missed_calls, totalCalls, totalCalls)
+                        : mXmppConnectionService
+                        .getResources()
+                        .getQuantityString(
+                                R.plurals.n_missed_calls_from_m_contacts,
+                                mMissedCalls.size(),
+                                totalCalls,
+                                mMissedCalls.size());
         builder.setContentTitle(title);
         builder.setTicker(title);
         if (!publicVersion) {
@@ -1109,21 +1138,25 @@ public class NotificationService {
         final String title =
                 (info.getNumberOfCalls() == 1)
                         ? mXmppConnectionService.getString(R.string.missed_call)
-                        : mXmppConnectionService.getString(
-                        R.string.n_missed_calls, info.getNumberOfCalls());
+                        : mXmppConnectionService
+                        .getResources()
+                        .getQuantityString(
+                                R.plurals.n_missed_calls,
+                                info.getNumberOfCalls(),
+                                info.getNumberOfCalls());
         builder.setContentTitle(title);
         final String name = conversation.getContact().getDisplayName();
         if (publicVersion) {
             builder.setTicker(title);
         } else {
-            if (info.getNumberOfCalls() == 1) {
-                builder.setTicker(
-                        mXmppConnectionService.getString(R.string.missed_call_from_x, name));
-            } else {
-                builder.setTicker(
-                        mXmppConnectionService.getString(
-                                R.string.n_missed_calls_from_x, info.getNumberOfCalls(), name));
-            }
+            builder.setTicker(
+                    mXmppConnectionService
+                            .getResources()
+                            .getQuantityString(
+                                    R.plurals.n_missed_calls_from_x,
+                                    info.getNumberOfCalls(),
+                                    info.getNumberOfCalls(),
+                                    name));
             builder.setContentText(name);
         }
         builder.setSmallIcon(R.drawable.ic_missed_call_notification);

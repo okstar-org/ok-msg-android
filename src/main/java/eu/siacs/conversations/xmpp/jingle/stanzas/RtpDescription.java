@@ -32,6 +32,10 @@ public class RtpDescription extends GenericDescription {
         super("description", Namespace.JINGLE_APPS_RTP);
     }
 
+    public static RtpDescription stub(final Media media) {
+        return new RtpDescription(media.toString());
+    }
+
     public Media getMedia() {
         return Media.of(this.getAttribute("media"));
     }
@@ -57,7 +61,8 @@ public class RtpDescription extends GenericDescription {
     public List<RtpHeaderExtension> getHeaderExtensions() {
         final ImmutableList.Builder<RtpHeaderExtension> builder = new ImmutableList.Builder<>();
         for (final Element child : getChildren()) {
-            if ("rtp-hdrext".equals(child.getName()) && Namespace.JINGLE_RTP_HEADER_EXTENSIONS.equals(child.getNamespace())) {
+            if ("rtp-hdrext".equals(child.getName())
+                    && Namespace.JINGLE_RTP_HEADER_EXTENSIONS.equals(child.getNamespace())) {
                 builder.add(RtpHeaderExtension.upgrade(child));
             }
         }
@@ -67,7 +72,9 @@ public class RtpDescription extends GenericDescription {
     public List<Source> getSources() {
         final ImmutableList.Builder<Source> builder = new ImmutableList.Builder<>();
         for (final Element child : this.children) {
-            if ("source".equals(child.getName()) && Namespace.JINGLE_RTP_SOURCE_SPECIFIC_MEDIA_ATTRIBUTES.equals(child.getNamespace())) {
+            if ("source".equals(child.getName())
+                    && Namespace.JINGLE_RTP_SOURCE_SPECIFIC_MEDIA_ATTRIBUTES.equals(
+                    child.getNamespace())) {
                 builder.add(Source.upgrade(child));
             }
         }
@@ -77,7 +84,9 @@ public class RtpDescription extends GenericDescription {
     public List<SourceGroup> getSourceGroups() {
         final ImmutableList.Builder<SourceGroup> builder = new ImmutableList.Builder<>();
         for (final Element child : this.children) {
-            if ("ssrc-group".equals(child.getName()) && Namespace.JINGLE_RTP_SOURCE_SPECIFIC_MEDIA_ATTRIBUTES.equals(child.getNamespace())) {
+            if ("ssrc-group".equals(child.getName())
+                    && Namespace.JINGLE_RTP_SOURCE_SPECIFIC_MEDIA_ATTRIBUTES.equals(
+                    child.getNamespace())) {
                 builder.add(SourceGroup.upgrade(child));
             }
         }
@@ -85,8 +94,12 @@ public class RtpDescription extends GenericDescription {
     }
 
     public static RtpDescription upgrade(final Element element) {
-        Preconditions.checkArgument("description".equals(element.getName()), "Name of provided element is not description");
-        Preconditions.checkArgument(Namespace.JINGLE_APPS_RTP.equals(element.getNamespace()), "Element does not match the jingle rtp namespace");
+        Preconditions.checkArgument(
+                "description".equals(element.getName()),
+                "Name of provided element is not description");
+        Preconditions.checkArgument(
+                Namespace.JINGLE_APPS_RTP.equals(element.getNamespace()),
+                "Element does not match the jingle rtp namespace");
         final RtpDescription description = new RtpDescription();
         description.setAttributes(element.getAttributes());
         description.setChildren(element.getChildren());
@@ -116,7 +129,8 @@ public class RtpDescription extends GenericDescription {
 
         private static FeedbackNegotiation upgrade(final Element element) {
             Preconditions.checkArgument("rtcp-fb".equals(element.getName()));
-            Preconditions.checkArgument(Namespace.JINGLE_RTP_FEEDBACK_NEGOTIATION.equals(element.getNamespace()));
+            Preconditions.checkArgument(
+                    Namespace.JINGLE_RTP_FEEDBACK_NEGOTIATION.equals(element.getNamespace()));
             final FeedbackNegotiation feedback = new FeedbackNegotiation();
             feedback.setAttributes(element.getAttributes());
             feedback.setChildren(element.getChildren());
@@ -126,13 +140,13 @@ public class RtpDescription extends GenericDescription {
         public static List<FeedbackNegotiation> fromChildren(final List<Element> children) {
             ImmutableList.Builder<FeedbackNegotiation> builder = new ImmutableList.Builder<>();
             for (final Element child : children) {
-                if ("rtcp-fb".equals(child.getName()) && Namespace.JINGLE_RTP_FEEDBACK_NEGOTIATION.equals(child.getNamespace())) {
+                if ("rtcp-fb".equals(child.getName())
+                        && Namespace.JINGLE_RTP_FEEDBACK_NEGOTIATION.equals(child.getNamespace())) {
                     builder.add(upgrade(child));
                 }
             }
             return builder.build();
         }
-
     }
 
     public static class FeedbackNegotiationTrrInt extends Element {
@@ -142,7 +156,6 @@ public class RtpDescription extends GenericDescription {
             this.setAttribute("value", value);
         }
 
-
         private FeedbackNegotiationTrrInt() {
             super("rtcp-fb-trr-int", Namespace.JINGLE_RTP_FEEDBACK_NEGOTIATION);
         }
@@ -150,12 +163,12 @@ public class RtpDescription extends GenericDescription {
         public int getValue() {
             final String value = getAttribute("value");
             return Integer.parseInt(value);
-
         }
 
         private static FeedbackNegotiationTrrInt upgrade(final Element element) {
             Preconditions.checkArgument("rtcp-fb-trr-int".equals(element.getName()));
-            Preconditions.checkArgument(Namespace.JINGLE_RTP_FEEDBACK_NEGOTIATION.equals(element.getNamespace()));
+            Preconditions.checkArgument(
+                    Namespace.JINGLE_RTP_FEEDBACK_NEGOTIATION.equals(element.getNamespace()));
             final FeedbackNegotiationTrrInt trr = new FeedbackNegotiationTrrInt();
             trr.setAttributes(element.getAttributes());
             trr.setChildren(element.getChildren());
@@ -163,9 +176,11 @@ public class RtpDescription extends GenericDescription {
         }
 
         public static List<FeedbackNegotiationTrrInt> fromChildren(final List<Element> children) {
-            ImmutableList.Builder<FeedbackNegotiationTrrInt> builder = new ImmutableList.Builder<>();
+            ImmutableList.Builder<FeedbackNegotiationTrrInt> builder =
+                    new ImmutableList.Builder<>();
             for (final Element child : children) {
-                if ("rtcp-fb-trr-int".equals(child.getName()) && Namespace.JINGLE_RTP_FEEDBACK_NEGOTIATION.equals(child.getNamespace())) {
+                if ("rtcp-fb-trr-int".equals(child.getName())
+                        && Namespace.JINGLE_RTP_FEEDBACK_NEGOTIATION.equals(child.getNamespace())) {
                     builder.add(upgrade(child));
                 }
             }
@@ -174,8 +189,8 @@ public class RtpDescription extends GenericDescription {
     }
 
 
-    //XEP-0294: Jingle RTP Header Extensions Negotiation
-    //maps to `extmap:$id $uri`
+    // XEP-0294: Jingle RTP Header Extensions Negotiation
+    // maps to `extmap:$id $uri`
     public static class RtpHeaderExtension extends Element {
 
         private RtpHeaderExtension() {
@@ -198,7 +213,8 @@ public class RtpDescription extends GenericDescription {
 
         public static RtpHeaderExtension upgrade(final Element element) {
             Preconditions.checkArgument("rtp-hdrext".equals(element.getName()));
-            Preconditions.checkArgument(Namespace.JINGLE_RTP_HEADER_EXTENSIONS.equals(element.getNamespace()));
+            Preconditions.checkArgument(
+                    Namespace.JINGLE_RTP_HEADER_EXTENSIONS.equals(element.getNamespace()));
             final RtpHeaderExtension extension = new RtpHeaderExtension();
             extension.setAttributes(element.getAttributes());
             extension.setChildren(element.getChildren());
@@ -217,7 +233,7 @@ public class RtpDescription extends GenericDescription {
         }
     }
 
-    //maps to `rtpmap:$id $name/$clockrate/$channels`
+    // maps to `rtpmap:$id $name/$clockrate/$channels`
     public static class PayloadType extends Element {
 
         private PayloadType() {
@@ -238,8 +254,14 @@ public class RtpDescription extends GenericDescription {
             final int channels = getChannels();
             final String name = getPayloadTypeName();
             Preconditions.checkArgument(name != null, "Payload-type name must not be empty");
-            SessionDescription.checkNoWhitespace(name, "payload-type name must not contain whitespaces");
-            return getId() + " " + name + "/" + getClockRate() + (channels == 1 ? "" : "/" + channels);
+            SessionDescription.checkNoWhitespace(
+                    name, "payload-type name must not contain whitespaces");
+            return getId()
+                    + " "
+                    + name
+                    + "/"
+                    + getClockRate()
+                    + (channels == 1 ? "" : "/" + channels);
         }
 
         public int getIntId() {
@@ -250,7 +272,6 @@ public class RtpDescription extends GenericDescription {
         public String getId() {
             return this.getAttribute("id");
         }
-
 
         public String getPayloadTypeName() {
             return this.getAttribute("name");
@@ -271,7 +292,8 @@ public class RtpDescription extends GenericDescription {
         public int getChannels() {
             final String channels = this.getAttribute("channels");
             if (channels == null) {
-                return 1; // The number of channels; if omitted, it MUST be assumed to contain one channel
+                return 1; // The number of channels; if omitted, it MUST be assumed to contain one
+                // channel
             }
             try {
                 return Integer.parseInt(channels);
@@ -299,7 +321,9 @@ public class RtpDescription extends GenericDescription {
         }
 
         public static PayloadType of(final Element element) {
-            Preconditions.checkArgument("payload-type".equals(element.getName()), "element name must be called payload-type");
+            Preconditions.checkArgument(
+                    "payload-type".equals(element.getName()),
+                    "element name must be called payload-type");
             PayloadType payloadType = new PayloadType();
             payloadType.setAttributes(element.getAttributes());
             payloadType.setChildren(element.getChildren());
@@ -339,8 +363,8 @@ public class RtpDescription extends GenericDescription {
         }
     }
 
-    //map to `fmtp $id key=value;key=value
-    //where id is the id of the parent payload-type
+    // map to `fmtp $id key=value;key=value
+    // where id is the id of the parent payload-type
     public static class Parameter extends Element {
 
         private Parameter() {
@@ -362,7 +386,8 @@ public class RtpDescription extends GenericDescription {
         }
 
         public static Parameter of(final Element element) {
-            Preconditions.checkArgument("parameter".equals(element.getName()), "element name must be called parameter");
+            Preconditions.checkArgument(
+                    "parameter".equals(element.getName()), "element name must be called parameter");
             Parameter parameter = new Parameter();
             parameter.setAttributes(element.getAttributes());
             parameter.setChildren(element.getChildren());
@@ -375,12 +400,18 @@ public class RtpDescription extends GenericDescription {
             for (int i = 0; i < parameters.size(); ++i) {
                 final Parameter p = parameters.get(i);
                 final String name = p.getParameterName();
-                Preconditions.checkArgument(name != null, String.format("parameter for %s must have a name", id));
-                SessionDescription.checkNoWhitespace(name, String.format("parameter names for %s must not contain whitespaces", id));
+                Preconditions.checkArgument(
+                        name != null, String.format("parameter for %s must have a name", id));
+                SessionDescription.checkNoWhitespace(
+                        name,
+                        String.format("parameter names for %s must not contain whitespaces", id));
 
                 final String value = p.getParameterValue();
-                Preconditions.checkArgument(value != null, String.format("parameter for %s must have a value", id));
-                SessionDescription.checkNoWhitespace(value, String.format("parameter values for %s must not contain whitespaces", id));
+                Preconditions.checkArgument(
+                        value != null, String.format("parameter for %s must have a value", id));
+                SessionDescription.checkNoWhitespace(
+                        value,
+                        String.format("parameter values for %s must not contain whitespaces", id));
 
                 stringBuilder.append(name).append('=').append(value);
                 if (i != parameters.size() - 1) {
@@ -393,8 +424,11 @@ public class RtpDescription extends GenericDescription {
         public static String toSdpString(final String id, final Parameter parameter) {
             final String name = parameter.getParameterName();
             final String value = parameter.getParameterValue();
-            Preconditions.checkArgument(value != null, String.format("parameter for %s must have a value", id));
-            SessionDescription.checkNoWhitespace(value, String.format("parameter values for %s must not contain whitespaces", id));
+            Preconditions.checkArgument(
+                    value != null, String.format("parameter for %s must have a value", id));
+            SessionDescription.checkNoWhitespace(
+                    value,
+                    String.format("parameter values for %s must not contain whitespaces", id));
             if (Strings.isNullOrEmpty(name)) {
                 return String.format("%s %s", id, value);
             } else {
@@ -420,8 +454,8 @@ public class RtpDescription extends GenericDescription {
         }
     }
 
-    //XEP-0339: Source-Specific Media Attributes in Jingle
-    //maps to `a=ssrc:<ssrc-id> <attribute>:<value>`
+    // XEP-0339: Source-Specific Media Attributes in Jingle
+    // maps to `a=ssrc:<ssrc-id> <attribute>:<value>`
     public static class Source extends Element {
 
         private Source() {
@@ -452,7 +486,9 @@ public class RtpDescription extends GenericDescription {
 
         public static Source upgrade(final Element element) {
             Preconditions.checkArgument("source".equals(element.getName()));
-            Preconditions.checkArgument(Namespace.JINGLE_RTP_SOURCE_SPECIFIC_MEDIA_ATTRIBUTES.equals(element.getNamespace()));
+            Preconditions.checkArgument(
+                    Namespace.JINGLE_RTP_SOURCE_SPECIFIC_MEDIA_ATTRIBUTES.equals(
+                            element.getNamespace()));
             final Source source = new Source();
             source.setChildren(element.getChildren());
             source.setAttributes(element.getAttributes());
@@ -525,7 +561,9 @@ public class RtpDescription extends GenericDescription {
 
         public static SourceGroup upgrade(final Element element) {
             Preconditions.checkArgument("ssrc-group".equals(element.getName()));
-            Preconditions.checkArgument(Namespace.JINGLE_RTP_SOURCE_SPECIFIC_MEDIA_ATTRIBUTES.equals(element.getNamespace()));
+            Preconditions.checkArgument(
+                    Namespace.JINGLE_RTP_SOURCE_SPECIFIC_MEDIA_ATTRIBUTES.equals(
+                            element.getNamespace()));
             final SourceGroup group = new SourceGroup();
             group.setChildren(element.getChildren());
             group.setAttributes(element.getAttributes());
@@ -533,15 +571,18 @@ public class RtpDescription extends GenericDescription {
         }
     }
 
-    public static RtpDescription of(final SessionDescription sessionDescription, final SessionDescription.Media media) {
+    public static RtpDescription of(
+            final SessionDescription sessionDescription, final SessionDescription.Media media) {
         final RtpDescription rtpDescription = new RtpDescription(media.media);
         final Map<String, List<Parameter>> parameterMap = new HashMap<>();
-        final ArrayListMultimap<String, Element> feedbackNegotiationMap = ArrayListMultimap.create();
-        final ArrayListMultimap<String, Source.Parameter> sourceParameterMap = ArrayListMultimap.create();
-        final Set<String> attributes = Sets.newHashSet(Iterables.concat(
-                sessionDescription.attributes.keySet(),
-                media.attributes.keySet()
-        ));
+        final ArrayListMultimap<String, Element> feedbackNegotiationMap =
+                ArrayListMultimap.create();
+        final ArrayListMultimap<String, Source.Parameter> sourceParameterMap =
+                ArrayListMultimap.create();
+        final Set<String> attributes =
+                Sets.newHashSet(
+                        Iterables.concat(
+                                sessionDescription.attributes.keySet(), media.attributes.keySet()));
         for (final String rtcpFb : media.attributes.get("rtcp-fb")) {
             final String[] parts = rtcpFb.split(" ");
             if (parts.length >= 2) {
@@ -550,7 +591,10 @@ public class RtpDescription extends GenericDescription {
                 final String subType = parts.length >= 3 ? parts[2] : null;
                 if ("trr-int".equals(type)) {
                     if (subType != null) {
-                        feedbackNegotiationMap.put(id, new FeedbackNegotiationTrrInt(SessionDescription.ignorantIntParser(subType)));
+                        feedbackNegotiationMap.put(
+                                id,
+                                new FeedbackNegotiationTrrInt(
+                                        SessionDescription.ignorantIntParser(subType)));
                     }
                 } else {
                     feedbackNegotiationMap.put(id, new FeedbackNegotiation(type, subType));
@@ -602,7 +646,8 @@ public class RtpDescription extends GenericDescription {
                 rtpDescription.addChild(new SourceGroup(semantics, builder.build()));
             }
         }
-        for (Map.Entry<String, Collection<Source.Parameter>> source : sourceParameterMap.asMap().entrySet()) {
+        for (Map.Entry<String, Collection<Source.Parameter>> source :
+                sourceParameterMap.asMap().entrySet()) {
             rtpDescription.addChild(new Source(source.getKey(), source.getValue()));
         }
         if (media.attributes.containsKey("rtcp-mux")) {
