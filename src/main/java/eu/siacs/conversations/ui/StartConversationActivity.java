@@ -774,7 +774,7 @@ public class StartConversationActivity extends XmppActivity implements XmppConne
                     SharedPreferences pref = this.getSharedPreferences("PACKAGE.NAME",MODE_PRIVATE);
                     Boolean firstTime = pref.getBoolean("firstTime",true);
                     if(firstTime){
-                    if (QuickConversationsService.isQuicksy() || shouldShowRequestPermissionRationale(Manifest.permission.READ_CONTACTS)) {
+                         if (QuickConversationsService.isQuicksy() || shouldShowRequestPermissionRationale(Manifest.permission.READ_CONTACTS)) {
                         final AlertDialog.Builder builder = new AlertDialog.Builder(this);
                         final AtomicBoolean requestPermission = new AtomicBoolean(false);
                         builder.setTitle(R.string.sync_with_contacts);
@@ -807,10 +807,10 @@ public class StartConversationActivity extends XmppActivity implements XmppConne
                         });
                         dialog.show();
                     } else {
-                        requestPermissions(new String[]{Manifest.permission.READ_CONTACTS}, REQUEST_SYNC_CONTACTS);
+                              requestPermissions(new String[]{Manifest.permission.READ_CONTACTS}, REQUEST_SYNC_CONTACTS);
+                            }
+                        pref.edit().putBoolean("firstTime",false).apply();
                     }
-                }
-                    pref.edit().putBoolean("firstTime",false).apply();
                 }
             }
         }
