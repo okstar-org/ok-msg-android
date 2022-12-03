@@ -771,9 +771,7 @@ public class StartConversationActivity extends XmppActivity implements XmppConne
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
             if (checkSelfPermission(Manifest.permission.READ_CONTACTS) != PackageManager.PERMISSION_GRANTED) {
                 if (mRequestedContactsPermission.compareAndSet(false, true)) {
-                    SharedPreferences pref = this.getSharedPreferences("PACKAGE.NAME",MODE_PRIVATE);
-                    Boolean firstTime = pref.getBoolean("firstTime",true);
-                    if(firstTime){
+
                          if (QuickConversationsService.isQuicksy() || shouldShowRequestPermissionRationale(Manifest.permission.READ_CONTACTS)) {
                         final AlertDialog.Builder builder = new AlertDialog.Builder(this);
                         final AtomicBoolean requestPermission = new AtomicBoolean(false);
@@ -796,6 +794,9 @@ public class StartConversationActivity extends XmppActivity implements XmppConne
 
                             }
                         });
+                             SharedPreferences pref = this.getSharedPreferences("PACKAGE.NAME",MODE_PRIVATE);
+                             Boolean firstTime = pref.getBoolean("firstTime",true);
+                             if(firstTime){
                         builder.setCancelable(QuickConversationsService.isQuicksy());
                         final AlertDialog dialog = builder.create();
                         dialog.setCanceledOnTouchOutside(QuickConversationsService.isQuicksy());
@@ -806,11 +807,12 @@ public class StartConversationActivity extends XmppActivity implements XmppConne
                             }
                         });
                         dialog.show();
+                                 pref.edit().putBoolean("firstTime",false).apply();
+                             }
                     } else {
                               requestPermissions(new String[]{Manifest.permission.READ_CONTACTS}, REQUEST_SYNC_CONTACTS);
                             }
-                        pref.edit().putBoolean("firstTime",false).apply();
-                    }
+
                 }
             }
         }
