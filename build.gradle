@@ -108,8 +108,8 @@ android {
         targetSdkVersion 32
 
         //versionNameSuffix " beta_(2022-11-29)" // " beta_(XXXX-XX-XX)" // activate for beta versions
-        versionCode 125
-        versionName "1.5.14"
+        versionCode 126
+        versionName "1.5.15"
         //resConfigs "en"
 
         archivesBaseName += "-$versionName"

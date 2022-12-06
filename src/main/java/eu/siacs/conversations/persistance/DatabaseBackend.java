@@ -67,7 +67,7 @@ import eu.siacs.conversations.xmpp.mam.MamReference;
 public class DatabaseBackend extends SQLiteOpenHelper {
 
     public static final String DATABASE_NAME = "history";
-    public static final int DATABASE_VERSION = 58; // = Conversations DATABASE_VERSION + 7
+    public static final int DATABASE_VERSION = 59; // = Conversations DATABASE_VERSION + 7
     private static boolean requiresMessageIndexRebuild = false;
     private static DatabaseBackend instance = null;
     private static final List<String> DB_PRAGMAS = Collections.unmodifiableList(Arrays.asList(
@@ -682,7 +682,7 @@ public class DatabaseBackend extends SQLiteOpenHelper {
             db.execSQL("ALTER TABLE " + Account.TABLENAME + " ADD COLUMN " + Account.PINNED_MECHANISM + " TEXT");
             db.execSQL("ALTER TABLE " + Account.TABLENAME + " ADD COLUMN " + Account.PINNED_CHANNEL_BINDING + " TEXT");
         }
-        if (oldVersion < 58 && newVersion >= 58) {
+        if (oldVersion < 59 && newVersion >= 59) {
             db.execSQL("ALTER TABLE " + Account.TABLENAME + " ADD COLUMN " + Account.FAST_MECHANISM + " TEXT");
             db.execSQL("ALTER TABLE " + Account.TABLENAME + " ADD COLUMN " + Account.FAST_TOKEN + " TEXT");
         }
