@@ -95,7 +95,6 @@ dependencies {
 }
 
 ext {
-    travisBuild = System.getenv("TRAVIS") == "true"
     preDexEnabled = System.getProperty("pre-dex", "true")
 }
 
