@@ -46,7 +46,7 @@ dependencies {
         exclude group: 'com.android.support', module: 'appcompat-v7'
         exclude group: 'com.android.support', module: 'exifinterface'
     }
-    implementation 'im.conversations.webrtc:webrtc-android:108.0.1'
+    implementation 'im.conversations.webrtc:webrtc-android:104.0.0'
     //implementation 'org.snikket:webrtc-android:107.0.0'
     implementation 'org.jitsi:org.otr4j:0.23'
     implementation 'org.bouncycastle:bcmail-jdk15on:1.64'
