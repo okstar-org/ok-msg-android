@@ -6,6 +6,9 @@ import java.util.ArrayList;
 import java.util.Hashtable;
 import java.util.List;
 
+import com.google.common.base.Optional;
+import com.google.common.primitives.Ints;
+
 import eu.siacs.conversations.utils.XmlHelper;
 import eu.siacs.conversations.xmpp.InvalidJid;
 import eu.siacs.conversations.xmpp.Jid;
@@ -148,6 +151,13 @@ public class Element {
         } else {
             return null;
         }
+    }
+    public Optional<Integer> getOptionalIntAttribute(final String name) {
+        final String value = getAttribute(name);
+        if (value == null) {
+            return Optional.absent();
+        }
+        return Optional.fromNullable(Ints.tryParse(value));
     }
 
     public Jid getAttributeAsJid(String name) {
