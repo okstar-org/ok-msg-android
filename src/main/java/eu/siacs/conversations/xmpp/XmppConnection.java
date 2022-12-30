@@ -175,6 +175,7 @@ public class XmppConnection implements Runnable {
     private String streamId = null;
     private int stanzasReceived = 0;
     private int stanzasSent = 0;
+    private int stanzasSentBeforeAuthentication;
     private long lastPacketReceived = 0;
     private long lastPingSent = 0;
     private long lastConnect = 0;
@@ -837,6 +838,7 @@ public class XmppConnection implements Runnable {
                 final Element carbonsEnabled = bound.findChild("enabled", Namespace.CARBONS);
                 final boolean waitForDisco;
                 if (streamManagementEnabled != null) {
+                    resetOutboundStanzaQueue();
                     processEnabled(streamManagementEnabled);
                     waitForDisco = true;
                 } else {
@@ -895,6 +897,37 @@ public class XmppConnection implements Runnable {
             return false;
         }
     }
+    private void resetOutboundStanzaQueue() {
+        synchronized (this.mStanzaQueue) {
+            final List<AbstractAcknowledgeableStanza> intermediateStanzas = new ArrayList<>();
+            if (Config.EXTENDED_SM_LOGGING) {
+                Log.d(
+                        Config.LOGTAG,
+                        account.getJid().asBareJid()
+                                + ": stanzas sent before auth: "
+                                + this.stanzasSentBeforeAuthentication);
+            }
+            for (int i = this.stanzasSentBeforeAuthentication + 1; i <= this.stanzasSent; ++i) {
+                final AbstractAcknowledgeableStanza stanza = this.mStanzaQueue.get(i);
+                if (stanza != null) {
+                    intermediateStanzas.add(stanza);
+                }
+            }
+            this.mStanzaQueue.clear();
+            for (int i = 0; i < intermediateStanzas.size(); ++i) {
+                this.mStanzaQueue.put(i, intermediateStanzas.get(i));
+            }
+            this.stanzasSent = intermediateStanzas.size();
+            if (Config.EXTENDED_SM_LOGGING) {
+                Log.d(
+                        Config.LOGTAG,
+                        account.getJid().asBareJid()
+                                + ": resetting outbound stanza queue to "
+                                + this.stanzasSent);
+            }
+        }
+    }
+
     private void processNopStreamFeatures() throws IOException {
         final Tag tag = tagReader.readTag();
         if (tag != null && tag.isStart("features", Namespace.STREAMS)) {
@@ -1504,7 +1537,11 @@ public class XmppConnection implements Runnable {
                         + "/"
                         + this.saslMechanism.getMechanism());
         authenticate.setAttribute("mechanism", this.saslMechanism.getMechanism());
-        tagWriter.writeElement(authenticate);
+
+        synchronized (this.mStanzaQueue) {
+            this.stanzasSentBeforeAuthentication = this.stanzasSent;
+            tagWriter.writeElement(authenticate);
+        }
     }
 
     private static boolean isFastTokenAvailable(final Element authentication) {
@@ -2318,7 +2355,10 @@ public class XmppConnection implements Runnable {
                     generateAuthenticationRequest(quickStartMechanism.getClientFirstMessage(sslSocketOrNull(this.socket)), usingFast);
             authenticate.setAttribute("mechanism", quickStartMechanism.getMechanism());
             sendStartStream(true, false);
-            tagWriter.writeElement(authenticate);
+            synchronized (this.mStanzaQueue) {
+                this.stanzasSentBeforeAuthentication = this.stanzasSent;
+                tagWriter.writeElement(authenticate);
+            }
             Log.d(
                     Config.LOGTAG,
                     account.getJid().toString()
