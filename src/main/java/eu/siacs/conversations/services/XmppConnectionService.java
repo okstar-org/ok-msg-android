@@ -189,7 +189,6 @@ import eu.siacs.conversations.xmpp.OnMessagePacketReceived;
 import eu.siacs.conversations.xmpp.OnPresencePacketReceived;
 import eu.siacs.conversations.xmpp.OnStatusChanged;
 import eu.siacs.conversations.xmpp.OnUpdateBlocklist;
-import eu.siacs.conversations.xmpp.Patches;
 import eu.siacs.conversations.xmpp.XmppConnection;
 import eu.siacs.conversations.xmpp.chatstate.ChatState;
 import eu.siacs.conversations.xmpp.forms.Data;
@@ -862,7 +861,7 @@ public class XmppConnectionService extends Service {
                 case Intent.ACTION_SEND:
                     Uri uri = intent.getData();
                     if (uri != null) {
-                        Log.d(Config.LOGTAG, "received uri permission for " + uri.toString());
+                        Log.d(Config.LOGTAG, "received uri permission for " + uri);
                     }
                     return START_STICKY;
             }
@@ -1826,9 +1825,7 @@ public class XmppConnectionService extends Service {
             }
         }
         MessagePacket packet = null;
-        final boolean addToConversation = (conversation.getMode() != Conversation.MODE_MULTI
-                || !Patches.BAD_MUC_REFLECTION.contains(account.getServerIdentity()))
-                && !message.edited();
+        final boolean addToConversation = !message.edited();
         boolean saveInDb = addToConversation;
         message.setStatus(Message.STATUS_WAITING);
 
@@ -4156,7 +4153,7 @@ public class XmppConnectionService extends Service {
                     }
                 });
             } else {
-                Log.d(Config.LOGTAG, "failed to request vcard " + response.toString());
+                Log.d(Config.LOGTAG, "failed to request vcard " + response);
                 callback.onAvatarPublicationFailed(R.string.error_publish_avatar_no_server_support);
             }
         });
@@ -5300,7 +5297,7 @@ public class XmppConnectionService extends Service {
         mAvatarService.clear(account);
         sendIqPacket(account, request, (account1, packet) -> {
             if (packet.getType() == IqPacket.TYPE.ERROR) {
-                Log.d(Config.LOGTAG, account1.getJid().asBareJid() + ": unable to modify nick name " + packet.toString());
+                Log.d(Config.LOGTAG, account1.getJid().asBareJid() + ": unable to modify nick name " + packet);
             }
         });
     }
