@@ -3,6 +3,9 @@ package eu.siacs.conversations.ui;
 import static eu.siacs.conversations.persistance.FileBackend.APP_DIRECTORY;
 import static eu.siacs.conversations.utils.StorageHelper.getBackupDirectory;
 
+import com.google.common.collect.ImmutableList;
+import com.google.common.collect.Lists;
+
 import android.app.FragmentManager;
 import android.content.DialogInterface;
 import android.content.Intent;
@@ -49,6 +52,7 @@ import eu.siacs.conversations.utils.ThemeHelper;
 import eu.siacs.conversations.utils.TimeFrameUtils;
 import eu.siacs.conversations.xmpp.Jid;
 import me.drakeet.support.toast.ToastCompat;
+import eu.siacs.conversations.services.UnifiedPushDistributor;
 
 public class SettingsActivity extends XmppActivity implements OnSharedPreferenceChangeListener {
 
@@ -130,7 +134,36 @@ public class SettingsActivity extends XmppActivity implements OnSharedPreference
     }
 
     @Override
-    void onBackendConnected() {}
+    void onBackendConnected() {
+        final Preference accountPreference =
+                mSettingsFragment.findPreference(UnifiedPushDistributor.PREFERENCE_ACCOUNT);
+        reconfigureUpAccountPreference(accountPreference);
+    }
+
+    private void reconfigureUpAccountPreference(final Preference preference) {
+        final ListPreference listPreference;
+        if (preference instanceof ListPreference) {
+            listPreference = (ListPreference) preference;
+        } else {
+            return;
+        }
+        final List<CharSequence> accounts =
+                ImmutableList.copyOf(
+                        Lists.transform(
+                                xmppConnectionService.getAccounts(),
+                                a -> a.getJid().asBareJid().toEscapedString()));
+        final ImmutableList.Builder<CharSequence> entries = new ImmutableList.Builder<>();
+        final ImmutableList.Builder<CharSequence> entryValues = new ImmutableList.Builder<>();
+        entries.add(getString(R.string.no_account_deactivated));
+        entryValues.add("none");
+        entries.addAll(accounts);
+        entryValues.addAll(accounts);
+        listPreference.setEntries(entries.build().toArray(new CharSequence[0]));
+        listPreference.setEntryValues(entryValues.build().toArray(new CharSequence[0]));
+        if (!accounts.contains(listPreference.getValue())) {
+            listPreference.setValue("none");
+        }
+    }
 
     @Override
     public void onStart() {
@@ -650,6 +683,11 @@ public class SettingsActivity extends XmppActivity implements OnSharedPreference
             updateTheme();
         } else if (name.equals(USE_UNICOLORED_CHATBG)) {
             xmppConnectionService.updateConversationUi();
+        }
+        else if (UnifiedPushDistributor.PREFERENCES.contains(name)) {
+            if (xmppConnectionService.reconfigurePushDistributor()) {
+                xmppConnectionService.renewUnifiedPushEndpoints();
+            }
         }
     }
 
