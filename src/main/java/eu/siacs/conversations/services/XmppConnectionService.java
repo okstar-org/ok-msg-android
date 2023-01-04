@@ -419,6 +419,7 @@ public class XmppConnectionService extends Service {
             connectMultiModeConversations(account);
             syncDirtyContacts(account);
 
+            unifiedPushBroker.renewUnifiedPushEndpointsOnBind(account);
         }
     };
     private boolean destroyed = false;

@@ -50,14 +50,14 @@ public class UnifiedPushDatabase extends SQLiteOpenHelper {
         sqLiteDatabase.beginTransaction();
         final Optional<String> existingApplication;
         try (final Cursor cursor =
-                     sqLiteDatabase.query(
-                             "push",
-                             new String[] {"application"},
-                             "instance=?",
-                             new String[] {instance},
-                             null,
-                             null,
-                             null)) {
+                sqLiteDatabase.query(
+                        "push",
+                        new String[] {"application"},
+                        "instance=?",
+                        new String[] {instance},
+                        null,
+                        null,
+                        null)) {
             if (cursor != null && cursor.moveToFirst()) {
                 existingApplication = Optional.of(cursor.getString(0));
             } else {
@@ -84,17 +84,18 @@ public class UnifiedPushDatabase extends SQLiteOpenHelper {
 
     public List<PushTarget> getRenewals(final String account, final String transport) {
         final ImmutableList.Builder<PushTarget> renewalBuilder = ImmutableList.builder();
+        // TODO use a date somewhat in the future to account for period renewal triggers
+        final long expiration = System.currentTimeMillis();
         final SQLiteDatabase sqLiteDatabase = getReadableDatabase();
         try (final Cursor cursor =
-                     sqLiteDatabase.query(
-                             "push",
-                             new String[] {"application", "instance"},
-                             "account <> ? OR transport <> ? OR expiration < "
-                                     + System.currentTimeMillis(),
-                             new String[] {account, transport},
-                             null,
-                             null,
-                             null)) {
+                sqLiteDatabase.query(
+                        "push",
+                        new String[] {"application", "instance"},
+                        "account <> ? OR transport <> ? OR expiration < " + expiration,
+                        new String[] {account, transport},
+                        null,
+                        null,
+                        null)) {
             while (cursor != null && cursor.moveToNext()) {
                 renewalBuilder.add(
                         new PushTarget(
@@ -109,14 +110,15 @@ public class UnifiedPushDatabase extends SQLiteOpenHelper {
             final String account, final String transport, final String instance) {
         final SQLiteDatabase sqLiteDatabase = getReadableDatabase();
         try (final Cursor cursor =
-                     sqLiteDatabase.query(
-                             "push",
-                             new String[] {"application", "endpoint"},
-                             "account = ? AND transport = ? AND instance = ? ",
-                             new String[] {account, transport, instance},
-                             null,
-                             null,
-                             null)) {
+                sqLiteDatabase.query(
+                        "push",
+                        new String[] {"application", "endpoint"},
+                        "account = ? AND transport = ? AND instance = ? AND endpoint IS NOT NULL AND expiration >= "
+                                + System.currentTimeMillis(),
+                        new String[] {account, transport, instance},
+                        null,
+                        null,
+                        null)) {
             if (cursor != null && cursor.moveToFirst()) {
                 return new ApplicationEndpoint(
                         cursor.getString(cursor.getColumnIndexOrThrow("application")),
@@ -140,14 +142,14 @@ public class UnifiedPushDatabase extends SQLiteOpenHelper {
         sqLiteDatabase.beginTransaction();
         final String existingEndpoint;
         try (final Cursor cursor =
-                     sqLiteDatabase.query(
-                             "push",
-                             new String[] {"endpoint"},
-                             "instance=?",
-                             new String[] {instance},
-                             null,
-                             null,
-                             null)) {
+                sqLiteDatabase.query(
+                        "push",
+                        new String[] {"endpoint"},
+                        "instance=?",
+                        new String[] {instance},
+                        null,
+                        null,
+                        null)) {
             if (cursor != null && cursor.moveToFirst()) {
                 existingEndpoint = cursor.getString(0);
             } else {
@@ -169,14 +171,14 @@ public class UnifiedPushDatabase extends SQLiteOpenHelper {
         final ImmutableList.Builder<PushTarget> renewalBuilder = ImmutableList.builder();
         final SQLiteDatabase sqLiteDatabase = getReadableDatabase();
         try (final Cursor cursor =
-                     sqLiteDatabase.query(
-                             "push",
-                             new String[] {"application", "instance"},
-                             "account = ?",
-                             new String[] {account},
-                             null,
-                             null,
-                             null)) {
+                sqLiteDatabase.query(
+                        "push",
+                        new String[] {"application", "instance"},
+                        "account = ?",
+                        new String[] {account},
+                        null,
+                        null,
+                        null)) {
             while (cursor != null && cursor.moveToNext()) {
                 renewalBuilder.add(
                         new PushTarget(
