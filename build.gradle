@@ -35,7 +35,7 @@ configurations {
 }
 
 dependencies {
-    playstoreImplementation('com.google.firebase:firebase-messaging:23.1.0') {
+    playstoreImplementation('com.google.firebase:firebase-messaging:23.1.1') {
         exclude group: 'com.google.firebase', module: 'firebase-core'
         exclude group: 'com.google.firebase', module: 'firebase-analytics'
         exclude group: 'com.google.firebase', module: 'firebase-measurement-connector'
@@ -46,7 +46,8 @@ dependencies {
         exclude group: 'com.android.support', module: 'appcompat-v7'
         exclude group: 'com.android.support', module: 'exifinterface'
     }
-    implementation 'ch.threema:webrtc-android:100.0.0'
+    implementation 'im.conversations.webrtc:webrtc-android:104.0.0'
+    //implementation 'org.snikket:webrtc-android:107.0.0'
     implementation 'org.jitsi:org.otr4j:0.23'
     implementation 'org.bouncycastle:bcmail-jdk15on:1.64'
     implementation 'org.gnu.inet:libidn:1.15'
@@ -94,7 +95,6 @@ dependencies {
 }
 
 ext {
-    travisBuild = System.getenv("TRAVIS") == "true"
     preDexEnabled = System.getProperty("pre-dex", "true")
 }
 
@@ -108,8 +108,8 @@ android {
         targetSdkVersion 32
 
         //versionNameSuffix " beta_(2022-11-29)" // " beta_(XXXX-XX-XX)" // activate for beta versions
-        versionCode 125
-        versionName "1.5.14"
+        versionCode 126
+        versionName "1.5.15"
         //resConfigs "en"
 
         archivesBaseName += "-$versionName"

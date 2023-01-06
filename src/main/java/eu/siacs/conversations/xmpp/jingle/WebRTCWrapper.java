@@ -423,19 +423,32 @@ public class WebRTCWrapper {
     }
 
     void restartIce() {
-        executorService.execute(() -> {
-            final PeerConnection peerConnection = requirePeerConnection();
-            setIsReadyToReceiveIceCandidates(false);
-            peerConnection.restartIce();
-            requirePeerConnection().restartIce();}
-        );
+        executorService.execute(
+                () -> {
+                    final PeerConnection peerConnection;
+                    try {
+                        peerConnection = requirePeerConnection();
+                    } catch (final PeerConnectionNotInitialized e) {
+                        Log.w(
+                                EXTENDED_LOGGING_TAG,
+                                "PeerConnection vanished before we could execute restart");
+                        return;
+                    }
+                    setIsReadyToReceiveIceCandidates(false);
+                    peerConnection.restartIce();
+                });
     }
 
     public void setIsReadyToReceiveIceCandidates(final boolean ready) {
         readyToReceivedIceCandidates.set(ready);
+        final int was = iceCandidates.size();
         while (ready && iceCandidates.peek() != null) {
             eventCallback.onIceCandidate(iceCandidates.poll());
         }
+        final int is = iceCandidates.size();
+        Log.d(
+                EXTENDED_LOGGING_TAG,
+                "setIsReadyToReceiveCandidates(" + ready + ") was=" + was + " is=" + is);
     }
 
     synchronized void close() {
@@ -445,8 +458,8 @@ public class WebRTCWrapper {
         final AppRTCAudioManager audioManager = this.appRTCAudioManager;
         final EglBase eglBase = this.eglBase;
         if (peerConnection != null) {
-            dispose(peerConnection);
             this.peerConnection = null;
+            dispose(peerConnection);
         }
         if (audioManager != null) {
             toneManager.setAppRtcAudioManagerHasControl(false);
@@ -455,6 +468,7 @@ public class WebRTCWrapper {
         this.localVideoTrack = null;
         this.remoteVideoTrack = null;
         if (videoSourceWrapper != null) {
+            this.videoSourceWrapper = null;
             try {
                 videoSourceWrapper.stopCapture();
             } catch (final InterruptedException e) {
@@ -467,6 +481,7 @@ public class WebRTCWrapper {
             this.eglBase = null;
         }
         if (peerConnectionFactory != null) {
+            this.peerConnectionFactory = null;
             peerConnectionFactory.dispose();
         }
     }
@@ -693,7 +708,11 @@ public class WebRTCWrapper {
     }
 
     public PeerConnection.SignalingState getSignalingState() {
-        return requirePeerConnection().signalingState();
+        try {
+            return requirePeerConnection().signalingState();
+        } catch (final IllegalStateException e) {
+            return PeerConnection.SignalingState.CLOSED;
+        }
     }
 
     EglBase.Context getEglBaseContext() {

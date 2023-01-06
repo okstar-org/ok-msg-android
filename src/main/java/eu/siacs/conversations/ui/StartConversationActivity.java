@@ -771,7 +771,8 @@ public class StartConversationActivity extends XmppActivity implements XmppConne
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
             if (checkSelfPermission(Manifest.permission.READ_CONTACTS) != PackageManager.PERMISSION_GRANTED) {
                 if (mRequestedContactsPermission.compareAndSet(false, true)) {
-                    if (QuickConversationsService.isQuicksy() || shouldShowRequestPermissionRationale(Manifest.permission.READ_CONTACTS)) {
+
+                         if (QuickConversationsService.isQuicksy() || shouldShowRequestPermissionRationale(Manifest.permission.READ_CONTACTS)) {
                         final AlertDialog.Builder builder = new AlertDialog.Builder(this);
                         final AtomicBoolean requestPermission = new AtomicBoolean(false);
                         builder.setTitle(R.string.sync_with_contacts);
@@ -793,6 +794,9 @@ public class StartConversationActivity extends XmppActivity implements XmppConne
 
                             }
                         });
+                             SharedPreferences pref = this.getSharedPreferences("PACKAGE.NAME",MODE_PRIVATE);
+                             Boolean firstTime = pref.getBoolean("firstTime",true);
+                             if(firstTime){
                         builder.setCancelable(QuickConversationsService.isQuicksy());
                         final AlertDialog dialog = builder.create();
                         dialog.setCanceledOnTouchOutside(QuickConversationsService.isQuicksy());
@@ -803,9 +807,12 @@ public class StartConversationActivity extends XmppActivity implements XmppConne
                             }
                         });
                         dialog.show();
+                                 pref.edit().putBoolean("firstTime",false).apply();
+                             }
                     } else {
-                        requestPermissions(new String[]{Manifest.permission.READ_CONTACTS}, REQUEST_SYNC_CONTACTS);
-                    }
+                              requestPermissions(new String[]{Manifest.permission.READ_CONTACTS}, REQUEST_SYNC_CONTACTS);
+                            }
+
                 }
             }
         }
@@ -813,6 +820,7 @@ public class StartConversationActivity extends XmppActivity implements XmppConne
 
     @Override
     public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults);
         if (grantResults.length > 0) {
             if (grantResults[0] == PackageManager.PERMISSION_GRANTED) {
                 ScanActivity.onRequestPermissionResult(this, requestCode, grantResults);

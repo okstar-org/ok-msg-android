@@ -953,8 +953,8 @@ public class ConversationsActivity extends XmppActivity implements OnConversatio
         actionBar.setDisplayShowTitleEnabled(true);
         actionBar.setDisplayShowCustomEnabled(false);
         actionBar.setTitle(null);
-        actionBar.setIcon(R.drawable.logo_actionbar);
-        actionBar.setBackgroundDrawable(new ColorDrawable(getResources().getColor(R.color.header_background)));
+        actionBar.setIcon(R.drawable.logo_toolbar_white);
+        //actionBar.setBackgroundDrawable(new ColorDrawable(getResources().getColor(R.color.header_background)));
         actionBar.setSubtitle(null);
         actionBar.setDisplayHomeAsUpEnabled(false);
         ActionBarUtil.resetCustomActionBarOnClickListeners(binding.toolbar);

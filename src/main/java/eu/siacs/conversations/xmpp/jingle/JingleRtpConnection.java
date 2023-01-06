@@ -45,10 +45,13 @@ import eu.siacs.conversations.crypto.axolotl.AxolotlService;
 import eu.siacs.conversations.crypto.axolotl.CryptoFailedException;
 import eu.siacs.conversations.crypto.axolotl.FingerprintStatus;
 import eu.siacs.conversations.entities.Account;
+import eu.siacs.conversations.entities.Contact;
 import eu.siacs.conversations.entities.Conversation;
 import eu.siacs.conversations.entities.Conversational;
 import eu.siacs.conversations.entities.Message;
+import eu.siacs.conversations.entities.Presence;
 import eu.siacs.conversations.entities.RtpSessionStatus;
+import eu.siacs.conversations.entities.ServiceDiscoveryResult;
 import eu.siacs.conversations.services.AppRTCAudioManager;
 import eu.siacs.conversations.utils.IP;
 import eu.siacs.conversations.xml.Namespace;
@@ -1277,7 +1280,6 @@ public class JingleRtpConnection extends AbstractJingleConnection
         final RtpContentMap respondingRtpContentMap = RtpContentMap.of(sessionDescription, false);
         this.responderRtpContentMap = respondingRtpContentMap;
         storePeerDtlsSetup(respondingRtpContentMap.getDtlsSetup().flip());
-        webRTCWrapper.setIsReadyToReceiveIceCandidates(true);
         final ListenableFuture<RtpContentMap> outgoingContentMapFuture =
                 prepareOutgoingContentMap(respondingRtpContentMap);
         Futures.addCallback(
@@ -1286,6 +1288,7 @@ public class JingleRtpConnection extends AbstractJingleConnection
                     @Override
                     public void onSuccess(final RtpContentMap outgoingContentMap) {
                         sendSessionAccept(outgoingContentMap);
+                        webRTCWrapper.setIsReadyToReceiveIceCandidates(true);
                     }
 
                     @Override
@@ -1728,8 +1731,6 @@ public class JingleRtpConnection extends AbstractJingleConnection
                 SessionDescription.parse(webRTCSessionDescription.description);
         final RtpContentMap rtpContentMap = RtpContentMap.of(sessionDescription, true);
         this.initiatorRtpContentMap = rtpContentMap;
-        //TODO delay ready to receive ice until after session-init
-        this.webRTCWrapper.setIsReadyToReceiveIceCandidates(true);
         final ListenableFuture<RtpContentMap> outgoingContentMapFuture =
                 encryptSessionInitiate(rtpContentMap);
         Futures.addCallback(
@@ -1738,6 +1739,7 @@ public class JingleRtpConnection extends AbstractJingleConnection
                     @Override
                     public void onSuccess(final RtpContentMap outgoingContentMap) {
                         sendSessionInitiate(outgoingContentMap, targetState);
+                        webRTCWrapper.setIsReadyToReceiveIceCandidates(true);
                     }
 
                     @Override
@@ -2661,6 +2663,12 @@ public class JingleRtpConnection extends AbstractJingleConnection
                                                             + ": skipping invalid combination of udp/tls in external services");
                                             continue;
                                         }
+                                        // TODO Starting on milestone 110, Chromium will perform
+                                        // stricter validation of TURN and STUN URLs passed to the
+                                        // constructor of an RTCPeerConnection. More specifically,
+                                        // STUN URLs will not support a query section, and TURN URLs
+                                        // will support only a transport parameter in their query
+                                        // section.
                                         final PeerConnection.IceServer.Builder iceServerBuilder =
                                                 PeerConnection.IceServer.builder(
                                                         String.format(
@@ -2792,6 +2800,25 @@ public class JingleRtpConnection extends AbstractJingleConnection
         final RtpEndUserState endUserState = getEndUserState();
         xmppConnectionService.notifyJingleRtpConnectionUpdate(
                 id.account, id.with, id.sessionId, endUserState);
+    }
+
+    public boolean isSwitchToVideoAvailable() {
+        final boolean prerequisite =
+                Media.audioOnly(getMedia())
+                        && Arrays.asList(RtpEndUserState.CONNECTED, RtpEndUserState.RECONNECTING)
+                                .contains(getEndUserState());
+        return prerequisite && remoteHasVideoFeature();
+    }
+
+    private boolean remoteHasVideoFeature() {
+        final Contact contact = id.getContact();
+        final Presence presence =
+                contact.getPresences().get(Strings.nullToEmpty(id.with.getResource()));
+        final ServiceDiscoveryResult serviceDiscoveryResult =
+                presence == null ? null : presence.getServiceDiscoveryResult();
+        final List<String> features =
+                serviceDiscoveryResult == null ? null : serviceDiscoveryResult.getFeatures();
+        return features != null && features.contains(Namespace.JINGLE_FEATURE_VIDEO);
     }
 
     private interface OnIceServersDiscovered {
