@@ -15,6 +15,9 @@ import com.google.common.io.BaseEncoding;
 import java.nio.charset.StandardCharsets;
 import java.text.ParseException;
 import java.util.List;
+import java.util.concurrent.Executors;
+import java.util.concurrent.ScheduledExecutorService;
+import java.util.concurrent.TimeUnit;
 
 import eu.siacs.conversations.Config;
 import eu.siacs.conversations.R;
@@ -25,26 +28,52 @@ import eu.siacs.conversations.xml.Element;
 import eu.siacs.conversations.xml.Namespace;
 import eu.siacs.conversations.xmpp.Jid;
 import eu.siacs.conversations.xmpp.stanzas.IqPacket;
+import eu.siacs.conversations.xmpp.stanzas.PresencePacket;
 
 public class UnifiedPushBroker {
+
+    // time to expiration before a renewal attempt is made (24 hours)
+    public static final long TIME_TO_RENEW = 86_400_000L;
+
+    // interval for the 'cron tob' that attempts renewals for everything that expires is lass than
+    // `TIME_TO_RENEW`
+    public static final long RENEWAL_INTERVAL = 3_600_000L;
+
+    private static final ScheduledExecutorService SCHEDULER = Executors.newScheduledThreadPool(1);
 
     private final XmppConnectionService service;
 
     public UnifiedPushBroker(final XmppConnectionService xmppConnectionService) {
         this.service = xmppConnectionService;
+        SCHEDULER.scheduleAtFixedRate(
+                this::renewUnifiedPushEndpoints,
+                RENEWAL_INTERVAL,
+                RENEWAL_INTERVAL,
+                TimeUnit.MILLISECONDS);
     }
 
     public void renewUnifiedPushEndpointsOnBind(final Account account) {
-        final Optional<Transport> transport = getTransport();
-        if (transport.isPresent()) {
-            final Account transportAccount = transport.get().account;
+        final Optional<Transport> transportOptional = getTransport();
+        if (transportOptional.isPresent()) {
+            final Transport transport = transportOptional.get();
+            final Account transportAccount = transport.account;
             if (transportAccount != null && transportAccount.getUuid().equals(account.getUuid())) {
+                final UnifiedPushDatabase database = UnifiedPushDatabase.getInstance(service);
+                if (database.hasEndpoints(transport)) {
+                    sendDirectedPresence(transportAccount, transport.transport);
+                }
                 Log.d(
                         Config.LOGTAG,
                         account.getJid().asBareJid() + ": trigger endpoint renewal on bind");
-                renewUnifiedEndpoint(transport.get());
+                renewUnifiedEndpoint(transportOptional.get());
             }
         }
+    }
+
+    private void sendDirectedPresence(final Account account, Jid to) {
+        final PresencePacket presence = new PresencePacket();
+        presence.setTo(to);
+        service.sendPresencePacket(account, presence);
     }
 
     public Optional<Transport> renewUnifiedPushEndpoints() {
@@ -68,6 +97,13 @@ public class UnifiedPushBroker {
         final List<UnifiedPushDatabase.PushTarget> renewals =
                 unifiedPushDatabase.getRenewals(
                         account.getUuid(), transport.transport.toEscapedString());
+        Log.d(
+                Config.LOGTAG,
+                account.getJid().asBareJid()
+                        + ": "
+                        + renewals.size()
+                        + " UnifiedPush endpoints scheduled for renewal on "
+                        + transport.transport);
         for (final UnifiedPushDatabase.PushTarget renewal : renewals) {
             Log.d(
                     Config.LOGTAG,
@@ -110,6 +146,8 @@ public class UnifiedPushBroker {
                 return;
             }
             renewUnifiedPushEndpoint(transport, renewal, endpoint, expiration);
+        } else {
+            Log.d(Config.LOGTAG, "could not register UP endpoint " + response.getErrorCondition());
         }
     }
 
