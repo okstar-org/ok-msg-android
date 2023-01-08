@@ -302,7 +302,7 @@
     <string name="finish">Terminar</string>
     <string name="verified">¡Verificado!</string>
     <string name="smp_requested">El contacto solicita verificación SMP</string>
-    string name="conversations_foreground_service" translatable="false">monocles chat</string>
+    <string name="conversations_foreground_service" translatable="false">monocles chat</string>
     <string name="pref_create_backup">Crear copia de seguridad</string>
     <string name="pref_create_backup_summary">Escribir archivos de copia de seguridad a %s</string>
     <string name="notification_create_backup_title">Creando copia de seguridad</string>
