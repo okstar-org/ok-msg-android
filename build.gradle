@@ -35,7 +35,35 @@ configurations {
     implementation.exclude group: 'org.jetbrains' , module:'annotations'
 }
 
+spotless {
+    ratchetFrom '2.12.0'
+    java {
+        target '**/*.java'
+        googleJavaFormat('1.8').aosp().reflowLongStrings()
+    }
+}
+
 dependencies {
+
+
+    // Conversations 3.0 dependencies
+
+    def room_version = "2.4.3"
+
+    coreLibraryDesugaring 'com.android.tools:desugar_jdk_libs:1.1.8'
+
+    implementation "androidx.room:room-runtime:$room_version"
+    annotationProcessor "androidx.room:room-compiler:$room_version"
+    implementation "androidx.room:room-guava:$room_version"
+
+
+
+    // legacy dependencies. Ideally everything below should be carefully reviewed and eventually moved up
+
+
+    implementation 'androidx.viewpager:viewpager:1.0.0'
+
+
     playstoreImplementation('com.google.firebase:firebase-messaging:23.1.1') {
         exclude group: 'com.google.firebase', module: 'firebase-core'
         exclude group: 'com.google.firebase', module: 'firebase-analytics'
@@ -126,6 +154,13 @@ android {
         resValue "string", "app_name", "monocles chat"
         resValue "string", "short_app_name", "chat"
 
+        javaCompileOptions {
+            annotationProcessorOptions {
+                arguments += ["room.schemaLocation": "$projectDir/schemas".toString()]
+            }
+        }
+
+
     }
 
     dataBinding {
@@ -142,6 +177,7 @@ android {
     }
 
     compileOptions {
+        coreLibraryDesugaringEnabled true
         sourceCompatibility JavaVersion.VERSION_1_8
         targetCompatibility JavaVersion.VERSION_1_8
     }
