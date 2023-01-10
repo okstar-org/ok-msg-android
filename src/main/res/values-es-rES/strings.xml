@@ -302,6 +302,7 @@
     <string name="finish">Terminar</string>
     <string name="verified">¡Verificado!</string>
     <string name="smp_requested">El contacto solicita verificación SMP</string>
+    <string name="conversations_foreground_service" translatable="false">monocles chat</string>
     <string name="pref_create_backup">Crear copia de seguridad</string>
     <string name="pref_create_backup_summary">Escribir archivos de copia de seguridad a %s</string>
     <string name="notification_create_backup_title">Creando copia de seguridad</string>
@@ -843,6 +844,19 @@
     <string name="pref_play_gif_inside">Reproducir archivos GIF en la conversación</string>
     <string name="pref_play_gif_inside_summary">Ejecutar archivos GIF dentro de la vista de chat.</string>
     <string name="open_with">Abrir con…</string>
+    <string name="send_otr_message">Enviar mensaje cifrado con OTR</string>
+    <string name="unknown_otr_fingerprint">Huella OTR desconocida</string>
+    <string name="otr_fingerprint">Huella OTR</string>
+    <string name="otr_fingerprint_selected_message">Huella OTR del mensaje</string>
+    <string name="toast_message_otr_fingerprint">¡Huella OTR copiada al portapeles!</string>
+    <string name="verify_otr">Verificar OTR</string>
+    <string name="no_otr_session_found">¡No se ha encontrado sesión OTR válida!</string>
+    <string name="are_you_sure_verify_fingerprint">¿Estás seguro de que quieres verificar la huella OTR de tus contactos?</string>
+    <string name="copy_otr_clipboard_description">Copiar huella OTR al portapapeles</string>
+    <string name="otr_session_not_started">Enviar un mensaje para empezar un chat cifrado</string>
+    <string name="pref_enable_otr_summary">Habilitar cifrado OTR. OTR todavía es muy inestable, por favor, úsalo solo si sabes lo que haces.</string>
+    <string name="pref_enable_otr">Habilitar cifrado OTR (BETA)</string>
+    <string name="otr_warning">El soporte de cifrado OTR está en beta. Haz click par obtener más información. Se abrirá un enlace en el navegador.</string>
     <string name="server_info_adhoc_invite">XEP-0050: Ad-Hoc Commands: invitación de usuario</string>
     <string name="choose_account">Elige cuenta</string>
     <string name="set_profile_picture">Foto de perfil de monocles chat</string>
@@ -993,19 +1007,6 @@
     <string name="gp_short">Corto</string>
     <string name="gp_medium">Medio</string>
     <string name="gp_long">Largo</string>
-    <string name="send_otr_message">Enviar mensaje cifrado con OTR</string>
-    <string name="unknown_otr_fingerprint">Huella OTR desconocida</string>
-    <string name="otr_fingerprint">Huella OTR</string>
-    <string name="otr_fingerprint_selected_message">Huella OTR del mensaje</string>
-    <string name="toast_message_otr_fingerprint">¡Huella OTR copiada al portapeles!</string>
-    <string name="verify_otr">Verificar OTR</string>
-    <string name="no_otr_session_found">¡No se ha encontrado sesión OTR válida!</string>
-    <string name="are_you_sure_verify_fingerprint">¿Estás seguro de que quieres verificar la huella OTR de tus contactos?</string>
-    <string name="copy_otr_clipboard_description">Copiar huella OTR al portapapeles</string>
-    <string name="otr_session_not_started">Enviar un mensaje para empezar un chat cifrado</string>
-    <string name="pref_enable_otr_summary">Habilitar cifrado OTR. OTR todavía es muy inestable, por favor, úsalo solo si sabes lo que haces.</string>
-    <string name="pref_enable_otr">Habilitar cifrado OTR (BETA)</string>
-    <string name="otr_warning">El soporte de cifrado OTR está en beta. Haz click par obtener más información. Se abrirá un enlace en el navegador.</string>
     <string translatable="false" name="x_user_quote">%s:</string>
     <string name="create_monocles_account">¡Consigue una cuenta monocles!</string>
     <string name="copy_file_to">Copiar fichero a %s</string>
@@ -1107,10 +1108,18 @@
     </plurals>
     <string name="failed_deliveries">Entregas fallidas</string>
     <string name="missed_calls_channel_name">Llamadas perdidas</string>
-    <string name="missed_call_from_x">Llamada perdida de %s</string>
-    <string name="n_missed_calls_from_x">%1$d llamadas perdidas de %2$s</string>
-    <string name="n_missed_calls">%d llamadas perdidas</string>
-    <string name="n_missed_calls_from_m_contacts">%1$d llamadas perdidas de %2$d contactos</string>
+    <plurals name="n_missed_calls_from_x">
+        <item quantity="one">%1$d llamada perdida de %2$s</item>
+        <item quantity="other">%1$d llamadas perdidas de %2$s</item>
+    </plurals>
+    <plurals name="n_missed_calls">
+        <item quantity="one">%d llamada perdida</item>
+        <item quantity="other">%d llamadas perdidas</item>
+    </plurals>
+    <plurals name="n_missed_calls_from_m_contacts">
+        <item quantity="one">%1$d llamada perdida del contacto %2$d</item>
+        <item quantity="other">%1$d llamadas perdidas del contacto %2$d</item>
+    </plurals>
     <string name="pref_invidious_host_summary">Usar un servidor invidious personalizado</string>
     <string name="pref_invidious_host">Servidor invidious</string>
     <string name="updated_to_monocles">Hemos actualizado con éxito Monocles Messenger a monocles chat\n\nLa cooperación de los dos proyectos monocles chat y Monocles Messenger se amplió en noviembre de 2020. En el futuro, la aplicación de Android Monocles Messenger continuará bajo el nombre monocles chat.\n\nLo que puede esperar:\n- El rango de funciones sigue siendo el mismo\n- Las salas de chat de soporte se fusionan\n- Los colores y logotipos se adaptan a monocles chat\n- La aplicación aún está disponible gratis en Google Play Store y F-Droid Store\n\nTu equipo de monocles chat</string>
@@ -1235,4 +1244,10 @@
     <string name="pref_enable_persistent_rooms_title">Grupos persistentes</string>
     <string name="switch_to_video">Cambiar a vídeo</string>
     <string name="reject_switch_to_video">Rechazar peticiones de cambio a vídeo</string>
+    <string name="unified_push_distributor">Distribuidor UnifiedPush</string>
+    <string name="pref_up_push_account_title">Cuenta XMPP</string>
+    <string name="pref_up_push_account_summary">Cuenta a través de la cual se recibirán los mensajes push.</string>
+    <string name="pref_up_push_server_title">Servidor Push</string>
+    <string name="pref_up_push_server_summary">Servidor push elegido por el usuario para retransmitir mensajes messages vía XMPP a tu dispositivo.</string>
+    <string name="no_account_deactivated">Nada (desactivado)</string>
 </resources>
