@@ -107,12 +107,11 @@
             android:key="start_searching"
             android:summary="@string/pref_start_search_summary"
             android:title="@string/pref_start_search" />
-        <!-- disabled since commit e0de9d467244cc36dff88bb65d009db9d4349f33 -->
-        <!--<CheckBoxPreference
+        <CheckBoxPreference
             android:defaultValue="@bool/allowmergemessages"
             android:key="allowmergemessages"
             android:summary="@string/pref_allowmergemessages_sum"
-            android:title="@string/pref_allowmergemessages" />-->
+            android:title="@string/pref_allowmergemessages" />
         <CheckBoxPreference
             android:defaultValue="@bool/showtextformatting"
             android:key="showtextformatting"
@@ -513,7 +512,6 @@
                 android:key="up_push_server"
                 android:summary="@string/pref_up_push_server_summary"
                 android:title="@string/pref_up_push_server_title" />
-
         </PreferenceCategory>
 
         <PreferenceCategory
