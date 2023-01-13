@@ -56,6 +56,8 @@ dependencies {
     annotationProcessor "androidx.room:room-compiler:$room_version"
     implementation "androidx.room:room-guava:$room_version"
 
+    implementation "androidx.security:security-crypto:1.0.0"
+
 
 
     // legacy dependencies. Ideally everything below should be carefully reviewed and eventually moved up
@@ -133,7 +135,7 @@ android {
     compileSdkVersion 32
 
     defaultConfig {
-        minSdkVersion 21
+        minSdkVersion 23
         targetSdkVersion 32
 
         //versionNameSuffix " beta_(2023-01-10)" // " beta_(XXXX-XX-XX)" // activate for beta versions
