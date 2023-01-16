@@ -18,7 +18,7 @@ Folge uns auf <a rel="me" href="https://monocles.social/@monocles">monocles soci
 nightly oder beta Versionen kann man direkt hier von Codeberg unter [Releases](https://codeberg.org/Arne/monocles_chat/releases/latest) herunterladen.
 
 #### Wie kann ich bei der Übersetzung helfen?
-Du kannst einen Merge Request erstellen in dem du Verbesserungen oder neue Sprachen hinzugefügt hast.
+Du kannst auf https://translate.codeberg.org/projects/monocles_chat/monocles_chat/ bei den Übersetzungen helfen. Danke!
 
 #### Ich habe Probleme, was soll ich tun?
 Am einfachsten ist es, wenn du unserer Support-Gruppe beitrittst, dort werden deine Probleme mit Sicherheit schnell gelöst. 
