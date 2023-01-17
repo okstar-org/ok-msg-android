@@ -1,18 +1,20 @@
 package eu.siacs.conversations.xml;
 
-import org.jetbrains.annotations.NotNull;
-
-import java.util.ArrayList;
-import java.util.Hashtable;
-import java.util.List;
-
 import com.google.common.base.Optional;
+import com.google.common.base.Strings;
+import com.google.common.collect.Collections2;
+import com.google.common.collect.Iterables;
 import com.google.common.primitives.Ints;
-
 import eu.siacs.conversations.utils.XmlHelper;
 import eu.siacs.conversations.xmpp.InvalidJid;
 import eu.siacs.conversations.xmpp.Jid;
 import eu.siacs.conversations.xmpp.stanzas.MessagePacket;
+import im.conversations.android.xmpp.model.Extension;
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.Hashtable;
+import java.util.List;
+import org.jetbrains.annotations.NotNull;
 
 public class Element {
     private final String name;
@@ -63,6 +65,23 @@ public class Element {
             }
         }
         return null;
+    }
+
+    public <E extends Extension> boolean hasExtension(final Class<E> clazz) {
+        return Iterables.any(this.children, clazz::isInstance);
+    }
+
+    public <E extends Extension> E getExtension(final Class<E> clazz) {
+        final var extension = Iterables.find(this.children, clazz::isInstance);
+        if (extension == null) {
+            return null;
+        }
+        return clazz.cast(extension);
+    }
+
+    public <E extends Extension> Collection<E> getExtensions(final Class<E> clazz) {
+        return Collections2.transform(
+                Collections2.filter(this.children, clazz::isInstance), clazz::cast);
     }
 
     public String findChildContent(String name) {
@@ -152,6 +171,7 @@ public class Element {
             return null;
         }
     }
+
     public Optional<Integer> getOptionalIntAttribute(final String name) {
         final String value = getAttribute(name);
         if (value == null) {
@@ -162,14 +182,14 @@ public class Element {
 
     public Jid getAttributeAsJid(String name) {
         final String jid = this.getAttribute(name);
-        if (jid != null && !jid.isEmpty()) {
-            try {
-                return Jid.ofEscaped(jid);
-            } catch (final IllegalArgumentException e) {
-                return InvalidJid.of(jid, this instanceof MessagePacket);
-            }
+        if (Strings.isNullOrEmpty(jid)) {
+            return null;
         }
-        return null;
+        try {
+            return Jid.ofEscaped(jid);
+        } catch (final IllegalArgumentException e) {
+            return InvalidJid.of(jid, this instanceof MessagePacket);
+        }
     }
 
     public Hashtable<String, String> getAttributes() {
@@ -200,6 +220,7 @@ public class Element {
         return elementOutput.toString();
     }
 
+    // TODO should ultimately be removed once everything is an extension
     public final String getName() {
         return name;
     }

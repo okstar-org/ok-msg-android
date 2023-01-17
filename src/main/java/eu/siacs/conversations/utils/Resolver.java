@@ -500,6 +500,14 @@ public class Resolver {
             return socket;
         }
 
+        public InetAddress getIp() {
+            return ip;
+        }
+
+        public int getPort() {
+            return port;
+        }
+
         @NotNull
         @Override
         public String toString() {

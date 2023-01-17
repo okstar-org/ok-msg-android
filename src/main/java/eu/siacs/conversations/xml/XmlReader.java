@@ -2,16 +2,14 @@ package eu.siacs.conversations.xml;
 
 import android.util.Log;
 import android.util.Xml;
-
-import org.xmlpull.v1.XmlPullParser;
-import org.xmlpull.v1.XmlPullParserException;
-
+import eu.siacs.conversations.Config;
+import im.conversations.android.xmpp.Extensions;
 import java.io.Closeable;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
-
-import eu.siacs.conversations.Config;
+import org.xmlpull.v1.XmlPullParser;
+import org.xmlpull.v1.XmlPullParserException;
 
 public class XmlReader implements Closeable {
     private final XmlPullParser parser;
@@ -82,13 +80,22 @@ public class XmlReader implements Closeable {
             }
 
         } catch (Throwable throwable) {
-            throw new IOException("xml parser mishandled " + throwable.getClass().getSimpleName() + "(" + throwable.getMessage() + ")", throwable);
+            throw new IOException(
+                    "xml parser mishandled "
+                            + throwable.getClass().getSimpleName()
+                            + "("
+                            + throwable.getMessage()
+                            + ")",
+                    throwable);
         }
         return null;
     }
 
     public Element readElement(Tag currentTag) throws IOException {
-        Element element = new Element(currentTag.getName());
+        final var attributes = currentTag.getAttributes();
+        final var namespace = attributes.get("xmlns");
+        final var name = currentTag.getName();
+        final Element element = Extensions.create(name, namespace);
         element.setAttributes(currentTag.getAttributes());
         Tag nextTag = this.readTag();
         if (nextTag == null) {

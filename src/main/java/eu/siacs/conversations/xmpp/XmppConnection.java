@@ -405,9 +405,9 @@ public class XmppConnection implements Runnable {
                 Resolver.Result results;
                 final boolean hardcoded = extended && !account.getHostname().isEmpty();
                 if (hardcoded) {
-                    results = Resolver.fromHardCoded(account.getHostname(), account.getPort());
+                    results = (Resolver.Result) Resolver.fromHardCoded(account.getHostname(), account.getPort());
                 } else {
-                    results = Resolver.resolve(domain);
+                    results = (Resolver.Result) Resolver.resolve(domain);
                 }
                 if (Thread.currentThread().isInterrupted()) {
                     Log.d(Config.LOGTAG, account.getJid().asBareJid() + ": Thread was interrupted");
@@ -435,7 +435,7 @@ public class XmppConnection implements Runnable {
                     }
                 }
                 if (results == null || results.getSocket() == null) {
-                    results = Resolver.resolve(domain);
+                    results = (Resolver.Result) Resolver.resolve(domain);
                 }
                 if (results == null) {
                     throw new UnknownHostException();

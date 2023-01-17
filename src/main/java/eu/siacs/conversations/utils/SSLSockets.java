@@ -5,7 +5,9 @@ import android.util.Log;
 
 import androidx.annotation.RequiresApi;
 
-import org.conscrypt.Conscrypt;
+import eu.siacs.conversations.Config;
+import eu.siacs.conversations.entities.Account;
+import eu.siacs.conversations.xmpp.Jid;
 
 import java.lang.reflect.Method;
 import java.security.NoSuchAlgorithmException;
@@ -23,22 +25,21 @@ import javax.net.ssl.SSLSocket;
 import com.google.common.base.Strings;
 import java.net.Socket;
 
-import eu.siacs.conversations.Config;
-import eu.siacs.conversations.entities.Account;
+import org.conscrypt.Conscrypt;
 
 public class SSLSockets {
 
     public static void setSecurity(final SSLSocket sslSocket) {
         final String[] supportProtocols;
-        final Collection<String> supportedProtocols = new LinkedList<>(
-                Arrays.asList(sslSocket.getSupportedProtocols()));
+        final Collection<String> supportedProtocols =
+                new LinkedList<>(Arrays.asList(sslSocket.getSupportedProtocols()));
         supportedProtocols.remove("SSLv3");
         supportProtocols = supportedProtocols.toArray(new String[0]);
 
         sslSocket.setEnabledProtocols(supportProtocols);
 
-        final String[] cipherSuites = CryptoHelper.getOrderedCipherSuites(
-                sslSocket.getSupportedCipherSuites());
+        final String[] cipherSuites =
+                CryptoHelper.getOrderedCipherSuites(sslSocket.getSupportedCipherSuites());
         if (cipherSuites.length > 0) {
             sslSocket.setEnabledCipherSuites(cipherSuites);
         }
@@ -70,7 +71,8 @@ public class SSLSockets {
         socket.setSSLParameters(parameters);
     }
 
-    private static void setApplicationProtocolReflection(final SSLSocket socket, final String protocol) {
+    private static void setApplicationProtocolReflection(
+            final SSLSocket socket, final String protocol) {
         try {
             final Method method = socket.getClass().getMethod("setAlpnProtocols", byte[].class);
             // the concatenation of 8-bit, length prefixed protocol names, just one in our case...
@@ -78,8 +80,9 @@ public class SSLSockets {
             final byte[] protocolUTF8Bytes = protocol.getBytes("UTF-8");
             final byte[] lengthPrefixedProtocols = new byte[protocolUTF8Bytes.length + 1];
             lengthPrefixedProtocols[0] = (byte) protocol.length(); // cannot be over 255 anyhow
-            System.arraycopy(protocolUTF8Bytes, 0, lengthPrefixedProtocols, 1, protocolUTF8Bytes.length);
-            method.invoke(socket, new Object[]{lengthPrefixedProtocols});
+            System.arraycopy(
+                    protocolUTF8Bytes, 0, lengthPrefixedProtocols, 1, protocolUTF8Bytes.length);
+            method.invoke(socket, new Object[] {lengthPrefixedProtocols});
         } catch (Throwable e) {
             Log.e(Config.LOGTAG, "unable to set ALPN on socket", e);
         }
@@ -87,7 +90,7 @@ public class SSLSockets {
 
     public static void setApplicationProtocol(final SSLSocket socket, final String protocol) {
         if (Conscrypt.isConscrypt(socket)) {
-            Conscrypt.setApplicationProtocols(socket, new String[]{protocol});
+            Conscrypt.setApplicationProtocols(socket, new String[] {protocol});
         } else {
             setApplicationProtocolReflection(socket, protocol);
         }
@@ -101,11 +104,15 @@ public class SSLSockets {
         }
     }
 
-    public static void log(Account account, SSLSocket socket) {
+    public static void log(final Account account, SSLSocket socket) {
+        log(account.getJid(), socket);
+    }
+
+    public static void log(final Jid address, SSLSocket socket) {
         SSLSession session = socket.getSession();
         Log.d(
                 Config.LOGTAG,
-                account.getJid().asBareJid()
+                address
                         + ": protocol="
                         + session.getProtocol()
                         + " cipher="

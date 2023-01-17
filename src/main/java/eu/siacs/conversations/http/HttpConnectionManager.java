@@ -77,6 +77,11 @@ public class HttpConnectionManager extends AbstractConnectionManager {
         }
     }
 
+    public static InputStream open(final String url, final boolean tor) throws IOException {
+        return open(String.valueOf(HttpUrl.get(url)), tor);
+    }
+
+
     public void createNewDownloadConnection(Message message) {
         this.createNewDownloadConnection(message, false);
     }

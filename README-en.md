@@ -57,7 +57,7 @@ There also is an Support-MUC where you can ask questions and get help with issue
 
 
 ## How can I support translations ?
-You can create merge request and add new languages as locales and add and edit translations already existing.
+You can help translating through https://translate.codeberg.org/projects/monocles_chat/monocles_chat/ and add or edit translations already existing. Thanks!
 
 
 

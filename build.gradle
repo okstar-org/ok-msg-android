@@ -7,11 +7,12 @@ buildscript {
     }
     dependencies {
         classpath 'com.android.tools.build:gradle:7.3.1'
-       // classpath 'com.google.gms:google-services:4.3.13'
+        classpath "com.diffplug.spotless:spotless-plugin-gradle:6.12.1"
     }
 }
 
 apply plugin: 'com.android.application'
+apply plugin: "com.diffplug.spotless"
 
 allprojects {
     repositories {
@@ -34,7 +35,38 @@ configurations {
     implementation.exclude group: 'org.jetbrains' , module:'annotations'
 }
 
+spotless {
+    ratchetFrom '2.12.0'
+    java {
+        target '**/*.java'
+        googleJavaFormat('1.8').aosp().reflowLongStrings()
+    }
+}
+
 dependencies {
+
+
+    // Conversations 3.0 dependencies
+
+    def room_version = "2.5.0"
+
+    coreLibraryDesugaring 'com.android.tools:desugar_jdk_libs:1.1.8'
+
+    implementation "androidx.room:room-runtime:$room_version"
+    annotationProcessor "androidx.room:room-compiler:$room_version"
+    implementation "androidx.room:room-guava:$room_version"
+
+    implementation "androidx.security:security-crypto:1.0.0"
+
+    testImplementation 'junit:junit:4.13.2'
+    testImplementation 'org.robolectric:robolectric:4.9'
+
+    // legacy dependencies. Ideally everything below should be carefully reviewed and eventually moved up
+
+
+    implementation 'androidx.viewpager:viewpager:1.0.0'
+
+
     playstoreImplementation('com.google.firebase:firebase-messaging:23.1.1') {
         exclude group: 'com.google.firebase', module: 'firebase-core'
         exclude group: 'com.google.firebase', module: 'firebase-analytics'
@@ -101,19 +133,19 @@ ext {
 android {
     namespace 'eu.siacs.conversations'
     //noinspection GradleCompatible
-    compileSdkVersion 32
+    compileSdkVersion 33
 
     defaultConfig {
-        minSdkVersion 21
-        targetSdkVersion 32
+        minSdkVersion 23
+        targetSdkVersion 33
 
-        versionNameSuffix " beta_(2023-01-10)" // " beta_(XXXX-XX-XX)" // activate for beta versions
+        //versionNameSuffix " beta_(2023-01-10)" // " beta_(XXXX-XX-XX)" // activate for beta versions
         versionCode 127
         versionName "1.5.16"
         //resConfigs "en"
 
         archivesBaseName += "-$versionName"
-        archivesBaseName += "$versionNameSuffix"  // activate for beta versions
+        //archivesBaseName += "$versionNameSuffix"  // activate for beta versions
         applicationId "de.monocles.chat"
         multiDexEnabled true
 
@@ -125,6 +157,16 @@ android {
         resValue "string", "app_name", "monocles chat"
         resValue "string", "short_app_name", "chat"
 
+        javaCompileOptions {
+            annotationProcessorOptions {
+                arguments += ["room.schemaLocation": "$projectDir/schemas".toString()]
+            }
+        }
+    }
+    testOptions {
+        unitTests {
+            includeAndroidResources = false
+        }
     }
 
     dataBinding {
@@ -141,8 +183,9 @@ android {
     }
 
     compileOptions {
-        sourceCompatibility JavaVersion.VERSION_1_8
-        targetCompatibility JavaVersion.VERSION_1_8
+        coreLibraryDesugaringEnabled true
+        sourceCompatibility JavaVersion.VERSION_11
+        targetCompatibility JavaVersion.VERSION_11
     }
 
     flavorDimensions("distribution")

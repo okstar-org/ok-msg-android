@@ -88,6 +88,7 @@ import eu.siacs.conversations.entities.Account;
 import eu.siacs.conversations.entities.DownloadableFile;
 import eu.siacs.conversations.entities.Message;
 import eu.siacs.conversations.services.AttachFileToConversationRunnable;
+import eu.siacs.conversations.ui.adapter.MediaAdapter;
 import eu.siacs.conversations.services.XmppConnectionService;
 import eu.siacs.conversations.ui.SettingsActivity;
 import eu.siacs.conversations.ui.util.Attachment;
@@ -519,7 +520,9 @@ public class FileBackend {
                 try {
                     Dimensions dimensions = FileBackend.getVideoDimensions(context, attachment.getUri());
                     if (dimensions.getMin() >= 720) {
-                        Log.d(Config.LOGTAG, "do not consider video file with min width larger or equal than 720 for size check");
+                        Log.d(Config.LOGTAG,
+                                "do not consider video file with min width larger than 720 for"
+                                + " size check");
                         continue;
                     }
                 } catch (NotAVideoFile notAVideoFile) {
@@ -1844,13 +1847,12 @@ public class FileBackend {
     }
 
     private Dimensions getVideoDimensions(File file) throws NotAVideoFile {
-        MediaMetadataRetriever metadataRetriever = new MediaMetadataRetriever();
-        try {
+        try (final MediaMetadataRetriever metadataRetriever = new MediaMetadataRetriever()) {
             metadataRetriever.setDataSource(file.getAbsolutePath());
-        } catch (RuntimeException e) {
+            return getVideoDimensions(metadataRetriever);
+        } catch (IOException | RuntimeException e) {
             throw new NotAVideoFile(e);
         }
-        return getVideoDimensions(metadataRetriever);
     }
 
     public Bitmap getPreviewForUri(Attachment attachment, int size, boolean cacheOnly) {
@@ -1882,17 +1884,16 @@ public class FileBackend {
     }
 
     private static Dimensions getVideoDimensions(Context context, Uri uri) throws NotAVideoFile {
-        MediaMetadataRetriever mediaMetadataRetriever = new MediaMetadataRetriever();
-        try {
+        try (final MediaMetadataRetriever mediaMetadataRetriever = new MediaMetadataRetriever()) {
             try {
                 mediaMetadataRetriever.setDataSource(context, uri);
-            } catch (RuntimeException e) {
+                return getVideoDimensions(mediaMetadataRetriever);
+            } catch (IOException | RuntimeException e) {
                 throw new NotAVideoFile(e);
             }
         } catch (Exception e) {
             throw new NotAVideoFile();
         }
-        return getVideoDimensions(mediaMetadataRetriever);
     }
 
     private static Dimensions getVideoDimensionsOfFrame(MediaMetadataRetriever mediaMetadataRetriever) {
@@ -1909,7 +1910,7 @@ public class FileBackend {
         }
     }
 
-    private static Dimensions getVideoDimensions(MediaMetadataRetriever metadataRetriever) throws NotAVideoFile {
+    private static Dimensions getVideoDimensions(MediaMetadataRetriever metadataRetriever) throws NotAVideoFile, IOException {
         String hasVideo = metadataRetriever.extractMetadata(MediaMetadataRetriever.METADATA_KEY_HAS_VIDEO);
         if (hasVideo == null) {
             throw new NotAVideoFile();
@@ -1935,7 +1936,7 @@ public class FileBackend {
         } catch (Exception e) {
             width = -1;
         }
-        metadataRetriever.release();
+        // metadataRetriever.release();
         Log.d(Config.LOGTAG, "extracted video dims " + width + "x" + height);
         return rotated ? new Dimensions(width, height) : new Dimensions(height, width);
     }
