@@ -1,12 +1,8 @@
 package eu.siacs.conversations.generator;
 
-
-import static eu.siacs.conversations.ui.SettingsActivity.PERSISTENT_ROOM;
-
 import android.os.Bundle;
 import android.util.Base64;
 import android.util.Log;
-
 import eu.siacs.conversations.Config;
 import eu.siacs.conversations.R;
 import eu.siacs.conversations.crypto.axolotl.AxolotlService;
@@ -38,11 +34,8 @@ import org.whispersystems.libsignal.state.SignedPreKeyRecord;
 
 public class IqGenerator extends AbstractGenerator {
 
-    private static XmppConnectionService xmppConnectionService;
-
     public IqGenerator(final XmppConnectionService service) {
         super(service);
-        xmppConnectionService = service;
     }
 
     public IqPacket discoResponse(final Account account, final IqPacket request) {
@@ -185,12 +178,6 @@ public class IqGenerator extends AbstractGenerator {
         return publish(Namespace.AVATAR_METADATA, item, options);
     }
 
-    public IqPacket deleteAvatar() {
-        final Element item = new Element("item");
-        item.addChild("metadata", Namespace.AVATAR_DATA);
-        return publish(Namespace.AVATAR_DATA, item);
-    }
-
     public IqPacket retrievePepAvatar(final Avatar avatar) {
         final Element item = new Element("item");
         item.setAttribute("id", avatar.sha1sum);
@@ -213,9 +200,8 @@ public class IqGenerator extends AbstractGenerator {
         return packet;
     }
 
-
     public IqPacket retrieveAvatarMetaData(final Jid to) {
-        final IqPacket packet = retrieve(Namespace.AVATAR_DATA, null);
+        final IqPacket packet = retrieve("urn:xmpp:avatar:metadata", null);
         if (to != null) {
             packet.setTo(to);
         }
@@ -317,7 +303,6 @@ public class IqGenerator extends AbstractGenerator {
                 Log.d(Config.LOGTAG, "could not encode certificate");
             }
         }
-
         verification
                 .addChild("signature")
                 .setContent(Base64.encodeToString(signature, Base64.NO_WRAP));
@@ -419,17 +404,6 @@ public class IqGenerator extends AbstractGenerator {
         return packet;
     }
 
-    public IqPacket destroyRoom(Conversation conference) {
-        IqPacket packet = new IqPacket(IqPacket.TYPE.SET);
-        packet.setTo(conference.getJid().asBareJid());
-        packet.setFrom(conference.getAccount().getJid());
-        final Element query = packet.addChild("query", "http://jabber.org/protocol/muc#owner");
-        final Element destroy = query.addChild("destroy");
-        destroy.setAttribute("jid", conference.getJid().asBareJid().toString());
-        Log.d(Config.LOGTAG, "Destroy: " + packet.toString());
-        return packet;
-    }
-
     public IqPacket requestHttpUploadSlot(Jid host, DownloadableFile file, String mime) {
         IqPacket packet = new IqPacket(IqPacket.TYPE.GET);
         packet.setTo(host);
@@ -459,7 +433,7 @@ public class IqGenerator extends AbstractGenerator {
                 bb.putLong(uuid.getMostSignificantBits());
                 bb.putLong(uuid.getLeastSignificantBits());
                 return Base64.encodeToString(
-                        bb.array(), Base64.URL_SAFE | Base64.NO_PADDING | Base64.NO_WRAP)
+                                bb.array(), Base64.URL_SAFE | Base64.NO_PADDING | Base64.NO_WRAP)
                         + name.substring(pos);
             } catch (Exception e) {
                 return name;
@@ -489,20 +463,16 @@ public class IqGenerator extends AbstractGenerator {
         final IqPacket packet = new IqPacket(IqPacket.TYPE.SET);
         packet.setTo(appServer);
         final Element command = packet.addChild("command", Namespace.COMMANDS);
-        command.setAttribute("node", "v1-register-push");
+        command.setAttribute("node", "register-push-fcm");
         command.setAttribute("action", "execute");
         final Data data = new Data();
-        data.put("type", "fcm");
         data.put("token", token);
-        data.put("node", deviceId);
-        data.put("FORM_TYPE", "https://github.com/tmolitor-stud-tu/mod_push_appserver/#v1-register-push");
-        // to do MUC not support
-        /*if (muc != null) {
+        data.put("android-id", deviceId);
+        if (muc != null) {
             data.put("muc", muc.toEscapedString());
-        }*/
+        }
         data.submit();
         command.addChild(data);
-        Log.d(Config.LOGTAG, "Push packet " + packet);
         return packet;
     }
 
@@ -513,11 +483,8 @@ public class IqGenerator extends AbstractGenerator {
         command.setAttribute("node", "unregister-push-fcm");
         command.setAttribute("action", "execute");
         final Data data = new Data();
-        data.put("type", "fcm");
-        data.put("node", deviceId);
         data.put("channel", channel);
         data.put("android-id", deviceId);
-        data.put("FORM_TYPE", "https://github.com/tmolitor-stud-tu/mod_push_appserver/#v1-unregister-push");
         data.submit();
         command.addChild(data);
         return packet;
@@ -557,11 +524,7 @@ public class IqGenerator extends AbstractGenerator {
 
     public static Bundle defaultGroupChatConfiguration() {
         Bundle options = new Bundle();
-        if (persistentRoom()) {
-            options.putString("muc#roomconfig_persistentroom", "1");
-        } else {
-            options.putString("muc#roomconfig_persistentroom", "0");
-        }
+        options.putString("muc#roomconfig_persistentroom", "1");
         options.putString("muc#roomconfig_membersonly", "1");
         options.putString("muc#roomconfig_publicroom", "0");
         options.putString("muc#roomconfig_whois", "anyone");
@@ -575,11 +538,7 @@ public class IqGenerator extends AbstractGenerator {
 
     public static Bundle defaultChannelConfiguration() {
         Bundle options = new Bundle();
-        if (persistentRoom()) {
-            options.putString("muc#roomconfig_persistentroom", "1");
-        } else {
-            options.putString("muc#roomconfig_persistentroom", "0");
-        }
+        options.putString("muc#roomconfig_persistentroom", "1");
         options.putString("muc#roomconfig_membersonly", "0");
         options.putString("muc#roomconfig_publicroom", "1");
         options.putString("muc#roomconfig_whois", "moderators");
@@ -589,7 +548,6 @@ public class IqGenerator extends AbstractGenerator {
         options.putString("muc#roomconfig_mam", "1"); // ejabberd saas
         return options;
     }
-
 
     public IqPacket requestPubsubConfiguration(Jid jid, String node) {
         return pubsubConfiguration(jid, node, null);
@@ -622,9 +580,5 @@ public class IqGenerator extends AbstractGenerator {
         packet.setTo(jid);
         packet.addChild("query", Namespace.DISCO_INFO);
         return packet;
-    }
-
-    private static boolean persistentRoom() {
-        return xmppConnectionService.getBooleanPreference(PERSISTENT_ROOM, R.bool.enable_persistent_rooms);
     }
 }

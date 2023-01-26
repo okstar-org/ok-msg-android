@@ -8,7 +8,7 @@ public final class Namespace {
     public static final String BIND2 = "urn:xmpp:bind:0";
     public static final String BLOCKING = "urn:xmpp:blocking";
     public static final String BOOKMARKS = "storage:bookmarks";
-    public static final String BOOKMARKS2 = "urn:xmpp:bookmarks:0";
+    public static final String BOOKMARKS2 = "urn:xmpp:bookmarks:1";
     public static final String BOOKMARKS2_COMPAT = BOOKMARKS2 + "#compat";
     public static final String BOOKMARKS_CONVERSION = "urn:xmpp:bookmarks-conversion:0";
     public static final String BYTE_STREAMS = "http://jabber.org/protocol/bytestreams";

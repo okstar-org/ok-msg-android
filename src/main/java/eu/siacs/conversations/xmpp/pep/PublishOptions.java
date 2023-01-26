@@ -1,7 +1,6 @@
 package eu.siacs.conversations.xmpp.pep;
 
 import android.os.Bundle;
-
 import eu.siacs.conversations.xml.Element;
 import eu.siacs.conversations.xml.Namespace;
 import eu.siacs.conversations.xmpp.stanzas.IqPacket;
@@ -40,5 +39,4 @@ public class PublishOptions {
                 response.getType() == IqPacket.TYPE.ERROR ? response.findChild("error") : null;
         return error != null && error.hasChild("precondition-not-met", Namespace.PUB_SUB_ERROR);
     }
-
 }

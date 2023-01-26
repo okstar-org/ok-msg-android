@@ -3,20 +3,17 @@ package eu.siacs.conversations.parser;
 import android.text.TextUtils;
 import android.util.Log;
 import android.util.Pair;
-
 import androidx.annotation.NonNull;
-
 import com.google.common.base.CharMatcher;
 import com.google.common.io.BaseEncoding;
-
 import eu.siacs.conversations.Config;
 import eu.siacs.conversations.crypto.axolotl.AxolotlService;
 import eu.siacs.conversations.entities.Account;
 import eu.siacs.conversations.entities.Contact;
 import eu.siacs.conversations.entities.Room;
 import eu.siacs.conversations.services.XmppConnectionService;
-import eu.siacs.conversations.xml.Namespace;
 import eu.siacs.conversations.xml.Element;
+import eu.siacs.conversations.xml.Namespace;
 import eu.siacs.conversations.xmpp.InvalidJid;
 import eu.siacs.conversations.xmpp.Jid;
 import eu.siacs.conversations.xmpp.OnIqPacketReceived;
@@ -428,7 +425,7 @@ public class IqParser extends AbstractParser implements OnIqPacketReceived {
             }
             this.rosterItems(account, query);
         } else if ((packet.hasChild("block", Namespace.BLOCKING)
-                || packet.hasChild("blocklist", Namespace.BLOCKING))
+                        || packet.hasChild("blocklist", Namespace.BLOCKING))
                 && packet.fromServer(account)) {
             // Block list or block push.
             Log.d(Config.LOGTAG, "Received blocklist update from server");
@@ -514,7 +511,7 @@ public class IqParser extends AbstractParser implements OnIqPacketReceived {
             mXmppConnectionService.sendIqPacket(account, response, null);
         } else if (packet.hasChild("time", "urn:xmpp:time") && isGet) {
             final IqPacket response;
-            if (mXmppConnectionService.useTorToConnect() || account.isOnion() || mXmppConnectionService.useI2PToConnect() || account.isI2P()) {
+            if (mXmppConnectionService.useTorToConnect() || account.isOnion()) {
                 response = packet.generateResponse(IqPacket.TYPE.ERROR);
                 final Element error = response.addChild("error");
                 error.setAttribute("type", "cancel");
@@ -530,7 +527,7 @@ public class IqParser extends AbstractParser implements OnIqPacketReceived {
             final boolean success =
                     push != null
                             && mXmppConnectionService.processUnifiedPushMessage(
-                            account, transport, push);
+                                    account, transport, push);
             final IqPacket response;
             if (success) {
                 response = packet.generateResponse(IqPacket.TYPE.RESULT);
