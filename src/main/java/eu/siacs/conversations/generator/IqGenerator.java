@@ -7,21 +7,6 @@ import android.os.Bundle;
 import android.util.Base64;
 import android.util.Log;
 
-import org.whispersystems.libsignal.IdentityKey;
-import org.whispersystems.libsignal.ecc.ECPublicKey;
-import org.whispersystems.libsignal.state.PreKeyRecord;
-import org.whispersystems.libsignal.state.SignedPreKeyRecord;
-
-import java.nio.ByteBuffer;
-import java.security.cert.CertificateEncodingException;
-import java.security.cert.X509Certificate;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Locale;
-import java.util.Set;
-import java.util.TimeZone;
-import java.util.UUID;
-
 import eu.siacs.conversations.Config;
 import eu.siacs.conversations.R;
 import eu.siacs.conversations.crypto.axolotl.AxolotlService;
@@ -37,6 +22,19 @@ import eu.siacs.conversations.xmpp.Jid;
 import eu.siacs.conversations.xmpp.forms.Data;
 import eu.siacs.conversations.xmpp.pep.Avatar;
 import eu.siacs.conversations.xmpp.stanzas.IqPacket;
+import java.nio.ByteBuffer;
+import java.security.cert.CertificateEncodingException;
+import java.security.cert.X509Certificate;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Locale;
+import java.util.Set;
+import java.util.TimeZone;
+import java.util.UUID;
+import org.whispersystems.libsignal.IdentityKey;
+import org.whispersystems.libsignal.ecc.ECPublicKey;
+import org.whispersystems.libsignal.state.PreKeyRecord;
+import org.whispersystems.libsignal.state.SignedPreKeyRecord;
 
 public class IqGenerator extends AbstractGenerator {
 
@@ -104,13 +102,13 @@ public class IqGenerator extends AbstractGenerator {
 
     protected IqPacket publish(final String node, final Element item, final Bundle options) {
         final IqPacket packet = new IqPacket(IqPacket.TYPE.SET);
-        final Element pubsub = packet.addChild("pubsub", Namespace.PUBSUB);
+        final Element pubsub = packet.addChild("pubsub", Namespace.PUB_SUB);
         final Element publish = pubsub.addChild("publish");
         publish.setAttribute("node", node);
         publish.addChild(item);
         if (options != null) {
             final Element publishOptions = pubsub.addChild("publish-options");
-            publishOptions.addChild(Data.create(Namespace.PUBSUB_PUBLISH_OPTIONS, options));
+            publishOptions.addChild(Data.create(Namespace.PUB_SUB_PUBLISH_OPTIONS, options));
         }
         return packet;
     }
@@ -121,7 +119,7 @@ public class IqGenerator extends AbstractGenerator {
 
     private IqPacket retrieve(String node, Element item) {
         final IqPacket packet = new IqPacket(IqPacket.TYPE.GET);
-        final Element pubsub = packet.addChild("pubsub", Namespace.PUBSUB);
+        final Element pubsub = packet.addChild("pubsub", Namespace.PUB_SUB);
         final Element items = pubsub.addChild("items");
         items.setAttribute("node", node);
         if (item != null) {
@@ -143,14 +141,14 @@ public class IqGenerator extends AbstractGenerator {
 
     public IqPacket deleteNode(final String node) {
         final IqPacket packet = new IqPacket(IqPacket.TYPE.SET);
-        final Element pubsub = packet.addChild("pubsub", Namespace.PUBSUB_OWNER);
+        final Element pubsub = packet.addChild("pubsub", Namespace.PUB_SUB_OWNER);
         pubsub.addChild("delete").setAttribute("node", node);
         return packet;
     }
 
     public IqPacket deleteItem(final String node, final String id) {
         IqPacket packet = new IqPacket(IqPacket.TYPE.SET);
-        final Element pubsub = packet.addChild("pubsub", Namespace.PUBSUB);
+        final Element pubsub = packet.addChild("pubsub", Namespace.PUB_SUB);
         final Element retract = pubsub.addChild("retract");
         retract.setAttribute("node", node);
         retract.setAttribute("notify", "true");
@@ -166,7 +164,8 @@ public class IqGenerator extends AbstractGenerator {
         return publish(Namespace.AVATAR_DATA, item, options);
     }
 
-    public IqPacket publishElement(final String namespace, final Element element, String id, final Bundle options) {
+    public IqPacket publishElement(
+            final String namespace, final Element element, String id, final Bundle options) {
         final Element item = new Element("item");
         item.setAttribute("id", id);
         item.addChild(element);
@@ -176,8 +175,7 @@ public class IqGenerator extends AbstractGenerator {
     public IqPacket publishAvatarMetadata(final Avatar avatar, final Bundle options) {
         final Element item = new Element("item");
         item.setAttribute("id", avatar.sha1sum);
-        final Element metadata = item
-                .addChild("metadata", Namespace.AVATAR_METADATA);
+        final Element metadata = item.addChild("metadata", Namespace.AVATAR_METADATA);
         final Element info = metadata.addChild("info");
         info.setAttribute("bytes", avatar.size);
         info.setAttribute("id", avatar.sha1sum);
@@ -271,8 +269,12 @@ public class IqGenerator extends AbstractGenerator {
         return conference;
     }
 
-    public IqPacket publishBundles(final SignedPreKeyRecord signedPreKeyRecord, final IdentityKey identityKey,
-                                   final Set<PreKeyRecord> preKeyRecords, final int deviceId, Bundle publishOptions) {
+    public IqPacket publishBundles(
+            final SignedPreKeyRecord signedPreKeyRecord,
+            final IdentityKey identityKey,
+            final Set<PreKeyRecord> preKeyRecords,
+            final int deviceId,
+            Bundle publishOptions) {
         final Element item = new Element("item");
         item.setAttribute("id", "current");
         final Element bundle = item.addChild("bundle", AxolotlService.PEP_PREFIX);
@@ -281,21 +283,26 @@ public class IqGenerator extends AbstractGenerator {
         ECPublicKey publicKey = signedPreKeyRecord.getKeyPair().getPublicKey();
         signedPreKeyPublic.setContent(Base64.encodeToString(publicKey.serialize(), Base64.NO_WRAP));
         final Element signedPreKeySignature = bundle.addChild("signedPreKeySignature");
-        signedPreKeySignature.setContent(Base64.encodeToString(signedPreKeyRecord.getSignature(), Base64.NO_WRAP));
+        signedPreKeySignature.setContent(
+                Base64.encodeToString(signedPreKeyRecord.getSignature(), Base64.NO_WRAP));
         final Element identityKeyElement = bundle.addChild("identityKey");
-        identityKeyElement.setContent(Base64.encodeToString(identityKey.serialize(), Base64.NO_WRAP));
+        identityKeyElement.setContent(
+                Base64.encodeToString(identityKey.serialize(), Base64.NO_WRAP));
 
         final Element prekeys = bundle.addChild("prekeys", AxolotlService.PEP_PREFIX);
         for (PreKeyRecord preKeyRecord : preKeyRecords) {
             final Element prekey = prekeys.addChild("preKeyPublic");
             prekey.setAttribute("preKeyId", preKeyRecord.getId());
-            prekey.setContent(Base64.encodeToString(preKeyRecord.getKeyPair().getPublicKey().serialize(), Base64.NO_WRAP));
+            prekey.setContent(
+                    Base64.encodeToString(
+                            preKeyRecord.getKeyPair().getPublicKey().serialize(), Base64.NO_WRAP));
         }
 
         return publish(AxolotlService.PEP_BUNDLES + ":" + deviceId, item, publishOptions);
     }
 
-    public IqPacket publishVerification(byte[] signature, X509Certificate[] certificates, final int deviceId) {
+    public IqPacket publishVerification(
+            byte[] signature, X509Certificate[] certificates, final int deviceId) {
         final Element item = new Element("item");
         item.setAttribute("id", "current");
         final Element verification = item.addChild("verification", AxolotlService.PEP_PREFIX);
@@ -303,13 +310,17 @@ public class IqGenerator extends AbstractGenerator {
         for (int i = 0; i < certificates.length; ++i) {
             try {
                 Element certificate = chain.addChild("certificate");
-                certificate.setContent(Base64.encodeToString(certificates[i].getEncoded(), Base64.NO_WRAP));
+                certificate.setContent(
+                        Base64.encodeToString(certificates[i].getEncoded(), Base64.NO_WRAP));
                 certificate.setAttribute("index", i);
             } catch (CertificateEncodingException e) {
                 Log.d(Config.LOGTAG, "could not encode certificate");
             }
         }
-        verification.addChild("signature").setContent(Base64.encodeToString(signature, Base64.NO_WRAP));
+
+        verification
+                .addChild("signature")
+                .setContent(Base64.encodeToString(signature, Base64.NO_WRAP));
         return publish(AxolotlService.PEP_VERIFICATION + ":" + deviceId, item);
     }
 
@@ -447,7 +458,9 @@ public class IqGenerator extends AbstractGenerator {
                 ByteBuffer bb = ByteBuffer.wrap(new byte[16]);
                 bb.putLong(uuid.getMostSignificantBits());
                 bb.putLong(uuid.getLeastSignificantBits());
-                return Base64.encodeToString(bb.array(), Base64.URL_SAFE | Base64.NO_PADDING | Base64.NO_WRAP) + name.substring(pos, name.length());
+                return Base64.encodeToString(
+                        bb.array(), Base64.URL_SAFE | Base64.NO_PADDING | Base64.NO_WRAP)
+                        + name.substring(pos);
             } catch (Exception e) {
                 return name;
             }
@@ -517,7 +530,7 @@ public class IqGenerator extends AbstractGenerator {
         enable.setAttribute("node", node);
         if (secret != null) {
             Data data = new Data();
-            data.setFormType(Namespace.PUBSUB_PUBLISH_OPTIONS);
+            data.setFormType(Namespace.PUB_SUB_PUBLISH_OPTIONS);
             data.put("secret", secret);
             data.submit();
             enable.addChild(data);
@@ -536,7 +549,9 @@ public class IqGenerator extends AbstractGenerator {
     public IqPacket queryAffiliation(Conversation conversation, String affiliation) {
         IqPacket packet = new IqPacket(IqPacket.TYPE.GET);
         packet.setTo(conversation.getJid().asBareJid());
-        packet.query("http://jabber.org/protocol/muc#admin").addChild("item").setAttribute("affiliation", affiliation);
+        packet.query("http://jabber.org/protocol/muc#admin")
+                .addChild("item")
+                .setAttribute("affiliation", affiliation);
         return packet;
     }
 
@@ -552,9 +567,9 @@ public class IqGenerator extends AbstractGenerator {
         options.putString("muc#roomconfig_whois", "anyone");
         options.putString("muc#roomconfig_changesubject", "0");
         options.putString("muc#roomconfig_allowinvites", "0");
-        options.putString("muc#roomconfig_enablearchiving", "1"); //prosody
-        options.putString("mam", "1"); //ejabberd community
-        options.putString("muc#roomconfig_mam", "1"); //ejabberd saas
+        options.putString("muc#roomconfig_enablearchiving", "1"); // prosody
+        options.putString("mam", "1"); // ejabberd community
+        options.putString("muc#roomconfig_mam", "1"); // ejabberd saas
         return options;
     }
 
@@ -569,9 +584,9 @@ public class IqGenerator extends AbstractGenerator {
         options.putString("muc#roomconfig_publicroom", "1");
         options.putString("muc#roomconfig_whois", "moderators");
         options.putString("muc#roomconfig_changesubject", "0");
-        options.putString("muc#roomconfig_enablearchiving", "1"); //prosody
-        options.putString("mam", "1"); //ejabberd community
-        options.putString("muc#roomconfig_mam", "1"); //ejabberd saas
+        options.putString("muc#roomconfig_enablearchiving", "1"); // prosody
+        options.putString("mam", "1"); // ejabberd community
+        options.putString("muc#roomconfig_mam", "1"); // ejabberd saas
         return options;
     }
 

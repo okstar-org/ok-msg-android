@@ -8,9 +8,7 @@ import eu.siacs.conversations.xmpp.stanzas.IqPacket;
 
 public class PublishOptions {
 
-    private PublishOptions() {
-
-    }
+    private PublishOptions() {}
 
     public static Bundle openAccess() {
         final Bundle options = new Bundle();
@@ -30,15 +28,17 @@ public class PublishOptions {
         options.putString("pubsub#persist_items", "true");
         options.putString("pubsub#access_model", "whitelist");
         options.putString("pubsub#send_last_published_item", "never");
-        options.putString("pubsub#max_items", "128"); //YOLO!
+        options.putString("pubsub#max_items", "128"); // YOLO!
         options.putString("pubsub#notify_delete", "true");
-        options.putString("pubsub#notify_retract", "true"); //one could also set notify=true on the retract
+        options.putString(
+                "pubsub#notify_retract", "true"); // one could also set notify=true on the retract
         return options;
     }
 
     public static boolean preconditionNotMet(IqPacket response) {
-        final Element error = response.getType() == IqPacket.TYPE.ERROR ? response.findChild("error") : null;
-        return error != null && error.hasChild("precondition-not-met", Namespace.PUBSUB_ERROR);
+        final Element error =
+                response.getType() == IqPacket.TYPE.ERROR ? response.findChild("error") : null;
+        return error != null && error.hasChild("precondition-not-met", Namespace.PUB_SUB_ERROR);
     }
 
 }

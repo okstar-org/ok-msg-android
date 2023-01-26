@@ -69,10 +69,11 @@ public final class Namespace {
     public static final String OOB = "jabber:x:oob";
     public static final String PARS = "urn:xmpp:pars:0";
     public static final String PING = "urn:xmpp:ping";
-    public static final String PUBSUB = "http://jabber.org/protocol/pubsub";
-    public static final String PUBSUB_ERROR = PUBSUB + "#errors";
-    public static final String PUBSUB_OWNER = PUBSUB + "#owner";
-    public static final String PUBSUB_PUBLISH_OPTIONS = PUBSUB + "#publish-options";
+    public static final String PUB_SUB = "http://jabber.org/protocol/pubsub";
+    public static final String PUB_SUB_ERROR = PUB_SUB + "#errors";
+    public static final String PUB_SUB_EVENT = PUB_SUB + "#event";
+    public static final String PUB_SUB_OWNER = PUB_SUB + "#owner";
+    public static final String PUB_SUB_PUBLISH_OPTIONS = PUB_SUB + "#publish-options";
     public static final String PUSH = "urn:xmpp:push:0";
     public static final String REGISTER = "jabber:iq:register";
     public static final String REGISTER_STREAM_FEATURE = "http://jabber.org/features/iq-register";
