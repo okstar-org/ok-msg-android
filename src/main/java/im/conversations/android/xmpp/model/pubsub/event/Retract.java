@@ -9,4 +9,8 @@ public class Retract extends Extension {
     public Retract() {
         super(Retract.class);
     }
+
+    public String getId() {
+        return this.getAttribute("id");
+    }
 }

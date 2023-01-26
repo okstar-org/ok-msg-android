@@ -1,12 +1,10 @@
 package im.conversations.android.xmpp.model.pubsub;
 
-import im.conversations.android.annotation.XmlElement;
 import im.conversations.android.xmpp.model.Extension;
 
-@XmlElement
-public class Item extends Extension {
+public interface Item {
 
-    public Item() {
-        super(Item.class);
-    }
+    <T extends Extension> T getExtension(final Class<T> clazz);
+
+    String getId();
 }

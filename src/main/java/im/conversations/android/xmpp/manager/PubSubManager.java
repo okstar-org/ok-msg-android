@@ -1,12 +1,20 @@
 package im.conversations.android.xmpp.manager;
 
 import android.content.Context;
+import com.google.common.util.concurrent.Futures;
+import com.google.common.util.concurrent.ListenableFuture;
+import com.google.common.util.concurrent.MoreExecutors;
 import eu.siacs.conversations.xml.Namespace;
+import im.conversations.android.xmpp.ExtensionFactory;
 import im.conversations.android.xmpp.XmppConnection;
+import im.conversations.android.xmpp.model.Extension;
+import im.conversations.android.xmpp.model.pubsub.Items;
+import im.conversations.android.xmpp.model.pubsub.PubSub;
 import im.conversations.android.xmpp.model.pubsub.event.Event;
-import im.conversations.android.xmpp.model.pubsub.event.ItemsWrapper;
 import im.conversations.android.xmpp.model.pubsub.event.Purge;
+import im.conversations.android.xmpp.model.stanza.Iq;
 import im.conversations.android.xmpp.model.stanza.Message;
+import java.util.Map;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -22,26 +30,50 @@ public class PubSubManager extends AbstractManager {
         final var event = message.getExtension(Event.class);
         if (event.hasExtension(Purge.class)) {
             handlePurge(message);
-        } else if (event.hasExtension(ItemsWrapper.class)) {
+        } else if (event.hasExtension(Event.ItemsWrapper.class)) {
             handleItems(message);
         }
+    }
+
+    public <T extends Extension> ListenableFuture<Map<String, T>> fetchItems(final Class<T> clazz) {
+        final var id = ExtensionFactory.id(clazz);
+        if (id == null) {
+            return Futures.immediateFailedFuture(
+                    new IllegalArgumentException(
+                            String.format("%s is not a registered extension", clazz.getName())));
+        }
+        return fetchItems(id.namespace, clazz);
+    }
+
+    public <T extends Extension> ListenableFuture<Map<String, T>> fetchItems(
+            final String node, final Class<T> clazz) {
+        final Iq request = new Iq(Iq.Type.GET);
+        final var pubSub = request.addExtension(new PubSub());
+        final var itemsWrapper = pubSub.addExtension(new PubSub.ItemsWrapper());
+        itemsWrapper.setNode(node);
+        return Futures.transform(
+                connection.sendIqPacket(request),
+                response -> {
+                    final var pubSubResponse = response.getExtension(PubSub.class);
+                    if (pubSubResponse == null) {
+                        throw new IllegalStateException();
+                    }
+                    final var items = pubSubResponse.getItems();
+                    if (items == null) {
+                        throw new IllegalStateException();
+                    }
+                    return items.getItemMap(clazz);
+                },
+                MoreExecutors.directExecutor());
     }
 
     private void handleItems(final Message message) {
         final var from = message.getFrom();
         final var event = message.getExtension(Event.class);
-        final var itemsWrapper = event.getItemsWrapper();
-        final var node = itemsWrapper.getNode();
-        final var items = itemsWrapper.getItems();
-        final var retractions = itemsWrapper.getRetractions();
+        final Items items = event.getItems();
+        final var node = items.getNode();
         if (connection.fromAccount(message) && Namespace.BOOKMARKS2.equals(node)) {
-            final var bookmarkManager = getManager(BookmarkManager.class);
-            if (retractions.size() > 0) {
-                bookmarkManager.deleteItems(retractions);
-            }
-            if (items.size() > 0) {
-                bookmarkManager.updateItems(items);
-            }
+            getManager(BookmarkManager.class).handleItems(items);
         }
     }
 
