@@ -1204,6 +1204,7 @@
     <string name="bold">negrita</string>
     <string name="italic">cursiva</string>
     <string name="monospace">monoespaciado</string>
+    <string name="pref_picture_compression">Compresión de imagen</string>
     <string name="strikethrough">tachado</string>
     <string name="grant">Otorgar</string>
     <string name="no_manage_storage_permission">Desde Android 11, Las aplicaciones necesitan un permiso especial para acceder a todo tipo de ficheros en el almacenamiento externo. monocles chat te pedirá que otorgues este permiso para continuar.</string>
