@@ -30,7 +30,6 @@
 package eu.siacs.conversations.xmpp;
 
 import androidx.annotation.NonNull;
-
 import eu.siacs.conversations.xmpp.stanzas.AbstractStanza;
 
 public class InvalidJid implements Jid {
@@ -76,7 +75,6 @@ public class InvalidJid implements Jid {
     public Jid asBareJid() {
         throw new AssertionError("Not implemented");
     }
-
 
     @Override
     public Jid withResource(CharSequence charSequence) {
@@ -138,6 +136,10 @@ public class InvalidJid implements Jid {
 
     public static boolean isValid(Jid jid) {
         return !(jid != null && jid instanceof InvalidJid);
+    }
+
+    public static boolean invalid(final Jid jid) {
+        return jid instanceof InvalidJid;
     }
 
     public static boolean hasValidFrom(AbstractStanza stanza) {

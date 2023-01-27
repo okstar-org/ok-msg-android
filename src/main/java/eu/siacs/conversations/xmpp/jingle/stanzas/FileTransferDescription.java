@@ -1,22 +1,17 @@
 package eu.siacs.conversations.xmpp.jingle.stanzas;
 
 import com.google.common.base.Preconditions;
-
-import java.util.Arrays;
-import java.util.List;
-
 import eu.siacs.conversations.crypto.axolotl.XmppAxolotlMessage;
 import eu.siacs.conversations.entities.DownloadableFile;
 import eu.siacs.conversations.xml.Element;
+import eu.siacs.conversations.xml.Namespace;
+import java.util.Arrays;
+import java.util.List;
 
 public class FileTransferDescription extends GenericDescription {
 
-    public static List<String> NAMESPACES = Arrays.asList(
-            Version.FT_3.namespace,
-            Version.FT_4.namespace,
-            Version.FT_5.namespace
-    );
-
+    public static List<String> NAMESPACES =
+            Arrays.asList(Version.FT_3.namespace, Version.FT_4.namespace, Version.FT_5.namespace);
 
     private FileTransferDescription(String name, String namespace) {
         super(name, namespace);
@@ -45,8 +40,10 @@ public class FileTransferDescription extends GenericDescription {
         }
     }
 
-    public static FileTransferDescription of(DownloadableFile file, Version version, XmppAxolotlMessage axolotlMessage) {
-        final FileTransferDescription description = new FileTransferDescription("description", version.getNamespace());
+    public static FileTransferDescription of(
+            DownloadableFile file, Version version, XmppAxolotlMessage axolotlMessage) {
+        final FileTransferDescription description =
+                new FileTransferDescription("description", version.getNamespace());
         final Element fileElement;
         if (version == Version.FT_3) {
             Element offer = description.addChild("offer");
@@ -63,18 +60,23 @@ public class FileTransferDescription extends GenericDescription {
     }
 
     public static FileTransferDescription upgrade(final Element element) {
-        Preconditions.checkArgument("description".equals(element.getName()), "Name of provided element is not description");
-        Preconditions.checkArgument(NAMESPACES.contains(element.getNamespace()), "Element does not match a file transfer namespace");
-        final FileTransferDescription description = new FileTransferDescription("description", element.getNamespace());
+        Preconditions.checkArgument(
+                "description".equals(element.getName()),
+                "Name of provided element is not description");
+        Preconditions.checkArgument(
+                NAMESPACES.contains(element.getNamespace()),
+                "Element does not match a file transfer namespace");
+        final FileTransferDescription description =
+                new FileTransferDescription("description", element.getNamespace());
         description.setAttributes(element.getAttributes());
         description.setChildren(element.getChildren());
         return description;
     }
 
     public enum Version {
-        FT_3("urn:xmpp:jingle:apps:file-transfer:3"),
-        FT_4("urn:xmpp:jingle:apps:file-transfer:4"),
-        FT_5("urn:xmpp:jingle:apps:file-transfer:5");
+        FT_3(Namespace.JINGLE_FILE_TRANSFER_3),
+        FT_4(Namespace.JINGLE_FILE_TRANSFER_4),
+        FT_5(Namespace.JINGLE_FILE_TRANSFER_5);
 
         private final String namespace;
 

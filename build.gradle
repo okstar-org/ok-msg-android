@@ -50,6 +50,9 @@ dependencies {
 
     def room_version = "2.5.0"
 
+    implementation project(':libs:annotation')
+    annotationProcessor project(':libs:annotation-processor')
+
     coreLibraryDesugaring 'com.android.tools:desugar_jdk_libs:1.1.8'
 
     implementation "androidx.room:room-runtime:$room_version"
@@ -57,6 +60,10 @@ dependencies {
     implementation "androidx.room:room-guava:$room_version"
 
     implementation "androidx.security:security-crypto:1.0.0"
+
+
+    implementation 'org.slf4j:slf4j-api:1.7.36'
+    implementation 'com.github.tony19:logback-android:2.0.1'
 
     testImplementation 'junit:junit:4.13.2'
     testImplementation 'org.robolectric:robolectric:4.9'
@@ -137,7 +144,7 @@ android {
 
     defaultConfig {
         minSdkVersion 23
-        targetSdkVersion 33
+        targetSdkVersion 32
 
         //versionNameSuffix " beta_(2023-01-10)" // " beta_(XXXX-XX-XX)" // activate for beta versions
         versionCode 127
@@ -154,8 +161,10 @@ android {
         buildConfigField("boolean", "SHOW_INTRO", 'true')
         buildConfigField("String", "UPDATE_URL", '"https://monocles.eu/chat/update/"')
         resValue "string", "applicationId", applicationId
+        def appName = "monocles chat"
         resValue "string", "app_name", "monocles chat"
         resValue "string", "short_app_name", "chat"
+        buildConfigField "String", "APP_NAME", "\"$appName\""
 
         javaCompileOptions {
             annotationProcessorOptions {

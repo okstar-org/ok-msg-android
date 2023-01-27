@@ -2,11 +2,12 @@ package im.conversations.android.xmpp.manager;
 
 import android.content.Context;
 import com.google.common.collect.Collections2;
-import eu.siacs.conversations.xmpp.stanzas.IqPacket;
 import im.conversations.android.xmpp.XmppConnection;
 import im.conversations.android.xmpp.model.blocking.Block;
 import im.conversations.android.xmpp.model.blocking.Blocklist;
+import im.conversations.android.xmpp.model.blocking.Item;
 import im.conversations.android.xmpp.model.blocking.Unblock;
+import im.conversations.android.xmpp.model.stanza.Iq;
 import java.util.Objects;
 
 public class BlockingManager extends AbstractManager {
@@ -15,18 +16,35 @@ public class BlockingManager extends AbstractManager {
         super(context, connection);
     }
 
-    public void handlePush(final Block block) {}
+    public void handlePush(final Block block) {
+        final var items = block.getExtensions(Item.class);
+        final var addresses =
+                Collections2.transform(
+                        Collections2.filter(items, i -> Objects.nonNull(i.getJid())), Item::getJid);
+        getDatabase().blockingDao().add(getAccount(), addresses);
+    }
 
-    public void handlePush(final Unblock unblock) {}
+    public void handlePush(final Unblock unblock) {
+        final var items = unblock.getExtensions(Item.class);
+        if (items.isEmpty()) {
+            getDatabase().blockingDao().clear(getAccount().id);
+        } else {
+            final var addresses =
+                    Collections2.transform(
+                            Collections2.filter(items, i -> Objects.nonNull(i.getJid())),
+                            Item::getJid);
+            getDatabase().blockingDao().remove(getAccount().id, addresses);
+        }
+    }
 
     public void fetch() {
-        final IqPacket iqPacket = new IqPacket(IqPacket.TYPE.GET);
+        final Iq iqPacket = new Iq(Iq.Type.GET);
         iqPacket.addChild(new Blocklist());
         connection.sendIqPacket(iqPacket, this::handleFetchResult);
     }
 
-    private void handleFetchResult(final IqPacket result) {
-        if (result.getType() != IqPacket.TYPE.RESULT) {
+    private void handleFetchResult(final Iq result) {
+        if (result.getType() != Iq.Type.RESULT) {
             return;
         }
         final var blocklist = result.getExtension(Blocklist.class);
@@ -37,6 +55,6 @@ public class BlockingManager extends AbstractManager {
         final var items =
                 blocklist.getExtensions(im.conversations.android.xmpp.model.blocking.Item.class);
         final var filteredItems = Collections2.filter(items, i -> Objects.nonNull(i.getJid()));
-        getDatabase().blockingDao().setBlocklist(account, filteredItems);
+        getDatabase().blockingDao().set(account, filteredItems);
     }
 }

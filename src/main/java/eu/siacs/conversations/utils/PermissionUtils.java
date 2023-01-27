@@ -6,8 +6,10 @@ import android.content.pm.PackageManager;
 import android.os.Build;
 
 import androidx.core.app.ActivityCompat;
-import com.google.common.primitives.Ints;
+
 import com.google.common.collect.ImmutableList;
+import com.google.common.primitives.Ints;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -31,6 +33,7 @@ public class PermissionUtils {
         return false;
     }
 
+
     public static boolean readGranted(int[] grantResults, String[] permission) {
         for (int i = 0; i < grantResults.length; ++i) {
             if (Manifest.permission.READ_EXTERNAL_STORAGE.equals(permission[i])) {
@@ -39,6 +42,7 @@ public class PermissionUtils {
         }
         return false;
     }
+
 
     public static String getFirstDenied(int[] grantResults, String[] permissions) {
         for (int i = 0; i < grantResults.length; ++i) {

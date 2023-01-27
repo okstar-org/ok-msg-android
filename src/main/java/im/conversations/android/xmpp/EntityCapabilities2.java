@@ -6,7 +6,10 @@ import com.google.common.collect.Collections2;
 import com.google.common.collect.Ordering;
 import com.google.common.hash.HashFunction;
 import com.google.common.hash.Hashing;
+import com.google.common.io.BaseEncoding;
 import com.google.common.primitives.Bytes;
+import eu.siacs.conversations.xml.Namespace;
+import im.conversations.android.xmpp.model.Hash;
 import im.conversations.android.xmpp.model.data.Data;
 import im.conversations.android.xmpp.model.data.Field;
 import im.conversations.android.xmpp.model.data.Value;
@@ -15,6 +18,7 @@ import im.conversations.android.xmpp.model.disco.info.Identity;
 import im.conversations.android.xmpp.model.disco.info.InfoQuery;
 import java.nio.charset.StandardCharsets;
 import java.util.Collection;
+import java.util.Objects;
 
 public class EntityCapabilities2 {
 
@@ -25,13 +29,28 @@ public class EntityCapabilities2 {
 
     private static final char FILE_SEPARATOR = 0x1c;
 
-    public static byte[] hash(final InfoQuery info) {
-        return hash(Hashing.sha256(), info);
+    public static EntityCaps2Hash hash(final InfoQuery info) {
+        return hash(Hash.Algorithm.SHA_256, info);
     }
 
-    public static byte[] hash(HashFunction hashFunction, final InfoQuery info) {
-        final String algo = algorithm(info);
-        return hashFunction.hashString(algo, StandardCharsets.UTF_8).asBytes();
+    public static EntityCaps2Hash hash(final Hash.Algorithm algorithm, final InfoQuery info) {
+        final String result = algorithm(info);
+        final var hashFunction = toHashFunction(algorithm);
+        return new EntityCaps2Hash(
+                algorithm, hashFunction.hashString(result, StandardCharsets.UTF_8).asBytes());
+    }
+
+    private static HashFunction toHashFunction(final Hash.Algorithm algorithm) {
+        switch (algorithm) {
+            case SHA_1:
+                return Hashing.sha1();
+            case SHA_256:
+                return Hashing.sha256();
+            case SHA_512:
+                return Hashing.sha512();
+            default:
+                throw new IllegalArgumentException("Unknown hash algorithm");
+        }
     }
 
     private static String asHex(final String message) {
@@ -127,5 +146,39 @@ public class EntityCapabilities2 {
                                                         extensions,
                                                         EntityCapabilities2::extension)))
                 + FILE_SEPARATOR;
+    }
+
+    public static class EntityCaps2Hash extends EntityCapabilities.Hash {
+
+        public final Hash.Algorithm algorithm;
+
+        protected EntityCaps2Hash(final Hash.Algorithm algorithm, byte[] hash) {
+            super(hash);
+            this.algorithm = algorithm;
+        }
+
+        public static EntityCaps2Hash of(final Hash.Algorithm algorithm, final String encoded) {
+            return new EntityCaps2Hash(algorithm, BaseEncoding.base64().decode(encoded));
+        }
+
+        @Override
+        public String capabilityNode(String node) {
+            return String.format(
+                    "%s#%s.%s", Namespace.ENTITY_CAPABILITIES_2, algorithm.toString(), encoded());
+        }
+
+        @Override
+        public boolean equals(Object o) {
+            if (this == o) return true;
+            if (o == null || getClass() != o.getClass()) return false;
+            if (!super.equals(o)) return false;
+            EntityCaps2Hash that = (EntityCaps2Hash) o;
+            return algorithm == that.algorithm;
+        }
+
+        @Override
+        public int hashCode() {
+            return Objects.hash(super.hashCode(), algorithm);
+        }
     }
 }

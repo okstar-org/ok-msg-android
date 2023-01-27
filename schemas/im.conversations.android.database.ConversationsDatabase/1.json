@@ -2,7 +2,7 @@
   "formatVersion": 1,
   "database": {
     "version": 1,
-    "identityHash": "adc70f7066828bb6cf1fc32aa3a24b2f",
+    "identityHash": "e2dbbac3327bc8ef188286642b379e7d",
     "entities": [
       {
         "tableName": "account",
@@ -319,7 +319,7 @@
       },
       {
         "tableName": "disco_ext",
-        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`id` INTEGER PRIMARY KEY AUTOINCREMENT, `discoId` INTEGER NOT NULL, FOREIGN KEY(`discoId`) REFERENCES `disco`(`id`) ON UPDATE NO ACTION ON DELETE CASCADE )",
+        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`id` INTEGER PRIMARY KEY AUTOINCREMENT, `discoId` INTEGER NOT NULL, `type` TEXT, FOREIGN KEY(`discoId`) REFERENCES `disco`(`id`) ON UPDATE NO ACTION ON DELETE CASCADE )",
         "fields": [
           {
             "fieldPath": "id",
@@ -332,6 +332,12 @@
             "columnName": "discoId",
             "affinity": "INTEGER",
             "notNull": true
+          },
+          {
+            "fieldPath": "type",
+            "columnName": "type",
+            "affinity": "TEXT",
+            "notNull": false
           }
         ],
         "primaryKey": {
@@ -421,7 +427,7 @@
       },
       {
         "tableName": "disco_ext_field_value",
-        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`id` INTEGER PRIMARY KEY AUTOINCREMENT, `fieldId` INTEGER NOT NULL, `value` TEXT, FOREIGN KEY(`fieldId`) REFERENCES `disco_ext`(`id`) ON UPDATE NO ACTION ON DELETE CASCADE )",
+        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`id` INTEGER PRIMARY KEY AUTOINCREMENT, `fieldId` INTEGER NOT NULL, `value` TEXT, FOREIGN KEY(`fieldId`) REFERENCES `disco_ext_field`(`id`) ON UPDATE NO ACTION ON DELETE CASCADE )",
         "fields": [
           {
             "fieldPath": "id",
@@ -461,7 +467,7 @@
         ],
         "foreignKeys": [
           {
-            "table": "disco_ext",
+            "table": "disco_ext_field",
             "onDelete": "CASCADE",
             "onUpdate": "NO ACTION",
             "columns": [
@@ -595,7 +601,7 @@
       },
       {
         "tableName": "disco_item",
-        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`id` INTEGER PRIMARY KEY AUTOINCREMENT, `accountId` INTEGER NOT NULL, `address` TEXT NOT NULL, `node` TEXT, `parent` TEXT, `discoId` INTEGER, FOREIGN KEY(`accountId`) REFERENCES `account`(`id`) ON UPDATE NO ACTION ON DELETE CASCADE , FOREIGN KEY(`discoId`) REFERENCES `disco`(`id`) ON UPDATE NO ACTION ON DELETE CASCADE )",
+        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`id` INTEGER PRIMARY KEY AUTOINCREMENT, `accountId` INTEGER NOT NULL, `address` TEXT NOT NULL, `node` TEXT NOT NULL, `parentAddress` TEXT NOT NULL, `parentNode` TEXT NOT NULL, `discoId` INTEGER, FOREIGN KEY(`accountId`) REFERENCES `account`(`id`) ON UPDATE NO ACTION ON DELETE CASCADE , FOREIGN KEY(`discoId`) REFERENCES `disco`(`id`) ON UPDATE NO ACTION ON DELETE CASCADE )",
         "fields": [
           {
             "fieldPath": "id",
@@ -619,13 +625,19 @@
             "fieldPath": "node",
             "columnName": "node",
             "affinity": "TEXT",
-            "notNull": false
+            "notNull": true
           },
           {
-            "fieldPath": "parent",
-            "columnName": "parent",
+            "fieldPath": "parentAddress",
+            "columnName": "parentAddress",
             "affinity": "TEXT",
-            "notNull": false
+            "notNull": true
+          },
+          {
+            "fieldPath": "parentNode",
+            "columnName": "parentNode",
+            "affinity": "TEXT",
+            "notNull": true
           },
           {
             "fieldPath": "discoId",
@@ -642,25 +654,27 @@
         },
         "indices": [
           {
-            "name": "index_disco_item_accountId_address_node",
+            "name": "index_disco_item_accountId_address_node_parentAddress_parentNode",
             "unique": true,
             "columnNames": [
               "accountId",
               "address",
-              "node"
+              "node",
+              "parentAddress",
+              "parentNode"
             ],
             "orders": [],
-            "createSql": "CREATE UNIQUE INDEX IF NOT EXISTS `index_disco_item_accountId_address_node` ON `${TABLE_NAME}` (`accountId`, `address`, `node`)"
+            "createSql": "CREATE UNIQUE INDEX IF NOT EXISTS `index_disco_item_accountId_address_node_parentAddress_parentNode` ON `${TABLE_NAME}` (`accountId`, `address`, `node`, `parentAddress`, `parentNode`)"
           },
           {
-            "name": "index_disco_item_accountId_parent",
+            "name": "index_disco_item_accountId_parentAddress",
             "unique": false,
             "columnNames": [
               "accountId",
-              "parent"
+              "parentAddress"
             ],
             "orders": [],
-            "createSql": "CREATE INDEX IF NOT EXISTS `index_disco_item_accountId_parent` ON `${TABLE_NAME}` (`accountId`, `parent`)"
+            "createSql": "CREATE INDEX IF NOT EXISTS `index_disco_item_accountId_parentAddress` ON `${TABLE_NAME}` (`accountId`, `parentAddress`)"
           },
           {
             "name": "index_disco_item_discoId",
@@ -969,7 +983,7 @@
       },
       {
         "tableName": "presence",
-        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`id` INTEGER PRIMARY KEY AUTOINCREMENT, `accountId` INTEGER NOT NULL, `address` TEXT NOT NULL, `resource` TEXT, `type` TEXT, `show` TEXT, `status` TEXT, `vCardPhoto` TEXT, `occupantId` TEXT, `mucUserAffiliation` TEXT, `mucUserRole` TEXT, `mucUserJid` TEXT, `mucUserSelf` INTEGER NOT NULL, FOREIGN KEY(`accountId`) REFERENCES `account`(`id`) ON UPDATE NO ACTION ON DELETE CASCADE )",
+        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`id` INTEGER PRIMARY KEY AUTOINCREMENT, `accountId` INTEGER NOT NULL, `address` TEXT NOT NULL, `resource` TEXT NOT NULL, `type` TEXT, `show` TEXT, `status` TEXT, `vCardPhoto` TEXT, `occupantId` TEXT, `mucUserAffiliation` TEXT, `mucUserRole` TEXT, `mucUserJid` TEXT, `mucUserSelf` INTEGER NOT NULL, `discoId` INTEGER, FOREIGN KEY(`accountId`) REFERENCES `account`(`id`) ON UPDATE NO ACTION ON DELETE CASCADE , FOREIGN KEY(`discoId`) REFERENCES `disco`(`id`) ON UPDATE NO ACTION ON DELETE CASCADE )",
         "fields": [
           {
             "fieldPath": "id",
@@ -993,7 +1007,7 @@
             "fieldPath": "resource",
             "columnName": "resource",
             "affinity": "TEXT",
-            "notNull": false
+            "notNull": true
           },
           {
             "fieldPath": "type",
@@ -1048,6 +1062,12 @@
             "columnName": "mucUserSelf",
             "affinity": "INTEGER",
             "notNull": true
+          },
+          {
+            "fieldPath": "discoId",
+            "columnName": "discoId",
+            "affinity": "INTEGER",
+            "notNull": false
           }
         ],
         "primaryKey": {
@@ -1067,6 +1087,15 @@
             ],
             "orders": [],
             "createSql": "CREATE UNIQUE INDEX IF NOT EXISTS `index_presence_accountId_address_resource` ON `${TABLE_NAME}` (`accountId`, `address`, `resource`)"
+          },
+          {
+            "name": "index_presence_discoId",
+            "unique": false,
+            "columnNames": [
+              "discoId"
+            ],
+            "orders": [],
+            "createSql": "CREATE INDEX IF NOT EXISTS `index_presence_discoId` ON `${TABLE_NAME}` (`discoId`)"
           }
         ],
         "foreignKeys": [
@@ -1076,6 +1105,17 @@
             "onUpdate": "NO ACTION",
             "columns": [
               "accountId"
+            ],
+            "referencedColumns": [
+              "id"
+            ]
+          },
+          {
+            "table": "disco",
+            "onDelete": "CASCADE",
+            "onUpdate": "NO ACTION",
+            "columns": [
+              "discoId"
             ],
             "referencedColumns": [
               "id"
@@ -1304,7 +1344,7 @@
     "views": [],
     "setupQueries": [
       "CREATE TABLE IF NOT EXISTS room_master_table (id INTEGER PRIMARY KEY,identity_hash TEXT)",
-      "INSERT OR REPLACE INTO room_master_table (id,identity_hash) VALUES(42, 'adc70f7066828bb6cf1fc32aa3a24b2f')"
+      "INSERT OR REPLACE INTO room_master_table (id,identity_hash) VALUES(42, 'e2dbbac3327bc8ef188286642b379e7d')"
     ]
   }
 }

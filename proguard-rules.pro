@@ -17,6 +17,10 @@
 -keep class com.squareup.okhttp.** { *; }
 -keep interface com.squareup.okhttp.** { *; }
 
+# Logger
+-keep class org.slf4j.** {*;}
+-keep class ch.qos.** {*;}
+
 -dontwarn javax.mail.internet.MimeMessage
 -dontwarn javax.mail.internet.MimeBodyPart
 -dontwarn javax.mail.internet.SharedInputStream

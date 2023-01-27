@@ -9,6 +9,7 @@ import eu.siacs.conversations.utils.XmlHelper;
 import eu.siacs.conversations.xmpp.InvalidJid;
 import eu.siacs.conversations.xmpp.Jid;
 import eu.siacs.conversations.xmpp.stanzas.MessagePacket;
+import im.conversations.android.xmpp.ExtensionFactory;
 import im.conversations.android.xmpp.model.Extension;
 import java.util.ArrayList;
 import java.util.Collection;
@@ -35,6 +36,17 @@ public class Element {
         this.content = null;
         children.add(child);
         return child;
+    }
+
+    public <T extends Extension> T addExtension(T child) {
+        this.addChild(child);
+        return child;
+    }
+
+    public void addExtensions(final Collection<? extends Extension> extensions) {
+        for (final Extension extension : extensions) {
+            addExtension(extension);
+        }
     }
 
     public Element addChild(String name) {
@@ -72,7 +84,7 @@ public class Element {
     }
 
     public <E extends Extension> E getExtension(final Class<E> clazz) {
-        final var extension = Iterables.find(this.children, clazz::isInstance);
+        final var extension = Iterables.find(this.children, clazz::isInstance, null);
         if (extension == null) {
             return null;
         }
@@ -82,6 +94,11 @@ public class Element {
     public <E extends Extension> Collection<E> getExtensions(final Class<E> clazz) {
         return Collections2.transform(
                 Collections2.filter(this.children, clazz::isInstance), clazz::cast);
+    }
+
+    public Collection<ExtensionFactory.Id> getExtensionIds() {
+        return Collections2.transform(
+                this.children, c -> new ExtensionFactory.Id(c.getName(), c.getNamespace()));
     }
 
     public String findChildContent(String name) {

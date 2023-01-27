@@ -107,7 +107,45 @@ import eu.siacs.conversations.xmpp.stanzas.streammgmt.AckPacket;
 import eu.siacs.conversations.xmpp.stanzas.streammgmt.EnablePacket;
 import eu.siacs.conversations.xmpp.stanzas.streammgmt.RequestPacket;
 import eu.siacs.conversations.xmpp.stanzas.streammgmt.ResumePacket;
+import java.io.ByteArrayInputStream;
+import java.io.IOException;
+import java.io.InputStream;
+import java.net.ConnectException;
+import java.net.IDN;
+import java.net.InetAddress;
+import java.net.InetSocketAddress;
+import java.net.Socket;
+import java.net.UnknownHostException;
+import java.security.KeyManagementException;
+import java.security.NoSuchAlgorithmException;
+import java.security.Principal;
+import java.security.PrivateKey;
+import java.security.cert.X509Certificate;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collection;
+import java.util.Collections;
+import java.util.HashMap;
+import java.util.HashSet;
+import java.util.Hashtable;
+import java.util.Iterator;
+import java.util.List;
+import java.util.Map.Entry;
+import java.util.Set;
+import java.util.concurrent.CountDownLatch;
+import java.util.concurrent.TimeUnit;
+import java.util.concurrent.atomic.AtomicBoolean;
+import java.util.concurrent.atomic.AtomicInteger;
+import java.util.regex.Matcher;
+import javax.net.ssl.KeyManager;
+import javax.net.ssl.SSLContext;
+import javax.net.ssl.SSLPeerUnverifiedException;
+import javax.net.ssl.SSLSocket;
+import javax.net.ssl.SSLSocketFactory;
+import javax.net.ssl.X509KeyManager;
+import javax.net.ssl.X509TrustManager;
 import okhttp3.HttpUrl;
+import org.xmlpull.v1.XmlPullParserException;
 
 public class XmppConnection implements Runnable {
 
@@ -300,7 +338,8 @@ public class XmppConnection implements Runnable {
         this.quickStartInProgress = false;
         this.isBound = false;
         this.attempt++;
-        this.verifiedHostname = null; // will be set if user entered hostname is being used or hostname was verified
+        this.verifiedHostname =
+                null; // will be set if user entered hostname is being used or hostname was verified
         // with dnssec
         try {
             Socket localSocket;
@@ -734,7 +773,8 @@ public class XmppConnection implements Runnable {
             throw new AssertionError("Missing implementation for " + version);
         }
         try {
-            response.setContent(saslMechanism.getResponse(challenge.getContent(), sslSocketOrNull(socket)));
+            response.setContent(
+                    saslMechanism.getResponse(challenge.getContent(), sslSocketOrNull(socket)));
         } catch (final SaslMechanism.AuthenticationException e) {
             // TODO: Send auth abort tag.
             Log.e(Config.LOGTAG, e.toString());
@@ -843,7 +883,7 @@ public class XmppConnection implements Runnable {
                     processEnabled(streamManagementEnabled);
                     waitForDisco = true;
                 } else {
-                    //if we did not enable stream management in bind do it now
+                    // if we did not enable stream management in bind do it now
                     waitForDisco = enableStreamManagement();
                 }
                 if (carbonsEnabled != null) {
@@ -988,7 +1028,8 @@ public class XmppConnection implements Runnable {
             Log.d(
                     Config.LOGTAG,
                     account.getJid().asBareJid()
-                            + ": fast authentication failed. falling back to regular authentication");
+                            + ": fast authentication failed. falling back to regular"
+                            + " authentication");
             authenticate();
         } else {
             throw new StateChangingException(Account.State.UNAUTHORIZED);
@@ -1456,7 +1497,8 @@ public class XmppConnection implements Runnable {
 
     private void authenticate() throws IOException {
         final boolean isSecure = isSecure();
-        if (isSecure && this.streamFeatures.hasChild("authentication", Namespace.SASL_2)) {authenticate(SaslMechanism.Version.SASL_2);
+        if (isSecure && this.streamFeatures.hasChild("authentication", Namespace.SASL_2)) {
+            authenticate(SaslMechanism.Version.SASL_2);
         } else if (isSecure && this.streamFeatures.hasChild("mechanisms", Namespace.SASL)) {
             authenticate(SaslMechanism.Version.SASL);
         } else {
@@ -1480,10 +1522,12 @@ public class XmppConnection implements Runnable {
                 this.streamFeatures.findChild("sasl-channel-binding", Namespace.CHANNEL_BINDING);
         final Collection<ChannelBinding> channelBindings = ChannelBinding.of(cbElement);
         final SaslMechanism.Factory factory = new SaslMechanism.Factory(account);
-        final SaslMechanism saslMechanism = factory.of(mechanisms, channelBindings, version, SSLSockets.version(this.socket));
+        final SaslMechanism saslMechanism =
+                factory.of(mechanisms, channelBindings, version, SSLSockets.version(this.socket));
         this.saslMechanism = validate(saslMechanism, mechanisms);
         final boolean quickStartAvailable;
-        final String firstMessage = this.saslMechanism.getClientFirstMessage(sslSocketOrNull(this.socket));
+        final String firstMessage =
+                this.saslMechanism.getClientFirstMessage(sslSocketOrNull(this.socket));
         final boolean usingFast = SaslMechanism.hashedToken(this.saslMechanism);
         final Element authenticate;
         if (version == SaslMechanism.Version.SASL) {
@@ -1499,7 +1543,8 @@ public class XmppConnection implements Runnable {
             if (usingFast) {
                 hashTokenRequest = null;
             } else {
-                final Element fast = inline == null ? null : inline.findChild("fast", Namespace.FAST);
+                final Element fast =
+                        inline == null ? null : inline.findChild("fast", Namespace.FAST);
                 final Collection<String> fastMechanisms = SaslMechanism.mechanisms(fast);
                 hashTokenRequest =
                         HashedToken.Mechanism.best(fastMechanisms, SSLSockets.version(this.socket));
@@ -1516,12 +1561,15 @@ public class XmppConnection implements Runnable {
                     Log.d(
                             Config.LOGTAG,
                             account.getJid().asBareJid()
-                                    + ": interrupted while waiting for DB restore during SASL2 bind");
+                                    + ": interrupted while waiting for DB restore during SASL2"
+                                    + " bind");
                     return;
                 }
             }
             this.hashTokenRequest = hashTokenRequest;
-            authenticate = generateAuthenticationRequest(firstMessage, usingFast, hashTokenRequest, bindFeatures, sm);
+            authenticate =
+                    generateAuthenticationRequest(
+                            firstMessage, usingFast, hashTokenRequest, bindFeatures, sm);
         } else {
             throw new AssertionError("Missing implementation for " + version);
         }
@@ -1551,7 +1599,9 @@ public class XmppConnection implements Runnable {
     }
 
     @NonNull
-    private SaslMechanism validate(final @Nullable SaslMechanism saslMechanism, Collection<String> mechanisms) throws StateChangingException {
+    private SaslMechanism validate(
+            final @Nullable SaslMechanism saslMechanism, Collection<String> mechanisms)
+            throws StateChangingException {
         if (saslMechanism == null) {
             Log.d(
                     Config.LOGTAG,
@@ -1579,8 +1629,10 @@ public class XmppConnection implements Runnable {
         return saslMechanism;
     }
 
-    private Element generateAuthenticationRequest(final String firstMessage, final boolean usingFast) {
-        return generateAuthenticationRequest(firstMessage, usingFast, null, Bind2.QUICKSTART_FEATURES, true);
+    private Element generateAuthenticationRequest(
+            final String firstMessage, final boolean usingFast) {
+        return generateAuthenticationRequest(
+                firstMessage, usingFast, null, Bind2.QUICKSTART_FEATURES, true);
     }
 
     private Element generateAuthenticationRequest(
@@ -1843,7 +1895,8 @@ public class XmppConnection implements Runnable {
                                     Log.d(
                                             Config.LOGTAG,
                                             account.getJid().asBareJid()
-                                                    + ": jid changed during bind. updating database");
+                                                    + ": jid changed during bind. updating"
+                                                    + " database");
                                     mXmppConnectionService.databaseBackend.updateAccount(account);
                                 }
                                 if (streamFeatures.hasChild("session")
@@ -2344,7 +2397,9 @@ public class XmppConnection implements Runnable {
             this.saslMechanism = quickStartMechanism;
             final boolean usingFast = quickStartMechanism instanceof HashedToken;
             final Element authenticate =
-                    generateAuthenticationRequest(quickStartMechanism.getClientFirstMessage(sslSocketOrNull(this.socket)), usingFast);
+                    generateAuthenticationRequest(
+                            quickStartMechanism.getClientFirstMessage(sslSocketOrNull(this.socket)),
+                            usingFast);
             authenticate.setAttribute("mechanism", quickStartMechanism.getMechanism());
             sendStartStream(true, false);
             synchronized (this.mStanzaQueue) {
@@ -2445,7 +2500,13 @@ public class XmppConnection implements Runnable {
                 }
                 ++stanzasSent;
                 if (Config.EXTENDED_SM_LOGGING) {
-                    Log.d(Config.LOGTAG, account.getJid().asBareJid()+": counting outbound "+packet.getName()+" as #" + stanzasSent);
+                    Log.d(
+                            Config.LOGTAG,
+                            account.getJid().asBareJid()
+                                    + ": counting outbound "
+                                    + packet.getName()
+                                    + " as #"
+                                    + stanzasSent);
                 }
                 this.mStanzaQueue.append(stanzasSent, stanza);
                 if (stanza instanceof MessagePacket && stanza.getId() != null && inSmacksSession) {
@@ -2812,7 +2873,8 @@ public class XmppConnection implements Runnable {
         public boolean sm() {
             return streamId != null
                     || (connection.streamFeatures != null
-                    && connection.streamFeatures.hasChild("sm", Namespace.STREAM_MANAGEMENT));
+                    && connection.streamFeatures.hasChild(
+                    "sm", Namespace.STREAM_MANAGEMENT));
         }
 
         public boolean csi() {
@@ -2837,7 +2899,7 @@ public class XmppConnection implements Runnable {
         }
 
         public boolean pepPublishOptions() {
-            return hasDiscoFeature(account.getJid().asBareJid(), Namespace.PUBSUB_PUBLISH_OPTIONS);
+            return hasDiscoFeature(account.getJid().asBareJid(), Namespace.PUB_SUB_PUBLISH_OPTIONS);
         }
 
         public boolean pepOmemoWhitelisted() {
@@ -2889,7 +2951,8 @@ public class XmppConnection implements Runnable {
                                 Log.d(
                                         Config.LOGTAG,
                                         account.getJid().asBareJid()
-                                                + ": http upload is not available for files with size "
+                                                + ": http upload is not available for files with"
+                                                + " size "
                                                 + filesize
                                                 + " (max is "
                                                 + maxsize

@@ -4,7 +4,6 @@ import static eu.siacs.conversations.utils.Random.SECURE_RANDOM;
 
 import android.content.Context;
 import android.os.SystemClock;
-import android.util.Log;
 import com.google.common.base.Optional;
 import com.google.common.collect.ImmutableList;
 import com.google.common.collect.ImmutableSet;
@@ -28,15 +27,19 @@ import java.util.concurrent.Executor;
 import java.util.concurrent.Executors;
 import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.TimeUnit;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 public class ConnectionPool {
+
+    private static final Logger LOGGER = LoggerFactory.getLogger(ConnectionPool.class);
 
     private static volatile ConnectionPool INSTANCE;
 
     private final Context context;
 
     private final Executor reconfigurationExecutor = Executors.newSingleThreadExecutor();
-    private final ScheduledExecutorService reconnectExecutor =
+    public static final ScheduledExecutorService CONNECTION_SCHEDULER =
             Executors.newSingleThreadScheduledExecutor();
 
     private final List<XmppConnection> connections = new ArrayList<>();
@@ -55,15 +58,53 @@ public class ConnectionPool {
                 reconfigurationExecutor);
     }
 
-    public synchronized XmppConnection get(final Jid address) {
-        return Iterables.find(this.connections, c -> address.equals(c.getAccount().address));
+    public synchronized XmppConnection reconfigure(final Account account) {
+        final Optional<XmppConnection> xmppConnectionOptional =
+                Iterables.tryFind(this.connections, c -> c.getAccount().equals(account));
+        if (xmppConnectionOptional.isPresent()) {
+            return xmppConnectionOptional.get();
+        }
+        return setupXmppConnection(context, account);
     }
 
-    public synchronized XmppConnection get(final long id) {
-        return Iterables.find(this.connections, c -> id == c.getAccount().id);
+    public synchronized ListenableFuture<XmppConnection> get(final Jid address) {
+        final var configured =
+                Iterables.tryFind(this.connections, c -> address.equals(c.getAccount().address));
+        if (configured.isPresent()) {
+            return Futures.immediateFuture(configured.get());
+        }
+        return Futures.transform(
+                ConversationsDatabase.getInstance(context).accountDao().getEnabledAccount(address),
+                account -> {
+                    if (account == null) {
+                        throw new IllegalStateException(
+                                String.format(
+                                        "No enabled account with address %s",
+                                        address.toEscapedString()));
+                    }
+                    return reconfigure(account);
+                },
+                reconfigurationExecutor);
     }
 
-    public synchronized boolean isEnabled(final long id) {
+    public synchronized ListenableFuture<XmppConnection> get(final long id) {
+        final var configured = Iterables.tryFind(this.connections, c -> id == c.getAccount().id);
+        if (configured.isPresent()) {
+            return Futures.immediateFuture(configured.get());
+        }
+        return Futures.transform(
+                ConversationsDatabase.getInstance(context).accountDao().getEnabledAccount(id),
+                account -> {
+                    if (account == null) {
+                        throw new IllegalStateException(
+                                String.format("No enabled account with id %d", id));
+                    }
+                    return reconfigure(account);
+                },
+                reconfigurationExecutor);
+    }
+
+    private synchronized boolean isEnabled(final long id) {
         return Iterables.any(this.connections, c -> id == c.getAccount().id);
     }
 
@@ -76,8 +117,7 @@ public class ConnectionPool {
         final Set<Account> removed = Sets.difference(current, accounts);
         final Set<Account> added = Sets.difference(accounts, current);
         for (final Account account : added) {
-            final XmppConnection connection = this.instantiate(context, account);
-            connection.setOnStatusChangedListener(this::onStatusChanged);
+            this.setupXmppConnection(context, account);
         }
         for (final Account account : removed) {
             final Optional<XmppConnection> connectionOptional =
@@ -100,13 +140,13 @@ public class ConnectionPool {
         if (connection.getStatus() == ConnectionState.ONLINE) {
             synchronized (lowPingTimeoutMode) {
                 if (lowPingTimeoutMode.remove(account.address)) {
-                    Log.d(Config.LOGTAG, account.address + ": leaving low ping timeout mode");
+                    LOGGER.debug("{}: leaving low ping timeout mode", account.address);
                 }
             }
             ConversationsDatabase.getInstance(context)
                     .accountDao()
                     .setShowErrorNotification(account.id, true);
-            if (connection.getFeatures().csi()) {
+            if (connection.supportsClientStateIndication()) {
                 // TODO send correct CSI state (connection.sendActive or connection.sendInactive)
             }
             scheduleWakeUpCall(Config.PING_MAX_INTERVAL);
@@ -117,11 +157,9 @@ public class ConnectionPool {
 
             // resetSendingToWaiting(account);
             if (isInLowPingTimeoutMode(account)) {
-                Log.d(
-                        Config.LOGTAG,
-                        account.address
-                                + ": went into offline state during low ping mode."
-                                + " reconnecting now");
+                LOGGER.debug(
+                        "{}: went into offline state during low ping mode. reconnecting now",
+                        account.address);
                 reconnectAccount(connection);
             } else {
                 final int timeToReconnect = SECURE_RANDOM.nextInt(10) + 2;
@@ -136,24 +174,20 @@ public class ConnectionPool {
                 final int next = connection.getTimeToNextAttempt();
                 final boolean lowPingTimeoutMode = isInLowPingTimeoutMode(account);
                 if (next <= 0) {
-                    Log.d(
-                            Config.LOGTAG,
-                            account.address
-                                    + ": error connecting account. reconnecting now."
-                                    + " lowPingTimeout="
-                                    + lowPingTimeoutMode);
+                    LOGGER.debug(
+                            "{}: error connecting account. reconnecting now. lowPingTimeout={}",
+                            account.address,
+                            lowPingTimeoutMode);
                     reconnectAccount(connection);
                 } else {
                     final int attempt = connection.getAttempt() + 1;
-                    Log.d(
-                            Config.LOGTAG,
-                            account.address
-                                    + ": error connecting account. try again in "
-                                    + next
-                                    + "s for the "
-                                    + attempt
-                                    + " time. lowPingTimeout="
-                                    + lowPingTimeoutMode);
+                    LOGGER.debug(
+                            "{}: error connecting account. try again in {}s for the {} time."
+                                    + " lowPingTimeout={}",
+                            account.address,
+                            next,
+                            attempt,
+                            lowPingTimeoutMode);
                     scheduleWakeUpCall(next);
                 }
             }
@@ -163,7 +197,7 @@ public class ConnectionPool {
     }
 
     public void scheduleWakeUpCall(final int seconds) {
-        reconnectExecutor.schedule(
+        CONNECTION_SCHEDULER.schedule(
                 () -> {
                     manageConnectionStates();
                 },
@@ -209,9 +243,7 @@ public class ConnectionPool {
                 final Account account = xmppConnection.getAccount();
                 final boolean lowTimeout = isInLowPingTimeoutMode(account);
                 xmppConnection.sendPing();
-                Log.d(
-                        Config.LOGTAG,
-                        account.address + " send ping (lowTimeout=" + lowTimeout + ")");
+                LOGGER.debug("{}: send ping (lowTimeout={})", account.address, lowTimeout);
                 scheduleWakeUpCall(lowTimeout ? Config.LOW_PING_TIMEOUT : Config.PING_TIMEOUT);
             }
         }
@@ -230,7 +262,7 @@ public class ConnectionPool {
                     final long lastReceived = connection.getLastPacketReceived();
                     final long lastSent = connection.getLastPingSent();
                     final long msToNextPing =
-                            (Math.max(lastReceived, lastSent) + Config.PING_MAX_INTERVAL)
+                            (Math.max(lastReceived, lastSent) + Config.PING_MAX_INTERVAL * 1000)
                                     - SystemClock.elapsedRealtime();
                     final int pingTimeout =
                             lowPingTimeoutMode.contains(account.address)
@@ -240,29 +272,24 @@ public class ConnectionPool {
                             (lastSent + pingTimeout) - SystemClock.elapsedRealtime();
                     if (lastSent > lastReceived) {
                         if (pingTimeoutIn < 0) {
-                            Log.d(Config.LOGTAG, account.address + ": ping timeout");
+                            LOGGER.debug("{}: ping timeout", account.address);
                             this.reconnectAccount(connection);
                         } else {
-                            final int secs = (int) (pingTimeoutIn / 1000);
-                            this.scheduleWakeUpCall(secs);
+                            this.scheduleWakeUpCall(Ints.saturatedCast(pingTimeoutIn / 1000));
                         }
                     } else {
                         pingCandidates.add(connection);
                         if (isAccountPushed) {
                             pingNow = true;
                             if (lowPingTimeoutMode.add(account.address)) {
-                                Log.d(
-                                        Config.LOGTAG,
-                                        account.address + ": entering low ping timeout mode");
+                                LOGGER.debug("{}: entering low ping timeout mode", account.address);
                             }
                         } else if (msToNextPing <= 0) {
                             pingNow = true;
                         } else {
                             this.scheduleWakeUpCall(Ints.saturatedCast(msToNextPing / 1000));
                             if (lowPingTimeoutMode.remove(account.address)) {
-                                Log.d(
-                                        Config.LOGTAG,
-                                        account.address + ": leaving low ping timeout mode");
+                                LOGGER.debug("{}: leaving low ping timeout mode", account.address);
                             }
                         }
                     }
@@ -272,25 +299,14 @@ public class ConnectionPool {
             } else if (connection.getStatus() == ConnectionState.CONNECTING) {
                 long secondsSinceLastConnect =
                         (SystemClock.elapsedRealtime() - connection.getLastConnect()) / 1000;
-                long secondsSinceLastDisco =
-                        (SystemClock.elapsedRealtime() - connection.getLastDiscoStarted()) / 1000;
-                long discoTimeout = Config.CONNECT_DISCO_TIMEOUT - secondsSinceLastDisco;
                 long timeout = Config.CONNECT_TIMEOUT - secondsSinceLastConnect;
                 if (timeout < 0) {
-                    Log.d(
-                            Config.LOGTAG,
-                            account.address
-                                    + ": time out during connect reconnecting"
-                                    + " (secondsSinceLast="
-                                    + secondsSinceLastConnect
-                                    + ")");
+                    LOGGER.debug(
+                            "{}: time out during connect reconnecting (secondsSinceLast={})",
+                            account.address,
+                            secondsSinceLastConnect);
                     connection.resetAttemptCount(false);
                     reconnectAccount(connection);
-                } else if (discoTimeout < 0) {
-                    connection.sendDiscoTimeout();
-                    scheduleWakeUpCall(Ints.saturatedCast(discoTimeout));
-                } else {
-                    scheduleWakeUpCall(Ints.saturatedCast(Math.min(timeout, discoTimeout)));
                 }
             } else {
                 if (connection.getTimeToNextAttempt() <= 0) {
@@ -331,9 +347,11 @@ public class ConnectionPool {
         }
     }
 
-    private XmppConnection instantiate(final Context context, final Account account) {
+    private XmppConnection setupXmppConnection(final Context context, final Account account) {
         final XmppConnection xmppConnection = new XmppConnection(context, account);
         this.connections.add(xmppConnection);
+        xmppConnection.setOnStatusChangedListener(this::onStatusChanged);
+        reconnectAccount(xmppConnection);
         return xmppConnection;
     }
 

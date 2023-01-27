@@ -39,12 +39,17 @@ import eu.siacs.conversations.utils.XmppUri;
 import eu.siacs.conversations.xmpp.Jid;
 import me.drakeet.support.toast.ToastCompat;
 
+import static eu.siacs.conversations.utils.PermissionUtils.allGranted;
+import static eu.siacs.conversations.utils.PermissionUtils.writeGranted;
+
+
 public class WelcomeActivity extends XmppActivity implements XmppConnectionService.OnAccountCreated, KeyChainAliasCallback {
 
     private static final int REQUEST_IMPORT_BACKUP = 0x63fb;
     private static final int REQUEST_READ_EXTERNAL_STORAGE = 0XD737;
 
     private XmppUri inviteUri;
+
 
     public void onInstallReferrerDiscovered(final Uri referrer) {
         Log.d(Config.LOGTAG, "welcome activity: on install referrer discovered " + referrer);
@@ -188,6 +193,11 @@ public class WelcomeActivity extends XmppActivity implements XmppConnectionServi
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
+            case R.id.action_import_backup:
+                if (hasStoragePermission(REQUEST_IMPORT_BACKUP)) {
+                    startActivity(new Intent(this, ImportBackupActivity.class));
+                }
+                break;
             case R.id.action_scan_qr_code:
                 UriHandlerActivity.scan(this, true);
                 break;
@@ -197,6 +207,7 @@ public class WelcomeActivity extends XmppActivity implements XmppConnectionServi
         }
         return super.onOptionsItemSelected(item);
     }
+
 
     private void addAccountFromKey() {
         try {
