@@ -1,7 +1,11 @@
 package im.conversations.android.xmpp.manager;
 
 import android.content.Context;
+import androidx.annotation.NonNull;
 import com.google.common.collect.Collections2;
+import com.google.common.util.concurrent.FutureCallback;
+import com.google.common.util.concurrent.Futures;
+import com.google.common.util.concurrent.MoreExecutors;
 import eu.siacs.conversations.xmpp.Jid;
 import im.conversations.android.database.entity.BookmarkEntity;
 import im.conversations.android.xmpp.XmppConnection;
@@ -11,14 +15,33 @@ import im.conversations.android.xmpp.model.pubsub.event.Retract;
 import java.util.Collection;
 import java.util.Map;
 import java.util.Objects;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 public class BookmarkManager extends AbstractManager {
+
+    private static final Logger LOGGER = LoggerFactory.getLogger(BookmarkManager.class);
+
     public BookmarkManager(Context context, XmppConnection connection) {
         super(context, connection);
     }
 
     public void fetch() {
         final var future = getManager(PubSubManager.class).fetchItems(Conference.class);
+        Futures.addCallback(
+                future,
+                new FutureCallback<>() {
+                    @Override
+                    public void onSuccess(final Map<String, Conference> bookmarks) {
+                        getDatabase().bookmarkDao().setItems(getAccount(), bookmarks);
+                    }
+
+                    @Override
+                    public void onFailure(@NonNull final Throwable throwable) {
+                        LOGGER.warn("Could not fetch bookmarks", throwable);
+                    }
+                },
+                MoreExecutors.directExecutor());
     }
 
     private void updateItems(final Map<String, Conference> items) {

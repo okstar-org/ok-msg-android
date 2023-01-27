@@ -36,4 +36,14 @@ public abstract class BookmarkDao {
         // non null filtering is required because BookmarkEntity.of() can return null values if the
         insert(Collections2.filter(entities, Objects::nonNull));
     }
+
+    @Transaction
+    public void setItems(Account account, Map<String, Conference> items) {
+        deleteAll(account.id);
+        final var entities =
+                Collections2.transform(
+                        items.entrySet(), entry -> BookmarkEntity.of(account.id, entry));
+        // non null filtering is required because BookmarkEntity.of() can return null values if the
+        insert(Collections2.filter(entities, Objects::nonNull));
+    }
 }
