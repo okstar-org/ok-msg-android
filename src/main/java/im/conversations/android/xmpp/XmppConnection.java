@@ -2019,7 +2019,6 @@ public class XmppConnection implements Runnable {
                     } else if (type == Iq.Type.TIMEOUT) {
                         future.setException(new TimeoutException());
                     } else {
-                        Log.d(Config.LOGTAG, "" + result.getError());
                         future.setException(new IqErrorException(result));
                     }
                 });

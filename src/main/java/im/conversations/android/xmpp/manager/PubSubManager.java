@@ -5,6 +5,7 @@ import com.google.common.util.concurrent.Futures;
 import com.google.common.util.concurrent.ListenableFuture;
 import com.google.common.util.concurrent.MoreExecutors;
 import eu.siacs.conversations.xml.Namespace;
+import eu.siacs.conversations.xmpp.Jid;
 import im.conversations.android.xmpp.ExtensionFactory;
 import im.conversations.android.xmpp.XmppConnection;
 import im.conversations.android.xmpp.model.Extension;
@@ -35,18 +36,19 @@ public class PubSubManager extends AbstractManager {
         }
     }
 
-    public <T extends Extension> ListenableFuture<Map<String, T>> fetchItems(final Class<T> clazz) {
+    public <T extends Extension> ListenableFuture<Map<String, T>> fetchItems(
+            final Jid address, final Class<T> clazz) {
         final var id = ExtensionFactory.id(clazz);
         if (id == null) {
             return Futures.immediateFailedFuture(
                     new IllegalArgumentException(
                             String.format("%s is not a registered extension", clazz.getName())));
         }
-        return fetchItems(id.namespace, clazz);
+        return fetchItems(address, id.namespace, clazz);
     }
 
     public <T extends Extension> ListenableFuture<Map<String, T>> fetchItems(
-            final String node, final Class<T> clazz) {
+            final Jid address, final String node, final Class<T> clazz) {
         final Iq request = new Iq(Iq.Type.GET);
         final var pubSub = request.addExtension(new PubSub());
         final var itemsWrapper = pubSub.addExtension(new PubSub.ItemsWrapper());
@@ -74,6 +76,10 @@ public class PubSubManager extends AbstractManager {
         final var node = items.getNode();
         if (connection.fromAccount(message) && Namespace.BOOKMARKS2.equals(node)) {
             getManager(BookmarkManager.class).handleItems(items);
+            return;
+        }
+        if (Namespace.AVATAR_METADATA.equals(node)) {
+            getManager(AvatarManager.class).handleItems(from, items);
         }
     }
 

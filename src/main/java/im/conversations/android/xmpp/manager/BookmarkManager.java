@@ -27,7 +27,8 @@ public class BookmarkManager extends AbstractManager {
     }
 
     public void fetch() {
-        final var future = getManager(PubSubManager.class).fetchItems(Conference.class);
+        final var future =
+                getManager(PubSubManager.class).fetchItems(getAccount().address, Conference.class);
         Futures.addCallback(
                 future,
                 new FutureCallback<>() {
