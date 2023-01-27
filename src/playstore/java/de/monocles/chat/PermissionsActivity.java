@@ -85,7 +85,7 @@ public class PermissionsActivity extends AppCompatActivity
             dialog.show();
         } else {
             if (Compatibility.hasStoragePermission(PermissionsActivity.this)) {
-                StartUI.next(this);
+                //StartUI.next(this);
             }
         }
     }
