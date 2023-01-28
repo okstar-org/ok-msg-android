@@ -117,6 +117,11 @@ public class PubSubManager extends AbstractManager {
         }
         if (Namespace.AVATAR_METADATA.equals(node)) {
             getManager(AvatarManager.class).handleItems(from, items);
+            return;
+        }
+        if (Namespace.NICK.equals(node)) {
+            getManager(NickManager.class).handleItems(from, items);
+            return;
         }
     }
 

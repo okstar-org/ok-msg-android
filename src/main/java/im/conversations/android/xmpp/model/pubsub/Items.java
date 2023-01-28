@@ -2,6 +2,7 @@ package im.conversations.android.xmpp.model.pubsub;
 
 import com.google.common.base.Strings;
 import com.google.common.collect.ImmutableMap;
+import com.google.common.collect.Iterables;
 import im.conversations.android.xmpp.model.Extension;
 import im.conversations.android.xmpp.model.pubsub.event.Retract;
 import java.util.Collection;
@@ -37,5 +38,10 @@ public interface Items {
                     String.format("An item with id %s does not exist", id));
         }
         return item;
+    }
+
+    default <T extends Extension> T getFirstItem(final Class<T> clazz) {
+        final var map = getItemMap(clazz);
+        return Iterables.getFirst(map.values(), null);
     }
 }

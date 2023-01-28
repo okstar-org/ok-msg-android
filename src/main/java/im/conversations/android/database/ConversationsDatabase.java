@@ -11,6 +11,7 @@ import im.conversations.android.database.dao.BlockingDao;
 import im.conversations.android.database.dao.BookmarkDao;
 import im.conversations.android.database.dao.DiscoDao;
 import im.conversations.android.database.dao.MessageDao;
+import im.conversations.android.database.dao.NickDao;
 import im.conversations.android.database.dao.PresenceDao;
 import im.conversations.android.database.dao.RosterDao;
 import im.conversations.android.database.entity.AccountEntity;
@@ -29,6 +30,7 @@ import im.conversations.android.database.entity.DiscoItemEntity;
 import im.conversations.android.database.entity.MessageEntity;
 import im.conversations.android.database.entity.MessagePartEntity;
 import im.conversations.android.database.entity.MessageVersionEntity;
+import im.conversations.android.database.entity.NickEntity;
 import im.conversations.android.database.entity.PresenceEntity;
 import im.conversations.android.database.entity.ReactionEntity;
 import im.conversations.android.database.entity.RosterItemEntity;
@@ -52,6 +54,7 @@ import im.conversations.android.database.entity.RosterItemGroupEntity;
             MessageEntity.class,
             MessagePartEntity.class,
             MessageVersionEntity.class,
+            NickEntity.class,
             PresenceEntity.class,
             ReactionEntity.class,
             RosterItemEntity.class,
@@ -90,6 +93,8 @@ public abstract class ConversationsDatabase extends RoomDatabase {
     public abstract DiscoDao discoDao();
 
     public abstract MessageDao messageDao();
+
+    public abstract NickDao nickDao();
 
     public abstract PresenceDao presenceDao();
 
