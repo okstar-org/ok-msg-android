@@ -2,7 +2,7 @@
   "formatVersion": 1,
   "database": {
     "version": 1,
-    "identityHash": "1f934e1f28328934c3c59ca5b467ad33",
+    "identityHash": "b343db6ec051c535709be3c6ee9b7bed",
     "entities": [
       {
         "tableName": "account",
@@ -123,6 +123,90 @@
           }
         ],
         "foreignKeys": []
+      },
+      {
+        "tableName": "avatar_additional",
+        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`id` INTEGER PRIMARY KEY AUTOINCREMENT, `avatarId` INTEGER NOT NULL, `avatar_external_url` TEXT, `avatar_external_id` TEXT, `avatar_external_type` TEXT, `avatar_external_bytes` INTEGER NOT NULL, `avatar_external_height` INTEGER NOT NULL, `avatar_external_width` INTEGER NOT NULL, FOREIGN KEY(`avatarId`) REFERENCES `avatar`(`id`) ON UPDATE NO ACTION ON DELETE CASCADE )",
+        "fields": [
+          {
+            "fieldPath": "id",
+            "columnName": "id",
+            "affinity": "INTEGER",
+            "notNull": false
+          },
+          {
+            "fieldPath": "avatarId",
+            "columnName": "avatarId",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "external.url",
+            "columnName": "avatar_external_url",
+            "affinity": "TEXT",
+            "notNull": false
+          },
+          {
+            "fieldPath": "external.id",
+            "columnName": "avatar_external_id",
+            "affinity": "TEXT",
+            "notNull": false
+          },
+          {
+            "fieldPath": "external.type",
+            "columnName": "avatar_external_type",
+            "affinity": "TEXT",
+            "notNull": false
+          },
+          {
+            "fieldPath": "external.bytes",
+            "columnName": "avatar_external_bytes",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "external.height",
+            "columnName": "avatar_external_height",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "external.width",
+            "columnName": "avatar_external_width",
+            "affinity": "INTEGER",
+            "notNull": true
+          }
+        ],
+        "primaryKey": {
+          "autoGenerate": true,
+          "columnNames": [
+            "id"
+          ]
+        },
+        "indices": [
+          {
+            "name": "index_avatar_additional_avatarId",
+            "unique": false,
+            "columnNames": [
+              "avatarId"
+            ],
+            "orders": [],
+            "createSql": "CREATE INDEX IF NOT EXISTS `index_avatar_additional_avatarId` ON `${TABLE_NAME}` (`avatarId`)"
+          }
+        ],
+        "foreignKeys": [
+          {
+            "table": "avatar",
+            "onDelete": "CASCADE",
+            "onUpdate": "NO ACTION",
+            "columns": [
+              "avatarId"
+            ],
+            "referencedColumns": [
+              "id"
+            ]
+          }
+        ]
       },
       {
         "tableName": "avatar",
@@ -1508,7 +1592,7 @@
     "views": [],
     "setupQueries": [
       "CREATE TABLE IF NOT EXISTS room_master_table (id INTEGER PRIMARY KEY,identity_hash TEXT)",
-      "INSERT OR REPLACE INTO room_master_table (id,identity_hash) VALUES(42, '1f934e1f28328934c3c59ca5b467ad33')"
+      "INSERT OR REPLACE INTO room_master_table (id,identity_hash) VALUES(42, 'b343db6ec051c535709be3c6ee9b7bed')"
     ]
   }
 }
