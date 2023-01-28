@@ -6,6 +6,7 @@ import im.conversations.android.xmpp.model.Extension;
 import im.conversations.android.xmpp.model.pubsub.event.Retract;
 import java.util.Collection;
 import java.util.Map;
+import java.util.NoSuchElementException;
 
 public interface Items {
 
@@ -26,5 +27,15 @@ public interface Items {
             builder.put(id, extension);
         }
         return builder.buildKeepingLast();
+    }
+
+    default <T extends Extension> T getItemOrThrow(final String id, final Class<T> clazz) {
+        final var map = getItemMap(clazz);
+        final var item = map.get(id);
+        if (item == null) {
+            throw new NoSuchElementException(
+                    String.format("An item with id %s does not exist", id));
+        }
+        return item;
     }
 }

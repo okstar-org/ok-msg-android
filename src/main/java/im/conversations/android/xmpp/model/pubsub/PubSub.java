@@ -52,5 +52,9 @@ public class PubSub extends Extension {
         public String getId() {
             return this.getAttribute("id");
         }
+
+        public void setId(String itemId) {
+            this.setAttribute("id", itemId);
+        }
     }
 }

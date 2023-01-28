@@ -50,6 +50,7 @@ public class PubSubManager extends AbstractManager {
     public <T extends Extension> ListenableFuture<Map<String, T>> fetchItems(
             final Jid address, final String node, final Class<T> clazz) {
         final Iq request = new Iq(Iq.Type.GET);
+        request.setTo(address);
         final var pubSub = request.addExtension(new PubSub());
         final var itemsWrapper = pubSub.addExtension(new PubSub.ItemsWrapper());
         itemsWrapper.setNode(node);
@@ -65,6 +66,42 @@ public class PubSubManager extends AbstractManager {
                         throw new IllegalStateException();
                     }
                     return items.getItemMap(clazz);
+                },
+                MoreExecutors.directExecutor());
+    }
+
+    public <T extends Extension> ListenableFuture<T> fetchItem(
+            final Jid address, final String itemId, final Class<T> clazz) {
+        final var id = ExtensionFactory.id(clazz);
+        if (id == null) {
+            return Futures.immediateFailedFuture(
+                    new IllegalArgumentException(
+                            String.format("%s is not a registered extension", clazz.getName())));
+        }
+        return fetchItem(address, id.namespace, itemId, clazz);
+    }
+
+    public <T extends Extension> ListenableFuture<T> fetchItem(
+            final Jid address, final String node, final String itemId, final Class<T> clazz) {
+        final Iq request = new Iq(Iq.Type.GET);
+        request.setTo(address);
+        final var pubSub = request.addExtension(new PubSub());
+        final var itemsWrapper = pubSub.addExtension(new PubSub.ItemsWrapper());
+        itemsWrapper.setNode(node);
+        final var item = itemsWrapper.addExtension(new PubSub.Item());
+        item.setId(itemId);
+        return Futures.transform(
+                connection.sendIqPacket(request),
+                response -> {
+                    final var pubSubResponse = response.getExtension(PubSub.class);
+                    if (pubSubResponse == null) {
+                        throw new IllegalStateException();
+                    }
+                    final var items = pubSubResponse.getItems();
+                    if (items == null) {
+                        throw new IllegalStateException();
+                    }
+                    return items.getItemOrThrow(itemId, clazz);
                 },
                 MoreExecutors.directExecutor());
     }
