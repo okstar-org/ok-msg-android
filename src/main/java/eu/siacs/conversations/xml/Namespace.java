@@ -1,6 +1,9 @@
 package eu.siacs.conversations.xml;
 
 public final class Namespace {
+
+    public static final String AXOLOTL = "eu.siacs.conversations.axolotl";
+    public static final String AXOLOTL_DEVICE_LIST = AXOLOTL + ".devicelist";
     public static final String AVATAR_CONVERSION = "urn:xmpp:pep-vcard-conversion:0";
     public static final String AVATAR_DATA = "urn:xmpp:avatar:data";
     public static final String AVATAR_METADATA = "urn:xmpp:avatar:metadata";

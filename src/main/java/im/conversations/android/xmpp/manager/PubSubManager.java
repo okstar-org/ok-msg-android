@@ -106,6 +106,30 @@ public class PubSubManager extends AbstractManager {
                 MoreExecutors.directExecutor());
     }
 
+    public <T extends Extension> ListenableFuture<T> fetchMostRecentItem(
+            final Jid address, final String node, final Class<T> clazz) {
+        final Iq request = new Iq(Iq.Type.GET);
+        request.setTo(address);
+        final var pubSub = request.addExtension(new PubSub());
+        final var itemsWrapper = pubSub.addExtension(new PubSub.ItemsWrapper());
+        itemsWrapper.setNode(node);
+        itemsWrapper.setMaxItems(1);
+        return Futures.transform(
+                connection.sendIqPacket(request),
+                response -> {
+                    final var pubSubResponse = response.getExtension(PubSub.class);
+                    if (pubSubResponse == null) {
+                        throw new IllegalStateException();
+                    }
+                    final var items = pubSubResponse.getItems();
+                    if (items == null) {
+                        throw new IllegalStateException();
+                    }
+                    return items.getOnlyItem(clazz);
+                },
+                MoreExecutors.directExecutor());
+    }
+
     private void handleItems(final Message message) {
         final var from = message.getFrom();
         final var event = message.getExtension(Event.class);
@@ -122,6 +146,9 @@ public class PubSubManager extends AbstractManager {
         if (Namespace.NICK.equals(node)) {
             getManager(NickManager.class).handleItems(from, items);
             return;
+        }
+        if (Namespace.AXOLOTL_DEVICE_LIST.equals(node)) {
+            getManager(AxolotlManager.class).handleItems(from, items);
         }
     }
 

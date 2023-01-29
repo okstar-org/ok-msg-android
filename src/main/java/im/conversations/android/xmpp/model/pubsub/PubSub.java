@@ -38,6 +38,10 @@ public class PubSub extends Extension {
         public void setNode(String node) {
             this.setAttribute("node", node);
         }
+
+        public void setMaxItems(final int maxItems) {
+            this.setAttribute("max_items", maxItems);
+        }
     }
 
     @XmlElement(name = "item")

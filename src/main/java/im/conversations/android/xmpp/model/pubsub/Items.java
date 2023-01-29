@@ -44,4 +44,9 @@ public interface Items {
         final var map = getItemMap(clazz);
         return Iterables.getFirst(map.values(), null);
     }
+
+    default <T extends Extension> T getOnlyItem(final Class<T> clazz) {
+        final var map = getItemMap(clazz);
+        return Iterables.getOnlyElement(map.values());
+    }
 }
