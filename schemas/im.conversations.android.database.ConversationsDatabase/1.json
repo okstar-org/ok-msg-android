@@ -2,7 +2,7 @@
   "formatVersion": 1,
   "database": {
     "version": 1,
-    "identityHash": "c0fe4ae85350e91383f8ec90c294514c",
+    "identityHash": "5f0d97a019a02bd732d82eb3173336a9",
     "entities": [
       {
         "tableName": "account",
@@ -286,6 +286,137 @@
             "onUpdate": "NO ACTION",
             "columns": [
               "accountId"
+            ],
+            "referencedColumns": [
+              "id"
+            ]
+          }
+        ]
+      },
+      {
+        "tableName": "axolotl_device_list",
+        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`id` INTEGER PRIMARY KEY AUTOINCREMENT, `accountId` INTEGER NOT NULL, `address` TEXT NOT NULL, `receivedAt` INTEGER NOT NULL, `errorCondition` TEXT, FOREIGN KEY(`accountId`) REFERENCES `account`(`id`) ON UPDATE NO ACTION ON DELETE CASCADE )",
+        "fields": [
+          {
+            "fieldPath": "id",
+            "columnName": "id",
+            "affinity": "INTEGER",
+            "notNull": false
+          },
+          {
+            "fieldPath": "accountId",
+            "columnName": "accountId",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "address",
+            "columnName": "address",
+            "affinity": "TEXT",
+            "notNull": true
+          },
+          {
+            "fieldPath": "receivedAt",
+            "columnName": "receivedAt",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "errorCondition",
+            "columnName": "errorCondition",
+            "affinity": "TEXT",
+            "notNull": false
+          }
+        ],
+        "primaryKey": {
+          "autoGenerate": true,
+          "columnNames": [
+            "id"
+          ]
+        },
+        "indices": [
+          {
+            "name": "index_axolotl_device_list_accountId_address",
+            "unique": true,
+            "columnNames": [
+              "accountId",
+              "address"
+            ],
+            "orders": [],
+            "createSql": "CREATE UNIQUE INDEX IF NOT EXISTS `index_axolotl_device_list_accountId_address` ON `${TABLE_NAME}` (`accountId`, `address`)"
+          }
+        ],
+        "foreignKeys": [
+          {
+            "table": "account",
+            "onDelete": "CASCADE",
+            "onUpdate": "NO ACTION",
+            "columns": [
+              "accountId"
+            ],
+            "referencedColumns": [
+              "id"
+            ]
+          }
+        ]
+      },
+      {
+        "tableName": "axolotl_device_list_item",
+        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`id` INTEGER PRIMARY KEY AUTOINCREMENT, `deviceListId` INTEGER NOT NULL, `deviceId` INTEGER, FOREIGN KEY(`deviceListId`) REFERENCES `axolotl_device_list`(`id`) ON UPDATE NO ACTION ON DELETE CASCADE )",
+        "fields": [
+          {
+            "fieldPath": "id",
+            "columnName": "id",
+            "affinity": "INTEGER",
+            "notNull": false
+          },
+          {
+            "fieldPath": "deviceListId",
+            "columnName": "deviceListId",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "deviceId",
+            "columnName": "deviceId",
+            "affinity": "INTEGER",
+            "notNull": false
+          }
+        ],
+        "primaryKey": {
+          "autoGenerate": true,
+          "columnNames": [
+            "id"
+          ]
+        },
+        "indices": [
+          {
+            "name": "index_axolotl_device_list_item_deviceListId",
+            "unique": false,
+            "columnNames": [
+              "deviceListId"
+            ],
+            "orders": [],
+            "createSql": "CREATE INDEX IF NOT EXISTS `index_axolotl_device_list_item_deviceListId` ON `${TABLE_NAME}` (`deviceListId`)"
+          },
+          {
+            "name": "index_axolotl_device_list_item_deviceListId_deviceId",
+            "unique": true,
+            "columnNames": [
+              "deviceListId",
+              "deviceId"
+            ],
+            "orders": [],
+            "createSql": "CREATE UNIQUE INDEX IF NOT EXISTS `index_axolotl_device_list_item_deviceListId_deviceId` ON `${TABLE_NAME}` (`deviceListId`, `deviceId`)"
+          }
+        ],
+        "foreignKeys": [
+          {
+            "table": "axolotl_device_list",
+            "onDelete": "CASCADE",
+            "onUpdate": "NO ACTION",
+            "columns": [
+              "deviceListId"
             ],
             "referencedColumns": [
               "id"
@@ -1653,7 +1784,7 @@
     "views": [],
     "setupQueries": [
       "CREATE TABLE IF NOT EXISTS room_master_table (id INTEGER PRIMARY KEY,identity_hash TEXT)",
-      "INSERT OR REPLACE INTO room_master_table (id,identity_hash) VALUES(42, 'c0fe4ae85350e91383f8ec90c294514c')"
+      "INSERT OR REPLACE INTO room_master_table (id,identity_hash) VALUES(42, '5f0d97a019a02bd732d82eb3173336a9')"
     ]
   }
 }
