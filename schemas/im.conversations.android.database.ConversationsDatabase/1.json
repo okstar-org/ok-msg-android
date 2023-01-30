@@ -2,7 +2,7 @@
   "formatVersion": 1,
   "database": {
     "version": 1,
-    "identityHash": "5f0d97a019a02bd732d82eb3173336a9",
+    "identityHash": "c2b44b5fa601528f4ebc164388c0b6c0",
     "entities": [
       {
         "tableName": "account",
@@ -295,7 +295,7 @@
       },
       {
         "tableName": "axolotl_device_list",
-        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`id` INTEGER PRIMARY KEY AUTOINCREMENT, `accountId` INTEGER NOT NULL, `address` TEXT NOT NULL, `receivedAt` INTEGER NOT NULL, `errorCondition` TEXT, FOREIGN KEY(`accountId`) REFERENCES `account`(`id`) ON UPDATE NO ACTION ON DELETE CASCADE )",
+        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`id` INTEGER PRIMARY KEY AUTOINCREMENT, `accountId` INTEGER NOT NULL, `address` TEXT NOT NULL, `receivedAt` INTEGER NOT NULL, `errorCondition` TEXT, `isParsingIssue` INTEGER NOT NULL, FOREIGN KEY(`accountId`) REFERENCES `account`(`id`) ON UPDATE NO ACTION ON DELETE CASCADE )",
         "fields": [
           {
             "fieldPath": "id",
@@ -326,6 +326,12 @@
             "columnName": "errorCondition",
             "affinity": "TEXT",
             "notNull": false
+          },
+          {
+            "fieldPath": "isParsingIssue",
+            "columnName": "isParsingIssue",
+            "affinity": "INTEGER",
+            "notNull": true
           }
         ],
         "primaryKey": {
@@ -1784,7 +1790,7 @@
     "views": [],
     "setupQueries": [
       "CREATE TABLE IF NOT EXISTS room_master_table (id INTEGER PRIMARY KEY,identity_hash TEXT)",
-      "INSERT OR REPLACE INTO room_master_table (id,identity_hash) VALUES(42, '5f0d97a019a02bd732d82eb3173336a9')"
+      "INSERT OR REPLACE INTO room_master_table (id,identity_hash) VALUES(42, 'c2b44b5fa601528f4ebc164388c0b6c0')"
     ]
   }
 }

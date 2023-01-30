@@ -9,6 +9,7 @@ import eu.siacs.conversations.xmpp.Jid;
 import im.conversations.android.database.entity.AxolotlDeviceListEntity;
 import im.conversations.android.database.entity.AxolotlDeviceListItemEntity;
 import im.conversations.android.database.model.Account;
+import im.conversations.android.xmpp.model.error.Condition;
 import java.util.Collection;
 import java.util.Set;
 
@@ -22,10 +23,20 @@ public abstract class AxolotlDao {
     protected abstract void insert(Collection<AxolotlDeviceListItemEntity> entities);
 
     @Transaction
-    public void set(Account account, Jid from, Set<Integer> deviceIds) {
+    public void setDeviceList(Account account, Jid from, Set<Integer> deviceIds) {
         final var listId = insert(AxolotlDeviceListEntity.of(account.id, from));
         insert(
                 Collections2.transform(
                         deviceIds, deviceId -> AxolotlDeviceListItemEntity.of(listId, deviceId)));
+    }
+
+    @Transaction
+    public void setDeviceListError(final Account account, final Jid address, Condition condition) {
+        insert(AxolotlDeviceListEntity.of(account.id, address, condition.getName()));
+    }
+
+    @Transaction
+    public void setDeviceListParsingError(final Account account, final Jid address) {
+        insert(AxolotlDeviceListEntity.ofParsingIssue(account.id, address));
     }
 }

@@ -34,11 +34,33 @@ public class AxolotlDeviceListEntity {
 
     public String errorCondition;
 
-    public static AxolotlDeviceListEntity of(long accountId, Jid from) {
+    public boolean isParsingIssue;
+
+    public static AxolotlDeviceListEntity of(long accountId, final Jid address) {
         final var entity = new AxolotlDeviceListEntity();
         entity.accountId = accountId;
-        entity.address = from;
+        entity.address = address;
         entity.receivedAt = Instant.now();
+        entity.isParsingIssue = false;
+        return entity;
+    }
+
+    public static AxolotlDeviceListEntity of(
+            final long accountId, final Jid address, final String errorCondition) {
+        final var entity = new AxolotlDeviceListEntity();
+        entity.accountId = accountId;
+        entity.address = address;
+        entity.receivedAt = Instant.now();
+        entity.errorCondition = errorCondition;
+        return entity;
+    }
+
+    public static AxolotlDeviceListEntity ofParsingIssue(final long account, Jid address) {
+        final var entity = new AxolotlDeviceListEntity();
+        entity.accountId = account;
+        entity.address = address;
+        entity.receivedAt = Instant.now();
+        entity.isParsingIssue = true;
         return entity;
     }
 }

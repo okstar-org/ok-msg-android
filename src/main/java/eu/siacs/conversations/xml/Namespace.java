@@ -2,11 +2,12 @@ package eu.siacs.conversations.xml;
 
 public final class Namespace {
 
-    public static final String AXOLOTL = "eu.siacs.conversations.axolotl";
-    public static final String AXOLOTL_DEVICE_LIST = AXOLOTL + ".devicelist";
     public static final String AVATAR_CONVERSION = "urn:xmpp:pep-vcard-conversion:0";
     public static final String AVATAR_DATA = "urn:xmpp:avatar:data";
     public static final String AVATAR_METADATA = "urn:xmpp:avatar:metadata";
+    public static final String AXOLOTL = "eu.siacs.conversations.axolotl";
+    public static final String AXOLOTL_BUNDLES = AXOLOTL + ".bundles";
+    public static final String AXOLOTL_DEVICE_LIST = AXOLOTL + ".devicelist";
     public static final String BIND = "urn:ietf:params:xml:ns:xmpp-bind";
     public static final String BIND2 = "urn:xmpp:bind:0";
     public static final String BLOCKING = "urn:xmpp:blocking";
