@@ -8,6 +8,7 @@ import com.google.common.util.concurrent.ListenableFuture;
 import com.google.common.util.concurrent.MoreExecutors;
 import eu.siacs.conversations.xml.Namespace;
 import eu.siacs.conversations.xmpp.Jid;
+import im.conversations.android.database.AxolotlDatabaseStore;
 import im.conversations.android.xmpp.IqErrorException;
 import im.conversations.android.xmpp.XmppConnection;
 import im.conversations.android.xmpp.model.axolotl.Bundle;
@@ -18,13 +19,17 @@ import java.util.Set;
 import java.util.concurrent.TimeoutException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.whispersystems.libsignal.state.SignalProtocolStore;
 
 public class AxolotlManager extends AbstractManager {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(AxolotlManager.class);
 
+    private final SignalProtocolStore signalProtocolStore;
+
     public AxolotlManager(Context context, XmppConnection connection) {
         super(context, connection);
+        this.signalProtocolStore = new AxolotlDatabaseStore(context, connection.getAccount());
     }
 
     public void handleItems(final Jid from, final Items items) {

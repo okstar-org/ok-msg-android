@@ -20,6 +20,11 @@ import im.conversations.android.database.entity.AvatarAdditionalEntity;
 import im.conversations.android.database.entity.AvatarEntity;
 import im.conversations.android.database.entity.AxolotlDeviceListEntity;
 import im.conversations.android.database.entity.AxolotlDeviceListItemEntity;
+import im.conversations.android.database.entity.AxolotlIdentityEntity;
+import im.conversations.android.database.entity.AxolotlIdentityKeyPairEntity;
+import im.conversations.android.database.entity.AxolotlPreKeyEntity;
+import im.conversations.android.database.entity.AxolotlSessionEntity;
+import im.conversations.android.database.entity.AxolotlSignedPreKeyEntity;
 import im.conversations.android.database.entity.BlockedItemEntity;
 import im.conversations.android.database.entity.BookmarkEntity;
 import im.conversations.android.database.entity.ChatEntity;
@@ -46,6 +51,11 @@ import im.conversations.android.database.entity.RosterItemGroupEntity;
             AvatarEntity.class,
             AxolotlDeviceListEntity.class,
             AxolotlDeviceListItemEntity.class,
+            AxolotlIdentityEntity.class,
+            AxolotlIdentityKeyPairEntity.class,
+            AxolotlPreKeyEntity.class,
+            AxolotlSessionEntity.class,
+            AxolotlSignedPreKeyEntity.class,
             BlockedItemEntity.class,
             BookmarkEntity.class,
             ChatEntity.class,
