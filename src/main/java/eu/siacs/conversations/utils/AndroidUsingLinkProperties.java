@@ -21,7 +21,7 @@ public class AndroidUsingLinkProperties extends AbstractDNSServerLookupMechanism
 
     private final Context context;
 
-    AndroidUsingLinkProperties(Context context) {
+    public AndroidUsingLinkProperties(Context context) {
         super(AndroidUsingLinkProperties.class.getSimpleName(), AndroidUsingExec.PRIORITY - 1);
         this.context = context;
     }

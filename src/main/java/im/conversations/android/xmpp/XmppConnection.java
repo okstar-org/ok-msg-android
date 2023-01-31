@@ -32,7 +32,7 @@ import eu.siacs.conversations.services.NotificationService;
 import eu.siacs.conversations.ui.util.PendingItem;
 import eu.siacs.conversations.utils.Patterns;
 import eu.siacs.conversations.utils.PhoneHelper;
-import eu.siacs.conversations.utils.Resolver;
+import im.conversations.android.utils.Resolver;
 import eu.siacs.conversations.utils.SSLSockets;
 import eu.siacs.conversations.utils.SocksSocketFactory;
 import eu.siacs.conversations.utils.XmlHelper;
