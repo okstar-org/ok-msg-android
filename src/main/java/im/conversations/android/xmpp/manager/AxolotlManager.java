@@ -11,6 +11,7 @@ import eu.siacs.conversations.xmpp.Jid;
 import im.conversations.android.database.AxolotlDatabaseStore;
 import im.conversations.android.xmpp.IqErrorException;
 import im.conversations.android.xmpp.XmppConnection;
+import im.conversations.android.xmpp.axolotl.AxolotlAddress;
 import im.conversations.android.xmpp.model.axolotl.Bundle;
 import im.conversations.android.xmpp.model.axolotl.DeviceList;
 import im.conversations.android.xmpp.model.pubsub.Items;
@@ -19,6 +20,12 @@ import java.util.Set;
 import java.util.concurrent.TimeoutException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.whispersystems.libsignal.IdentityKey;
+import org.whispersystems.libsignal.InvalidKeyException;
+import org.whispersystems.libsignal.SessionBuilder;
+import org.whispersystems.libsignal.SessionCipher;
+import org.whispersystems.libsignal.UntrustedIdentityException;
+import org.whispersystems.libsignal.state.PreKeyBundle;
 import org.whispersystems.libsignal.state.SignalProtocolStore;
 
 public class AxolotlManager extends AbstractManager {
@@ -84,5 +91,58 @@ public class AxolotlManager extends AbstractManager {
     public ListenableFuture<Bundle> fetchBundle(final Jid address, final int deviceId) {
         final var node = String.format(Locale.ROOT, "%s:%d", Namespace.AXOLOTL_BUNDLES, deviceId);
         return getManager(PubSubManager.class).fetchMostRecentItem(address, node, Bundle.class);
+    }
+
+    public ListenableFuture<SessionCipher> getOrCreateSessionCipher(
+            final AxolotlAddress axolotlAddress) {
+        if (signalProtocolStore.containsSession(axolotlAddress)) {
+            return Futures.immediateFuture(new SessionCipher(signalProtocolStore, axolotlAddress));
+        } else {
+            final var bundleFuture =
+                    fetchBundle(axolotlAddress.getJid(), axolotlAddress.getDeviceId());
+            return Futures.transform(
+                    bundleFuture,
+                    bundle -> {
+                        buildSession(axolotlAddress, bundle);
+                        return new SessionCipher(signalProtocolStore, axolotlAddress);
+                    },
+                    MoreExecutors.directExecutor());
+        }
+    }
+
+    private void buildSession(final AxolotlAddress address, final Bundle bundle) {
+        final var sessionBuilder = new SessionBuilder(signalProtocolStore, address);
+        final var deviceId = address.getDeviceId();
+        final var preKey = bundle.getRandomPreKey();
+        final var signedPreKey = bundle.getSignedPreKey();
+        final var signedPreKeySignature = bundle.getSignedPreKeySignature();
+        final var identityKey = bundle.getIdentityKey();
+        if (preKey == null) {
+            throw new IllegalArgumentException("No PreKey found in bundle");
+        }
+        if (signedPreKey == null) {
+            throw new IllegalArgumentException("No signed PreKey found in bundle");
+        }
+        if (signedPreKeySignature == null) {
+            throw new IllegalArgumentException("No signed PreKey signature found in bundle");
+        }
+        if (identityKey == null) {
+            throw new IllegalArgumentException("No IdentityKey found in bundle");
+        }
+        final var preKeyBundle =
+                new PreKeyBundle(
+                        0,
+                        deviceId,
+                        preKey.getId(),
+                        preKey.asECPublicKey(),
+                        signedPreKey.getId(),
+                        signedPreKey.asECPublicKey(),
+                        signedPreKeySignature.asBytes(),
+                        new IdentityKey(identityKey.asECPublicKey()));
+        try {
+            sessionBuilder.process(preKeyBundle);
+        } catch (final InvalidKeyException | UntrustedIdentityException e) {
+            throw new RuntimeException(e);
+        }
     }
 }
