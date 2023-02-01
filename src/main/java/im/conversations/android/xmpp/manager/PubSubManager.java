@@ -23,6 +23,8 @@ public class PubSubManager extends AbstractManager {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(PubSubManager.class);
 
+    private static final String SINGLETON_ITEM_ID = "current";
+
     public PubSubManager(Context context, XmppConnection connection) {
         super(context, connection);
     }
@@ -160,5 +162,36 @@ public class PubSubManager extends AbstractManager {
         if (connection.fromAccount(message) && Namespace.BOOKMARKS2.equals(node)) {
             getManager(BookmarkManager.class).deleteAllItems();
         }
+    }
+
+    public ListenableFuture<Void> publishSingleton(Jid address, Extension item) {
+        final var id = ExtensionFactory.id(item.getClass());
+        return publish(address, item, SINGLETON_ITEM_ID, id.namespace);
+    }
+
+    public ListenableFuture<Void> publishSingleton(Jid address, Extension item, final String node) {
+        return publish(address, item, SINGLETON_ITEM_ID, node);
+    }
+
+    public ListenableFuture<Void> publish(Jid address, Extension item, final String itemId) {
+        final var id = ExtensionFactory.id(item.getClass());
+        return publish(address, item, itemId, id.namespace);
+    }
+
+    public ListenableFuture<Void> publish(
+            final Jid address,
+            final Extension itemPayload,
+            final String itemId,
+            final String node) {
+        final var iq = new Iq(Iq.Type.SET);
+        iq.setTo(address);
+        final var pubSub = iq.addExtension(new PubSub());
+        final var pubSubItemsWrapper = pubSub.addExtension(new PubSub.ItemsWrapper());
+        pubSubItemsWrapper.setNode(node);
+        final var item = pubSubItemsWrapper.addExtension(new PubSub.Item());
+        item.setId(itemId);
+        item.addExtension(itemPayload);
+        return Futures.transform(
+                connection.sendIqPacket(iq), result -> null, MoreExecutors.directExecutor());
     }
 }

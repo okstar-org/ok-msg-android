@@ -78,6 +78,11 @@ public abstract class AxolotlDao {
                     + " signedPreKeyId=:signedPreKeyId")
     public abstract SignedPreKeyRecord getSignedPreKey(long account, int signedPreKeyId);
 
+    @Query(
+            "SELECT signedPreKeyRecord FROM axolotl_signed_pre_key WHERE accountId=:account ORDER"
+                    + " BY signedPreKeyId DESC LIMIT 1")
+    public abstract SignedPreKeyRecord getLatestSignedPreKey(long account);
+
     @Transaction
     public boolean setIdentity(
             Account account, Jid address, int deviceId, IdentityKey identityKey) {
@@ -103,12 +108,27 @@ public abstract class AxolotlDao {
                     + " preKeyid=:preKeyId")
     public abstract PreKeyRecord getPreKey(long account, int preKeyId);
 
+    @Query("SELECT MAX(preKeyId) FROM axolotl_pre_key WHERE accountId=:account")
+    public abstract Integer getMaxPreKeyId(final long account);
+
+    @Query("SELECT COUNT(id) FROM axolotl_pre_key WHERE accountId=:account AND removed=0")
+    public abstract int getExistingPreKeyCount(final long account);
+
     public void setPreKey(final Account account, int preKeyId, PreKeyRecord preKeyRecord) {
         insert(AxolotlPreKeyEntity.of(account, preKeyId, preKeyRecord));
     }
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     protected abstract void insert(AxolotlPreKeyEntity axolotlPreKeyEntity);
+
+    public void setPreKeys(final Account account, final Collection<PreKeyRecord> preKeyRecords) {
+        insertPreKeys(
+                Collections2.transform(
+                        preKeyRecords, r -> AxolotlPreKeyEntity.of(account, r.getId(), r)));
+    }
+
+    @Insert(onConflict = OnConflictStrategy.REPLACE)
+    protected abstract void insertPreKeys(Collection<AxolotlPreKeyEntity> entities);
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     protected abstract void insert(AxolotlSessionEntity axolotlSessionEntity);
@@ -156,8 +176,13 @@ public abstract class AxolotlDao {
     @Query("DELETE FROM axolotl_session WHERE accountId=:account AND address=:address")
     public abstract void deleteSessions(long account, String address);
 
-    @Query("SELECT signedPreKeyRecord FROM axolotl_signed_pre_key WHERE accountId=:account")
+    @Query(
+            "SELECT signedPreKeyRecord FROM axolotl_signed_pre_key WHERE accountId=:account AND"
+                    + " removed=0")
     public abstract List<SignedPreKeyRecord> getSignedPreKeys(long account);
+
+    @Query("SELECT preKeyRecord FROM axolotl_pre_key WHERE accountId=:account AND removed=0")
+    public abstract List<PreKeyRecord> getPreKeys(long account);
 
     public void setSignedPreKey(Account account, int signedPreKeyId, SignedPreKeyRecord record) {
         insert(AxolotlSignedPreKeyEntity.of(account, signedPreKeyId, record));

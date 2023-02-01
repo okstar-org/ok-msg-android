@@ -14,4 +14,8 @@ public class PreKey extends Extension implements ECPublicKeyContent {
     public int getId() {
         return Ints.saturatedCast(this.getLongAttribute("preKeyId"));
     }
+
+    public void setId(int id) {
+        this.setAttribute("id", id);
+    }
 }

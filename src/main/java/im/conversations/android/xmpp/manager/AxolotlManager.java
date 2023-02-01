@@ -27,10 +27,13 @@ import org.whispersystems.libsignal.SessionCipher;
 import org.whispersystems.libsignal.UntrustedIdentityException;
 import org.whispersystems.libsignal.state.PreKeyBundle;
 import org.whispersystems.libsignal.state.SignalProtocolStore;
+import org.whispersystems.libsignal.util.KeyHelper;
 
 public class AxolotlManager extends AbstractManager {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(AxolotlManager.class);
+
+    private static final int NUM_PRE_KEYS_IN_BUNDLE = 30;
 
     private final SignalProtocolStore signalProtocolStore;
 
@@ -144,5 +147,35 @@ public class AxolotlManager extends AbstractManager {
         } catch (final InvalidKeyException | UntrustedIdentityException e) {
             throw new RuntimeException(e);
         }
+    }
+
+    private void refillPreKeys() {
+        final var accountId = getAccount().id;
+        final var axolotlDao = getDatabase().axolotlDao();
+        final var existing = axolotlDao.getExistingPreKeyCount(accountId);
+        final var max = axolotlDao.getMaxPreKeyId(accountId);
+        final var count = NUM_PRE_KEYS_IN_BUNDLE - existing;
+        final int start = max == null ? 0 : max + 1;
+        final var preKeys = KeyHelper.generatePreKeys(start, count);
+        axolotlDao.setPreKeys(getAccount(), preKeys);
+        if (count > 0) {
+            LOGGER.info("Generated {} PreKeys starting with {}", preKeys.size(), start);
+        }
+    }
+
+    private ListenableFuture<Void> publishBundle() {
+        final var bundle = new Bundle();
+        bundle.setIdentityKey(
+                signalProtocolStore.getIdentityKeyPair().getPublicKey().getPublicKey());
+        final var signedPreKeyRecord =
+                getDatabase().axolotlDao().getLatestSignedPreKey(getAccount().id);
+        if (signedPreKeyRecord == null) {
+            throw new IllegalStateException("No signed PreKeys have been created yet");
+        }
+        bundle.setSignedPreKey(
+                signedPreKeyRecord.getKeyPair().getPublicKey(), signedPreKeyRecord.getSignature());
+        bundle.setPreKeys(getDatabase().axolotlDao().getPreKeys(getAccount().id));
+        return getManager(PubSubManager.class)
+                .publishSingleton(getAccount().address, bundle, Namespace.AXOLOTL_BUNDLES);
     }
 }

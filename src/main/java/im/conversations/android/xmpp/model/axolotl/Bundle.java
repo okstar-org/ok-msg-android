@@ -5,6 +5,9 @@ import im.conversations.android.annotation.XmlElement;
 import im.conversations.android.xmpp.model.Extension;
 import java.util.Collection;
 import java.util.Collections;
+import java.util.List;
+import org.whispersystems.libsignal.ecc.ECPublicKey;
+import org.whispersystems.libsignal.state.PreKeyRecord;
 
 @XmlElement
 public class Bundle extends Extension {
@@ -30,5 +33,26 @@ public class Bundle extends Extension {
         final Collection<PreKey> preKeyList =
                 preKeys == null ? Collections.emptyList() : preKeys.getExtensions(PreKey.class);
         return Iterables.get(preKeyList, (int) (preKeyList.size() * Math.random()), null);
+    }
+
+    public void setIdentityKey(final ECPublicKey ecPublicKey) {
+        final var identityKey = this.addExtension(new IdentityKey());
+        identityKey.setContent(ecPublicKey);
+    }
+
+    public void setSignedPreKey(final ECPublicKey ecPublicKey, final byte[] signature) {
+        final var signedPreKey = this.addExtension(new SignedPreKey());
+        signedPreKey.setContent(ecPublicKey);
+        final var signedPreKeySignature = this.addExtension(new SignedPreKeySignature());
+        signedPreKeySignature.setContent(signature);
+    }
+
+    public void setPreKeys(final List<PreKeyRecord> preKeyRecords) {
+        final var preKeys = this.addExtension(new PreKeys());
+        for (final PreKeyRecord preKeyRecord : preKeyRecords) {
+            final var preKey = preKeys.addExtension(new PreKey());
+            preKey.setId(preKeyRecord.getId());
+            preKey.setContent(preKeyRecord.getKeyPair().getPublicKey());
+        }
     }
 }

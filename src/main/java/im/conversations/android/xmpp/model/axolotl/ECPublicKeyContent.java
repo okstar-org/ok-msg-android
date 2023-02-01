@@ -8,7 +8,6 @@ import org.whispersystems.libsignal.ecc.ECPublicKey;
 public interface ECPublicKeyContent extends ByteContent {
 
     default ECPublicKey asECPublicKey() {
-        final var bytes = asBytes();
         try {
             return Curve.decodePoint(asBytes(), 0);
         } catch (InvalidKeyException e) {
@@ -16,5 +15,9 @@ public interface ECPublicKeyContent extends ByteContent {
                     String.format("%s does not contain a valid ECPublicKey", getClass().getName()),
                     e);
         }
+    }
+
+    default void setContent(final ECPublicKey ecPublicKey) {
+        setContent(ecPublicKey.serialize());
     }
 }

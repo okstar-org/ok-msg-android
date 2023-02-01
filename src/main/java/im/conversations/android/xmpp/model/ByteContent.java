@@ -3,6 +3,7 @@ package im.conversations.android.xmpp.model;
 import com.google.common.base.CharMatcher;
 import com.google.common.base.Strings;
 import com.google.common.io.BaseEncoding;
+import eu.siacs.conversations.xml.Element;
 
 public interface ByteContent {
 
@@ -22,4 +23,10 @@ public interface ByteContent {
                     String.format("%s element contains invalid base64", getClass().getName()));
         }
     }
+
+    default void setContent(final byte[] bytes) {
+        setContent(BaseEncoding.base64().encode(bytes));
+    }
+
+    Element setContent(final String content);
 }
