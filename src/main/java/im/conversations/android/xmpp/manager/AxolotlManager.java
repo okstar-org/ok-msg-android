@@ -164,6 +164,25 @@ public class AxolotlManager extends AbstractManager {
     }
 
     private ListenableFuture<Void> publishBundle() {
+        final ListenableFuture<Bundle> bundleFuture =
+                Futures.submit(this::prepareBundle, IO_EXECUTOR);
+        return Futures.transformAsync(
+                bundleFuture,
+                bundle -> {
+                    final var node =
+                            String.format(
+                                    Locale.ROOT,
+                                    "%s:%d",
+                                    Namespace.AXOLOTL_BUNDLES,
+                                    signalProtocolStore.getLocalRegistrationId());
+                    return getManager(PubSubManager.class)
+                            .publishSingleton(getAccount().address, bundle, node);
+                },
+                MoreExecutors.directExecutor());
+    }
+
+    private Bundle prepareBundle() {
+        refillPreKeys();
         final var bundle = new Bundle();
         bundle.setIdentityKey(
                 signalProtocolStore.getIdentityKeyPair().getPublicKey().getPublicKey());
@@ -175,7 +194,6 @@ public class AxolotlManager extends AbstractManager {
         bundle.setSignedPreKey(
                 signedPreKeyRecord.getKeyPair().getPublicKey(), signedPreKeyRecord.getSignature());
         bundle.setPreKeys(getDatabase().axolotlDao().getPreKeys(getAccount().id));
-        return getManager(PubSubManager.class)
-                .publishSingleton(getAccount().address, bundle, Namespace.AXOLOTL_BUNDLES);
+        return bundle;
     }
 }
