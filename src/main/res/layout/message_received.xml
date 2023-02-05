@@ -20,7 +20,7 @@
         android:layout_alignParentLeft="true"
         android:layout_alignParentBottom="true"
         android:scaleType="fitXY"
-        app:riv_corner_radius="@dimen/rounded_avatar_border" />
+        app:riv_corner_radius="30dp" />
 
     <LinearLayout
         android:id="@+id/message_box"
