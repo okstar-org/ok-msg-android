@@ -2,6 +2,7 @@ package im.conversations.android.xmpp.manager;
 
 import android.content.Context;
 import androidx.annotation.NonNull;
+import com.google.common.collect.ImmutableSet;
 import com.google.common.util.concurrent.FutureCallback;
 import com.google.common.util.concurrent.Futures;
 import com.google.common.util.concurrent.ListenableFuture;
@@ -15,6 +16,7 @@ import im.conversations.android.xmpp.axolotl.AxolotlAddress;
 import im.conversations.android.xmpp.model.axolotl.Bundle;
 import im.conversations.android.xmpp.model.axolotl.DeviceList;
 import im.conversations.android.xmpp.model.pubsub.Items;
+import java.util.Collection;
 import java.util.Locale;
 import java.util.Set;
 import java.util.concurrent.TimeoutException;
@@ -27,6 +29,7 @@ import org.whispersystems.libsignal.SessionCipher;
 import org.whispersystems.libsignal.UntrustedIdentityException;
 import org.whispersystems.libsignal.state.PreKeyBundle;
 import org.whispersystems.libsignal.state.SignalProtocolStore;
+import org.whispersystems.libsignal.state.SignedPreKeyRecord;
 import org.whispersystems.libsignal.util.KeyHelper;
 
 public class AxolotlManager extends AbstractManager {
@@ -60,6 +63,7 @@ public class AxolotlManager extends AbstractManager {
                                         address, Namespace.AXOLOTL_DEVICE_LIST, DeviceList.class),
                         DeviceList::getDeviceIds,
                         MoreExecutors.directExecutor());
+        // TODO refactor callback into class
         Futures.addCallback(
                 deviceIdsFuture,
                 new FutureCallback<>() {
@@ -149,18 +153,69 @@ public class AxolotlManager extends AbstractManager {
         }
     }
 
-    private void refillPreKeys() {
-        final var accountId = getAccount().id;
-        final var axolotlDao = getDatabase().axolotlDao();
-        final var existing = axolotlDao.getExistingPreKeyCount(accountId);
-        final var max = axolotlDao.getMaxPreKeyId(accountId);
-        final var count = NUM_PRE_KEYS_IN_BUNDLE - existing;
-        final int start = max == null ? 0 : max + 1;
-        final var preKeys = KeyHelper.generatePreKeys(start, count);
-        axolotlDao.setPreKeys(getAccount(), preKeys);
-        if (count > 0) {
-            LOGGER.info("Generated {} PreKeys starting with {}", preKeys.size(), start);
+    public void publishIfNecessary() {
+        final int myDeviceId = getAccount().getPublicDeviceIdInt();
+        if (getDatabase()
+                        .axolotlDao()
+                        .hasDeviceId(getAccount().id, getAccount().address, myDeviceId)
+                && getManager(DiscoManager.class)
+                        .hasAccountFeature(Namespace.PUB_SUB_PERSISTENT_ITEMS)) {
+            LOGGER.info(
+                    "device id seems to be current and server supports persistent items. nothing"
+                            + " to do");
+            return;
         }
+        final var future = publishBundleAndDeviceId();
+        Futures.addCallback(
+                future,
+                new FutureCallback<>() {
+                    @Override
+                    public void onSuccess(Void result) {
+                        LOGGER.info("Successfully publish bundle and device ID {}", myDeviceId);
+                    }
+
+                    @Override
+                    public void onFailure(@NonNull Throwable throwable) {
+                        LOGGER.warn(
+                                "Could not publish bundle and device ID for account {} ",
+                                getAccount().address,
+                                throwable);
+                    }
+                },
+                MoreExecutors.directExecutor());
+    }
+
+    private ListenableFuture<Void> publishBundleAndDeviceId() {
+        final ListenableFuture<Void> bundleFuture = publishBundle();
+        return Futures.transformAsync(
+                bundleFuture, ignored -> publishDeviceId(), MoreExecutors.directExecutor());
+    }
+
+    private ListenableFuture<Void> publishDeviceId() {
+        final var currentDeviceIdsFuture = fetchDeviceIds(getAccount().address);
+        return Futures.transformAsync(
+                currentDeviceIdsFuture,
+                currentDeviceIds -> {
+                    final var myDeviceId = getAccount().getPublicDeviceIdInt();
+                    if (currentDeviceIds.contains(myDeviceId)) {
+                        return Futures.immediateVoidFuture();
+                    } else {
+                        final var deviceIds =
+                                new ImmutableSet.Builder<Integer>()
+                                        .addAll(currentDeviceIds)
+                                        .add(myDeviceId)
+                                        .build();
+                        return publishDeviceIds(deviceIds);
+                    }
+                },
+                MoreExecutors.directExecutor());
+    }
+
+    private ListenableFuture<Void> publishDeviceIds(final Collection<Integer> deviceIds) {
+        final var deviceList = new DeviceList();
+        deviceList.setDeviceIds(deviceIds);
+        return getManager(PubSubManager.class)
+                .publishSingleton(getAccount().address, deviceList, Namespace.AXOLOTL_DEVICE_LIST);
     }
 
     private ListenableFuture<Void> publishBundle() {
@@ -195,5 +250,32 @@ public class AxolotlManager extends AbstractManager {
                 signedPreKeyRecord.getKeyPair().getPublicKey(), signedPreKeyRecord.getSignature());
         bundle.setPreKeys(getDatabase().axolotlDao().getPreKeys(getAccount().id));
         return bundle;
+    }
+
+    private void refillPreKeys() {
+        final var accountId = getAccount().id;
+        final var axolotlDao = getDatabase().axolotlDao();
+        final var existing = axolotlDao.getExistingPreKeyCount(accountId);
+        final var max = axolotlDao.getMaxPreKeyId(accountId);
+        final var count = NUM_PRE_KEYS_IN_BUNDLE - existing;
+        final int start = max == null ? 0 : max + 1;
+        final var preKeys = KeyHelper.generatePreKeys(start, count);
+        final int signedPreKeyId = (start + count) / NUM_PRE_KEYS_IN_BUNDLE - 1;
+        if (getDatabase().axolotlDao().hasNotSignedPreKey(getAccount().id, signedPreKeyId)) {
+            final SignedPreKeyRecord signedPreKeyRecord;
+            try {
+                signedPreKeyRecord =
+                        KeyHelper.generateSignedPreKey(
+                                signalProtocolStore.getIdentityKeyPair(), signedPreKeyId);
+            } catch (final InvalidKeyException e) {
+                throw new IllegalStateException("Could not generate SignedPreKey", e);
+            }
+            signalProtocolStore.storeSignedPreKey(signedPreKeyRecord.getId(), signedPreKeyRecord);
+            LOGGER.info("Generated SignedPreKey #{}", signedPreKeyRecord.getId());
+        }
+        axolotlDao.setPreKeys(getAccount(), preKeys);
+        if (count > 0) {
+            LOGGER.info("Generated {} PreKeys starting with {}", preKeys.size(), start);
+        }
     }
 }

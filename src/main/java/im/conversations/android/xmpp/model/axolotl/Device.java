@@ -15,4 +15,8 @@ public class Device extends Extension {
     public Integer getDeviceId() {
         return Ints.tryParse(Strings.nullToEmpty(this.getAttribute("id")));
     }
+
+    public void setDeviceId(int deviceId) {
+        this.setAttribute("id", deviceId);
+    }
 }

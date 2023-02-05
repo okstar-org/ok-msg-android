@@ -43,6 +43,12 @@ public abstract class AxolotlDao {
                         deviceIds, deviceId -> AxolotlDeviceListItemEntity.of(listId, deviceId)));
     }
 
+    @Query(
+            "SELECT EXISTS(SELECT deviceId FROM axolotl_device_list JOIN axolotl_device_list_item"
+                    + " ON axolotl_device_list.id=axolotl_device_list_item.deviceId WHERE"
+                    + " accountId=:account AND address=:address AND deviceId=:deviceId)")
+    public abstract boolean hasDeviceId(final long account, final Jid address, final int deviceId);
+
     @Transaction
     public void setDeviceListError(final Account account, final Jid address, Condition condition) {
         insert(AxolotlDeviceListEntity.of(account.id, address, condition.getName()));
@@ -77,6 +83,11 @@ public abstract class AxolotlDao {
             "SELECT signedPreKeyRecord FROM axolotl_signed_pre_key WHERE accountId=:account AND"
                     + " signedPreKeyId=:signedPreKeyId")
     public abstract SignedPreKeyRecord getSignedPreKey(long account, int signedPreKeyId);
+
+    @Query(
+            "SELECT NOT EXISTS(SELECT signedPreKeyRecord FROM axolotl_signed_pre_key WHERE"
+                    + " accountId=:account AND signedPreKeyId=:signedPreKeyId)")
+    public abstract boolean hasNotSignedPreKey(long account, int signedPreKeyId);
 
     @Query(
             "SELECT signedPreKeyRecord FROM axolotl_signed_pre_key WHERE accountId=:account ORDER"
@@ -157,7 +168,7 @@ public abstract class AxolotlDao {
     public abstract SessionRecord getSessionRecord(long account, Jid address, int deviceId);
 
     @Query("SELECT deviceId FROM axolotl_session WHERE accountId=:account AND address=:address")
-    public abstract List<Integer> getDeviceIds(long account, String address);
+    public abstract List<Integer> getSessionDeviceIds(long account, String address);
 
     public void setSessionRecord(Account account, Jid address, int deviceId, SessionRecord record) {
         insert(AxolotlSessionEntity.of(account, address, deviceId, record));

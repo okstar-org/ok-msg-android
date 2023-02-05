@@ -25,4 +25,11 @@ public class DeviceList extends Extension {
                         Collections2.transform(getDevices(), Device::getDeviceId),
                         Objects::nonNull));
     }
+
+    public void setDeviceIds(Collection<Integer> deviceIds) {
+        for (final Integer deviceId : deviceIds) {
+            final var device = this.addExtension(new Device());
+            device.setDeviceId(deviceId);
+        }
+    }
 }

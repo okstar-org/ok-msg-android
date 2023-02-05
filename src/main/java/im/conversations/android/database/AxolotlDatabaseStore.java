@@ -87,7 +87,7 @@ public class AxolotlDatabaseStore implements SignalProtocolStore {
 
     @Override
     public List<Integer> getSubDeviceSessions(String name) {
-        return axolotlDao().getDeviceIds(account.id, name);
+        return axolotlDao().getSessionDeviceIds(account.id, name);
     }
 
     @Override
