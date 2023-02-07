@@ -37,6 +37,6 @@ public class PublishOptions {
     public static boolean preconditionNotMet(IqPacket response) {
         final Element error =
                 response.getType() == IqPacket.TYPE.ERROR ? response.findChild("error") : null;
-        return error != null && error.hasChild("precondition-not-met", Namespace.PUB_SUB_ERROR);
+        return error != null && error.hasChild("precondition-not-met", Namespace.PUB_SUB_ERRORS);
     }
 }
