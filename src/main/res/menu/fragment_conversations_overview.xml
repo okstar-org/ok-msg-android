@@ -37,7 +37,7 @@
         android:icon="?attr/icon_search"
         app:showAsAction="always" />
     <item
-        android:id="@+id/action_invite"
+        android:id="@+id/action_invite_user"
         android:orderInCategory="89"
         app:showAsAction="ifRoom"
         android:icon="?attr/icon_add_person"
