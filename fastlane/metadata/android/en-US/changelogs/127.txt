@@ -1,0 +1,10 @@
+* Integrate Conversations UnifiedPush Distributor to facilitate push messages to other UnifiedPush enabled apps like Tusky and Fedilab
+* Fix crash in UnifiedPush Distributor
+* Fix resend loop on servers that support only sm:2
+* Show 'Switch to video' only if other party supports video
+* Fixed regression in P2P file transfer
+* Fix messages getting resend when using SASL2
+* Fix black video between some devices
+* Fix crash on empty passwords
+* Integration of Conversations 3 updates
+* Updated WebRTC

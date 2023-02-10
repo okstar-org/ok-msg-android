@@ -1,0 +1,10 @@
+* Integration des Conversations UnifiedPush Distributors, um Push-Nachrichten an andere UnifiedPush-fähige Anwendungen wie Tusky und Fedilab zu ermöglichen
+* Behebt einen Absturz im UnifiedPush Distributor
+* Behebung der Resend-Schleife auf Servern, die nur sm:2 unterstützen
+* Zeigt 'Switch to video' nur an, wenn die andere Partei Video unterstützt
+* Regression in P2P-Dateiübertragung behoben
+* Behebt Nachrichten, die bei Verwendung von SASL2 erneut gesendet werden
+* Behebt schwarze Videos zwischen einigen Geräten
+* Behebt Absturz bei leeren Passwörtern
+* Integration der Conversationens 3 Updates
+* Update WebRTC
