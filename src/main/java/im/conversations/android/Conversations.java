@@ -25,7 +25,7 @@ public class Conversations extends Application {
         final var accountRepository = new AccountRepository(this);
         final var accountFuture =
                 accountRepository.createAccountAsync(
-                        Jid.ofEscaped("derdaniel@xmpp.zone"), "derdaniel");
+                        Jid.ofEscaped("random@monocles.de"), "123456");
         Futures.addCallback(
                 accountFuture,
                 new FutureCallback<Account>() {

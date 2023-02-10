@@ -2,7 +2,7 @@
   "formatVersion": 1,
   "database": {
     "version": 1,
-    "identityHash": "2972255ca35c75ece48909471313d20a",
+    "identityHash": "63252c987fcb14419482248c0a28cfa4",
     "entities": [
       {
         "tableName": "account",
@@ -1420,7 +1420,7 @@
       },
       {
         "tableName": "message",
-        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`id` INTEGER PRIMARY KEY AUTOINCREMENT, `chatId` INTEGER NOT NULL, `receivedAt` INTEGER, `sentAt` INTEGER, `bareTo` TEXT, `toResource` TEXT, `bareFrom` TEXT, `fromResource` TEXT, `occupantId` TEXT, `messageId` TEXT, `stanzaId` TEXT, `acknowledged` INTEGER NOT NULL, FOREIGN KEY(`chatId`) REFERENCES `chat`(`id`) ON UPDATE NO ACTION ON DELETE CASCADE )",
+        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`id` INTEGER PRIMARY KEY AUTOINCREMENT, `chatId` INTEGER NOT NULL, `receivedAt` INTEGER, `sentAt` INTEGER, `outgoing` INTEGER NOT NULL, `bareTo` TEXT, `toResource` TEXT, `bareFrom` TEXT, `fromResource` TEXT, `occupantId` TEXT, `messageId` TEXT, `stanzaId` TEXT, `stanzaIdVerified` TEXT, `acknowledged` INTEGER NOT NULL, FOREIGN KEY(`chatId`) REFERENCES `chat`(`id`) ON UPDATE NO ACTION ON DELETE CASCADE )",
         "fields": [
           {
             "fieldPath": "id",
@@ -1445,6 +1445,12 @@
             "columnName": "sentAt",
             "affinity": "INTEGER",
             "notNull": false
+          },
+          {
+            "fieldPath": "outgoing",
+            "columnName": "outgoing",
+            "affinity": "INTEGER",
+            "notNull": true
           },
           {
             "fieldPath": "bareTo",
@@ -1485,6 +1491,12 @@
           {
             "fieldPath": "stanzaId",
             "columnName": "stanzaId",
+            "affinity": "TEXT",
+            "notNull": false
+          },
+          {
+            "fieldPath": "stanzaIdVerified",
+            "columnName": "stanzaIdVerified",
             "affinity": "TEXT",
             "notNull": false
           },
@@ -2112,7 +2124,7 @@
     "views": [],
     "setupQueries": [
       "CREATE TABLE IF NOT EXISTS room_master_table (id INTEGER PRIMARY KEY,identity_hash TEXT)",
-      "INSERT OR REPLACE INTO room_master_table (id,identity_hash) VALUES(42, '2972255ca35c75ece48909471313d20a')"
+      "INSERT OR REPLACE INTO room_master_table (id,identity_hash) VALUES(42, '63252c987fcb14419482248c0a28cfa4')"
     ]
   }
 }
