@@ -11,6 +11,10 @@ buildscript {
     }
 }
 
+plugins {
+    id 'org.ajoberstar.grgit' version '4.1.1'
+}
+
 apply plugin: 'com.android.application'
 apply plugin: "com.diffplug.spotless"
 
@@ -97,7 +101,12 @@ dependencies {
 
 ext {
     preDexEnabled = System.getProperty("pre-dex", "true")
+    abiCodes = ['armeabi-v7a': 1, 'x86': 2, 'x86_64': 3, 'arm64-v8a': 4]
 }
+
+
+
+def tags = grgit.tag.list().findAll { it.dateTime != null }.sort { it.dateTime }
 
 android {
     namespace 'eu.siacs.conversations'
@@ -117,7 +126,7 @@ android {
         //archivesBaseName += "$versionNameSuffix"  // activate for beta versions
         applicationId "de.monocles.chat"
         multiDexEnabled true
-
+        versionName grgit.describe(always: true)
         buildConfigField("String", "LOGTAG", '"monocles chat"')
         buildConfigField("String", "DOMAIN_LOCK", 'null')
         buildConfigField("boolean", "SHOW_INTRO", 'true')
@@ -125,19 +134,20 @@ android {
         resValue "string", "applicationId", applicationId
         resValue "string", "app_name", "monocles chat"
         resValue "string", "short_app_name", "chat"
-
     }
-
+    splits {
+        abi {
+            universalApk true
+            enable true
+        }
+    }
     dataBinding {
         enabled true
     }
 
     packagingOptions {
-        jniLibs {
-            excludes += ['lib/x86/**', 'lib/x86_64/**']
-        }
         resources {
-            excludes += ['lib/x86/**', 'lib/x86_64/**', 'META-INF/BCKEY.DSA', 'META-INF/BCKEY.SF']
+            excludes += ['META-INF/BCKEY.DSA', 'META-INF/BCKEY.SF']
         }
     }
 
@@ -214,5 +224,17 @@ android {
         checkReleaseBuilds true
         disable 'ExtraTranslation', 'MissingTranslation', 'InvalidPackage', 'MissingQuantity', 'AppCompatResource', 'RestrictedApi'
         error 'StringFormatInvalid', 'StringFormatMatches'
+    }
+
+    android.applicationVariants.all { variant ->
+        variant.outputs.each { output ->
+            def baseAbiVersionCode = project.ext.abiCodes.get(output.getFilter(com.android.build.OutputFile.ABI))
+            if (baseAbiVersionCode != null) {
+                output.versionCodeOverride = (100 * project.android.defaultConfig.versionCode) + baseAbiVersionCode
+            } else {
+                output.versionCodeOverride = (100 * project.android.defaultConfig.versionCode) + grgit.log(includes: ["HEAD"], excludes: [tags.last()]).size()
+            }
+        }
+
     }
 }
