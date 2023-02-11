@@ -226,15 +226,4 @@ android {
         error 'StringFormatInvalid', 'StringFormatMatches'
     }
 
-    android.applicationVariants.all { variant ->
-        variant.outputs.each { output ->
-            def baseAbiVersionCode = project.ext.abiCodes.get(output.getFilter(com.android.build.OutputFile.ABI))
-            if (baseAbiVersionCode != null) {
-                output.versionCodeOverride = (100 * project.android.defaultConfig.versionCode) + baseAbiVersionCode
-            } else {
-                output.versionCodeOverride = (100 * project.android.defaultConfig.versionCode) + grgit.log(includes: ["HEAD"], excludes: [tags.last()]).size()
-            }
-        }
-
-    }
 }
