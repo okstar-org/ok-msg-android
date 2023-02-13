@@ -18,7 +18,7 @@ public class Conversations extends Application {
     private static final Logger LOGGER = LoggerFactory.getLogger(Conversations.class);
 
     public static final SecureRandom SECURE_RANDOM = new SecureRandom();
-
+/**
     @Override
     public void onCreate() {
         super.onCreate();
@@ -42,4 +42,5 @@ public class Conversations extends Application {
                 },
                 MoreExecutors.directExecutor());
     }
+    **/
 }
