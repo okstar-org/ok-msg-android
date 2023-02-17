@@ -17,6 +17,7 @@ import static eu.siacs.conversations.utils.RichPreview.RICH_LINK_METADATA;
 import static eu.siacs.conversations.utils.Random.SECURE_RANDOM;
 import static eu.siacs.conversations.utils.StorageHelper.getAppMediaDirectory;
 import eu.siacs.conversations.xmpp.OnGatewayResult;
+import eu.siacs.conversations.utils.Consumer;
 
 import static eu.siacs.conversations.utils.Compatibility.s;
 import android.Manifest;
@@ -3828,6 +3829,17 @@ public class XmppConnectionService extends Service {
             }
             return false;
         }
+    }
+
+    public void checkIfMuc(final Account account, final Jid jid, Consumer<Boolean> cb) {
+        IqPacket request = mIqGenerator.queryDiscoInfo(jid.asBareJid());
+        sendIqPacket(account, request, (acct, reply) -> {
+            ServiceDiscoveryResult result = new ServiceDiscoveryResult(reply);
+            cb.accept(
+                    result.getFeatures().contains("http://jabber.org/protocol/muc") &&
+                            result.hasIdentity("conference", null)
+            );
+        });
     }
 
     public void fetchConferenceConfiguration(final Conversation conversation) {
