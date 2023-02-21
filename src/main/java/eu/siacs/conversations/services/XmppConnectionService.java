@@ -94,7 +94,8 @@ import org.openintents.openpgp.util.OpenPgpServiceConnection;
 import com.google.common.base.Optional;
 
 import eu.siacs.conversations.utils.Emoticons;
-
+import java.io.FileInputStream;
+import java.io.IOException;
 import java.io.File;
 import java.security.Security;
 import java.security.cert.CertificateException;
@@ -5724,8 +5725,20 @@ public class XmppConnectionService extends Service {
         sendIqPacket(account, set, null);
     }
 
+    public void evictPreview(File f) {
+        if (mBitmapCache.remove(f.getAbsolutePath()) != null) {
+            Log.d(Config.LOGTAG, "deleted cached preview");
+        }
+        if (mDrawableCache.remove(f.getAbsolutePath()) != null) {
+            Log.d(Config.LOGTAG, "deleted cached preview");
+        }
+    }
+
     public void evictPreview(String uuid) {
         if (mBitmapCache.remove(uuid) != null) {
+            Log.d(Config.LOGTAG, "deleted cached preview");
+        }
+        if (mDrawableCache.remove(uuid) != null) {
             Log.d(Config.LOGTAG, "deleted cached preview");
         }
     }
@@ -5767,14 +5780,19 @@ public class XmppConnectionService extends Service {
     }
 
     public void saveCid(Cid cid, File file) throws BlockedMediaException {
-        saveCid(cid, file, null);
-    }
-
-    public void saveCid(Cid cid, File file, String url) throws BlockedMediaException {
         if (this.databaseBackend.isBlockedMedia(cid)) {
             throw new BlockedMediaException();
         }
-        this.databaseBackend.saveCid(cid, file, url);
+        this.databaseBackend.saveCid(cid, file);
+    }
+
+    public void blockMedia(File f) {
+        try {
+            Cid[] cids = getFileBackend().calculateCids(new FileInputStream(f));
+            for (Cid cid : cids) {
+                blockMedia(cid);
+            }
+        } catch (final IOException e) { }
     }
 
     public LruCache<String, Drawable> getDrawableCache() {

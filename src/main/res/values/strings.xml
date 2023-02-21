@@ -1280,4 +1280,6 @@
     <string name="sticker_name">Sticker Name</string>
     <string name="action_execute">Go</string>
     <string name="block_avatar">Block avatar</string>
+    <string name="block_media">Block media</string>
+
 </resources>

@@ -748,8 +748,13 @@ public class FileBackend {
             extension = "oga";
         }
         String filename = "Sent" + File.separator + fileDateFormat.format(new Date(message.getTimeSent())) + "_" + message.getUuid().substring(0, 4);
-        setupRelativeFilePath(message, uri, extension);
-        copyFileToPrivateStorage(mXmppConnectionService.getFileBackend().getFile(message), uri);
+        try {
+            setupRelativeFilePath(message, uri, extension);
+            copyFileToPrivateStorage(mXmppConnectionService.getFileBackend().getFile(message), uri);
+        } catch (final XmppConnectionService.BlockedMediaException e) {
+            message.setRelativeFilePath(null);
+            message.setDeleted(true);
+        }
     }
 
     public static void moveDirectory(XmppConnectionService mXmppConnectionService, File sourceLocation, File targetLocation) throws Exception {
@@ -922,12 +927,17 @@ public class FileBackend {
             throw new FileCopyException(R.string.error_file_not_found);
         } catch (final IOException e) {
             throw new FileCopyException(R.string.error_io_exception);
+        } catch (final XmppConnectionService.BlockedMediaException e) {
+            tmp.delete();
+            message.setRelativeFilePath(null);
+            message.setDeleted(true);
+            return;
         }
         tmp.renameTo(getFile(message));
         updateFileParams(message, null, false);
     }
 
-    public void setupRelativeFilePath(final Message message, final Uri uri, final String extension) throws FileCopyException {
+    public void setupRelativeFilePath(final Message message, final Uri uri, final String extension) throws FileCopyException, XmppConnectionService.BlockedMediaException {
         try {
             setupRelativeFilePath(message, mXmppConnectionService.getContentResolver().openInputStream(uri), extension);
         } catch (final FileNotFoundException e) {
@@ -937,7 +947,7 @@ public class FileBackend {
         }
     }
 
-    public void setupRelativeFilePath(final Message message, final InputStream is, final String extension) throws IOException {
+    public void setupRelativeFilePath(final Message message, final InputStream is, final String extension) throws IOException, XmppConnectionService.BlockedMediaException {
         message.setRelativeFilePath(getStorageLocation(is, extension).getAbsolutePath());
     }
 
@@ -947,7 +957,7 @@ public class FileBackend {
         setupRelativeFilePath(message, filename, mime);
     }
 
-    public File getStorageLocation(final InputStream is, final String extension) throws IOException {
+    public File getStorageLocation(final InputStream is, final String extension) throws IOException, XmppConnectionService.BlockedMediaException {
         final String mime = MimeUtils.guessMimeTypeFromExtension(extension);
         Cid[] cids = calculateCids(is);
 
@@ -1766,10 +1776,7 @@ public class FileBackend {
                 for (int i = 0; i < cids.length; i++) {
                     mXmppConnectionService.saveCid(cids[i], file);
                 }
-            } catch (final IOException e) { } catch (
-                    XmppConnectionService.BlockedMediaException e) {
-                throw new RuntimeException(e);
-            }
+            } catch (final IOException | XmppConnectionService.BlockedMediaException e) { }
         }
     }
 
