@@ -670,14 +670,13 @@ public class FileBackend {
     }
 
 
-    public void copyFileToDocumentFile(Context ctx, File file, DocumentFile df, String name) throws FileCopyException {
+    public void copyFileToDocumentFile(Context ctx, File file, DocumentFile df) throws FileCopyException {
         Log.d(
                 Config.LOGTAG,
-                "copy file (" + file + ") to " + df + " / " + name);
-        final DocumentFile dff = df.createFile(MimeUtils.guessMimeTypeFromUri(ctx, getUriForFile(ctx, file)), name);
+                "copy file (" + file + ") to " + df);
         try (final InputStream is = new FileInputStream(file);
              final OutputStream os =
-                     mXmppConnectionService.getContentResolver().openOutputStream(dff.getUri())) {
+                     mXmppConnectionService.getContentResolver().openOutputStream(df.getUri())) {
             if (is == null) {
                 throw new FileCopyException(R.string.error_file_not_found);
             }

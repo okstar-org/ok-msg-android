@@ -167,6 +167,7 @@ import eu.siacs.conversations.ui.util.SendButtonTool;
 import eu.siacs.conversations.ui.util.ShareUtil;
 import eu.siacs.conversations.ui.util.StyledAttributes;
 import eu.siacs.conversations.ui.util.ViewUtil;
+import eu.siacs.conversations.utils.MimeUtils;
 import eu.siacs.conversations.ui.widget.EditMessage;
 import eu.siacs.conversations.utils.CameraUtils;
 import eu.siacs.conversations.utils.Compatibility;
@@ -1139,22 +1140,15 @@ public class ConversationFragment extends XmppFragment
     private void handlePositiveActivityResult(int requestCode, final Intent data) {
         switch (requestCode) {
             case REQUEST_SAVE_STICKER:
-                final DocumentFile df = DocumentFile.fromTreeUri(activity, data.getData());
+                final DocumentFile df = DocumentFile.fromSingleUri(activity, data.getData());
                 final File f = savingAsSticker;
-                final String existingName = savingAsStickerName;
                 savingAsSticker = null;
-                savingAsStickerName = null;
-                activity.quickEdit(existingName, (name) -> {
-                    try {
-                        activity.xmppConnectionService.getFileBackend().copyFileToDocumentFile(activity, f, df, name);
-                    } catch (final FileBackend.FileCopyException e) {
-                        Toast.makeText(activity, e.getResId(), Toast.LENGTH_SHORT).show();
-                        return null;
-                    }
-
+                try {
+                    activity.xmppConnectionService.getFileBackend().copyFileToDocumentFile(activity, f, df);
                     Toast.makeText(activity, "Sticker saved", Toast.LENGTH_SHORT).show();
-                    return null;
-                }, R.string.sticker_name, false, false, true);
+                } catch (final FileBackend.FileCopyException e) {
+                    Toast.makeText(activity, e.getResId(), Toast.LENGTH_SHORT).show();
+                }
                 break;
             case REQUEST_TRUST_KEYS_TEXT:
                 sendMessage();
@@ -2780,9 +2774,11 @@ public class ConversationFragment extends XmppFragment
 
     private void saveAsSticker(final File file, final String name) {
         savingAsSticker = file;
-        savingAsStickerName = name;
 
-        Intent intent = ((StorageManager) activity.getSystemService(Context.STORAGE_SERVICE)).getPrimaryStorageVolume().createOpenDocumentTreeIntent();
+        Intent intent = new Intent(Intent.ACTION_CREATE_DOCUMENT);
+        intent.addCategory(Intent.CATEGORY_OPENABLE);
+        intent.setType(MimeUtils.guessMimeTypeFromUri(activity, activity.xmppConnectionService.getFileBackend().getUriForFile(activity, file)));
+        intent.putExtra(Intent.EXTRA_TITLE, name);
 
         SharedPreferences p = PreferenceManager.getDefaultSharedPreferences(activity);
         final String dir = p.getString("sticker_directory", "Stickers");
@@ -2790,7 +2786,8 @@ public class ConversationFragment extends XmppFragment
             intent.putExtra("android.provider.extra.INITIAL_URI", Uri.parse(dir));
         } else {
             new File(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_PICTURES) + "/" + dir + "/User Pack").mkdirs();
-            Uri uri = intent.getParcelableExtra("android.provider.extra.INITIAL_URI");
+            Intent tmp = ((StorageManager) activity.getSystemService(Context.STORAGE_SERVICE)).getPrimaryStorageVolume().createOpenDocumentTreeIntent();
+            Uri uri = tmp.getParcelableExtra("android.provider.extra.INITIAL_URI");
             intent.putExtra("android.provider.extra.INITIAL_URI", Uri.parse(uri.toString().replace("/root/", "/document/") + "%3APictures%2F" + dir));
         }
 
