@@ -1713,7 +1713,13 @@ public class ConversationFragment extends XmppFragment
                 saveFile.setVisible(true);
                 saveFile.setTitle(activity.getString(R.string.save_x_file, UIHelper.getFileDescriptionString(activity, m)));
             }
-            showErrorMessage.setVisible(showError);
+            if (m.getFileParams() != null && !m.getFileParams().getThumbnails().isEmpty()) {
+                // We might be showing a thumbnail worth blocking
+                blockMedia.setVisible(true);
+            }
+            if (showError) {
+                showErrorMessage.setVisible(true);
+            }
             final String mime = m.isFileOrImage() ? m.getMimeType() : null;
             if ((m.isGeoUri() && GeoHelper.openInOsmAnd(getActivity(), m)) || (mime != null && mime.startsWith("audio/"))) {
                 openWith.setVisible(true);
