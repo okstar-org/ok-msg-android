@@ -1251,4 +1251,5 @@
     <string name="pref_up_push_server_title">Servidor Push</string>
     <string name="pref_up_push_server_summary">Servidor push elegido por el usuario para retransmitir mensajes messages vía XMPP a tu dispositivo.</string>
     <string name="no_account_deactivated">Nada (desactivado)</string>
+    <string name="pref_theme_custom">Personalizado</string>
 </resources>
