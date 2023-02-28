@@ -111,6 +111,8 @@ import eu.siacs.conversations.xmpp.Jid;
 import eu.siacs.conversations.xmpp.OnUpdateBlocklist;
 import eu.siacs.conversations.xmpp.chatstate.ChatState;
 import me.drakeet.support.toast.ToastCompat;
+import eu.siacs.conversations.utils.ThemeHelper;
+
 
 public class ConversationsActivity extends XmppActivity implements OnConversationSelected, OnConversationArchived, OnConversationsListItemUpdated, OnConversationRead, XmppConnectionService.OnAccountUpdate, XmppConnectionService.OnConversationUpdate, XmppConnectionService.OnRosterUpdate, OnUpdateBlocklist, XmppConnectionService.OnShowErrorToast, XmppConnectionService.OnAffiliationChanged, XmppConnectionService.OnRoomDestroy {
 
@@ -756,7 +758,7 @@ public class ConversationsActivity extends XmppActivity implements OnConversatio
     protected void onStart() {
         super.onStart();
         final int theme = findTheme();
-        if (this.mTheme != theme) {
+        if (this.mTheme != theme || !this.mCustomColors.equals(ThemeHelper.applyCustomColors(this))) {
             this.mSkipBackgroundBinding = true;
             recreate();
         } else {

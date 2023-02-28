@@ -94,3 +94,4 @@ public class PermissionsActivity extends AppCompatActivity
         void onPermissionGranted();
     }
 }
+
