@@ -35,9 +35,13 @@ import android.content.res.ColorStateList;
 import android.content.res.Configuration;
 import android.content.res.Resources;
 import android.content.res.TypedArray;
+import android.os.Build;
 import android.preference.PreferenceManager;
 import android.util.TypedValue;
 import android.widget.TextView;
+import android.content.res.loader.ResourcesLoader;
+import de.monocles.chat.ColorResourcesLoaderCreator;
+import java.util.HashMap;
 
 import androidx.annotation.StyleRes;
 import androidx.core.content.ContextCompat;
@@ -49,7 +53,20 @@ import eu.siacs.conversations.ui.SettingsActivity;
 import eu.siacs.conversations.ui.util.StyledAttributes;
 
 public class ThemeHelper {
+    public static HashMap<Integer, Integer> applyCustomColors(final Context context) {
+        HashMap<Integer, Integer> colors = new HashMap<>();
+        if (Build.VERSION.SDK_INT < 30) return colors;
 
+        final SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(context);
+        if (sharedPreferences.contains("custom_theme_primary")) colors.put(R.color.custom_theme_primary, sharedPreferences.getInt("custom_theme_primary", 0));
+        if (sharedPreferences.contains("custom_theme_primary_dark")) colors.put(R.color.custom_theme_primary_dark, sharedPreferences.getInt("custom_theme_primary_dark", 0));
+        if (sharedPreferences.contains("custom_theme_accent")) colors.put(R.color.custom_theme_accent, sharedPreferences.getInt("custom_theme_accent", 0));
+        if (colors.isEmpty()) return colors;
+
+        ResourcesLoader loader = de.monocles.chat.ColorResourcesLoaderCreator.create(context, colors);
+        if (loader != null) context.getResources().addLoaders(loader);
+        return colors;
+    }
     public static int find(final Context context) {
         final SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(context);
         final Resources resources = context.getResources();
@@ -225,6 +242,33 @@ public class ThemeHelper {
                             return R.style.ConversationsTheme_Pink_Dark;
                         } else {
                             return R.style.ConversationsTheme_Pink;
+                        }
+                }
+            case "custom":
+                switch (fontSize) {
+                    case "medium":
+                        if (black) {
+                            return R.style.ConversationsTheme_CustomDark_Medium;
+                        } else if (dark) {
+                            return R.style.ConversationsTheme_CustomDark_Medium;
+                        } else {
+                            return R.style.ConversationsTheme_Custom_Medium;
+                        }
+                    case "large":
+                        if (black) {
+                            return R.style.ConversationsTheme_CustomDark_Large;
+                        } else if (dark) {
+                            return R.style.ConversationsTheme_CustomDark_Large;
+                        } else {
+                            return R.style.ConversationsTheme_Custom_Large;
+                        }
+                    default:
+                        if (black) {
+                            return R.style.ConversationsTheme_CustomDark;
+                        } else if (dark) {
+                            return R.style.ConversationsTheme_CustomDark;
+                        } else {
+                            return R.style.ConversationsTheme_Custom;
                         }
                 }
             default:
@@ -439,7 +483,15 @@ public class ThemeHelper {
                 }
         }
     }
-
+    private static boolean isDark(final SharedPreferences sharedPreferences, final Resources resources) {
+        final String setting = sharedPreferences.getString(SettingsActivity.THEME, resources.getString(R.string.theme));
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q && "automatic".equals(setting)) {
+            return (resources.getConfiguration().uiMode & Configuration.UI_MODE_NIGHT_MASK) == Configuration.UI_MODE_NIGHT_YES;
+        } else {
+            if ("custom".equals(setting)) return sharedPreferences.getBoolean("custom_theme_dark", false);
+            return "dark".equals(setting) || "obsidian".equals(setting) || "oledblack".equals(setting);
+        }
+    }
     public static boolean isDark(@StyleRes int id) {
         switch (id) {
             //blue
@@ -484,6 +536,10 @@ public class ThemeHelper {
             case R.style.ConversationsTheme_Pink_Black:
             case R.style.ConversationsTheme_Pink_Black_Large:
             case R.style.ConversationsTheme_Pink_Black_Medium:
+                //custom
+            case R.style.ConversationsTheme_CustomDark:
+            case R.style.ConversationsTheme_CustomDark_Large:
+            case R.style.ConversationsTheme_CustomDark_Medium:
                 return true;
             default:
                 return false;
@@ -514,6 +570,8 @@ public class ThemeHelper {
                 return dark ? ContextCompat.getColorStateList(context, R.color.white70) : ContextCompat.getColorStateList(context, R.color.darkWhite);
             case "pink":
                 return dark ? ContextCompat.getColorStateList(context, R.color.white70) : ContextCompat.getColorStateList(context, R.color.darkpink);
+            case "custom":
+                return dark ? ContextCompat.getColorStateList(context, R.color.white70) : ContextCompat.getColorStateList(context, R.color.darkWhite);
             default:
                 return dark ? ContextCompat.getColorStateList(context, R.color.white70) : ContextCompat.getColorStateList(context, R.color.darkmonocles);
         }

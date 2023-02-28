@@ -53,6 +53,8 @@ import eu.siacs.conversations.utils.TimeFrameUtils;
 import eu.siacs.conversations.xmpp.Jid;
 import me.drakeet.support.toast.ToastCompat;
 import eu.siacs.conversations.services.UnifiedPushDistributor;
+import eu.siacs.conversations.utils.ThemeHelper;
+
 
 public class SettingsActivity extends XmppActivity implements OnSharedPreferenceChangeListener {
 
@@ -119,6 +121,7 @@ public class SettingsActivity extends XmppActivity implements OnSharedPreference
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setTheme(ThemeHelper.find(this));
+        ThemeHelper.applyCustomColors(this);
         setContentView(R.layout.activity_settings);
         FragmentManager fm = getFragmentManager();
         mSettingsFragment = (SettingsFragment) fm.findFragmentById(R.id.settings_content);
@@ -508,6 +511,13 @@ public class SettingsActivity extends XmppActivity implements OnSharedPreference
             });
             updateTheme();
         }
+        // TODO: handle skd<30
+       // final String theTheme = PreferenceManager.getDefaultSharedPreferences(this).getString(THEME, "");
+       // if (Build.VERSION.SDK_INT < 30 || !theTheme.equals("custom")) {
+        //    final PreferenceCategory uiCategory = (PreferenceCategory) mSettingsFragment.findPreference("UI");
+        //    final Preference customTheme = mSettingsFragment.findPreference("custom_theme");
+        //    if (customTheme != null) uiCategory.removePreference(customTheme);
+        //}
     }
 
     private void updateTheme() {
@@ -679,7 +689,11 @@ public class SettingsActivity extends XmppActivity implements OnSharedPreference
             xmppConnectionService.reinitializeMuclumbusService();
         } else if (name.equals(AUTOMATIC_MESSAGE_DELETION)) {
             xmppConnectionService.expireOldMessages(true);
-        } else if (name.equals(THEME) || name.equals(THEME_COLOR)) {
+        } else if (name.equals(THEME) || name.equals(THEME_COLOR) || name.equals("custom_theme_primary") || name.equals("custom_theme_primary_dark") || name.equals("custom_theme_accent") || name.equals("custom_theme_dark")) {
+            final int theme = findTheme();
+            xmppConnectionService.setTheme(theme);
+            ThemeHelper.applyCustomColors(xmppConnectionService);
+            recreate();
             updateTheme();
         } else if (name.equals(USE_UNICOLORED_CHATBG)) {
             xmppConnectionService.updateConversationUi();

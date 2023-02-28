@@ -65,6 +65,7 @@ import androidx.databinding.DataBindingUtil;
 import com.google.common.base.Strings;
 import com.google.common.collect.Collections2;
 
+import java.util.HashMap;
 import java.io.File;
 import java.io.IOException;
 import java.lang.ref.WeakReference;
@@ -140,6 +141,7 @@ public abstract class XmppActivity extends ActionBarActivity {
     private boolean isCameraFeatureAvailable = false;
 
     protected int mTheme;
+    protected HashMap<Integer,Integer> mCustomColors;
     protected boolean mUsingEnterKey = false;
     public boolean mUseTor = false;
     public boolean mUseI2P = false;
@@ -479,6 +481,7 @@ public abstract class XmppActivity extends ActionBarActivity {
         super.onCreate(savedInstanceState);
         this.mTheme = findTheme();
         setTheme(this.mTheme);
+        this.mCustomColors = ThemeHelper.applyCustomColors(this);
         metrics = getResources().getDisplayMetrics();
         ExceptionHelper.init(getApplicationContext());
         EmojiInitializationService.execute(this);

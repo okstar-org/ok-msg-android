@@ -70,6 +70,8 @@ import net.java.otr4j.session.Session;
 import net.java.otr4j.session.SessionID;
 import net.java.otr4j.session.SessionImpl;
 import net.java.otr4j.session.SessionStatus;
+
+import eu.siacs.conversations.utils.ThemeHelper;
 import eu.siacs.conversations.xmpp.jid.OtrJidHelper;
 import eu.siacs.conversations.xmpp.Jid;
 
@@ -1421,6 +1423,8 @@ public class XmppConnectionService extends Service {
     @Override
     public void onCreate() {
         updateNotificationChannels();
+        setTheme(ThemeHelper.find(this));
+        ThemeHelper.applyCustomColors(this);
         if (Compatibility.runsTwentySix()) {
             cleanOldNotificationChannels();
         }
