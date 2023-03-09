@@ -221,11 +221,10 @@ public class Conversation extends AbstractEntity implements Blockable, Comparabl
     private String mFirstMamReference = null;
     protected int mCurrentTab = -1;
     protected ConversationPagerAdapter pagerAdapter = new ConversationPagerAdapter();
-    protected Message replyTo = null;
     protected Element thread = null;
     protected boolean lockThread = false;
     protected boolean userSelectedThread = false;
-
+    protected Message replyTo = null;
 
     public Conversation(final String name, final Account account, final Jid contactJid,
                         final int mode) {

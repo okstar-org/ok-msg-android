@@ -78,6 +78,7 @@ import eu.siacs.conversations.xml.Tag;
 import eu.siacs.conversations.xml.XmlReader;
 import eu.siacs.conversations.xmpp.Jid;
 import eu.siacs.conversations.xml.Namespace;
+import eu.siacs.conversations.ui.util.QuoteHelper;
 import io.ipfs.cid.Cid;
 
 public class Message extends AbstractEntity implements AvatarService.Avatarable {
@@ -423,17 +424,17 @@ public class Message extends AbstractEntity implements AvatarService.Avatarable 
         return conversation.getMode() == Conversation.MODE_MULTI ? getServerMsgId() : getRemoteMsgId();
     }
     public Message reply() {
-        Message m = new Message(conversation, QuoteHelper.quote(MessageUtils.prepareQuote(this)) + "\n", ENCRYPTION_NONE);
+        Message m = new Message(conversation, QuoteHelper.quote(getBody()) + "\n", ENCRYPTION_NONE);
         m.setThread(getThread());
         m.addPayload(
                 new Element("reply", "urn:xmpp:reply:0")
                         .setAttribute("to", getCounterpart())
-                        .setAttribute("id", replyId())
+                        .setAttribute("id", conversation.getMode() == Conversation.MODE_MULTI ? getServerMsgId() : getRemoteMsgId())
         );
         final Element fallback = new Element("fallback", "urn:xmpp:fallback:0").setAttribute("for", "urn:xmpp:reply:0");
         fallback.addChild("body", "urn:xmpp:fallback:0")
                 .setAttribute("start", "0")
-                .setAttribute("end", "" + m.body.codePointCount(0, m.body.length()));
+                .setAttribute("end", "" + m.body.length());
         m.addPayload(fallback);
         return m;
     }
@@ -511,12 +512,6 @@ public class Message extends AbstractEntity implements AvatarService.Avatarable 
         return null;
     }
 
-    public synchronized void appendBody(String append) {
-        this.body += append;
-        this.isGeoUri = null;
-        this.isEmojisOnly = null;
-        this.treatAsDownloadable = null;
-    }
     public String getConversationUuid() {
         return conversationUuid;
     }
@@ -589,6 +584,14 @@ public class Message extends AbstractEntity implements AvatarService.Avatarable 
         this.isEmojisOnly = null;
         this.treatAsDownloadable = null;
     }
+
+    public synchronized void appendBody(String append) {
+        this.body += append;
+        this.isGeoUri = null;
+        this.isEmojisOnly = null;
+        this.treatAsDownloadable = null;
+    }
+
     public String getSubject() {
         return subject;
     }

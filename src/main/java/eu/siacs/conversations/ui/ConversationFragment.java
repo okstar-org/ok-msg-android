@@ -1012,7 +1012,7 @@ public class ConversationFragment extends XmppFragment
             return;
         }
         final Editable text = this.binding.textinput.getText();
-        String body = text == null ? "" : text.toString();
+        final String body = text == null ? "" : text.toString();
         final Conversation conversation = this.conversation;
         if (body.length() == 0 || conversation == null) {
             return;
@@ -1022,24 +1022,12 @@ public class ConversationFragment extends XmppFragment
         }
         final Message message;
         if (conversation.getCorrectingMessage() == null) {
-            boolean attention = false;
-            if (Pattern.compile("\\A@here\\s.*").matcher(body).find()) {
-                attention = true;
-                body = body.replaceFirst("\\A@here\\s+", "");
-            }
             if (conversation.getReplyTo() != null) {
-                if (Emoticons.isEmoji(body)) {
-                    message = conversation.getReplyTo().react(body);
-                } else {
-                    message = conversation.getReplyTo().reply();
-                    message.appendBody(body);
-                }
+                message = conversation.getReplyTo().reply();
+                message.appendBody(body);
                 message.setEncryption(conversation.getNextEncryption());
             } else {
                 message = new Message(conversation, body, conversation.getNextEncryption());
-            }
-            if (attention) {
-                message.addPayload(new Element("attention", "urn:xmpp:attention:0"));
             }
             message.setThread(conversation.getThread());
             Message.configurePrivateMessage(message);
@@ -1060,7 +1048,6 @@ public class ConversationFragment extends XmppFragment
             default:
                 sendMessage(message);
         }
-        setupReply(null);
     }
 
     private boolean trustKeysIfNeeded(final Conversation conversation, final int requestCode) {
@@ -1561,7 +1548,7 @@ public class ConversationFragment extends XmppFragment
         if (message.isGeoUri()) {
             quoteGeoUri(message, user);
         }
-        setupReply(message);
+        conversation.setReplyTo(message);
     }
 
     private void setThread(Element thread) {
