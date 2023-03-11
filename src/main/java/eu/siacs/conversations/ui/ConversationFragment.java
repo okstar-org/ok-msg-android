@@ -1354,6 +1354,10 @@ public class ConversationFragment extends XmppFragment implements EditMessage.Ke
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
             this.binding.textinput.setCustomInsertionActionModeCallback(new EditMessageActionModeCallback(this.binding.textinput));
         }
+        messageListAdapter.setOnMessageBoxSwiped(message -> {
+            String user = null;
+            quoteMessage(message, user);
+        });
         return binding.getRoot();
     }
 

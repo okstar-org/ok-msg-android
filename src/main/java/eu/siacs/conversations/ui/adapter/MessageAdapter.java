@@ -14,6 +14,7 @@ import static eu.siacs.conversations.ui.util.MyLinkify.removeTrackingParameter;
 import static eu.siacs.conversations.ui.util.MyLinkify.removeTrailingBracket;
 import static eu.siacs.conversations.ui.util.MyLinkify.replaceYoutube;
 import eu.siacs.conversations.ui.util.ShareUtil;
+import de.monocles.chat.SwipeDetector;
 
 import android.Manifest;
 import android.annotation.SuppressLint;
@@ -122,6 +123,8 @@ public class MessageAdapter extends ArrayAdapter<Message> {
     private List<String> highlightedTerm = null;
     private final DisplayMetrics metrics;
     private OnContactPictureClicked mOnContactPictureClickedListener;
+    private OnContactPictureClicked mOnMessageBoxSwipedListener;
+
     private OnContactPictureLongClicked mOnContactPictureLongClickedListener;
     private boolean mIndicateReceived = false;
     private boolean mPlayGifInside = false;
@@ -179,6 +182,9 @@ public class MessageAdapter extends ArrayAdapter<Message> {
     public void setOnContactPictureLongClicked(
             OnContactPictureLongClicked listener) {
         this.mOnContactPictureLongClickedListener = listener;
+    }
+    public void setOnMessageBoxSwiped(OnContactPictureClicked listener) {
+        this.mOnMessageBoxSwipedListener = listener;
     }
 
     public Activity getActivity() {
@@ -1123,7 +1129,7 @@ public class MessageAdapter extends ArrayAdapter<Message> {
         }
     }
 
-    @SuppressLint("StringFormatInvalid")
+    @SuppressLint({"StringFormatInvalid", "ClickableViewAccessibility"})
     @Override
     public View getView(int position, View view, ViewGroup parent) {
         final Message message = getItem(position);
@@ -1291,8 +1297,16 @@ public class MessageAdapter extends ArrayAdapter<Message> {
             if (MessageAdapter.this.mOnContactPictureClickedListener != null) {
                 MessageAdapter.this.mOnContactPictureClickedListener.onContactPictureClicked(message);
             }
-
         });
+        SwipeDetector swipeDetector = new SwipeDetector((action) -> {
+            if (action == SwipeDetector.Action.LR && MessageAdapter.this.mOnMessageBoxSwipedListener != null) {
+                MessageAdapter.this.mOnMessageBoxSwipedListener.onContactPictureClicked(message);
+            }
+        });
+        viewHolder.message_box.setOnTouchListener(swipeDetector);
+        viewHolder.messageBody.setOnTouchListener(swipeDetector);
+        viewHolder.image.setOnTouchListener(swipeDetector);
+        viewHolder.time.setOnTouchListener(swipeDetector);
         viewHolder.contact_picture.setOnLongClickListener(v -> {
             if (MessageAdapter.this.mOnContactPictureLongClickedListener != null) {
                 MessageAdapter.this.mOnContactPictureLongClickedListener.onContactPictureLongClicked(v, message);
