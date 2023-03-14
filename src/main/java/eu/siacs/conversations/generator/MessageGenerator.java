@@ -149,6 +149,7 @@ public class MessageGenerator extends AbstractGenerator {
             final Message.FileParams fileParams = message.getFileParams();
             content = fileParams.url;
             packet.addChild("x", Namespace.OOB).addChild("url").setContent(content);
+            message.setBody(content);
         } else {
             content = message.getBody();
         }
