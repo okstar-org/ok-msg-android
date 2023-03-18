@@ -1482,6 +1482,7 @@ public class ConversationFragment extends XmppFragment implements EditMessage.Ke
             MenuItem quoteMessage = menu.findItem(R.id.quote_message);
             MenuItem retryDecryption = menu.findItem(R.id.retry_decryption);
             MenuItem correctMessage = menu.findItem(R.id.correct_message);
+            MenuItem moderateMessage = menu.findItem(R.id.moderate_message);
             MenuItem deleteMessage = menu.findItem(R.id.delete_message);
             MenuItem shareWith = menu.findItem(R.id.share_with);
             MenuItem sendAgain = menu.findItem(R.id.send_again);
@@ -1511,6 +1512,9 @@ public class ConversationFragment extends XmppFragment implements EditMessage.Ke
                     && relevantForCorrection.isLastCorrectableMessage()
                     && m.getConversation() instanceof Conversation) {
                 correctMessage.setVisible(true);
+            }
+            if (conversation.getMode() == Conversation.MODE_MULTI && conversation.getMucOptions().getSelf().getRole().ranks(MucOptions.Role.MODERATOR) && conversation.getMucOptions().hasFeature("urn:xmpp:message-moderate:0")) {
+                moderateMessage.setVisible(true);
             }
             if ((m.isFileOrImage() && !fileDeleted && !receiving) || (m.getType() == Message.TYPE_TEXT && !m.treatAsDownloadable()) && !unInitiatedButKnownSize && t == null && !messageDeleted) {
                 shareWith.setVisible(true);
@@ -1585,6 +1589,12 @@ public class ConversationFragment extends XmppFragment implements EditMessage.Ke
                 return true;
             case R.id.correct_message:
                 correctMessage(selectedMessage);
+                return true;
+            case R.id.moderate_message:
+                activity.quickEdit("Spam", (reason) -> {
+                    activity.xmppConnectionService.moderateMessage(conversation.getAccount(), selectedMessage, reason);
+                    return null;
+                }, R.string.moderate_reason, false, false, true);
                 return true;
             case R.id.copy_message:
                 ShareUtil.copyToClipboard(activity, selectedMessage);
@@ -3004,6 +3014,7 @@ public class ConversationFragment extends XmppFragment implements EditMessage.Ke
         return true;
     }
 
+    @SuppressLint("StringFormatInvalid")
     private void updateSnackBar(final Conversation conversation) {
         if (conversation == null) {
             return;

@@ -37,6 +37,8 @@ import eu.siacs.conversations.xmpp.Jid;
 import eu.siacs.conversations.xmpp.forms.Data;
 import eu.siacs.conversations.xmpp.pep.Avatar;
 import eu.siacs.conversations.xmpp.stanzas.IqPacket;
+import eu.siacs.conversations.entities.Message;
+
 
 public class IqGenerator extends AbstractGenerator {
 
@@ -407,7 +409,18 @@ public class IqGenerator extends AbstractGenerator {
         item.setAttribute("role", role);
         return packet;
     }
-
+    public IqPacket moderateMessage(Account account, Message m, String reason) {
+        IqPacket packet = new IqPacket(IqPacket.TYPE.SET);
+        packet.setTo(m.getConversation().getJid().asBareJid());
+        packet.setFrom(account.getJid());
+        Element moderate =
+                packet.addChild("apply-to", "urn:xmpp:fasten:0")
+                        .setAttribute("id", m.getServerMsgId())
+                        .addChild("moderate", "urn:xmpp:message-moderate:0");
+        moderate.addChild("retract", "urn:xmpp:message-retract:0");
+        moderate.addChild("reason", "urn:xmpp:message-moderate:0").setContent(reason);
+        return packet;
+    }
     public IqPacket destroyRoom(Conversation conference) {
         IqPacket packet = new IqPacket(IqPacket.TYPE.SET);
         packet.setTo(conference.getJid().asBareJid());
