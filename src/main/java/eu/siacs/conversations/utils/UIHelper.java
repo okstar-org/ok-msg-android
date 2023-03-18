@@ -292,7 +292,7 @@ public class UIHelper {
         return getMessagePreview(context, message, 0);
     }
 
-    @SuppressLint("StringFormatMatches")
+    @SuppressLint({"StringFormatMatches", "StringFormatInvalid"})
     public static Pair<CharSequence, Boolean> getMessagePreview(final Context context, final Message message, @ColorInt int textColor) {
         final Transferable d = message.getTransferable();
         if (d != null) {
@@ -362,7 +362,7 @@ public class UIHelper {
                 if (textColor != 0) {
                     StylingHelper.format(styledBody, 0, styledBody.length() - 1, textColor, true);
                 }
-                MyLinkify.addLinks(styledBody, message.getConversation().getAccount());
+                MyLinkify.addLinks(styledBody, message.getConversation().getAccount(), message.getConversation().getJid());
                 SpannableStringBuilder builder = new SpannableStringBuilder();
                 for (CharSequence l : CharSequenceUtils.split(styledBody, '\n')) {
                     if (l.length() > 0) {
