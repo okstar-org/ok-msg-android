@@ -483,6 +483,18 @@ public class Message extends AbstractEntity implements AvatarService.Avatarable 
     public void setFileDeleted(boolean file_deleted) {
         this.file_deleted = file_deleted;
     }
+    public Element getModerated() {
+        if (this.payloads == null) return null;
+
+        for (Element el : this.payloads) {
+            if (el.getName().equals("moderated") && el.getNamespace().equals("urn:xmpp:message-moderate:0")) {
+                return el;
+            }
+        }
+
+        return null;
+    }
+
     public void setDeleted(boolean deleted) {
         this.deleted = deleted;
     }
