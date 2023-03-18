@@ -1513,7 +1513,7 @@ public class ConversationFragment extends XmppFragment implements EditMessage.Ke
                     && m.getConversation() instanceof Conversation) {
                 correctMessage.setVisible(true);
             }
-            if (conversation.getMode() == Conversation.MODE_MULTI && conversation.getMucOptions().getSelf().getRole().ranks(MucOptions.Role.MODERATOR) && conversation.getMucOptions().hasFeature("urn:xmpp:message-moderate:0")) {
+            if (conversation.getMode() == Conversation.MODE_MULTI && m.getServerMsgId() != null && m.getModerated() == null && conversation.getMucOptions().getSelf().getRole().ranks(MucOptions.Role.MODERATOR) && conversation.getMucOptions().hasFeature("urn:xmpp:message-moderate:0")) {
                 moderateMessage.setVisible(true);
             }
             if ((m.isFileOrImage() && !fileDeleted && !receiving) || (m.getType() == Message.TYPE_TEXT && !m.treatAsDownloadable()) && !unInitiatedButKnownSize && t == null && !messageDeleted) {
