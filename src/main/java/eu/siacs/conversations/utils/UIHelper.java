@@ -2,6 +2,7 @@ package eu.siacs.conversations.utils;
 
 import static eu.siacs.conversations.ui.util.QuoteHelper.bodyContainsQuoteStart;
 
+import android.annotation.SuppressLint;
 import android.content.Context;
 import android.graphics.Typeface;
 import android.text.Spannable;
@@ -291,6 +292,7 @@ public class UIHelper {
         return getMessagePreview(context, message, 0);
     }
 
+    @SuppressLint("StringFormatMatches")
     public static Pair<CharSequence, Boolean> getMessagePreview(final Context context, final Message message, @ColorInt int textColor) {
         final Transferable d = message.getTransferable();
         if (d != null) {
@@ -563,6 +565,8 @@ public class UIHelper {
     }
 
     public static String getMessageDisplayName(final Message message) {
+        if (message.getModerated() != null) return "moderated";
+
         final Conversational conversation = message.getConversation();
         if (message.getStatus() == Message.STATUS_RECEIVED) {
             final Contact contact = message.getContact();
