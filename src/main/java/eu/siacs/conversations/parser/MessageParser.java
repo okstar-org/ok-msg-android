@@ -792,6 +792,8 @@ public class MessageParser extends AbstractParser implements OnMessagePacketRece
                     } else {
                         Log.d(Config.LOGTAG, account.getJid().asBareJid() + ": received message correction but verification didn't check out");
                     }
+                } else if (replaceAsRetraction) {
+                    return;
                 }
             } else if (replacementId != null && !mXmppConnectionService.allowMessageCorrection() && (message.hasDeletedBody())) {
                 Log.d(Config.LOGTAG, account.getJid().asBareJid() + ": received deleted message but LMC is deactivated");
