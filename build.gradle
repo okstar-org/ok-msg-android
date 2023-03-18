@@ -6,8 +6,8 @@ buildscript {
         mavenCentral()
     }
     dependencies {
-        classpath 'com.android.tools.build:gradle:7.3.1'
-        classpath "com.diffplug.spotless:spotless-plugin-gradle:6.12.1"
+        classpath 'com.android.tools.build:gradle:7.4.2'
+        classpath "com.diffplug.spotless:spotless-plugin-gradle:6.13.0"
     }
 }
 
@@ -40,7 +40,7 @@ configurations {
 }
 
 dependencies {
-    playstoreImplementation('com.google.firebase:firebase-messaging:23.1.1') {
+    playstoreImplementation('com.google.firebase:firebase-messaging:23.1.2') {
         exclude group: 'com.google.firebase', module: 'firebase-core'
         exclude group: 'com.google.firebase', module: 'firebase-analytics'
         exclude group: 'com.google.firebase', module: 'firebase-measurement-connector'
@@ -119,8 +119,8 @@ android {
         targetSdkVersion 32
 
         //versionNameSuffix " beta_(2023-01-10)" // " beta_(XXXX-XX-XX)" // activate for beta versions
-        versionCode 129
-        versionName "1.6.2"
+        versionCode 130
+        versionName "1.6.3"
         //resConfigs "en"
 
         archivesBaseName += "-$versionName"

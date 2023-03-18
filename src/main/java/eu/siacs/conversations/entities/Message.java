@@ -1,5 +1,6 @@
 package eu.siacs.conversations.entities;
 
+import android.annotation.SuppressLint;
 import android.content.ContentValues;
 import android.database.Cursor;
 import android.graphics.Color;
@@ -8,10 +9,12 @@ import android.util.Log;
 
 import com.google.common.base.Strings;
 import com.google.common.collect.ImmutableSet;
+import com.google.common.io.ByteSource;
 import com.google.common.primitives.Longs;
 
 import org.json.JSONException;
 
+import java.io.IOException;
 import java.lang.ref.WeakReference;
 import java.util.ArrayList;
 import java.util.Iterator;
@@ -35,6 +38,9 @@ import eu.siacs.conversations.utils.MimeUtils;
 import eu.siacs.conversations.utils.Patterns;
 import eu.siacs.conversations.utils.UIHelper;
 import eu.siacs.conversations.utils.XmppUri;
+import eu.siacs.conversations.xml.Element;
+import eu.siacs.conversations.xml.Tag;
+import eu.siacs.conversations.xml.XmlReader;
 import eu.siacs.conversations.xmpp.Jid;
 
 public class Message extends AbstractEntity implements AvatarService.Avatarable {
@@ -108,6 +114,8 @@ public class Message extends AbstractEntity implements AvatarService.Avatarable 
     protected boolean file_deleted = false;
     protected boolean carbon = false;
     protected boolean oob = false;
+    protected List<Element> payloads = new ArrayList<>();
+
     protected List<Edit> edits = new ArrayList<>();
     protected String relativeFilePath;
     protected boolean read = true;
@@ -168,6 +176,7 @@ public class Message extends AbstractEntity implements AvatarService.Avatarable 
                 false,
                 false,
                 null,
+                null,
                 null);
     }
 
@@ -195,6 +204,7 @@ public class Message extends AbstractEntity implements AvatarService.Avatarable 
                 false,
                 false,
                 null,
+                null,
                 null);
     }
 
@@ -204,7 +214,7 @@ public class Message extends AbstractEntity implements AvatarService.Avatarable 
                       final String remoteMsgId, final String relativeFilePath,
                       final String serverMsgId, final String fingerprint, final boolean read, final boolean deleted,
                       final String edited, final boolean oob, final String errorMessage, final Set<ReadByMarker> readByMarkers,
-                      final boolean markable, final boolean file_deleted, final String bodyLanguage, final String retractId) {
+                      final boolean markable, final boolean file_deleted, final String bodyLanguage, final String retractId, final List<Element> payloads) {
         this.conversation = conversation;
         this.uuid = uuid;
         this.conversationUuid = conversationUUid;
@@ -230,9 +240,22 @@ public class Message extends AbstractEntity implements AvatarService.Avatarable 
         this.file_deleted = file_deleted;
         this.bodyLanguage = bodyLanguage;
         this.retractId = retractId;
+        if (payloads != null) this.payloads = payloads;
     }
 
-    public static Message fromCursor(Cursor cursor, Conversation conversation) {
+    @SuppressLint("Range")
+    public static Message fromCursor(Cursor cursor, Conversation conversation) throws IOException {
+        @SuppressLint("Range") String payloadsStr = cursor.getString(cursor.getColumnIndex("payloads"));
+        List<Element> payloads = new ArrayList<>();
+        if (payloadsStr != null) {
+            final XmlReader xmlReader = new XmlReader();
+            xmlReader.setInputStream(ByteSource.wrap(payloadsStr.getBytes()).openStream());
+            Tag tag;
+            while ((tag = xmlReader.readTag()) != null) {
+                payloads.add(xmlReader.readElement(tag));
+            }
+        }
+
         return new Message(conversation,
                 cursor.getString(cursor.getColumnIndex(UUID)),
                 cursor.getString(cursor.getColumnIndex(CONVERSATION)),
@@ -257,7 +280,8 @@ public class Message extends AbstractEntity implements AvatarService.Avatarable 
                 cursor.getInt(cursor.getColumnIndex(MARKABLE)) > 0,
                 cursor.getInt(cursor.getColumnIndex(FILE_DELETED)) > 0,
                 cursor.getString(cursor.getColumnIndex(BODY_LANGUAGE)),
-                cursor.getString(cursor.getColumnIndex(RETRACT_ID))
+                cursor.getString(cursor.getColumnIndex(RETRACT_ID)),
+                payloads
         );
     }
 
@@ -459,7 +483,21 @@ public class Message extends AbstractEntity implements AvatarService.Avatarable 
     public void setFileDeleted(boolean file_deleted) {
         this.file_deleted = file_deleted;
     }
+    public Element getModerated() {
+        if (this.payloads == null) return null;
 
+        for (Element el : this.payloads) {
+            if (el.getName().equals("moderated") && el.getNamespace().equals("urn:xmpp:message-moderate:0")) {
+                return el;
+            }
+        }
+
+        return null;
+    }
+
+    public void setDeleted(boolean deleted) {
+        this.deleted = deleted;
+    }
     public void markRead() {
         this.read = true;
     }
@@ -852,6 +890,18 @@ public class Message extends AbstractEntity implements AvatarService.Avatarable 
     public void setOob(boolean isOob) {
         this.oob = isOob;
     }
+    public void clearPayloads() {
+        this.payloads.clear();
+    }
+    public void addPayload(Element el) {
+        if (el == null) return;
+
+        this.payloads.add(el);
+    }
+
+    public List<Element> getPayloads() {
+        return new ArrayList<>(this.payloads);
+    }
 
     public String getMimeType() {
         String extension;
@@ -922,9 +972,17 @@ public class Message extends AbstractEntity implements AvatarService.Avatarable 
     }
 
     public synchronized void resetFileParams() {
-        this.fileParams = null;
+        if (fileParams != null && this.fileParams != null && this.fileParams.sims != null && fileParams.sims == null) {
+            fileParams.sims = this.fileParams.sims;
+        }
+        this.fileParams = fileParams;
     }
-
+    public synchronized void setFileParams(FileParams fileParams) {
+        if (fileParams != null && this.fileParams != null && this.fileParams.sims != null && fileParams.sims == null) {
+            fileParams.sims = this.fileParams.sims;
+        }
+        this.fileParams = fileParams;
+    }
     public synchronized FileParams getFileParams() {
         if (fileParams == null) {
             fileParams = new FileParams();
@@ -1022,6 +1080,8 @@ public class Message extends AbstractEntity implements AvatarService.Avatarable 
         public int height = 0;
         public int runtime = 0;
         public String subject = "";
+        public Element sims = null;
+
         public long getSize() {
             return size == null ? 0 : size;
         }

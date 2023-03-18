@@ -235,7 +235,7 @@ public class WelcomeActivity extends XmppActivity implements XmppConnectionServi
             if (allGranted(grantResults)) {
                 switch (requestCode) {
                     case REQUEST_IMPORT_BACKUP:
-                        startActivity(new Intent(this, ImportBackupActivity.class));
+                       // startActivity(new Intent(this, ImportBackupActivity.class));
                         break;
                 }
             } else if (Arrays.asList(permissions).contains(Manifest.permission.WRITE_EXTERNAL_STORAGE)) {

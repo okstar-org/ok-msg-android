@@ -493,11 +493,23 @@ public class MessageParser extends AbstractParser implements OnMessagePacketRece
         }
         final Element mucUserElement = packet.findChild("x", Namespace.MUC_USER);
         final String pgpEncrypted = packet.findChildContent("x", "jabber:x:encrypted");
-        final Element replaceElement = packet.findChild("replace", "urn:xmpp:message-correct:0");
+        Element replaceElement = packet.findChild("replace", "urn:xmpp:message-correct:0");
         final Element oob = packet.findChild("x", Namespace.OOB);
         final String oobUrl = oob != null ? oob.findChildContent("url") : null;
-        final String replacementId = replaceElement == null ? null : replaceElement.getAttribute("id");
-
+        String replacementId = replaceElement == null ? null : replaceElement.getAttribute("id");
+        boolean replaceAsRetraction = false;
+        if (replacementId == null) {
+            final Element fasten = packet.findChild("apply-to", "urn:xmpp:fasten:0");
+            if (fasten != null) {
+                replaceElement = fasten.findChild("retract", "urn:xmpp:message-retract:0");
+                if (replaceElement == null) replaceElement = fasten.findChild("moderated", "urn:xmpp:message-moderate:0");
+                if (replaceElement != null) {
+                    final String reason = replaceElement.findChildContent("reason", "urn:xmpp:message-moderate:0");
+                    replacementId = fasten.getAttribute("id");
+                    packet.setBody(reason == null ? "" : reason);
+                }
+            }
+        }
         final Element applyToElement = packet.findChild("apply-to", "urn:xmpp:fasten:0");
         final String retractId = applyToElement != null && applyToElement.findChild("retract", "urn:xmpp:message-retract:0") != null ? applyToElement.getAttribute("id") : null;
 
@@ -726,9 +738,8 @@ public class MessageParser extends AbstractParser implements OnMessagePacketRece
 
             if (replacementId != null && mXmppConnectionService.allowMessageCorrection()) {
                 Message replacedMessage = conversation.findMessageWithRemoteIdAndCounterpart(replacementId,
-                        counterpart,
-                        message.getStatus() == Message.STATUS_RECEIVED,
-                        message.isCarbon());
+                        counterpart
+                );
 
                 if (replacedMessage == null) {
                     replacedMessage = conversation.findSentMessageWithUuidOrRemoteId(replacementId, true, true);
@@ -741,7 +752,7 @@ public class MessageParser extends AbstractParser implements OnMessagePacketRece
                             && replacedMessage.getTrueCounterpart().asBareJid().equals(message.getTrueCounterpart().asBareJid());
                     final boolean mucUserMatches = query == null && replacedMessage.sameMucUser(message); //can not be checked when using mam
                     final boolean duplicate = conversation.hasDuplicateMessage(message);
-                    if (fingerprintsMatch && (trueCountersMatch || !conversationMultiMode || mucUserMatches) && !duplicate) {
+                    if (fingerprintsMatch && (trueCountersMatch || !conversationMultiMode || mucUserMatches || counterpart.isBareJid()) && !duplicate) {
                         Log.d(Config.LOGTAG, "replaced message '" + replacedMessage.getBody() + "' with '" + message.getBody() + "'");
                         synchronized (replacedMessage) {
                             final String uuid = replacedMessage.getUuid();
@@ -751,6 +762,14 @@ public class MessageParser extends AbstractParser implements OnMessagePacketRece
                             replacedMessage.setUuid(UUID.randomUUID().toString());
                             replacedMessage.setBody(message.getBody());
                             replacedMessage.setRemoteMsgId(remoteMsgId);
+                            if (!replaceElement.getName().equals("replace")) {
+                                mXmppConnectionService.getFileBackend().deleteFile(replacedMessage);
+                                mXmppConnectionService.evictPreview(message.getUuid());
+                                replacedMessage.clearPayloads();
+                                replacedMessage.setFileParams(null);
+                                replacedMessage.setDeleted(true);
+                                replacedMessage.addPayload(replaceElement);
+                            }
                             if (replacedMessage.getServerMsgId() == null || message.getServerMsgId() != null) {
                                 replacedMessage.setServerMsgId(message.getServerMsgId());
                             }
@@ -778,6 +797,8 @@ public class MessageParser extends AbstractParser implements OnMessagePacketRece
                     } else {
                         Log.d(Config.LOGTAG, account.getJid().asBareJid() + ": received message correction but verification didn't check out");
                     }
+                } else if (message.getBody() == null || message.getBody().equals("") || message.getBody().equals(" ")) {
+                    return;
                 }
             } else if (replacementId != null && !mXmppConnectionService.allowMessageCorrection() && (message.hasDeletedBody())) {
                 Log.d(Config.LOGTAG, account.getJid().asBareJid() + ": received deleted message but LMC is deactivated");

@@ -298,6 +298,7 @@ public abstract class XmppActivity extends ActionBarActivity {
         return xmppConnectionService.getPgpEngine() != null;
     }
 
+    @SuppressLint("StringFormatInvalid")
     public void showInstallPgpDialog() {
         final AlertDialog.Builder builder = new AlertDialog.Builder(this);
         builder.setTitle(getString(R.string.openkeychain_required));
@@ -887,13 +888,16 @@ public abstract class XmppActivity extends ActionBarActivity {
     protected void quickPasswordEdit(String previousValue, OnValueEdited callback) {
         quickEdit(previousValue, callback, R.string.password, true, false);
     }
-
+    protected void quickEdit(final String previousValue, final OnValueEdited callback, final @StringRes int hint, boolean password, boolean permitEmpty) {
+        quickEdit(previousValue, callback, hint, password, permitEmpty, false);
+    }
     @SuppressLint("InflateParams")
-    private void quickEdit(final String previousValue,
-                           final OnValueEdited callback,
-                           final @StringRes int hint,
-                           boolean password,
-                           boolean permitEmpty) {
+    void quickEdit(final String previousValue,
+                   final OnValueEdited callback,
+                   final @StringRes int hint,
+                   boolean password,
+                   boolean permitEmpty,
+                   boolean alwaysCallback) {
         final AlertDialog.Builder builder = new AlertDialog.Builder(this);
         DialogQuickeditBinding binding = DataBindingUtil.inflate(getLayoutInflater(), R.layout.dialog_quickedit, null, false);
         if (password) {
@@ -914,7 +918,7 @@ public abstract class XmppActivity extends ActionBarActivity {
         dialog.show();
         View.OnClickListener clickListener = v -> {
             String value = binding.inputEditText.getText().toString();
-            if (!value.equals(previousValue) && (!value.trim().isEmpty() || permitEmpty)) {
+            if ((alwaysCallback || !value.equals(previousValue)) && (!value.trim().isEmpty() || permitEmpty)) {
                 String error = callback.onValueEdited(value);
                 if (error != null) {
                     binding.inputLayout.setError(error);
@@ -1057,7 +1061,7 @@ public abstract class XmppActivity extends ActionBarActivity {
                     inviteURL = Config.inviteUserURL + user + "/" + domain;
                 }
                 Log.d(Config.LOGTAG, "Invite uri = " + inviteURL);
-                final String inviteText = getString(R.string.InviteText, user);
+                @SuppressLint({"StringFormatInvalid", "LocalSuppress"}) final String inviteText = getString(R.string.InviteText, user);
                 final Intent intent = new Intent(android.content.Intent.ACTION_SEND);
                 intent.setType("text/plain");
                 intent.putExtra(Intent.EXTRA_SUBJECT, user + " " + getString(R.string.inviteUser_Subject) + " " + getString(R.string.app_name));
