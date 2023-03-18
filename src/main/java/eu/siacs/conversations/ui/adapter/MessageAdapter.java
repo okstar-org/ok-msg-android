@@ -704,7 +704,7 @@ public class MessageAdapter extends ArrayAdapter<Message> {
             if (message.isWebUri() || message.getWebUri() != null) {
                 displayRichLinkMessage(viewHolder, message, darkBackground);
             }
-            MyLinkify.addLinks(body, message.getConversation().getAccount());
+            MyLinkify.addLinks(body, message.getConversation().getAccount(), message.getConversation().getJid());
             viewHolder.messageBody.setText(body);
             viewHolder.messageBody.setAutoLinkMask(0);
             BetterLinkMovementMethod method = BetterLinkMovementMethod.newInstance();

@@ -391,20 +391,34 @@ public class MyLinkify {
         FixedURLSpan.fix(body);
     }
 
-    public static void addLinks(Editable body, Account account) {
+    public static void addLinks(Editable body, Account account, Jid context) {
         addLinks(body, true);
         Roster roster = account.getRoster();
         for (final URLSpan urlspan : body.getSpans(0, body.length() - 1, URLSpan.class)) {
             Uri uri = Uri.parse(urlspan.getURL());
             if ("xmpp".equals(uri.getScheme())) {
+                if (!body.subSequence(body.getSpanStart(urlspan), body.getSpanEnd(urlspan)).toString().startsWith("xmpp:")) {
+                    // Already customized
+                    continue;
+                }
+
                 try {
-                    Jid jid = new XmppUri(uri).getJid();
-                    ListItem item = account.getBookmark(jid);
-                    if (item == null) item = roster.getContact(jid);
+                    XmppUri xmppUri = new XmppUri(uri);
+                    Jid jid = xmppUri.getJid();
+                    String display = xmppUri.toString();
+                    if (jid.asBareJid().equals(context) && xmppUri.isAction("message") && xmppUri.getBody() != null) {
+                        display = xmppUri.getBody();
+                    } else if (jid.asBareJid().equals(context)) {
+                        display = xmppUri.parameterString();
+                    } else {
+                        ListItem item = account.getBookmark(jid);
+                        if (item == null) item = roster.getContact(jid);
+                        display = item.getDisplayName() + xmppUri.parameterString();
+                    }
                     body.replace(
-                        body.getSpanStart(urlspan),
-                        body.getSpanEnd(urlspan),
-                        item.getDisplayName()
+                            body.getSpanStart(urlspan),
+                            body.getSpanEnd(urlspan),
+                            display
                     );
                 } catch (final IllegalArgumentException e) { /* bad JID */ }
             }
