@@ -188,7 +188,7 @@ public class Contact implements ListItem, Blockable {
 
     @Override
     public List<Tag> getTags(Context context) {
-        final ArrayList<Tag> tags = new ArrayList<>();
+        final HashSet<Tag> tags = new HashSet<>();
         for (final String group : getGroups(true)) {
             tags.add(new Tag(group, UIHelper.getColorForName(group), 0, account, isActive()));
         }
@@ -197,7 +197,7 @@ public class Contact implements ListItem, Blockable {
         if (isBlocked()) {
             tags.add(new Tag(context.getString(R.string.blocked), 0xff2e2f3b, 0, account, isActive()));
         }
-        return tags;
+        return new ArrayList<>(tags);
     }
 
     @Override
