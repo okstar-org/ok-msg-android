@@ -112,11 +112,11 @@ def tags = grgit.tag.list().findAll { it.dateTime != null }.sort { it.dateTime }
 android {
     namespace 'eu.siacs.conversations'
     //noinspection GradleCompatible
-    compileSdkVersion 32
+    compileSdkVersion 33
 
     defaultConfig {
         minSdkVersion 21
-        targetSdkVersion 32
+        targetSdkVersion 33
 
         //versionNameSuffix " beta_(2023-01-10)" // " beta_(XXXX-XX-XX)" // activate for beta versions
         versionCode 130

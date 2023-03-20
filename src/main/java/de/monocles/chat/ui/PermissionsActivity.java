@@ -58,38 +58,6 @@ public class PermissionsActivity extends AppCompatActivity
         dialog.show();
     }
 
-    public void requestAllFilesAccess(@NonNull final PermissionsActivity.OnPermissionGranted onPermissionGranted) {
-        if (Compatibility.runsAndTargetsThirty(this) && !Environment.isExternalStorageManager()) {
-            final AlertDialog.Builder builder = new AlertDialog.Builder(this);
-            builder.setTitle(R.string.intro_required_permissions);
-            builder.setMessage(getString(R.string.no_manage_storage_permission));
-            builder.setNegativeButton(R.string.cancel, (dialog, which) -> finish());
-            builder.setPositiveButton(R.string.grant, (dialog, which) -> {
-                permissionCallbacks[ALL_FILES_PERMISSION] = onPermissionGranted;
-                try {
-                    Intent intent = new Intent(Settings.ACTION_MANAGE_ALL_FILES_ACCESS_PERMISSION);
-                    Uri uri = Uri.fromParts("package", getPackageName(), null);
-                    intent.setData(uri);
-                    startActivityForResult(intent, ALL_FILES_PERMISSION);
-                } catch (Exception e) {
-                    Intent intent = new Intent(Settings.ACTION_MANAGE_APP_ALL_FILES_ACCESS_PERMISSION);
-                    Uri uri = Uri.fromParts("package", getPackageName(), null);
-                    intent.setData(uri);
-                    startActivityForResult(intent, ALL_FILES_PERMISSION);
-                }
-            });
-            builder.setOnCancelListener(dialog -> finish());
-            final AlertDialog dialog = builder.create();
-            dialog.setCanceledOnTouchOutside(false);
-            dialog.setCancelable(false);
-            dialog.show();
-        } else {
-            if (Compatibility.hasStoragePermission(PermissionsActivity.this)) {
-                //StartUI.next(this);
-            }
-        }
-    }
-
     public interface OnPermissionGranted {
         void onPermissionGranted();
     }
