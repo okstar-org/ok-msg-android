@@ -116,7 +116,7 @@ android {
 
     defaultConfig {
         minSdkVersion 21
-        targetSdkVersion 33
+        targetSdkVersion 32
 
         //versionNameSuffix " beta_(2023-01-10)" // " beta_(XXXX-XX-XX)" // activate for beta versions
         versionCode 130
@@ -125,16 +125,16 @@ android {
 
         archivesBaseName += "-$versionName"
         //archivesBaseName += "$versionNameSuffix"  // activate for beta versions
-        applicationId "de.monocles.chat"
+        applicationId "de.monocles.chat.beta"
         multiDexEnabled true
         versionName grgit.describe(always: true)
-        buildConfigField("String", "LOGTAG", '"monocles chat"')
+        buildConfigField("String", "LOGTAG", '"monocles chat.beta"')
         buildConfigField("String", "DOMAIN_LOCK", 'null')
         buildConfigField("boolean", "SHOW_INTRO", 'true')
         buildConfigField("String", "UPDATE_URL", '"https://monocles.eu/chat/update/"')
         resValue "string", "applicationId", applicationId
-        resValue "string", "app_name", "monocles chat"
-        resValue "string", "short_app_name", "chat"
+        resValue "string", "app_name", "monocles chat.beta"
+        resValue "string", "short_app_name", "chat.beta"
     }
     splits {
         abi {
