@@ -125,16 +125,16 @@ android {
 
         archivesBaseName += "-$versionName"
         //archivesBaseName += "$versionNameSuffix"  // activate for beta versions
-        applicationId "de.monocles.chat.beta"
+        applicationId "de.monocles.chat"
         multiDexEnabled true
         versionName grgit.describe(always: true)
-        buildConfigField("String", "LOGTAG", '"monocles chat.beta"')
+        buildConfigField("String", "LOGTAG", '"monocles chat"')
         buildConfigField("String", "DOMAIN_LOCK", 'null')
         buildConfigField("boolean", "SHOW_INTRO", 'true')
         buildConfigField("String", "UPDATE_URL", '"https://monocles.eu/chat/update/"')
         resValue "string", "applicationId", applicationId
-        resValue "string", "app_name", "monocles chat.beta"
-        resValue "string", "short_app_name", "chat.beta"
+        resValue "string", "app_name", "monocles chat"
+        resValue "string", "short_app_name", "chat"
     }
     splits {
         abi {
