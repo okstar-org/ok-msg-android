@@ -826,10 +826,6 @@ public abstract class XmppActivity extends ActionBarActivity {
 
     }
 
-    public void showAddToRosterDialog(final Conversation conversation) {
-        showAddToRosterDialog(conversation.getContact());
-    }
-
     public void showAddToRosterDialog(final Contact contact) {
         if (contact == null) {
             return;
@@ -839,6 +835,7 @@ public abstract class XmppActivity extends ActionBarActivity {
         builder.setMessage(getString(R.string.not_in_roster));
         builder.setNegativeButton(getString(R.string.cancel), null);
         builder.setPositiveButton(getString(R.string.add_contact), (dialog, which) -> {
+            contact.copySystemTagsToGroups();
             xmppConnectionService.createContact(contact, true);
             recreate();
         });
