@@ -112,6 +112,7 @@
     -->
 
     <string-array name="support_domains">
+        <item>monocles.eu</item>
         <item>monocles.de</item>
         <item>jabber.de</item>
         <item>dismail.de</item>
@@ -125,6 +126,7 @@
     </string-array>
 
     <string-array name="support_site">
+        <item>https://monocles.wiki</item>
         <item>https://monocles.wiki</item>
         <item>https://www.jabber.de/support/</item>
         <item>https://dismail.de/contact.html</item>
