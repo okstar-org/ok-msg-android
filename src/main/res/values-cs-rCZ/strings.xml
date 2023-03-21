@@ -448,7 +448,7 @@
     <string name="pref_dnd_on_silent_mode_summary">Pokud je vaše zařízení v tichém režimu, přepne váš stav na \"Zaneprázdněný\"</string>
     <string name="pref_treat_vibrate_as_silent">Vibrační mód brát stejně jako tichý</string>
     <string name="pref_treat_vibrate_as_dnd_summary">Pokud je vaše zařízení v režimu vibrace, přepne váš stav na \"Zaneprázdněný\"</string>
-    <string name="hostname_example">monocles chat</string>
+    <string name="hostname_example">monocles.de</string>
     <string name="action_add_account_with_certificate">Přidat účet s certifikátem</string>
     <string name="unable_to_parse_certificate">Nelze načíst certifikát</string>
     <string name="authenticate_with_certificate">Nechat prázdné pro ověření s certifikátem</string>
