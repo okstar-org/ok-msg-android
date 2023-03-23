@@ -11,6 +11,7 @@ import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
 import android.content.res.ColorStateList;
 import android.net.Uri;
+import android.preference.PreferenceManager;
 import android.os.Build;
 import android.os.Bundle;
 import android.text.Editable;
@@ -710,9 +711,15 @@ public class StartConversationActivity extends XmppActivity implements XmppConne
         mSearchEditText = mSearchView.findViewById(R.id.search_field);
         mSearchEditText.addTextChangedListener(mSearchTextWatcher);
         mSearchEditText.setOnEditorActionListener(mSearchDone);
-        RecyclerView tags = mSearchView.findViewById(R.id.tags);
-        tags.setLayoutManager(new LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false));
-        tags.setAdapter(mTagsAdapter);
+
+        SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(this);
+        boolean showDynamicTags = preferences.getBoolean(SettingsActivity.SHOW_DYNAMIC_TAGS, getResources().getBoolean(R.bool.show_dynamic_tags));
+        if (showDynamicTags) {
+            RecyclerView tags = mSearchView.findViewById(R.id.tags);
+            tags.setLayoutManager(new LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false));
+            tags.setAdapter(mTagsAdapter);
+        }
+
         String initialSearchValue = mInitialSearchValue.pop();
         if (initialSearchValue != null) {
             mMenuSearchView.expandActionView();
