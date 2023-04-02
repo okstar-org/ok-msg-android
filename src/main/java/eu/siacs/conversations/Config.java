@@ -54,7 +54,7 @@ public final class Config {
 
     public static String monocles() {
         //if (Locale.getDefault().getLanguage().equalsIgnoreCase("de")) {
-        return "https://ocean.monocles.eu/apps/registration/";
+        return "https://ocean.monocles.de/apps/registration/";
         /*} else {
             return "blabber.im/en.html";
         }*/
