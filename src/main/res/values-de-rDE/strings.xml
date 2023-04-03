@@ -1053,7 +1053,7 @@
     <string name="incoming_call_duration">%s · Eingehender Anruf · %s</string>
     <string name="incoming_call_time">%s · Eingehender Anruf</string>
     <string name="incoming_call">Eingehender Anruf</string>
-    <string name="missed_call_timestamp">%s · Verpasster Anruf</string>
+    <string name="missed_call_timestamp">Entgangener Anruf · %s</string>
     <string name="outgoing_call_duration">%s · Ausgehender Anruf · %s</string>
     <string name="outgoing_call_time">%s · Ausgehender Anruf</string>
     <string name="outgoing_call">Ausgehender Anruf</string>
