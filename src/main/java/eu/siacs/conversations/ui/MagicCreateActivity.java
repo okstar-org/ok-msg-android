@@ -122,7 +122,7 @@ public class MagicCreateActivity extends XmppActivity implements TextWatcher, Ad
         //    binding.instructions.setText(getString(R.string.magic_create_text_on_x, domain));
         }
         binding.createAccount.setOnClickListener(v -> {
-            Uri uri = Uri.parse("https://ocean.monocles.eu/apps/registration/"); // missing 'http://' will cause crashed
+            Uri uri = Uri.parse("https://ocean.monocles.de/apps/registration/"); // missing 'http://' will cause crashed
             Intent intent = new Intent(Intent.ACTION_VIEW, uri);
             startActivity(intent);
       /*      try {
