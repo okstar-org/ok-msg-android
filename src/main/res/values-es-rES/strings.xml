@@ -1255,4 +1255,7 @@
     <string name="moderate_message">Moderar</string>
     <string name="moderate_reason">Razón para la moderación</string>
     <string name="unable_to_moderate">No es posible moderar</string>
+    <string name="incoming_call_duration_timestamp">Llamada entrante (%s) · %s</string>
+    <string name="outgoing_call_duration_timestamp">Llamada saliente (%s) · %s</string>
+    <string name="outgoing_call_timestamp">Llamada saliente · %s</string>
 </resources>
