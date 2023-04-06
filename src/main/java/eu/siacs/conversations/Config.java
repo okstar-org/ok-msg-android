@@ -76,7 +76,7 @@ public final class Config {
     public static final String CHANGELOG_URL = "https://codeberg.org/Arne/monocles_chat/src/branch/master/CHANGELOG.md";
     public static final String GIT_URL = "https://codeberg.org/Arne/monocles_chat";
 
-    public static final String PROVIDER_URL = ""; // https://invent.kde.org/melvo/xmpp-providers
+    public static final String PROVIDER_URL = "https://data.xmpp.net/providers/v1/providers-A.json"; // https://invent.kde.org/melvo/xmpp-providers
     //or https://invent.kde.org/melvo/xmpp-providers/-/raw/master/providers.json
     public static final String XMPP_IP = null; //BuildConfig.XMPP_IP; // set to null means disable
     public static final Integer[] XMPP_Ports = null; //BuildConfig.XMPP_Ports; // set to null means disable
@@ -225,15 +225,7 @@ public final class Config {
         public static final List<String> DOMAINS = Arrays.asList(
                 "monocles.de",
                 "monocles.eu",
-                "monocles.fr",
-                "monocl.es",
-                "monocles.es",
-                "monocles.se",
-                "monocles.uk",
-                "monocles.ch",
-                "monocles.jp",
-                "monocles.us",
-                "monocles.cn"
+                "conversations.im"
         );
 
         // don't use these servers in provider list
@@ -251,7 +243,7 @@ public final class Config {
             } catch (Exception e) {
                 Log.d(LOGTAG, "Error getting random server ", e);
             }
-            return "monocles.de";
+            return "conversations.im";
         }
     }
 
