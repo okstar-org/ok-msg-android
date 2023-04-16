@@ -298,7 +298,6 @@ public abstract class XmppActivity extends ActionBarActivity {
         return xmppConnectionService.getPgpEngine() != null;
     }
 
-    @SuppressLint("StringFormatInvalid")
     public void showInstallPgpDialog() {
         final AlertDialog.Builder builder = new AlertDialog.Builder(this);
         builder.setTitle(getString(R.string.openkeychain_required));
@@ -1058,7 +1057,7 @@ public abstract class XmppActivity extends ActionBarActivity {
                     inviteURL = Config.inviteUserURL + user + "/" + domain;
                 }
                 Log.d(Config.LOGTAG, "Invite uri = " + inviteURL);
-                @SuppressLint({"StringFormatInvalid", "LocalSuppress"}) final String inviteText = getString(R.string.InviteText, user);
+                final String inviteText = getString(R.string.InviteText, user);
                 final Intent intent = new Intent(android.content.Intent.ACTION_SEND);
                 intent.setType("text/plain");
                 intent.putExtra(Intent.EXTRA_SUBJECT, user + " " + getString(R.string.inviteUser_Subject) + " " + getString(R.string.app_name));
