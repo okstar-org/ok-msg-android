@@ -1258,4 +1258,5 @@
     <string name="incoming_call_duration_timestamp">Incoming call (%s) · %s</string>
     <string name="outgoing_call_duration_timestamp">Outgoing call (%s) · %s</string>
     <string name="outgoing_call_timestamp">Outgoing call · %s</string>
+    <string name="note_to_self">Note to self</string>
 </resources>

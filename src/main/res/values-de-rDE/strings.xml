@@ -1187,4 +1187,5 @@
     <string name="pref_resend_delay_summary">Verzögerung des Wiederversands (Millisekunden), die Zeit der Verzögerung für den Wiederversand einer Nachricht.</string>
     <string name="pref_enable_persistent_rooms_summary">Mache Chaträume und öffentliche Chaträume persistent und lösche sie nicht von dem Server nachdem der letzte Nutzer den Chatraum verlassen hat.</string>
     <string name="pref_enable_persistent_rooms_title">Persistente Chaträume</string>
+    <string name="note_to_self">Notiz an mich selbst</string>
 </resources>
