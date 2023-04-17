@@ -28,7 +28,6 @@
  */
 package eu.siacs.conversations.entities;
 
-import android.annotation.SuppressLint;
 import android.database.Cursor;
 
 import java.util.Set;
@@ -43,7 +42,7 @@ public class IndividualMessage extends Message {
     }
 
     private IndividualMessage(Conversational conversation, String uuid, String conversationUUid, Jid counterpart, Jid trueCounterpart, String body, long timeSent, int encryption, int status, int type, boolean carbon, String remoteMsgId, String relativeFilePath, String serverMsgId, String fingerprint, boolean read, boolean deleted, String edited, boolean oob, String errorMessage, Set<ReadByMarker> readByMarkers, boolean markable, boolean file_deleted, String bodyLanguage, String retractId) {
-        super(conversation, uuid, conversationUUid, counterpart, trueCounterpart, body, timeSent, encryption, status, type, carbon, remoteMsgId, relativeFilePath, serverMsgId, fingerprint, read, deleted, edited, oob, errorMessage, readByMarkers, markable, file_deleted, bodyLanguage,retractId,null);
+        super(conversation, uuid, conversationUUid, counterpart, trueCounterpart, body, timeSent, encryption, status, type, carbon, remoteMsgId, relativeFilePath, serverMsgId, fingerprint, read, deleted, edited, oob, errorMessage, readByMarkers, markable, file_deleted, bodyLanguage, retractId, null);
     }
 
     public static Message createDateSeparator(Message message) {
@@ -54,11 +53,10 @@ public class IndividualMessage extends Message {
         return separator;
     }
 
-    @SuppressLint("Range")
     public static Message fromCursor(Cursor cursor, Conversational conversation) {
         Jid jid;
         try {
-            @SuppressLint("Range") String value = cursor.getString(cursor.getColumnIndex(COUNTERPART));
+            String value = cursor.getString(cursor.getColumnIndex(COUNTERPART));
             if (value != null) {
                 jid = Jid.of(value);
             } else {
@@ -71,7 +69,7 @@ public class IndividualMessage extends Message {
         }
         Jid trueCounterpart;
         try {
-            @SuppressLint("Range") String value = cursor.getString(cursor.getColumnIndex(TRUE_COUNTERPART));
+            String value = cursor.getString(cursor.getColumnIndex(TRUE_COUNTERPART));
             if (value != null) {
                 trueCounterpart = Jid.of(value);
             } else {

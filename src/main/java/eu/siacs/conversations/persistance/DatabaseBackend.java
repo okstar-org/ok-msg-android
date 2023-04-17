@@ -2,7 +2,6 @@ package eu.siacs.conversations.persistance;
 
 import static eu.siacs.conversations.ui.util.UpdateHelper.moveData_PAM_monocles;
 
-import android.annotation.SuppressLint;
 import android.content.ContentValues;
 import android.content.Context;
 import android.database.Cursor;
@@ -703,7 +702,6 @@ public class DatabaseBackend extends SQLiteOpenHelper {
         return isExist;
     }
 
-    @SuppressLint("Range")
     private void canonicalizeJids(SQLiteDatabase db) {
         // migrate db to new, canonicalized JID domainpart representation
 
@@ -958,12 +956,7 @@ public class DatabaseBackend extends SQLiteOpenHelper {
 
                 @Override
                 public Message next() {
-                    Message message = null;
-                    try {
-                        message = Message.fromCursor(cursor, conversation);
-                    } catch (IOException e) {
-                        throw new RuntimeException(e);
-                    }
+                    Message message = Message.fromCursor(cursor, conversation);
                     cursor.moveToNext();
                     return message;
                 }
@@ -1352,7 +1345,6 @@ public class DatabaseBackend extends SQLiteOpenHelper {
                 null, null, null);
     }
 
-    @SuppressLint("Range")
     public SessionRecord loadSession(Account account, SignalProtocolAddress contact) {
         SessionRecord session = null;
         Cursor cursor = getCursorForSession(account, contact);
@@ -1374,7 +1366,6 @@ public class DatabaseBackend extends SQLiteOpenHelper {
         return getSubDeviceSessions(db, account, contact);
     }
 
-    @SuppressLint("Range")
     private List<Integer> getSubDeviceSessions(SQLiteDatabase db, Account account, SignalProtocolAddress contact) {
         List<Integer> devices = new ArrayList<>();
         String[] columns = {SQLiteAxolotlStore.DEVICE_ID};
@@ -1469,7 +1460,6 @@ public class DatabaseBackend extends SQLiteOpenHelper {
         return cursor;
     }
 
-    @SuppressLint("Range")
     public PreKeyRecord loadPreKey(Account account, int preKeyId) {
         PreKeyRecord record = null;
         Cursor cursor = getCursorForPreKey(account, preKeyId);
@@ -1523,7 +1513,6 @@ public class DatabaseBackend extends SQLiteOpenHelper {
         return cursor;
     }
 
-    @SuppressLint("Range")
     public SignedPreKeyRecord loadSignedPreKey(Account account, int signedPreKeyId) {
         SignedPreKeyRecord record = null;
         Cursor cursor = getCursorForSignedPreKey(account, signedPreKeyId);
@@ -1539,7 +1528,6 @@ public class DatabaseBackend extends SQLiteOpenHelper {
         return record;
     }
 
-    @SuppressLint("Range")
     public List<SignedPreKeyRecord> loadSignedPreKeys(Account account) {
         List<SignedPreKeyRecord> prekeys = new ArrayList<>();
         SQLiteDatabase db = this.getReadableDatabase();
@@ -1657,7 +1645,6 @@ public class DatabaseBackend extends SQLiteOpenHelper {
         return loadOwnIdentityKeyPair(db, account);
     }
 
-    @SuppressLint("Range")
     private IdentityKeyPair loadOwnIdentityKeyPair(SQLiteDatabase db, Account account) {
         String name = account.getJid().asBareJid().toString();
         IdentityKeyPair identityKeyPair = null;
@@ -1688,7 +1675,7 @@ public class DatabaseBackend extends SQLiteOpenHelper {
                 continue;
             }
             try {
-                @SuppressLint("Range") String key = cursor.getString(cursor.getColumnIndex(SQLiteAxolotlStore.KEY));
+                String key = cursor.getString(cursor.getColumnIndex(SQLiteAxolotlStore.KEY));
                 if (key != null) {
                     identityKeys.add(new IdentityKey(Base64.decode(key, Base64.DEFAULT), 0));
                 } else {
@@ -1811,7 +1798,7 @@ public class DatabaseBackend extends SQLiteOpenHelper {
             return null;
         } else {
             cursor.moveToFirst();
-            @SuppressLint("Range") byte[] certificate = cursor.getBlob(cursor.getColumnIndex(SQLiteAxolotlStore.CERTIFICATE));
+            byte[] certificate = cursor.getBlob(cursor.getColumnIndex(SQLiteAxolotlStore.CERTIFICATE));
             cursor.close();
             if (certificate == null || certificate.length == 0) {
                 return null;

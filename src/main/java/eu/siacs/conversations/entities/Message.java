@@ -114,7 +114,7 @@ public class Message extends AbstractEntity implements AvatarService.Avatarable 
     protected boolean file_deleted = false;
     protected boolean carbon = false;
     protected boolean oob = false;
-    protected List<Element> payloads = new ArrayList<>();
+    protected static List<Element> payloads = new ArrayList<>();
 
     protected List<Edit> edits = new ArrayList<>();
     protected String relativeFilePath;
@@ -243,11 +243,10 @@ public class Message extends AbstractEntity implements AvatarService.Avatarable 
         if (payloads != null) this.payloads = payloads;
     }
 
-    @SuppressLint("Range")
-    public static Message fromCursor(Cursor cursor, Conversation conversation) throws IOException {
-        @SuppressLint("Range") String payloadsStr = cursor.getString(cursor.getColumnIndex("payloads"));
+    public static Message fromCursor(Cursor cursor, Conversation conversation) {
+/*         String payloadsStr = cursor.getString(cursor.getColumnIndex("payloads"));
         List<Element> payloads = new ArrayList<>();
-        if (payloadsStr != null) {
+       if (payloadsStr != null) {
             final XmlReader xmlReader = new XmlReader();
             xmlReader.setInputStream(ByteSource.wrap(payloadsStr.getBytes()).openStream());
             Tag tag;
@@ -255,7 +254,8 @@ public class Message extends AbstractEntity implements AvatarService.Avatarable 
                 payloads.add(xmlReader.readElement(tag));
             }
         }
-
+        //TODO: Handle payload and Xml Reader
+*/
         return new Message(conversation,
                 cursor.getString(cursor.getColumnIndex(UUID)),
                 cursor.getString(cursor.getColumnIndex(CONVERSATION)),

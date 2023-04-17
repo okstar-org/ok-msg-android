@@ -463,7 +463,7 @@
     <string name="share_uri_with">Сподели URI с…</string>
     <string name="mgmt_account_reconnect">Повторно Свързване</string>
     <string name="welcome_text">...е безплатен и сигурен XMPP / Jabber клиент.</string>
-    <string name="magic_create_text">You can use monocles chat with every modern XMPP account or get a affordable and secure monocles account, hosted on the monocles server station and powered with regenerative energies!\n\n This includes:\n● two month encrypted temporary chat storage\n● e-mail with 1 GB end-to-end encrypted storage\n\n optionally: \n● 4 GB cloud storage (nextcloud)\n● calendar and contact sync\n● a secure conferencing tool \n● and more on https://monocles.de/more/</string>
+    <string name="magic_create_text">You can use monocles chat with every modern XMPP account or get a affordable and secure monocles account, hosted on the monocles server station and powered with regenerative energies!\n\n This includes:\n● two month encrypted temporary chat storage\n● e-mail with 1 GB end-to-end encrypted storage\n\n optionally: \n● 4 GB cloud storage (nextcloud)\n● calendar and contact sync\n● a secure conferencing tool \n● and more on <a href="https://monocles.de/more/">https://monocles.de/more/</a></string>
     <string name="your_full_jid_will_be">Вашият chat address ще бъде: %s</string>
     <string name="create_account">Създаване на нов акаунт</string>
     <string name="welcome_existing_account">Имам профил</string>

@@ -999,7 +999,7 @@ public class StartConversationActivity extends XmppActivity implements XmppConne
                 }
                 final Contact self = account.getSelfContact();
                 if (self.match(this, needle)) {
-                    self.setSystemName("Note to Self");
+                    self.setSystemName(getString(R.string.note_to_self));
                     this.contacts.add(self);
                 }
 

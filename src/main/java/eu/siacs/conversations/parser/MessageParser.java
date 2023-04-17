@@ -738,8 +738,9 @@ public class MessageParser extends AbstractParser implements OnMessagePacketRece
 
             if (replacementId != null && mXmppConnectionService.allowMessageCorrection()) {
                 Message replacedMessage = conversation.findMessageWithRemoteIdAndCounterpart(replacementId,
-                        counterpart
-                );
+                        counterpart,
+                        message.getStatus() == Message.STATUS_RECEIVED,
+                        message.isCarbon());
 
                 if (replacedMessage == null) {
                     replacedMessage = conversation.findSentMessageWithUuidOrRemoteId(replacementId, true, true);

@@ -512,7 +512,7 @@
     <string name="share_uri_with">Teile URI mit…</string>
     <string name="mgmt_account_reconnect">Neu verbinden</string>
     <string name="welcome_text">…ist ein privatsphäre respektierender und sicherer Chat Client.</string>
-    <string name="magic_create_text">Du kannst monocles chat mit jedem modernen XMPP-Konto nutzen oder ein günstiges und sicheres monocles Konto erwerben, gehostet auf der monocles Serverstation und direkt versorgt mit regenerativen Energien!\n\n Dies beinhaltet: \n ● zwei Monate verschlüsselte Chat-Speicher\n ● E-Mail mit 1 GB Ende-zu-Ende verschlüsseltem Speicher\n\n optional: \n ● 4 GB Cloud-Speicher (Nextcloud)\n ● Kalender und Kontakt Synchronisation\n ● Ein sicheres Conferencing-Tool \n ● und mehr auf https://monocles.de/more/</string>
+    <string name="magic_create_text">Du kannst monocles chat mit jedem modernen XMPP-Konto nutzen oder ein günstiges und sicheres monocles Konto erwerben, gehostet auf der monocles Serverstation und direkt versorgt mit regenerativen Energien!\n\n Dies beinhaltet: \n ● zwei Monate verschlüsselte Chat-Speicher\n ● E-Mail mit 1 GB Ende-zu-Ende verschlüsseltem Speicher\n\n optional: \n ● 4 GB Cloud-Speicher (Nextcloud)\n ● Kalender und Kontakt Synchronisation\n ● Ein sicheres Conferencing-Tool \n ● und mehr auf <a href="https://monocles.de/more/">https://monocles.de/more/</a></string>
     <string name="your_full_jid_will_be">Deine Chat Adresse lautet: %s</string>
     <string name="create_account">Neues Konto erstellen</string>
     <string name="welcome_existing_account">Ich habe ein Konto</string>
@@ -1187,4 +1187,5 @@
     <string name="pref_resend_delay_summary">Verzögerung des Wiederversands (Millisekunden), die Zeit der Verzögerung für den Wiederversand einer Nachricht.</string>
     <string name="pref_enable_persistent_rooms_summary">Mache Chaträume und öffentliche Chaträume persistent und lösche sie nicht von dem Server nachdem der letzte Nutzer den Chatraum verlassen hat.</string>
     <string name="pref_enable_persistent_rooms_title">Persistente Chaträume</string>
+    <string name="note_to_self">Notiz an mich</string>
 </resources>

@@ -119,8 +119,8 @@ android {
         targetSdkVersion 32
 
         //versionNameSuffix " beta_(2023-01-10)" // " beta_(XXXX-XX-XX)" // activate for beta versions
-        versionCode 130
-        versionName "1.6.3"
+        versionCode 131
+        versionName "1.6.4"
         //resConfigs "en"
 
         archivesBaseName += "-$versionName"
@@ -226,5 +226,15 @@ android {
         disable 'ExtraTranslation', 'MissingTranslation', 'InvalidPackage', 'MissingQuantity', 'AppCompatResource', 'RestrictedApi'
         error 'StringFormatInvalid', 'StringFormatMatches'
     }
+    android.applicationVariants.all { variant ->
+        variant.outputs.each { output ->
+            def baseAbiVersionCode = project.ext.abiCodes.get(output.getFilter(com.android.build.OutputFile.ABI))
+            if (baseAbiVersionCode != null) {
+                output.versionCodeOverride = (100 * project.android.defaultConfig.versionCode) + baseAbiVersionCode
+            } else {
+                output.versionCodeOverride = (100 * project.android.defaultConfig.versionCode) + grgit.log(includes: ["HEAD"], excludes: [tags.last()]).size()
+            }
+        }
 
+    }
 }
