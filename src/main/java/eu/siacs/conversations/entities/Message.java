@@ -6,12 +6,17 @@ import android.database.Cursor;
 import android.graphics.Color;
 import android.text.SpannableStringBuilder;
 import android.util.Log;
+import android.util.Pair;
+
 import eu.siacs.conversations.ui.util.QuoteHelper;
 
 import com.google.common.base.Strings;
 import com.google.common.collect.ImmutableSet;
 import com.google.common.io.ByteSource;
 import com.google.common.primitives.Longs;
+
+import java.net.URI;
+import java.net.URISyntaxException;
 import java.util.HashSet;
 
 import org.json.JSONException;
@@ -484,9 +489,31 @@ public class Message extends AbstractEntity implements AvatarService.Avatarable 
     }
 
     public String getBody() {
-        return body;
-    }
+        StringBuilder body = new StringBuilder(this.body);
 
+        List<Element> fallbacks = getFallbacks();
+        List<Pair<Integer, Integer>> spans = new ArrayList<>();
+        for (Element fallback : fallbacks) {
+            for (Element span : fallback.getChildren()) {
+                if (!span.getName().equals("body") && !span.getNamespace().equals("urn:xmpp:fallback:0")) continue;
+                if (span.getAttribute("start") == null || span.getAttribute("end") == null) return "";
+                spans.add(new Pair(parseInt(span.getAttribute("start")), parseInt(span.getAttribute("end"))));
+            }
+        }
+        // Do them in reverse order so that span deletions don't affect the indexes of other spans
+        spans.sort((x, y) -> y.first.compareTo(x.first));
+        try {
+            for (Pair<Integer, Integer> span : spans) {
+                body.delete(span.first, span.second);
+            }
+        } catch (final StringIndexOutOfBoundsException e) { spans.clear(); }
+
+        if (spans.isEmpty() && getOob() != null) {
+            return body.toString().replace(getOob().toString(), "");
+        } else {
+            return body.toString();
+        }
+    }
     public synchronized void setBody(String body) {
         if (body == null) {
             throw new Error("You should not set the message body to null");
@@ -975,7 +1002,14 @@ public class Message extends AbstractEntity implements AvatarService.Avatarable 
             throw new IllegalStateException("Attempting to store unedited message");
         }
     }
-
+    public URI getOob() {
+        final String url = getFileParams().url;
+        try {
+            return url == null ? null : new URI(url);
+        } catch (final URISyntaxException e) {
+            return null;
+        }
+    }
     public List<Edit> getEditedList() {
         return edits;
     }
