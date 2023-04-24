@@ -1,6 +1,7 @@
 package eu.siacs.conversations.xml;
 
 import org.jetbrains.annotations.NotNull;
+import org.w3c.dom.Node;
 
 import java.util.ArrayList;
 import java.util.Hashtable;
@@ -14,11 +15,14 @@ import eu.siacs.conversations.xmpp.InvalidJid;
 import eu.siacs.conversations.xmpp.Jid;
 import eu.siacs.conversations.xmpp.stanzas.MessagePacket;
 
+
 public class Element {
     private final String name;
     private Hashtable<String, String> attributes = new Hashtable<>();
     private String content;
     protected List<Element> children = new ArrayList<>();
+    private List<Node> childNodes = new ArrayList<>();
+
 
     public Element(String name) {
         this.name = name;
@@ -223,5 +227,12 @@ public class Element {
 
     public String getNamespace() {
         return getAttribute("xmlns");
+    }
+
+    public void removeChild(Node child) {
+        if (child == null) return;
+
+        this.childNodes.remove(child);
+        if (child instanceof Element) this.children.remove(child);
     }
 }

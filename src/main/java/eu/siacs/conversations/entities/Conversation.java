@@ -7,6 +7,8 @@ import android.content.SharedPreferences;
 import android.database.Cursor;
 import android.preference.PreferenceManager;
 import android.text.TextUtils;
+import java.util.HashSet;
+import java.util.Set;
 
 import net.java.otr4j.OtrException;
 import net.java.otr4j.crypto.OtrCryptoException;
@@ -44,6 +46,7 @@ import eu.siacs.conversations.services.QuickConversationsService;
 import eu.siacs.conversations.utils.JidHelper;
 import eu.siacs.conversations.utils.MessageUtils;
 import eu.siacs.conversations.utils.UIHelper;
+import eu.siacs.conversations.xml.Element;
 import eu.siacs.conversations.xmpp.Jid;
 import eu.siacs.conversations.xmpp.chatstate.ChatState;
 import eu.siacs.conversations.xmpp.mam.MamReference;
@@ -101,6 +104,10 @@ public class Conversation extends AbstractEntity implements Blockable, Comparabl
     private ChatState mIncomingChatState = Config.DEFAULT_CHAT_STATE;
     private String mLastReceivedOtrMessageId = null;
     private String mFirstMamReference = null;
+    protected Message replyTo = null;
+    protected Element thread = null;
+
+
 
     public Conversation(final String name, final Account account, final Jid contactJid,
                         final int mode) {
@@ -493,12 +500,12 @@ public class Conversation extends AbstractEntity implements Blockable, Comparabl
             for (int i = this.messages.size() - 1; i >= 0; --i) {
                 final Message message = messages.get(i);
                 final Jid mcp = message.getCounterpart();
-                if (mcp == null) {
+                if (mcp == null && counterpart != null) {
                     continue;
                 }
-                if (mcp.equals(counterpart) && ((message.getStatus() == Message.STATUS_RECEIVED) == received || mcp.asBareJid().equals(counterpart))
+                if (counterpart == null || mcp.equals(counterpart) && ((message.getStatus() == Message.STATUS_RECEIVED) == received || mcp.asBareJid().equals(counterpart))
                         && (carbon == message.isCarbon() || received)) {
-                    final boolean idMatch = id.equals(message.getRemoteMsgId()) || message.remoteMsgIdMatchInEdit(id) || (getMode() == MODE_MULTI && id.equals(message.getServerMsgId()));
+                    final boolean idMatch = id.equals(message.getUuid()) || id.equals(message.getRemoteMsgId()) || message.remoteMsgIdMatchInEdit(id) || (getMode() == MODE_MULTI && id.equals(message.getServerMsgId()));
                     if (idMatch && !message.isFileOrImage() && !message.treatAsDownloadable()) {
                         return message;
                     }
@@ -506,6 +513,13 @@ public class Conversation extends AbstractEntity implements Blockable, Comparabl
             }
         }
         return null;
+    }
+    public void setReplyTo(Message m) {
+        this.replyTo = m;
+    }
+
+    public Message getReplyTo() {
+        return this.replyTo;
     }
 
     public Message findSentMessageWithUuid(String id) {
@@ -568,6 +582,35 @@ public class Conversation extends AbstractEntity implements Blockable, Comparabl
             return 0;
         });
         return result;
+    }
+    public Message findMessageReactingTo(String id, Jid reactor) {
+        synchronized (this.messages) {
+            for (int i = this.messages.size() - 1; i >= 0; --i) {
+                final Message message = messages.get(i);
+                if (reactor == null && message.getStatus() < Message.STATUS_SEND) continue;
+                if (reactor != null && !(message.getCounterpart().equals(reactor) || message.getCounterpart().asBareJid().equals(reactor))) continue;
+
+                final Element r = message.getReactions();
+                if (r != null && r.getAttribute("id") != null && id.equals(r.getAttribute("id"))) {
+                    return message;
+                }
+            }
+        }
+        return null;
+    }
+
+    public Set<String> findReactionsTo(String id, Jid reactor) {
+        Set<String> reactionEmoji = new HashSet<>();
+        Message reactM = findMessageReactingTo(id, reactor);
+        Element reactions = reactM == null ? null : reactM.getReactions();
+        if (reactions != null) {
+            for (Element el : reactions.getChildren()) {
+                if (el.getName().equals("reaction") && el.getNamespace().equals("urn:xmpp:reactions:0")) {
+                    reactionEmoji.add(el.getContent());
+                }
+            }
+        }
+        return reactionEmoji;
     }
 
     public void populateWithMessages(final List<Message> messages) {
@@ -651,7 +694,12 @@ public class Conversation extends AbstractEntity implements Blockable, Comparabl
             setAttribute(ATTRIBUTE_LAST_CLEAR_HISTORY, time);
         }
     }
-
+    public Element getThread() {
+        return this.thread;
+    }
+    public void setThread(Element thread) {
+        this.thread = thread;
+    }
     public MamReference getLastClearHistory() {
         return MamReference.fromAttribute(getAttribute(ATTRIBUTE_LAST_CLEAR_HISTORY));
     }
