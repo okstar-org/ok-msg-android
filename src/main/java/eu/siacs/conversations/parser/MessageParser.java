@@ -632,6 +632,7 @@ public class MessageParser extends AbstractParser implements OnMessagePacketRece
             }
             mXmppConnectionService.insertWebxdcUpdate(new WebxdcUpdate(
                     conversation,
+                    remoteMsgId,
                     counterpart,
                     packet.findChild("thread"),
                     body == null ? null : body.content,

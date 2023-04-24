@@ -321,6 +321,14 @@ public class DatabaseBackend extends SQLiteOpenHelper {
                 db.execSQL("PRAGMA monocles.user_version = 8");
             }
 
+            if(monoclesVersion < 9) {
+                db.execSQL(
+                        "ALTER TABLE monocles.webxdc_updates " +
+                                "ADD COLUMN message_id TEXT"
+                );
+                db.execSQL("CREATE UNIQUE INDEX monocles.webxdc_message_id_index ON webxdc_updates (" + Message.CONVERSATION + ", message_id)");
+                db.execSQL("PRAGMA monocles.user_version = 9");
+            }
 
             db.setTransactionSuccessful();
         } finally {
@@ -896,13 +904,13 @@ public class DatabaseBackend extends SQLiteOpenHelper {
 
     public void insertWebxdcUpdate(final WebxdcUpdate update) {
         SQLiteDatabase db = this.getWritableDatabase();
-        db.insert("cheogram.webxdc_updates", null, update.getContentValues());
+        db.insertWithOnConflict("monocles.webxdc_updates", null, update.getContentValues(), SQLiteDatabase.CONFLICT_IGNORE);
     }
 
     public WebxdcUpdate findLastWebxdcUpdate(Message message) {
         SQLiteDatabase db = this.getReadableDatabase();
         String[] selectionArgs = {message.getConversation().getUuid(), message.getThread().getContent()};
-        Cursor cursor = db.query("cheogram.webxdc_updates", null,
+        Cursor cursor = db.query("monocles.webxdc_updates", null,
                 Message.CONVERSATION + "=? AND thread=?",
                 selectionArgs, null, null, null);
         WebxdcUpdate update = null;
@@ -916,7 +924,7 @@ public class DatabaseBackend extends SQLiteOpenHelper {
     public List<WebxdcUpdate> findWebxdcUpdates(Message message, long serial) {
         SQLiteDatabase db = this.getReadableDatabase();
         String[] selectionArgs = {message.getConversation().getUuid(), message.getThread().getContent(), String.valueOf(serial)};
-        Cursor cursor = db.query("cheogram.webxdc_updates", null,
+        Cursor cursor = db.query("monocles.webxdc_updates", null,
                 Message.CONVERSATION + "=? AND thread=? AND serial>?",
                 selectionArgs, null, null, null);
         long maxSerial = 0;
