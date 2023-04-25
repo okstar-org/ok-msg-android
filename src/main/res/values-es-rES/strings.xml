@@ -1259,4 +1259,5 @@
     <string name="outgoing_call_duration_timestamp">Llamada saliente (%s) · %s</string>
     <string name="outgoing_call_timestamp">Llamada saliente · %s</string>
     <string name="note_to_self">Nota para mi</string>
+    <string name="retract_message">Retractar mensaje</string>
 </resources>
