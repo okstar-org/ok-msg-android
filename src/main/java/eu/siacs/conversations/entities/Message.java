@@ -6,11 +6,18 @@ import android.database.Cursor;
 import android.graphics.Color;
 import android.text.SpannableStringBuilder;
 import android.util.Log;
+import android.util.Pair;
+
+import eu.siacs.conversations.ui.util.QuoteHelper;
 
 import com.google.common.base.Strings;
 import com.google.common.collect.ImmutableSet;
 import com.google.common.io.ByteSource;
 import com.google.common.primitives.Longs;
+
+import java.net.URI;
+import java.net.URISyntaxException;
+import java.util.HashSet;
 
 import org.json.JSONException;
 
@@ -30,6 +37,7 @@ import eu.siacs.conversations.crypto.axolotl.FingerprintStatus;
 import eu.siacs.conversations.http.URL;
 import eu.siacs.conversations.services.AvatarService;
 import eu.siacs.conversations.ui.util.PresenceSelector;
+import eu.siacs.conversations.ui.util.QuoteHelper;
 import eu.siacs.conversations.utils.CryptoHelper;
 import eu.siacs.conversations.utils.Emoticons;
 import eu.siacs.conversations.utils.GeoHelper;
@@ -39,6 +47,7 @@ import eu.siacs.conversations.utils.Patterns;
 import eu.siacs.conversations.utils.UIHelper;
 import eu.siacs.conversations.utils.XmppUri;
 import eu.siacs.conversations.xml.Element;
+import eu.siacs.conversations.xml.Namespace;
 import eu.siacs.conversations.xml.Tag;
 import eu.siacs.conversations.xml.XmlReader;
 import eu.siacs.conversations.xmpp.Jid;
@@ -352,7 +361,104 @@ public class Message extends AbstractEntity implements AvatarService.Avatarable 
         values.put(RETRACT_ID, retractId);
         return values;
     }
+    public String replyId() {
+        return conversation.getMode() == Conversation.MODE_MULTI ? getServerMsgId() : getRemoteMsgId();
+    }
+    public Message reply() {
+        Message m = new Message(conversation, QuoteHelper.quote(MessageUtils.prepareQuote(this)) + "\n", ENCRYPTION_NONE);
+        m.setThread(getThread());
+        m.addPayload(
+                new Element("reply", "urn:xmpp:reply:0")
+                        .setAttribute("to", getCounterpart())
+                        .setAttribute("id", replyId())
+        );
+        final Element fallback = new Element("fallback", "urn:xmpp:fallback:0").setAttribute("for", "urn:xmpp:reply:0");
+        fallback.addChild("body", "urn:xmpp:fallback:0")
+                .setAttribute("start", "0")
+                .setAttribute("end", "" + m.body.length());
+        m.addPayload(fallback);
+        return m;
+    }
+    public Message react(String emoji) {
+        Set<String> emojis = new HashSet<>();
+        if (conversation instanceof Conversation) emojis = ((Conversation) conversation).findReactionsTo(replyId(), null);
+        emojis.add(emoji);
+        final Message m = reply();
+        m.appendBody(emoji);
+        final Element fallback = new Element("fallback", "urn:xmpp:fallback:0").setAttribute("for", "urn:xmpp:reactions:0");
+        fallback.addChild("body", "urn:xmpp:fallback:0");
+        m.addPayload(fallback);
+        final Element reactions = new Element("reactions", "urn:xmpp:reactions:0").setAttribute("id", replyId());
+        for (String oneEmoji : emojis) {
+            reactions.addChild("reaction", "urn:xmpp:reactions:0").setContent(oneEmoji);
+        }
+        m.addPayload(reactions);
+        return m;
+    }
 
+    public void setReactions(Element reactions) {
+        if (this.payloads != null) {
+            this.payloads.remove(getReactions());
+        }
+        addPayload(reactions);
+    }
+
+    public Element getThread() {
+        if (this.payloads == null) return null;
+
+        for (Element el : this.payloads) {
+            if (el.getName().equals("thread") && el.getNamespace().equals("jabber:client")) {
+                return el;
+            }
+        }
+
+        return null;
+    }
+    public synchronized void clearFallbacks() {
+        this.payloads.removeAll(getFallbacks());
+    }
+    public List<Element> getFallbacks() {
+        List<Element> fallbacks = new ArrayList<>();
+
+        if (this.payloads == null) return fallbacks;
+
+        for (Element el : this.payloads) {
+            if (el.getName().equals("fallback") && el.getNamespace().equals("urn:xmpp:fallback:0")) {
+                final String fallbackFor = el.getAttribute("for");
+                if (fallbackFor == null) continue;
+                if (fallbackFor.equals("http://jabber.org/protocol/address") || fallbackFor.equals(Namespace.OOB)) {
+                    fallbacks.add(el);
+                }
+            }
+        }
+
+        return fallbacks;
+    }
+
+    public String getQuoteableBody() {
+        return this.body;
+    }
+    public void setThread(Element thread) {
+        payloads.removeIf(el -> el.getName().equals("thread") && el.getNamespace().equals("jabber:client"));
+        addPayload(thread);
+    }
+    public Element getReactions() {
+        if (this.payloads == null) return null;
+
+        for (Element el : this.payloads) {
+            if (el.getName().equals("reactions") && el.getNamespace().equals("urn:xmpp:reactions:0")) {
+                return el;
+            }
+        }
+
+        return null;
+    }
+    public synchronized void appendBody(String append) {
+        this.body += append;
+        this.isGeoUri = null;
+        this.isEmojisOnly = null;
+        this.treatAsDownloadable = null;
+    }
     public String getConversationUuid() {
         return conversationUuid;
     }
@@ -383,9 +489,31 @@ public class Message extends AbstractEntity implements AvatarService.Avatarable 
     }
 
     public String getBody() {
-        return body;
-    }
+        StringBuilder body = new StringBuilder(this.body);
 
+        List<Element> fallbacks = getFallbacks();
+        List<Pair<Integer, Integer>> spans = new ArrayList<>();
+        for (Element fallback : fallbacks) {
+            for (Element span : fallback.getChildren()) {
+                if (!span.getName().equals("body") && !span.getNamespace().equals("urn:xmpp:fallback:0")) continue;
+                if (span.getAttribute("start") == null || span.getAttribute("end") == null) return "";
+                spans.add(new Pair(parseInt(span.getAttribute("start")), parseInt(span.getAttribute("end"))));
+            }
+        }
+        // Do them in reverse order so that span deletions don't affect the indexes of other spans
+        spans.sort((x, y) -> y.first.compareTo(x.first));
+        try {
+            for (Pair<Integer, Integer> span : spans) {
+                body.delete(span.first, span.second);
+            }
+        } catch (final StringIndexOutOfBoundsException e) { spans.clear(); }
+
+        if (spans.isEmpty() && getOob() != null) {
+            return body.toString().replace(getOob().toString(), "");
+        } else {
+            return body.toString();
+        }
+    }
     public synchronized void setBody(String body) {
         if (body == null) {
             throw new Error("You should not set the message body to null");
@@ -874,7 +1002,14 @@ public class Message extends AbstractEntity implements AvatarService.Avatarable 
             throw new IllegalStateException("Attempting to store unedited message");
         }
     }
-
+    public URI getOob() {
+        final String url = getFileParams().url;
+        try {
+            return url == null ? null : new URI(url);
+        } catch (final URISyntaxException e) {
+            return null;
+        }
+    }
     public List<Edit> getEditedList() {
         return edits;
     }

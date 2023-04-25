@@ -518,7 +518,7 @@ public class MessageParser extends AbstractParser implements OnMessagePacketRece
             packet.setBody("This person attempted to retract a previous message, but it's unsupported by your client.");
         }
 
-        final LocalizedContent body = packet.getBody();
+        LocalizedContent body = packet.getBody();
 
         final Element axolotlEncrypted = packet.findChildEnsureSingle(XmppAxolotlMessage.CONTAINERTAG, AxolotlService.PEP_PREFIX);
         int status;
@@ -533,7 +533,10 @@ public class MessageParser extends AbstractParser implements OnMessagePacketRece
             remoteMsgId = packet.getId();
         }
         boolean notify = false;
-
+        Element html = packet.findChild("html", "http://jabber.org/protocol/xhtml-im");
+        if (html != null && html.findChild("body", "http://www.w3.org/1999/xhtml") == null) {
+            html = null;
+        }
         if (from == null || !InvalidJid.isValid(from) || !InvalidJid.isValid(to)) {
             Log.e(Config.LOGTAG, "encountered invalid message from='" + from + "' to='" + to + "'");
             return;
@@ -570,6 +573,28 @@ public class MessageParser extends AbstractParser implements OnMessagePacketRece
             } else {
                 invite.execute(account, packet.getBody());
                 return;
+            }
+        }
+
+        final Element reactions = packet.findChild("reactions", "urn:xmpp:reactions:0");
+        if (body == null && html == null) {
+            if (reactions != null && reactions.getAttribute("id") != null) {
+                final Conversation conversation = mXmppConnectionService.find(account, counterpart.asBareJid());
+                if (conversation != null) {
+                    final Message reactionTo = conversation.findMessageWithRemoteIdAndCounterpart(reactions.getAttribute("id"), null, false, false);
+                    if (reactionTo != null) {
+                        String bodyS = reactionTo.reply().getBody();
+                        for (Element el : reactions.getChildren()) {
+                            if (el.getName().equals("reaction") && el.getNamespace().equals("urn:xmpp:reactions:0")) {
+                                bodyS += el.getContent();
+                            }
+                        }
+                        body = new LocalizedContent(bodyS, "en", 1);
+                        final Message previousReaction = conversation.findMessageReactingTo(reactions.getAttribute("id"), counterpart);
+                        Log.d("WUT", "" + previousReaction + "    " + counterpart);
+                        if (previousReaction != null) replacementId = previousReaction.replyId();
+                    }
+                }
             }
         }
 
@@ -708,6 +733,7 @@ public class MessageParser extends AbstractParser implements OnMessagePacketRece
                 }
             }
             message.markable = packet.hasChild("markable", "urn:xmpp:chat-markers:0");
+            if (reactions != null) message.addPayload(reactions);
             if (conversationMultiMode) {
                 message.setMucUser(conversation.getMucOptions().findUserByFullJid(counterpart));
                 final Jid fallback = conversation.getMucOptions().getTrueCounterpart(counterpart);
@@ -763,7 +789,7 @@ public class MessageParser extends AbstractParser implements OnMessagePacketRece
                             replacedMessage.setUuid(UUID.randomUUID().toString());
                             replacedMessage.setBody(message.getBody());
                             replacedMessage.setRemoteMsgId(remoteMsgId);
-                            if (!replaceElement.getName().equals("replace")) {
+                            if (replaceElement != null && !replaceElement.getName().equals("replace")) {
                                 mXmppConnectionService.getFileBackend().deleteFile(replacedMessage);
                                 mXmppConnectionService.evictPreview(message.getUuid());
                                 replacedMessage.clearPayloads();

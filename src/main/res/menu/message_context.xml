@@ -22,6 +22,10 @@
         android:title="@string/correct_message"
         android:visible="false" />
     <item
+        android:id="@+id/retract_message"
+        android:title="@string/retract_message"
+        android:visible="false" />
+    <item
         android:id="@+id/quote_message"
         android:title="@string/quote"
         android:visible="false" />

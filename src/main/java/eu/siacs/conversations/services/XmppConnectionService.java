@@ -92,6 +92,7 @@ import com.google.common.base.Optional;
 import java.text.ParseException;
 import eu.siacs.conversations.persistance.UnifiedPushDatabase;
 import eu.siacs.conversations.utils.AccountUtils;
+import eu.siacs.conversations.utils.Emoticons;
 
 import java.io.File;
 import java.security.Security;
@@ -1075,7 +1076,17 @@ public class XmppConnectionService extends Service {
 
     private void directReply(final Conversation conversation, final String body, final String lastMessageUuid, final boolean dismissAfterReply) {
         final Message inReplyTo = lastMessageUuid == null ? null : conversation.findMessageWithUuid(lastMessageUuid);
-        final Message message = new Message(conversation, body, conversation.getNextEncryption());
+        Message message = new Message(conversation, body, conversation.getNextEncryption());
+        if (inReplyTo != null) {
+            if (Emoticons.isEmoji(body)) {
+                message = inReplyTo.react(body);
+            } else {
+                message = inReplyTo.reply();
+            }
+            message.clearFallbacks();
+            message.setBody(body);
+            message.setEncryption(conversation.getNextEncryption());
+        }
         if (inReplyTo != null && inReplyTo.isPrivateMessage()) {
             Message.configurePrivateMessage(message, inReplyTo.getCounterpart());
         }

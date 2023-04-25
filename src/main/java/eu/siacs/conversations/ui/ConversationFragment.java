@@ -67,6 +67,8 @@ import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.TextView.OnEditorActionListener;
 import android.widget.Toast;
+import eu.siacs.conversations.utils.Emoticons;
+
 
 import androidx.annotation.IdRes;
 import androidx.annotation.NonNull;
@@ -84,6 +86,7 @@ import androidx.databinding.DataBindingUtil;
 import com.google.common.base.Optional;
 
 import org.jetbrains.annotations.NotNull;
+import org.w3c.dom.Node;
 
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -100,6 +103,7 @@ import java.util.UUID;
 import java.util.concurrent.atomic.AtomicBoolean;
 
 import eu.siacs.conversations.utils.TimeFrameUtils;
+import eu.siacs.conversations.xml.Element;
 import eu.siacs.conversations.xmpp.jingle.AbstractJingleConnection;
 import eu.siacs.conversations.xmpp.jingle.JingleConnectionManager;
 import eu.siacs.conversations.xmpp.jingle.Media;
@@ -978,7 +982,18 @@ public class ConversationFragment extends XmppFragment implements EditMessage.Ke
         }
         final Message message;
         if (conversation.getCorrectingMessage() == null) {
-            message = new Message(conversation, body, conversation.getNextEncryption());
+            if (conversation.getReplyTo() != null) {
+                if (Emoticons.isEmoji(body)) {
+                    message = conversation.getReplyTo().react(body);
+                } else {
+                    message = conversation.getReplyTo().reply();
+                    message.appendBody(body);
+                }
+                message.setEncryption(conversation.getNextEncryption());
+            } else {
+                message = new Message(conversation, body, conversation.getNextEncryption());
+            }
+            message.setThread(conversation.getThread());
             Message.configurePrivateMessage(message);
         } else {
             message = conversation.getCorrectingMessage();
@@ -1482,6 +1497,7 @@ public class ConversationFragment extends XmppFragment implements EditMessage.Ke
             MenuItem quoteMessage = menu.findItem(R.id.quote_message);
             MenuItem retryDecryption = menu.findItem(R.id.retry_decryption);
             MenuItem correctMessage = menu.findItem(R.id.correct_message);
+            MenuItem retractMessage = menu.findItem(R.id.retract_message);
             MenuItem moderateMessage = menu.findItem(R.id.moderate_message);
             MenuItem deleteMessage = menu.findItem(R.id.delete_message);
             MenuItem shareWith = menu.findItem(R.id.share_with);
@@ -1512,6 +1528,11 @@ public class ConversationFragment extends XmppFragment implements EditMessage.Ke
                     && relevantForCorrection.isLastCorrectableMessage()
                     && m.getConversation() instanceof Conversation) {
                 correctMessage.setVisible(true);
+                if (!relevantForCorrection.getBody().equals("") && !relevantForCorrection.getBody().equals(" ")) retractMessage.setVisible(true);
+            }
+            if (relevantForCorrection.getReactions() != null) {
+                correctMessage.setVisible(false);
+                retractMessage.setVisible(true);
             }
             if (conversation.getMode() == Conversation.MODE_MULTI && m.getServerMsgId() != null && m.getModerated() == null && conversation.getMucOptions().getSelf().getRole().ranks(MucOptions.Role.MODERATOR) && conversation.getMucOptions().hasFeature("urn:xmpp:message-moderate:0")) {
                 moderateMessage.setVisible(true);
@@ -1589,6 +1610,38 @@ public class ConversationFragment extends XmppFragment implements EditMessage.Ke
                 return true;
             case R.id.correct_message:
                 correctMessage(selectedMessage);
+                return true;
+            case R.id.retract_message:
+                new AlertDialog.Builder(activity)
+                        .setTitle(R.string.retract_message)
+                        .setMessage("Do you really want to retract this message?")
+                        .setPositiveButton(R.string.yes, (dialog, whichButton) -> {
+                            Message message = selectedMessage;
+                            while (message.mergeable(message.next())) {
+                                message = message.next();
+                            }
+                            Element reactions = message.getReactions();
+                            if (reactions != null) {
+                                final Message previousReaction = conversation.findMessageReactingTo(reactions.getAttribute("id"), null);
+                                if (previousReaction != null) reactions = previousReaction.getReactions();
+                                for (Element el : reactions.getChildren()) {
+                                    if (message.getQuoteableBody().endsWith(el.getContent())) {
+                                        reactions.removeChild((Node) el);
+                                    }
+                                }
+                                message.setReactions(reactions);
+                                if (previousReaction != null) {
+                                    previousReaction.setReactions(reactions);
+                                    activity.xmppConnectionService.updateMessage(previousReaction);
+                                }
+                            }
+                            message.setBody(" ");
+                            message.putEdited(message.getUuid(), message.getServerMsgId(), message.getBody(), message.getTimeSent());
+                            message.setServerMsgId(null);
+                            message.setUuid(UUID.randomUUID().toString());
+                            sendMessage(message);
+                        })
+                        .setNegativeButton(R.string.no, null).show();
                 return true;
             case R.id.moderate_message:
                 activity.quickEdit("Spam", (reason) -> {
