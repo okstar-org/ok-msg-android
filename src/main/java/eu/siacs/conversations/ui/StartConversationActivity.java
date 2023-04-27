@@ -916,7 +916,10 @@ public class StartConversationActivity extends XmppActivity implements XmppConne
         configureHomeButton();
         Intent intent = pendingViewIntent.pop();
 
-        if (intent != null && intent.getBooleanExtra("init", false)) {
+        final boolean onboardingCancel = xmppConnectionService.getPreferences().getString("onboarding_action", "").equals("cancel");
+        if (onboardingCancel) xmppConnectionService.getPreferences().edit().remove("onboarding_action").commit();
+
+        if (intent != null && intent.getBooleanExtra("init", false) && !onboardingCancel && !xmppConnectionService.getAccounts().isEmpty()) {
             Account selectedAccount = xmppConnectionService.getAccounts().get(0);
             final String accountJid = intent.getStringExtra(EXTRA_ACCOUNT);
             intent = null;
