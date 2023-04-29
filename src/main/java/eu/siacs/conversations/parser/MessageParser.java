@@ -859,6 +859,8 @@ public class MessageParser extends AbstractParser implements OnMessagePacketRece
 
                             replacedMessage.setUuid(UUID.randomUUID().toString());
                             replacedMessage.setBody(message.getBody());
+                            replacedMessage.setSubject(message.getSubject());
+                            replacedMessage.setThread(message.getThread());
                             replacedMessage.setRemoteMsgId(remoteMsgId);
                             if (replaceElement != null && !replaceElement.getName().equals("replace")) {
                                 mXmppConnectionService.getFileBackend().deleteFile(replacedMessage);

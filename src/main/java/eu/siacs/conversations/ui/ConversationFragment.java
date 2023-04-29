@@ -563,6 +563,7 @@ public class ConversationFragment extends XmppFragment
                         break;
                     case CANCEL:
                         if (conversation != null) {
+                            conversation.setUserSelectedThread(false);
                             if (conversation.setCorrectingMessage(null)) {
                                 binding.textinput.setText("");
                                 binding.textinput.append(conversation.getDraftMessage());
@@ -920,7 +921,6 @@ public class ConversationFragment extends XmppFragment
     }
 
     private void sendMessage() {
-        conversation.setUserSelectedThread(false);
         if (mediaPreviewAdapter.hasAttachments()) {
             commitAttachments();
             return;
@@ -960,6 +960,7 @@ public class ConversationFragment extends XmppFragment
         } else {
             message = conversation.getCorrectingMessage();
             message.setBody(body);
+            message.setThread(conversation.getThread());
             message.putEdited(message.getUuid(), message.getServerMsgId(), message.getBody(), message.getTimeSent());
             message.setServerMsgId(null);
             message.setUuid(UUID.randomUUID().toString());
@@ -2897,6 +2898,8 @@ public class ConversationFragment extends XmppFragment
         while (message.mergeable(message.next())) {
             message = message.next();
         }
+        setThread(message.getThread());
+        conversation.setUserSelectedThread(true);
         this.conversation.setCorrectingMessage(message);
         final Editable editable = binding.textinput.getText();
         this.conversation.setDraftMessage(editable.toString());
@@ -3582,6 +3585,7 @@ public class ConversationFragment extends XmppFragment
     }
 
     protected void messageSent() {
+        conversation.setUserSelectedThread(false);
         mSendingPgpMessage.set(false);
         this.binding.textinput.setText("");
         if (conversation.setCorrectingMessage(null)) {

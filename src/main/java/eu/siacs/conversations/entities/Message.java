@@ -69,6 +69,7 @@ import eu.siacs.conversations.utils.Emoticons;
 import eu.siacs.conversations.utils.GeoHelper;
 import eu.siacs.conversations.utils.MessageUtils;
 import eu.siacs.conversations.utils.MimeUtils;
+import eu.siacs.conversations.utils.StringUtils;
 import eu.siacs.conversations.utils.Patterns;
 import eu.siacs.conversations.utils.UIHelper;
 import eu.siacs.conversations.utils.XmppUri;
@@ -76,6 +77,7 @@ import eu.siacs.conversations.xml.Element;
 import eu.siacs.conversations.xml.Namespace;
 import eu.siacs.conversations.xml.Tag;
 import eu.siacs.conversations.xml.XmlReader;
+
 import eu.siacs.conversations.xmpp.Jid;
 import eu.siacs.conversations.xml.Namespace;
 import eu.siacs.conversations.ui.util.QuoteHelper;
@@ -367,7 +369,7 @@ public class Message extends AbstractEntity implements AvatarService.Avatarable 
         values.put(UUID, uuid);
         values.put("subject", subject);
         values.put("fileParams", fileParams == null ? null : fileParams.toString());
-        if (fileParams != null) {
+        if (fileParams != null && !fileParams.isEmpty()) {
             List<Element> sims = getSims();
             if (sims.isEmpty()) {
                 addPayload(fileParams.toSims());
@@ -1437,6 +1439,11 @@ public class Message extends AbstractEntity implements AvatarService.Avatarable 
                     break;
             }
         }
+
+        public boolean isEmpty() {
+            return StringUtils.nullOnEmpty(toString()) == null && StringUtils.nullOnEmpty(toSims().getContent()) == null;
+        }
+
         public long getSize() {
             return size == null ? 0 : size;
         }
