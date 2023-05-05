@@ -1491,7 +1491,6 @@ public class ConversationFragment extends XmppFragment implements EditMessage.Ke
                     || m.getEncryption() == Message.ENCRYPTION_PGP;
             final boolean receiving = m.getStatus() == Message.STATUS_RECEIVED && (t instanceof JingleFileTransferConnection || t instanceof HttpDownloadConnection);
             activity.getMenuInflater().inflate(R.menu.message_context, menu);
-            menu.setHeaderTitle(R.string.message_options);
             MenuItem openWith = menu.findItem(R.id.open_with);
             MenuItem copyMessage = menu.findItem(R.id.copy_message);
             MenuItem quoteMessage = menu.findItem(R.id.quote_message);
@@ -1513,14 +1512,15 @@ public class ConversationFragment extends XmppFragment implements EditMessage.Ke
             final boolean showError = m.getStatus() == Message.STATUS_SEND_FAILED && m.getErrorMessage() != null && !Message.ERROR_MESSAGE_CANCELLED.equals(m.getErrorMessage());
             final boolean messageDeleted = m.isMessageDeleted();
             deleteMessage.setVisible(true);
-            if (!m.isFileOrImage() && !encrypted && !m.isGeoUri() && !m.treatAsDownloadable() && !unInitiatedButKnownSize && t == null && !m.isMessageDeleted()) {
+            if (!encrypted && !m.getBody().equals("")) {
                 copyMessage.setVisible(true);
+            }
+            quoteMessage.setVisible(!encrypted && !showError);
+            if (m.getEncryption() == Message.ENCRYPTION_DECRYPTION_FAILED && !fileDeleted) {
+                retryDecryption.setVisible(true);
             }
             if (!encrypted && !unInitiatedButKnownSize && t == null) {
                 quoteMessage.setVisible(!showError && QuoteHelper.isMessageQuoteable(m));
-            }
-            if (m.getEncryption() == Message.ENCRYPTION_DECRYPTION_FAILED && !fileDeleted) {
-                retryDecryption.setVisible(true);
             }
             if (!showError
                     && relevantForCorrection.getType() == Message.TYPE_TEXT
