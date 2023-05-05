@@ -71,6 +71,7 @@ import net.java.otr4j.session.SessionID;
 import net.java.otr4j.session.SessionImpl;
 import net.java.otr4j.session.SessionStatus;
 
+import eu.siacs.conversations.entities.DownloadableFile;
 import eu.siacs.conversations.utils.ThemeHelper;
 import eu.siacs.conversations.xmpp.jid.OtrJidHelper;
 import eu.siacs.conversations.xmpp.Jid;
@@ -210,6 +211,7 @@ import eu.siacs.conversations.xmpp.pep.PublishOptions;
 import eu.siacs.conversations.xmpp.stanzas.IqPacket;
 import eu.siacs.conversations.xmpp.stanzas.MessagePacket;
 import eu.siacs.conversations.xmpp.stanzas.PresencePacket;
+import io.ipfs.cid.Cid;
 import me.leolin.shortcutbadger.ShortcutBadger;
 
 public class XmppConnectionService extends Service {
@@ -1453,7 +1455,7 @@ public class XmppConnectionService extends Service {
         Resolver.init(this);
         this.mRandom = new SecureRandom();
         updateMemorizingTrustmanager();
-        final int DEFAULT_CACHE_SIZE_PROPORTION = 8;
+        final int DEFAULT_CACHE_SIZE_PROPORTION = 10;
         ActivityManager manager = (ActivityManager) this.getSystemService(Context.ACTIVITY_SERVICE);
         int memoryClass = manager.getMemoryClass();
         int memoryClassInKilobytes = memoryClass * 1024;
@@ -5623,6 +5625,21 @@ public class XmppConnectionService extends Service {
         }
     }
 
+    public DownloadableFile getFileForCid(Cid cid) {
+        return this.databaseBackend.getFileForCid(cid);
+    }
+
+    public void saveCid(Cid cid, File file) throws BlockedMediaException {
+        saveCid(cid, file, null);
+    }
+
+    public void saveCid(Cid cid, File file, String url) throws BlockedMediaException {
+        if (this.databaseBackend.isBlockedMedia(cid)) {
+            throw new BlockedMediaException();
+        }
+        this.databaseBackend.saveCid(cid, file, url);
+    }
+
     public interface OnMamPreferencesFetched {
         void onPreferencesFetched(Element prefs);
 
@@ -5779,4 +5796,5 @@ public class XmppConnectionService extends Service {
             }
         }).start();
     }
+    public static class BlockedMediaException extends Exception { }
 }

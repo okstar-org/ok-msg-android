@@ -82,6 +82,7 @@ import androidx.core.content.ContextCompat;
 import androidx.core.view.inputmethod.InputConnectionCompat;
 import androidx.core.view.inputmethod.InputContentInfoCompat;
 import androidx.databinding.DataBindingUtil;
+import android.text.SpannableStringBuilder;
 
 import com.google.common.base.Optional;
 
@@ -101,6 +102,7 @@ import java.util.Objects;
 import java.util.Set;
 import java.util.UUID;
 import java.util.concurrent.atomic.AtomicBoolean;
+import java.util.regex.Pattern;
 
 import eu.siacs.conversations.utils.TimeFrameUtils;
 import eu.siacs.conversations.xml.Element;
@@ -972,7 +974,7 @@ public class ConversationFragment extends XmppFragment implements EditMessage.Ke
             return;
         }
         final Editable text = this.binding.textinput.getText();
-        final String body = text == null ? "" : text.toString();
+        String body = text == null ? "" : text.toString();
         final Conversation conversation = this.conversation;
         if (body.length() == 0 || conversation == null) {
             return;
@@ -982,6 +984,11 @@ public class ConversationFragment extends XmppFragment implements EditMessage.Ke
         }
         final Message message;
         if (conversation.getCorrectingMessage() == null) {
+            boolean attention = false;
+            if (Pattern.compile("\\A@here\\s.*").matcher(body).find()) {
+                attention = true;
+                body = body.replaceFirst("\\A@here\\s+", "");
+            }
             if (conversation.getReplyTo() != null) {
                 if (Emoticons.isEmoji(body)) {
                     message = conversation.getReplyTo().react(body);
@@ -994,11 +1001,15 @@ public class ConversationFragment extends XmppFragment implements EditMessage.Ke
                 message = new Message(conversation, body, conversation.getNextEncryption());
             }
             message.setThread(conversation.getThread());
+            if (attention) {
+                message.addPayload(new Element("attention", "urn:xmpp:attention:0"));
+            }
             Message.configurePrivateMessage(message);
         } else {
             message = conversation.getCorrectingMessage();
-            message.putEdited(message.getUuid(), message.getServerMsgId(), message.getBody(), message.getTimeSent());
             message.setBody(body);
+            message.setThread(conversation.getThread());
+            message.putEdited(message.getUuid(), message.getServerMsgId(), message.getBody(), message.getTimeSent());
             message.setServerMsgId(null);
             message.setUuid(UUID.randomUUID().toString());
         }
@@ -1012,6 +1023,7 @@ public class ConversationFragment extends XmppFragment implements EditMessage.Ke
             default:
                 sendMessage(message);
         }
+        setupReply(null);
     }
 
     private boolean trustKeysIfNeeded(final Conversation conversation, final int requestCode) {
@@ -1353,6 +1365,9 @@ public class ConversationFragment extends XmppFragment implements EditMessage.Ke
         binding.textinput.setRichContentListener(new String[]{"image/*"}, mEditorContentListener);
 
         binding.textSendButton.setOnClickListener(this.mSendButtonListener);
+        binding.contextPreviewCancel.setOnClickListener((v) -> {
+            setupReply(null);
+        });
         binding.textSendButton.setOnLongClickListener(this.mSendButtonLongListener);
         binding.scrollToBottomButton.setOnClickListener(this.mScrollButtonListener);
         binding.recordVoiceButton.setOnClickListener(this.mRecordVoiceButtonListener);
@@ -1447,18 +1462,23 @@ public class ConversationFragment extends XmppFragment implements EditMessage.Ke
     private void quoteMessage(Message message, @Nullable String user) {
         if (message.isGeoUri()) {
             quoteGeoUri(message, user);
-        } else if (message.isFileOrImage()) {
-            quoteMedia(message, user);
-        } else if (message.isTypeText()) {
-            final StringBuilder stringBuilder = new StringBuilder();
-            if (activity.showDateInQuotes()) {
-                stringBuilder.append(df.format(message.getTimeSent())).append(System.getProperty("line.separator"));
-            }
-            stringBuilder.append(MessageUtils.prepareQuote(message));
-            quoteText(stringBuilder.toString(), user);
         }
+        setupReply(message);
     }
 
+    private void setupReply(Message message) {
+        conversation.setReplyTo(message);
+        if (message == null) {
+            binding.contextPreview.setVisibility(View.GONE);
+            return;
+        }
+
+        SpannableStringBuilder body = message.getSpannableBody(null, null);
+        if (message.isFileOrImage() || message.isOOb()) body.append(" 🖼️");
+        messageListAdapter.handleTextQuotes(body, activity.isDarkTheme());
+        binding.contextPreviewText.setText(body);
+        binding.contextPreview.setVisibility(View.VISIBLE);
+    }
     @Override
     public void onCreateContextMenu(ContextMenu menu, View v, ContextMenuInfo menuInfo) {
         //This should cancel any remaining click events that would otherwise trigger links

@@ -4,9 +4,16 @@ import android.annotation.SuppressLint;
 import android.content.ContentValues;
 import android.database.Cursor;
 import android.graphics.Color;
+import android.graphics.drawable.Drawable;
+import android.os.Build;
+import android.text.Html;
 import android.text.SpannableStringBuilder;
+import android.text.Spanned;
+import android.text.style.ClickableSpan;
+import android.text.style.ImageSpan;
 import android.util.Log;
 import android.util.Pair;
+import android.view.View;
 
 import eu.siacs.conversations.ui.util.QuoteHelper;
 
@@ -14,6 +21,8 @@ import com.google.common.base.Strings;
 import com.google.common.collect.ImmutableSet;
 import com.google.common.io.ByteSource;
 import com.google.common.primitives.Longs;
+import de.monocles.chat.BobTransfer;
+import de.monocles.chat.GetThumbnailForCid;
 
 import java.net.URI;
 import java.net.URISyntaxException;
@@ -37,7 +46,6 @@ import eu.siacs.conversations.crypto.axolotl.FingerprintStatus;
 import eu.siacs.conversations.http.URL;
 import eu.siacs.conversations.services.AvatarService;
 import eu.siacs.conversations.ui.util.PresenceSelector;
-import eu.siacs.conversations.ui.util.QuoteHelper;
 import eu.siacs.conversations.utils.CryptoHelper;
 import eu.siacs.conversations.utils.Emoticons;
 import eu.siacs.conversations.utils.GeoHelper;
@@ -51,6 +59,7 @@ import eu.siacs.conversations.xml.Namespace;
 import eu.siacs.conversations.xml.Tag;
 import eu.siacs.conversations.xml.XmlReader;
 import eu.siacs.conversations.xmpp.Jid;
+import io.ipfs.cid.Cid;
 
 public class Message extends AbstractEntity implements AvatarService.Avatarable {
 
@@ -375,10 +384,11 @@ public class Message extends AbstractEntity implements AvatarService.Avatarable 
         final Element fallback = new Element("fallback", "urn:xmpp:fallback:0").setAttribute("for", "urn:xmpp:reply:0");
         fallback.addChild("body", "urn:xmpp:fallback:0")
                 .setAttribute("start", "0")
-                .setAttribute("end", "" + m.body.length());
+                .setAttribute("end", "" + m.body.codePointCount(0, m.body.length()));
         m.addPayload(fallback);
         return m;
     }
+
     public Message react(String emoji) {
         Set<String> emojis = new HashSet<>();
         if (conversation instanceof Conversation) emojis = ((Conversation) conversation).findReactionsTo(replyId(), null);
@@ -918,9 +928,68 @@ public class Message extends AbstractEntity implements AvatarService.Avatarable 
 
     public static class MergeSeparator {
     }
+    public SpannableStringBuilder getSpannableBody(GetThumbnailForCid thumbnailer, Drawable fallbackImg) {
+        final Element html = getHtml();
+        if (html == null || Build.VERSION.SDK_INT < 24) {
+            return new SpannableStringBuilder(MessageUtils.filterLtrRtl(getBody()).trim());
+        } else {
+            SpannableStringBuilder spannable = new SpannableStringBuilder(Html.fromHtml(
+                    MessageUtils.filterLtrRtl(html.toString()).trim(),
+                    Html.FROM_HTML_MODE_COMPACT,
+                    (source) -> {
+                        try {
+                            if (thumbnailer == null) return fallbackImg;
+                            Cid cid = BobTransfer.cid(new URI(source));
+                            if (cid == null) return fallbackImg;
+                            Drawable thumbnail = thumbnailer.getThumbnail(cid);
+                            if (thumbnail == null) return fallbackImg;
+                            return thumbnail;
+                        } catch (final URISyntaxException e) {
+                            return fallbackImg;
+                        }
+                    },
+                    (opening, tag, output, xmlReader) -> {}
+            ));
+
+            // Make images clickable and long-clickable with BetterLinkMovementMethod
+            ImageSpan[] imageSpans = spannable.getSpans(0, spannable.length(), ImageSpan.class);
+            for (ImageSpan span : imageSpans) {
+                final int start = spannable.getSpanStart(span);
+                final int end = spannable.getSpanEnd(span);
+
+                ClickableSpan click_span = new ClickableSpan() {
+                    @Override
+                    public void onClick(View widget) { }
+                };
+
+                spannable.setSpan(click_span, start, end, Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
+            }
+
+            // https://stackoverflow.com/a/10187511/8611
+            int i = spannable.length();
+            while(--i >= 0 && Character.isWhitespace(spannable.charAt(i))) { }
+            return (SpannableStringBuilder) spannable.subSequence(0, i+1);
+        }
+    }
+
+    public Element getHtml() {
+        if (this.payloads == null) return null;
+
+        for (Element el : this.payloads) {
+            if (el.getName().equals("html") && el.getNamespace().equals("http://jabber.org/protocol/xhtml-im")) {
+                return el.getChildren().get(0);
+            }
+        }
+
+        return null;
+    }
 
     public SpannableStringBuilder getMergedBody() {
-        SpannableStringBuilder body = new SpannableStringBuilder(MessageUtils.filterLtrRtl(this.body).trim());
+        return getMergedBody(null, null);
+    }
+
+    public SpannableStringBuilder getMergedBody(GetThumbnailForCid thumbnailer, Drawable fallbackImg) {
+        SpannableStringBuilder body = getSpannableBody(thumbnailer, fallbackImg);
         Message current = this;
         while (current.mergeable(current.next())) {
             current = current.next();
@@ -928,8 +997,9 @@ public class Message extends AbstractEntity implements AvatarService.Avatarable 
                 break;
             }
             body.append("\n\n");
-            body.setSpan(new MergeSeparator(), body.length() - 2, body.length(), SpannableStringBuilder.SPAN_EXCLUSIVE_EXCLUSIVE);
-            body.append(MessageUtils.filterLtrRtl(current.getBody()).trim());
+            body.setSpan(new MergeSeparator(), body.length() - 2, body.length(),
+                    SpannableStringBuilder.SPAN_EXCLUSIVE_EXCLUSIVE);
+            body.append(current.getSpannableBody(thumbnailer, fallbackImg));
         }
         return body;
     }

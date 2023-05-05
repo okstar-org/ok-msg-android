@@ -96,8 +96,10 @@ dependencies {
     implementation 'com.github.AppIntro:AppIntro:6.2.0'
     implementation 'androidx.browser:browser:1.4.0'
     implementation 'com.otaliastudios:transcoder:0.9.1' // 0.10.4 seems to be buggy
-    implementation 'me.saket:better-link-movement-method:2.2.0'
+    implementation 'com.github.singpolyma:Better-Link-Movement-Method:4df081e1e4'
     implementation project(':libs:AXML')
+    implementation 'com.github.ipld:java-cid:v1.3.1'
+
 }
 
 ext {

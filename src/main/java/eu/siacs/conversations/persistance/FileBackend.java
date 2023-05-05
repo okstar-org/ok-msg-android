@@ -50,6 +50,7 @@ import androidx.exifinterface.media.ExifInterface;
 import com.google.common.base.Strings;
 import com.google.common.io.ByteStreams;
 
+import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.Closeable;
 import java.io.File;
@@ -98,6 +99,7 @@ import eu.siacs.conversations.utils.MimeUtils;
 import eu.siacs.conversations.xmpp.pep.Avatar;
 import ezvcard.Ezvcard;
 import ezvcard.VCard;
+import io.ipfs.cid.Cid;
 import me.drakeet.support.toast.ToastCompat;
 
 public class FileBackend {
@@ -1594,8 +1596,10 @@ public class FileBackend {
     public void updateFileParams(Message message) {
         updateFileParams(message, null);
     }
-
     public void updateFileParams(final Message message, final String url) {
+        updateFileParams(message, url, true);
+    }
+    public void updateFileParams(final Message message, String url, boolean updateCids) {
         final boolean encrypted =
                 message.getEncryption() == Message.ENCRYPTION_PGP
                         || message.getEncryption() == Message.ENCRYPTION_DECRYPTED;
@@ -1953,6 +1957,27 @@ public class FileBackend {
         }
     }
 
+    public File getStorageLocation(final InputStream is, final String extension) throws IOException, XmppConnectionService.BlockedMediaException {
+        final String mime = MimeUtils.guessMimeTypeFromExtension(extension);
+        Cid[] cids = calculateCids(is);
+
+        File file = getStorageLocation(String.format("%s.%s", cids[0], extension), mime);
+        for (int i = 0; i < cids.length; i++) {
+            mXmppConnectionService.saveCid(cids[i], file);
+        }
+        return file;
+    }
+    public Cid[] calculateCids(final Uri uri) throws IOException {
+        return calculateCids(mXmppConnectionService.getContentResolver().openInputStream(uri));
+    }
+
+    public Cid[] calculateCids(final InputStream is) throws IOException {
+        try {
+            return CryptoHelper.cid(is, new String[]{"SHA-256", "SHA-1", "SHA-512"});
+        } catch (final NoSuchAlgorithmException e) {
+            throw new AssertionError(e);
+        }
+    }
     private static class Dimensions {
         public final int width;
         public final int height;
