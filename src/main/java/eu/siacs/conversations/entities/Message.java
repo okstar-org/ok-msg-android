@@ -514,9 +514,9 @@ public class Message extends AbstractEntity implements AvatarService.Avatarable 
         spans.sort((x, y) -> y.first.compareTo(x.first));
         try {
             for (Pair<Integer, Integer> span : spans) {
-                body.delete(span.first, span.second);
+                body.delete(body.offsetByCodePoints(0, span.first.intValue()), body.offsetByCodePoints(0, span.second.intValue()));
             }
-        } catch (final StringIndexOutOfBoundsException e) { spans.clear(); }
+        } catch (final IndexOutOfBoundsException e) { spans.clear(); }
 
         if (spans.isEmpty() && getOob() != null) {
             return body.toString().replace(getOob().toString(), "");
