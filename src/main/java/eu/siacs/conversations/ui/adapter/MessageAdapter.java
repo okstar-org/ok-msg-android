@@ -1,6 +1,8 @@
 package eu.siacs.conversations.ui.adapter;
 
+import de.monocles.chat.BobTransfer;
 import eu.siacs.conversations.ui.widget.ClickableMovementMethod;
+import io.ipfs.cid.Cid;
 import me.saket.bettermovementmethod.BetterLinkMovementMethod;
 import static android.view.ViewGroup.LayoutParams.WRAP_CONTENT;
 import static eu.siacs.conversations.entities.Message.DELETED_MESSAGE_BODY;
@@ -33,9 +35,12 @@ import android.text.Spannable;
 import android.text.SpannableString;
 import android.text.SpannableStringBuilder;
 import android.text.format.DateUtils;
+import android.text.style.ClickableSpan;
 import android.text.style.ForegroundColorSpan;
+import android.text.style.ImageSpan;
 import android.text.style.RelativeSizeSpan;
 import android.text.style.StyleSpan;
+import android.text.style.URLSpan;
 import android.util.Base64;
 import android.util.DisplayMetrics;
 import android.util.Log;
@@ -131,6 +136,7 @@ public class MessageAdapter extends ArrayAdapter<Message> {
     private boolean mShowLinksInside = false;
     private boolean mShowMapsInside = false;
     private final boolean mForceNames;
+    private OnInlineImageLongClicked mOnInlineImageLongClickedListener;
 
     public MessageAdapter(final XmppActivity activity, final List<Message> messages, final boolean forceNames) {
         super(activity, 0, messages);
@@ -182,6 +188,10 @@ public class MessageAdapter extends ArrayAdapter<Message> {
     public void setOnContactPictureLongClicked(
             OnContactPictureLongClicked listener) {
         this.mOnContactPictureLongClickedListener = listener;
+    }
+
+    public void setOnInlineImageLongClicked(OnInlineImageLongClicked listener) {
+        this.mOnInlineImageLongClickedListener = listener;
     }
     public void setOnMessageBoxSwiped(OnContactPictureClicked listener) {
         this.mOnMessageBoxSwipedListener = listener;
@@ -723,7 +733,27 @@ public class MessageAdapter extends ArrayAdapter<Message> {
             MyLinkify.addLinks(body, message.getConversation().getAccount(), message.getConversation().getJid());
             viewHolder.messageBody.setText(body);
             viewHolder.messageBody.setAutoLinkMask(0);
-            BetterLinkMovementMethod method = BetterLinkMovementMethod.newInstance();
+            BetterLinkMovementMethod method = new BetterLinkMovementMethod() {
+                @Override
+                protected void dispatchUrlLongClick(TextView tv, ClickableSpan span) {
+                    if (span instanceof URLSpan || mOnInlineImageLongClickedListener == null) {
+                        tv.dispatchTouchEvent(MotionEvent.obtain(0, 0, MotionEvent.ACTION_CANCEL, 0f, 0f, 0));
+                        super.dispatchUrlLongClick(tv, span);
+                        return;
+                    }
+
+                    Spannable body = (Spannable) tv.getText();
+                    ImageSpan[] imageSpans = body.getSpans(body.getSpanStart(span), body.getSpanEnd(span), ImageSpan.class);
+                    if (imageSpans.length > 0) {
+                        Uri uri = Uri.parse(imageSpans[0].getSource());
+                        Cid cid = BobTransfer.cid(uri);
+                        if (cid == null) return;
+                        if (mOnInlineImageLongClickedListener.onInlineImageLongClicked(cid)) {
+                            tv.dispatchTouchEvent(MotionEvent.obtain(0, 0, MotionEvent.ACTION_CANCEL, 0f, 0f, 0));
+                        }
+                    }
+                }
+            };
             method.setOnLinkLongClickListener((tv, url) -> {
                 tv.dispatchTouchEvent(MotionEvent.obtain(0, 0, MotionEvent.ACTION_CANCEL, 0f, 0f, 0));
                 ShareUtil.copyLinkToClipboard(activity, url);
@@ -1653,5 +1683,8 @@ public class MessageAdapter extends ArrayAdapter<Message> {
                 activity.setBubbleColor(viewHolder, StyledAttributes.getColor(activity, R.attr.color_bubble_dark), -1);
             }
         }
+    }
+    public interface OnInlineImageLongClicked {
+        boolean onInlineImageLongClicked(Cid cid);
     }
 }
