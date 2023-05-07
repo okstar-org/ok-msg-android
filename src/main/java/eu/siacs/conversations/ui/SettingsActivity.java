@@ -3,6 +3,7 @@ package eu.siacs.conversations.ui;
 import static eu.siacs.conversations.persistance.FileBackend.APP_DIRECTORY;
 import static eu.siacs.conversations.utils.StorageHelper.getBackupDirectory;
 
+import com.google.common.base.Strings;
 import com.google.common.collect.ImmutableList;
 import com.google.common.collect.Lists;
 
@@ -35,6 +36,8 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.ObjectInputStream;
+import java.net.URI;
+import java.net.URISyntaxException;
 import java.security.KeyStoreException;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -42,6 +45,8 @@ import java.util.Collections;
 import java.util.List;
 import java.util.Map;
 import android.provider.MediaStore;
+import android.widget.Toast;
+
 import eu.siacs.conversations.Config;
 import eu.siacs.conversations.R;
 import eu.siacs.conversations.crypto.OmemoSetting;
@@ -58,6 +63,7 @@ import eu.siacs.conversations.xmpp.Jid;
 import me.drakeet.support.toast.ToastCompat;
 import eu.siacs.conversations.services.UnifiedPushDistributor;
 import eu.siacs.conversations.utils.ThemeHelper;
+import eu.siacs.conversations.xmpp.InvalidJid;
 
 
 public class SettingsActivity extends XmppActivity implements OnSharedPreferenceChangeListener {
@@ -754,10 +760,39 @@ public class SettingsActivity extends XmppActivity implements OnSharedPreference
             xmppConnectionService.updateConversationUi();
         }
         else if (UnifiedPushDistributor.PREFERENCES.contains(name)) {
+            final String pushServerPreference =
+                    Strings.nullToEmpty(preferences.getString(
+                            UnifiedPushDistributor.PREFERENCE_PUSH_SERVER,
+                            getString(R.string.default_push_server))).trim();
+            if (isJidInvalid(pushServerPreference) || isHttpUri(pushServerPreference)) {
+                Toast.makeText(this,R.string.invalid_jid,Toast.LENGTH_LONG).show();
+            }
             if (xmppConnectionService.reconfigurePushDistributor()) {
                 xmppConnectionService.renewUnifiedPushEndpoints();
             }
         }
+    }
+
+    private static boolean isJidInvalid(final String input) {
+        if (Strings.isNullOrEmpty(input)) {
+            return true;
+        }
+        try {
+            Jid.ofEscaped(input);
+            return false;
+        } catch (final IllegalArgumentException e) {
+            return true;
+        }
+    }
+
+    private static boolean isHttpUri(final String input) {
+        final URI uri;
+        try {
+            uri = new URI(input);
+        } catch (final URISyntaxException e) {
+            return false;
+        }
+        return Arrays.asList("http","https").contains(uri.getScheme());
     }
 
     @Override
