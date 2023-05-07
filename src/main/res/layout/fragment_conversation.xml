@@ -116,8 +116,8 @@
 
                 <ImageButton
                     android:id="@+id/recordVoiceButton"
-                    android:layout_width="48dp"
-                    android:layout_height="48dp"
+                    android:layout_width="32dp"
+                    android:layout_height="32dp"
                     android:layout_alignParentStart="true"
                     android:layout_alignParentLeft="true"
                     android:layout_centerVertical="true"
@@ -168,7 +168,7 @@
                         android:imeOptions="flagNoExtractUi|actionSend"
                         android:inputType="textShortMessage|textMultiLine|textCapSentences"
                         android:maxLines="6"
-                        android:minHeight="48dp"
+                        android:minHeight="32dp"
                         android:minLines="1"
                         android:paddingStart="8dp"
                         android:paddingLeft="8dp"
@@ -185,8 +185,8 @@
 
                 <ImageButton
                     android:id="@+id/textSendButton"
-                    android:layout_width="48dp"
-                    android:layout_height="48dp"
+                    android:layout_width="32dp"
+                    android:layout_height="32dp"
                     android:layout_alignParentEnd="true"
                     android:layout_alignParentRight="true"
                     android:layout_centerVertical="true"
