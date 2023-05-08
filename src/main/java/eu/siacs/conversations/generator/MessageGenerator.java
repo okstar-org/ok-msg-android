@@ -149,15 +149,14 @@ public class MessageGenerator extends AbstractGenerator {
             final Message.FileParams fileParams = message.getFileParams();
             content = fileParams.url;
             packet.addChild("x", Namespace.OOB).addChild("url").setContent(content);
-            packet.addChild("fallback", "urn:xmpp:fallback:0").setAttribute("for", Namespace.OOB)
-                    .addChild("body", "urn:xmpp:fallback:0");
-            message.setBody(content);
         } else {
             content = message.getBody();
         }
-        packet.setBody(content);
+        if (!message.isMessageDeleted())
+            packet.setBody(content);
         return packet;
     }
+
 
     public MessagePacket generatePgpChat(Message message) {
         MessagePacket packet = preparePacket(message);

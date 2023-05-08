@@ -50,6 +50,7 @@ import androidx.exifinterface.media.ExifInterface;
 import com.google.common.base.Strings;
 import com.google.common.io.ByteStreams;
 
+import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.Closeable;
 import java.io.File;
@@ -98,6 +99,7 @@ import eu.siacs.conversations.utils.MimeUtils;
 import eu.siacs.conversations.xmpp.pep.Avatar;
 import ezvcard.Ezvcard;
 import ezvcard.VCard;
+import io.ipfs.cid.Cid;
 import me.drakeet.support.toast.ToastCompat;
 
 public class FileBackend {
@@ -524,8 +526,6 @@ public class FileBackend {
                     }
                 } catch (NotAVideoFile notAVideoFile) {
                     //ignore and fall through
-                } catch (IOException e) {
-                    throw new RuntimeException(e);
                 }
             }
             if (FileBackend.getFileSize(context, attachment.getUri()) > max) {
@@ -1594,8 +1594,10 @@ public class FileBackend {
     public void updateFileParams(Message message) {
         updateFileParams(message, null);
     }
-
     public void updateFileParams(final Message message, final String url) {
+        updateFileParams(message, url, true);
+    }
+    public void updateFileParams(final Message message, String url, boolean updateCids) {
         final boolean encrypted =
                 message.getEncryption() == Message.ENCRYPTION_PGP
                         || message.getEncryption() == Message.ENCRYPTION_DECRYPTED;
@@ -1645,8 +1647,6 @@ public class FileBackend {
                     Log.d(Config.LOGTAG, "ambiguous file " + mime + " is audio");
                     body.append("|0|0|").append(getMediaRuntime(file, false)) // 5
                             .append('|').append(getAudioTitleArtist(file)); // 6
-                } catch (IOException e) {
-                    throw new RuntimeException(e);
                 }
             } else if (image || video || pdf) {
                 try {
@@ -1721,11 +1721,6 @@ public class FileBackend {
         }
     }
 
-    public static void updateFileParams(Message message, URL url, long size) {
-        final StringBuilder body = new StringBuilder();
-        body.append(url.toString()).append('|').append(size);
-        message.setBody(body.toString());
-    }
 
     public int getMediaRuntime(final File file, final boolean isGif) {
         if (isGif) {
@@ -1847,7 +1842,7 @@ public class FileBackend {
         return new Dimensions(imageHeight, imageWidth);
     }
 
-    private Dimensions getVideoDimensions(File file) throws NotAVideoFile, IOException {
+    private Dimensions getVideoDimensions(File file) throws NotAVideoFile {
         MediaMetadataRetriever metadataRetriever = new MediaMetadataRetriever();
         try {
             metadataRetriever.setDataSource(file.getAbsolutePath());
@@ -1885,7 +1880,7 @@ public class FileBackend {
         return bitmap;
     }
 
-    private static Dimensions getVideoDimensions(Context context, Uri uri) throws NotAVideoFile, IOException {
+    private static Dimensions getVideoDimensions(Context context, Uri uri) throws NotAVideoFile {
         MediaMetadataRetriever mediaMetadataRetriever = new MediaMetadataRetriever();
         try {
             try {
@@ -1913,7 +1908,7 @@ public class FileBackend {
         }
     }
 
-    private static Dimensions getVideoDimensions(MediaMetadataRetriever metadataRetriever) throws NotAVideoFile, IOException {
+    private static Dimensions getVideoDimensions(MediaMetadataRetriever metadataRetriever) throws NotAVideoFile {
         String hasVideo = metadataRetriever.extractMetadata(MediaMetadataRetriever.METADATA_KEY_HAS_VIDEO);
         if (hasVideo == null) {
             throw new NotAVideoFile();
@@ -1953,6 +1948,27 @@ public class FileBackend {
         }
     }
 
+    public File getStorageLocation(final InputStream is, final String extension) throws IOException, XmppConnectionService.BlockedMediaException {
+        final String mime = MimeUtils.guessMimeTypeFromExtension(extension);
+        Cid[] cids = calculateCids(is);
+
+        File file = getStorageLocation(String.format("%s.%s", cids[0], extension), mime);
+        for (int i = 0; i < cids.length; i++) {
+            mXmppConnectionService.saveCid(cids[i], file);
+        }
+        return file;
+    }
+    public Cid[] calculateCids(final Uri uri) throws IOException {
+        return calculateCids(mXmppConnectionService.getContentResolver().openInputStream(uri));
+    }
+
+    public Cid[] calculateCids(final InputStream is) throws IOException {
+        try {
+            return CryptoHelper.cid(is, new String[]{"SHA-256", "SHA-1", "SHA-512"});
+        } catch (final NoSuchAlgorithmException e) {
+            throw new AssertionError(e);
+        }
+    }
     private static class Dimensions {
         public final int width;
         public final int height;

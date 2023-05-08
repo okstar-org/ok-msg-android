@@ -51,6 +51,7 @@ import eu.siacs.conversations.crypto.axolotl.SQLiteAxolotlStore;
 import eu.siacs.conversations.entities.Account;
 import eu.siacs.conversations.entities.Contact;
 import eu.siacs.conversations.entities.Conversation;
+import eu.siacs.conversations.entities.DownloadableFile;
 import eu.siacs.conversations.entities.Message;
 import eu.siacs.conversations.entities.PresenceTemplate;
 import eu.siacs.conversations.entities.Roster;
@@ -63,6 +64,7 @@ import eu.siacs.conversations.utils.Resolver;
 import eu.siacs.conversations.xmpp.InvalidJid;
 import eu.siacs.conversations.xmpp.Jid;
 import eu.siacs.conversations.xmpp.mam.MamReference;
+import io.ipfs.cid.Cid;
 
 public class DatabaseBackend extends SQLiteOpenHelper {
 
@@ -1049,6 +1051,43 @@ public class DatabaseBackend extends SQLiteOpenHelper {
         }
         cursor.close();
         return filesPaths;
+    }
+
+    public DownloadableFile getFileForCid(Cid cid) {
+        SQLiteDatabase db = this.getReadableDatabase();
+        Cursor cursor = db.query("monocles.cids", new String[]{"path"}, "cid=?", new String[]{cid.toString()}, null, null, null);
+        DownloadableFile f = null;
+        if (cursor.moveToNext()) {
+            f = new DownloadableFile(cursor.getString(0));
+        }
+        cursor.close();
+        return f;
+    }
+
+    public boolean isBlockedMedia(Cid cid) {
+        SQLiteDatabase db = this.getReadableDatabase();
+        Cursor cursor = db.query("monocles.blocked_media", new String[]{"count(*)"}, "cid=?", new String[]{cid.toString()}, null, null, null);
+        boolean is = false;
+        if (cursor.moveToNext()) {
+            is = cursor.getInt(0) > 0;
+        }
+        cursor.close();
+        return is;
+    }
+
+    public void saveCid(Cid cid, File file) {
+        saveCid(cid, file, null);
+    }
+
+    public void saveCid(Cid cid, File file, String url) {
+        SQLiteDatabase db = this.getWritableDatabase();
+        ContentValues cv = new ContentValues();
+        cv.put("cid", cid.toString());
+        if (file != null) cv.put("path", file.getAbsolutePath());
+        if (url != null) cv.put("url", url);
+        if (db.update("monocles.cids", cv, "cid=?", new String[]{cid.toString()}) < 1) {
+            db.insertWithOnConflict("monocles.cids", null, cv, SQLiteDatabase.CONFLICT_REPLACE);
+        }
     }
 
     public static class FilePath {

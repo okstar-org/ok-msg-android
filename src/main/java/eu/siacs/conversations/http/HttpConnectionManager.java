@@ -23,7 +23,9 @@ import java.util.concurrent.TimeUnit;
 import javax.net.ssl.SSLSocketFactory;
 import javax.net.ssl.X509TrustManager;
 
+import eu.siacs.conversations.BuildConfig;
 import eu.siacs.conversations.Config;
+import eu.siacs.conversations.R;
 import eu.siacs.conversations.entities.Account;
 import eu.siacs.conversations.entities.Message;
 import eu.siacs.conversations.services.AbstractConnectionManager;
@@ -56,7 +58,7 @@ public class HttpConnectionManager extends AbstractConnectionManager {
     }
 
     public static String getUserAgent() {
-        return System.getProperty("http.agent");
+        return String.format("%s/%s", "monocles chat", BuildConfig.VERSION_NAME);
     }
 
     public HttpConnectionManager(XmppConnectionService service) {

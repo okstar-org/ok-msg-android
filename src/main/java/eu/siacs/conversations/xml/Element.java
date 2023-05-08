@@ -1,7 +1,6 @@
 package eu.siacs.conversations.xml;
 
 import org.jetbrains.annotations.NotNull;
-import org.w3c.dom.Node;
 
 import java.util.ArrayList;
 import java.util.Hashtable;
@@ -16,7 +15,7 @@ import eu.siacs.conversations.xmpp.Jid;
 import eu.siacs.conversations.xmpp.stanzas.MessagePacket;
 
 
-public class Element {
+public class Element  implements Node {
     private final String name;
     private Hashtable<String, String> attributes = new Hashtable<>();
     private String content;

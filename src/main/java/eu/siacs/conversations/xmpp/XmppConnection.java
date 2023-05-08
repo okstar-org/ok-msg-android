@@ -173,6 +173,7 @@ public class XmppConnection implements Runnable {
     private boolean quickStartInProgress = false;
     private boolean isBound = false;
     private Element streamFeatures;
+    private Element boundStreamFeatures;
     private String streamId = null;
     private int stanzasReceived = 0;
     private int stanzasSent = 0;
@@ -827,6 +828,10 @@ public class XmppConnection implements Runnable {
             }
             final boolean processNopStreamFeatures;
             if (resumed != null && streamId != null) {
+                if (this.boundStreamFeatures != null) {
+                    this.streamFeatures = this.boundStreamFeatures;
+                    Log.d(Config.LOGTAG, "putting previous stream features back in place: " + XmlHelper.printElementNames(this.boundStreamFeatures));
+                }
                 processResumed(resumed);
             } else if (failed != null) {
                 processFailed(failed, false); // wait for new stream features
@@ -880,6 +885,7 @@ public class XmppConnection implements Runnable {
             // a successful resume will not send stream features
             if (processNopStreamFeatures) {
                 processNopStreamFeatures();
+                this.boundStreamFeatures = this.streamFeatures;
             }
         }
         mXmppConnectionService.databaseBackend.updateAccount(account);
@@ -1446,6 +1452,7 @@ public class XmppConnection implements Runnable {
                 throw new StateChangingException(Account.State.INCOMPATIBLE_SERVER);
             }
         } else {
+
             Log.d(
                     Config.LOGTAG,
                     account.getJid().asBareJid()
@@ -2566,6 +2573,7 @@ public class XmppConnection implements Runnable {
 
     public void resetStreamId() {
         this.streamId = null;
+        this.boundStreamFeatures = null;
     }
 
     public List<Entry<Jid, ServiceDiscoveryResult>> findDiscoItemsByFeature(final String feature) {
