@@ -202,7 +202,7 @@
     <string name="done">Hecho</string>
     <string name="verify">Verificar</string>
     <string name="decrypt">Descifrar</string>
-    <string name="bookmarks">Chats multiusuarios</string>
+    <string name="bookmarks">Salas de chat</string>
     <string name="search">Buscar</string>
     <string name="enter_contact">Introducir contacto</string>
     <string name="delete_contact">Eliminar Contacto</string>
@@ -1260,4 +1260,5 @@
     <string name="outgoing_call_timestamp">Llamada saliente · %s</string>
     <string name="note_to_self">Nota para mi</string>
     <string name="retract_message">Retractar mensaje</string>
+    <string name="reply_to">Responder a</string>
 </resources>
