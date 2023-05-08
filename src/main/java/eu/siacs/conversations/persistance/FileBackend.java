@@ -1721,11 +1721,6 @@ public class FileBackend {
         }
     }
 
-    public static void updateFileParams(Message message, URL url, long size) {
-        final StringBuilder body = new StringBuilder();
-        body.append(url.toString()).append('|').append(size);
-        message.setBody(body.toString());
-    }
 
     public int getMediaRuntime(final File file, final boolean isGif) {
         if (isGif) {
