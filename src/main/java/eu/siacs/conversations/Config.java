@@ -212,6 +212,7 @@ public final class Config {
         //can be used for well known, widely used gateways
         private static final List<String> CONTACT_DOMAINS = Arrays.asList(
                 "cheogram.com",
+                "monocles.eu",
                 "*.covid.monal.im"
         );
 
