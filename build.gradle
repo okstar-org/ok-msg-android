@@ -99,6 +99,7 @@ dependencies {
     implementation 'com.github.singpolyma:Better-Link-Movement-Method:4df081e1e4'
     implementation project(':libs:AXML')
     implementation 'com.github.ipld:java-cid:v1.3.1'
+    implementation 'com.github.woltapp:blurhash:master'
 
 }
 

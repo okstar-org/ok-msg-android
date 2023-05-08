@@ -1055,7 +1055,7 @@ public class DatabaseBackend extends SQLiteOpenHelper {
 
     public DownloadableFile getFileForCid(Cid cid) {
         SQLiteDatabase db = this.getReadableDatabase();
-        Cursor cursor = db.query("cheogram.cids", new String[]{"path"}, "cid=?", new String[]{cid.toString()}, null, null, null);
+        Cursor cursor = db.query("monocles.cids", new String[]{"path"}, "cid=?", new String[]{cid.toString()}, null, null, null);
         DownloadableFile f = null;
         if (cursor.moveToNext()) {
             f = new DownloadableFile(cursor.getString(0));
@@ -1066,7 +1066,7 @@ public class DatabaseBackend extends SQLiteOpenHelper {
 
     public boolean isBlockedMedia(Cid cid) {
         SQLiteDatabase db = this.getReadableDatabase();
-        Cursor cursor = db.query("cheogram.blocked_media", new String[]{"count(*)"}, "cid=?", new String[]{cid.toString()}, null, null, null);
+        Cursor cursor = db.query("monocles.blocked_media", new String[]{"count(*)"}, "cid=?", new String[]{cid.toString()}, null, null, null);
         boolean is = false;
         if (cursor.moveToNext()) {
             is = cursor.getInt(0) > 0;
