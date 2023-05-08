@@ -1650,7 +1650,7 @@ public class ConversationFragment extends XmppFragment implements EditMessage.Ke
                                 if (previousReaction != null) reactions = previousReaction.getReactions();
                                 for (Element el : reactions.getChildren()) {
                                     if (message.getQuoteableBody().endsWith(el.getContent())) {
-                                        reactions.removeChild((Node) el);
+                                        reactions.removeChild(el);
                                     }
                                 }
                                 message.setReactions(reactions);

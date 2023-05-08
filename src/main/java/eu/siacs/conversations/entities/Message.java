@@ -134,7 +134,6 @@ public class Message extends AbstractEntity implements AvatarService.Avatarable 
     protected boolean carbon = false;
     protected boolean oob = false;
     protected static List<Element> payloads = new ArrayList<>();
-
     protected List<Edit> edits = new ArrayList<>();
     protected String relativeFilePath;
     protected boolean read = true;
@@ -162,6 +161,7 @@ public class Message extends AbstractEntity implements AvatarService.Avatarable 
     private FileParams fileParams = null;
     private List<MucOptions.User> counterparts;
     private WeakReference<MucOptions.User> user;
+
 
     protected Message(Conversational conversation) {
         this.conversation = conversation;
@@ -466,6 +466,7 @@ public class Message extends AbstractEntity implements AvatarService.Avatarable 
 
         return null;
     }
+
     public synchronized void appendBody(String append) {
         this.body += append;
         this.isGeoUri = null;
@@ -1078,6 +1079,7 @@ public class Message extends AbstractEntity implements AvatarService.Avatarable 
     public void clearPayloads() {
         this.payloads.clear();
     }
+
     public void addPayload(Element el) {
         if (el == null) return;
 
