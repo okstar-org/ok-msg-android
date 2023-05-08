@@ -897,7 +897,10 @@ public class ConversationFragment extends XmppFragment implements EditMessage.Ke
 
             @Override
             public void success(Message message) {
-                runOnUiThread(() -> activity.hideToast());
+                runOnUiThread(() -> {
+                    activity.hideToast();
+                    setupReply(null);
+                });
                 hidePrepareFileToast(prepareFileToast);
             }
 
@@ -948,6 +951,7 @@ public class ConversationFragment extends XmppFragment implements EditMessage.Ke
                     @Override
                     public void success(Message message) {
                         hidePrepareFileToast(prepareFileToast);
+                        runOnUiThread(() -> setupReply(null));
                     }
 
                     @Override

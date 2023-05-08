@@ -611,10 +611,14 @@ public class XmppConnectionService extends Service {
 
     public void attachFileToConversation(final Conversation conversation, final Uri uri, final String type, final UiCallback<Message> callback) {
         final Message message;
-        if (conversation.getNextEncryption() == Message.ENCRYPTION_PGP) {
-            message = new Message(conversation, "", Message.ENCRYPTION_DECRYPTED);
-        } else {
+        if (conversation.getReplyTo() == null) {
             message = new Message(conversation, "", conversation.getNextEncryption());
+        } else {
+            message = conversation.getReplyTo().reply();
+            message.setEncryption(conversation.getNextEncryption());
+        }
+        if (conversation.getNextEncryption() == Message.ENCRYPTION_PGP) {
+            message.setEncryption(Message.ENCRYPTION_DECRYPTED);
         }
         if (!Message.configurePrivateFileMessage(message)) {
             message.setCounterpart(conversation.getNextCounterpart());
@@ -647,11 +651,17 @@ public class XmppConnectionService extends Service {
             return;
         }
         final Message message;
-        if (conversation.getNextEncryption() == Message.ENCRYPTION_PGP) {
-            message = new Message(conversation, "", Message.ENCRYPTION_DECRYPTED);
-        } else {
+
+        if (conversation.getReplyTo() == null) {
             message = new Message(conversation, "", conversation.getNextEncryption());
+        } else {
+            message = conversation.getReplyTo().reply();
+            message.setEncryption(conversation.getNextEncryption());
         }
+        if (conversation.getNextEncryption() == Message.ENCRYPTION_PGP) {
+            message.setEncryption(Message.ENCRYPTION_DECRYPTED);
+        }
+
         if (!Message.configurePrivateFileMessage(message)) {
             message.setCounterpart(conversation.getNextCounterpart());
             message.setType(Message.TYPE_IMAGE);
