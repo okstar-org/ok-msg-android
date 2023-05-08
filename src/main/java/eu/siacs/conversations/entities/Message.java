@@ -14,6 +14,7 @@ import android.text.style.ImageSpan;
 import android.util.Log;
 import android.util.Pair;
 import android.view.View;
+import eu.siacs.conversations.utils.Compatibility;
 
 import eu.siacs.conversations.ui.util.QuoteHelper;
 
@@ -449,7 +450,9 @@ public class Message extends AbstractEntity implements AvatarService.Avatarable 
         return this.body;
     }
     public void setThread(Element thread) {
-        payloads.removeIf(el -> el.getName().equals("thread") && el.getNamespace().equals("jabber:client"));
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
+            payloads.removeIf(el -> el.getName().equals("thread") && el.getNamespace().equals("jabber:client"));
+        }
         addPayload(thread);
     }
     public Element getReactions() {
