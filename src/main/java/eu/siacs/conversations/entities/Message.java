@@ -499,30 +499,7 @@ public class Message extends AbstractEntity implements AvatarService.Avatarable 
     }
 
     public String getBody() {
-        StringBuilder body = new StringBuilder(this.body);
-
-        List<Element> fallbacks = getFallbacks();
-        List<Pair<Integer, Integer>> spans = new ArrayList<>();
-        for (Element fallback : fallbacks) {
-            for (Element span : fallback.getChildren()) {
-                if (!span.getName().equals("body") && !span.getNamespace().equals("urn:xmpp:fallback:0")) continue;
-                if (span.getAttribute("start") == null || span.getAttribute("end") == null) return "";
-                spans.add(new Pair(parseInt(span.getAttribute("start")), parseInt(span.getAttribute("end"))));
-            }
-        }
-        // Do them in reverse order so that span deletions don't affect the indexes of other spans
-        spans.sort((x, y) -> y.first.compareTo(x.first));
-        try {
-            for (Pair<Integer, Integer> span : spans) {
-                body.delete(body.offsetByCodePoints(0, span.first.intValue()), body.offsetByCodePoints(0, span.second.intValue()));
-            }
-        } catch (final IndexOutOfBoundsException e) { spans.clear(); }
-
-        if (spans.isEmpty() && getOob() != null) {
-            return body.toString().replace(getOob().toString(), "");
-        } else {
-            return body.toString();
-        }
+        return body;
     }
     public synchronized void setBody(String body) {
         if (body == null) {
