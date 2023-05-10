@@ -2,8 +2,12 @@ package eu.siacs.conversations.xmpp.pep;
 
 import android.util.Base64;
 
+import java.security.NoSuchAlgorithmException;
+
+import eu.siacs.conversations.utils.CryptoHelper;
 import eu.siacs.conversations.xml.Element;
 import eu.siacs.conversations.xmpp.Jid;
+import io.ipfs.cid.Cid;
 
 public class Avatar {
 
@@ -81,7 +85,15 @@ public class Avatar {
             return false;
         }
     }
+    public Cid cid() {
+        if (sha1sum == null) return null;
 
+        try {
+            return CryptoHelper.cid(CryptoHelper.hexToBytes(sha1sum), "sha-1");
+        } catch (final NoSuchAlgorithmException e) {
+            return null;
+        }
+    }
     public static Avatar parsePresence(Element x) {
         String hash = x == null ? null : x.findChildContent("photo");
         if (hash == null) {
