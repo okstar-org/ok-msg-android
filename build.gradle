@@ -100,7 +100,7 @@ dependencies {
     implementation project(':libs:AXML')
     implementation 'com.github.ipld:java-cid:v1.3.1'
     implementation 'com.github.woltapp:blurhash:master'
-
+    coreLibraryDesugaring 'com.android.tools:desugar_jdk_libs:1.1.5'
 }
 
 ext {
@@ -156,6 +156,7 @@ android {
     }
 
     compileOptions {
+        coreLibraryDesugaringEnabled true
         sourceCompatibility JavaVersion.VERSION_1_8
         targetCompatibility JavaVersion.VERSION_1_8
     }
