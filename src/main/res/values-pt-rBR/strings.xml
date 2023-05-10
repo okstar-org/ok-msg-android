@@ -116,7 +116,7 @@
     <string name="pref_send_crash_summary">Ao enviar os stack traces você ajudará o desenvolvimento do monocles chat</string>
     <string name="pref_confirm_messages">Confirmar mensagens</string>
     <string name="pref_confirm_messages_summary">Informe seus contatos quando você tiver recebido e lido as mensagens deles</string>
-    <string name="pref_ui_options">Interface do usuário</string>
+    <string name="pref_ui_options">Interface</string>
     <string name="openpgp_error">O OpenKeychain reportou um erro</string>
     <string name="accept">Aceitar</string>
     <string name="error">Ocorreu um erro</string>
@@ -215,7 +215,7 @@
     <string name="contact_already_exists">O contacto já existe</string>
     <string name="join">Entrar</string>
     <string name="channel_full_jid_example">sala@conference.exemplo.com/nome</string>
-    <string name="channel_bare_jid_example">canal@conference.exemplo.com</string>
+    <string name="channel_bare_jid_example">sala@conference.exemplo.com</string>
     <string name="save_as_bookmark">Salvar como favorito</string>
     <string name="delete_bookmark">Apagar favorito</string>
     <string name="topic">Tópico</string>
@@ -254,7 +254,7 @@
 \n
 \n<small>Vá aos detalhes do contato para verificar as suas subscrições de presença.</small></string>
     <string name="pref_security_settings">Segurança e proteção de dados</string>
-    <string name="pref_allow_message_correction">Permitir a correção de mensagens</string>
+    <string name="pref_allow_message_correction">Permitir a correção de mensagem</string>
     <string name="pref_allow_message_correction_summary">Permitir que os seus contatos editem as mensagens deles após enviadas</string>
     <string name="pref_expert_options">Configurações avançadas</string>
     <string name="title_activity_about">Sobre</string>
@@ -266,7 +266,7 @@
     <string name="pref_quiet_hours_summary">As notificações serão silenciadas durante o horário de silêncio</string>
     <string name="pref_use_send_button_to_indicate_status">O botão de enviar indica o status</string>
     <string name="pref_use_colored_names_to_indicate_status">Cores nos nomes indicam o status</string>
-    <string name="pref_use_indicate_received">Solicitar recibos de mensagem</string>
+    <string name="pref_use_indicate_received">Solicitar visualização de mensagem</string>
     <string name="pref_use_send_button_to_indicate_status_summary">Colorir o botão de enviar para indicar o status do contato</string>
     <string name="pref_use_colored_names_to_indicate_status_summary">Colorir os nomes de contato para indicar seus status</string>
     <string name="pref_expert_options_other">Outros</string>
@@ -383,7 +383,7 @@
     <string name="until_further_notice">Até segunda ordem</string>
     <string name="pref_input_options">Introdução</string>
     <string name="pref_enter_is_send">O enter envia</string>
-    <string name="pref_enter_is_send_summary">Usar a tecla Enter para enviar mensagens. Você sempre pode usar Ctrl+Enter para enviá-las, mesmo que esta opção esteja desabilitada.</string>
+    <string name="pref_enter_is_send_summary">Usar a tecla enter para enviar mensagens. Você sempre pode usar Ctrl+Enter para enviá-las, mesmo que esta opção esteja desabilitada.</string>
     <string name="pref_display_enter_key">Exibir tecla enter</string>
     <string name="pref_display_enter_key_summary">Alterar a tecla dos emojis para uma tecla enter</string>
     <string name="audio">áudio</string>
@@ -420,7 +420,7 @@
     <string name="none">Nenhum</string>
     <string name="recently_used">Usados mais recentemente</string>
     <string name="search_contacts">Procurar contatos</string>
-    <string name="search_bookmarks">Buscar chats de múltiplos usuários</string>
+    <string name="search_bookmarks">Buscar conversas de múltiplos usuários</string>
     <string name="choose_quick_action">Escolher ação rápida</string>
     <string name="send_private_message">Enviar mensagem privada</string>
     <string name="user_has_left_conference">%1$s saiu do grupo!</string>
@@ -619,7 +619,7 @@
     <string name="contact_blocked_past_tense">Contato bloqueado.</string>
     <string name="pref_notifications_from_strangers">Notificações de desconhecidos</string>
     <string name="contacts_are_typing">%s estão digitando…</string>
-    <string name="contact_is_typing">%s está escrevendo…</string>
+    <string name="contact_is_typing">%s está digitando…</string>
     <string name="one_participant">Um participante</string>
     <string name="more_participants">%d participantes</string>
     <string name="presence_offline">Desconectado</string>
@@ -674,7 +674,7 @@
     <string name="search_messages">Procurar mensagens</string>
     <string name="gif">GIF</string>
     <string name="copy_jabber_id">Copiar JID</string>
-    <string name="copy_link">Copiar site</string>
+    <string name="copy_link">Copiar link</string>
     <string name="server_hint">Selecionar provedor</string>
     <string name="choose_your_server">Escolha seu provedor Jabber</string>
     <string name="show_privacy">Política de privacidade</string>
@@ -826,7 +826,7 @@
     <string name="encrypted_with_omemo">Criptografado com OMEMO</string>
     <string name="encrypted_with_openpgp">Criptografado com OpenPGP</string>
     <string name="not_encrypted">Não criptografado</string>
-    <string name="add_contact_or_create_or_join_group_chat">Adicionar contato, criar ou entrar em um grupo, ou descobrir canais</string>
+    <string name="add_contact_or_create_or_join_group_chat">Adicionar contato, criar ou entrar em um grupo, ou descobrir salas</string>
     <plurals name="some_messages_could_not_be_delivered">
         <item quantity="one">A mensagem não pôde ser entregue</item>
         <item quantity="other">Algumas mensagens não puderam ser entregues</item>
@@ -860,8 +860,12 @@
     <string name="videos">vídeos</string>
     <string name="files">arquivos</string>
     <string name="all_media_files">arquivos de mídia</string>
-    <string name="memory_warning">Seu chat está usando %1$s (%2$s) de memória interna.\n\nVocê pode habilitar a exclusão automática de anexos ou apagar a mídia armazenada manualmente.</string>
-    <string name="memory_warning_force">Seu chat está usando %1$s (%2$s) de memória interna.\n\nVocê deve habilitar a exclusão automática de anexos ou apagar a mídia armazenada manualmente. Seu dispositivo vai ficar sem espaço livre!</string>
+    <string name="memory_warning">Seu aplicativo está usando %1$s (%2$s) de memória interna.
+\n
+\nVocê pode habilitar a exclusão automática de anexos ou apagar a mídia armazenada manualmente.</string>
+    <string name="memory_warning_force">Seu aplicativo está usando %1$s (%2$s) de memória interna.
+\n
+\nVocê deve habilitar a exclusão automática de anexos ou apagar a mídia armazenada manualmente. Seu dispositivo vai ficar sem espaço livre!</string>
     <string name="open_settings">Abrir configurações</string>
     <string name="save_x_file">Salvar %s</string>
     <string name="use_individual_notifications">Usar notificações individuais</string>
@@ -899,7 +903,7 @@
     <string name="pref_quick_share_attachment_choice">Escolha do anexo</string>
     <string name="unable_to_save_recording">Não foi possível salvar a gravação</string>
     <string name="foreground_service_channel_name">Serviço em primeiro plano</string>
-    <string name="foreground_service_channel_description">Esta categoria de notificação é usada para exibir uma notificação permanente indicando que o chat do Monocles está em execução.</string>
+    <string name="foreground_service_channel_description">Esta categoria de notificação é usada para exibir uma notificação permanente indicando que o Monocles Chat está em execução.</string>
     <string name="notification_group_status_information">Status da informação</string>
     <string name="error_channel_name">Problemas de conectividade</string>
     <string name="silent_messages_channel_description">Esta categoria de notificação é usada para exibir notificações que não devem acionar nenhum som. Por exemplo, quando estiver ativo em outro dispositivo (período de tolerância).</string>
@@ -918,14 +922,14 @@
     <string name="retry_decryption">Tentar descriptografar novamente</string>
     <string name="session_failure">Falha na sessão</string>
     <string name="account_status_regis_web">Servidor requer registro no site</string>
-    <string name="application_found_to_open_website">Nenhum aplicativo encontrado para abrir o site</string>
+    <string name="application_found_to_open_website">Nenhum aplicativo encontrado para abrir o link</string>
     <string name="pref_show_foreground_service">Usar serviço em primeiro plano</string>
     <string name="update_service">Serviço de atualização do Monocles Chat</string>
     <string name="no_application_found_to_open_link">Nenhum aplicativo encontrado para abrir o link</string>
     <string name="contacts_have_read_up_to_this_point">%s leu até este ponto</string>
     <string name="contacts_and_n_more_have_read_up_to_this_point">%1$s e mais %2$d leram até este ponto</string>
-    <string name="pref_warn_unencrypted_chat">Avisar se o chat não estiver criptografado</string>
-    <string name="pref_warn_unencrypted_chat_summary">Se a criptografia de mensagem estiver disponível, você deve usá-la. Se você não usa criptografia de mensagens, mostre uma mensagem de aviso dentro do chat.</string>
+    <string name="pref_warn_unencrypted_chat">Avisar se a conversa não estiver criptografada</string>
+    <string name="pref_warn_unencrypted_chat_summary">Se a criptografia de mensagem estiver disponível, você deve usá-la. Se você não usa criptografia de mensagens, mostre uma mensagem de aviso dentro da conversa.</string>
     <string name="pref_use_bundled_emoji">Use emojis integrados</string>
     <string name="pref_use_bundled_emoji_summary">Use a biblioteca de emojis integrada em vez de usar os de seus dispositivos. As alterações estarão disponíveis após a reabertura do aplicativo.</string>
     <string name="invalid_muc_nick">Nome inválido</string>
@@ -939,7 +943,7 @@
         <item quantity="other"/>
     </plurals>
     <string name="account_status_tls_error_domain">Domínio não verificável</string>
-    <string name="pref_allow_message_retraction">Permitir retração de mensagem</string>
+    <string name="pref_allow_message_retraction">Permitir retratação de mensagem</string>
     <string name="pref_use_indicate_received_summary">As mensagens recebidas serão marcadas com um visto, se suportadas</string>
     <string name="receiving_file_x">Recebendo %1$s (%2$s %)</string>
     <string name="pref_picture_quality_summary">Redimensionar e compactar imagens</string>
@@ -965,8 +969,8 @@
     <string name="certificate_does_not_contain_jid">O certificado não contém um ID</string>
     <string name="server_info_partial">parcial</string>
     <string name="pref_show_foreground_service_summary">Alguns dispositivos Android fecharão alguns aplicativos após um período de tempo e você não poderá receber novas mensagens. Se você tiver esses problemas, tente ativar o serviço em primeiro plano. Mas lembre-se de que você terá uma notificação permanente com esta opção marcada.</string>
-    <string name="conversation_unencrypted_hint">Este chat não é criptografado, por motivos de segurança, você deve ativar a criptografia de mensagens usando o ícone de cadeado. A criptografia preferível é OMEMO.</string>
-    <string name="destroy_room_dialog">Gostaria de excluir o grupo %s\? Isso removerá este chat em grupo permanentemente.</string>
+    <string name="conversation_unencrypted_hint">Esta conversa não é criptografada, por motivos de segurança, você deve ativar a criptografia de mensagens usando o ícone de cadeado. A criptografia preferível é OMEMO.</string>
+    <string name="destroy_room_dialog">Gostaria de excluir o grupo %s\? Isso removerá este grupo permanentemente.</string>
     <string name="destroy_room_failed">Grupo não pôde ser excluído</string>
     <string name="huawei_protected_apps_summary">Para continuar recebendo notificações, mesmo com a tela desligada, você precisa adicionar o Monocles Chat à lista de aplicativos protegidos.</string>
     <string name="qr_code_scanner_needs_access_to_camera">O escaneador de código QR precisa acessar a câmera</string>
@@ -974,7 +978,7 @@
     <string name="pref_automatically_delete_messages_description">Exclua automaticamente as mensagens deste dispositivo que são mais antigas do que o período de tempo configurado.</string>
     <string name="error_trustkey_general">O Monocles Chat não pôde enviar mensagens criptografadas para %1$s. Isso pode ser devido ao seu contato usando um servidor ou cliente desatualizado que não pôde lidar com o OMEMO.</string>
     <string name="pref_omemo_setting_summary_always">O OMEMO sempre será usado para conversas individuais e em grupos privados.</string>
-    <string name="web_address">site</string>
+    <string name="web_address">link</string>
     <string name="p1_s3_filetransfer">Compartilhamento de arquivos HTTP para S3</string>
     <string name="pref_start_search_summary">Na tela \'Iniciar conversa\', abra o teclado e coloque o cursor no campo de pesquisa</string>
     <string name="conference_resource_constraint">Restrição de recursos</string>
@@ -987,7 +991,7 @@
     <string name="account_status_stream_opening_error">Erro ao abrir stream</string>
     <string name="security_violation_not_attaching_file">Arquivo omitido devido a violação de segurança.</string>
     <string name="remote_server_timeout">Tempo limite do servidor remoto</string>
-    <string name="already_drafting_message">Você já está escrevendo uma mensagem.</string>
+    <string name="already_drafting_message">Você já está digitando uma mensagem.</string>
     <string name="bad_key_for_encryption">Chave inválida para criptografia.</string>
     <string name="device_does_not_support_unknown_source_op">Seu dispositivo não permite a instalação de aplicativos de fontes desconhecidas.</string>
     <string name="error_message_copied_to_clipboard">Mensagem de erro copiada para a área de transferência</string>
@@ -1042,7 +1046,7 @@
     <string name="verify_otr">Verificar OTR</string>
     <string name="autojoin_group_chat">Entrar automaticamente neste grupo</string>
     <string name="no_market_app_installed">Nenhum aplicativo de vendas instalado.</string>
-    <string name="pref_show_links_inside_summary">Mostrar pré-visualizações de links da web diretamente dentro da visualização da conversa, uma conexão com o servidor especificado no link será estabelecida.</string>
+    <string name="pref_show_links_inside_summary">Mostrar prévia de links diretamente dentro da visualização da conversa, uma conexão com o servidor especificado no link será estabelecida.</string>
     <string name="pref_play_gif_inside_summary">Reproduza arquivos GIF diretamente na visualização da conversa</string>
     <string name="copy_otr_clipboard_description">Copie a impressão digital OTR para a área de transferência</string>
     <string name="otr_session_not_started">Envie uma mensagem para iniciar uma conversa criptografada</string>
@@ -1088,8 +1092,8 @@
     <string name="channel_discovery_opt_in_title">Aviso de privacidade</string>
     <string name="action_add_existing_account">Adicionar conta existente</string>
     <string name="use_own_provider">Usar provedor próprio</string>
-    <string name="discover_channels">Descubra canais</string>
-    <string name="search_channels">Pesquisar canais</string>
+    <string name="discover_channels">Descubra salas</string>
+    <string name="search_channels">Pesquisar salas</string>
     <string name="pref_show_mappreview_inside">Mostrar prévia de localização na conversa</string>
     <string name="pref_use_internal_updater_summary">Deixe o mensageiro procurar novas atualizações de aplicativo uma vez por dia</string>
     <string name="add_anyway">Adicionar mesmo assim</string>
@@ -1124,7 +1128,7 @@
     <string name="this_looks_like_a_domain">Isso parece um endereço de domínio</string>
     <string name="anyone_can_edit_subject">Qualquer pessoa pode editar o tópico.</string>
     <string name="owners_can_edit_subject">Administradores podem editar o tópico.</string>
-    <string name="enable_message_encryption">Este chat não é criptografado. Por motivos de segurança, você deve habilitar a criptografia de mensagens, preferencialmente OMEMO. Se algo não estiver funcionando para você, você pode desativar a criptografia de mensagens pressionando o ícone de cadeado.</string>
+    <string name="enable_message_encryption">Esta conversa não é criptografada. Por motivos de segurança, você deve habilitar a criptografia de mensagens, preferencialmente OMEMO. Se algo não estiver funcionando para você, você pode desativar a criptografia de mensagens clicando no ícone de cadeado.</string>
     <string name="no_users_hint_channel">Esta sala pública não tem participantes. Convide seus contatos ou use o botão de compartilhamento para distribuir seu endereço XMPP.</string>
     <string name="notification_backup_failed_subtitle">Os arquivos de backup não puderam ser armazenados em %s</string>
     <string name="me_quote">Eu:</string>
@@ -1138,7 +1142,7 @@
     <string name="your_server_invitation">Seu convite de servidor</string>
     <string name="pref_alternative_voice_settings_summary">Se você tiver problemas durante a gravação de voz, use esta configuração para alterar o codec.</string>
     <string name="pref_alternative_voice_settings">Método alternativo de gravação de voz</string>
-    <string name="pref_use_colored_muc_names_summary">Colorir nomes em conversas em grupo ou canais como planos de fundo de avatar padrão.</string>
+    <string name="pref_use_colored_muc_names_summary">Colorir nomes em grupos ou salas como planos de fundo de avatar padrão.</string>
     <string name="pref_use_unicolored_chatbg_summary">Use plano de fundo unicolor nas conversas.</string>
     <string name="pref_use_unicolored_chatbg">Usar plano fundo unicolor</string>
     <string name="pref_use_colored_muc_names">Colorir nomes de usuário</string>
@@ -1151,8 +1155,8 @@
     <string name="tap_share_button_send_invite">Toque no botão de compartilhamento para enviar ao seu contato um convite para %1$s.</string>
     <string name="easy_invite_share_text">Junte-se a %1$s e converse comigo: %2$s</string>
     <string name="no_active_accounts_support_this">Nenhuma conta ativa suporta este recurso</string>
-    <string name="pref_mappreview_host_summary">Use um host de pré-visualização de mapa personalizado</string>
-    <string name="pref_mappreview_host">Host de pré-visualização do mapa</string>
+    <string name="pref_mappreview_host_summary">Use um host de prévia de mapa personalizado</string>
+    <string name="pref_mappreview_host">Host de prévia do mapa</string>
     <string name="webview_not_available">Webview não está disponível em seu dispositivo.</string>
     <string name="pref_easy_downloader">Baixar automaticamente todos os anexos</string>
     <string name="a_user">um usuário</string>
@@ -1187,13 +1191,13 @@
     <string name="action_unfix_from_location">Desfixar posição</string>
     <plurals name="n_missed_calls_from_x">
         <item quantity="one">%1$d chamada perdida de %2$s</item>
-        <item quantity="many"></item>
+        <item quantity="many"/>
         <item quantity="other">%1$d chamadas perdidas de %2$s</item>
     </plurals>
     <plurals name="view_users">
         <item quantity="one">Ver %1$d participante</item>
         <item quantity="many">Ver %1$d participantes</item>
-        <item quantity="other"></item>
+        <item quantity="other"/>
     </plurals>
     <string name="strikethrough">traçado</string>
     <string name="grant">Conceder</string>
@@ -1244,8 +1248,8 @@
     <string name="delete_message_dialog_msg">Você tem certeza que desejadeletar esta mensagem\?
 \n
 \n<b>Aviso:</b> Não há garantia de que isso excluirá as cópias desta mensagem que estão armazenadas em outros dispositivos ou servidores.</string>
-    <string name="pref_enable_persistent_rooms_summary">Torne grupos e canais públicos persistentes e não os exclua do servidor depois que o último usuário sair do chat.</string>
-    <string name="pref_show_links_inside">Mostrar pré-visualização de links da web na conversa</string>
+    <string name="pref_enable_persistent_rooms_summary">Torne grupos e salas públicas persistentes e não os exclua do servidor depois que o último usuário sair do conversa.</string>
+    <string name="pref_show_links_inside">Mostrar prévia de links na conversa</string>
     <string name="pref_enable_otr_summary">Ative a criptografia OTR para criptografia de mensagens. OTR ainda é altamente instável, por favor, use-o apenas se você souber o que está fazendo.</string>
     <string name="magic_create_text">Você pode usar o Monocles Chat com todas as contas XMPP modernas ou obter uma conta de Monocles acessível e segura, hospedada na estação do servidor de Monocles e alimentada com energias renováveis!
 \n
@@ -1262,7 +1266,7 @@
     <string name="please_enter_xmpp_address">Por favor, forneça um endereço XMPP</string>
     <string name="intro_desc_start_chatting">Se você concedeu permissões de contato, os contatos Jabber já existentes são exibidos automaticamente em sua lista de contatos. Caso contrário, basta adicionar os endereços.</string>
     <string name="intro_desc_optional_permissions">As permissões para ler sua lista de contatos são necessárias para ler a lista de usuários (se houver) de seus contatos. Os contatos nunca são compartilhados, carregados ou copiados.</string>
-    <string name="pref_show_mappreview_inside_summary">Mostre pré-visualizações de mapa diretamente dentro da conversa, uma conexão com o servidor Monocles será estabelecida.</string>
+    <string name="pref_show_mappreview_inside_summary">Mostre prévias de mapa diretamente dentro da conversa, uma conexão com o servidor Monocles será estabelecida.</string>
     <string name="data_saver_enabled_explained">Seu sistema operacional está impedindo que o Monocles Chat acesse a Internet em segundo plano. Para receber notificações de novas mensagens, você deve permitir o acesso irrestrito ao Monocles Chat quando a economia de dados estiver ativada.
 \n
 \nO Monocles Chat ainda fará um esforço para salvar os dados quando possível.</string>
@@ -1287,7 +1291,7 @@
     <string name="if_contact_is_nearby_use_qr">Se o seu contato estiver por perto, ele também pode escanear o código abaixo para aceitar seu convite.</string>
     <string name="intro_desc_optional_permissions2">Permissões para sua localização são necessárias se você quiser compartilhar sua localização.
 \nPara compartilhar mensagens de voz, é necessário ter acesso ao seu microfone.</string>
-    <string name="pref_easy_downloader_summary">Baixe automaticamente todos os anexos em canais públicos e de desconhecidos em vez de mostrar um botão para download manual.</string>
+    <string name="pref_easy_downloader_summary">Baixe automaticamente todos os anexos em salas públicas e de desconhecidos em vez de mostrar um botão para download manual.</string>
     <string name="intro_desc_account3">Você tem a opção de importar uma conta existente.
 \nSe houver arquivos de backup disponíveis, eles serão mostrados.</string>
     <string name="oldAndroidVersionMessage">Você está usando uma versão antiga do Android que não será mais suportada em atualizações futuras. A partir da versão 1.0 do Monocles Chat, apenas dispositivos com Android 5 ou superior são suportados. Atualize o firmware do seu dispositivo.</string>
@@ -1299,7 +1303,7 @@
     <string name="local_server">Servidor local</string>
     <string name="help_format_text">Você pode usar opções de estilo simples para formatar seu texto. As chaves para identificar o início e o fim de uma formatação estão exatamente no início e no fim da palavra ou grupo de palavras. Deve haver um espaço antes da tecla inicial e um espaço após a tecla final, caso contrário a formatação não será reconhecida.
 \n
-\nVocê pode usar as ferramentas diretamente enquanto escreve, pressionando uma ferramenta irá inserir a chave na posição do cursor. Ou você pode marcar uma palavra ou um grupo de palavras e pressionar um botão de formatação.</string>
+\nVocê pode usar as ferramentas diretamente enquanto digita, pressionando uma ferramenta irá inserir a chave na posição do cursor. Ou você pode marcar uma palavra ou um grupo de palavras e pressionar um botão de formatação.</string>
     <string name="pref_channel_discovery_summary">A maioria dos usuários deve escolher ‘jabber.network’ para melhores sugestões de todo o ecossistema público do XMPP.</string>
     <string name="pref_notification_grace_period_summary">O período de tempo em que as notificações são silenciadas após a detecção de atividade em um de seus outros dispositivos.</string>
 </resources>
