@@ -289,6 +289,13 @@ public class Contact implements ListItem, Blockable {
         return this.presences.getShownStatus();
     }
 
+    public Jid resourceWhichSupport(final String namespace) {
+        final String resource = getPresences().firstWhichSupport(namespace);
+        if (resource == null) return null;
+
+        return resource.equals("") ? getJid() : getJid().withResource(resource);
+    }
+
     public String getMostAvailableResource() {
         return this.presences.getMostAvailableResource();
     }

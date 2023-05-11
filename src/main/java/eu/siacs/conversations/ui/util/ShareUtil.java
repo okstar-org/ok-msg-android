@@ -34,6 +34,10 @@ import android.content.Intent;
 
 import java.util.regex.Matcher;
 
+
+import android.content.ClipData;
+import android.content.ClipboardManager;
+import android.content.Context;
 import eu.siacs.conversations.R;
 import eu.siacs.conversations.entities.DownloadableFile;
 import eu.siacs.conversations.entities.Message;
@@ -138,6 +142,22 @@ public class ShareUtil {
         }
     }
 
+    public static void copyLinkToClipboard(final Context context, final String url) {
+        final Uri uri = Uri.parse(url);
+        if ("xmpp".equals(uri.getScheme())) {
+            try {
+                final Jid jid = new XmppUri(uri).getJid();
+                if (copyTextToClipboard(context, jid.asBareJid().toString(), R.string.account_settings_jabber_id)) {
+                    Toast.makeText(context, R.string.jabber_id_copied_to_clipboard, Toast.LENGTH_SHORT).show();
+                }
+            } catch (final Exception e) { }
+        } else {
+            if (copyTextToClipboard(context, url, R.string.web_address)) {
+                Toast.makeText(context, R.string.url_copied_to_clipboard, Toast.LENGTH_SHORT).show();
+            }
+        }
+    }
+
     public static boolean containsXmppUri(String body) {
         Matcher xmppPatternMatcher = Patterns.XMPP_PATTERN.matcher(body);
         if (xmppPatternMatcher.find()) {
@@ -146,6 +166,17 @@ public class ShareUtil {
             } catch (Exception e) {
                 return false;
             }
+        }
+        return false;
+    }
+
+    public static boolean copyTextToClipboard(Context context, String text, int labelResId) {
+        ClipboardManager mClipBoardManager = (ClipboardManager) context.getSystemService(Context.CLIPBOARD_SERVICE);
+        String label = context.getResources().getString(labelResId);
+        if (mClipBoardManager != null) {
+            ClipData mClipData = ClipData.newPlainText(label, text);
+            mClipBoardManager.setPrimaryClip(mClipData);
+            return true;
         }
         return false;
     }
