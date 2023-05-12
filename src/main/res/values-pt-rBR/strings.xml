@@ -27,6 +27,7 @@
     <string name="minutes_ago">%d minutos atrás</string>
     <plurals name="x_unread_conversations">
         <item quantity="one">%d conversa não lida</item>
+        <item quantity="many"></item>
         <item quantity="other">%d conversas não lidas</item>
     </plurals>
     <string name="sending">enviando…</string>
@@ -38,14 +39,14 @@
     <string name="moderator">Moderador</string>
     <string name="participant">Participante</string>
     <string name="visitor">Visitante</string>
-    <string name="remove_contact_text">Deseja remover %s da sua lista? A conversa associada a este contato não será removida.</string>
-    <string name="block_contact_text">Deseja bloquear o recebimento de mensagens de %s?</string>
-    <string name="unblock_contact_text">Deseja desbloquear o recebimento de mensagens de %s?</string>
-    <string name="block_domain_text">Bloquear todos os contatos de %s?</string>
-    <string name="unblock_domain_text">Desbloquear todos os contatos de %s?</string>
+    <string name="remove_contact_text">Deseja remover %s da sua lista\? A conversa associada a este contato não será removida.</string>
+    <string name="block_contact_text">Deseja bloquear o recebimento de mensagens de %s\?</string>
+    <string name="unblock_contact_text">Deseja desbloquear o recebimento de mensagens de %s\?</string>
+    <string name="block_domain_text">Bloquear todos os contatos de %s\?</string>
+    <string name="unblock_domain_text">Desbloquear todos os contatos de %s\?</string>
     <string name="contact_blocked">Contato bloqueado</string>
     <string name="blocked">Bloqueado</string>
-    <string name="remove_bookmark_text">Deseja remover %s dos favoritos? A conversa associada a este favorito não será removida.</string>
+    <string name="remove_bookmark_text">Deseja remover %s dos favoritos\? A conversa associada a este favorito não será removida.</string>
     <string name="register_account">Registre uma nova conta no servidor</string>
     <string name="change_password_on_server">Altere a senha no servidor</string>
     <string name="share_with">Compartilhar com…</string>
@@ -62,7 +63,8 @@
     <string name="save">Salvar</string>
     <string name="ok">OK</string>
     <string name="crash_report_title">Monocles Chat teve um problema e parou de funcionar</string>
-    <string name="crash_report_message">Ao enviar os stack traces você ajudará o desenvolvimento do aplicativo\n<b>Atenção:</b> Isso usará a sua conta XMPP para enviar o stack trace para o desenvolvedor.</string>
+    <string name="crash_report_message">Ao enviar os stack traces você ajudará o desenvolvimento do aplicativo
+\n<b>Atenção:</b> Isso usará a sua conta XMPP para enviar o stack trace para o desenvolvedor.</string>
     <string name="send_now">Enviar agora</string>
     <string name="send_never">Não perguntar novamente</string>
     <string name="problem_connecting_to_account">Não foi possível se conectar à conta</string>
@@ -75,7 +77,9 @@
     <string name="preparing_image">Preparando a imagem para enviar</string>
     <string name="action_clear_history">Limpar histórico</string>
     <string name="clear_conversation_history">Limpar o histórico de conversas</string>
-    <string name="clear_histor_msg">Tem certeza que deseja remover todas as mensagens nesta conversa?\n\n<b>Aviso:</b> Isto não irá influenciar mensagens salvas em outros dispositivos ou servidores.</string>
+    <string name="clear_histor_msg">Tem certeza que deseja remover todas as mensagens nesta conversa\?
+\n
+\n<b>Aviso:</b> Isto não irá influenciar mensagens salvas em outros dispositivos ou servidores.</string>
     <string name="also_end_conversation">Terminar esta conversa depois</string>
     <string name="choose_presence">Escolher dispositivo</string>
     <string name="send_unencrypted_message">Enviar mensagem não criptografada</string>
@@ -87,7 +91,11 @@
     <string name="send_unencrypted">Enviar descriptografada</string>
     <string name="decryption_failed">A desencriptação falhou. Talvez você não tenha a chave privada correta.</string>
     <string name="openkeychain_required">OpenKeychain</string>
-    <string name="openkeychain_required_long">%1$s utiliza um aplicativo de terceiros chamado <b>OpenKeychain</b> para criptografar e descriptografar mensagens e para gerenciar suas chaves públicas.\n\nO OpenKeychain é licenciado sob a GPLv3 e está disponível no F-Droid e Google Play.\n\n<small>(Por favor, reinicie %1$s em seguida).</small></string>
+    <string name="openkeychain_required_long">%1$s utiliza um aplicativo de terceiros chamado <b>OpenKeychain</b> para criptografar e descriptografar mensagens e para gerenciar suas chaves públicas.
+\n
+\nO OpenKeychain é licenciado sob a GPLv3 e está disponível no F-Droid e Google Play.
+\n
+\n<small>(Por favor, reinicie %1$s em seguida).</small></string>
     <string name="restart">Reiniciar</string>
     <string name="install">Instalar</string>
     <string name="offering">oferecendo…</string>
@@ -129,14 +137,14 @@
     <string name="error_not_an_image_file">O arquivo selecionado não é uma imagem</string>
     <string name="error_compressing_image">Erro ao converter o ficheiro de imagem</string>
     <string name="error_file_not_found">Ficheiro não encontrado</string>
-    <string name="error_io_exception">Erro de I/O genérico. Talvez tenha ficado sem espaço de armazenamento?</string>
+    <string name="error_io_exception">Erro de I/O genérico. Talvez tenha ficado sem espaço de armazenamento\?</string>
     <string name="error_security_exception_during_image_copy">A aplicação que usou para selecionar esta imagem não nos forneceu permissões suficientes para ler o arquivo.
 \n
 \n<small>Utilize um gerenciador de arquivos diferente para escolher uma imagem</small></string>
     <string name="account_status_unknown">Desconhecido</string>
     <string name="account_status_disabled">Temporariamente desativado</string>
     <string name="account_status_online">Conectado</string>
-    <string name="account_status_connecting">Conectando\u2026</string>
+    <string name="account_status_connecting">Conectando…</string>
     <string name="account_status_offline">Desconectado</string>
     <string name="account_status_unauthorized">Não autorizado</string>
     <string name="account_status_not_found">Servidor não encontrado</string>
@@ -158,17 +166,20 @@
     <string name="mgmt_account_publish_avatar">Publicar o avatar</string>
     <string name="mgmt_account_publish_pgp">Publicar chave pública OpenPGP</string>
     <string name="unpublish_pgp">Remover chave pública OpenPGP</string>
-    <string name="unpublish_pgp_message">Tem certeza de que deseja remover sua chave pública do OpenPGP de seu anúncio de presença?\nSeus contatos não poderão mais lhe enviar mensagens criptografadas com o OpenPGP.</string>
+    <string name="unpublish_pgp_message">Tem certeza de que deseja remover sua chave pública do OpenPGP de seu anúncio de presença\?
+\nSeus contatos não poderão mais lhe enviar mensagens criptografadas com o OpenPGP.</string>
     <string name="openpgp_has_been_published">Chave pública OpenPGP publicada.</string>
-    <string name="mgmt_account_are_you_sure">Tem certeza?</string>
-    <string name="mgmt_account_delete_confirm_message">Se você apagar sua conta, todo o seu histórico local será perdido.\n\nSe você apagar sua conta do servidor, todo o seu histórico também será apagado do servidor e você não poderá se conectar novamente enquanto não criar uma nova conta.</string>
+    <string name="mgmt_account_are_you_sure">Tem certeza\?</string>
+    <string name="mgmt_account_delete_confirm_message">Se você apagar sua conta, todo o seu histórico local será perdido.
+\n
+\nSe você apagar sua conta do servidor, todo o seu histórico também será apagado do servidor e você não poderá se conectar novamente enquanto não criar uma nova conta.</string>
     <string name="attach_record_voice">Gravar voz</string>
     <string name="account_settings_jabber_id">ID Jabber</string>
     <string name="account_settings_example_jabber_id">nomedeusuario@monocles chat</string>
     <string name="password">Senha</string>
     <string name="invalid_jid">Esse não é um ID Jabber válido</string>
     <string name="error_out_of_memory">Memória insuficiente. A imagem é muito grande</string>
-    <string name="add_phone_book_text">Deseja adicionar %s aos seus contatos?</string>
+    <string name="add_phone_book_text">Deseja adicionar %s aos seus contatos\?</string>
     <string name="server_info_show_more">Informações do servidor</string>
     <string name="server_info_mam">XEP-0313: MAM</string>
     <string name="server_info_carbon_messages">XEP-0280: Message Carbons</string>
@@ -248,7 +259,7 @@
 \n<small>Isto irá ser utilizado para determinar que cliente(s) o seu contato está utilizando.</small></string>
     <string name="request_now">Solicitar agora</string>
     <string name="delete_fingerprint">Remover impressão digital</string>
-    <string name="sure_delete_fingerprint">Tem certeza que deseja remover essa impressão digital?</string>
+    <string name="sure_delete_fingerprint">Tem certeza que deseja remover essa impressão digital\?</string>
     <string name="ignore">Ignorar</string>
     <string name="without_mutual_presence_updates"><b>Aviso:</b> Enviar isto sem atualizações de presença mútuas pode causar problemas inesperados.
 \n
@@ -333,8 +344,10 @@
     <string name="clear_other_devices">Apagar dispositivos</string>
     <string name="clear_other_devices_desc">Tem certeza de que deseja limpar todos os outros dispositivos do anúncio OMEMO\? Na próxima vez que seus dispositivos se conectarem, eles se anunciarão novamente, mas podem não receber as mensagens enviadas nesse meio tempo.</string>
     <string name="distrust_omemo_key">Remover confiança do dispositivo</string>
-    <string name="distrust_omemo_key_text">Tem certeza de que deseja remover a verificação deste dispositivo?\nEste dispositivo e as mensagens provenientes deste dispositivo serão marcadas como não confiáveis.</string>
-    <string name="error_no_keys_to_trust_server_error">Não há chaves utilizáveis disponíveis para este contato.\nA obtenção de novas chaves através do servidor não foi bem sucedida. Talvez haja algo errado com seu servidor de contatos.</string>
+    <string name="distrust_omemo_key_text">Tem certeza de que deseja remover a verificação deste dispositivo\?
+\nEste dispositivo e as mensagens provenientes deste dispositivo serão marcadas como não confiáveis.</string>
+    <string name="error_no_keys_to_trust_server_error">Não há chaves utilizáveis disponíveis para este contato.
+\nA obtenção de novas chaves através do servidor não foi bem sucedida. Talvez haja algo errado com seu servidor de contatos.</string>
     <string name="error_trustkeys_title">Algo deu errado</string>
     <string name="fetching_history_from_server">Obtendo o histórico do servidor</string>
     <string name="no_more_history_on_server">Não existe mais histórico no servidor</string>
@@ -413,6 +426,7 @@
     <string name="dialog_manage_certs_negativebutton">Cancelar</string>
     <plurals name="toast_delete_certificates">
         <item quantity="one">%d certificado apagado</item>
+        <item quantity="many"></item>
         <item quantity="other">%d certificados apagados</item>
     </plurals>
     <string name="pref_quick_action_summary">Substituir botão enviar com ação rápida</string>
@@ -433,7 +447,11 @@
     <string name="download_failed_could_not_write_file">Download falhou: Não foi possível escrever o arquivo</string>
     <string name="action_check_update">Verificar atualizações</string>
     <string name="title_activity_updater">Atualizar serviço</string>
-    <string name="update_available">A versão %1$s está disponível.\n\nTamanho de arquivo: %2$s\n\nAtualizar para versão %1$s agora?</string>
+    <string name="update_available">A versão %1$s está disponível.
+\n
+\nTamanho de arquivo: %2$s
+\n
+\nAtualizar para versão %1$s agora\?</string>
     <string name="remind_later">mais tarde</string>
     <string name="update">atualizar</string>
     <string name="no_update_available">Nenhuma atualização disponível</string>
@@ -477,6 +495,7 @@
     <string name="connected_accounts">%1$d de %2$d contas conectadas</string>
     <plurals name="x_messages">
         <item quantity="one">%d mensagem</item>
+        <item quantity="many"></item>
         <item quantity="other">%d mensagens</item>
     </plurals>
     <string name="load_more_messages">Carregar mais mensagens</string>
@@ -500,14 +519,16 @@
     <string name="battery_optimizations_enabled_explained">Seu dispositivo está fazendo algumas otimizações pesadas de bateria no Monocles Chat que podem levar a notificações atrasadas ou até mesmo a perda de mensagens.
 \nÉ recomendável que as desative.</string>
     <string name="disable">Desativar</string>
-    <string name="cancel_update">Cancelar a atualização?</string>
+    <string name="cancel_update">Cancelar a atualização\?</string>
     <string name="yes">Sim</string>
     <string name="no">Não</string>
     <string name="no_accounts">(Nenhuma conta ativada)</string>
     <string name="this_field_is_required">Este campo é obrigatório</string>
     <string name="correct_message">Corrigir mensagem</string>
     <string name="send_corrected_message">Enviar mensagem corrigida</string>
-    <string name="contacts_have_no_pgp_keys">monocles chat não pôde criptografar suas mensagens pois seus contatos não estão disponibilizando as chaves públicas deles.\n\n</string>
+    <string name="contacts_have_no_pgp_keys">monocles chat não pôde criptografar suas mensagens pois seus contatos não estão disponibilizando as chaves públicas deles.
+\n
+\n</string>
     <string name="this_account_is_disabled">Desativou esta conta</string>
     <string name="no_application_to_share_uri">Nenhum aplicativo encontrado para compartilhar URI</string>
     <string name="share_uri_with">Compartilhar URI com…</string>
@@ -591,26 +612,32 @@
     <string name="transcoding_video">Compactando vídeo</string>
     <plurals name="seconds">
         <item quantity="one">%d segundo</item>
+        <item quantity="many"></item>
         <item quantity="other">%d segundos</item>
     </plurals>
     <plurals name="minutes">
         <item quantity="one">%d minuto</item>
+        <item quantity="many"></item>
         <item quantity="other">%d minutos</item>
     </plurals>
     <plurals name="hours">
         <item quantity="one">%d hora</item>
+        <item quantity="many"></item>
         <item quantity="other">%d horas</item>
     </plurals>
     <plurals name="days">
         <item quantity="one">%d dia</item>
+        <item quantity="many"></item>
         <item quantity="other">%d dias</item>
     </plurals>
     <plurals name="weeks">
         <item quantity="one">%d semana</item>
+        <item quantity="many"></item>
         <item quantity="other">%d semanas</item>
     </plurals>
     <plurals name="months">
         <item quantity="one">%d mês</item>
+        <item quantity="many"></item>
         <item quantity="other">%d meses</item>
     </plurals>
     <string name="today">Hoje</string>
@@ -639,17 +666,17 @@
     <string name="open_website">Abrir site</string>
     <string name="yesterday">Ontem</string>
     <string name="mark_as_read">Marcar como lido</string>
-    <string name="install_update">Instalar atualização?</string>
+    <string name="install_update">Instalar atualização\?</string>
     <string name="contact_has_read_up_to_this_point">%s leu até este ponto</string>
     <string name="snooze">Adiar</string>
     <string name="huawei_protected_apps">Aplicativos protegidos</string>
     <string name="pref_enable_multi_accounts_title">Habilitar múltiplas contas</string>
-    <string name="pref_enable_multi_accounts_summary">Você quer usar múltiplas contas?</string>
+    <string name="pref_enable_multi_accounts_summary">Você quer usar múltiplas contas\?</string>
     <string name="mtm_accept_cert">Aceitar certificado desconhecido\?</string>
     <string name="mtm_trust_anchor">O certificado do servidor não é assinado por uma autoridade de certificado conhecida.</string>
-    <string name="mtm_accept_servername">Aceitar o nome do servidor incompatível?</string>
+    <string name="mtm_accept_servername">Aceitar o nome do servidor incompatível\?</string>
     <string name="mtm_hostname_mismatch">Servidor não pode autenticar como \"%s\". O certificado é válido apenas para:</string>
-    <string name="mtm_connect_anyway">Deseja conectar mesmo assim?</string>
+    <string name="mtm_connect_anyway">Deseja conectar mesmo assim\?</string>
     <string name="mtm_cert_details">Detalhes do certificado:</string>
     <string name="once">Uma vez</string>
     <string name="pref_scroll_to_bottom">Rolar para o final</string>
@@ -829,6 +856,7 @@
     <string name="add_contact_or_create_or_join_group_chat">Adicionar contato, criar ou entrar em um grupo, ou descobrir salas</string>
     <plurals name="some_messages_could_not_be_delivered">
         <item quantity="one">A mensagem não pôde ser entregue</item>
+        <item quantity="many"></item>
         <item quantity="other">Algumas mensagens não puderam ser entregues</item>
     </plurals>
     <string name="failed_deliveries">Envios com falha</string>
@@ -854,7 +882,7 @@
     <string name="files_usage">Memória usada por arquivos</string>
     <string name="audios_usage">Memória usada por áudios</string>
     <string name="delete_files_dialog">Apagar anexos</string>
-    <string name="delete_files_dialog_msg">Você realmente deseja apagar todos(as) os(as) %s?</string>
+    <string name="delete_files_dialog_msg">Você realmente deseja apagar todos(as) os(as) %s\?</string>
     <string name="audios">áudios</string>
     <string name="images">imagens</string>
     <string name="videos">vídeos</string>
@@ -874,7 +902,7 @@
     <string name="backup_started_message">O backup foi iniciado. Você receberá uma notificação quando ele estiver pronto.</string>
     <string name="error_security_exception">O aplicativo que você usou para compartilhar o arquivo não forneceu permissões suficientes.</string>
     <string name="unable_to_enable_video">Impossível habilitar o vídeo.</string>
-    <string name="delete_recording_dialog_message">Você realmente deseja cancelar e apagar sua gravação?</string>
+    <string name="delete_recording_dialog_message">Você realmente deseja cancelar e apagar sua gravação\?</string>
     <string name="pref_automatically_delete_messages">Exclusão automática de mensagem</string>
     <string name="pref_automatically_delete_files">Exclusão automática de anexos</string>
     <string name="error_trustkey_device_list">Não foi possível buscar a lista de dispositivos</string>
@@ -940,7 +968,7 @@
     <plurals name="years">
         <item quantity="one">%d ano</item>
         <item quantity="many">%d anos</item>
-        <item quantity="other"/>
+        <item quantity="other"></item>
     </plurals>
     <string name="account_status_tls_error_domain">Domínio não verificável</string>
     <string name="pref_allow_message_retraction">Permitir retratação de mensagem</string>
@@ -1191,13 +1219,13 @@
     <string name="action_unfix_from_location">Desfixar posição</string>
     <plurals name="n_missed_calls_from_x">
         <item quantity="one">%1$d chamada perdida de %2$s</item>
-        <item quantity="many"/>
+        <item quantity="many"></item>
         <item quantity="other">%1$d chamadas perdidas de %2$s</item>
     </plurals>
     <plurals name="view_users">
         <item quantity="one">Ver %1$d participante</item>
         <item quantity="many">Ver %1$d participantes</item>
-        <item quantity="other"/>
+        <item quantity="other"></item>
     </plurals>
     <string name="strikethrough">traçado</string>
     <string name="grant">Conceder</string>
@@ -1306,4 +1334,12 @@
 \nVocê pode usar as ferramentas diretamente enquanto digita, pressionando uma ferramenta irá inserir a chave na posição do cursor. Ou você pode marcar uma palavra ou um grupo de palavras e pressionar um botão de formatação.</string>
     <string name="pref_channel_discovery_summary">A maioria dos usuários deve escolher ‘jabber.network’ para melhores sugestões de todo o ecossistema público do XMPP.</string>
     <string name="pref_notification_grace_period_summary">O período de tempo em que as notificações são silenciadas após a detecção de atividade em um de seus outros dispositivos.</string>
+    <string name="server_info_external_service_discovery"></string>
+    <string name="updated_to_monocles"></string>
+    <string name="port_example" translatable="false"></string>
+    <string translatable="false" name="x_user_quote"></string>
+    <string name="intro_desc_start_chatting2"></string>
+    <string name="jabber_network"></string>
+    <string name="conversations_foreground_service" translatable="false"></string>
+    <string name="server_info_adhoc_invite"></string>
 </resources>

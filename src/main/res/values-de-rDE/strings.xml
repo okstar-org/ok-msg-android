@@ -38,14 +38,14 @@
     <string name="moderator">Moderator</string>
     <string name="participant">Teilnehmer</string>
     <string name="visitor">Besucher</string>
-    <string name="remove_contact_text">Möchtest du %s von deiner Kontaktliste entfernen? Die Unterhaltung mit diesem Kontakt wird dabei nicht entfernt.</string>
-    <string name="block_contact_text">Möchtest du %s sperren und keine Nachrichten mehr erhalten?</string>
-    <string name="unblock_contact_text">Möchtest du %s entsperren und wieder Nachrichten empfangen?</string>
-    <string name="block_domain_text">Alle Kontakte von %s sperren?</string>
-    <string name="unblock_domain_text">Alle Kontakte von %s entsperren?</string>
+    <string name="remove_contact_text">Möchtest du %s von deiner Kontaktliste entfernen\? Die Unterhaltung mit diesem Kontakt wird dabei nicht entfernt.</string>
+    <string name="block_contact_text">Möchtest du %s sperren und keine Nachrichten mehr erhalten\?</string>
+    <string name="unblock_contact_text">Möchtest du %s entsperren und wieder Nachrichten empfangen\?</string>
+    <string name="block_domain_text">Alle Kontakte von %s sperren\?</string>
+    <string name="unblock_domain_text">Alle Kontakte von %s entsperren\?</string>
     <string name="contact_blocked">Kontakt gesperrt</string>
     <string name="blocked">Gesperrt</string>
-    <string name="remove_bookmark_text">Möchtest du %s von deiner Kontaktliste entfernen? Die Unterhaltung mit dieser Konferenz wird dabei nicht entfernt.</string>
+    <string name="remove_bookmark_text">Möchtest du %s von deiner Kontaktliste entfernen\? Die Unterhaltung mit dieser Konferenz wird dabei nicht entfernt.</string>
     <string name="register_account">Neues Konto auf Server erstellen</string>
     <string name="change_password_on_server">Kennwort ändern</string>
     <string name="share_with">Teilen mit…</string>
@@ -62,20 +62,23 @@
     <string name="save">Speichern</string>
     <string name="ok">OK</string>
     <string name="crash_report_title">monocles chat ist abgestürzt</string>
-    <string name="crash_report_message">Durch das Einsenden von Fehlerberichten hilfst du bei der stetigen Verbesserung von monocles chat.\n<b>Achtung:</b> Dies wird dein XMPP-Konto benutzen, um den Entwickler zu kontaktieren.</string>
+    <string name="crash_report_message">Durch das Einsenden von Fehlerberichten hilfst du bei der stetigen Verbesserung von monocles chat.
+\n<b>Achtung:</b> Dies wird dein XMPP-Konto benutzen, um den Entwickler zu kontaktieren.</string>
     <string name="send_now">Jetzt abschicken</string>
     <string name="send_never">Nie mehr nachfragen</string>
     <string name="problem_connecting_to_account">Es gibt Probleme beim Verbindungsaufbau mit einem Konto</string>
     <string name="problem_connecting_to_accounts">Es gibt Probleme beim Verbindungsaufbau mit mehreren Konten</string>
     <string name="touch_to_fix">Hier tippen, um deine Konten zu verwalten</string>
     <string name="attach_file">Datei anfügen</string>
-    <string name="not_in_roster">Der Kontakt ist nicht in deiner Kontaktliste. Möchtest du ihn hinzufügen?</string>
+    <string name="not_in_roster">Der Kontakt ist nicht in deiner Kontaktliste. Möchtest du ihn hinzufügen\?</string>
     <string name="add_contact">Kontakt hinzufügen</string>
     <string name="send_failed">Zustellung fehlgeschlagen</string>
     <string name="preparing_image">Bild wird für Übertragung vorbereitet</string>
     <string name="action_clear_history">Verlauf löschen</string>
     <string name="clear_conversation_history">Verlauf löschen</string>
-    <string name="clear_histor_msg">Bist du sicher, dass du alle Nachrichten in dieser Unterhaltung löschen möchtest?\n\n<b>Achtung:</b> Dies löscht keine Nachrichten, die auf anderen Geräten oder Servern gespeichert sind.</string>
+    <string name="clear_histor_msg">Bist du sicher, dass du alle Nachrichten in dieser Unterhaltung löschen möchtest\?
+\n
+\n<b>Achtung:</b> Dies löscht keine Nachrichten, die auf anderen Geräten oder Servern gespeichert sind.</string>
     <string name="also_end_conversation">Diese Unterhaltung danach beenden</string>
     <string name="choose_presence">Ressource des Kontakts auswählen</string>
     <string name="send_unencrypted_message">Unverschlüsselt schreiben…</string>
@@ -87,14 +90,20 @@
     <string name="send_unencrypted">Normal verschicken</string>
     <string name="decryption_failed">Entschlüsselung fehlgeschlagen. Vielleicht hast du nicht den richtigen privaten Schlüssel.</string>
     <string name="openkeychain_required">OpenKeychain</string>
-    <string name="openkeychain_required_long">%1$s benutzt eine Drittanwendung namens <b>OpenKeychain</b>, um Nachrichten zu ver- und entschlüsseln und um deine Schlüssel zu verwalten.\n\nOpenKeychain ist GPLv3-lizenziert und kann über F-Droid oder Google Play bezogen werden.\n\n<small>(Bitte starte %1$s danach neu.)</small></string>
+    <string name="openkeychain_required_long">%1$s benutzt eine Drittanwendung namens <b>OpenKeychain</b>, um Nachrichten zu ver- und entschlüsseln und um deine Schlüssel zu verwalten.
+\n
+\nOpenKeychain ist GPLv3-lizenziert und kann über F-Droid oder Google Play bezogen werden.
+\n
+\n<small>(Bitte starte %1$s danach neu.)</small></string>
     <string name="restart">Neu starten</string>
     <string name="install">Installieren</string>
     <string name="offering">angeboten…</string>
     <string name="waiting">warten…</string>
     <string name="create_monocles_account"><a href="https://ocean.monocles.de/apps/registration/">Bekomme einen monocles account!</a></string>
     <string name="no_pgp_key">Kein OpenPGP-Schlüssel gefunden</string>
-    <string name="contact_has_no_pgp_key">monocles chat ist nicht in der Lage, deine Nachrichten zu verschlüsseln, weil dein Kontakt seinen Schlüssel nicht preisgibt.\n\n<small>Bitte deinen Kontakt darum, OpenPGP zu installieren.</small> </string>
+    <string name="contact_has_no_pgp_key">monocles chat ist nicht in der Lage, deine Nachrichten zu verschlüsseln, weil dein Kontakt seinen Schlüssel nicht preisgibt.
+\n
+\n<small>Bitte deinen Kontakt darum, OpenPGP zu installieren.</small> </string>
     <string name="no_pgp_keys">Keine OpenPGP-Schlüssel gefunden</string>
     <string name="pref_general">Allgemeines</string>
     <string name="pref_accept_files_wifi">Dateien im WLAN annehmen</string>
@@ -128,8 +137,10 @@
     <string name="error_not_an_image_file">Die ausgewählte Datei ist kein Bild</string>
     <string name="error_compressing_image">Fehler beim Umwandeln des Bildes</string>
     <string name="error_file_not_found">Datei nicht gefunden</string>
-    <string name="error_io_exception">Allgemeiner Fehler. Vielleicht hast du keinen Speicherplatz mehr?</string>
-    <string name="error_security_exception_during_image_copy">Die App, mit der du das Bild ausgesucht hast, hat uns keine Rechte eingeräumt, das Bild zu betrachten.\n\n<small>Benutze einen anderen Dateimanager</small></string>
+    <string name="error_io_exception">Allgemeiner Fehler. Vielleicht hast du keinen Speicherplatz mehr\?</string>
+    <string name="error_security_exception_during_image_copy">Die App, mit der du das Bild ausgesucht hast, hat uns keine Rechte eingeräumt, das Bild zu betrachten.
+\n
+\n<small>Benutze einen anderen Dateimanager</small></string>
     <string name="account_status_unknown">Unbekannt</string>
     <string name="account_status_disabled">Vorübergehend abgeschaltet</string>
     <string name="account_status_online">Online</string>
@@ -156,17 +167,19 @@
     <string name="mgmt_account_publish_avatar">Kontobild veröffentlichen</string>
     <string name="mgmt_account_publish_pgp">Öffentlichen OpenPGP-Schlüssel veröffentlichen</string>
     <string name="unpublish_pgp">Öffentlichen OpenPGP-Schlüssel verwerfen</string>
-    <string name="unpublish_pgp_message">Bist du sicher, dass du deinen öffentlichen OpenPGP-Schlüssel aus deiner Anwesenheitsmitteilung entfernen möchtest?\\nDeine Kontakte können dir dann keine OpenPGP-verschlüsselten Nachrichten senden.</string>
+    <string name="unpublish_pgp_message">Bist du sicher, dass du deinen öffentlichen OpenPGP-Schlüssel aus deiner Anwesenheitsmitteilung entfernen möchtest\?\\nDeine Kontakte können dir dann keine OpenPGP-verschlüsselten Nachrichten senden.</string>
     <string name="openpgp_has_been_published">Öffentlicher OpenPGP-Schlüssel wurde veröffentlicht.</string>
-    <string name="mgmt_account_are_you_sure">Bist du dir sicher?</string>
-    <string name="mgmt_account_delete_confirm_message">Wenn du dein Konto löschst, gehen deine lokal gespeicherten Chatverläufe verloren.\n\nWenn du dein Konto vom Server löschst, wird dein gesamtes Benutzerkonto ebenfalls gelöscht, du wirst dich nicht mehr einloggen können bis du ein neues Konto erstellt hast.</string>
+    <string name="mgmt_account_are_you_sure">Bist du dir sicher\?</string>
+    <string name="mgmt_account_delete_confirm_message">Wenn du dein Konto löschst, gehen deine lokal gespeicherten Chatverläufe verloren.
+\n
+\nWenn du dein Konto vom Server löschst, wird dein gesamtes Benutzerkonto ebenfalls gelöscht, du wirst dich nicht mehr einloggen können bis du ein neues Konto erstellt hast.</string>
     <string name="attach_record_voice">Sprache aufzeichnen</string>
     <string name="account_settings_jabber_id">Chat Adresse</string>
     <string name="account_settings_example_jabber_id">benutzer@monocles.de</string>
     <string name="password">Kennwort</string>
     <string name="invalid_jid">Ungültige Chat Adresse</string>
     <string name="error_out_of_memory">Zu wenig Speicher vorhanden. Das Bild ist zu groß</string>
-    <string name="add_phone_book_text">%s zum Telefonbuch hinzufügen?</string>
+    <string name="add_phone_book_text">%s zum Telefonbuch hinzufügen\?</string>
     <string name="server_info_show_more">Server-Info</string>
     <string name="server_info_mam">XEP-0313: MAM</string>
     <string name="server_info_carbon_messages">XEP-0280: Message Carbons</string>
@@ -192,7 +205,7 @@
     <string name="your_fingerprint">Dein Fingerabdruck</string>
     <string name="openpgp_key_id">OpenPGP Schlüssel ID</string>
     <string name="omemo_fingerprint">OMEMO-Fingerabdruck</string>
-    <string name="omemo_fingerprint_x509">v\\OMEMO-Fingerabdruck </string>
+    <string name="omemo_fingerprint_x509">v\\OMEMO-Fingerabdruck</string>
     <string name="omemo_fingerprint_selected_message">OMEMO-Fingerabdruck (Nachrichtenquelle)</string>
     <string name="omemo_fingerprint_x509_selected_message">v\\OMEMO-Fingerabdruck (Nachrichtenquelle)</string>
     <string name="other_devices">Andere Geräte</string>
@@ -241,12 +254,16 @@
     <string name="enable">Aktivieren</string>
     <string name="conference_requires_password">Gruppenchat verlangt ein Kennwort</string>
     <string name="enter_password">Kennwort eingeben</string>
-    <string name="request_presence_updates">Bitte erst Onlinestatus vom Kontakt anfragen.\n\n<small>Dies wird verwendet, um festzustellen, welche Client(s) der Kontakt benutzt.</small></string>
+    <string name="request_presence_updates">Bitte erst Onlinestatus vom Kontakt anfragen.
+\n
+\n<small>Dies wird verwendet, um festzustellen, welche Client(s) der Kontakt benutzt.</small></string>
     <string name="request_now">Jetzt anfordern</string>
     <string name="delete_fingerprint">Fingerabdruck löschen</string>
-    <string name="sure_delete_fingerprint">Soll dieser Fingerabdruck wirklich gelöscht werden?</string>
+    <string name="sure_delete_fingerprint">Soll dieser Fingerabdruck wirklich gelöscht werden\?</string>
     <string name="ignore">Ignorieren</string>
-    <string name="without_mutual_presence_updates"><b>Achtung:</b> Ohne gegenseitige Kenntnis des Onlinestatus kann es zu unerwarteten Problemen kommen.\n\n<small>Bitte die Einstellungen in den Kontaktdetails prüfen.</small></string>
+    <string name="without_mutual_presence_updates"><b>Achtung:</b> Ohne gegenseitige Kenntnis des Onlinestatus kann es zu unerwarteten Problemen kommen.
+\n
+\n<small>Bitte die Einstellungen in den Kontaktdetails prüfen.</small></string>
     <string name="pref_security_settings">Sicherheit und Datenschutz</string>
     <string name="pref_allow_message_correction">Nachrichtenkorrektur erlauben</string>
     <string name="pref_allow_message_correction_summary">Erlaube deinen Kontakten, nachträglich ihre Nachrichten zu korrigieren</string>
@@ -308,7 +325,7 @@
     <string name="notification_restored_backup_subtitle">Vergiss nicht, das Konto zu aktivieren.</string>
     <string name="choose_file">Datei auswählen</string>
     <string name="receiving_file">Empfange %1$s</string>
-    <string name="receiving_file_x">Empfange %1$s (%2$s \%%)</string>
+    <string name="receiving_file_x">Empfange %1$s (%2$s %)</string>
     <string name="download_x_file">%s herunterladen</string>
     <string name="delete_x_file">%s löschen</string>
     <string name="file">Datei</string>
@@ -329,10 +346,11 @@
     <string name="copy_omemo_clipboard_description">OMEMO-Fingerabdruck in Zwischenablage kopieren</string>
     <string name="regenerate_omemo_key">OMEMO-Fingerabdruck erneuern</string>
     <string name="clear_other_devices">Geräte entfernen</string>
-    <string name="clear_other_devices_desc">Alle anderen Geräte aus der OMEMO-Bekanntmachung entfernen? Die Bekanntmachung wird bei der nächsten Verbindung erneuert, möglicherweise werden aber nicht alle Nachrichten empfangen, die in der Zwischenzeit versendet wurden.</string>
+    <string name="clear_other_devices_desc">Alle anderen Geräte aus der OMEMO-Bekanntmachung entfernen\? Die Bekanntmachung wird bei der nächsten Verbindung erneuert, möglicherweise werden aber nicht alle Nachrichten empfangen, die in der Zwischenzeit versendet wurden.</string>
     <string name="distrust_omemo_key">Gerät misstrauen</string>
-    <string name="distrust_omemo_key_text">Bist du sicher, dass du die Verifizierung dieses Gerätes misstrauen möchtest? Dieses Gerät und Nachrichten von dem Gerät werden als unverifiziert markiert.</string>
-    <string name="error_no_keys_to_trust_server_error">Für diesen Kontakt sind keine benutzbaren Fingerabdrücke verfügbar.\nNeuen Fingerabdruck vom Server herunterzuladen war nicht erfolgreich. Vielleicht stimmt etwas mit dem Server deines Kontakts nicht.</string>
+    <string name="distrust_omemo_key_text">Bist du sicher, dass du die Verifizierung dieses Gerätes misstrauen möchtest\? Dieses Gerät und Nachrichten von dem Gerät werden als unverifiziert markiert.</string>
+    <string name="error_no_keys_to_trust_server_error">Für diesen Kontakt sind keine benutzbaren Fingerabdrücke verfügbar.
+\nNeuen Fingerabdruck vom Server herunterzuladen war nicht erfolgreich. Vielleicht stimmt etwas mit dem Server deines Kontakts nicht.</string>
     <string name="error_trustkeys_title">Es ist ein Fehler aufgetreten</string>
     <string name="fetching_history_from_server">Lade Chatverlauf…</string>
     <string name="no_more_history_on_server">Keine weiteren Nachrichten vorhanden</string>
@@ -340,11 +358,14 @@
     <string name="password_changed">Kennwort geändert.</string>
     <string name="could_not_change_password">Kennwort kann nicht geändert werden.</string>
     <string name="ask_question">Frage stellen</string>
-    <string name="smp_explain_question">Falls du mit deinem Kontakt ein gemeinsames Geheimnis hast (z. B. ein Insider-Witz oder was ihr zuletzt gemeinsam zum Mittag gegessen habt), kann dies zur gegenseitigen Überprüfung des Fingerabdrucks genutzt werden.\n\nDu stellst eine Frage oder gibst einen Hinweis und dein Kontakt gibt eine eindeutige Antwort.</string>
+    <string name="smp_explain_question">Falls du mit deinem Kontakt ein gemeinsames Geheimnis hast (z. B. ein Insider-Witz oder was ihr zuletzt gemeinsam zum Mittag gegessen habt), kann dies zur gegenseitigen Überprüfung des Fingerabdrucks genutzt werden.
+\n
+\nDu stellst eine Frage oder gibst einen Hinweis und dein Kontakt gibt eine eindeutige Antwort.</string>
     <string name="smp_explain_answer">Dein Kontakt möchte deinen Fingerabdruck mit Hilfe eines gemeinsamen Geheimnisses überprüfen. Dein Kontakt hat folgende Frage oder Hinweis zu diesem Geheimnis angeboten.</string>
     <string name="shared_secret_hint_should_not_be_empty">Dein Hinweis darf nicht leer sein</string>
     <string name="shared_secret_can_not_be_empty">Dein gemeinsamer Schlüssel darf nicht leer sein</string>
-    <string name="manual_verification_explanation">Vergleiche den angezeigten Fingerabdruck sorgfältig mit dem deines Kontakts.\nDu kannst dazu einen sicheren Kommunikationsweg (z. B. verschlüsselte E-Mail oder Telefonanruf) zum Austausch nutzen.</string>
+    <string name="manual_verification_explanation">Vergleiche den angezeigten Fingerabdruck sorgfältig mit dem deines Kontakts.
+\nDu kannst dazu einen sicheren Kommunikationsweg (z. B. verschlüsselte E-Mail oder Telefonanruf) zum Austausch nutzen.</string>
     <string name="change_password">Kennwort ändern</string>
     <string name="current_password">Aktuelles Kennwort</string>
     <string name="new_password">Neues Kennwort</string>
@@ -389,7 +410,7 @@
     <string name="vcard">Kontakt</string>
     <string name="avatar_has_been_published">Kontobild wurde gespeichert</string>
     <string name="sending_x_file">%s wird gesendet</string>
-    <string name="sending_x_file_x">%1$s wird gesendet (%2$s \%%)</string>
+    <string name="sending_x_file_x">%1$s wird gesendet (%2$s %)</string>
     <string name="offering_x_file">%s wird angeboten</string>
     <string name="hide_offline">Offline verstecken</string>
     <string name="is_typing">schreibt…</string>
@@ -429,7 +450,11 @@
     <string name="download_failed_could_not_write_file">Download fehlgeschlagen: Datei kann nicht gespeichert werden</string>
     <string name="action_check_update">Auf Updates prüfen</string>
     <string name="title_activity_updater">Update-Dienst</string>
-    <string name="update_available">Version %1$s ist verfügbar.\n\nDateigröße: %2$s\n\nJetzt auf Version %1$s aktualisieren?</string>
+    <string name="update_available">Version %1$s ist verfügbar.
+\n
+\nDateigröße: %2$s
+\n
+\nJetzt auf Version %1$s aktualisieren\?</string>
     <string name="remind_later">später</string>
     <string name="update">aktualisieren</string>
     <string name="no_update_available">Kein Update verfügbar</string>
@@ -442,7 +467,9 @@
     <string name="pref_away_when_screen_off">Abwesend bei gesperrtem Gerät</string>
     <string name="pref_away_when_screen_off_summary">Setze deinen Status auf \"abwesend\", wenn dein Gerät gesperrt ist</string>
     <string name="pref_dnd_on_silent_mode">Bitte nicht stören bei Stummschaltung</string>
-    <string name="update_info">monocles chat lädt und installiert die neue Version automatisch.\n\nBitte warten…</string>
+    <string name="update_info">monocles chat lädt und installiert die neue Version automatisch.
+\n
+\nBitte warten…</string>
     <string name="pref_dnd_on_silent_mode_summary">Setze deinen Status auf \"Bitte nicht stören\", solange dein Gerät stummgeschaltet ist</string>
     <string name="pref_treat_vibrate_as_silent">Vibration als Lautlos behandeln</string>
     <string name="pref_treat_vibrate_as_dnd_summary">Setze deinen Status auf \"Bitte nicht stören\", solange das Gerät auf Vibration geschaltet ist</string>
@@ -476,7 +503,11 @@
     <string name="load_more_messages">Weitere Nachrichten laden</string>
     <string name="no_storage_permission">monocles chat benötigt Zugriff auf externen Speicher</string>
     <string name="sync_with_contacts">Mit Kontakten synchronisieren</string>
-    <string name="sync_with_contacts_long">monocles chat möchte deine XMPP-Kontaktliste mit deinen Kontakten abgleichen, um deren vollständige Namen und Kontobilder anzuzeigen.\n\nmonocles chat wird deine Kontakte nur lokal lesen und abgleichen und überträgt diese nicht auf den Server.\n\nDu wirst nun gefragt, ob du den Zugriff auf deine Kontakte erlauben möchtest.</string>
+    <string name="sync_with_contacts_long">monocles chat möchte deine XMPP-Kontaktliste mit deinen Kontakten abgleichen, um deren vollständige Namen und Kontobilder anzuzeigen.
+\n
+\nmonocles chat wird deine Kontakte nur lokal lesen und abgleichen und überträgt diese nicht auf den Server.
+\n
+\nDu wirst nun gefragt, ob du den Zugriff auf deine Kontakte erlauben möchtest.</string>
     <string name="notify_on_all_messages">Bei allen Nachrichten benachrichtigen</string>
     <string name="notify_only_when_highlighted">Nur benachrichtigen, wenn ich erwähnt werde</string>
     <string name="notify_never">Benachrichtigungen deaktiviert</string>
@@ -493,12 +524,17 @@
     <string name="always">Immer</string>
     <string name="always_off">Immer aus</string>
     <string name="battery_optimizations_enabled">Batterieoptimierung aktiv</string>
-    <string name="battery_optimizations_enabled_explained">Dein Gerät wendet Batterieoptimierungen bei monocles chat an, welche verspätete Benachrichtigungen oder Nachrichtenverlust verursachen können.\nEs ist empfehlenswert diese zu deaktivieren.</string>
-    <string name="battery_optimizations_enabled_dialog">Dein Gerät wendet Batterieoptimierungen bei monocles chat an, welche verspätete Benachrichtigungen oder Nachrichtenverlust verursachen können.\n\nEs ist empfehlenswert dies zu deaktivieren.</string>
+    <string name="battery_optimizations_enabled_explained">Dein Gerät wendet Batterieoptimierungen bei monocles chat an, welche verspätete Benachrichtigungen oder Nachrichtenverlust verursachen können.
+\nEs ist empfehlenswert diese zu deaktivieren.</string>
+    <string name="battery_optimizations_enabled_dialog">Dein Gerät wendet Batterieoptimierungen bei monocles chat an, welche verspätete Benachrichtigungen oder Nachrichtenverlust verursachen können.
+\n
+\nEs ist empfehlenswert dies zu deaktivieren.</string>
     <string name="install_from_unknown_sources_disabled">Installation von unbekannter Quelle ist nicht erlaubt</string>
-    <string name="install_from_unknown_sources_disabled_dialog">Dein Gerät erlaubt keine Installationen von Apps aus unbekannten Quellen außer über Google Play Store. Dies verursacht Probleme mit automatischen Updates von monocles chat.\n\nDu wirst nun gefragt, die Installation von Apps aus unbekannten Quellen zu erlauben.</string>
+    <string name="install_from_unknown_sources_disabled_dialog">Dein Gerät erlaubt keine Installationen von Apps aus unbekannten Quellen außer über Google Play Store. Dies verursacht Probleme mit automatischen Updates von monocles chat.
+\n
+\nDu wirst nun gefragt, die Installation von Apps aus unbekannten Quellen zu erlauben.</string>
     <string name="disable">Deaktivieren</string>
-    <string name="cancel_update">Update abbrechen?</string>
+    <string name="cancel_update">Update abbrechen\?</string>
     <string name="yes">Ja</string>
     <string name="no">Nein</string>
     <string name="no_accounts">(Keine aktivierten Konten)</string>
@@ -506,13 +542,25 @@
     <string name="correct_message">Nachricht korrigieren</string>
     <string name="send_corrected_message">Korrigierte Nachricht senden</string>
     <string name="no_keys_just_confirm">Du vertraust diesem Kontakt bereits. Durch Auswählen von Fertig bestätigst du, dass %s Teil dieses Gruppenchats ist.</string>
-    <string name="contacts_have_no_pgp_keys">monocles chat ist nicht in der Lage, deine Nachrichten zu verschlüsseln, weil deine Kontakte ihren öffentlichen Schlüssel nicht preisgeben.\n\n<small>Bitte sage deinen Kontakten, sie mögen OpenPGP einrichten.</small></string>
+    <string name="contacts_have_no_pgp_keys">monocles chat ist nicht in der Lage, deine Nachrichten zu verschlüsseln, weil deine Kontakte ihren öffentlichen Schlüssel nicht preisgeben.
+\n
+\n<small>Bitte sage deinen Kontakten, sie mögen OpenPGP einrichten.</small></string>
     <string name="this_account_is_disabled">Du hast dieses Konto deaktiviert</string>
     <string name="no_application_to_share_uri">Keine Anwendung zum Teilen der URI gefunden</string>
     <string name="share_uri_with">Teile URI mit…</string>
     <string name="mgmt_account_reconnect">Neu verbinden</string>
     <string name="welcome_text">…ist ein privatsphäre respektierender und sicherer Chat Client.</string>
-    <string name="magic_create_text">Du kannst monocles chat mit jedem modernen XMPP-Konto nutzen oder ein günstiges und sicheres monocles Konto erwerben, gehostet auf der monocles Serverstation und direkt versorgt mit regenerativen Energien!\n\n Dies beinhaltet: \n ● zwei Monate verschlüsselte Chat-Speicher\n ● E-Mail mit 1 GB Ende-zu-Ende verschlüsseltem Speicher\n\n optional: \n ● 4 GB Cloud-Speicher (Nextcloud)\n ● Kalender und Kontakt Synchronisation\n ● Ein sicheres Conferencing-Tool \n ● und mehr auf <a href="https://monocles.de/more/">https://monocles.de/more/</a></string>
+    <string name="magic_create_text">Du kannst monocles chat mit jedem modernen XMPP-Konto nutzen oder ein günstiges und sicheres monocles Konto erwerben, gehostet auf der monocles Serverstation und direkt versorgt mit regenerativen Energien!
+\n
+\n Dies beinhaltet:
+\n ● zwei Monate verschlüsselte Chat-Speicher
+\n ● E-Mail mit 1 GB Ende-zu-Ende verschlüsseltem Speicher
+\n
+\n optional:
+\n ● 4 GB Cloud-Speicher (Nextcloud)
+\n ● Kalender und Kontakt Synchronisation
+\n ● Ein sicheres Conferencing-Tool
+\n ● und mehr auf <a href="https://monocles.de/more/">https://monocles.de/more/</a></string>
     <string name="your_full_jid_will_be">Deine Chat Adresse lautet: %s</string>
     <string name="create_account">Neues Konto erstellen</string>
     <string name="welcome_existing_account">Ich habe ein Konto</string>
@@ -532,7 +580,7 @@
     <string name="location_sharing_disabled">GPS ist in den Android-Einstellungen deaktiviert</string>
     <string name="locating">Lokalisiere…</string>
     <string name="action_end_conversation_muc">Gruppenchat verlassen</string>
-    <string name="leave_conference_warning">Willst du den Gruppenchat wirklich verlassen? Du wirst keine neuen Nachrichten mehr bekommen, bis du dem Gruppenchat erneut beitrittst.</string>
+    <string name="leave_conference_warning">Willst du den Gruppenchat wirklich verlassen\? Du wirst keine neuen Nachrichten mehr bekommen, bis du dem Gruppenchat erneut beitrittst.</string>
     <string name="show_password">Kennwort anzeigen</string>
     <string name="registration_please_wait">Registrierung fehlgeschlagen: Bitte später versuchen</string>
     <string name="registration_password_too_weak">Registrierung fehlgeschlagen: Kennwort zu schwach</string>
@@ -542,11 +590,13 @@
     <string name="import_database">Sicherung importieren</string>
     <string name="invite_again">Erneut hinzufügen</string>
     <string name="inviteUser_Subject">hat dich eingeladen über</string>
-    <string name="InviteText">Hallo,\n\n%s hat dich zu einem Chat mit monocles chat eingeladen. Klicke einfach auf folgenden Link…</string>
+    <string name="InviteText">Hallo,
+\n
+\n%s hat dich zu einem Chat mit monocles chat eingeladen. Klicke einfach auf folgenden Link…</string>
     <string name="pref_broadcast_last_activity">Zuletzt gesehen senden</string>
     <string name="pref_broadcast_last_activity_summary">Lasse deine Kontakte wissen, wann du monocles chat nutzt</string>
     <string name="request_permissions_message">monocles chat wird dich nach ein paar Berechtigungen fragen. Es ist wichtig, dass du alle Berechtigungen erlaubst, um alle Funktionen nutzen zu können. Falls du eine dieser Berechtigungen ablehnst, wird sich die App schließen.</string>
-    <string name="request_permissions_message_again">Du hast eine oder alle Berechtigungen, welche für monocles chat benötigt werden, abgelehnt. Willst du zu den Einstellungen springen, um diese Berechtigungen zu erlauben? Falls du eine dieser Berechtigungen ablehnst, wird sich die App schließen.</string>
+    <string name="request_permissions_message_again">Du hast eine oder alle Berechtigungen, welche für monocles chat benötigt werden, abgelehnt. Willst du zu den Einstellungen springen, um diese Berechtigungen zu erlauben\? Falls du eine dieser Berechtigungen ablehnst, wird sich die App schließen.</string>
     <string name="unable_to_connect_to_keychain">Keine Verbindung zu OpenKeychain</string>
     <string name="this_device_is_no_longer_in_use">Dieses Gerät wird nicht länger verwendet</string>
     <string name="please_wait">Bitte warten…</string>
@@ -574,7 +624,9 @@
     <string name="show_error_message">Zeige Fehlermeldung</string>
     <string name="error_message">Fehlermeldung</string>
     <string name="data_saver_enabled">Datensparmodus aktiviert</string>
-    <string name="data_saver_enabled_explained">Dein Betriebssystem verbietet monocles chat im Hintergrund den Zugang zum Internet. Um Benachrichtigungen erhalten zu können, solltest du monocles chat den Zugang erlauben, wenn der Datensparmodus aktiv ist.\n\nmonocles chat wird dennoch versuchen, so viele Daten wie möglich einzusparen.</string>
+    <string name="data_saver_enabled_explained">Dein Betriebssystem verbietet monocles chat im Hintergrund den Zugang zum Internet. Um Benachrichtigungen erhalten zu können, solltest du monocles chat den Zugang erlauben, wenn der Datensparmodus aktiv ist.
+\n
+\nmonocles chat wird dennoch versuchen, so viele Daten wie möglich einzusparen.</string>
     <string name="device_does_not_support_data_saver">Dein Gerät unterstützt den Datensparmodus für monocles chat nicht.</string>
     <string name="add_to_contact_list">Zur Kontaktliste hinzufügen</string>
     <string name="contact">Kontakt</string>
@@ -603,7 +655,7 @@
     <string name="hide_inactive_devices">Verberge Inaktive</string>
     <string name="reply">Antworten</string>
     <string name="transcoding_video">Video wird komprimiert</string>
-    <string name="transcoding_video_x">Video wird komprimiert (%s \%%)</string>
+    <string name="transcoding_video_x">Video wird komprimiert (%s %)</string>
     <string name="not_fetching_history_retention_period">Nachrichten werden aufgrund der eingestellten lokalen Speicherfrist nicht abgerufen.</string>
     <plurals name="seconds">
         <item quantity="one">%d Sekunde</item>
@@ -677,13 +729,14 @@
     <string name="pref_validate_hostname">Überprüfe den Hostnamen mit DNSSEC</string>
     <string name="pref_validate_hostname_summary">Serverzertifikate, die den überprüften Hostnamen enthalten, werden als verifiziert betrachtet</string>
     <string name="certificate_does_not_contain_jid">Zertifikat enthält keine Chat Adresse</string>
-    <string name="error_no_keys_to_trust_presence">Für diesen Kontakt sind keine benutzbaren Schlüssel verfügbar.\nStelle sicher, dass du den gegenseitigen Onlinestatus aktiviert hast.</string>
+    <string name="error_no_keys_to_trust_presence">Für diesen Kontakt sind keine benutzbaren Schlüssel verfügbar.
+\nStelle sicher, dass du den gegenseitigen Onlinestatus aktiviert hast.</string>
     <string name="mark_as_read">Als gelesen markieren</string>
     <string name="server_info_partial">teilweise</string>
     <string name="pref_show_foreground_service_summary">Einige Android-Geräte schließen manche Apps nach einer gewissen Zeitspanne automatisch und du wirst keine neuen Nachrichten mehr empfangen können. Falls du solche Probleme hast, versuche den Vordergrunddienst zu aktivieren. Bitte beachte, dass dadurch ein permanenter Eintrag in der Benachrichtigungsleiste erscheint.</string>
     <string name="pref_show_foreground_service">Nutze Vordergrunddienst</string>
     <string name="update_service">monocles chat-Update-Dienst</string>
-    <string name="install_update">Update installieren?</string>
+    <string name="install_update">Update installieren\?</string>
     <string name="highlight_in_muc">Benutzer erwähnen</string>
     <string name="no_application_found_to_open_link">Keine Anwendung zum Öffnen von Webseiten gefunden</string>
     <string name="contacts_have_read_up_to_this_point">%s haben bis hierher gelesen</string>
@@ -698,20 +751,21 @@
     <string name="title_activity_share_via_account">Teilen mit Konto</string>
     <string name="destroy_room">Gruppenchat auflösen</string>
     <string name="conference_unknown_error">Du bist nicht länger in diesem Gruppenchat</string>
-    <string name="destroy_room_dialog">Möchtest du den Gruppenchat %s auflösen? Der Gruppenchat wird dabei vollständig vom Server gelöscht.</string>
+    <string name="destroy_room_dialog">Möchtest du den Gruppenchat %s auflösen\? Der Gruppenchat wird dabei vollständig vom Server gelöscht.</string>
     <string name="destroy_room_succeed">Gruppenchat erfolgreich gelöscht</string>
     <string name="destroy_room_failed">Gruppenchat konnte nicht aufgelöst werden</string>
-    <string name="no_write_access_in_public_muc">Du bist kein Mitglied dieser Gruppe und hast aktuell keine Erlaubnis zum Schreiben.\nBitte gehe in die Gruppenchat-Details indem du <b>OK</b> klickst und sende eine private Nachricht an einen Moderator, Administrator oder Eigentümer dadurch, dass du auf den Namen eines dieser Mitglieder am Anfang der Liste lange klickst und bitte um Erlaubnis, schreiben zu dürfen.</string>
+    <string name="no_write_access_in_public_muc">Du bist kein Mitglied dieser Gruppe und hast aktuell keine Erlaubnis zum Schreiben.
+\nBitte gehe in die Gruppenchat-Details indem du <b>OK</b> klickst und sende eine private Nachricht an einen Moderator, Administrator oder Eigentümer dadurch, dass du auf den Namen eines dieser Mitglieder am Anfang der Liste lange klickst und bitte um Erlaubnis, schreiben zu dürfen.</string>
     <string name="snooze">Schlummern</string>
     <string name="huawei_protected_apps">Geschützte Apps</string>
     <string name="huawei_protected_apps_summary">Um Benachrichtigungen zu erhalten, selbst wenn der Bildschirm ausgeschaltet ist, füge monocles chat bitte der Liste geschützter Apps hinzu.</string>
     <string name="pref_enable_multi_accounts_title">Mehrkonten-Modus aktivieren</string>
-    <string name="pref_enable_multi_accounts_summary">Möchtest du mehrere Konten benutzen?</string>
-    <string name="mtm_accept_cert">Unbekanntes Zertifikat akzeptieren?</string>
+    <string name="pref_enable_multi_accounts_summary">Möchtest du mehrere Konten benutzen\?</string>
+    <string name="mtm_accept_cert">Unbekanntes Zertifikat akzeptieren\?</string>
     <string name="mtm_trust_anchor">Das Serverzertifikat wurde nicht von einer bekannten Zertifizierungsstelle signiert.</string>
-    <string name="mtm_accept_servername">Nicht übereinstimmenden Servernamen akzeptieren?</string>
+    <string name="mtm_accept_servername">Nicht übereinstimmenden Servernamen akzeptieren\?</string>
     <string name="mtm_hostname_mismatch">Server konnte sich nicht als \"%s\" authentifizieren. Das Zertifikat ist nur gültig für:</string>
-    <string name="mtm_connect_anyway">Möchtest du trotzdem eine Verbindung herstellen?</string>
+    <string name="mtm_connect_anyway">Möchtest du trotzdem eine Verbindung herstellen\?</string>
     <string name="mtm_cert_details">Zertifikatdetails:</string>
     <string name="once">Einmalig</string>
     <string name="qr_code_scanner_needs_access_to_camera">Der QR-Code-Scanner benötigt Zugriff auf die Kamera</string>
@@ -724,11 +778,12 @@
     <string name="pref_automatically_delete_attachments_description">Anhänge nach Ablauf des eingestellten Zeitraums automatisch von diesem Gerät löschen.</string>
     <string name="pref_automatically_delete_files">Anhänge automatisch löschen</string>
     <string name="disable_encryption">Verschlüsselung deaktivieren</string>
-    <string name="error_trustkey_general">monocles chat ist nicht in der Lage verschlüsselte Nachrichten an  %1$s zu senden. Dies kann daran liegen, dass dein Kontakt einen veralteten Server oder Client verwendet, der die OMEMO-Verschlüsselung nicht unterstützt.</string>
+    <string name="error_trustkey_general">monocles chat ist nicht in der Lage verschlüsselte Nachrichten an %1$s zu senden. Dies kann daran liegen, dass dein Kontakt einen veralteten Server oder Client verwendet, der die OMEMO-Verschlüsselung nicht unterstützt.</string>
     <string name="error_trustkey_device_list">Geräteliste konnte nicht abgerufen werden</string>
     <string name="error_trustkey_bundle">Gerätebündel konnten nicht abgerufen werden</string>
     <string name="error_trustkey_hint_mutual">Tipp: In manchen Fällen kann dies behoben werden, indem man sich gegenseitig in die Kontaktlisten hinzufügt.</string>
-    <string name="disable_encryption_message">Bist du sicher, dass du die OMEMO-Verschlüsselung für diesen Chat deaktivieren möchtest?\nDies wird es deinem Serveradministrator ermöglichen, deine Nachrichten zu lesen, aber es könnte die einzige Möglichkeit sein, mit Personen zu kommunizieren, die veraltete Clients verwenden.</string>
+    <string name="disable_encryption_message">Bist du sicher, dass du die OMEMO-Verschlüsselung für diesen Chat deaktivieren möchtest\?
+\nDies wird es deinem Serveradministrator ermöglichen, deine Nachrichten zu lesen, aber es könnte die einzige Möglichkeit sein, mit Personen zu kommunizieren, die veraltete Clients verwenden.</string>
     <string name="disable_now">Jetzt deaktivieren</string>
     <string name="draft">Entwurf:</string>
     <string name="pref_omemo_setting">OMEMO-Verschlüsselung</string>
@@ -809,13 +864,17 @@
     <string name="action_open">Öffnen</string>
     <string name="security_violation_not_attaching_file">Datei aufgrund von Sicherheitsverletzungen ausgelassen.</string>
     <string name="delete_file_dialog">Datei löschen</string>
-    <string name="delete_file_dialog_msg">Bist du sicher, dass du diese Datei löschen möchtest?\n\n<b>Achtung:</b> Dies wird keine Kopien dieser Datei löschen, die auf anderen Geräten oder Servern gespeichert sind.</string>
+    <string name="delete_file_dialog_msg">Bist du sicher, dass du diese Datei löschen möchtest\?
+\n
+\n<b>Achtung:</b> Dies wird keine Kopien dieser Datei löschen, die auf anderen Geräten oder Servern gespeichert sind.</string>
     <string name="cancelled">abgebrochen</string>
     <string name="remote_server_timeout">Zeitüberschreitung des Remote-Servers</string>
     <string name="already_drafting_message">Du bist bereits dabei, eine Nachricht zu entwerfen.</string>
     <string name="bad_key_for_encryption">Ungültiger Schlüssel für die Verschlüsselung.</string>
     <string name="delete_message_dialog">Nachricht löschen</string>
-    <string name="delete_message_dialog_msg">Bist du sicher, dass du diese Nachricht löschen möchtest?\n\n<b>Achtung:</b> Dies wird keine Kopien dieser Nachricht löschen, die auf anderen Geräten oder Servern gespeichert sind.</string>
+    <string name="delete_message_dialog_msg">Bist du sicher, dass du diese Nachricht löschen möchtest\?
+\n
+\n<b>Achtung:</b> Dies wird keine Kopien dieser Nachricht löschen, die auf anderen Geräten oder Servern gespeichert sind.</string>
     <string name="feature_not_implemented">Funktion ist nicht implementiert</string>
     <string name="device_does_not_support_unknown_source_op">Dein Gerät bietet keine Einstellung an, um die Installation aus unbekannten Quellen zu erlauben.</string>
     <string name="reject_request">Anfrage ablehnen</string>
@@ -846,7 +905,7 @@
     <string name="enter_password_to_restore">Um die Sicherung wiederherzustellen, gib für das Konto %s dein Kennwort ein.</string>
     <string name="restore_warning">Benutze die Wiederherstellungsfunktion unter keinen Umständen, außer im Falle einer Migration oder eines Verlustes deines Geräts.</string>
     <string name="unable_to_restore_backup">Sicherung kann nicht wiederhergestellt werden.</string>
-    <string name="unable_to_decrypt_backup">Sicherung kann nicht entschlüsselt werden. Stimmt das Kennwort?</string>
+    <string name="unable_to_decrypt_backup">Sicherung kann nicht entschlüsselt werden. Stimmt das Kennwort\?</string>
     <string name="pref_prefer_xmpp_avatar_summary">Bevorzuge den vom Benutzer gesetzten Avatar anstatt des Kontobildes in deinem Adressbuch</string>
     <string name="pref_prefer_xmpp_avatar">XMPP-Avatar bevorzugen</string>
     <plurals name="view_users">
@@ -888,7 +947,7 @@
     <string name="ban_from_channel">Vom Raum ausschließen</string>
     <string name="manage_permission">Rechte verwalten</string>
     <string name="destroy_channel">Raum auflösen</string>
-    <string name="destroy_channel_dialog">Möchtest du den öffentlichen Raum %s auflösen? Der Raum wird dabei vollständig vom Server gelöscht.</string>
+    <string name="destroy_channel_dialog">Möchtest du den öffentlichen Raum %s auflösen\? Der Raum wird dabei vollständig vom Server gelöscht.</string>
     <string name="destroy_channel_succeed">Raum erfolgreich gelöscht</string>
     <string name="destroy_channel_failed">Raum konnte nicht aufgelöst werden</string>
     <string name="action_end_conversation_channel">Raum verlassen</string>
@@ -902,7 +961,7 @@
     <string name="file_too_large">Datei zu groß</string>
     <string name="mgmt_account_password_forgotten">Kennwort vergessen</string>
     <string name="password_forgotten_title">Kennwort vergessen</string>
-    <string name="password_forgotten_text">Du hast dein Kennwort vergessen? Wir versuchen, die Support-Website deines Anbieters zu öffnen.</string>
+    <string name="password_forgotten_text">Du hast dein Kennwort vergessen\? Wir versuchen, die Support-Website deines Anbieters zu öffnen.</string>
     <string name="set_settings_intro">Hier kannst du einige wichtige Einstellungen zur Privatsphäre nach deinen Wünschen vornehmen. Alle Einstellungen können auch später noch angepasst werden.</string>
     <string name="pref_show_mappreview_inside_summary">Zeige eine Vorschau von Standorten direkt im Chat, dabei wird eine Verbindung zum monocles chat-Server hergestellt.</string>
     <string name="pref_show_mappreview_inside">Zeige Karten-Vorschau im Chat</string>
@@ -914,7 +973,7 @@
     <string name="discover_channels">Räume entdecken</string>
     <string name="search_channels">Räume suchen</string>
     <string name="channel_discovery_opt_in_title">Datenschutzerklärung</string>
-    <string name="channel_discover_opt_in_message"><![CDATA[Die Raum-Entdeckung verwendet einen Drittanbieterdienst namens <a href="https://search.jabbercat.org">search.jabbercat.org</a>.<br><br>Wenn du diese Funktion verwendest, werden deine IP-Adresse und deine Suchbegriffe an diesen Dienst übertragen. Weitere Informationen findest du in der <a href="https://search.jabbercat.org/privacy">Datenschutzerklärung</a>.]]></string>
+    <string name="channel_discover_opt_in_message">Die Raum-Entdeckung verwendet einen Drittanbieterdienst namens &lt;a href=https://search.jabbercat.org&gt;search.jabbercat.org&lt;/a&gt;.&lt;br&gt;&lt;br&gt;Wenn du diese Funktion verwendest, werden deine IP-Adresse und deine Suchbegriffe an diesen Dienst übertragen. Weitere Informationen findest du in der &lt;a href=https://search.jabbercat.org/privacy&gt;Datenschutzerklärung&lt;/a&gt;.</string>
     <string name="action_add_existing_account">Bestehendes Konto hinzufügen</string>
     <string name="use_own_provider">Nutze eigenen Anbieter</string>
     <string name="this_looks_like_a_domain">Dies sieht aus wie eine Domain-Adresse</string>
@@ -948,7 +1007,8 @@
     <string name="pref_use_inner_storage_summary">Andere Apps können die Medien aus dem versteckten Speicher nicht lesen</string>
     <string name="this_device">Dieses Gerät</string>
     <string name="intro_desc_main">Mehr erfahren…</string>
-    <string name="welcome_header">Willkommen bei\nmonocles chat</string>
+    <string name="welcome_header">Willkommen bei
+\nmonocles chat</string>
     <string name="intro_required_permissions">Erforderliche Berechtigungen</string>
     <string name="intro_desc_required_permissions">Am Ende des Intros wirst du gefragt, Zugriff auf externen Speicher zuzulassen (erforderlich), wenn du ihn nicht bereits erteilt hast. Zusätzliche Berechtigungen werden bei Bedarf angefragt und sind optional.</string>
     <string name="intro_account">Dein Konto</string>
@@ -957,7 +1017,7 @@
     <string name="intro_desc_start_chatting">Hast du den Adressbuchzugriff erlaubt, werden bereits vorhandene Jabber-Kontakte automatisch in deiner Kontaktliste angezeigt. Andernfalls füge einfach Chat Adresse hinzu</string>
     <string name="intro_desc_open_chat">Jetzt kannst du mit dem Chatten beginnen, Orte, Dateien, Videos und Bilder freigeben oder Sprachnachrichten senden.</string>
     <string name="intro_chat_details">Chat-Details</string>
-    <string name="intro_desc_chat_details">Du möchtest die Chat-Details öffnen? Tippe einfach auf den Chat-Namen oben in der Menüleiste.</string>
+    <string name="intro_desc_chat_details">Du möchtest die Chat-Details öffnen\? Tippe einfach auf den Chat-Namen oben in der Menüleiste.</string>
     <string name="intro_highlight_user">Benutzer erwähnen</string>
     <string name="intro_desc_highlight_user">Wenn du einen Benutzer in einem Gruppenchat erwähnen möchtest, berühre einfach den Avatar des Benutzers im Chat. Alternativ, insbesondere wenn sich der Benutzer nicht im Chat befindet, wechsele zu den Chat-Details und suche den Benutzer in der Teilnehmerliste. Ein langer Klick auf den Avatar des Benutzers öffnet ein Popup-Menü, in dem du den Benutzer erwähnen kannst.</string>
     <string name="intro_desc_open_chat_details">Du hast die Chat-Details geöffnet. Hier kannst du die Details des Chats sehen, das Verhalten der Benachrichtigung für neue Nachrichten ändern, den Chat deiner Kontaktliste hinzufügen oder entfernen und vieles mehr.</string>
@@ -966,16 +1026,20 @@
     <string name="show_intro_again">Hilfen werden erneut angezeigt</string>
     <string name="show_intro_again_failed">Zurücksetzen der Hilfen fehlgeschlagen. Versuche es erneut…</string>
     <string name="intro_desc_whats_xmpp">XMPP, auch Jabber genannt, ist ein dezentrales Kommunikationsnetzwerk und funktioniert wie E-Mail. Du brauchst eine Chat Adresse (auch Jabber-ID genannt), ein Kennwort und eine Messenger-Software, z. B. monocles chat. Mehr dazu später.</string>
-    <string name="intro_whats_xmpp">Was ist XMPP / Jabber / monocles chat?</string>
+    <string name="intro_whats_xmpp">Was ist XMPP / Jabber / monocles chat\?</string>
     <string name="intro_desc_optional_permissions">Berechtigungen zum Zugriff deines Adressbuchs sind zum Lesen von Chat Adressen (falls vorhanden) erforderlich. Kontakte werden niemals geteilt, hochgeladen oder kopiert.</string>
     <string name="intro_desc_account2">Du kannst ein neues Konto auf monocles chat nur durch Eingabe eines Nicknamens erstellen.</string>
     <string name="open_join_dialog">Öffentlichem Raum beitreten…</string>
     <string name="intro_optional_permissions">Optionale Berechtigungen</string>
-    <string name="intro_desc_optional_permissions2">Wenn du deinen Standort teilen möchtest, ist das Erteilen der Standortberechtigung erforderlich.\nFür den Versand von Sprachnachrichten ist es erforderlich, Zugriff auf das Mikrofon zu erhalten.</string>
-    <string name="intro_desc_account3">Du hast die Möglichkeit, ein bestehendes Konto zu importieren.\nTippe einfach auf Konto importieren. Wenn Sicherungsdateien verfügbar sind, werden diese angezeigt. Wähle ein Konto aus, das importiert werden soll.</string>
+    <string name="intro_desc_optional_permissions2">Wenn du deinen Standort teilen möchtest, ist das Erteilen der Standortberechtigung erforderlich.
+\nFür den Versand von Sprachnachrichten ist es erforderlich, Zugriff auf das Mikrofon zu erhalten.</string>
+    <string name="intro_desc_account3">Du hast die Möglichkeit, ein bestehendes Konto zu importieren.
+\nTippe einfach auf Konto importieren. Wenn Sicherungsdateien verfügbar sind, werden diese angezeigt. Wähle ein Konto aus, das importiert werden soll.</string>
     <string name="intro_desc_start_chatting2">Du kannst auch Gruppenchats - sogenannte Räume - hinzufügen, erstellen oder ihnen beitreten. Man unterscheidet zwischen privaten Gruppenchats und öffentlichen Gruppenchats - sogenannten Räumen.</string>
-    <string name="intro_desc_start_chatting3">Herzlichen Glückwunsch!\nJetzt geht\'s los und viel Spaß…</string>
-    <string name="intro_privacy">Deine Privatsphäre\nDeine Souveränität</string>
+    <string name="intro_desc_start_chatting3">Herzlichen Glückwunsch!
+\nJetzt geht\'s los und viel Spaß…</string>
+    <string name="intro_privacy">Deine Privatsphäre
+\nDeine Souveränität</string>
     <string name="intro_desc_privacy">monocles chat wird deine Daten weder verkaufen noch analysieren und du entscheidest, welche Berechtigungen du erteilst.</string>
     <string name="no_results">Keine Ergebnisse</string>
     <string name="file_transmission_cancelled">Übertragung abgebrochen</string>
@@ -1000,9 +1064,11 @@
     <string name="pref_theme_black">Schwarz (AMOLED)</string>
     <string name="pref_theme_color_options_summary">Wähle das Farbschema</string>
     <string name="pref_theme_color_options">Designfarbe</string>
-    <string name="magic_create_text_on_x">Du wurdest zu %1$s eingeladen. Wir erstellen nun mit dir gemeinsam ein Konto.\nWenn du %1$s als deinen Anbieter wählst, kannst du mit Kontakten auf diesem und anderen Servern in Kontakt treten, indem du ihnen deine Chat Adresse mitteilst.</string>
+    <string name="magic_create_text_on_x">Du wurdest zu %1$s eingeladen. Wir erstellen nun mit dir gemeinsam ein Konto.
+\nWenn du %1$s als deinen Anbieter wählst, kannst du mit Kontakten auf diesem und anderen Servern in Kontakt treten, indem du ihnen deine Chat Adresse mitteilst.</string>
     <string name="account_status_regis_invalid_token">Falscher Registrierungsschlüssel</string>
-    <string name="magic_create_text_fixed">Du wurdest zu %1$s eingeladen. Ein Nutzername wurde für dich bereits voreingestellt. Wir erstellen nun mit dir gemeinsam ein Konto.\nDu kannst mit Kontakten auf diesem und anderen Servern in Kontakt treten, indem du ihnen deine Chat Adresse mitteilst.</string>
+    <string name="magic_create_text_fixed">Du wurdest zu %1$s eingeladen. Ein Nutzername wurde für dich bereits voreingestellt. Wir erstellen nun mit dir gemeinsam ein Konto.
+\nDu kannst mit Kontakten auf diesem und anderen Servern in Kontakt treten, indem du ihnen deine Chat Adresse mitteilst.</string>
     <string name="your_server_invitation">Deine Server-Einladung</string>
     <string name="pref_use_unicolored_chatbg_summary">Nutze einfarbigen Hintergrund in Chats.</string>
     <string name="pref_use_unicolored_chatbg">Nutze einfarbigen Hintergrund</string>
@@ -1089,7 +1155,17 @@
     <string name="n_missed_calls_from_m_contacts">%1$d verpasste Anrufe von %2$d Kontakten</string>
     <string name="pref_invidious_host_summary">Nutze benutzerdefinierten Invidious-Server</string>
     <string name="pref_invidious_host">Invidious-Server</string>
-    <string name="updated_to_monocles">Monocles Messenger wurde erfolgreich auf monocles chat aktualisiert\n\nDie Zusammenarbeit der beiden Projekte monocles chat und Monocles Messenger wurde im November 2020 weiter ausgebaut. Zukünftig wird die Android-App Monocles Messenger unter dem Namen monocles chat weitergeführt.\n\nWas euch erwartet:\n- Funktionsumfang bleibt erhalten\n- Support Chaträume werden zusammengelegt\n- Farben und Logos werden an monocles chat angepasst\n- App ist weiterhin kostenlos im Google Play Store und F-Droid Store verfügbar\n\nEuer monocles chat-Team</string>
+    <string name="updated_to_monocles">Monocles Messenger wurde erfolgreich auf monocles chat aktualisiert
+\n
+\nDie Zusammenarbeit der beiden Projekte monocles chat und Monocles Messenger wurde im November 2020 weiter ausgebaut. Zukünftig wird die Android-App Monocles Messenger unter dem Namen monocles chat weitergeführt.
+\n
+\nWas euch erwartet:
+\n- Funktionsumfang bleibt erhalten
+\n- Support Chaträume werden zusammengelegt
+\n- Farben und Logos werden an monocles chat angepasst
+\n- App ist weiterhin kostenlos im Google Play Store und F-Droid Store verfügbar
+\n
+\nEuer monocles chat-Team</string>
     <string name="updated_to_monocles_google">Wir müssen uns entschuldigen, dass wir nicht direkt auf monocles chat aktualisieren konnten. Unter dem folgenden Link erhältst du eine Anleitung, wie du alle deine Konten vom Monocles Messenger auf monocles chat übertragen kannst. Mit einem Klick auf \"Daten verschieben\" versuchen wir, alle gesendeten und empfangenen Dateien vom Monocles Messenger auf monocles chat zu verschieben. Nach einer erfolgreichen Migration solltest du daran denken, Monocles Messenger von deinem Gerät zu entfernen.</string>
     <string name="link">Link</string>
     <string name="no_application_found">Keine Anwendung gefunden</string>
@@ -1124,14 +1200,18 @@
     <string name="audios_usage">Belegt durch Audioaufnahmen</string>
     <string name="using_inner_storage">Nutze versteckten Speicher</string>
     <string name="delete_files_dialog">Anhänge entfernen</string>
-    <string name="delete_files_dialog_msg">Möchtest du wirklich alle %s löschen?</string>
+    <string name="delete_files_dialog_msg">Möchtest du wirklich alle %s löschen\?</string>
     <string name="audios">Audioaufnahmen</string>
     <string name="images">Bilder</string>
     <string name="videos">Videos</string>
     <string name="files">Andere Dateien</string>
     <string name="all_media_files">Medien-Dateien</string>
-    <string name="memory_warning">monocles chat nutzt %1$s (%2$s) des internen Speichers.\n\nDu kannst das automatische Löschen von Anhängen aktivieren oder gespeicherte Medien manuell löschen.</string>
-    <string name="memory_warning_force">monocles chat nutzt %1$s (%2$s) des internen Speichers.\n\nDu solltest das automatische Löschen von Anhängen aktivieren oder gespeicherte Medien manuell löschen. Dein Gerät wird bald keinen freien Speicher mehr haben!</string>
+    <string name="memory_warning">monocles chat nutzt %1$s (%2$s) des internen Speichers.
+\n
+\nDu kannst das automatische Löschen von Anhängen aktivieren oder gespeicherte Medien manuell löschen.</string>
+    <string name="memory_warning_force">monocles chat nutzt %1$s (%2$s) des internen Speichers.
+\n
+\nDu solltest das automatische Löschen von Anhängen aktivieren oder gespeicherte Medien manuell löschen. Dein Gerät wird bald keinen freien Speicher mehr haben!</string>
     <string name="open_settings">Einstellungen öffnen</string>
     <string name="oldAndroidVersion">Alte Android-Version</string>
     <string name="oldAndroidVersionMessage">Du verwendest eine alte Android-Version, die in zukünftigen Updates nicht mehr unterstützt wird. Ab monocles chat Version 1.0 werden nur noch Geräte mit Android 5 oder höher unterstützt. Bitte aktualisiere deine Geräte-Firmware.</string>
@@ -1141,15 +1221,15 @@
     <string name="pref_remove_all_individual_summary">Entferne alle individuellen Benachrichtigungen für deine Kontakte und Gruppen.</string>
     <string name="pref_remove_all_individual_notifications_title">Entferne alle individuellen Benachrichtigen</string>
     <string name="remove_individual_notifications">Entferne individuelle Benachrichtigen</string>
-    <string name="remove_individual_notifications_message">Möchtest du wirklich die eingestellten individuellen Benachrichtigungen für %s entfernen?</string>
-    <string name="remove_all_individual_notifications_message">Möchtest du wirklich alle eingestellten individuellen Benachrichtigungen für Kontakte und Gruppen entfernen?</string>
+    <string name="remove_individual_notifications_message">Möchtest du wirklich die eingestellten individuellen Benachrichtigungen für %s entfernen\?</string>
+    <string name="remove_all_individual_notifications_message">Möchtest du wirklich alle eingestellten individuellen Benachrichtigungen für Kontakte und Gruppen entfernen\?</string>
     <string name="exit">Beenden</string>
     <string name="record_voice_mail">Sprachnachricht aufnehmen</string>
     <string name="backup_started_message">Die Sicherung wurde gestartet. Du erhältst eine Benachrichtigung, sobald sie abgeschlossen ist.</string>
     <string name="error_security_exception">Die App, die zum Freigeben dieser Datei verwendet wurde, hat nicht genügend Berechtigungen erteilt.</string>
     <string name="unable_to_enable_video">Video kann nicht aktiviert werden.</string>
     <string name="plain_text_document">Reintext-Dokument</string>
-    <string name="delete_recording_dialog_message">Soll die Aufnahme wirklich beendet und gelöscht werden?</string>
+    <string name="delete_recording_dialog_message">Soll die Aufnahme wirklich beendet und gelöscht werden\?</string>
     <string name="pref_pause_voice_on_move_from_ear">Sprachnachrichten automatisch anhalten</string>
     <string name="pref_pause_voice_on_move_from_ear_summary">Hält die Wiedergabe von Sprachnachrichten an, sobald du dein Gerät vom Ohr entfernst.</string>
     <string name="pref_import_settings_summary">Importiere Einstellungen aus der settings.dat Datei aus dem monocles chat Sicherungs-Verzeichnis.</string>
@@ -1188,4 +1268,68 @@
     <string name="pref_enable_persistent_rooms_summary">Mache Chaträume und öffentliche Chaträume persistent und lösche sie nicht von dem Server nachdem der letzte Nutzer den Chatraum verlassen hat.</string>
     <string name="pref_enable_persistent_rooms_title">Persistente Chaträume</string>
     <string name="note_to_self">Notiz an mich</string>
+    <string name="title_undo_swipe_out_group_chat"></string>
+    <string name="title_undo_swipe_out_channel"></string>
+    <string name="title_undo_swipe_out_conversation"></string>
+    <string name="outgoing_call_duration_timestamp"></string>
+    <string name="outgoing_call_timestamp"></string>
+    <string name="no_manage_storage_permission"></string>
+    <string name="help_format_text"></string>
+    <string name="close_format_text"></string>
+    <string name="port_example" translatable="false"></string>
+    <string name="delete_avatar"></string>
+    <string name="import_backup_description"></string>
+    <string name="i_have_written"></string>
+    <string name="title_activity_about_x"></string>
+    <string name="x_has_written"></string>
+    <string name="choose_camera_app"></string>
+    <string name="pref_choose_camera_summary"></string>
+    <string name="vector_graphic"></string>
+    <string name="multimedia_file"></string>
+    <string name="audio_video_disabled_tor"></string>
+    <string name="pref_up_push_server_summary"></string>
+    <string name="no_account_deactivated"></string>
+    <string name="pref_theme_custom"></string>
+    <string name="moderate_message"></string>
+    <string name="retract_message"></string>
+    <string name="conversations_foreground_service" translatable="false"></string>
+    <string translatable="false" name="x_user_quote"></string>
+    <string name="rtp_state_content_add"></string>
+    <string name="undo"></string>
+    <string name="reply_to"></string>
+    <string name="reject_switch_to_video"></string>
+    <string name="unified_push_distributor"></string>
+    <string name="pref_up_push_account_summary"></string>
+    <string name="pref_up_push_server_title"></string>
+    <string name="moderate_reason"></string>
+    <string name="unable_to_moderate"></string>
+    <string name="incoming_call_duration_timestamp"></string>
+    <string name="optimize_database"></string>
+    <string name="verifying_omemo_keys_trusted_source_account"></string>
+    <string name="continue_btn"></string>
+    <string name="switch_to_video"></string>
+    <string name="no_i2p_calls"></string>
+    <string name="account_status_incompatible_client"></string>
+    <string name="enable_notifications"></string>
+    <string name="account_status_i2p_unavailable"></string>
+    <string name="pref_use_i2p"></string>
+    <string name="pref_use_i2p_summary"></string>
+    <string name="send_otr_message"></string>
+    <string name="unknown_otr_fingerprint"></string>
+    <string name="are_you_sure_verify_fingerprint"></string>
+    <string name="copy_otr_clipboard_description"></string>
+    <string name="otr_session_not_started"></string>
+    <string name="pref_enable_otr"></string>
+    <string name="otr_fingerprint_selected_message"></string>
+    <string name="toast_message_otr_fingerprint"></string>
+    <string name="verify_otr"></string>
+    <string name="no_otr_session_found"></string>
+    <string name="otr_warning"></string>
+    <string name="conference_technical_problems"></string>
+    <string name="rtp_state_content_add_video"></string>
+    <string name="copy_file_to"></string>
+    <string name="grant"></string>
+    <string name="otr_fingerprint"></string>
+    <string name="close"></string>
+    <string name="pref_up_push_account_title"></string>
 </resources>

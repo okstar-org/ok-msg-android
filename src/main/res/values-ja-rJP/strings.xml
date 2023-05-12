@@ -61,7 +61,8 @@
     <string name="save">保存</string>
     <string name="ok">OK</string>
     <string name="crash_report_title">monocles chatはクラッシュしました</string>
-    <string name="crash_report_message">スタックトレースを送信すると、monocles chatの開発の継続を助けることになります。\n<b>警告:</b>これは開発者へスタックトレースを送信するのに、あなたのXMPPアカウントを使います。</string>
+    <string name="crash_report_message">スタックトレースを送信すると、monocles chatの開発の継続を助けることになります。
+\n<b>警告:</b>これは開発者へスタックトレースを送信するのに、あなたのXMPPアカウントを使います。</string>
     <string name="send_now">今すぐ送信</string>
     <string name="send_never">今後は確認しない</string>
     <string name="problem_connecting_to_account">アカウントに接続できません</string>
@@ -74,7 +75,9 @@
     <string name="preparing_image">送信用画像の準備中</string>
     <string name="action_clear_history">履歴を消去</string>
     <string name="clear_conversation_history">会話履歴を消去</string>
-    <string name="clear_histor_msg">この会話内の全メッセージを削除しますか？\n\n<b>警告:</b> これは、他のデバイスやサーバー上に残されている、これらのメッセージのコピーを削除しません。</string>
+    <string name="clear_histor_msg">この会話内の全メッセージを削除しますか？
+\n
+\n<b>警告:</b> これは、他のデバイスやサーバー上に残されている、これらのメッセージのコピーを削除しません。</string>
     <string name="also_end_conversation">この後、この会話を終了する</string>
     <string name="choose_presence">デバイスを選択</string>
     <string name="send_unencrypted_message">暗号化されていないメッセージを送信</string>
@@ -86,13 +89,19 @@
     <string name="send_unencrypted">暗号化せずに送信</string>
     <string name="decryption_failed">復号に失敗しました。適切な秘密鍵を持っていないのかもしれません。</string>
     <string name="openkeychain_required">OpenKeychain</string>
-    <string name="openkeychain_required_long">%1$s は、メッセージの暗号化および復号、そしてあなたの公開鍵を管理するのに、<b>OpenKeychain</b>と呼ばれる第三者のアプリを活用しています。\n\nOpenKeychainはF-DroidとGoogle Playで入手可能で、GPLv3の下で許諾されています。\n\n<small>（後で %1$s を再起動してください。）</small></string>
+    <string name="openkeychain_required_long">%1$s は、メッセージの暗号化および復号、そしてあなたの公開鍵を管理するのに、<b>OpenKeychain</b>と呼ばれる第三者のアプリを活用しています。
+\n
+\nOpenKeychainはF-DroidとGoogle Playで入手可能で、GPLv3の下で許諾されています。
+\n
+\n<small>（後で %1$s を再起動してください。）</small></string>
     <string name="restart">再起動</string>
     <string name="install">インストール</string>
     <string name="offering">依頼中…</string>
     <string name="waiting">待機中…</string>
     <string name="no_pgp_key">OpenPGP鍵が見つかりません</string>
-    <string name="contact_has_no_pgp_key">連絡先が公開鍵を告知しないので、monocles chatはメッセージを暗号化できません。\n\n<small>連絡先にOpenPGPをセットアップするよう頼んでください。</small></string>
+    <string name="contact_has_no_pgp_key">連絡先が公開鍵を告知しないので、monocles chatはメッセージを暗号化できません。
+\n
+\n<small>連絡先にOpenPGPをセットアップするよう頼んでください。</small></string>
     <string name="no_pgp_keys">OpenPGP鍵が見つかりません</string>
     <string name="pref_general">全般</string>
     <string name="pref_accept_files_wifi">Wifi接続時にファイルを受取</string>
@@ -127,11 +136,13 @@
     <string name="error_compressing_image">画像ファイル変換中にエラー</string>
     <string name="error_file_not_found">ファイルが見つかりません</string>
     <string name="error_io_exception">一般的な入出力エラー。空き容量がなくなっていませんか？</string>
-    <string name="error_security_exception_during_image_copy">あなたが画像の選択のために使用したアプリは、読み取りに必要なアクセス権がありません。\n\n<small>画像を選択するために、別のファイルマネージャーを使ってください</small></string>
+    <string name="error_security_exception_during_image_copy">あなたが画像の選択のために使用したアプリは、読み取りに必要なアクセス権がありません。
+\n
+\n<small>画像を選択するために、別のファイルマネージャーを使ってください</small></string>
     <string name="account_status_unknown">不明</string>
     <string name="account_status_disabled">一時的に無効</string>
     <string name="account_status_online">オンライン</string>
-    <string name="account_status_connecting">接続中\u2026</string>
+    <string name="account_status_connecting">接続中…</string>
     <string name="account_status_offline">オフライン</string>
     <string name="account_status_unauthorized">許可されていません</string>
     <string name="account_status_not_found">サーバーが見つかりません</string>
@@ -154,10 +165,13 @@
     <string name="mgmt_account_publish_avatar">アバターを公開</string>
     <string name="mgmt_account_publish_pgp">OpenPGP公開鍵を公開</string>
     <string name="unpublish_pgp">OpenPGP公開鍵を削除</string>
-    <string name="unpublish_pgp_message">出席情報の告知からOpenPGP公開鍵を削除してもよろしいですか？\n連絡先はあなたにOpenPGP暗号化メッセージを送信できなくなります。</string>
+    <string name="unpublish_pgp_message">出席情報の告知からOpenPGP公開鍵を削除してもよろしいですか？
+\n連絡先はあなたにOpenPGP暗号化メッセージを送信できなくなります。</string>
     <string name="openpgp_has_been_published">OpenPGP公開鍵は公開されました。</string>
     <string name="mgmt_account_are_you_sure">よろしいですか？</string>
-    <string name="mgmt_account_delete_confirm_message">アカウントを削除すると、ローカルの会話履歴全体が失われます。\n\nサーバーからアカウントを削除すると、サーバーからもアカウント全体が削除され、新規アカウントを登録するまで、もはやログインできなくなります。</string>
+    <string name="mgmt_account_delete_confirm_message">アカウントを削除すると、ローカルの会話履歴全体が失われます。
+\n
+\nサーバーからアカウントを削除すると、サーバーからもアカウント全体が削除され、新規アカウントを登録するまで、もはやログインできなくなります。</string>
     <string name="attach_record_voice">音声を録音</string>
     <string name="account_settings_jabber_id">chat address</string>
     <string name="account_settings_example_jabber_id">username@monocles chat</string>
@@ -235,12 +249,16 @@
     <string name="enable">有効</string>
     <string name="conference_requires_password">グループチャットにはパスワードが必要</string>
     <string name="enter_password">パスワードを入力</string>
-    <string name="request_presence_updates">最初に、連絡先から出席情報の更新を要求してください。\n\n<small>これは、連絡先が何のクライアントを使用しているかを特定するために使用されます。</small></string>
+    <string name="request_presence_updates">最初に、連絡先から出席情報の更新を要求してください。
+\n
+\n<small>これは、連絡先が何のクライアントを使用しているかを特定するために使用されます。</small></string>
     <string name="request_now">今すぐ要求</string>
     <string name="delete_fingerprint">指紋を削除</string>
     <string name="sure_delete_fingerprint">この指紋を削除してもよろしいですか？</string>
     <string name="ignore">無視</string>
-    <string name="without_mutual_presence_updates"><b>警告:</b> 相互の出席情報の更新なしにこれを送信すると、予期しない問題が発生する可能性があります。\n\n<small>あなたの出席情報の購読を検証するために、連絡先の詳細に移動します。</small></string>
+    <string name="without_mutual_presence_updates"><b>警告:</b> 相互の出席情報の更新なしにこれを送信すると、予期しない問題が発生する可能性があります。
+\n
+\n<small>あなたの出席情報の購読を検証するために、連絡先の詳細に移動します。</small></string>
     <string name="pref_security_settings">安全とデータ保護</string>
     <string name="pref_allow_message_correction">メッセージの修正を許可</string>
     <string name="pref_allow_message_correction_summary">あなたの連絡先が、メッセージを遡って編集することを許可する</string>
@@ -321,8 +339,10 @@
     <string name="clear_other_devices">デバイスを消去</string>
     <string name="clear_other_devices_desc">OMEMOの告知から他の全デバイスを消去してもよろしいですか？お使いのデバイスが次回接続したとき、それらのデバイスは自分自身を再告知しますが、その間に送信されたメッセージを受信できない場合があります。</string>
     <string name="distrust_omemo_key">信頼できないデバイス</string>
-    <string name="distrust_omemo_key_text">このデバイスの検証を削除してよろしいですか？\nこのデバイスとそのデバイスからのメッセージは、信頼できないとマークされます。</string>
-    <string name="error_no_keys_to_trust_server_error">この連絡先には使用可能な鍵がありません。\nサーバーからの新しい鍵の取得に失敗しました。連絡先のサーバーに何か問題があるのかもしれません。</string>
+    <string name="distrust_omemo_key_text">このデバイスの検証を削除してよろしいですか？
+\nこのデバイスとそのデバイスからのメッセージは、信頼できないとマークされます。</string>
+    <string name="error_no_keys_to_trust_server_error">この連絡先には使用可能な鍵がありません。
+\nサーバーからの新しい鍵の取得に失敗しました。連絡先のサーバーに何か問題があるのかもしれません。</string>
     <string name="error_trustkeys_title">何か問題が発生しました</string>
     <string name="fetching_history_from_server">サーバーから履歴を取得中</string>
     <string name="no_more_history_on_server">サーバーにこれ以上履歴がありません</string>
@@ -330,11 +350,14 @@
     <string name="password_changed">パスワードを変更しました！</string>
     <string name="could_not_change_password">パスワードを変更できません</string>
     <string name="ask_question">質問する</string>
-    <string name="smp_explain_question">もしあなたと連絡先の人が、（内輪の冗談や、前回会ったときの昼食の内容など、）誰も知らないような共通の秘密を持っているなら、その秘密を使ってお互いの指紋を確認することができます。\n\nあなたが助言や質問を連絡先のために提供すると、その連絡先は回答者として、大文字小文字を区別して回答します。</string>
+    <string name="smp_explain_question">もしあなたと連絡先の人が、（内輪の冗談や、前回会ったときの昼食の内容など、）誰も知らないような共通の秘密を持っているなら、その秘密を使ってお互いの指紋を確認することができます。
+\n
+\nあなたが助言や質問を連絡先のために提供すると、その連絡先は回答者として、大文字小文字を区別して回答します。</string>
     <string name="smp_explain_answer">連絡先は、共有された秘密を用いてあなたに課題を出すことで、あなたの指紋を検証したいと考えています。連絡先は、その秘密のために次のような助言や質問を提供しました。</string>
     <string name="shared_secret_hint_should_not_be_empty">助言は空にできません</string>
     <string name="shared_secret_can_not_be_empty">共有された質問は空にできません</string>
-    <string name="manual_verification_explanation">下に表示されている指紋と、あなたの連絡先の指紋を注意深く比較してください。\n暗号化された電子メールや電話など、信頼できる通信手段を使って、それらを交換することができます。</string>
+    <string name="manual_verification_explanation">下に表示されている指紋と、あなたの連絡先の指紋を注意深く比較してください。
+\n暗号化された電子メールや電話など、信頼できる通信手段を使って、それらを交換することができます。</string>
     <string name="change_password">パスワードを変更</string>
     <string name="current_password">現在のパスワード</string>
     <string name="new_password">新しいパスワード</string>
@@ -417,7 +440,11 @@
     <string name="download_failed_could_not_write_file">ダウンロード失敗: ファイルを書き込めません</string>
     <string name="action_check_update">更新を確認</string>
     <string name="title_activity_updater">サービスを更新</string>
-    <string name="update_available">バージョン%1$sは利用可能です。\n\nファイルの大きさ: %2$s\n\n今すぐバージョン%1$sへ更新しますか？</string>
+    <string name="update_available">バージョン%1$sは利用可能です。
+\n
+\nファイルの大きさ: %2$s
+\n
+\n今すぐバージョン%1$sへ更新しますか？</string>
     <string name="remind_later">後で</string>
     <string name="update">更新</string>
     <string name="no_update_available">利用可能な更新はありません</string>
@@ -430,7 +457,9 @@
     <string name="pref_away_when_screen_off">デバイスがロックされているときは離席</string>
     <string name="pref_away_when_screen_off_summary">デバイスがロックされているとき、離席として印をつける</string>
     <string name="pref_dnd_on_silent_mode">サイレントモードのとき、「邪魔するな」</string>
-    <string name="update_info">monocles chatは自動的に新しいバージョンをダウンロードとインストールしています。\n\nしばらくお待ちください…</string>
+    <string name="update_info">monocles chatは自動的に新しいバージョンをダウンロードとインストールしています。
+\n
+\nしばらくお待ちください…</string>
     <string name="pref_dnd_on_silent_mode_summary">端末がサイレントモードのとき、「邪魔するな」と印をつける</string>
     <string name="pref_treat_vibrate_as_silent">バイブレートをサイレントモードとして扱う</string>
     <string name="pref_treat_vibrate_as_dnd_summary">端末がバイブレートのとき、「邪魔するな」と印をつける</string>
@@ -462,7 +491,11 @@
     <string name="load_more_messages">さらにメッセージを読み込む</string>
     <string name="no_storage_permission">monocles chatは外部ストレージへのアクセスが必要です</string>
     <string name="sync_with_contacts">連絡先と同期</string>
-    <string name="sync_with_contacts_long">monocles chatは連絡先のフルネームとアバターを表示するため、あなたのXMPP連絡先名簿と照合する権限を求めています。\n\nmonocles chatはあなたのサーバーに何かをアップロードすることなく、あなたのアドレス帳を読み込んでローカルに照合するだけです。\n\n今、連絡先へのアクセス権限を付与するよう求められます。</string>
+    <string name="sync_with_contacts_long">monocles chatは連絡先のフルネームとアバターを表示するため、あなたのXMPP連絡先名簿と照合する権限を求めています。
+\n
+\nmonocles chatはあなたのサーバーに何かをアップロードすることなく、あなたのアドレス帳を読み込んでローカルに照合するだけです。
+\n
+\n今、連絡先へのアクセス権限を付与するよう求められます。</string>
     <string name="notify_on_all_messages">すべてのメッセージで通知</string>
     <string name="notify_only_when_highlighted">メンションされたときにのみ通知</string>
     <string name="notify_never">通知は無効</string>
@@ -479,10 +512,15 @@
     <string name="always">常に</string>
     <string name="always_off">常にオフ</string>
     <string name="battery_optimizations_enabled">電池最適化が有効</string>
-    <string name="battery_optimizations_enabled_explained">お使いのデバイスは、monocles chat上で通知の遅延やメッセージの損失につながる可能性のある、重い電池の最適化を使用しています。\nそれを無効化することをお勧めします。</string>
-    <string name="battery_optimizations_enabled_dialog">お使いのデバイスでいくつかの重い電池最適化を行うと、monocles chat上の通知が遅延したり、メッセージを損失する可能性があります。\n\nそれらを無効化するかを確認します。</string>
+    <string name="battery_optimizations_enabled_explained">お使いのデバイスは、monocles chat上で通知の遅延やメッセージの損失につながる可能性のある、重い電池の最適化を使用しています。
+\nそれを無効化することをお勧めします。</string>
+    <string name="battery_optimizations_enabled_dialog">お使いのデバイスでいくつかの重い電池最適化を行うと、monocles chat上の通知が遅延したり、メッセージを損失する可能性があります。
+\n
+\nそれらを無効化するかを確認します。</string>
     <string name="install_from_unknown_sources_disabled">不明な提供元からのインストールが無効</string>
-    <string name="install_from_unknown_sources_disabled_dialog">お使いの端末では、Google PlayStore以外の提供元不明のアプリのインストールを許可しないように設定されています。この場合、アプリ内アップデータに問題が生じます。\n\n今、提供元不明のアプリのインストールを許可するかどうかを尋ねられます。</string>
+    <string name="install_from_unknown_sources_disabled_dialog">お使いの端末では、Google PlayStore以外の提供元不明のアプリのインストールを許可しないように設定されています。この場合、アプリ内アップデータに問題が生じます。
+\n
+\n今、提供元不明のアプリのインストールを許可するかどうかを尋ねられます。</string>
     <string name="disable">無効</string>
     <string name="cancel_update">更新を中止しますか？</string>
     <string name="yes">はい</string>
@@ -492,13 +530,25 @@
     <string name="correct_message">メッセージを修正</string>
     <string name="send_corrected_message">修正したメッセージを送信</string>
     <string name="no_keys_just_confirm">あなたはこの連絡先を既に信用しています。「完了」を選択すると、 %s がこのグループチャットの一員であることを確認したことになります。</string>
-    <string name="contacts_have_no_pgp_keys">連絡先が公開鍵を告知していないため、monocles chatはあなたのメッセージを暗号化できません。\n\n</string>
+    <string name="contacts_have_no_pgp_keys">連絡先が公開鍵を告知していないため、monocles chatはあなたのメッセージを暗号化できません。
+\n
+\n</string>
     <string name="this_account_is_disabled">このアカウントを無効化しました</string>
     <string name="no_application_to_share_uri">URIを共有するアプリケーションが見つかりません</string>
     <string name="share_uri_with">…でURIを共有</string>
     <string name="mgmt_account_reconnect">再接続</string>
     <string name="welcome_text">…は、自由かつ安全なXMPP/Jabberクライアントです。</string>
-    <string name="magic_create_text">You can use monocles chat with every modern XMPP account or get a affordable and secure monocles account, hosted on the monocles server station and powered with regenerative energies!\n\n This includes:\n● two month encrypted temporary chat storage\n● e-mail with 1 GB end-to-end encrypted storage\n\n optionally: \n● 4 GB cloud storage (nextcloud)\n● calendar and contact sync\n● a secure conferencing tool \n● and more on <a href="https://monocles.de/more/">https://monocles.de/more/</a></string>
+    <string name="magic_create_text">You can use monocles chat with every modern XMPP account or get a affordable and secure monocles account, hosted on the monocles server station and powered with regenerative energies!
+\n
+\n This includes:
+\n● two month encrypted temporary chat storage
+\n● e-mail with 1 GB end-to-end encrypted storage
+\n
+\n optionally:
+\n● 4 GB cloud storage (nextcloud)
+\n● calendar and contact sync
+\n● a secure conferencing tool
+\n● and more on <a href="https://monocles.de/more/">https://monocles.de/more/</a></string>
     <string name="your_full_jid_will_be">あなたのchat addressはこの通りになります: %s</string>
     <string name="create_account">新規アカウントを作成</string>
     <string name="welcome_existing_account">アカウントを持っています</string>
@@ -527,7 +577,9 @@
     <string name="import_text">バックアップが利用可能な場合、以下のボタンを押してこれをインポートできます。</string>
     <string name="import_database">バックアップをインポート</string>
     <string name="invite_again">再招待</string>
-    <string name="InviteText">こんにちは、\n\nユーザー%sがmonocles chatにあなたを招待しています。次のリンクをクリックしてください…</string>
+    <string name="InviteText">こんにちは、
+\n
+\nユーザー%sがmonocles chatにあなたを招待しています。次のリンクをクリックしてください…</string>
     <string name="pref_broadcast_last_activity">最終ユーザーインタラクションブロードキャスト</string>
     <string name="pref_broadcast_last_activity_summary">monocles chatを使うとき、あなたの全連絡先に知らせましょう</string>
     <string name="request_permissions_message">monocles chatはいくつかの権限を許可するようあなたに尋ねます。このメッセンジャーの全機能を使うには、これらの全権限を許可することが重要です。これらの権限のいくつかを拒否すると、アプリは自己終了します。</string>
@@ -558,8 +610,9 @@
     <string name="show_error_message">エラーメッセージを表示</string>
     <string name="error_message">エラーメッセージ</string>
     <string name="data_saver_enabled">データセーバーが有効</string>
-    <string name="data_saver_enabled_explained">お使いのオペレーティングシステムは、monocles chatがバックグラウンドのときにインターネットにアクセスすることを制限しています。
-新着メッセージの通知を受信するには、データセーバーがオンならば、monocles chatが無制限のアクセスを許可する必要があります。\n\nmonocles chatは可能なときにデータを保存するための努力をします。</string>
+    <string name="data_saver_enabled_explained">お使いのオペレーティングシステムは、monocles chatがバックグラウンドのときにインターネットにアクセスすることを制限しています。 新着メッセージの通知を受信するには、データセーバーがオンならば、monocles chatが無制限のアクセスを許可する必要があります。
+\n
+\nmonocles chatは可能なときにデータを保存するための努力をします。</string>
     <string name="device_does_not_support_data_saver">お使いのデバイスは、monocles chatのデータセーバーを無効にできません。</string>
     <string name="add_to_contact_list">連絡先名簿に追加</string>
     <string name="unable_to_start_recording">録音を開始できません</string>
@@ -653,7 +706,8 @@
     <string name="pref_validate_hostname">DNSSECでホスト名の妥当性を確認</string>
     <string name="pref_validate_hostname_summary">検証されたホスト名を含むサーバー証明書は検証済みと見なされます</string>
     <string name="certificate_does_not_contain_jid">証明書はchat addressを含みません</string>
-    <string name="error_no_keys_to_trust_presence">この連絡先で利用可能な鍵はありません。\n双方に出席情報の購読があることを確認してください。</string>
+    <string name="error_no_keys_to_trust_presence">この連絡先で利用可能な鍵はありません。
+\n双方に出席情報の購読があることを確認してください。</string>
     <string name="mark_as_read">既読にする</string>
     <string name="pref_show_foreground_service_summary">一部のAndroid端末では、一定時間が経過すると一部のアプリが終了してしまい、新着メッセージを受信できなくなります。このような問題が発生した場合は、フォアグラウンドサービスを有効にしてください。ただし、この選択肢をチェックすると、通知が永続的に表示されることに注意してください。</string>
     <string name="pref_show_foreground_service">フォアグラウンドサービスを使用</string>
@@ -676,7 +730,8 @@
     <string name="destroy_room_dialog">このグループチャット %s を破棄したいですか？ これで、このグループチャットが永久に削除されます。</string>
     <string name="destroy_room_succeed">グループチャットの破棄に成功しました</string>
     <string name="destroy_room_failed">グループチャットは破棄されません</string>
-    <string name="no_write_access_in_public_muc">あなたは、このグループチャットに参加しておらず、現在、書き込み権限がありません。\n<b>OK</b>を押してグループチャットの詳細に移動し、一覧の上部または前面にあるメンバーの名前を長くクリックして、調停者、管理者、または所有者に非公開メッセージを送り、書き込み権限を要求してください。</string>
+    <string name="no_write_access_in_public_muc">あなたは、このグループチャットに参加しておらず、現在、書き込み権限がありません。
+\n<b>OK</b>を押してグループチャットの詳細に移動し、一覧の上部または前面にあるメンバーの名前を長くクリックして、調停者、管理者、または所有者に非公開メッセージを送り、書き込み権限を要求してください。</string>
     <string name="snooze">スヌーズ</string>
     <string name="huawei_protected_apps">保護されたアプリ</string>
     <string name="huawei_protected_apps_summary">画面がオフのときでも通知を受信し続けるには、保護されたアプリの一覧にmonocles chatを追加する必要があります。</string>
@@ -703,7 +758,8 @@
     <string name="error_trustkey_device_list">デバイスの一覧を取得できません</string>
     <string name="error_trustkey_bundle">デバイスのバンドルを取得できません</string>
     <string name="error_trustkey_hint_mutual">心得: 場合によっては、お互いの連絡先名簿を追加することで解決できることもあります。</string>
-    <string name="disable_encryption_message">この会話でOMEMOの暗号化を無効化してもよろしいですか？\nこれにより、サーバー管理者がメッセージを読むことが可能になりますが、時代遅れのクライアントを使っている人と連絡をとるには、この方法しかないかもしれません。</string>
+    <string name="disable_encryption_message">この会話でOMEMOの暗号化を無効化してもよろしいですか？
+\nこれにより、サーバー管理者がメッセージを読むことが可能になりますが、時代遅れのクライアントを使っている人と連絡をとるには、この方法しかないかもしれません。</string>
     <string name="disable_now">今すぐ無効化</string>
     <string name="draft">下書き:</string>
     <string name="pref_omemo_setting">OMEMO暗号化</string>
@@ -784,7 +840,9 @@
     <string name="action_open">開く</string>
     <string name="security_violation_not_attaching_file">安全違反のため、ファイルが省略されています。</string>
     <string name="delete_file_dialog">ファイルを削除</string>
-    <string name="delete_file_dialog_msg">このファイルを削除しますか？\n\n<b>警告:</b> これは、他のデバイスやサーバー上に残されている、このファイルのコピーを削除しません。</string>
+    <string name="delete_file_dialog_msg">このファイルを削除しますか？
+\n
+\n<b>警告:</b> これは、他のデバイスやサーバー上に残されている、このファイルのコピーを削除しません。</string>
     <string name="cancelled">中止しました</string>
     <string name="remote_server_timeout">リモートサーバーがタイムアウト</string>
     <string name="already_drafting_message">あなたは既にメッセージを作成中です。</string>
@@ -887,7 +945,7 @@
     <string name="discover_channels">談話室を発見</string>
     <string name="search_channels">チャンネルを検索</string>
     <string name="channel_discovery_opt_in_title">プライバシー通知</string>
-    <string name="channel_discover_opt_in_message"><![CDATA[談話室発見は、第三者のサービスである <a href="https://search.jabber.network">search.jabber.network</a> を利用します。<br><br>この機能を使うと、あなたののIPアドレスや検索キーワードがそのサービスに送信されます。詳しくは、<a href="https://search.jabber.network/privacy">プライバシーポリシー</a>をご覧ください。]]></string>
+    <string name="channel_discover_opt_in_message">談話室発見は、第三者のサービスである &lt;a href=https://search.jabber.network&gt;search.jabber.network&lt;/a&gt; を利用します。&lt;br&gt;&lt;br&gt;この機能を使うと、あなたののIPアドレスや検索キーワードがそのサービスに送信されます。詳しくは、&lt;a href=https://search.jabber.network/privacy&gt;プライバシーポリシー&lt;/a&gt;をご覧ください。</string>
     <string name="action_add_existing_account">既存アカウントを追加</string>
     <string name="use_own_provider">自分のプロバイダを使用</string>
     <string name="this_looks_like_a_domain">これはドメインアドレスのようです</string>
@@ -918,7 +976,8 @@
     <string name="pref_use_invidious_summary">Invidiousはプライバシーに配慮された、YouTubeの代替です</string>
     <string name="this_device">このデバイス</string>
     <string name="intro_desc_main">詳細…</string>
-    <string name="welcome_header">monocles chat\nにようこそ</string>
+    <string name="welcome_header">monocles chat
+\nにようこそ</string>
     <string name="intro_required_permissions">必要な権限</string>
     <string name="intro_desc_required_permissions">導入の最後に、まだストレージのアクセス権を与えていない場合は、その権限を与えるように求められます（必須）。追加の権限は必要に応じて要求され、任意です。</string>
     <string name="intro_account">あなたのアカウント</string>
@@ -941,10 +1000,14 @@
     <string name="intro_desc_account2">monocles chatでは、ニックネームを入力するだけで、新しいプロフィールを作成することができます。</string>
     <string name="open_join_dialog">公開談話室に参加…</string>
     <string name="intro_optional_permissions">追加の権限</string>
-    <string name="intro_desc_optional_permissions2">位置情報を共有するには、位置情報のアクセス権が必要です。\n音声メッセージを共有するには、マイクにアクセスする必要があります。</string>
-    <string name="intro_desc_account3">既存のアカウントをインポートする選択肢があります。\n利用可能なバックアップファイルがある場合は、そのファイルが表示されます。</string>
-    <string name="intro_desc_start_chatting3">祝賀！\n始動だ、享楽しよう…</string>
-    <string name="intro_privacy">あなたのプライバシー\nあなたが主権をもつ</string>
+    <string name="intro_desc_optional_permissions2">位置情報を共有するには、位置情報のアクセス権が必要です。
+\n音声メッセージを共有するには、マイクにアクセスする必要があります。</string>
+    <string name="intro_desc_account3">既存のアカウントをインポートする選択肢があります。
+\n利用可能なバックアップファイルがある場合は、そのファイルが表示されます。</string>
+    <string name="intro_desc_start_chatting3">祝賀！
+\n始動だ、享楽しよう…</string>
+    <string name="intro_privacy">あなたのプライバシー
+\nあなたが主権をもつ</string>
     <string name="intro_desc_privacy">monocles chatはお客様のデータを販売したり、分析したりすることはありませんので、どのアクセス権を与えるかはお客様が決めてください。</string>
     <string name="no_results">結果なし</string>
     <string name="file_transmission_cancelled">ファイル転送を中止しました</string>
@@ -967,9 +1030,11 @@
     <string name="pref_theme_black">黒（AMOLED）</string>
     <string name="pref_theme_color_options_summary">テーマ色のパレットを選択</string>
     <string name="pref_theme_color_options">テーマ色</string>
-    <string name="magic_create_text_on_x">あなたは %1$s に招待されました。アカウント作成の手順を指南します。\n%1$s をプロバイダーとして選択した場合、あなたの完全な XMPP アドレスを他のプロバイダのユーザーに示すことで、その人と連絡をとることができます。</string>
+    <string name="magic_create_text_on_x">あなたは %1$s に招待されました。アカウント作成の手順を指南します。
+\n%1$s をプロバイダーとして選択した場合、あなたの完全な XMPP アドレスを他のプロバイダのユーザーに示すことで、その人と連絡をとることができます。</string>
     <string name="account_status_regis_invalid_token">登録トークンが無効です</string>
-    <string name="magic_create_text_fixed">あなたは %1$s に招待されました。ユーザー名はすでに選択されています。アカウント作成の手順を指南します。\nあなたの完全な XMPP アドレスを他のプロバイダのユーザーに示すことで、その人と連絡をとることができます。</string>
+    <string name="magic_create_text_fixed">あなたは %1$s に招待されました。ユーザー名はすでに選択されています。アカウント作成の手順を指南します。
+\nあなたの完全な XMPP アドレスを他のプロバイダのユーザーに示すことで、その人と連絡をとることができます。</string>
     <string name="your_server_invitation">あなたのサーバーの登録</string>
     <string name="pref_use_unicolored_chatbg_summary">チャット内で単色の背景を使用</string>
     <string name="pref_use_unicolored_chatbg">単色の背景を使用</string>
@@ -1092,8 +1157,12 @@
     <string name="videos">ビデオ</string>
     <string name="files">ファイル</string>
     <string name="all_media_files">メディアファイル</string>
-    <string name="memory_warning">メッセンジャーは内部メモリの%1$s（%2$s）を使用中です。\n\n添付の自動削除を有効化したり、保存したメディアを手動で削除することができます。</string>
-    <string name="memory_warning_force">メッセンジャーは内部メモリの%1$s（%2$s）を使用中です。\n\n添付の自動削除を有効化したり、保存したメディアを手動で削除するべきです。デバイスはメモリ不足になります！</string>
+    <string name="memory_warning">メッセンジャーは内部メモリの%1$s（%2$s）を使用中です。
+\n
+\n添付の自動削除を有効化したり、保存したメディアを手動で削除することができます。</string>
+    <string name="memory_warning_force">メッセンジャーは内部メモリの%1$s（%2$s）を使用中です。
+\n
+\n添付の自動削除を有効化したり、保存したメディアを手動で削除するべきです。デバイスはメモリ不足になります！</string>
     <string name="open_settings">設定を開く</string>
     <string name="oldAndroidVersion">古いAndroidバージョン</string>
     <string name="oldAndroidVersionMessage">今後のアップデートではサポートされない古いAndroidバージョンを使用しています。monocles chatバージョン1.0からは、Android 5以上の端末のみがサポートされます。お使いの端末のファームウェアをアップデートしてください。</string>
@@ -1130,4 +1199,115 @@
     <string name="italic">斜体</string>
     <string name="monospace">等幅</string>
     <string name="strikethrough">取り消し線</string>
+    <string name="user"></string>
+    <string name="grant"></string>
+    <string name="title_undo_swipe_out_group_chat"></string>
+    <string name="bookmarks"></string>
+    <string name="no_manage_storage_permission"></string>
+    <string name="pref_showtextformatting_sum"></string>
+    <string name="pref_showtextformatting"></string>
+    <string name="help_format_text"></string>
+    <string name="close"></string>
+    <string name="close_format_text"></string>
+    <string name="port_example" translatable="false"></string>
+    <string name="pref_show_date_in_quotes_summary"></string>
+    <string name="pref_show_date_in_quotes"></string>
+    <string name="delete_avatar"></string>
+    <string name="import_backup_description"></string>
+    <string name="optimize_database"></string>
+    <string name="verifying_omemo_keys_trusted_source_account"></string>
+    <string name="continue_btn"></string>
+    <string name="participants"></string>
+    <string name="download_failed_invalid_file"></string>
+    <string name="orbot_not_found"></string>
+    <string name="account_status_temporary_auth_failure"></string>
+    <string name="pref_max_resend_time_title"></string>
+    <string name="pref_max_resend_time_summary"></string>
+    <string name="pref_resend_delay_title"></string>
+    <string name="pref_resend_delay_summary"></string>
+    <string name="i_have_written"></string>
+    <string name="title_activity_about_x"></string>
+    <string name="x_has_written"></string>
+    <string name="choose_camera_app"></string>
+    <string name="pref_choose_camera_summary"></string>
+    <string name="vector_graphic"></string>
+    <string name="multimedia_file"></string>
+    <string name="title_undo_swipe_out_channel"></string>
+    <string name="title_undo_swipe_out_conversation"></string>
+    <string name="undo"></string>
+    <string name="audio_video_disabled_tor"></string>
+    <string name="pref_enable_persistent_rooms_summary"></string>
+    <string name="pref_enable_persistent_rooms_title"></string>
+    <string name="switch_to_video"></string>
+    <string name="reject_switch_to_video"></string>
+    <string name="unified_push_distributor"></string>
+    <string name="unable_to_moderate"></string>
+    <string name="incoming_call_duration_timestamp"></string>
+    <string name="outgoing_call_duration_timestamp"></string>
+    <string name="outgoing_call_timestamp"></string>
+    <string name="note_to_self"></string>
+    <string name="retract_message"></string>
+    <string name="conference_technical_problems"></string>
+    <string name="account_status_incompatible_client"></string>
+    <string name="omemo_fingerprint_selected_message"></string>
+    <string name="omemo_fingerprint_x509_selected_message"></string>
+    <string name="add_back"></string>
+    <string name="enable_notifications"></string>
+    <string name="pref_allow_message_retraction"></string>
+    <string name="pref_allow_message_retraction_summary"></string>
+    <string name="smp_requested"></string>
+    <string name="conversations_foreground_service" translatable="false"></string>
+    <string name="receiving_file_x"></string>
+    <string name="sending_x_file_x"></string>
+    <string name="account_status_i2p_unavailable"></string>
+    <string name="authenticate_with_certificate"></string>
+    <string name="inviteUser_Subject"></string>
+    <string name="message"></string>
+    <string name="contact"></string>
+    <string name="transcoding_video_x"></string>
+    <string name="pref_use_i2p"></string>
+    <string name="pref_use_i2p_summary"></string>
+    <string name="server_info_partial"></string>
+    <string name="delete_message_dialog_msg"></string>
+    <string name="send_otr_message"></string>
+    <string name="unknown_otr_fingerprint"></string>
+    <string name="otr_fingerprint"></string>
+    <string name="otr_fingerprint_selected_message"></string>
+    <string name="toast_message_otr_fingerprint"></string>
+    <string name="verify_otr"></string>
+    <string name="no_otr_session_found"></string>
+    <string name="are_you_sure_verify_fingerprint"></string>
+    <string name="copy_otr_clipboard_description"></string>
+    <string name="otr_session_not_started"></string>
+    <string name="pref_enable_otr_summary"></string>
+    <string name="pref_enable_otr"></string>
+    <string name="otr_warning"></string>
+    <string translatable="false" name="x_user_quote"></string>
+    <string name="me_quote"></string>
+    <string name="pref_use_inner_storage"></string>
+    <string name="pref_use_inner_storage_summary"></string>
+    <string name="intro_desc_start_chatting2"></string>
+    <string name="ask_for_writeaccess"></string>
+    <string name="pref_theme_White"></string>
+    <string name="rtp_state_reconnecting"></string>
+    <string name="rtp_state_content_add_video"></string>
+    <string name="rtp_state_content_add"></string>
+    <string name="no_i2p_calls"></string>
+    <string name="updated_to_monocles"></string>
+    <string name="updated_to_monocles_google"></string>
+    <string name="create_monocles_account"></string>
+    <string name="a_user"></string>
+    <string name="copy_file_to"></string>
+    <string name="reconnecting_call"></string>
+    <string name="reconnecting_video_call"></string>
+    <string name="pref_up_push_account_title"></string>
+    <string name="pref_up_push_account_summary"></string>
+    <string name="pref_up_push_server_title"></string>
+    <string name="pref_up_push_server_summary"></string>
+    <string name="no_account_deactivated"></string>
+    <string name="pref_theme_custom"></string>
+    <string name="moderate_message"></string>
+    <string name="moderate_reason"></string>
+    <string name="reply_to"></string>
+    <string name="format_text"></string>
 </resources>

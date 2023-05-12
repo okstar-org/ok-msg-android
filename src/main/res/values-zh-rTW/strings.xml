@@ -34,7 +34,7 @@
     <string name="moderator">管理员</string>
     <string name="participant">参与者</string>
     <string name="visitor">访客</string>
-    <string name="remove_contact_text">将 %s 从XMPP联系人列表中移除? 与该联系人进行的会话不会被删除。</string>
+    <string name="remove_contact_text">将 %s 从XMPP联系人列表中移除\? 与该联系人进行的会话不会被删除。</string>
     <string name="block_contact_text">您想封禁 %s 的消息吗？</string>
     <string name="unblock_contact_text">您想让 %s 给您发送信息吗？</string>
     <string name="block_domain_text">封禁 %s 的所有联系人？</string>
@@ -69,7 +69,9 @@
     <string name="preparing_image">正在处理图像以传输</string>
     <string name="action_clear_history">清除历史记录</string>
     <string name="clear_conversation_history">清除会话历史</string>
-    <string name="clear_histor_msg">您确定要删除此对话中的所有消息吗？\n\n<b>警告：</b>这不会删除存储在其他设备或服务器上的那些消息。</string>
+    <string name="clear_histor_msg">您确定要删除此对话中的所有消息吗？
+\n
+\n<b>警告：</b>这不会删除存储在其他设备或服务器上的那些消息。</string>
     <string name="also_end_conversation">随后结束对话</string>
     <string name="choose_presence">选择设备</string>
     <string name="send_unencrypted_message">发送未加密的消息</string>
@@ -118,11 +120,13 @@
     <string name="error_compressing_image">转换图像文件时出错</string>
     <string name="error_file_not_found">文件未找到</string>
     <string name="error_io_exception">一般I/O错误。可能存储空间不足？</string>
-    <string name="error_security_exception_during_image_copy">您选择图像时使用的应用没有足够的权限来读取文件。\n\n<small>使用不同的文件管理器选择图像</small></string>
+    <string name="error_security_exception_during_image_copy">您选择图像时使用的应用没有足够的权限来读取文件。
+\n
+\n<small>使用不同的文件管理器选择图像</small></string>
     <string name="account_status_unknown">未知</string>
     <string name="account_status_disabled">暂时禁用</string>
     <string name="account_status_online">在线</string>
-    <string name="account_status_connecting">正在连接\u2026</string>
+    <string name="account_status_connecting">正在连接…</string>
     <string name="account_status_offline">离线</string>
     <string name="account_status_unauthorized">未授权</string>
     <string name="account_status_not_found">找不到服务器</string>
@@ -141,10 +145,13 @@
     <string name="mgmt_account_publish_avatar">发布头像</string>
     <string name="mgmt_account_publish_pgp">发布OpenPGP公钥</string>
     <string name="unpublish_pgp">删除OpenPGP公钥</string>
-    <string name="unpublish_pgp_message">您确定要从在线通知中移除OpenPGP公钥吗？\n您的联系人将无法再向您发送OpenPGP加密消息。</string>
+    <string name="unpublish_pgp_message">您确定要从在线通知中移除OpenPGP公钥吗？
+\n您的联系人将无法再向您发送OpenPGP加密消息。</string>
     <string name="openpgp_has_been_published">OpenPGP公钥已发布。</string>
     <string name="mgmt_account_are_you_sure">确定？</string>
-    <string name="mgmt_account_delete_confirm_message">如果您删除了帐户，则本地对话历史记录将丢失。\n\n如果您从服务器删除帐户，则您的帐户也将从服务器中删除，在注册新帐户之前，您将无法登录。</string>
+    <string name="mgmt_account_delete_confirm_message">如果您删除了帐户，则本地对话历史记录将丢失。
+\n
+\n如果您从服务器删除帐户，则您的帐户也将从服务器中删除，在注册新帐户之前，您将无法登录。</string>
     <string name="attach_record_voice">语音录制</string>
     <string name="account_settings_jabber_id">Jabber用户名</string>
     <string name="password">密码</string>
@@ -214,7 +221,7 @@
     <string name="private_message">已私信</string>
     <string name="private_message_to">至%s</string>
     <string name="send_private_message_to">发送私信给%s</string>
-    <string name="connect">连接 </string>
+    <string name="connect">连接</string>
     <string name="account_already_exists">此帐户已存在</string>
     <string name="next">下一步</string>
     <string name="server_info_session_established">会议已建立</string>
@@ -223,12 +230,16 @@
     <string name="enable">启用</string>
     <string name="conference_requires_password">群聊需要密码</string>
     <string name="enter_password">输入密码</string>
-    <string name="request_presence_updates">请先从联系人处请求在线更新。\n\n<small>这将用于确定对方使用的客户端。</small></string>
+    <string name="request_presence_updates">请先从联系人处请求在线更新。
+\n
+\n<small>这将用于确定对方使用的客户端。</small></string>
     <string name="request_now">现在请求</string>
     <string name="delete_fingerprint">删除指纹</string>
     <string name="sure_delete_fingerprint">您确定要删除此指纹吗？</string>
     <string name="ignore">忽略</string>
-    <string name="without_mutual_presence_updates"><b>警告：</b>在没有相互状态更新时发送此消息可能会导致意外的问题。\n\n<small>到“联系人详情”以验证您的状态订阅。</small></string>
+    <string name="without_mutual_presence_updates"><b>警告：</b>在没有相互状态更新时发送此消息可能会导致意外的问题。
+\n
+\n<small>到“联系人详情”以验证您的状态订阅。</small></string>
     <string name="pref_security_settings">安全和数据保护</string>
     <string name="pref_allow_message_correction">允许消息更正</string>
     <string name="pref_allow_message_correction_summary">允许联系人编辑已发送的消息</string>
@@ -309,8 +320,10 @@
     <string name="clear_other_devices">清除设备</string>
     <string name="clear_other_devices_desc">您确定要清除OMEMO公告中的所有其他设备吗？您的设备下次连接时，它们将自行重新声明，但在此期间它们可能无法接收消息。</string>
     <string name="distrust_omemo_key">不再信任设备</string>
-    <string name="distrust_omemo_key_text">您确定要删除此设备的验证吗？\n此设备和来自该设备的消息将被标记为不受信任。</string>
-    <string name="error_no_keys_to_trust_server_error">此联系人没有可用的密钥。\n从服务器获取新密钥不成功。也许您的联系人服务器有问题。</string>
+    <string name="distrust_omemo_key_text">您确定要删除此设备的验证吗？
+\n此设备和来自该设备的消息将被标记为不受信任。</string>
+    <string name="error_no_keys_to_trust_server_error">此联系人没有可用的密钥。
+\n从服务器获取新密钥不成功。也许您的联系人服务器有问题。</string>
     <string name="error_trustkeys_title">出错了</string>
     <string name="fetching_history_from_server">从服务器获取历史记录</string>
     <string name="no_more_history_on_server">服务器上没有更多历史记录</string>
@@ -318,11 +331,14 @@
     <string name="password_changed">密码已更改！</string>
     <string name="could_not_change_password">无法更改密码</string>
     <string name="ask_question">提问</string>
-    <string name="smp_explain_question">如果您和您的联系人有一个共同的秘密，没有其他人知道（比如一个笑话或者你们最后一次见面时吃的午餐），您可以用这个秘密来验证对方的指纹。\n\n您为联系人提供提示或问题，他们会回答答案。</string>
+    <string name="smp_explain_question">如果您和您的联系人有一个共同的秘密，没有其他人知道（比如一个笑话或者你们最后一次见面时吃的午餐），您可以用这个秘密来验证对方的指纹。
+\n
+\n您为联系人提供提示或问题，他们会回答答案。</string>
     <string name="smp_explain_answer">您的联系人希望通过共享秘密来验证您的指纹。您的联系人提供了以下有关该秘密的提示或问题。</string>
     <string name="shared_secret_hint_should_not_be_empty">提示不应为空</string>
     <string name="shared_secret_can_not_be_empty">共享秘密不能为空</string>
-    <string name="manual_verification_explanation">仔细比较下面显示的指纹和对方的指纹。\n您可以使用任何受信任的通信形式，如加密的电子邮件或电话来验证。</string>
+    <string name="manual_verification_explanation">仔细比较下面显示的指纹和对方的指纹。
+\n您可以使用任何受信任的通信形式，如加密的电子邮件或电话来验证。</string>
     <string name="change_password">更改密码</string>
     <string name="current_password">当前密码</string>
     <string name="new_password">新密码</string>
@@ -404,7 +420,11 @@
     <string name="download_failed_could_not_write_file">下载失败：无法写入文件</string>
     <string name="action_check_update">检查更新</string>
     <string name="title_activity_updater">下载更新服务</string>
-    <string name="update_available">版本%1$s可用。\n\n文件大小：%2$s\n\n现在更新到版本%1$s？</string>
+    <string name="update_available">版本%1$s可用。
+\n
+\n文件大小：%2$s
+\n
+\n现在更新到版本%1$s？</string>
     <string name="remind_later">稍后</string>
     <string name="update">更新</string>
     <string name="no_update_available">已经是最新版本</string>
@@ -461,7 +481,9 @@
     <string name="always_off">始终关闭</string>
     <string name="battery_optimizations_enabled">电池优化已启用</string>
     <string name="install_from_unknown_sources_disabled">禁用未知来源安装</string>
-    <string name="install_from_unknown_sources_disabled_dialog">您的设备不允许未知来源应用安装。这将导致应用更新出现问题。\n\n请您允许安装未知来源应用。</string>
+    <string name="install_from_unknown_sources_disabled_dialog">您的设备不允许未知来源应用安装。这将导致应用更新出现问题。
+\n
+\n请您允许安装未知来源应用。</string>
     <string name="disable">禁用</string>
     <string name="cancel_update">取消更新？</string>
     <string name="yes">是</string>
@@ -476,7 +498,17 @@
     <string name="share_uri_with">与…共享URI</string>
     <string name="mgmt_account_reconnect">重新连接</string>
     <string name="welcome_text">…是一个免费且安全的XMPP/Jabber客户端。</string>
-    <string name="magic_create_text">You can use monocles chat with every modern XMPP account or get a affordable and secure monocles account, hosted on the monocles server station and powered with regenerative energies!\n\n This includes:\n● two month encrypted temporary chat storage\n● e-mail with 1 GB end-to-end encrypted storage\n\n optionally: \n● 4 GB cloud storage (nextcloud)\n● calendar and contact sync\n● a secure conferencing tool \n● and more on <a href="https://monocles.de/more/">https://monocles.de/more/</a></string>
+    <string name="magic_create_text">You can use monocles chat with every modern XMPP account or get a affordable and secure monocles account, hosted on the monocles server station and powered with regenerative energies!
+\n
+\n This includes:
+\n● two month encrypted temporary chat storage
+\n● e-mail with 1 GB end-to-end encrypted storage
+\n
+\n optionally:
+\n● 4 GB cloud storage (nextcloud)
+\n● calendar and contact sync
+\n● a secure conferencing tool
+\n● and more on <a href="https://monocles.de/more/">https://monocles.de/more/</a></string>
     <string name="your_full_jid_will_be">您的Jabber用户名为：%s</string>
     <string name="create_account">创建新帐号</string>
     <string name="welcome_existing_account">我已有账号</string>
@@ -621,7 +653,8 @@
     <string name="pref_validate_hostname">使用DNSSEC验证主机名</string>
     <string name="pref_validate_hostname_summary">包含经过验证的主机名的服务器证书将被视为已验证</string>
     <string name="certificate_does_not_contain_jid">证书不包含Jabber用户名</string>
-    <string name="error_no_keys_to_trust_presence">此联系人没有可用的密钥。\n确保你们有共同的在线订阅。</string>
+    <string name="error_no_keys_to_trust_presence">此联系人没有可用的密钥。
+\n确保你们有共同的在线订阅。</string>
     <string name="mark_as_read">标记为已读</string>
     <string name="server_info_partial">部分</string>
     <string name="pref_show_foreground_service_summary">一些Android设备会在一段时间后关闭一些应用程序，您将无法接收到新的消息。如果您遇到此类问题，请尝试激活前台服务。但请记住，选中此选项后，您将获得永久通知。</string>
@@ -644,7 +677,8 @@
     <string name="destroy_room_dialog">您想解散群聊%s吗？</string>
     <string name="destroy_room_succeed">群聊成功解散</string>
     <string name="destroy_room_failed">无法解散群聊</string>
-    <string name="no_write_access_in_public_muc">您没有参与此群聊，所以现在不能发消息。\n请点<b>确定</b>，进入群聊详情，然后长按任何一个管理员的名称，发送一条私信请求许可。</string>
+    <string name="no_write_access_in_public_muc">您没有参与此群聊，所以现在不能发消息。
+\n请点<b>确定</b>，进入群聊详情，然后长按任何一个管理员的名称，发送一条私信请求许可。</string>
     <string name="snooze">稍后再响</string>
     <string name="huawei_protected_apps">受保护的应用</string>
     <string name="pref_enable_multi_accounts_title">启用多个帐户</string>
@@ -666,7 +700,8 @@
     <string name="error_trustkey_device_list">无法获取设备列表</string>
     <string name="error_trustkey_bundle">无法获取设备包</string>
     <string name="error_trustkey_hint_mutual">提示：在某些情况下，可以通过互相添加联系人列表来解决此问题。</string>
-    <string name="disable_encryption_message">您确定要为此对话禁用OMEMO加密吗？\n这将允许服务器管理员读取您的消息，但这可能是与使用过时客户端的人进行通信的唯一方式。</string>
+    <string name="disable_encryption_message">您确定要为此对话禁用OMEMO加密吗？
+\n这将允许服务器管理员读取您的消息，但这可能是与使用过时客户端的人进行通信的唯一方式。</string>
     <string name="disable_now">现在禁用</string>
     <string name="draft">草稿：</string>
     <string name="pref_omemo_setting">OMEMO加密</string>
@@ -742,7 +777,9 @@
     <string name="action_open">打开</string>
     <string name="security_violation_not_attaching_file">由于安全违规而省略了文件</string>
     <string name="delete_file_dialog">删除文件</string>
-    <string name="delete_file_dialog_msg">您确定要删除此文件吗？\n\n<b>警告:</b>这不会删除存储在其他设备或服务器上的此文件的副本。</string>
+    <string name="delete_file_dialog_msg">您确定要删除此文件吗？
+\n
+\n<b>警告:</b>这不会删除存储在其他设备或服务器上的此文件的副本。</string>
     <string name="cancelled">已取消</string>
     <string name="remote_server_timeout">远程服务器超时</string>
     <string name="already_drafting_message">您已经写草稿了</string>
@@ -840,7 +877,7 @@
     <string name="discover_channels">发现群聊</string>
     <string name="search_channels">搜索群聊</string>
     <string name="channel_discovery_opt_in_title">隐私声明</string>
-    <string name="channel_discover_opt_in_message"><![CDATA[群聊探索使用名为 <a href="https://search.jabber.network">search.jabber.network</a>的第三方服务。<br><br>使用此功能会将您的IP地址和搜索字词传输到该服务。有关详细信息，请参阅其<a href="https://search.jabber.network/privacy">隐私政策</a>。]]></string>
+    <string name="channel_discover_opt_in_message">群聊探索使用名为 &lt;a href=https://search.jabber.network&gt;search.jabber.network&lt;/a&gt;的第三方服务。&lt;br&gt;&lt;br&gt;使用此功能会将您的IP地址和搜索字词传输到该服务。有关详细信息，请参阅其&lt;a href=https://search.jabber.network/privacy&gt;隐私政策&lt;/a&gt;。</string>
     <string name="action_add_existing_account">添加已有帐户</string>
     <string name="use_own_provider">使用自己的提供商</string>
     <string name="this_looks_like_a_domain">这看起来像一个域名地址</string>
@@ -888,11 +925,15 @@
     <string name="intro_desc_optional_permissions">读取通讯录的权限用于从您的通讯录中读取 chat address（如果有）。通讯录的内容不会被分享、上传或复制。</string>
     <string name="open_join_dialog">加入公共群聊</string>
     <string name="intro_optional_permissions">可选权限</string>
-    <string name="intro_desc_optional_permissions2">如果要分享您的位置，需要获取位置的权限。\n如果要分享语言消息，需要麦克风的权限。</string>
-    <string name="intro_desc_account3">您会有导入现有帐户的选项。\n如果有可用的备份文件，它们会显示出来。</string>
+    <string name="intro_desc_optional_permissions2">如果要分享您的位置，需要获取位置的权限。
+\n如果要分享语言消息，需要麦克风的权限。</string>
+    <string name="intro_desc_account3">您会有导入现有帐户的选项。
+\n如果有可用的备份文件，它们会显示出来。</string>
     <string name="intro_desc_start_chatting2">您可以添加，创建或加入多人聊天（rooms）。与私密群组和公共群组有所区别的叫作频道。</string>
-    <string name="intro_desc_start_chatting3">祝贺！\n我们开始吧，用得开心…</string>
-    <string name="intro_privacy">您的隐私\n您作主</string>
+    <string name="intro_desc_start_chatting3">祝贺！
+\n我们开始吧，用得开心…</string>
+    <string name="intro_privacy">您的隐私
+\n您作主</string>
     <string name="no_results">无结果</string>
     <string name="file_transmission_cancelled">文件传输取消</string>
     <string name="sharing_application_not_grant_permission">分享文件的应用没有授予该文件的权限。</string>
@@ -907,4 +948,342 @@
     <string name="pref_theme_orange">橙色</string>
     <string name="pref_theme_color_options_summary">选择主题调色板</string>
     <string name="pref_theme_color_options">主题颜色</string>
+    <string name="pref_broadcast_last_activity_summary"></string>
+    <string name="request_permissions_message"></string>
+    <string name="copy_otr_clipboard_description"></string>
+    <string name="exit"></string>
+    <string name="your_server_invitation"></string>
+    <string name="i_have_written"></string>
+    <string name="strikethrough"></string>
+    <string name="grant"></string>
+    <string name="no_manage_storage_permission"></string>
+    <string name="pref_showtextformatting_sum"></string>
+    <string name="pref_showtextformatting"></string>
+    <string name="help_format_text"></string>
+    <string name="close"></string>
+    <string name="close_format_text"></string>
+    <string name="port_example" translatable="false"></string>
+    <string name="pref_show_date_in_quotes_summary"></string>
+    <string name="pref_show_date_in_quotes"></string>
+    <string name="delete_avatar"></string>
+    <string name="import_backup_description"></string>
+    <string name="title_activity_about_x"></string>
+    <string name="x_has_written"></string>
+    <string name="optimize_database"></string>
+    <string name="verifying_omemo_keys_trusted_source_account"></string>
+    <string name="continue_btn"></string>
+    <string name="participants"></string>
+    <string name="download_failed_invalid_file"></string>
+    <string name="orbot_not_found"></string>
+    <string name="account_status_temporary_auth_failure"></string>
+    <string name="pref_max_resend_time_title"></string>
+    <string name="pref_max_resend_time_summary"></string>
+    <string name="pref_resend_delay_title"></string>
+    <string name="pref_resend_delay_summary"></string>
+    <string name="choose_camera_app"></string>
+    <string name="pref_choose_camera_summary"></string>
+    <string name="vector_graphic"></string>
+    <string name="multimedia_file"></string>
+    <string name="title_undo_swipe_out_group_chat"></string>
+    <string name="title_undo_swipe_out_channel"></string>
+    <string name="title_undo_swipe_out_conversation"></string>
+    <string name="undo"></string>
+    <string name="audio_video_disabled_tor"></string>
+    <string name="pref_enable_persistent_rooms_summary"></string>
+    <string name="pref_enable_persistent_rooms_title"></string>
+    <string name="switch_to_video"></string>
+    <string name="reject_switch_to_video"></string>
+    <string name="unified_push_distributor"></string>
+    <string name="pref_up_push_account_title"></string>
+    <string name="pref_up_push_account_summary"></string>
+    <string name="pref_up_push_server_title"></string>
+    <string name="pref_up_push_server_summary"></string>
+    <string name="no_account_deactivated"></string>
+    <string name="pref_theme_custom"></string>
+    <string name="moderate_message"></string>
+    <string name="moderate_reason"></string>
+    <string name="unable_to_moderate"></string>
+    <string name="incoming_call_duration_timestamp"></string>
+    <string name="outgoing_call_duration_timestamp"></string>
+    <string name="outgoing_call_timestamp"></string>
+    <string name="note_to_self"></string>
+    <string name="retract_message"></string>
+    <string name="conference_technical_problems"></string>
+    <plurals name="x_unread_conversations">
+        <item quantity="other"></item>
+    </plurals>
+    <string name="crash_report_title"></string>
+    <string name="crash_report_message"></string>
+    <string name="openkeychain_required"></string>
+    <string name="openkeychain_required_long"></string>
+    <string name="contact_has_no_pgp_key"></string>
+    <string name="pref_send_crash_summary"></string>
+    <string name="account_status_tls_error_domain"></string>
+    <string name="account_status_incompatible_client"></string>
+    <string name="encryption_choice_otr"></string>
+    <string name="encryption_choice_pgp"></string>
+    <string name="encryption_choice_omemo"></string>
+    <string name="account_settings_example_jabber_id"></string>
+    <string name="omemo_fingerprint_selected_message"></string>
+    <string name="omemo_fingerprint_x509_selected_message"></string>
+    <string name="enable_notifications"></string>
+    <string name="pref_allow_message_retraction"></string>
+    <string name="pref_allow_message_retraction_summary"></string>
+    <string name="pref_use_indicate_received_summary"></string>
+    <string name="conversations_foreground_service" translatable="false"></string>
+    <string name="receiving_file_x"></string>
+    <string name="pref_enter_is_send_summary"></string>
+    <string name="sending_x_file_x"></string>
+    <string name="account_status_i2p_unavailable"></string>
+    <string name="pref_away_when_screen_off"></string>
+    <string name="pref_away_when_screen_off_summary"></string>
+    <string name="update_info"></string>
+    <string name="hostname_example"></string>
+    <string name="hostname_or_onion"></string>
+    <string name="no_storage_permission"></string>
+    <string name="sync_with_contacts_long"></string>
+    <string name="battery_optimizations_enabled_explained"></string>
+    <string name="battery_optimizations_enabled_dialog"></string>
+    <string name="InviteText"></string>
+    <string name="request_permissions_message_again"></string>
+    <string name="error_message"></string>
+    <string name="data_saver_enabled_explained"></string>
+    <string name="device_does_not_support_data_saver"></string>
+    <string name="transcoding_video_x"></string>
+    <plurals name="years">
+        <item quantity="other"></item>
+    </plurals>
+    <string name="block_jabber_id"></string>
+    <string name="one_participant"></string>
+    <string name="pref_use_i2p"></string>
+    <string name="pref_use_i2p_summary"></string>
+    <string name="update_service"></string>
+    <string name="pref_theme_pink"></string>
+    <string name="huawei_protected_apps_summary"></string>
+    <string name="no_camera_permission"></string>
+    <string name="pref_automatically_delete_attachments_description"></string>
+    <string name="pref_automatically_delete_files"></string>
+    <string name="error_trustkey_general"></string>
+    <string name="no_microphone_permission"></string>
+    <string name="gif"></string>
+    <string name="no_location_permission"></string>
+    <string name="foreground_service_channel_description"></string>
+    <string name="delivery_failed_channel_name"></string>
+    <string name="delete_message_dialog_msg"></string>
+    <string name="send_otr_message"></string>
+    <string name="unknown_otr_fingerprint"></string>
+    <string name="otr_fingerprint"></string>
+    <string name="otr_fingerprint_selected_message"></string>
+    <string name="toast_message_otr_fingerprint"></string>
+    <string name="verify_otr"></string>
+    <string name="no_otr_session_found"></string>
+    <string name="are_you_sure_verify_fingerprint"></string>
+    <string name="otr_session_not_started"></string>
+    <string name="pref_enable_otr_summary"></string>
+    <string name="pref_enable_otr"></string>
+    <string name="otr_warning"></string>
+    <string name="set_profile_picture"></string>
+    <plurals name="view_users">
+        <item quantity="other"></item>
+    </plurals>
+    <string name="pref_show_mappreview_inside_summary"></string>
+    <string name="add_anyway"></string>
+    <string name="pref_theme_black"></string>
+    <string name="conversations_backup"></string>
+    <string name="not_a_backup_file"></string>
+    <string translatable="false" name="x_user_quote"></string>
+    <string name="me_quote"></string>
+    <string name="pref_use_inner_storage"></string>
+    <string name="pref_use_inner_storage_summary"></string>
+    <string name="welcome_header"></string>
+    <string name="intro_whats_xmpp"></string>
+    <string name="intro_desc_account2"></string>
+    <string name="intro_desc_privacy"></string>
+    <string name="jabber_network"></string>
+    <string name="pref_notification_grace_period"></string>
+    <string name="pref_notification_grace_period_summary"></string>
+    <string name="ask_for_writeaccess"></string>
+    <string name="pref_theme_monocles"></string>
+    <string name="pref_theme_grey"></string>
+    <string name="pref_theme_White"></string>
+    <string name="magic_create_text_on_x"></string>
+    <string name="account_status_regis_invalid_token"></string>
+    <string name="magic_create_text_fixed"></string>
+    <string name="pref_use_unicolored_chatbg_summary"></string>
+    <string name="pref_use_unicolored_chatbg"></string>
+    <string name="pref_alternative_voice_settings_summary"></string>
+    <string name="pref_alternative_voice_settings"></string>
+    <string name="pref_use_colored_muc_names_summary"></string>
+    <string name="pref_use_colored_muc_names"></string>
+    <string name="show_videos_images_only"></string>
+    <string name="show_avatar"></string>
+    <string name="action_delete"></string>
+    <string name="attach_choose_video"></string>
+    <string name="please_enable_an_account"></string>
+    <string name="server_info_external_service_discovery"></string>
+    <string name="return_to_ongoing_call"></string>
+    <string name="make_call"></string>
+    <string name="audio_call"></string>
+    <string name="video_call"></string>
+    <string name="pref_message_notification_settings"></string>
+    <string name="pref_incoming_call_notification_settings"></string>
+    <string name="pref_notification_sound_summary"></string>
+    <string name="pref_notification_sound"></string>
+    <string name="pref_call_ringtone_summary"></string>
+    <string name="incoming_calls_channel_name"></string>
+    <string name="ongoing_calls_channel_name"></string>
+    <string name="rtp_state_incoming_video_call"></string>
+    <string name="rtp_state_incoming_call"></string>
+    <string name="dismiss_call"></string>
+    <string name="answer_call"></string>
+    <string name="ongoing_call"></string>
+    <string name="ongoing_video_call"></string>
+    <string name="hang_up"></string>
+    <string name="notification_group_calls"></string>
+    <string name="microphone_unavailable"></string>
+    <string name="rtp_state_connected"></string>
+    <string name="rtp_state_reconnecting"></string>
+    <string name="rtp_state_accepting_call"></string>
+    <string name="rtp_state_ending_call"></string>
+    <string name="rtp_state_finding_device"></string>
+    <string name="rtp_state_ringing"></string>
+    <string name="rtp_state_declined_or_busy"></string>
+    <string name="rtp_state_connectivity_error"></string>
+    <string name="rtp_state_connectivity_lost_error"></string>
+    <string name="rtp_state_content_add_video"></string>
+    <string name="rtp_state_content_add"></string>
+    <string name="rtp_state_retracted"></string>
+    <string name="rtp_state_application_failure"></string>
+    <string name="rtp_state_security_error"></string>
+    <string name="incoming_call_duration"></string>
+    <string name="incoming_call_time"></string>
+    <string name="incoming_call"></string>
+    <string name="missed_call_timestamp"></string>
+    <string name="outgoing_call_duration"></string>
+    <string name="outgoing_call_time"></string>
+    <string name="outgoing_call"></string>
+    <string name="disable_tor_to_make_call"></string>
+    <string name="no_i2p_calls"></string>
+    <string name="help"></string>
+    <string name="switch_to_conversation"></string>
+    <string name="only_one_call_at_a_time"></string>
+    <string name="missed_call"></string>
+    <string name="could_not_switch_camera"></string>
+    <string name="readmore"></string>
+    <string name="add_to_favorites"></string>
+    <string name="remove_from_favorites"></string>
+    <string name="improperly_formatted_provisioning"></string>
+    <string name="gpx_track"></string>
+    <string name="could_not_correct_message"></string>
+    <string name="search_all_conversations"></string>
+    <string name="search_this_conversation"></string>
+    <string name="your_avatar"></string>
+    <string name="avatar_for_x"></string>
+    <string name="encrypted_with_omemo"></string>
+    <string name="encrypted_with_openpgp"></string>
+    <string name="not_encrypted"></string>
+    <string name="add_contact_or_create_or_join_group_chat"></string>
+    <plurals name="some_messages_could_not_be_delivered">
+        <item quantity="other"></item>
+    </plurals>
+    <string name="failed_deliveries"></string>
+    <string name="missed_calls_channel_name"></string>
+    <plurals name="n_missed_calls_from_x">
+        <item quantity="other"></item>
+    </plurals>
+    <plurals name="n_missed_calls">
+        <item quantity="other"></item>
+    </plurals>
+    <plurals name="n_missed_calls_from_m_contacts">
+        <item quantity="other"></item>
+    </plurals>
+    <string name="pref_invidious_host_summary"></string>
+    <string name="pref_invidious_host"></string>
+    <string name="updated_to_monocles"></string>
+    <string name="updated_to_monocles_google"></string>
+    <string name="link"></string>
+    <string name="create_monocles_account"></string>
+    <string name="no_application_found"></string>
+    <string name="move_data"></string>
+    <string name="error_moving_data"></string>
+    <string name="data_successfully_moved"></string>
+    <string name="invite_to_app"></string>
+    <string name="unable_to_parse_invite"></string>
+    <string name="server_does_not_support_easy_onboarding_invites"></string>
+    <string name="your_server"></string>
+    <string name="tap_share_button_send_invite"></string>
+    <string name="invite"></string>
+    <string name="if_contact_is_nearby_use_qr"></string>
+    <string name="easy_invite_share_text"></string>
+    <string name="share_invite_with"></string>
+    <string name="no_active_accounts_support_this"></string>
+    <string name="server_info_easy_invite"></string>
+    <string name="pref_mappreview_host_summary"></string>
+    <string name="pref_mappreview_host"></string>
+    <string name="webview_not_available"></string>
+    <string name="pref_easy_downloader_summary"></string>
+    <string name="pref_easy_downloader"></string>
+    <string name="got_invitation_from"></string>
+    <string name="a_user"></string>
+    <string name="pref_memory_management_summary"></string>
+    <string name="title_memory_management"></string>
+    <string name="disk_storage"></string>
+    <string name="media_usage"></string>
+    <string name="pictures_usage"></string>
+    <string name="videos_usage"></string>
+    <string name="files_usage"></string>
+    <string name="memory_warning"></string>
+    <string name="memory_warning_force"></string>
+    <string name="open_settings"></string>
+    <string name="oldAndroidVersion"></string>
+    <string name="oldAndroidVersionMessage"></string>
+    <string name="save_x_file"></string>
+    <string name="file_copied_to"></string>
+    <string name="copy_file_to"></string>
+    <string name="use_individual_notifications"></string>
+    <string name="pref_remove_all_individual_summary"></string>
+    <string name="pref_remove_all_individual_notifications_title"></string>
+    <string name="remove_individual_notifications"></string>
+    <string name="remove_individual_notifications_message"></string>
+    <string name="remove_all_individual_notifications_message"></string>
+    <string name="record_voice_mail"></string>
+    <string name="backup_started_message"></string>
+    <string name="error_security_exception"></string>
+    <string name="unable_to_enable_video"></string>
+    <string name="plain_text_document"></string>
+    <string name="delete_recording_dialog_message"></string>
+    <string name="pref_pause_voice_on_move_from_ear"></string>
+    <string name="pref_pause_voice_on_move_from_ear_summary"></string>
+    <string name="pref_import_settings_summary"></string>
+    <string name="pref_import_settings"></string>
+    <string name="success_import_settings"></string>
+    <string name="error_import_settings"></string>
+    <string name="action_unfix_from_location"></string>
+    <string name="action_fix_to_location"></string>
+    <string name="action_copy_location"></string>
+    <string name="account_registrations_are_not_supported"></string>
+    <string name="no_xmpp_adddress_found"></string>
+    <string name="pref_allowmergemessages"></string>
+    <string name="pref_allowmergemessages_sum"></string>
+    <string name="show_edit_log"></string>
+    <string name="reconnecting_call"></string>
+    <string name="reconnecting_video_call"></string>
+    <string name="format_text"></string>
+    <string name="bold"></string>
+    <string name="italic"></string>
+    <string name="monospace"></string>
+    <string name="reply_to"></string>
+    <string name="rtp_state_connecting"></string>
+    <string name="contacts_have_no_pgp_keys"></string>
+    <string name="pref_ringtone"></string>
+    <string name="audios_usage"></string>
+    <string name="using_inner_storage"></string>
+    <string name="delete_files_dialog"></string>
+    <string name="delete_files_dialog_msg"></string>
+    <string name="audios"></string>
+    <string name="images"></string>
+    <string name="videos"></string>
+    <string name="files"></string>
+    <string name="all_media_files"></string>
+    <string name="user"></string>
 </resources>

@@ -38,14 +38,14 @@
     <string name="moderator">Moderator</string>
     <string name="participant">Deelnemer</string>
     <string name="visitor">Bezoeker</string>
-    <string name="remove_contact_text">Wil je %s uit je contactlijst verwijderen? Het gesprek met deze persoon zal niet worden verwijderd.</string>
-    <string name="block_contact_text">Wil je alle berichten van %s blokkeren?</string>
-    <string name="unblock_contact_text">Wil je %s deblokkeren en er weer berichten van kunnen ontvangen?</string>
-    <string name="block_domain_text">Alle contacten van %s blokkeren?</string>
-    <string name="unblock_domain_text">Alle contacten van %s deblokkeren?</string>
+    <string name="remove_contact_text">Wil je %s uit je contactlijst verwijderen\? Het gesprek met deze persoon zal niet worden verwijderd.</string>
+    <string name="block_contact_text">Wil je alle berichten van %s blokkeren\?</string>
+    <string name="unblock_contact_text">Wil je %s deblokkeren en er weer berichten van kunnen ontvangen\?</string>
+    <string name="block_domain_text">Alle contacten van %s blokkeren\?</string>
+    <string name="unblock_domain_text">Alle contacten van %s deblokkeren\?</string>
     <string name="contact_blocked">Contact geblokkeerd</string>
     <string name="blocked">Geblokkeerd</string>
-    <string name="remove_bookmark_text">Wil je %s als bladwijzer verwijderen? Het gesprek met dit account zal niet worden verwijderd.</string>
+    <string name="remove_bookmark_text">Wil je %s als bladwijzer verwijderen\? Het gesprek met dit account zal niet worden verwijderd.</string>
     <string name="register_account">Nieuw account op server registreren</string>
     <string name="change_password_on_server">Wachtwoord op server veranderen</string>
     <string name="share_with">Delen met…</string>
@@ -62,20 +62,24 @@
     <string name="save">Opslaan</string>
     <string name="ok">Oké</string>
     <string name="crash_report_title">monocles chat is vastgelopen</string>
-    <string name="crash_report_message">Door het versturen van crashrapportages help je de ontwikkeling van monocles chat.\n\n<b>Waarschuwing:</b> Deze app zal je XMPP-account gebruiken om de rapportage te versturen naar de ontwikkelaar.</string>
+    <string name="crash_report_message">Door het versturen van crashrapportages help je de ontwikkeling van monocles chat.
+\n
+\n<b>Waarschuwing:</b> Deze app zal je XMPP-account gebruiken om de rapportage te versturen naar de ontwikkelaar.</string>
     <string name="send_now">Nu versturen</string>
     <string name="send_never">Niet opnieuw vragen</string>
     <string name="problem_connecting_to_account">Verbinding maken met account mislukt</string>
     <string name="problem_connecting_to_accounts">Verbinden met meerdere accounts mislukt</string>
     <string name="touch_to_fix">Klik hier om je accounts te beheren</string>
     <string name="attach_file">Bestand bijvoegen</string>
-    <string name="not_in_roster">Het contact staat niet in je lijst. Wil je hem/haar toevoegen?</string>
+    <string name="not_in_roster">Het contact staat niet in je lijst. Wil je hem/haar toevoegen\?</string>
     <string name="add_contact">Contact toevoegen</string>
     <string name="send_failed">afleveren mislukt</string>
     <string name="preparing_image">Bezig met voorbereiden van versturen van afbeelding</string>
     <string name="action_clear_history">Geschiedenis wissen</string>
     <string name="clear_conversation_history">Gespreksgeschiedenis wissen</string>
-    <string name="clear_histor_msg">Alle berichten in dit gesprek verwijderen?\n\n<b>Waarschuwing:</b> Dit zal geen invloed hebben op de berichten die zijn opgeslagen op andere apparaten of servers.</string>
+    <string name="clear_histor_msg">Alle berichten in dit gesprek verwijderen\?
+\n
+\n<b>Waarschuwing:</b> Dit zal geen invloed hebben op de berichten die zijn opgeslagen op andere apparaten of servers.</string>
     <string name="also_end_conversation">Dit gesprek na afloop beëindigen</string>
     <string name="choose_presence">Apparaat kiezen</string>
     <string name="send_unencrypted_message">Verstuur onversleuteld bericht</string>
@@ -87,13 +91,19 @@
     <string name="send_unencrypted">Verstuur onversleuteld</string>
     <string name="decryption_failed">Ontsleutelen mislukt. Misschien heb je niet de juiste private sleutel.</string>
     <string name="openkeychain_required">OpenKeychain</string>
-    <string name="openkeychain_required_long">%1$s gebruikt een app genaamd <b>OpenKeychain</b> om berichten te versleutelen/ontsleutelen en om publieke sleutels te beheren.\n\nOpenKeychain is beschikbaar onder de GPLv3-licentie en beschikbaar op F-Droid en Google Play.\n\n<small>(Herstart monocles chat na installatie.)</small></string>
+    <string name="openkeychain_required_long">%1$s gebruikt een app genaamd <b>OpenKeychain</b> om berichten te versleutelen/ontsleutelen en om publieke sleutels te beheren.
+\n
+\nOpenKeychain is beschikbaar onder de GPLv3-licentie en beschikbaar op F-Droid en Google Play.
+\n
+\n<small>(Herstart monocles chat na installatie.)</small></string>
     <string name="restart">Herstarten</string>
     <string name="install">Installeren</string>
     <string name="offering">bezig met aanbieden…</string>
     <string name="waiting">wachten…</string>
     <string name="no_pgp_key">Geen OpenPGP-sleutel gevonden</string>
-    <string name="contact_has_no_pgp_key">monocles chat kan de berichten niet versleutelen omdat dit contact geen publieke sleutel doorstuurt.\n\n<small>Vraag het contact om OpenPGP in te stellen.</small></string>
+    <string name="contact_has_no_pgp_key">monocles chat kan de berichten niet versleutelen omdat dit contact geen publieke sleutel doorstuurt.
+\n
+\n<small>Vraag het contact om OpenPGP in te stellen.</small></string>
     <string name="no_pgp_keys">Geen OpenPGP-sleutels gevonden</string>
     <string name="pref_general">Algemeen</string>
     <string name="pref_accept_files_wifi">Bestanden accepteren met WiFi-verbindingen</string>
@@ -127,12 +137,14 @@
     <string name="error_not_an_image_file">Het bestand dat je gekozen hebt is geen afbeelding</string>
     <string name="error_compressing_image">Fout tijdens converteren van afbeelding</string>
     <string name="error_file_not_found">Bestand niet gevonden</string>
-    <string name="error_io_exception">Algemene I/O-fout. Misschien is er geen opslagruimte meer beschikbaar?</string>
-    <string name="error_security_exception_during_image_copy">De app die je gebruikte om de afbeelding te selecteren heeft niet voldoende toegang geleverd om het bestand te lezen.\n\n<small>Gebruik een andere bestandsbeheerder om een afbeelding te kiezen</small></string>
+    <string name="error_io_exception">Algemene I/O-fout. Misschien is er geen opslagruimte meer beschikbaar\?</string>
+    <string name="error_security_exception_during_image_copy">De app die je gebruikte om de afbeelding te selecteren heeft niet voldoende toegang geleverd om het bestand te lezen.
+\n
+\n<small>Gebruik een andere bestandsbeheerder om een afbeelding te kiezen</small></string>
     <string name="account_status_unknown">Onbekend</string>
     <string name="account_status_disabled">Tijdelijk uitgeschakeld</string>
     <string name="account_status_online">Online</string>
-    <string name="account_status_connecting">Verbinden\u2026</string>
+    <string name="account_status_connecting">Verbinden…</string>
     <string name="account_status_offline">Offline</string>
     <string name="account_status_unauthorized">Niet gemachtigd</string>
     <string name="account_status_not_found">Server niet gevonden</string>
@@ -155,17 +167,20 @@
     <string name="mgmt_account_publish_avatar">Avatar publiceren</string>
     <string name="mgmt_account_publish_pgp">OpenPGP-publieke sleutel publiceren</string>
     <string name="unpublish_pgp">OpenPGP-publieke sleutel verwijderen</string>
-    <string name="unpublish_pgp_message">Weet je zeker dat je de OpenPGP publieke sleutel uit je aanwezigheidsmelding wilt verwijderen?\nJe contacten zullen je dan geen met OpenPGP versleutelde berichten meer kunnen sturen.</string>
+    <string name="unpublish_pgp_message">Weet je zeker dat je de OpenPGP publieke sleutel uit je aanwezigheidsmelding wilt verwijderen\?
+\nJe contacten zullen je dan geen met OpenPGP versleutelde berichten meer kunnen sturen.</string>
     <string name="openpgp_has_been_published">OpenPGP-publieke sleutel is gepubliceerd.</string>
-    <string name="mgmt_account_are_you_sure">Weet je het zeker?</string>
-    <string name="mgmt_account_delete_confirm_message">Bij het verwijderen van deze account zal de hele gespreksgeschiedenis op dit apparaat verloren gaan.\n\nBij het verwijderen van het account op de server kan ook niet meer worden ingelogd met dit account.</string>
+    <string name="mgmt_account_are_you_sure">Weet je het zeker\?</string>
+    <string name="mgmt_account_delete_confirm_message">Bij het verwijderen van deze account zal de hele gespreksgeschiedenis op dit apparaat verloren gaan.
+\n
+\nBij het verwijderen van het account op de server kan ook niet meer worden ingelogd met dit account.</string>
     <string name="attach_record_voice">Stem opnemen</string>
     <string name="account_settings_jabber_id">chat address:</string>
     <string name="account_settings_example_jabber_id">gebruikersnaam@monocles.de</string>
     <string name="password">Wachtwoord</string>
     <string name="invalid_jid">Dit is geen geldige chat address</string>
     <string name="error_out_of_memory">Geen geheugen beschikbaar. Afbeelding is te groot</string>
-    <string name="add_phone_book_text">Wil je %s toevoegen aan je adresboek?</string>
+    <string name="add_phone_book_text">Wil je %s toevoegen aan je adresboek\?</string>
     <string name="server_info_show_more">Server-info</string>
     <string name="server_info_mam">XEP-0313: MAM</string>
     <string name="server_info_carbon_messages">XEP-0280: Message Carbons</string>
@@ -240,12 +255,16 @@
     <string name="enable">Inschakelen</string>
     <string name="conference_requires_password">Wachtwoord vereist voor toegang tot groepsgesprek</string>
     <string name="enter_password">Wachtwoord invoeren</string>
-    <string name="request_presence_updates">Vraag eerst aanwezigheidsupdates van je contact aan.\n\n<small>Dit wordt gebruikt om te bepalen welke client(s) je contact gebruikt.</small></string>
+    <string name="request_presence_updates">Vraag eerst aanwezigheidsupdates van je contact aan.
+\n
+\n<small>Dit wordt gebruikt om te bepalen welke client(s) je contact gebruikt.</small></string>
     <string name="request_now">Nu aanvragen</string>
     <string name="delete_fingerprint">Vingerafdruk verwijderen</string>
-    <string name="sure_delete_fingerprint">Ben je zeker dat je deze vingerafdruk wil verwijderen?</string>
+    <string name="sure_delete_fingerprint">Ben je zeker dat je deze vingerafdruk wil verwijderen\?</string>
     <string name="ignore">Negeren</string>
-    <string name="without_mutual_presence_updates"><b>Waarschuwing:</b> Dit verzenden zonder wederzijdse aanwezigheidsupdates kan voor onverwachte problemen zorgen.\n\n<small>Ga naar contactgegevens om je aanwezigheidsupdates te bevestigen.</small></string>
+    <string name="without_mutual_presence_updates"><b>Waarschuwing:</b> Dit verzenden zonder wederzijdse aanwezigheidsupdates kan voor onverwachte problemen zorgen.
+\n
+\n<small>Ga naar contactgegevens om je aanwezigheidsupdates te bevestigen.</small></string>
     <string name="pref_security_settings">Beveiliging</string>
     <string name="pref_allow_message_correction">Berichtcorrectie toestaan</string>
     <string name="pref_allow_message_correction_summary">Sta je contacten toe hun berichten na het versturen nog te corrigeren</string>
@@ -307,7 +326,7 @@
     <string name="notification_restored_backup_subtitle">Vergeet niet om het account in te schakelen.</string>
     <string name="choose_file">Bestand kiezen</string>
     <string name="receiving_file">%1$s ontvangen</string>
-    <string name="receiving_file_x">Ontvangen %1$s (%2$s \%%)</string>
+    <string name="receiving_file_x">Ontvangen %1$s (%2$s %)</string>
     <string name="download_x_file">%s downloaden</string>
     <string name="delete_x_file">%s verwijderen</string>
     <string name="file">bestand</string>
@@ -328,10 +347,12 @@
     <string name="copy_omemo_clipboard_description">OMEMO-vingerafdruk kopiëren naar klembord</string>
     <string name="regenerate_omemo_key">OMEMO-sleutel opnieuw aanmaken</string>
     <string name="clear_other_devices">Apparaten wissen</string>
-    <string name="clear_other_devices_desc">Weet je zeker dat je alle andere apparaten uit de OMEMO-aankondiging wilt verwijderen? De volgende keer dat je apparaten een verbinding maken zullen ze zich opnieuw moeten aankondigen, maar misschien niet de berichten ontvangen die in de tussentijd zijn verzonden.</string>
+    <string name="clear_other_devices_desc">Weet je zeker dat je alle andere apparaten uit de OMEMO-aankondiging wilt verwijderen\? De volgende keer dat je apparaten een verbinding maken zullen ze zich opnieuw moeten aankondigen, maar misschien niet de berichten ontvangen die in de tussentijd zijn verzonden.</string>
     <string name="distrust_omemo_key">Apparaat niet meer vertrouwen</string>
-    <string name="distrust_omemo_key_text">Weet je zeker dat je de verificatie voor dit apparaat wil verwijderen?\nHet apparaat en alle berichten die het verstuurt zullen als niet-vertrouwd worden weergegeven.</string>
-    <string name="error_no_keys_to_trust_server_error">Er zijn geen bruikbare sleutels beschikbaar voor dit contact.\nOphalen van nieuwe sleutels van de server is mislukt. Misschien is er iets mis met de server van je contact.</string>
+    <string name="distrust_omemo_key_text">Weet je zeker dat je de verificatie voor dit apparaat wil verwijderen\?
+\nHet apparaat en alle berichten die het verstuurt zullen als niet-vertrouwd worden weergegeven.</string>
+    <string name="error_no_keys_to_trust_server_error">Er zijn geen bruikbare sleutels beschikbaar voor dit contact.
+\nOphalen van nieuwe sleutels van de server is mislukt. Misschien is er iets mis met de server van je contact.</string>
     <string name="error_trustkeys_title">Er is een fout opgetreden</string>
     <string name="fetching_history_from_server">Geschiedenis van server halen</string>
     <string name="no_more_history_on_server">Geen verdere geschiedenis op server</string>
@@ -339,11 +360,14 @@
     <string name="password_changed">Wachtwoord gewijzigd!</string>
     <string name="could_not_change_password">Kon wachtwoord niet wijzigen</string>
     <string name="ask_question">Stel een vraag</string>
-    <string name="smp_explain_question">Als jij en je contact een gemeenschappelijk geheim hebben dat niemand anders weet (zoals een privé-grap of gewoonweg wat jullie gegeten hebben de laatste keer dat jullie elkaar zagen) kunnen jullie dat geheim gebruiken om elkaars vingerafdrukken te verifiëren.\n\nJe geeft een hint of een vraag voor je contact, en hij/zij moet hier een  hoofdlettergevoelig antwoord op geven.</string>
+    <string name="smp_explain_question">Als jij en je contact een gemeenschappelijk geheim hebben dat niemand anders weet (zoals een privé-grap of gewoonweg wat jullie gegeten hebben de laatste keer dat jullie elkaar zagen) kunnen jullie dat geheim gebruiken om elkaars vingerafdrukken te verifiëren.
+\n
+\nJe geeft een hint of een vraag voor je contact, en hij/zij moet hier een hoofdlettergevoelig antwoord op geven.</string>
     <string name="smp_explain_answer">Je contact wil je vingerafdruk verifiëren door je uit te dagen met een gedeeld geheim. Je contact heeft daarvoor volgende hint of vraag opgegeven.</string>
     <string name="shared_secret_hint_should_not_be_empty">Je hint zou niet leeg mogen zijn</string>
     <string name="shared_secret_can_not_be_empty">Je gedeeld geheim can niet leeg zijn</string>
-    <string name="manual_verification_explanation">Vergelijk met zorg de vingerafdruk hieronder met de vingerafdruk van je contact.\nJe kan hiervoor een andere betrouwbare vorm van communicatie gebruiken, zoals een versleutelde e-mail of een telefoongesprek.</string>
+    <string name="manual_verification_explanation">Vergelijk met zorg de vingerafdruk hieronder met de vingerafdruk van je contact.
+\nJe kan hiervoor een andere betrouwbare vorm van communicatie gebruiken, zoals een versleutelde e-mail of een telefoongesprek.</string>
     <string name="change_password">Wachtwoord wijzigen</string>
     <string name="current_password">Huidig wachtwoord</string>
     <string name="new_password">Nieuw wachtwoord</string>
@@ -388,7 +412,7 @@
     <string name="vcard">Contact</string>
     <string name="avatar_has_been_published">Avatar is gepubliceerd!</string>
     <string name="sending_x_file">Bezig met versturen van %s</string>
-    <string name="sending_x_file_x">Versturen %1$s (%2$s \%%)</string>
+    <string name="sending_x_file_x">Versturen %1$s (%2$s %)</string>
     <string name="offering_x_file">Bezig met aanbieden van %s</string>
     <string name="hide_offline">Offline contacten verbergen</string>
     <string name="is_typing">is aan het typen…</string>
@@ -428,7 +452,11 @@
     <string name="download_failed_could_not_write_file">Download mislukt: kon bestand niet schrijven</string>
     <string name="action_check_update">Controleren op updates</string>
     <string name="title_activity_updater">Update-service</string>
-    <string name="update_available">Versie %1$s is beschikbaar.\n\nBestandsgrootte: %2$s\n\nNu updaten naar versie %1$s?</string>
+    <string name="update_available">Versie %1$s is beschikbaar.
+\n
+\nBestandsgrootte: %2$s
+\n
+\nNu updaten naar versie %1$s\?</string>
     <string name="remind_later">later</string>
     <string name="update">update</string>
     <string name="no_update_available">Geen update beschikbaar</string>
@@ -441,7 +469,9 @@
     <string name="pref_away_when_screen_off">Afwezig wanneer apparaat vergrendeld wordt</string>
     <string name="pref_away_when_screen_off_summary">Zet status op \"Afwezig\" wanneer het apparaat wordt vergrendeld</string>
     <string name="pref_dnd_on_silent_mode">“Niet storen” in stille modus</string>
-    <string name="update_info">monocles chat is bezig met het downloaden en installeren van de nieuwe versie.\n\nEven geduld…</string>
+    <string name="update_info">monocles chat is bezig met het downloaden en installeren van de nieuwe versie.
+\n
+\nEven geduld…</string>
     <string name="pref_dnd_on_silent_mode_summary">Zet status op \"Niet storen\" wanneer het apparaat in Stille modus staat</string>
     <string name="pref_treat_vibrate_as_silent">Trillen behandelen als stille modus</string>
     <string name="pref_treat_vibrate_as_dnd_summary">Zet status op \"Niet storen\" wanneer het apparaat in trilmodus staat</string>
@@ -475,7 +505,11 @@
     <string name="load_more_messages">Laad meer berichten</string>
     <string name="no_storage_permission">monocles chat heeft toegang nodig tot de externe opslag</string>
     <string name="sync_with_contacts">Synchroniseer met contacten</string>
-    <string name="sync_with_contacts_long">monocles chat wil de XMPP-contacten met je Android-adresboek vergelijken om hun volledige namen en profielfoto\'s te kunnen tonen.\n\nmonocles chat zal de contacten enkel lokaal uitlezen en vergelijken, zonder ze te uploaden naar de server.\n\nEr zal nu gevraagd worden om monocles chat toegang te verlenen tot je contacten.</string>
+    <string name="sync_with_contacts_long">monocles chat wil de XMPP-contacten met je Android-adresboek vergelijken om hun volledige namen en profielfoto\'s te kunnen tonen.
+\n
+\nmonocles chat zal de contacten enkel lokaal uitlezen en vergelijken, zonder ze te uploaden naar de server.
+\n
+\nEr zal nu gevraagd worden om monocles chat toegang te verlenen tot je contacten.</string>
     <string name="notify_on_all_messages">Melding bij alle berichten</string>
     <string name="notify_only_when_highlighted">Melding enkel wanneer aangesproken</string>
     <string name="notify_never">Meldingen uitgeschakeld</string>
@@ -492,12 +526,17 @@
     <string name="always">Altijd</string>
     <string name="always_off">Altijd uit</string>
     <string name="battery_optimizations_enabled">Batterij-optimalisaties ingeschakeld</string>
-    <string name="battery_optimizations_enabled_explained">Dit apparaat voert sterke batterijoptimalisaties uit op monocles chat die kunnen leiden tot vertraagde meldingen of zelfs verlies van berichten.\nHet wordt aangeraden deze optimalisaties uit te schakelen.</string>
-    <string name="battery_optimizations_enabled_dialog">Dit apparaat voert sterke batterijoptimalisaties uit op monocles chat die kunnen leiden tot vertraagde meldingen of zelfs verlies van berichten.\n\nEr zal nu worden verzocht deze uit te schakelen.</string>
+    <string name="battery_optimizations_enabled_explained">Dit apparaat voert sterke batterijoptimalisaties uit op monocles chat die kunnen leiden tot vertraagde meldingen of zelfs verlies van berichten.
+\nHet wordt aangeraden deze optimalisaties uit te schakelen.</string>
+    <string name="battery_optimizations_enabled_dialog">Dit apparaat voert sterke batterijoptimalisaties uit op monocles chat die kunnen leiden tot vertraagde meldingen of zelfs verlies van berichten.
+\n
+\nEr zal nu worden verzocht deze uit te schakelen.</string>
     <string name="install_from_unknown_sources_disabled">Installeren vanaf onbekende bronnen is uitgeschakeld</string>
-    <string name="install_from_unknown_sources_disabled_dialog">Dit apparaat is zo ingesteld dat apps alleen vanuit de Play Store mogen worden geïnstalleerd, niet vanaf onbekende bronnen. De automatische updater in monocles chat. im zal zo niet werken.\n\nEr zal nu gevraagd worden om installeren vanaf onbekende bronnen toe te staan.</string>
+    <string name="install_from_unknown_sources_disabled_dialog">Dit apparaat is zo ingesteld dat apps alleen vanuit de Play Store mogen worden geïnstalleerd, niet vanaf onbekende bronnen. De automatische updater in monocles chat. im zal zo niet werken.
+\n
+\nEr zal nu gevraagd worden om installeren vanaf onbekende bronnen toe te staan.</string>
     <string name="disable">Uitschakelen</string>
-    <string name="cancel_update">Update annuleren?</string>
+    <string name="cancel_update">Update annuleren\?</string>
     <string name="yes">Ja</string>
     <string name="no">Nee</string>
     <string name="no_accounts">(Geen actieve accounts)</string>
@@ -505,13 +544,25 @@
     <string name="correct_message">Bericht corrigeren</string>
     <string name="send_corrected_message">Gecorrigeerd bericht versturen</string>
     <string name="no_keys_just_confirm">Je vertrouwt dit contact al. Door \'klaar\' te kiezen bevestig je enkel dat %s deel uitmaakt van dit groepsgesprek.</string>
-    <string name="contacts_have_no_pgp_keys">monocles chat kan de berichten niet versleutelen, omdat je contacten hun publieke sleutels niet hebben doorgegeven.\n\n</string>
+    <string name="contacts_have_no_pgp_keys">monocles chat kan de berichten niet versleutelen, omdat je contacten hun publieke sleutels niet hebben doorgegeven.
+\n
+\n</string>
     <string name="this_account_is_disabled">Je hebt dit account uitgeschakeld</string>
     <string name="no_application_to_share_uri">Geen applicatie om URI te delen</string>
     <string name="share_uri_with">URI delen met…</string>
     <string name="mgmt_account_reconnect">Opnieuw verbinden</string>
     <string name="welcome_text">…is een gratis en veilige client voor XMPP/Jabber.</string>
-    <string name="magic_create_text">You can use monocles chat with every modern XMPP account or get a affordable and secure monocles account, hosted on the monocles server station and powered with regenerative energies!\n\n This includes:\n● two month encrypted temporary chat storage\n● e-mail with 1 GB end-to-end encrypted storage\n\n optionally: \n● 4 GB cloud storage (nextcloud)\n● calendar and contact sync\n● a secure conferencing tool \n● and more on <a href="https://monocles.de/more/">https://monocles.de/more/</a></string>
+    <string name="magic_create_text">You can use monocles chat with every modern XMPP account or get a affordable and secure monocles account, hosted on the monocles server station and powered with regenerative energies!
+\n
+\n This includes:
+\n● two month encrypted temporary chat storage
+\n● e-mail with 1 GB end-to-end encrypted storage
+\n
+\n optionally:
+\n● 4 GB cloud storage (nextcloud)
+\n● calendar and contact sync
+\n● a secure conferencing tool
+\n● and more on <a href="https://monocles.de/more/">https://monocles.de/more/</a></string>
     <string name="your_full_jid_will_be">Je volledige chat address zal %s zijn</string>
     <string name="create_account">Account aanmaken</string>
     <string name="welcome_existing_account">Ik heb een account</string>
@@ -531,7 +582,7 @@
     <string name="location_sharing_disabled">Delen van locatie is uitgeschakeld in instellingen</string>
     <string name="locating">Locatie bepalen…</string>
     <string name="action_end_conversation_muc">Groepsgesprek verlaten</string>
-    <string name="leave_conference_warning">Wil je dit groepsgesprek echt verlaten? Je zult niet langer een melding krijgen bij nieuwe berichten uit dit gesprek.</string>
+    <string name="leave_conference_warning">Wil je dit groepsgesprek echt verlaten\? Je zult niet langer een melding krijgen bij nieuwe berichten uit dit gesprek.</string>
     <string name="show_password">Wachtwoord weergeven</string>
     <string name="registration_please_wait">Registratie mislukt: probeer later opnieuw</string>
     <string name="registration_password_too_weak">Registratie mislukt: wachtwoord te zwak</string>
@@ -541,11 +592,13 @@
     <string name="import_database">Back-up importeren</string>
     <string name="invite_again">Opnieuw uitnodigen</string>
     <string name="inviteUser_Subject">heeft je uitgenodigd via</string>
-    <string name="InviteText">Hoi,\n\n%s heeft je uitgenodigd voor monocles chat. Klik op de volgende link…</string>
+    <string name="InviteText">Hoi,
+\n
+\n%s heeft je uitgenodigd voor monocles chat. Klik op de volgende link…</string>
     <string name="pref_broadcast_last_activity">Laatste gebruikersinteractie uitzenden</string>
     <string name="pref_broadcast_last_activity_summary">Laat alle contacten weten wanneer je monocles chat gebruikt</string>
     <string name="request_permissions_message">monocles chat zal om enkele machtigingen vragen.</string>
-    <string name="request_permissions_message_again">Je hebt sommige of alle machtigingen die nodig zijn voor monocles chat geweigerd. Wil je naar de instellingen om deze machtigingen toe te staan? Als je een van deze toestemmingen weigert, zal de app zichzelf sluiten.</string>
+    <string name="request_permissions_message_again">Je hebt sommige of alle machtigingen die nodig zijn voor monocles chat geweigerd. Wil je naar de instellingen om deze machtigingen toe te staan\? Als je een van deze toestemmingen weigert, zal de app zichzelf sluiten.</string>
     <string name="unable_to_connect_to_keychain">Verbinden met OpenKeychain mislukt</string>
     <string name="this_device_is_no_longer_in_use">Dit apparaat wordt niet meer gebruikt</string>
     <string name="please_wait">Even geduld…</string>
@@ -573,7 +626,9 @@
     <string name="show_error_message">Toon foutbericht</string>
     <string name="error_message">Foutmelding</string>
     <string name="data_saver_enabled">Gegevensbesparing ingeschakeld</string>
-    <string name="data_saver_enabled_explained">Je besturingssysteem voorkomt dat monocles chat toegang heeft tot het internet als het op de achtergrond draait. Om meldingen van nieuwe berichten te kunnen ontvangen, zul je monocles chat onbeperkt datagebruik moeten geven voor wanneer databesparing wordt ingeschakeld.\n\nmonocles chat zal nog steeds proberen om wanneer mogelijk gegevens te besparen.</string>
+    <string name="data_saver_enabled_explained">Je besturingssysteem voorkomt dat monocles chat toegang heeft tot het internet als het op de achtergrond draait. Om meldingen van nieuwe berichten te kunnen ontvangen, zul je monocles chat onbeperkt datagebruik moeten geven voor wanneer databesparing wordt ingeschakeld.
+\n
+\nmonocles chat zal nog steeds proberen om wanneer mogelijk gegevens te besparen.</string>
     <string name="device_does_not_support_data_saver">Je apparaat ondersteunt het uitschakelen van gegevensbesparing voor monocles chat niet.</string>
     <string name="add_to_contact_list">Toevoegen aan contactpersonen</string>
     <string name="contact">Contact</string>
@@ -602,7 +657,7 @@
     <string name="hide_inactive_devices">Verberg inactief</string>
     <string name="reply">Beantwoorden</string>
     <string name="transcoding_video">Video wordt gecomprimeerd</string>
-    <string name="transcoding_video_x">Video comprimeren (%s \%%)</string>
+    <string name="transcoding_video_x">Video comprimeren (%s %)</string>
     <string name="not_fetching_history_retention_period">Berichten worden niet opgehaald wegens lokale bewaarperiode.</string>
     <plurals name="seconds">
         <item quantity="one">%d seconde</item>
@@ -676,13 +731,14 @@
     <string name="pref_validate_hostname">Hostnaam met DNSSEC valideren</string>
     <string name="pref_validate_hostname_summary">Servercertificaten die de gevalideerde hostnaam bevatten, worden beschouwd als geverifieerd</string>
     <string name="certificate_does_not_contain_jid">Certificaat bevat geen chat address</string>
-    <string name="error_no_keys_to_trust_presence">Er zijn geen bruikbare sleutels beschikbaar voor dit contact.\nZorg dat je allebei op elkaars aanwezigheidsupdates bent geabonneerd.</string>
+    <string name="error_no_keys_to_trust_presence">Er zijn geen bruikbare sleutels beschikbaar voor dit contact.
+\nZorg dat je allebei op elkaars aanwezigheidsupdates bent geabonneerd.</string>
     <string name="mark_as_read">Als gelezen markeren</string>
     <string name="server_info_partial">gedeeltelijk</string>
     <string name="pref_show_foreground_service_summary">Sommige Android-apparaten sluiten apps af na een bepaalde tijd, waardoor het niet meer mogelijk is om berichten te ontvangen. Als je zulke problemen ondervindt, probeer dan de voorgrondservice in te schakelen. Dit betekent wel dat er een permanente melding over die voorgrondservice zal verschijnen.</string>
     <string name="pref_show_foreground_service">Voorgrondservice gebruiken</string>
     <string name="update_service">monocles chat updateservice</string>
-    <string name="install_update">Update installeren?</string>
+    <string name="install_update">Update installeren\?</string>
     <string name="highlight_in_muc">gebruiker uitlichten</string>
     <string name="no_application_found_to_open_link">Geen apps gevonden die deze link kunnen openen</string>
     <string name="contacts_have_read_up_to_this_point">%s hebben tot hier gelezen</string>
@@ -697,20 +753,21 @@
     <string name="title_activity_share_via_account">Delen via account</string>
     <string name="destroy_room">Groepsgesprek vernietigen</string>
     <string name="conference_unknown_error">Je neem niet langer deel aan dit groepsgesprek</string>
-    <string name="destroy_room_dialog">Wil je het %s ontbinden? Dit zal het groepsgesprek definitief verwijderen.</string>
+    <string name="destroy_room_dialog">Wil je het %s ontbinden\? Dit zal het groepsgesprek definitief verwijderen.</string>
     <string name="destroy_room_succeed">Groepsgesprek met succes verwijderd</string>
     <string name="destroy_room_failed">Kan groepsgesprek niet vernietigen</string>
-    <string name="no_write_access_in_public_muc">Je neemt niet deel aan dit groepsgesprek en hebt op dit moment geen schrijftoegang.\nGa naar de gespreksgegevens door op <b>OK</b> te drukken en stuur een privébericht naar een moderator, beheerder of eigenaar door lang te drukken op de gebruikersnaam. Vraag vervolgens om schrijftoegang.</string>
+    <string name="no_write_access_in_public_muc">Je neemt niet deel aan dit groepsgesprek en hebt op dit moment geen schrijftoegang.
+\nGa naar de gespreksgegevens door op <b>OK</b> te drukken en stuur een privébericht naar een moderator, beheerder of eigenaar door lang te drukken op de gebruikersnaam. Vraag vervolgens om schrijftoegang.</string>
     <string name="snooze">Sluimeren</string>
     <string name="huawei_protected_apps">Beschermde apps</string>
     <string name="huawei_protected_apps_summary">Om meldingen te blijven ontvangen, zelfs wanneer het scherm uit staat, moet je monocles chat toevoegen aan de lijst met beschermde apps.</string>
     <string name="pref_enable_multi_accounts_title">Meerdere accounts gebruiken</string>
-    <string name="pref_enable_multi_accounts_summary">Wil je meerdere accounts gebruiken?</string>
-    <string name="mtm_accept_cert">Onbekend certificaat accepteren?</string>
+    <string name="pref_enable_multi_accounts_summary">Wil je meerdere accounts gebruiken\?</string>
+    <string name="mtm_accept_cert">Onbekend certificaat accepteren\?</string>
     <string name="mtm_trust_anchor">Het servercertificaat is niet ondertekend door een erkende Certificate Authority.</string>
-    <string name="mtm_accept_servername">Servernaam komt niet overeen, accepteren?</string>
+    <string name="mtm_accept_servername">Servernaam komt niet overeen, accepteren\?</string>
     <string name="mtm_hostname_mismatch">Server kon zich niet authentiseren als \"%s\". Het certificaat is alleen geldig voor:</string>
-    <string name="mtm_connect_anyway">Wil je toch een verbinding maken?</string>
+    <string name="mtm_connect_anyway">Wil je toch een verbinding maken\?</string>
     <string name="mtm_cert_details">Certificaatinformatie:</string>
     <string name="once">Eenmalig</string>
     <string name="qr_code_scanner_needs_access_to_camera">Om QR-codes te scannen is toegang tot de camera nodig</string>
@@ -727,7 +784,8 @@
     <string name="error_trustkey_device_list">Kon de lijst met apparaten niet ophalen</string>
     <string name="error_trustkey_bundle">Kon de apparaatbundels niet ophalen</string>
     <string name="error_trustkey_hint_mutual">Tip: In sommige gevallen kan dit worden verholpen door elkaar aan de contactlijsten toe te voegen.</string>
-    <string name="disable_encryption_message">Weet je zeker dat je de OMEMO-versleuteling voor dit gesprek wilt uitschakelen?\nDe beheerder van je server kan de berichten dan lezen.</string>
+    <string name="disable_encryption_message">Weet je zeker dat je de OMEMO-versleuteling voor dit gesprek wilt uitschakelen\?
+\nDe beheerder van je server kan de berichten dan lezen.</string>
     <string name="disable_now">Nu uitschakelen</string>
     <string name="draft">Concept:</string>
     <string name="pref_omemo_setting">OMEMO-versleuteling</string>
@@ -808,13 +866,17 @@
     <string name="action_open">Openen</string>
     <string name="security_violation_not_attaching_file">Bestand geweigerd wegens een veiligheidsovertreding.</string>
     <string name="delete_file_dialog">Bestand verwijderen</string>
-    <string name="delete_file_dialog_msg">Dit bestand verwijderen?\n\n<b>Waarschuwing:</b> Dit zal geen invloed hebben op kopieën van dit bestand die zijn opgeslagen op andere apparaten of servers.</string>
+    <string name="delete_file_dialog_msg">Dit bestand verwijderen\?
+\n
+\n<b>Waarschuwing:</b> Dit zal geen invloed hebben op kopieën van dit bestand die zijn opgeslagen op andere apparaten of servers.</string>
     <string name="cancelled">geannuleerd</string>
     <string name="remote_server_timeout">Timeout van de server</string>
     <string name="already_drafting_message">Je bent al een bericht aan het typen.</string>
     <string name="bad_key_for_encryption">Verkeerde sleutel voor beveiliging.</string>
     <string name="delete_message_dialog">Bericht verwijderen</string>
-    <string name="delete_message_dialog_msg">Dit bericht verwijderen?\n\n<b>Waarschuwing:</b> Het kan niet gegarandeerd worden dat kopieën van dit bericht die zijn opgeslagen op andere apparaten of servers óók worden verwijderd.</string>
+    <string name="delete_message_dialog_msg">Dit bericht verwijderen\?
+\n
+\n<b>Waarschuwing:</b> Het kan niet gegarandeerd worden dat kopieën van dit bericht die zijn opgeslagen op andere apparaten of servers óók worden verwijderd.</string>
     <string name="feature_not_implemented">Functie niet geïmplementeerd</string>
     <string name="device_does_not_support_unknown_source_op">Dit apparaat ondersteunt geen installaties vanaf onbekende bronnen.</string>
     <string name="reject_request">Verzoek afwijzen</string>
@@ -833,7 +895,9 @@
     <string name="no_name_set_instructions">Geen bijnaam ingevoerd.</string>
     <string name="autojoin_group_chat">Automatisch deelnemen aan dit groepsgesprek</string>
     <string name="pref_show_links_inside">Voorbeelden van links in gesprekken tonen</string>
-    <string name="pref_show_links_inside_summary">Toon een voorbeeld van de website als er een link wordt gestuurd in een gesprek.\n\n<b>Waarschuwing</b>: Voor iedere link die wordt gedeeld zal er vanaf dit apparaat een verbinding worden gemaakt met die website!</string>
+    <string name="pref_show_links_inside_summary">Toon een voorbeeld van de website als er een link wordt gestuurd in een gesprek.
+\n
+\n<b>Waarschuwing</b>: Voor iedere link die wordt gedeeld zal er vanaf dit apparaat een verbinding worden gemaakt met die website!</string>
     <string name="pref_play_gif_inside">GIF-animaties afspelen</string>
     <string name="pref_play_gif_inside_summary">Speel GIF-animaties direct in het gesprek af.</string>
     <string name="open_with">Open met…</string>
@@ -845,7 +909,7 @@
     <string name="enter_password_to_restore">Voer het wachtwoord van het account %s in om de back-up te herstellen.</string>
     <string name="restore_warning">Gebruik de herstelfunctie alleen in het geval van migratie of verlies van je toestel.</string>
     <string name="unable_to_restore_backup">Kan back-up niet herstellen.</string>
-    <string name="unable_to_decrypt_backup">Kan back-up niet ontsleutelen. Is het wachtwoord juist?</string>
+    <string name="unable_to_decrypt_backup">Kan back-up niet ontsleutelen. Is het wachtwoord juist\?</string>
     <string name="pref_prefer_xmpp_avatar_summary">Geef de voorkeur aan de avatar die door de XMPP-gebruiker is ingesteld, in plaats van de avatar voor die persoon in je Android-adresboek</string>
     <string name="pref_prefer_xmpp_avatar">Altijd XMPP-avatar tonen</string>
     <plurals name="view_users">
@@ -887,7 +951,7 @@
     <string name="ban_from_channel">Uit kanaal verbannen</string>
     <string name="manage_permission">Rechten beheren</string>
     <string name="destroy_channel">Kanaal vernietigen</string>
-    <string name="destroy_channel_dialog">Kanaal %s vernietigen? Dit zal het kanaal permanent verwijderen.</string>
+    <string name="destroy_channel_dialog">Kanaal %s vernietigen\? Dit zal het kanaal permanent verwijderen.</string>
     <string name="destroy_channel_succeed">Kanaal is vernietigd</string>
     <string name="destroy_channel_failed">Kanaal kon niet worden vernietigd</string>
     <string name="action_end_conversation_channel">Kanaal verlaten</string>
@@ -901,7 +965,7 @@
     <string name="file_too_large">Bestand te groot</string>
     <string name="mgmt_account_password_forgotten">Wachtwoord vergeten</string>
     <string name="password_forgotten_title">Wachtwoord vergeten</string>
-    <string name="password_forgotten_text">Ben je het wachtwoord van je account vergeten? We zullen proberen om de ondersteuningspagina van je provider te openen.</string>
+    <string name="password_forgotten_text">Ben je het wachtwoord van je account vergeten\? We zullen proberen om de ondersteuningspagina van je provider te openen.</string>
     <string name="set_settings_intro">Hier kunt je een aantal belangrijke privacy-opties instellen. Alle instellingen kunnen ook later nog worden gewijzigd.</string>
     <string name="pref_show_mappreview_inside_summary">Toon een kaart met de locatie binnen het gesprek. Hiervoor moet een verbinding worden gemaakt met de monocles chat-server.</string>
     <string name="pref_show_mappreview_inside">Kaart voor gedeelde locaties tonen</string>
@@ -913,7 +977,7 @@
     <string name="discover_channels">Kanalen ontdekken</string>
     <string name="search_channels">Kanalen zoeken</string>
     <string name="channel_discovery_opt_in_title">Privacyverklaring</string>
-    <string name="channel_discover_opt_in_message"><![CDATA[Voor Kanalen ontdekken wordt de service <a href="https://search.jabber.network">search.jabber.network</a> gebruikt.<br><br>Hierbij zullen je IP-adres en de zoektermen naar de service worden gestuurd. Bekijk het <a href="https://search.jabber.network/privacy">privacybeleid</a> voor meer informatie.]]></string>
+    <string name="channel_discover_opt_in_message">Voor Kanalen ontdekken wordt de service &lt;a href=https://search.jabber.network&gt;search.jabber.network&lt;/a&gt; gebruikt.&lt;br&gt;&lt;br&gt;Hierbij zullen je IP-adres en de zoektermen naar de service worden gestuurd. Bekijk het &lt;a href=https://search.jabber.network/privacy&gt;privacybeleid&lt;/a&gt; voor meer informatie.</string>
     <string name="action_add_existing_account">Bestaande account toevoegen</string>
     <string name="use_own_provider">Eigen provider gebruiken</string>
     <string name="this_looks_like_a_domain">Dit is waarschijnlijk een domeinadres</string>
@@ -947,7 +1011,8 @@
     <string name="pref_use_inner_storage_summary">Andere apps zullen de media niet kunnen benaderen</string>
     <string name="this_device">Dit apparaat</string>
     <string name="intro_desc_main">Meer informatie…</string>
-    <string name="welcome_header">Welkom bij\nmonocles chat</string>
+    <string name="welcome_header">Welkom bij
+\nmonocles chat</string>
     <string name="intro_required_permissions">Vereiste machtigingen</string>
     <string name="intro_desc_required_permissions">Aan het einde van de introductie word je gevraagd om de machtiging voor opslag te geven aan de app (verplicht). Andere machtigingen zijn optioneel en worden gevraagd zodra ze nodig zijn.</string>
     <string name="intro_account">Je account</string>
@@ -956,7 +1021,7 @@
     <string name="intro_desc_start_chatting">Als je de machtiging om je Android-adresboek te lezen aan de app geeft, worden personen met een chat address automatisch in je contactlijst getoond. Anders kun je gewoon zelf chat address\'s toevoegen.</string>
     <string name="intro_desc_open_chat">Vanaf nu kun je beginnen met chatten, je locatie, bestanden, afbeeldingen en video\'s delen of spraakberichten versturen.</string>
     <string name="intro_chat_details">Gespreksgegevens</string>
-    <string name="intro_desc_chat_details">Wil je de gespreksgegevens inzien? Druk dan bovenaan op de naam van het gesprek.</string>
+    <string name="intro_desc_chat_details">Wil je de gespreksgegevens inzien\? Druk dan bovenaan op de naam van het gesprek.</string>
     <string name="intro_highlight_user">Gebruiker uitlichten</string>
     <string name="intro_desc_highlight_user">Als je in een reactie wilt reageren op een gebruiker uit het groepsgesprek, raak je de avatar van de gebruiker in het gesprek aan, zodat de naam aan je reactie wordt toegevoegd. Als alternatief, vooral als de gebruiker niet in het gesprek te vinden is, kun je via de gespreksgegevens naar de deelnemerslijst. Als je daarin de avatar van de gebruiker lang aanraakt, kun je via het popup-menu de gebruiker uitlichten.</string>
     <string name="intro_desc_open_chat_details">Je hebt de gespreksgegevens geopend. Hier kun je o.a. informatie vinden over het gesprek, de instelling voor meldingen veranderen of het gesprek uit je contactlijst verwijderen.</string>
@@ -965,16 +1030,20 @@
     <string name="show_intro_again">De introductieschermen worden opnieuw getoond</string>
     <string name="show_intro_again_failed">Resetten van introductieschermen mislukt. Probeer opnieuw…</string>
     <string name="intro_desc_whats_xmpp">XMPP, ook wel jabber genoemd, is een gedecentraliseerd communicatienetwerk en werkt zoals e-mail: je hebt een adres nodig (een chat address), een wachtwoord en een app. Hierover later meer.</string>
-    <string name="intro_whats_xmpp">Wat is XMPP / Jabber / monocles chat?</string>
+    <string name="intro_whats_xmpp">Wat is XMPP / Jabber / monocles chat\?</string>
     <string name="intro_desc_optional_permissions">De machtiging om je contacten te lezen is nodig om chat address\'s (indien aanwezig) van je contacten te verzamelen. Contacten zullen nooit worden gedeeld, geüpload of gekopieerd.</string>
     <string name="intro_desc_account2">Je kunt eenvoudig een nieuw profiel aanmaken op monocles chat door een bijnaam in te voeren.</string>
     <string name="open_join_dialog">Deelnemen aan openbaar kanaal…</string>
     <string name="intro_optional_permissions">Optionele machtigingen</string>
-    <string name="intro_desc_optional_permissions2">Als je je locatie wilt delen, is de machtiging voor je locatie nodig.\nVoor het delen van spraakberichten heeft de app toegang tot je microfoon nodig.</string>
-    <string name="intro_desc_account3">Bestaande accounts kunnen worden geïmporteerd.\nAls er back-ups beschikbaar zijn, dan zullen die worden getoond.</string>
+    <string name="intro_desc_optional_permissions2">Als je je locatie wilt delen, is de machtiging voor je locatie nodig.
+\nVoor het delen van spraakberichten heeft de app toegang tot je microfoon nodig.</string>
+    <string name="intro_desc_account3">Bestaande accounts kunnen worden geïmporteerd.
+\nAls er back-ups beschikbaar zijn, dan zullen die worden getoond.</string>
     <string name="intro_desc_start_chatting2">Er kunnen ook groepsgesprekken worden aangemaakt (rooms). Deze kunnen worden onderverdeeld in besloten groepsgesprekken en openbare kanalen.</string>
-    <string name="intro_desc_start_chatting3">Gefeliciteerd!\nDaar gaan we dan… Veel plezier!</string>
-    <string name="intro_privacy">Jouw privacy\nJouw soevereiniteit</string>
+    <string name="intro_desc_start_chatting3">Gefeliciteerd!
+\nDaar gaan we dan… Veel plezier!</string>
+    <string name="intro_privacy">Jouw privacy
+\nJouw soevereiniteit</string>
     <string name="intro_desc_privacy">monocles chatzal je gegevens niet analyseren of verkopen en jij bepaalt zelf de machtigingen voor deze app.</string>
     <string name="no_results">Geen resultaten</string>
     <string name="file_transmission_cancelled">bestandsoverdracht geannuleerd</string>
@@ -998,9 +1067,11 @@
     <string name="pref_theme_black">Zwart (AMOLED)</string>
     <string name="pref_theme_color_options_summary">Kies het kleurenpalet</string>
     <string name="pref_theme_color_options">Themakleur</string>
-    <string name="magic_create_text_on_x">Je bent uitgenodigd voor %1$s. Wij zullen je begeleiden bij het aanmaken van een account.\nAls je %1$s als provider kiest, kun je communiceren met gebruikers van andere providers door hen je volledige XMPP-adres te geven.</string>
+    <string name="magic_create_text_on_x">Je bent uitgenodigd voor %1$s. Wij zullen je begeleiden bij het aanmaken van een account.
+\nAls je %1$s als provider kiest, kun je communiceren met gebruikers van andere providers door hen je volledige XMPP-adres te geven.</string>
     <string name="account_status_regis_invalid_token">Ongeldig registratieteken</string>
-    <string name="magic_create_text_fixed">Je bent uitgenodigd voor %1$s. Er is al een gebruikersnaam voor je gekozen. We zullen je begeleiden bij het aanmaken van een account.\nJe kunt met gebruikers van andere providers communiceren door hen je volledige XMPP-adres te geven.</string>
+    <string name="magic_create_text_fixed">Je bent uitgenodigd voor %1$s. Er is al een gebruikersnaam voor je gekozen. We zullen je begeleiden bij het aanmaken van een account.
+\nJe kunt met gebruikers van andere providers communiceren door hen je volledige XMPP-adres te geven.</string>
     <string name="your_server_invitation">Je serveruitnodiging</string>
     <string name="pref_use_unicolored_chatbg_summary">Gebruik een effen achtergrond in gesprekken.</string>
     <string name="pref_use_unicolored_chatbg">Effen achtergrond</string>
@@ -1087,7 +1158,17 @@
     <string name="n_missed_calls_from_m_contacts">%1$d gemiste oproepen van %2$d contacten</string>
     <string name="pref_invidious_host_summary">Gebruik een andere server voor Invidious</string>
     <string name="pref_invidious_host">Invidious-server</string>
-    <string name="updated_to_monocles">We hebben Monocles Messenger succesvol geüpdatet naar monocles chat\n\nDe samenwerking van de projecten monocles chat en Monocles Messenger is in november 2020 uitgebreid. In de toekomst zal de Android-app Monocles Messenger worden voortgezet onder de naam monocles chat.\n\nWat je kunt verwachten:\n- Functieaanbod blijft gelijk\n- Ondersteunende chatrooms worden samengevoegd\n- Kleuren en logo\'s worden aangepast aan monocles chat\n- App is nog steeds gratis beschikbaar in Google Play Store en F-Droid Store\n\nHet monocles chat Team</string>
+    <string name="updated_to_monocles">We hebben Monocles Messenger succesvol geüpdatet naar monocles chat
+\n
+\nDe samenwerking van de projecten monocles chat en Monocles Messenger is in november 2020 uitgebreid. In de toekomst zal de Android-app Monocles Messenger worden voortgezet onder de naam monocles chat.
+\n
+\nWat je kunt verwachten:
+\n- Functieaanbod blijft gelijk
+\n- Ondersteunende chatrooms worden samengevoegd
+\n- Kleuren en logo\'s worden aangepast aan monocles chat
+\n- App is nog steeds gratis beschikbaar in Google Play Store en F-Droid Store
+\n
+\nHet monocles chat Team</string>
     <string name="updated_to_monocles_google">We moeten ons verontschuldigen dat we niet rechtstreeks konden updaten naar monocles chat. Via de volgende link krijg je instructies over hoe je al je profielen van Monocles Messenger kunt overzetten naar monocles chat. Door op gegevens verplaatsen te klikken proberen we alle verzonden en ontvangen bestanden van Monocles Messenger te verplaatsen naar monocles chat. Vergeet niet om na een succesvolle migratie Monocles Messenger van je toestel te verwijderen.</string>
     <string name="link">Link</string>
     <string name="no_application_found">Geen app gevonden</string>
@@ -1122,14 +1203,18 @@
     <string name="audios_usage">Gebruik door geluidsopnames</string>
     <string name="using_inner_storage">Afgeschermde opslag gebruiken</string>
     <string name="delete_files_dialog">Bijlagen verwijderen</string>
-    <string name="delete_files_dialog_msg">Alle %s verwijderen?</string>
+    <string name="delete_files_dialog_msg">Alle %s verwijderen\?</string>
     <string name="audios">geluidsopnames</string>
     <string name="images">afbeeldingen</string>
     <string name="videos">video\'s</string>
     <string name="files">bestanden</string>
     <string name="all_media_files">mediabestanden</string>
-    <string name="memory_warning">De app gebruikt %1$s (%2$s) van de interne opslag.\n\nJe kunt het automatisch verwijderen van bijlagen inschakelen of de opgeslagen media handmatig verwijderen.</string>
-    <string name="memory_warning_force">De app gebruikt %1$s (%2$s) van de interne opslag.\n\nSchakel het automatisch verwijderen van bijlagen in of verwijder de opgeslagen media handmatig. Er is nog maar weinig ruimte beschikbaar!</string>
+    <string name="memory_warning">De app gebruikt %1$s (%2$s) van de interne opslag.
+\n
+\nJe kunt het automatisch verwijderen van bijlagen inschakelen of de opgeslagen media handmatig verwijderen.</string>
+    <string name="memory_warning_force">De app gebruikt %1$s (%2$s) van de interne opslag.
+\n
+\nSchakel het automatisch verwijderen van bijlagen in of verwijder de opgeslagen media handmatig. Er is nog maar weinig ruimte beschikbaar!</string>
     <string name="open_settings">Instellingen openen</string>
     <string name="oldAndroidVersion">Oude Android-versie</string>
     <string name="oldAndroidVersionMessage">Je gebruikt een oude Android-versie die niet langer wordt ondersteund in toekomstige updates. Vanaf monocles chat versie 1.0 worden alleen toestellen met Android 5 of hoger ondersteund. Update de firmware van je toestel.</string>
@@ -1139,15 +1224,15 @@
     <string name="pref_remove_all_individual_summary">Verwijder alle individuele meldingsinstellingen voor je contacten en groepen.</string>
     <string name="pref_remove_all_individual_notifications_title">Alle individuele meldingsinstellingen verwijderen</string>
     <string name="remove_individual_notifications">Individuele meldingsinstellingen verwijderen</string>
-    <string name="remove_individual_notifications_message">Individuele meldingsinstellingen voor %s verwijderen?</string>
-    <string name="remove_all_individual_notifications_message">Alle individuele meldingsinstellingen verwijderen?</string>
+    <string name="remove_individual_notifications_message">Individuele meldingsinstellingen voor %s verwijderen\?</string>
+    <string name="remove_all_individual_notifications_message">Alle individuele meldingsinstellingen verwijderen\?</string>
     <string name="exit">Afsluiten</string>
     <string name="record_voice_mail">Spraakbericht opnemen</string>
     <string name="backup_started_message">De back-up is gestart. Je krijgt een melding zodra deze is voltooid.</string>
     <string name="error_security_exception">De app die je hebt gebruikt om dit bestand te delen, heeft niet genoeg rechten gegeven.</string>
     <string name="unable_to_enable_video">Kan video niet inschakelen.</string>
     <string name="plain_text_document">Tekst zonder opmaak</string>
-    <string name="delete_recording_dialog_message">Opname annuleren en verwijderen?</string>
+    <string name="delete_recording_dialog_message">Opname annuleren en verwijderen\?</string>
     <string name="pref_pause_voice_on_move_from_ear">Spraakbericht automatisch pauzeren</string>
     <string name="pref_pause_voice_on_move_from_ear_summary">Pauzeer het huidige spraakbericht wanneer je het toestel van je oor af beweegt.</string>
     <string name="pref_import_settings_summary">Importeer instellingen uit het bestand settings.dat in de backupmap.</string>
@@ -1170,4 +1255,86 @@
     <string name="italic">cursief</string>
     <string name="monospace">vaste breedte</string>
     <string name="strikethrough">doorgehaald</string>
+    <string name="no_account_deactivated"></string>
+    <string name="grant"></string>
+    <string name="pref_showtextformatting_sum"></string>
+    <string name="no_manage_storage_permission"></string>
+    <string name="pref_showtextformatting"></string>
+    <string name="help_format_text"></string>
+    <string name="close_format_text"></string>
+    <string name="pref_show_date_in_quotes_summary"></string>
+    <string name="pref_show_date_in_quotes"></string>
+    <string name="delete_avatar"></string>
+    <string name="import_backup_description"></string>
+    <string name="optimize_database"></string>
+    <string name="verifying_omemo_keys_trusted_source_account"></string>
+    <string name="continue_btn"></string>
+    <string name="participants"></string>
+    <string name="download_failed_invalid_file"></string>
+    <string name="orbot_not_found"></string>
+    <string name="account_status_temporary_auth_failure"></string>
+    <string name="pref_max_resend_time_title"></string>
+    <string name="pref_max_resend_time_summary"></string>
+    <string name="pref_resend_delay_title"></string>
+    <string name="pref_resend_delay_summary"></string>
+    <string name="i_have_written"></string>
+    <string name="title_activity_about_x"></string>
+    <string name="x_has_written"></string>
+    <string name="choose_camera_app"></string>
+    <string name="pref_choose_camera_summary"></string>
+    <string name="vector_graphic"></string>
+    <string name="multimedia_file"></string>
+    <string name="title_undo_swipe_out_group_chat"></string>
+    <string name="title_undo_swipe_out_channel"></string>
+    <string name="title_undo_swipe_out_conversation"></string>
+    <string name="undo"></string>
+    <string name="audio_video_disabled_tor"></string>
+    <string name="pref_enable_persistent_rooms_summary"></string>
+    <string name="pref_enable_persistent_rooms_title"></string>
+    <string name="switch_to_video"></string>
+    <string name="reject_switch_to_video"></string>
+    <string name="unified_push_distributor"></string>
+    <string name="pref_up_push_account_title"></string>
+    <string name="pref_up_push_account_summary"></string>
+    <string name="pref_up_push_server_title"></string>
+    <string name="pref_up_push_server_summary"></string>
+    <string name="conference_technical_problems"></string>
+    <string name="account_status_incompatible_client"></string>
+    <string name="enable_notifications"></string>
+    <string name="conversations_foreground_service" translatable="false"></string>
+    <string name="account_status_i2p_unavailable"></string>
+    <string name="pref_use_i2p"></string>
+    <string name="pref_use_i2p_summary"></string>
+    <string name="send_otr_message"></string>
+    <string name="unknown_otr_fingerprint"></string>
+    <string name="otr_fingerprint"></string>
+    <string name="otr_fingerprint_selected_message"></string>
+    <string name="toast_message_otr_fingerprint"></string>
+    <string name="verify_otr"></string>
+    <string name="no_otr_session_found"></string>
+    <string name="are_you_sure_verify_fingerprint"></string>
+    <string name="copy_otr_clipboard_description"></string>
+    <string name="otr_session_not_started"></string>
+    <string name="pref_enable_otr_summary"></string>
+    <string name="pref_enable_otr"></string>
+    <string name="otr_warning"></string>
+    <string translatable="false" name="x_user_quote"></string>
+    <string name="pref_theme_White"></string>
+    <string name="rtp_state_content_add_video"></string>
+    <string name="rtp_state_content_add"></string>
+    <string name="no_i2p_calls"></string>
+    <string name="create_monocles_account"></string>
+    <string name="copy_file_to"></string>
+    <string name="pref_theme_custom"></string>
+    <string name="moderate_message"></string>
+    <string name="moderate_reason"></string>
+    <string name="unable_to_moderate"></string>
+    <string name="incoming_call_duration_timestamp"></string>
+    <string name="outgoing_call_duration_timestamp"></string>
+    <string name="outgoing_call_timestamp"></string>
+    <string name="note_to_self"></string>
+    <string name="retract_message"></string>
+    <string name="close"></string>
+    <string name="reply_to"></string>
+    <string name="port_example" translatable="false"></string>
 </resources>

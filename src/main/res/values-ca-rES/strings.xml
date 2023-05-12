@@ -23,7 +23,7 @@
     <string name="title_activity_choose_contacts">Escollir contactes</string>
     <string name="title_activity_block_list">Llista de contactes bloquejats</string>
     <string name="just_now">ara mateix</string>
-    <string name="minute_ago"> fa 1 minut</string>
+    <string name="minute_ago">fa 1 minut</string>
     <string name="minutes_ago">fa %d minuts</string>
     <plurals name="x_unread_conversations">
         <item quantity="one">%d conversa no llegides</item>
@@ -38,14 +38,14 @@
     <string name="moderator">Moderador</string>
     <string name="participant">Participant</string>
     <string name="visitor">Visitant</string>
-    <string name="remove_contact_text">Vols eliminar a %s de la teva llista? La conversa associada a aquest compte no s\'eliminarà.</string>
-    <string name="block_contact_text">¿Vols bloquejar a %s per a que no puguin enviar-t\'he missatges?</string>
-    <string name="unblock_contact_text">¿Vols desbloquejar a %s i permetre que t\'envíí missatges?</string>
-    <string name="block_domain_text">Bloquejar tots els contactes de %s?</string>
-    <string name="unblock_domain_text">Desbloquejar tots els contactes de %s?</string>
+    <string name="remove_contact_text">Vols eliminar a %s de la teva llista\? La conversa associada a aquest compte no s\'eliminarà.</string>
+    <string name="block_contact_text">¿Vols bloquejar a %s per a que no puguin enviar-t\'he missatges\?</string>
+    <string name="unblock_contact_text">¿Vols desbloquejar a %s i permetre que t\'envíí missatges\?</string>
+    <string name="block_domain_text">Bloquejar tots els contactes de %s\?</string>
+    <string name="unblock_domain_text">Desbloquejar tots els contactes de %s\?</string>
     <string name="contact_blocked">Contacte bloquejat</string>
     <string name="blocked">Bloquejat</string>
-    <string name="remove_bookmark_text">¿Vols eliminar %s dels teus marcadors? La conversa associada amb aquest marcador no s\'eliminarà.</string>
+    <string name="remove_bookmark_text">¿Vols eliminar %s dels teus marcadors\? La conversa associada amb aquest marcador no s\'eliminarà.</string>
     <string name="register_account">Registrar un nou compte a un servidor</string>
     <string name="change_password_on_server">Canviar contrasenya a un servidor</string>
     <string name="share_with">Compartir amb...</string>
@@ -62,38 +62,47 @@
     <string name="save">Guardar</string>
     <string name="ok">Acceptar</string>
     <string name="crash_report_title">monocles chat s\'ha tancat inesperadament</string>
-    <string name="crash_report_message">En enviar les traces de pila estàs ajudant al desenvolupament continu de monocles chat\n<b>Advertiment</b> Això utilitzarà el seu compte XMPP per a enviar el seguiment de la pila al desenvolupador.</string>
+    <string name="crash_report_message">En enviar les traces de pila estàs ajudant al desenvolupament continu de monocles chat
+\n<b>Advertiment</b> Això utilitzarà el seu compte XMPP per a enviar el seguiment de la pila al desenvolupador.</string>
     <string name="send_now">Enviar ara</string>
     <string name="send_never">No preguntar de nou</string>
     <string name="problem_connecting_to_account">No s\'ha pogut connectar a el compte</string>
     <string name="problem_connecting_to_accounts">No s\'ha pogut connectar a múltiples comptes</string>
     <string name="touch_to_fix">Polsar aquí per a gestionar els teus comptes</string>
     <string name="attach_file">Adjuntar arxiu</string>
-    <string name="not_in_roster">El contacte no està a la teva llista. Vols afegir-lo?</string>
+    <string name="not_in_roster">El contacte no està a la teva llista. Vols afegir-lo\?</string>
     <string name="add_contact">Afegir contacte</string>
     <string name="send_failed">Error al enviar</string>
     <string name="preparing_image">Preparant imatge per a enviar</string>
     <string name="action_clear_history">Netejar historial</string>
     <string name="clear_conversation_history">Netejar l\'historial de conversa</string>
-    <string name="clear_histor_msg">Vols borrar tots els missatges d\'aquesta conversa?\n\n<b>Atenció:</b> Aixó no afectarà als missatges guardats en altres dispositius o servidors.</string>
+    <string name="clear_histor_msg">Vols borrar tots els missatges d\'aquesta conversa\?
+\n
+\n<b>Atenció:</b> Aixó no afectarà als missatges guardats en altres dispositius o servidors.</string>
     <string name="also_end_conversation">Finalitzar aquesta conversa</string>
     <string name="choose_presence">Seleccionar dispositius</string>
     <string name="send_unencrypted_message">Enviar missatges sense xifrar</string>
     <string name="send_message_to_x">Enviar missatge a %s</string>
-    <string name="send_omemo_message">Enviar missatge xifrat amb OMEMO </string>
+    <string name="send_omemo_message">Enviar missatge xifrat amb OMEMO</string>
     <string name="send_omemo_x509_message">Enviar missatge xifrat amb v\\OMEMO</string>
     <string name="send_pgp_message">Enviar missatge xifrat amb OpenPGP</string>
     <string name="your_nick_has_been_changed">El teu sobrenom s\'ha modificat</string>
     <string name="send_unencrypted">Enviar sense xifrar</string>
     <string name="decryption_failed">Error en el desxifrar. Pot ser no tinguis la clau privada apropiada.</string>
     <string name="openkeychain_required">OpenKeychain</string>
-    <string name="openkeychain_required_long">%1$s utiliza una aplicación de terceros llamada <b>OpenKeychain</b> per a xifrar i desxifrar missatges i gestionar les seves claus públiques.\n\nOpenKeychain té llicència GPLv3 i està disponible en F-Droid i Google Play.\n\n<small>(Si us plau, reiniciï %1$s després.)</small></string>
+    <string name="openkeychain_required_long">%1$s utiliza una aplicación de terceros llamada <b>OpenKeychain</b> per a xifrar i desxifrar missatges i gestionar les seves claus públiques.
+\n
+\nOpenKeychain té llicència GPLv3 i està disponible en F-Droid i Google Play.
+\n
+\n<small>(Si us plau, reiniciï %1$s després.)</small></string>
     <string name="restart">Reiniciar</string>
     <string name="install">Instal·lar</string>
     <string name="offering">Oferint…</string>
     <string name="waiting">Esperant…</string>
     <string name="no_pgp_key">Clau OpenPGP no localitzada</string>
-    <string name="contact_has_no_pgp_key">monocles chat no pot xifrar els teus missatges perquè el teu contacte no anuncia la seva clau pública.\n\n<small>Demani al seu contacte que configuri OpenPGP.</small></string>
+    <string name="contact_has_no_pgp_key">monocles chat no pot xifrar els teus missatges perquè el teu contacte no anuncia la seva clau pública.
+\n
+\n<small>Demani al seu contacte que configuri OpenPGP.</small></string>
     <string name="no_pgp_keys">Claus OpenPGP no trobades</string>
     <string name="pref_general">General</string>
     <string name="pref_accept_files_wifi">Acceptar arxius en connexions WiFi</string>
@@ -127,16 +136,18 @@
     <string name="error_not_an_image_file">L\'arxiu seleccionat no és una imatge</string>
     <string name="error_compressing_image">Error comprimint l\'arxiu d\'imatge</string>
     <string name="error_file_not_found">Arxiu no trobat</string>
-    <string name="error_io_exception">Error general. Es possible que no tinguis espai al disc?</string>
-    <string name="error_security_exception_during_image_copy">L\'aplicació que utilitzes per a seleccionar aquesta imatge no proporciona suficients permissos per a llegir l\'arxiu.\n\n<small>Utiliza un explorador d\'arxiu diferent per a seleccionar l\'imaatge</small></string>
+    <string name="error_io_exception">Error general. Es possible que no tinguis espai al disc\?</string>
+    <string name="error_security_exception_during_image_copy">L\'aplicació que utilitzes per a seleccionar aquesta imatge no proporciona suficients permissos per a llegir l\'arxiu.
+\n
+\n<small>Utiliza un explorador d\'arxiu diferent per a seleccionar l\'imaatge</small></string>
     <string name="account_status_unknown">Desconegut</string>
     <string name="account_status_disabled">Deshabil·litar temporalment</string>
     <string name="account_status_online">Connectat</string>
-    <string name="account_status_connecting">Connectant\u2026</string>
+    <string name="account_status_connecting">Connectant…</string>
     <string name="account_status_offline">Fora de línia</string>
     <string name="account_status_unauthorized">No autorizat</string>
     <string name="account_status_not_found">Servidor no trobat</string>
-    <string name="account_status_no_internet">Sense  connectivitat</string>
+    <string name="account_status_no_internet">Sense connectivitat</string>
     <string name="account_status_regis_fail">Error en el registre</string>
     <string name="account_status_regis_conflict">L\'identificador ja està en ús</string>
     <string name="account_status_regis_success">Registre completat</string>
@@ -155,17 +166,19 @@
     <string name="mgmt_account_publish_avatar">Publicar imatge de perfil</string>
     <string name="mgmt_account_publish_pgp">Publicar clau pública OpenPGP</string>
     <string name="unpublish_pgp">Eliminar la clau pública OpenPGP</string>
-    <string name="unpublish_pgp_message">Estàs segur de que vols eliminar la teva clau pública OpenPGP del teu anunci de presència?\Els teus contactes no podràn enviar-t\'he missatges xifrats amb OpenPGP.</string>
+    <string name="unpublish_pgp_message">Estàs segur de que vols eliminar la teva clau pública OpenPGP del teu anunci de presència\?ls teus contactes no podràn enviar-t\'he missatges xifrats amb OpenPGP.</string>
     <string name="openpgp_has_been_published">Clau pública OpenPGP ha sigut publicada.</string>
-    <string name="mgmt_account_are_you_sure">Estàs segur?</string>
-    <string name="mgmt_account_delete_confirm_message">Si elimines el teu compte, el teu historial local de conversa serà completament eliminat.\n\nSi elimines el teu compte del servidor, serà eliminat del servidor tambè, no podràs entrar mai més fins que no registris un nou compte.</string>
+    <string name="mgmt_account_are_you_sure">Estàs segur\?</string>
+    <string name="mgmt_account_delete_confirm_message">Si elimines el teu compte, el teu historial local de conversa serà completament eliminat.
+\n
+\nSi elimines el teu compte del servidor, serà eliminat del servidor tambè, no podràs entrar mai més fins que no registris un nou compte.</string>
     <string name="attach_record_voice">Gravar àudio</string>
     <string name="account_settings_jabber_id">Identificador Jabber</string>
     <string name="account_settings_example_jabber_id">nom_d\'usuari@monocles chat</string>
     <string name="password">Contrasenya</string>
     <string name="invalid_jid">L\'identificador jabber- ID no és vàlid</string>
     <string name="error_out_of_memory">Sense memòria. La imatge és massa gran</string>
-    <string name="add_phone_book_text">Vols afegir a %s als teus contactes?</string>
+    <string name="add_phone_book_text">Vols afegir a %s als teus contactes\?</string>
     <string name="server_info_show_more">Informació de servidor</string>
     <string name="server_info_mam">XEP-0313:MAM</string>
     <string name="server_info_carbon_messages">XEP-0280: Missatge duplicat</string>
@@ -181,9 +194,9 @@
     <string name="missing_public_keys">S\'han perdut les claus d\'anunci públiques</string>
     <string name="last_seen_now">en línea</string>
     <string name="last_seen_min">Fa 1 minut</string>
-    <string name="last_seen_mins"> Fa %d minuts</string>
+    <string name="last_seen_mins">Fa %d minuts</string>
     <string name="last_seen_hour">fa 1 hora</string>
-    <string name="last_seen_hours"> Fa %d hores</string>
+    <string name="last_seen_hours">Fa %d hores</string>
     <string name="last_seen_day">Fa 1 día</string>
     <string name="last_seen_days">Fa %d díes</string>
     <string name="install_openkeychain">Missatge xifrat. Si us plau instal·la OpenKeychain per a desxifrar.</string>
@@ -194,7 +207,7 @@
     <string name="omemo_fingerprint_x509">Empremta digital v\\OMEMO</string>
     <string name="omemo_fingerprint_selected_message">Empremta digital de OMEMO (missatge original)</string>
     <string name="omemo_fingerprint_x509_selected_message">empremta digital de v\\OMEMO (missatge original)</string>
-    <string name="other_devices"> Altres dispositius</string>
+    <string name="other_devices">Altres dispositius</string>
     <string name="trust_omemo_fingerprints">Empremtes digitals OMEMO de confiança</string>
     <string name="fetching_keys">Buscant claus...</string>
     <string name="done">Fet</string>
@@ -240,12 +253,16 @@
     <string name="enable">Habil·litar</string>
     <string name="conference_requires_password">El xat de grup requereix contrasenya</string>
     <string name="enter_password">Introdueix la contrasenya</string>
-    <string name="request_presence_updates">Si us plau, sol·licita la suscripció de presència al teu contacte primer.\n\n<small>Això s\'utilitzarà per a determinar quins client(s) està utilitzant el teu contacte.</small></string>
+    <string name="request_presence_updates">Si us plau, sol·licita la suscripció de presència al teu contacte primer.
+\n
+\n<small>Això s\'utilitzarà per a determinar quins client(s) està utilitzant el teu contacte.</small></string>
     <string name="request_now">Sol·licitar ara</string>
     <string name="delete_fingerprint">Eliminar empremta digital OTR</string>
-    <string name="sure_delete_fingerprint">Estàs segur de que vols eliminar aquesta empremta digital OTR?</string>
+    <string name="sure_delete_fingerprint">Estàs segur de que vols eliminar aquesta empremta digital OTR\?</string>
     <string name="ignore">Ignorar</string>
-    <string name="without_mutual_presence_updates"><b>Avís:</b> Si envíes aixó sense subscripció de presència amb el teu contacte es podríen produir problemes inesperats.\n\n<small>Verifica la subscripció de presència en detalls del contacte.</small></string>
+    <string name="without_mutual_presence_updates"><b>Avís:</b> Si envíes aixó sense subscripció de presència amb el teu contacte es podríen produir problemes inesperats.
+\n
+\n<small>Verifica la subscripció de presència en detalls del contacte.</small></string>
     <string name="pref_security_settings">Seguretat</string>
     <string name="pref_allow_message_correction">Correcció del missatge</string>
     <string name="pref_allow_message_correction_summary">Permetre als teus contactes editar missatges prèviament enviats</string>
@@ -264,7 +281,7 @@
     <string name="pref_use_send_button_to_indicate_status_summary">El color del botó enviar indica l\'estat del contacte</string>
     <string name="pref_use_colored_names_to_indicate_status_summary">Pintar el nom del contacte per a mostrar el seu estat en línea</string>
     <string name="pref_expert_options_other">Altres</string>
-    <string name="pref_autojoin">Sincronitzar amb  marcadors</string>
+    <string name="pref_autojoin">Sincronitzar amb marcadors</string>
     <string name="pref_autojoin_summary">Uni-rse i abandonar els grups de xat d\'acord amb la configuració d\'unió automàtica als teus marcadors.</string>
     <string name="toast_message_omemo_fingerprint">Empremta digital OMEMO copiada al portapapers!</string>
     <string name="conference_banned">La teva entrada a aquest grup ha sigut prohibida</string>
@@ -310,7 +327,7 @@
     <string name="file">Arxiu</string>
     <string name="open_x_file">Obrir %s</string>
     <string name="preparing_file">Preparant transferència d\'arxiu</string>
-    <string name="x_file_offered_for_download">%s ofert per a descàrrega </string>
+    <string name="x_file_offered_for_download">%s ofert per a descàrrega</string>
     <string name="cancel_transmission">Cancel·lar transferència</string>
     <string name="file_transmission_failed">Va fallar la transferència del arxiu</string>
     <string name="file_deleted">L\'arxiu ha sigut eliminat</string>
@@ -324,23 +341,27 @@
     <string name="account_image_description">Imatge de perfil</string>
     <string name="copy_omemo_clipboard_description">Copiar empremta digital OMEMO al portapapers</string>
     <string name="regenerate_omemo_key">Regenerar clau OMEMO</string>
-    <string name="clear_other_devices"> Netejar dispositius</string>
-    <string name="clear_other_devices_desc">Estàs segur de que vols netejar todos els altres dispositius del anunci OMEMO? La pròxima vegada que els teus dispositius connectin, hauran de tornar a anunciar-se, però aquests podràn no rebre els missatges enviats durant el procés.</string>
+    <string name="clear_other_devices">Netejar dispositius</string>
+    <string name="clear_other_devices_desc">Estàs segur de que vols netejar todos els altres dispositius del anunci OMEMO\? La pròxima vegada que els teus dispositius connectin, hauran de tornar a anunciar-se, però aquests podràn no rebre els missatges enviats durant el procés.</string>
     <string name="distrust_omemo_key">Desconfiar d\'aquest dispositiu</string>
-    <string name="distrust_omemo_key_text">Estàs segur que vols eliminar la verificació d\'aquest dispositiu?\n Aquest dispositiu i els missatges que llegim des d\'allí seràn marcats com no confiables.</string>
+    <string name="distrust_omemo_key_text">Estàs segur que vols eliminar la verificació d\'aquest dispositiu\?
+\n Aquest dispositiu i els missatges que llegim des d\'allí seràn marcats com no confiables.</string>
     <string name="error_no_keys_to_trust_server_error">No hi ha claus disponibles per a aquest contacte. La cerca de noves claus al servidor ha fallat. Pot existir un problema amb al servidor del teu contacte.</string>
     <string name="error_trustkeys_title">Alguna cosa va sortir malament</string>
     <string name="fetching_history_from_server">Buscant historial en el servidor</string>
-    <string name="no_more_history_on_server">No hi ha  més historial en el servidor</string>
+    <string name="no_more_history_on_server">No hi ha més historial en el servidor</string>
     <string name="updating">Actualitzant…</string>
     <string name="password_changed">Contrasenya canviada!</string>
     <string name="could_not_change_password">No es pot canviar la contrasenya</string>
     <string name="ask_question">Fes una pregunta</string>
-    <string name="smp_explain_question">Si el teu contacte i tu teniu un secret en comú que ningú més coneix (com una broma o simplement el que v pendre per a dinar l\'última vegada que us vau veure) podeu utilitzar aquest secret per a verificar l\'empremta  digital de cada un .\n\nPots utilitzat una suggerencia o pregunta per a que el teu contacte pugui respondre distingint majúscules i minúscules.</string>
-    <string name="smp_explain_answer"> El  teu contacte vol verificar la teva empremta digital a través d\'un secret compartit. Et fa la següent suggerencia o pregunta per a aquest secret.</string>
+    <string name="smp_explain_question">Si el teu contacte i tu teniu un secret en comú que ningú més coneix (com una broma o simplement el que v pendre per a dinar l\'última vegada que us vau veure) podeu utilitzar aquest secret per a verificar l\'empremta digital de cada un .
+\n
+\nPots utilitzat una suggerencia o pregunta per a que el teu contacte pugui respondre distingint majúscules i minúscules.</string>
+    <string name="smp_explain_answer">El teu contacte vol verificar la teva empremta digital a través d\'un secret compartit. Et fa la següent suggerencia o pregunta per a aquest secret.</string>
     <string name="shared_secret_hint_should_not_be_empty">La pregunta no pot estar buida</string>
     <string name="shared_secret_can_not_be_empty">El secret compartit no pot estar buit</string>
-    <string name="manual_verification_explanation">Compara detingudament l\'empremta digital mostrada abaix amb la de teu contacte.\nPots utilitzar qualsevol forma de comunicació segura com un correu electrònic  xifrat o conversa telefònica per a verificar-lo.</string>
+    <string name="manual_verification_explanation">Compara detingudament l\'empremta digital mostrada abaix amb la de teu contacte.
+\nPots utilitzar qualsevol forma de comunicació segura com un correu electrònic xifrat o conversa telefònica per a verificar-lo.</string>
     <string name="change_password">Canviar contrasenya</string>
     <string name="current_password">Contrasenya actual</string>
     <string name="new_password">Nova contrasenya</string>
@@ -356,9 +377,9 @@
     <string name="grant_admin_privileges">Conèixer privilegis d\'administrador</string>
     <string name="remove_admin_privileges">Revocar privilegis d\'administrador</string>
     <string name="kick_from_room">Expulsar del grup de xat</string>
-    <string name="could_not_change_affiliation">No  es pot canviar l\'afiliació de %s</string>
+    <string name="could_not_change_affiliation">No es pot canviar l\'afiliació de %s</string>
     <string name="ban_from_conference">Desterrar del grup</string>
-    <string name="kick_from_conference">Expulsar del grupo de  xat</string>
+    <string name="kick_from_conference">Expulsar del grupo de xat</string>
     <string name="ban_from_public_conference_message">Estás intentant prohibir per a sempre a %s entrar en un canal públic.</string>
     <string name="ban_from_conference_message">Estás intentant prohibir per a sempre a %s entrar en un grupo de xat</string>
     <string name="kicking_from_public_conference">Estás intentando expulsar a %s de un canal público.</string>
@@ -421,10 +442,14 @@
     <string name="download_failed_server_not_found">Error al descarregar: Servidor no trobat</string>
     <string name="download_failed_file_not_found">Error al descarregar: Arxiu no trobat</string>
     <string name="download_failed_could_not_connect">Error al descarregar: No s\'ha pogut connectar amb el servidor</string>
-    <string name="download_failed_could_not_write_file"> Error a la descarga: No es pot escriure al fitxer</string>
+    <string name="download_failed_could_not_write_file">Error a la descarga: No es pot escriure al fitxer</string>
     <string name="action_check_update">Comprovar actualizacions</string>
     <string name="title_activity_updater">Servei d\'actualizació</string>
-    <string name="update_available">Versió %1$s està disponible.\n\nTamany arxiu: %2$s\n\nActualizació a la versió %1$s ara?</string>
+    <string name="update_available">Versió %1$s està disponible.
+\n
+\nTamany arxiu: %2$s
+\n
+\nActualizació a la versió %1$s ara\?</string>
     <string name="remind_later">Després</string>
     <string name="update">Actualizar</string>
     <string name="no_update_available">No hi ha actualizacions disponibles</string>
@@ -437,14 +462,16 @@
     <string name="pref_away_when_screen_off">Absent quan el dispositiu està bloquejat</string>
     <string name="pref_away_when_screen_off_summary">Canviar el teu estat a absent el dispositiu està bloquejat</string>
     <string name="pref_dnd_on_silent_mode">\"No molestar\" en mode silenci</string>
-    <string name="update_info">monocles chat està descarregant i instal·lant la nova versió automàticament.\n\nSi us plau, esperi…</string>
+    <string name="update_info">monocles chat està descarregant i instal·lant la nova versió automàticament.
+\n
+\nSi us plau, esperi…</string>
     <string name="pref_dnd_on_silent_mode_summary">Canvia el teu estat a \"no molestar\" quan el dispositiu està en mode silenci</string>
     <string name="pref_treat_vibrate_as_silent">Mode vibració como a mode silenci</string>
     <string name="pref_treat_vibrate_as_dnd_summary">Canvia el teu estat a \"no molestar\" quan el dispositiu està en mode vibració</string>
     <string name="hostname_example">monocles.de</string>
     <string name="action_add_account_with_certificate">Afegir compte amb certificat</string>
     <string name="unable_to_parse_certificate">No s\'ha pogut llegir el certificat</string>
-    <string name="authenticate_with_certificate">Deixar buit  per a autentificar el  certificat w/ </string>
+    <string name="authenticate_with_certificate">Deixar buit per a autentificar el certificat w/</string>
     <string name="mam_prefs">Preferències d\'arxivat</string>
     <string name="server_side_mam_prefs">Preferències d\'arxivat en servidor</string>
     <string name="fetching_mam_prefs">Buscant preferències d\'arvixat. Si us plau, espera...</string>
@@ -456,12 +483,12 @@
     <string name="action_renew_certificate">Renovar certificat</string>
     <string name="error_fetching_omemo_key">Error buscant clau OMEMO!</string>
     <string name="verified_omemo_key_with_certificate">Clau OMEMO amb certificat verificada!</string>
-    <string name="device_does_not_support_certificates"> El teu dispositiu no suporta l\'elecció de certificats de client!</string>
+    <string name="device_does_not_support_certificates">El teu dispositiu no suporta l\'elecció de certificats de client!</string>
     <string name="changelog">Modificacions</string>
     <string name="account_settings_hostname">Nom del host</string>
     <string name="account_settings_port">Port</string>
     <string name="hostname_or_onion">Nom de host o direcció .onion</string>
-    <string name="not_a_valid_port"> Aquest no és un número de port vàlid</string>
+    <string name="not_a_valid_port">Aquest no és un número de port vàlid</string>
     <string name="not_valid_hostname">Aquest no és un hostame vàlid</string>
     <string name="connected_accounts">%1$d de %2$d comptes connectats</string>
     <plurals name="x_messages">
@@ -471,14 +498,18 @@
     <string name="load_more_messages">Cargar més missatges</string>
     <string name="no_storage_permission">monocles chat necessita accés a l\'emmagatzematge extern</string>
     <string name="sync_with_contacts">Sincronitzar contactes</string>
-    <string name="sync_with_contacts_long">monocles chat vol fer coincidir la teva llista de XMPP amb els teus contactes per a mostrar els seus noms complets i avatars.\n\nmonocles chat només llegirà els teus contactes i els aparellarà localment sense pujar-los al teu servidor.\n\nAra es demanarà permís per a accedir als teus contactes.</string>
+    <string name="sync_with_contacts_long">monocles chat vol fer coincidir la teva llista de XMPP amb els teus contactes per a mostrar els seus noms complets i avatars.
+\n
+\nmonocles chat només llegirà els teus contactes i els aparellarà localment sense pujar-los al teu servidor.
+\n
+\nAra es demanarà permís per a accedir als teus contactes.</string>
     <string name="notify_on_all_messages">Notificar per a tots els missatges</string>
     <string name="notify_only_when_highlighted">Notificar només quan ets anomenat</string>
     <string name="notify_never">Notificacions deshabil·litades</string>
     <string name="notify_paused">Notificacions pausades</string>
     <string name="pref_picture_quality">Qualitat d\'imatge</string>
     <string name="pref_picture_quality_summary">Redimensionar i comprimir les imatges</string>
-    <string name="pref_video_quality">Qualitat de vídeo </string>
+    <string name="pref_video_quality">Qualitat de vídeo</string>
     <string name="pref_video_quality_summary">Redimensionar i comprimir els vídeos</string>
     <string name="video_very_low">molt baix (144p)</string>
     <string name="video_low">baix (360p)</string>
@@ -488,12 +519,17 @@
     <string name="always">Sempre</string>
     <string name="always_off">Sempre apagat</string>
     <string name="battery_optimizations_enabled">Optimitzacions d\'ús de batería habil·litades</string>
-    <string name="battery_optimizations_enabled_explained">El seu dispositiu està fent algunes optimitzacions de la bateria pesada en monocles chat que podria conduir a les notificacions de retard o fins i tot la pèrdua de missatges.\nes recomana desactivar-les.</string>
-    <string name="battery_optimizations_enabled_dialog">El teu dispositiu està fent algunes optimitzacions de bateria pesades en monocles chat que podrien conduir a notificacions retardades o fins i tot a la pèrdua de missatges.\n\nAra es demanarà que els desactivi.</string>
+    <string name="battery_optimizations_enabled_explained">El seu dispositiu està fent algunes optimitzacions de la bateria pesada en monocles chat que podria conduir a les notificacions de retard o fins i tot la pèrdua de missatges.
+\nes recomana desactivar-les.</string>
+    <string name="battery_optimizations_enabled_dialog">El teu dispositiu està fent algunes optimitzacions de bateria pesades en monocles chat que podrien conduir a notificacions retardades o fins i tot a la pèrdua de missatges.
+\n
+\nAra es demanarà que els desactivi.</string>
     <string name="install_from_unknown_sources_disabled">Instal·lació des d\'orígens desconeguts desactivades</string>
-    <string name="install_from_unknown_sources_disabled_dialog">El dispositiu està configurat per a no permetre l\'instal·lació d\'aplicacions des d\'orígens desconeguts, excepte des de Google PlayStore.\n\nAra se li demanarà que permiti l\'instal·lació d\'aplicacions des d\'orígens desconeguts.</string>
+    <string name="install_from_unknown_sources_disabled_dialog">El dispositiu està configurat per a no permetre l\'instal·lació d\'aplicacions des d\'orígens desconeguts, excepte des de Google PlayStore.
+\n
+\nAra se li demanarà que permiti l\'instal·lació d\'aplicacions des d\'orígens desconeguts.</string>
     <string name="disable">Deshabil·litar</string>
-    <string name="cancel_update">Cancel·lar actualizació?</string>
+    <string name="cancel_update">Cancel·lar actualizació\?</string>
     <string name="yes">Sí</string>
     <string name="no">No</string>
     <string name="no_accounts">(No hi ha comptes actives)</string>
@@ -501,13 +537,25 @@
     <string name="correct_message">Corretgir missatge</string>
     <string name="send_corrected_message">Enviar missatge corregit</string>
     <string name="no_keys_just_confirm">Ja confíes en aquest contacte. Seleccionant \'fet\', estàs confirmat que %s ets part d\'aquest grup.</string>
-    <string name="contacts_have_no_pgp_keys">monocles chat no pot xifrar els seus missatges perquè els seus contactes no anuncien les seves claus públiques.\n\n</string>
+    <string name="contacts_have_no_pgp_keys">monocles chat no pot xifrar els seus missatges perquè els seus contactes no anuncien les seves claus públiques.
+\n
+\n</string>
     <string name="this_account_is_disabled">Has deshabil·litat aquesta compte</string>
     <string name="no_application_to_share_uri">No s\'ha trobat ninguna aplicació per a compartir la URI</string>
     <string name="share_uri_with">Compartir URI con...</string>
     <string name="mgmt_account_reconnect">Reconnectar</string>
     <string name="welcome_text">... és una aplicació XMPP/Jabber gratuÏta i segura.</string>
-    <string name="magic_create_text">You can use monocles chat with every modern XMPP account or get a affordable and secure monocles account, hosted on the monocles server station and powered with regenerative energies!\n\n This includes:\n● two month encrypted temporary chat storage\n● e-mail with 1 GB end-to-end encrypted storage\n\n optionally: \n● 4 GB cloud storage (nextcloud)\n● calendar and contact sync\n● a secure conferencing tool \n● and more on <a href="https://monocles.de/more/">https://monocles.de/more/</a></string>
+    <string name="magic_create_text">You can use monocles chat with every modern XMPP account or get a affordable and secure monocles account, hosted on the monocles server station and powered with regenerative energies!
+\n
+\n This includes:
+\n● two month encrypted temporary chat storage
+\n● e-mail with 1 GB end-to-end encrypted storage
+\n
+\n optionally:
+\n● 4 GB cloud storage (nextcloud)
+\n● calendar and contact sync
+\n● a secure conferencing tool
+\n● and more on <a href="https://monocles.de/more/">https://monocles.de/more/</a></string>
     <string name="your_full_jid_will_be">El teu identificador Jabber serà: %s</string>
     <string name="create_account">Crear compte</string>
     <string name="welcome_existing_account">Tinc un compte</string>
@@ -521,13 +569,13 @@
     <string name="presence_xa">No disponible</string>
     <string name="presence_dnd">Ocupat</string>
     <string name="secure_password_generated">S\'ha generat una contrasenya segura</string>
-    <string name="device_does_not_support_battery_op"> El dispositiu no suporta l\'opció d\'optimizació de batería</string>
+    <string name="device_does_not_support_battery_op">El dispositiu no suporta l\'opció d\'optimizació de batería</string>
     <string name="share">Compartir</string>
     <string name="share_location">Compartir ubicació</string>
     <string name="location_sharing_disabled">L\'ubicació compartida está deshabil·litada en la configuració</string>
     <string name="locating">Localizant...</string>
     <string name="action_end_conversation_muc">Sortir del grup</string>
-    <string name="leave_conference_warning">Realment vols deixar aquest grup de xat? Ja no se\'t notificaran els teus missatges nous fins que et tornias a unir al grup.</string>
+    <string name="leave_conference_warning">Realment vols deixar aquest grup de xat\? Ja no se\'t notificaran els teus missatges nous fins que et tornias a unir al grup.</string>
     <string name="show_password">Mostrar contrasenya</string>
     <string name="registration_please_wait">El registre va fallar. Prova-ho de nou més tard</string>
     <string name="registration_password_too_weak">Error en el registre: La contrasenya és massa dèbil</string>
@@ -537,11 +585,13 @@
     <string name="import_database">Importar còpia de seguretat</string>
     <string name="invite_again">Convidar de nou</string>
     <string name="inviteUser_Subject">t\'ha convidat a través de</string>
-    <string name="InviteText">Hola,\n\nel usuari %s li ha convidat a monocles chat. Només ha de fer clic en el següent enllaç…</string>
+    <string name="InviteText">Hola,
+\n
+\nel usuari %s li ha convidat a monocles chat. Només ha de fer clic en el següent enllaç…</string>
     <string name="pref_broadcast_last_activity">Informar de la teva última interacció</string>
     <string name="pref_broadcast_last_activity_summary">Avisa a tots els teus contactes quan usis monocles chat</string>
     <string name="request_permissions_message">monocles chat li demanarà que permetis alguns permisos. És important que permeti tots aquests permisos per a utilitzar totes les funcions d\'aquest missatger. Si denega algun d\'aquests permisos, l\'aplicació es tancarà sola.</string>
-    <string name="request_permissions_message_again">S\'han denegat alguns o tots els permisos necessaris per a monocles chat. Vol anar a la configuració i concedir aquests permisos? Si denega algun d\'aquests permisos, l\'aplicació es tancarà sola.</string>
+    <string name="request_permissions_message_again">S\'han denegat alguns o tots els permisos necessaris per a monocles chat. Vol anar a la configuració i concedir aquests permisos\? Si denega algun d\'aquests permisos, l\'aplicació es tancarà sola.</string>
     <string name="unable_to_connect_to_keychain">No s\'ha pogut connectar a OpenKeychain</string>
     <string name="this_device_is_no_longer_in_use">Aquest dispositiu ja no està en ús</string>
     <string name="please_wait">Espera, si us plau…</string>
@@ -569,7 +619,9 @@
     <string name="show_error_message">Mostrar missatge d\'error</string>
     <string name="error_message">Missatge d\'error</string>
     <string name="data_saver_enabled">Optimizació de dades habil·litades</string>
-    <string name="data_saver_enabled_explained">El seu sistema operatiu està restringint l\'accés de monocles chat a Internet quan està en segon pla. Per a rebre notificacions de nous missatges ha de permetre l\'accés no restrictiu de monocles chat quan l\'economitzador de dades està activat.\n\nmonocles chat continuarà esforçant-se per guardar les dades quan sigui possible.</string>
+    <string name="data_saver_enabled_explained">El seu sistema operatiu està restringint l\'accés de monocles chat a Internet quan està en segon pla. Per a rebre notificacions de nous missatges ha de permetre l\'accés no restrictiu de monocles chat quan l\'economitzador de dades està activat.
+\n
+\nmonocles chat continuarà esforçant-se per guardar les dades quan sigui possible.</string>
     <string name="device_does_not_support_data_saver">El seu dispositiu no admet la desactivació de l\'estalvi de dades per a monocles chat.</string>
     <string name="add_to_contact_list">Afegir a contactes</string>
     <string name="contact">Contacte</string>
@@ -592,7 +644,7 @@
     <string name="invalid_barcode">Codi QR no vàlid</string>
     <string name="verify_with_qr_code">verificar amb codi QR</string>
     <string name="i_followed_this_link_from_a_trusted_source">Enllaç des de una font de confiança</string>
-    <string name="verifying_omemo_keys_trusted_source">Ves a verificar les claus OMEMO de %1$s després de fer click en l\'enllaç. Aixó solament  és segur si aconsegueixes aquest enllaç des de una font de confiança on sols %2$s va poder haver publicat l\'enllaç</string>
+    <string name="verifying_omemo_keys_trusted_source">Ves a verificar les claus OMEMO de %1$s després de fer click en l\'enllaç. Aixó solament és segur si aconsegueixes aquest enllaç des de una font de confiança on sols %2$s va poder haver publicat l\'enllaç</string>
     <string name="verify_omemo_keys">Verificar claus OMEMO</string>
     <string name="show_inactive_devices">Mostrar desconnectats</string>
     <string name="hide_inactive_devices">Amagar desconnectats</string>
@@ -671,13 +723,14 @@
     <string name="pref_validate_hostname">Validar hostname amb DNSSEC</string>
     <string name="pref_validate_hostname_summary">Els certificats del servidor que contenen el hostname validat són considerats verificats</string>
     <string name="certificate_does_not_contain_jid">El certificat no conté un identificador Jabber</string>
-    <string name="error_no_keys_to_trust_presence">No hi ha claus disponibles per a aquest contacte.\n Assegura\'t que teniu subscripció de presència mútua.</string>
+    <string name="error_no_keys_to_trust_presence">No hi ha claus disponibles per a aquest contacte.
+\n Assegura\'t que teniu subscripció de presència mútua.</string>
     <string name="mark_as_read">Marcar como a llegit</string>
     <string name="server_info_partial">Parcial</string>
     <string name="pref_show_foreground_service_summary">Alguns dispositius Android tancaràn algunes aplicacions després d\'un temps i no podrà rebre nous missatges. Si te aquests problemes, intente activar el servei de primer pla. Però tingui en compte que tindrà una notificació permanent amb aquesta opció marcada.</string>
     <string name="pref_show_foreground_service">Utilitzar servei en primer pla</string>
     <string name="update_service">Servei d\'actualització de monocles chat</string>
-    <string name="install_update">Instal·lar actualizació?</string>
+    <string name="install_update">Instal·lar actualizació\?</string>
     <string name="highlight_in_muc">anomena usuari</string>
     <string name="no_application_found_to_open_link">No s\'ha trobat aplicació per a obrir la pàgina web</string>
     <string name="contacts_have_read_up_to_this_point">%s han llegit fins aquest punt</string>
@@ -692,20 +745,21 @@
     <string name="title_activity_share_via_account">Compartir a través del compte</string>
     <string name="destroy_room">Destruir grupo de xat</string>
     <string name="conference_unknown_error">ja no estàs en aquest xat de grup</string>
-    <string name="destroy_room_dialog"> Vols destruir el grup de xat %s? Això eliminarà el grup permanentement.</string>
+    <string name="destroy_room_dialog">Vols destruir el grup de xat %s\? Això eliminarà el grup permanentement.</string>
     <string name="destroy_room_succeed">Grupo de xat destruit</string>
     <string name="destroy_room_failed">No s\'ha pogut destruir el grup de xat</string>
-    <string name="no_write_access_in_public_muc">De moment no estàs participant en aquest grup i no pots escriure en él\n Si us plau, ves als detalls del grup pressionant <b>OK</b> i envía un missatge privat a un moderador, administrador o propietari fent un click llarg en el nom dels membres en la part superior de la llista per a sol·licitar accès d\'escriptura en el grup.</string>
+    <string name="no_write_access_in_public_muc">De moment no estàs participant en aquest grup i no pots escriure en él
+\n Si us plau, ves als detalls del grup pressionant <b>OK</b> i envía un missatge privat a un moderador, administrador o propietari fent un click llarg en el nom dels membres en la part superior de la llista per a sol·licitar accès d\'escriptura en el grup.</string>
     <string name="snooze">Dormitar</string>
     <string name="huawei_protected_apps">Aplicacions protegides</string>
     <string name="huawei_protected_apps_summary">Per a continuar rebent notificacions, fins i tot quan la pantalla està apagada, has d\'afegir monocles chat a la llista d\'aplicacions protegides.</string>
     <string name="pref_enable_multi_accounts_title">Habil·litar múltiples comptes</string>
-    <string name="pref_enable_multi_accounts_summary"> Vols utilitzar comptes múltiples?</string>
-    <string name="mtm_accept_cert">Acceptar certificat desconegut?</string>
+    <string name="pref_enable_multi_accounts_summary">Vols utilitzar comptes múltiples\?</string>
+    <string name="mtm_accept_cert">Acceptar certificat desconegut\?</string>
     <string name="mtm_trust_anchor">El certificat del servidor no està firmat per a una Autoritat Certificadora coneguda.</string>
-    <string name="mtm_accept_servername">Acceptar el nom del servidor que no coincideix?</string>
+    <string name="mtm_accept_servername">Acceptar el nom del servidor que no coincideix\?</string>
     <string name="mtm_hostname_mismatch">El servidor no pot autenticar-se com \"%s\". El certificat es nomès vàlid per a:</string>
-    <string name="mtm_connect_anyway">¿Desitja connectar-se de totes formes?</string>
+    <string name="mtm_connect_anyway">¿Desitja connectar-se de totes formes\?</string>
     <string name="mtm_cert_details">Detalls del certificat:</string>
     <string name="once">Una vegada</string>
     <string name="qr_code_scanner_needs_access_to_camera">El escàner de codi QR necessita accès a la càmara</string>
@@ -722,7 +776,7 @@
     <string name="error_trustkey_device_list">No es pot obtenir la llista de dispositius</string>
     <string name="error_trustkey_bundle">No s\'han pogut aconseguir les claus del dispositiu</string>
     <string name="error_trustkey_hint_mutual">Consell: En algunes ocasions aixó es pot arreglar al agregar-se cada un a la seva llista de contactes.</string>
-    <string name="disable_encryption_message">Estàs segur de que vols deshabil·litar el xifrat OMEMO amb aquest conversa?\Aixó permetra l\'administrador del teu servidor llegir els teus missatges, encara aquesta podria ser l\'única via de comunicació amb persones que utilitzin clients desactualizats.</string>
+    <string name="disable_encryption_message">Estàs segur de que vols deshabil·litar el xifrat OMEMO amb aquest conversa\?ixó permetra l\'administrador del teu servidor llegir els teus missatges, encara aquesta podria ser l\'única via de comunicació amb persones que utilitzin clients desactualizats.</string>
     <string name="disable_now">Deshabil·litar ara</string>
     <string name="draft">Borrador:</string>
     <string name="pref_omemo_setting">Xifrat OMEMO</string>
@@ -743,7 +797,7 @@
     <string name="small">Petit</string>
     <string name="medium">Mitjà</string>
     <string name="large">Gran</string>
-    <string name="create_shortcut">Crear  drecera</string>
+    <string name="create_shortcut">Crear drecera</string>
     <string name="not_encrypted_for_this_device">El missatge no fou xifrat per a aquest dispositiu.</string>
     <string name="no_microphone_permission">monocles chatnecessita accés al micròfon</string>
     <string name="search_messages">Buscar missatges</string>
@@ -760,7 +814,7 @@
     <string name="p1_s3_filetransfer">HTTP File Sharing for S3 (Amazon)</string>
     <string name="pref_start_search">Cerca directa</string>
     <string name="pref_start_search_summary">En la pantalla \'Començar conversa\', obrir el teclat i situar el cursor en el camp de cerca</string>
-    <string name="paste_as_quote">Enganxar  como a  cita</string>
+    <string name="paste_as_quote">Enganxar como a cita</string>
     <string name="group_chat_avatar">Imatge de perfil del grup</string>
     <string name="host_does_not_support_group_chat_avatars">El servidor no suporta imatges de perfil</string>
     <string name="only_the_owner_can_change_group_chat_avatar">Només el propietari pot canviar l\'imatge de perfil</string>
@@ -789,8 +843,8 @@
     <string name="notification_group_messages">Missatges</string>
     <string name="messages_channel_name">Missatges</string>
     <string name="silent_messages_channel_name">Missatges silenciosos</string>
-    <string name="silent_messages_channel_description">Aquesta categoría s\'utilitza	per a mostrar notificacions que no haurien d\'activar ningun so. Per exemple, quan està actiu en un altra dispositiu (Període de gracia).</string>
-    <string name="pref_more_notification_settings">Configuració	de notificacions</string>
+    <string name="silent_messages_channel_description">Aquesta categoría s\'utilitza per a mostrar notificacions que no haurien d\'activar ningun so. Per exemple, quan està actiu en un altra dispositiu (Període de gracia).</string>
+    <string name="pref_more_notification_settings">Configuració de notificacions</string>
     <string name="delivery_failed_channel_name">Lliuraments fallits</string>
     <string name="pref_more_notification_settings_summary">Importància, So, Vibració</string>
     <string name="video_compression_channel_name">Compressió de vídeo</string>
@@ -803,7 +857,9 @@
     <string name="action_open">Obrir</string>
     <string name="security_violation_not_attaching_file">Fitxer omès por violació de seguretat.</string>
     <string name="delete_file_dialog">Borrar arxiu</string>
-    <string name="delete_file_dialog_msg">¿Està segur de que vols borrar aquest arxiu?\n\n<b>Atenció:</b> Aixó no afectarà a les còpies guardades en altres dispositius o servidors.</string>
+    <string name="delete_file_dialog_msg">¿Està segur de que vols borrar aquest arxiu\?
+\n
+\n<b>Atenció:</b> Aixó no afectarà a les còpies guardades en altres dispositius o servidors.</string>
     <string name="cancelled">cancel·lat</string>
     <string name="remote_server_timeout">Temps d\'espera esgotat en el servidor</string>
     <string name="already_drafting_message">Encara estàs redactant un missatge.</string>
@@ -839,7 +895,7 @@
     <string name="enter_password_to_restore">Escriu la teva contrasenya pel compte %s per a restaurar la còpia de seguretat.</string>
     <string name="restore_warning">No utilitzar la funció de restauració sota cap circumstància, excepte en el cas de migrar o perdre el teu dispositiu.</string>
     <string name="unable_to_restore_backup">No es pot restaurar la còpia de seguretat.</string>
-    <string name="unable_to_decrypt_backup">No es pot desxifrar la còpia de seguretat. És correcta la contrasenya?</string>
+    <string name="unable_to_decrypt_backup">No es pot desxifrar la còpia de seguretat. És correcta la contrasenya\?</string>
     <string name="pref_prefer_xmpp_avatar_summary">Preferir l\'avatar d\'usuaris XMPP en lloc del de la teva llista de contactes</string>
     <string name="pref_prefer_xmpp_avatar">Preferir avatar XMPP</string>
     <plurals name="view_users">
@@ -868,7 +924,7 @@
     <string name="allow_participants_to_invite_others">Permetre a qualsevol convidar a altres</string>
     <string name="anyone_can_edit_subject">Qualsevol pot editar el tema.</string>
     <string name="owners_can_edit_subject">Els propietaris poden editar el tema.</string>
-    <string name="admins_can_edit_subject">Els administradors poden  editar el tema.</string>
+    <string name="admins_can_edit_subject">Els administradors poden editar el tema.</string>
     <string name="owners_can_invite_others">Els propietaris poden convidar a altres.</string>
     <string name="anyone_can_invite_others">Qualsevol pot convidar a altres.</string>
     <string name="jabber_ids_are_visible_to_admins">Els identificadors Jabber són visibles per a els administradors.</string>
@@ -881,21 +937,21 @@
     <string name="ban_from_channel">Prohibir del canal</string>
     <string name="manage_permission">Gestionar privilegis</string>
     <string name="destroy_channel">Destruir canal</string>
-    <string name="destroy_channel_dialog">Vols destruir el canal %s? Aixó eliminarà el canal permanentment.</string>
+    <string name="destroy_channel_dialog">Vols destruir el canal %s\? Aixó eliminarà el canal permanentment.</string>
     <string name="destroy_channel_succeed">Canal destruït</string>
     <string name="destroy_channel_failed">No s\'ha pogut destruir el canal</string>
     <string name="action_end_conversation_channel">Abandonar canal</string>
     <string name="autojoin_channel">Unir-se automàticament a aquest canal</string>
     <string name="no_attachments">No hi ha adjunts</string>
     <string name="notification_backup_created_title">Còpia de seguretat realizada amb éxit</string>
-    <string name="notification_backup_created_subtitle"> Els arxius de còpia de seguretat han sigut emmagatzemats en %s</string>
+    <string name="notification_backup_created_subtitle">Els arxius de còpia de seguretat han sigut emmagatzemats en %s</string>
     <string name="notification_backup_failed_title">La còpia de seguretat ha fallat</string>
     <string name="notification_backup_failed_subtitle">No s\'han pogut guardar els arxius de copia de seguretat en %s</string>
     <string name="search_participants">Buscar participants</string>
     <string name="file_too_large">Arxiu massa gran</string>
     <string name="mgmt_account_password_forgotten">Contrasenya oblidada</string>
     <string name="password_forgotten_title">Contrasenya oblidada</string>
-    <string name="password_forgotten_text">Has oblidat la contrasenya del teu compte? Ara intentarem obrir la web de suport del teu proveïdor.</string>
+    <string name="password_forgotten_text">Has oblidat la contrasenya del teu compte\? Ara intentarem obrir la web de suport del teu proveïdor.</string>
     <string name="set_settings_intro">Aquí pots establir algunes configuracions de privacitat importants. Totes les configuracions poden èsser modificades més tard.</string>
     <string name="pref_show_mappreview_inside_summary">Mostrar vistes prèvies de mapes directament dins de la vista de xat, s\'establirà una connexió amb el servidor monocles chat.</string>
     <string name="pref_show_mappreview_inside">Mostrar previsualizacions de localizacions en el xat</string>
@@ -907,7 +963,7 @@
     <string name="discover_channels">Descobrir canals</string>
     <string name="search_channels">Cercar canals</string>
     <string name="channel_discovery_opt_in_title">Nota de privadesa</string>
-    <string name="channel_discover_opt_in_message"><![CDATA[El descobriment de canals empra un servei de tercers anomenat <a href="https://search.jabbercat.org">search.jabbercat.org</a>.<br><br>Utilitzar aquesta característica transmetrà la teva adreça IP i els termes de la cerca a aquest servei. Consulta la seva <a href="https://search.jabbercat.org/privacy">Política de Privadesa</a> per a obtenir més informació.]]></string>
+    <string name="channel_discover_opt_in_message">El descobriment de canals empra un servei de tercers anomenat &lt;a href=https://search.jabbercat.org&gt;search.jabbercat.org&lt;/a&gt;.&lt;br&gt;&lt;br&gt;Utilitzar aquesta característica transmetrà la teva adreça IP i els termes de la cerca a aquest servei. Consulta la seva &lt;a href=https://search.jabbercat.org/privacy&gt;Política de Privadesa&lt;/a&gt; per a obtenir més informació.</string>
     <string name="action_add_existing_account">Afegir compte existent</string>
     <string name="use_own_provider">Emprar proveïdor propi</string>
     <string name="this_looks_like_a_domain">Això sembla una adreça de domini</string>
@@ -938,7 +994,8 @@
     <string name="pref_use_invidious_summary">Invidious és una alternativa a YouTube que respecta la privacitat</string>
     <string name="this_device">Aquest dispositiu</string>
     <string name="intro_desc_main">Més informació…</string>
-    <string name="welcome_header">Benvingut a\nmonocles chat</string>
+    <string name="welcome_header">Benvingut a
+\nmonocles chat</string>
     <string name="intro_required_permissions">Permisos necessaris</string>
     <string name="intro_desc_required_permissions">Al final de la introducció se li demanarà que concedeixi permisos d\'emmagatzematge (obligatori), si no els ha concedit ja. Els permisos addicionals se sol·liciten segons sigui necessari i són opcionals.</string>
     <string name="intro_account">El vostre compte</string>
@@ -947,7 +1004,7 @@
     <string name="intro_desc_start_chatting">Si ha donat els permisos de contacte, els contactes Jabber ja existents es mostren automàticament en la seva llibreta d\'adreces. En cas contrari, només ha d\'afegir IDs de Jabber</string>
     <string name="intro_desc_open_chat">Ara pots començar a xatejar, compartir ubicacions, arxius, vídeos i imatges o enviar missatges de veu.</string>
     <string name="intro_chat_details">Detalls del xat</string>
-    <string name="intro_desc_chat_details">Vol obrir els detalls del xat? Només ha de prémer el nom del xat en la barra de menú de la part superior.</string>
+    <string name="intro_desc_chat_details">Vol obrir els detalls del xat\? Només ha de prémer el nom del xat en la barra de menú de la part superior.</string>
     <string name="intro_highlight_user">Esmentar usuari</string>
     <string name="intro_desc_highlight_user">Si vol esmentar a un usuari en un xat de grup, només ha de tocar l\'avatar de l\'usuari en el xat. Alternativament, especialment si l\'usuari no està en el xat, canviï als detalls del xat i busqui a l\'usuari en la llista de participants. Un toc prolongat en l\'avatar de l\'usuari mostrarà un menú emergent en el qual pot esmentar a l\'usuari.</string>
     <string name="intro_desc_open_chat_details">Ha obert els detalls del xat. Aquí pot veure els detalls del xat, canviar el comportament de la notificació de nous missatges, afegir o eliminar el xat de la seva llista de contactes i molt més.</string>
@@ -956,16 +1013,20 @@
     <string name="show_intro_again">Les pantalles d\'introducció es mostraran de nou</string>
     <string name="show_intro_again_failed">El restabliment de les pantalles d\'introducció ha fallat. Intenti-ho de nou…</string>
     <string name="intro_desc_whats_xmpp">XMPP, també anomenat Jabber, és una xarxa de comunicació descentralitzada i funciona com el correu electrònic. Es necessita una direcció anomenada Jabber-ANEU, una contrasenya i un missatger. Més endavant es parlarà d\'això.</string>
-    <string name="intro_whats_xmpp">Què és XMPP / Jabber / monocles chat?</string>
+    <string name="intro_whats_xmpp">Què és XMPP / Jabber / monocles chat\?</string>
     <string name="intro_desc_optional_permissions">Els permisos per a llegir la seva llibreta d\'adreces són necessaris per a llegir els chat addresses (si n\'hi ha) dels seus contactes. Els contactes mai es comparteixen, carreguen o copien.</string>
     <string name="intro_desc_account2">Pot crear un nou perfil en monocles chat simplement introduint un sobrenom.</string>
     <string name="open_join_dialog">Unir-se al canal públic…</string>
     <string name="intro_optional_permissions">Permisos opcionals</string>
-    <string name="intro_desc_optional_permissions2">Es necessiten permisos per a la seva ubicació si desitja compartir la seva ubicació.\nPer a compartir missatges de veu és necessari obtenir accés al seu micròfon.</string>
-    <string name="intro_desc_account3">Té l\'opció d\'importar un compte existent.\nSi hi ha arxius de còpia de seguretat disponibles, es mostraran.</string>
+    <string name="intro_desc_optional_permissions2">Es necessiten permisos per a la seva ubicació si desitja compartir la seva ubicació.
+\nPer a compartir missatges de veu és necessari obtenir accés al seu micròfon.</string>
+    <string name="intro_desc_account3">Té l\'opció d\'importar un compte existent.
+\nSi hi ha arxius de còpia de seguretat disponibles, es mostraran.</string>
     <string name="intro_desc_start_chatting2">També pots afegir, crear o unir-te a xats multiusuario, els anomenats MUC. En ells es distingeix entre xats de grup privats i xats de grup públics - els anomenats canals.</string>
-    <string name="intro_desc_start_chatting3">Felicitats!\nAllà anem i ens divertirem…</string>
-    <string name="intro_privacy">La seva privacitat\nLa seva sobirania</string>
+    <string name="intro_desc_start_chatting3">Felicitats!
+\nAllà anem i ens divertirem…</string>
+    <string name="intro_privacy">La seva privacitat
+\nLa seva sobirania</string>
     <string name="intro_desc_privacy">monocles chatno vendrà ni analitzarà les teves dades i vostè decideix quins permisos concedeix.</string>
     <string name="no_results">Sense resultats</string>
     <string name="file_transmission_cancelled">transmissió d\'arxius cancel·lada</string>
@@ -989,9 +1050,11 @@
     <string name="pref_theme_black">Negre (AMOLED)</string>
     <string name="pref_theme_color_options_summary">Seleccioni la paleta de colors del tema</string>
     <string name="pref_theme_color_options">Color del tema</string>
-    <string name="magic_create_text_on_x">Se l\'ha convidat a %1$s. Li guiarem en el procés de creació d\'un compte.\nEn triar %1$s com a proveïdor podrà comunicar-te amb usuaris d\'altres proveïdors donant-los la seva adreça XMPP completa.</string>
+    <string name="magic_create_text_on_x">Se l\'ha convidat a %1$s. Li guiarem en el procés de creació d\'un compte.
+\nEn triar %1$s com a proveïdor podrà comunicar-te amb usuaris d\'altres proveïdors donant-los la seva adreça XMPP completa.</string>
     <string name="account_status_regis_invalid_token">El token de confirmació no és vàlid</string>
-    <string name="magic_create_text_fixed">Se le ha invitado a %1$s. Ja s\'ha triat un nom d\'usuari per a vostè. Li guiarem en el procés de creació d\'un compte.\nPodràs comunicar-te amb usuaris d\'altres proveïdors donant-los la teva adreça XMPP completa.</string>
+    <string name="magic_create_text_fixed">Se le ha invitado a %1$s. Ja s\'ha triat un nom d\'usuari per a vostè. Li guiarem en el procés de creació d\'un compte.
+\nPodràs comunicar-te amb usuaris d\'altres proveïdors donant-los la teva adreça XMPP completa.</string>
     <string name="your_server_invitation">La seva invitació al servidor</string>
     <string name="pref_use_unicolored_chatbg_summary">Utilitzi un fons unicolor en els xats.</string>
     <string name="pref_use_unicolored_chatbg">Utilitzi un fons unicolor en els xats</string>
@@ -1077,7 +1140,17 @@
     <string name="n_missed_calls_from_m_contacts">%1$d trucades perdudes de %2$d contactes</string>
     <string name="pref_invidious_host_summary">Utilitzar un servidor invidious personalitzat</string>
     <string name="pref_invidious_host">Servidor invidious</string>
-    <string name="updated_to_monocles">Hem actualitzat amb èxit Monocles Messenger a monocles chat\n\nLa cooperació dels dos projectes monocles chat i Monocles Messenger es va ampliar al novembre de 2020. En el futur, l\'aplicació per a Android Monocles Messenger continuarà sota el nom de monocles chat.\n\nEl que pots esperar:\n- La gamma de funcions continua sent la mateixa\n- Les sales de xat de suport es fusionen\n- Els colors i els logotips s\'adapten a monocles chat\n- L\'aplicació continua estant disponible de manera gratuïta en Google Play Store i F-Droid Store\n\n- El teu equip de monocles chat</string>
+    <string name="updated_to_monocles">Hem actualitzat amb èxit Monocles Messenger a monocles chat
+\n
+\nLa cooperació dels dos projectes monocles chat i Monocles Messenger es va ampliar al novembre de 2020. En el futur, l\'aplicació per a Android Monocles Messenger continuarà sota el nom de monocles chat.
+\n
+\nEl que pots esperar:
+\n- La gamma de funcions continua sent la mateixa
+\n- Les sales de xat de suport es fusionen
+\n- Els colors i els logotips s\'adapten a monocles chat
+\n- L\'aplicació continua estant disponible de manera gratuïta en Google Play Store i F-Droid Store
+\n
+\n- El teu equip de monocles chat</string>
     <string name="updated_to_monocles_google">Hem de disculpar-nos per no haver pogut actualitzar directament a monocles chat. En el següent enllaç rebrà les instruccions per a transferir tots els seus perfils de Monocles Messenger a monocles chat. En fer clic a moure dades s\'intenten moure tots els arxius enviats i rebuts de Monocles Messenger a monocles chat. Després d\'una migració reeixida tingui en compte que ha d\'eliminar Monocles Messenger del teu dispositiu.</string>
     <string name="link">Enllaç</string>
     <string name="no_application_found">No s\'ha trobat cap aplicació</string>
@@ -1111,14 +1184,18 @@
     <string name="files_usage">Ús de la memòria dels arxius</string>
     <string name="audios_usage">Ús de la memòria dels àudios</string>
     <string name="delete_files_dialog">Esborrar arxius adjunts</string>
-    <string name="delete_files_dialog_msg">Realment vols esborrar tots els %s?</string>
+    <string name="delete_files_dialog_msg">Realment vols esborrar tots els %s\?</string>
     <string name="audios">audios</string>
     <string name="images">imatges</string>
     <string name="videos">vídeos</string>
     <string name="files">arxius</string>
     <string name="all_media_files">archivos multimedia</string>
-    <string name="memory_warning">El seu missatger està utilitzant %1$s (%2$s) de la memòria interna.\n\nPot activar l\'esborrat automàtic dels arxius adjunts o esborrar manualment els mitjans emmagatzemats.</string>
-    <string name="memory_warning_force">El seu missatger està utilitzant %1$s (%2$s) de la memòria interna.\n\nHauria d\'activar l\'esborrat automàtic dels arxius adjunts o esborrar manualment els mitjans emmagatzemats. El seu dispositiu es quedarà sense memòria!</string>
+    <string name="memory_warning">El seu missatger està utilitzant %1$s (%2$s) de la memòria interna.
+\n
+\nPot activar l\'esborrat automàtic dels arxius adjunts o esborrar manualment els mitjans emmagatzemats.</string>
+    <string name="memory_warning_force">El seu missatger està utilitzant %1$s (%2$s) de la memòria interna.
+\n
+\nHauria d\'activar l\'esborrat automàtic dels arxius adjunts o esborrar manualment els mitjans emmagatzemats. El seu dispositiu es quedarà sense memòria!</string>
     <string name="open_settings">Obrir la configuració</string>
     <string name="oldAndroidVersion">Versió antiga d\'Android</string>
     <string name="oldAndroidVersionMessage">Està utilitzant una versió antiga d\'Android que ja no serà suportada en futures actualitzacions. A partir de la versió 1.0 de monocles chat només s\'admeten dispositius amb Android 5 o superior. Si us plau, actualitzi el microprogramari del teu dispositiu.</string>
@@ -1128,19 +1205,128 @@
     <string name="pref_remove_all_individual_summary">Eliminar totes les notificacions individuals dels contactes i grups.</string>
     <string name="pref_remove_all_individual_notifications_title">Eliminar totes les notificacions individuals</string>
     <string name="remove_individual_notifications">Eliminar les notificacions individuals</string>
-    <string name="remove_individual_notifications_message">Realment vol eliminar aquest conjunt de notificacions individuals per a %s?</string>
-    <string name="remove_all_individual_notifications_message">Realment vol eliminar totes les notificacions individuals establertes per als contactes i grups?</string>
+    <string name="remove_individual_notifications_message">Realment vol eliminar aquest conjunt de notificacions individuals per a %s\?</string>
+    <string name="remove_all_individual_notifications_message">Realment vol eliminar totes les notificacions individuals establertes per als contactes i grups\?</string>
     <string name="exit">Sortir</string>
     <string name="record_voice_mail">Gravar un missatge de veu</string>
     <string name="backup_started_message">La còpia de seguretat s\'ha iniciat. Rebrà una notificació una vegada que s\'hagi completat.</string>
     <string name="error_security_exception">L\'aplicació que es va usar per a compartir aquest arxiu no va proporcionar suficients permisos.</string>
     <string name="unable_to_enable_video">No es pot activar el vídeo.</string>
     <string name="plain_text_document">Document de text pla</string>
-    <string name="delete_recording_dialog_message">Realment vol cancel·lar i esborrar el seu enregistrament?</string>
+    <string name="delete_recording_dialog_message">Realment vol cancel·lar i esborrar el seu enregistrament\?</string>
     <string name="pref_pause_voice_on_move_from_ear">Posar en pausa el missatge de veu automàticament</string>
     <string name="pref_pause_voice_on_move_from_ear_summary">Posar en pausa el missatge de veu actual quan allunyi el dispositiu de la seva oïda.</string>
     <string name="pref_import_settings_summary">Importi la configuració de l\'aplicació des de l\'arxiu settings.dat dins del directori de còpia de seguretat de monocles chat.</string>
     <string name="pref_import_settings">Importar la configuració de l\'aplicació</string>
     <string name="success_import_settings">Configuració importada amb èxit.</string>
     <string name="error_import_settings">Error en importar la configuració.</string>
+    <string name="pref_enable_persistent_rooms_summary"></string>
+    <string name="unified_push_distributor"></string>
+    <string name="pref_up_push_account_title"></string>
+    <string name="pref_up_push_account_summary"></string>
+    <string name="pref_up_push_server_summary"></string>
+    <string name="no_account_deactivated"></string>
+    <string name="receiving_file_x"></string>
+    <string name="no_manage_storage_permission"></string>
+    <string name="pref_showtextformatting_sum"></string>
+    <string name="close"></string>
+    <string name="port_example" translatable="false"></string>
+    <string name="pref_max_resend_time_summary"></string>
+    <string name="pref_resend_delay_title"></string>
+    <string name="pref_resend_delay_summary"></string>
+    <string name="i_have_written"></string>
+    <string name="vector_graphic"></string>
+    <string name="multimedia_file"></string>
+    <string name="title_undo_swipe_out_group_chat"></string>
+    <string name="title_undo_swipe_out_channel"></string>
+    <string name="undo"></string>
+    <string name="audio_video_disabled_tor"></string>
+    <string name="reject_switch_to_video"></string>
+    <string name="pref_up_push_server_title"></string>
+    <string name="outgoing_call_duration_timestamp"></string>
+    <string name="outgoing_call_timestamp"></string>
+    <string name="retract_message"></string>
+    <string translatable="false" name="x_user_quote"></string>
+    <string name="pref_theme_White"></string>
+    <string name="no_i2p_calls"></string>
+    <string name="create_monocles_account"></string>
+    <string name="reply_to"></string>
+    <string name="strikethrough"></string>
+    <string name="pref_showtextformatting"></string>
+    <string name="help_format_text"></string>
+    <string name="close_format_text"></string>
+    <string name="pref_show_date_in_quotes_summary"></string>
+    <string name="pref_show_date_in_quotes"></string>
+    <string name="delete_avatar"></string>
+    <string name="import_backup_description"></string>
+    <string name="optimize_database"></string>
+    <string name="verifying_omemo_keys_trusted_source_account"></string>
+    <string name="continue_btn"></string>
+    <string name="participants"></string>
+    <string name="download_failed_invalid_file"></string>
+    <string name="orbot_not_found"></string>
+    <string name="account_status_temporary_auth_failure"></string>
+    <string name="pref_max_resend_time_title"></string>
+    <string name="title_activity_about_x"></string>
+    <string name="x_has_written"></string>
+    <string name="pref_theme_custom"></string>
+    <string name="moderate_message"></string>
+    <string name="moderate_reason"></string>
+    <string name="unable_to_moderate"></string>
+    <string name="conference_technical_problems"></string>
+    <string name="account_status_incompatible_client"></string>
+    <string name="enable_notifications"></string>
+    <string name="pref_allow_message_retraction"></string>
+    <string name="pref_allow_message_retraction_summary"></string>
+    <string name="conversations_foreground_service" translatable="false"></string>
+    <string name="sending_x_file_x"></string>
+    <string name="account_status_i2p_unavailable"></string>
+    <string name="transcoding_video_x"></string>
+    <string name="pref_use_i2p"></string>
+    <string name="pref_use_i2p_summary"></string>
+    <string name="incoming_call_duration_timestamp"></string>
+    <string name="delete_message_dialog_msg"></string>
+    <string name="send_otr_message"></string>
+    <string name="unknown_otr_fingerprint"></string>
+    <string name="otr_fingerprint"></string>
+    <string name="otr_fingerprint_selected_message"></string>
+    <string name="toast_message_otr_fingerprint"></string>
+    <string name="verify_otr"></string>
+    <string name="no_otr_session_found"></string>
+    <string name="are_you_sure_verify_fingerprint"></string>
+    <string name="copy_otr_clipboard_description"></string>
+    <string name="otr_session_not_started"></string>
+    <string name="pref_enable_otr_summary"></string>
+    <string name="pref_enable_otr"></string>
+    <string name="otr_warning"></string>
+    <string name="me_quote"></string>
+    <string name="pref_use_inner_storage"></string>
+    <string name="pref_use_inner_storage_summary"></string>
+    <string name="rtp_state_reconnecting"></string>
+    <string name="rtp_state_content_add_video"></string>
+    <string name="rtp_state_content_add"></string>
+    <string name="using_inner_storage"></string>
+    <string name="copy_file_to"></string>
+    <string name="action_unfix_from_location"></string>
+    <string name="action_fix_to_location"></string>
+    <string name="action_copy_location"></string>
+    <string name="account_registrations_are_not_supported"></string>
+    <string name="no_xmpp_adddress_found"></string>
+    <string name="pref_allowmergemessages"></string>
+    <string name="pref_allowmergemessages_sum"></string>
+    <string name="show_edit_log"></string>
+    <string name="reconnecting_call"></string>
+    <string name="reconnecting_video_call"></string>
+    <string name="user"></string>
+    <string name="format_text"></string>
+    <string name="bold"></string>
+    <string name="italic"></string>
+    <string name="monospace"></string>
+    <string name="grant"></string>
+    <string name="choose_camera_app"></string>
+    <string name="pref_choose_camera_summary"></string>
+    <string name="note_to_self"></string>
+    <string name="pref_enable_persistent_rooms_title"></string>
+    <string name="switch_to_video"></string>
+    <string name="title_undo_swipe_out_conversation"></string>
 </resources>
