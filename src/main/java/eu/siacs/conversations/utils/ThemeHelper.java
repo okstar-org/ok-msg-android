@@ -670,7 +670,7 @@ public class ThemeHelper {
             if (text != null && action != null) {
                 text.setTextSize(TypedValue.COMPLEX_UNIT_PX, size);
                 action.setTextSize(TypedValue.COMPLEX_UNIT_PX, size);
-                action.setTextColor(ContextCompat.getColor(context, R.color.deep_purple_a100));
+                action.setTextColor(ContextCompat.getColor(context, R.color.accent_monocles));
             }
         }
     }
