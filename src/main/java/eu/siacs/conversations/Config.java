@@ -211,7 +211,13 @@ public final class Config {
         //if the contacts domain matches one of the following domains OMEMO won’t be turned on automatically
         //can be used for well known, widely used gateways
         private static final List<String> CONTACT_DOMAINS = Arrays.asList(
+                "sip.cheogram.com",
+                "irc.cheogram.com",
+                "smtp.cheogram.com",
                 "cheogram.com",
+                "aria-net.org",
+                "matrix.org",
+                "monocles.de",
                 "monocles.eu",
                 "*.covid.monal.im"
         );
@@ -224,15 +230,8 @@ public final class Config {
     public static class DOMAIN {
         // use this fallback server if provider list can't be updated automatically
         public static final List<String> DOMAINS = Arrays.asList(
-                "sip.cheogram.com",
-                "irc.cheogram.com",
-                "smtp.cheogram.com",
-                "cheogram.com",
-                "aria-net.org",
-                "matrix.org",
                 "monocles.de",
-                "monocles.eu",
-                "conversations.im"
+                "monocles.eu"
         );
 
         // don't use these servers in provider list
