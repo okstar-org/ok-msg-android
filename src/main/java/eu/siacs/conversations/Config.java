@@ -231,7 +231,8 @@ public final class Config {
         // use this fallback server if provider list can't be updated automatically
         public static final List<String> DOMAINS = Arrays.asList(
                 "monocles.de",
-                "monocles.eu"
+                "monocles.eu",
+                "conversations.im"
         );
 
         // don't use these servers in provider list
