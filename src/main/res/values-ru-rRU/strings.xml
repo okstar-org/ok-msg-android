@@ -10,7 +10,7 @@
     <string name="account_details">Детали учетной записи</string>
     <string name="account_image_description">Аватар</string>
     <string name="account_registrations_are_not_supported">Регистрация учетной записи не поддерживается</string>
-    <string name="account_settings_example_jabber_id">username@monocles.de</string>
+    <string name="account_settings_example_jabber_id">username@monocles.eu</string>
     <string name="account_settings_hostname">Имя хоста</string>
     <string name="account_settings_jabber_id">chat address</string>
     <string name="account_settings_port">Порт</string>

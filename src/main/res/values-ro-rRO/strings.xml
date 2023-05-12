@@ -176,7 +176,7 @@
 \nDacă vă ștergeți contul de pe server, tot contul dumneavoastră va fi șters și de pe server, nu veți mai putea să vă conectați până când nu veți înregistra un cont nou.</string>
     <string name="attach_record_voice">Înregistrare voce</string>
     <string name="account_settings_jabber_id">Adresă XMPP</string>
-    <string name="account_settings_example_jabber_id">username@monocles.de</string>
+    <string name="account_settings_example_jabber_id">username@monocles.eu</string>
     <string name="password">Parolă</string>
     <string name="invalid_jid">Aceasta nu este o adresă XMPP valabilă</string>
     <string name="error_out_of_memory">Memorie epuizată. Imaginea este prea mare.</string>

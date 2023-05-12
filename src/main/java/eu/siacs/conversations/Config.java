@@ -12,7 +12,6 @@ import java.util.Random;
 
 import eu.siacs.conversations.BuildConfig;
 import eu.siacs.conversations.crypto.XmppDomainVerifier;
-import eu.siacs.conversations.services.ProviderService;
 import eu.siacs.conversations.xmpp.Jid;
 import eu.siacs.conversations.xmpp.chatstate.ChatState;
 
@@ -81,7 +80,7 @@ public final class Config {
     public static final String XMPP_IP = null; //BuildConfig.XMPP_IP; // set to null means disable
     public static final Integer[] XMPP_Ports = null; //BuildConfig.XMPP_Ports; // set to null means disable
     public static final String DOMAIN_LOCK = BuildConfig.DOMAIN_LOCK; //only allow account creation for this domain
-    public static final String MAGIC_CREATE_DOMAIN = DOMAIN.getRandomServer();
+    public static final String MAGIC_CREATE_DOMAIN = BuildConfig.MAGIC_CREATE_DOMAIN; //"monocles.eu";
 
     public static final Jid QUICKSY_DOMAIN = Jid.of("quicksy.im");
     public static final String CHANNEL_DISCOVERY = "https://search.jabber.network";
@@ -240,18 +239,6 @@ public final class Config {
                 "blabber.im"
         );
 
-        // choose a random server for registration
-        public static String getRandomServer() {
-            try {
-                new ProviderService().execute();
-                final String domain = ProviderService.getProviders().get(new Random().nextInt(ProviderService.getProviders().size()));
-                Log.d(LOGTAG, "MagicCreate account on domain: " + domain);
-                return domain;
-            } catch (Exception e) {
-                Log.d(LOGTAG, "Error getting random server ", e);
-            }
-            return "conversations.im";
-        }
     }
 
     private Config() {

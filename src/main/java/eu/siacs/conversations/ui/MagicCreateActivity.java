@@ -15,20 +15,20 @@ import androidx.appcompat.widget.Toolbar;
 import androidx.databinding.DataBindingUtil;
 
 import java.security.SecureRandom;
+import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
-import java.util.concurrent.ExecutionException;
 
 import eu.siacs.conversations.Config;
 import eu.siacs.conversations.R;
 import eu.siacs.conversations.databinding.ActivityMagicCreateBinding;
 import eu.siacs.conversations.entities.Account;
-import eu.siacs.conversations.services.ProviderService;
 import eu.siacs.conversations.utils.CryptoHelper;
 import eu.siacs.conversations.utils.InstallReferrerUtils;
 import eu.siacs.conversations.xmpp.Jid;
 
 public class MagicCreateActivity extends XmppActivity implements TextWatcher, AdapterView.OnItemSelectedListener, CompoundButton.OnCheckedChangeListener {
+
 
     private boolean useOwnProvider = false;
     private boolean registerFromUri = false;
@@ -80,17 +80,10 @@ public class MagicCreateActivity extends XmppActivity implements TextWatcher, Ad
         }
         super.onCreate(savedInstanceState);
         this.binding = DataBindingUtil.setContentView(this, R.layout.activity_magic_create);
-        final List<String> domains = ProviderService.getProviders();
+        final List<String> domains = Arrays.asList(getResources().getStringArray(R.array.domains));
         Collections.sort(domains, String::compareToIgnoreCase);
         final ArrayAdapter<String> adapter = new ArrayAdapter<>(this, android.R.layout.simple_selectable_list_item, domains);
-        try {
-            if (new ProviderService().execute().get()) {
-                adapter.notifyDataSetChanged();
-            }
-        } catch (ExecutionException | InterruptedException e) {
-            e.printStackTrace();
-        }
-        int defaultServer = adapter.getPosition(Config.DOMAIN.getRandomServer());
+        int defaultServer = adapter.getPosition("monocles.eu");
         if (registerFromUri && !useOwnProvider && (this.preAuth != null || domain != null)) {
             binding.server.setEnabled(false);
             binding.server.setVisibility(View.GONE);
@@ -115,23 +108,9 @@ public class MagicCreateActivity extends XmppActivity implements TextWatcher, Ad
             binding.instructions.setText(getString(R.string.magic_create_text_fixed, domain));
             binding.username.setEnabled(false);
             binding.username.setText(this.username);
-            domains.clear();
-            domains.add(this.domain);
-            adapter.notifyDataSetChanged();
-            binding.server.setSelection(0);
-            binding.servertitle.setVisibility(View.GONE);
-            binding.server.setVisibility(View.GONE);
-            binding.useOwn.setVisibility(View.GONE);
             updateFullJidInformation(this.username);
         } else if (domain != null) {
             binding.instructions.setText(getString(R.string.magic_create_text_on_x, domain));
-            domains.clear();
-            domains.add(this.domain);
-            adapter.notifyDataSetChanged();
-            binding.server.setSelection(0);
-            binding.servertitle.setVisibility(View.GONE);
-            binding.server.setVisibility(View.GONE);
-            binding.useOwn.setVisibility(View.GONE);
         }
         binding.createAccount.setOnClickListener(v -> {
             try {
@@ -244,7 +223,7 @@ public class MagicCreateActivity extends XmppActivity implements TextWatcher, Ad
     private void updateFullJidInformation(String username) {
         if (useOwnProvider && !registerFromUri) {
             this.domain = updateDomain();
-        } else if (!registerFromUri && !binding.server.getSelectedItem().toString().isEmpty()) {
+        } else if (!registerFromUri){
             this.domain = binding.server.getSelectedItem().toString();
         }
         if (username.trim().isEmpty()) {

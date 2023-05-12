@@ -176,7 +176,7 @@
 \nإذا حذفت حسابك من الخادم ، سيحذف حسابك بالكامل من الخادم أيضًا ،ولن تتمكن من الولوج إليه حتى تقوم بتسجيل حساب جديد.</string>
     <string name="attach_record_voice">سجل مقطع صوتي</string>
     <string name="account_settings_jabber_id">معرّف جابر</string>
-    <string name="account_settings_example_jabber_id">username@monocles.de</string>
+    <string name="account_settings_example_jabber_id">username@monocles.eu</string>
     <string name="password">كلمة السر</string>
     <string name="invalid_jid">هذا ليس معرّف جابر صالح</string>
     <string name="error_out_of_memory">الذاكرة لا تكفي. الصورة كبيرة جدًا</string>

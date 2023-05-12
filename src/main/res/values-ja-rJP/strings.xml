@@ -174,7 +174,7 @@
 \nサーバーからアカウントを削除すると、サーバーからもアカウント全体が削除され、新規アカウントを登録するまで、もはやログインできなくなります。</string>
     <string name="attach_record_voice">音声を録音</string>
     <string name="account_settings_jabber_id">chat address</string>
-    <string name="account_settings_example_jabber_id">username@monocles chat</string>
+    <string name="account_settings_example_jabber_id">username@monocles.eu</string>
     <string name="password">パスワード</string>
     <string name="invalid_jid">有効なchat addressではありません</string>
     <string name="error_out_of_memory">メモリ不足です。画像が大きすぎます</string>

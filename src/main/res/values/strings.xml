@@ -164,7 +164,7 @@
     <string name="mgmt_account_delete_confirm_message">If you delete your account, your entire local conversation history will be lost.\n\nIf you delete your account from server, your entire account will be deleted from server too, you will not be able to login anymore until you register a new account.</string>
     <string name="attach_record_voice">Record voice</string>
     <string name="account_settings_jabber_id">chat address</string>
-    <string name="account_settings_example_jabber_id">username@monocles.de</string>
+    <string name="account_settings_example_jabber_id">username@monocles.eu</string>
     <string name="password">Password</string>
     <string name="invalid_jid">This is not a valid chat address</string>
     <string name="error_out_of_memory">Out of memory. Image is too large</string>
