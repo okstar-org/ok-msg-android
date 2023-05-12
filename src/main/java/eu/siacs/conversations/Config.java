@@ -226,21 +226,6 @@ public final class Config {
         }
     }
 
-    public static class DOMAIN {
-        // use this fallback server if provider list can't be updated automatically
-        public static final List<String> DOMAINS = Arrays.asList(
-                "monocles.de",
-                "monocles.eu",
-                "conversations.im"
-        );
-
-        // don't use these servers in provider list
-        public static final List<String> BLACKLISTED_DOMAINS = Arrays.asList(
-                "blabber.im"
-        );
-
-    }
-
     private Config() {
     }
 
