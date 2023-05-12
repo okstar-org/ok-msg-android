@@ -181,7 +181,7 @@ public final class Config {
     public static final String UPDATE_URL = BuildConfig.UPDATE_URL;
     public static final long UPDATE_CHECK_TIMER = 24 * 60 * 60; // 24 h in seconds
 
-    public static final String ISSUE_URL = "xmpp://support@conference.monocles.de?join";
+    public static final String ISSUE_URL = "xmpp:support@conference.monocles.de?join";
 
     //only allow secure tls chipers now
     public static final String[] ENABLED_CIPHERS = {
