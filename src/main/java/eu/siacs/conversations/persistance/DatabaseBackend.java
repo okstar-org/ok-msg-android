@@ -908,6 +908,11 @@ public class DatabaseBackend extends SQLiteOpenHelper {
     }
 
     public WebxdcUpdate findLastWebxdcUpdate(Message message) {
+        if (message.getThread() == null) {
+            Log.w(Config.LOGTAG, "WebXDC message with no thread!");
+            return null;
+        }
+
         SQLiteDatabase db = this.getReadableDatabase();
         String[] selectionArgs = {message.getConversation().getUuid(), message.getThread().getContent()};
         Cursor cursor = db.query("monocles.webxdc_updates", null,
