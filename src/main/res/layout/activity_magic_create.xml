@@ -48,16 +48,6 @@
                             android:src="@drawable/logo_actionbar" />
                     </RelativeLayout>
 
-
-
-                    <TextView
-                        android:id="@+id/activity_main_link"
-                        android:layout_width="match_parent"
-                        android:gravity="center_vertical|center_horizontal"
-                        android:text="@string/create_monocles_account"
-                        android:textSize="23sp"
-                        android:layout_height="60dp" />
-
                     <TextView
                         android:id="@+id/monocles_account_introduction"
                         android:layout_width="wrap_content"
@@ -73,6 +63,14 @@
                         android:layout_marginTop="8dp"
                         android:text="@string/magic_create_text"
                         android:textAppearance="@style/TextAppearance.Conversations.Subhead" />
+
+                    <TextView
+                        android:id="@+id/activity_main_link"
+                        android:layout_width="match_parent"
+                        android:gravity="center_vertical|center_horizontal"
+                        android:text="@string/create_monocles_account"
+                        android:textSize="19sp"
+                        android:layout_height="60dp" />
 
                     <View
                         android:layout_width="match_parent"
@@ -103,7 +101,8 @@
                         android:hint="@string/username_hint"
                         android:imeOptions="actionNext"
                         android:inputType="text"
-                        android:textColor="?attr/edit_text_color" />
+                        android:textColor="?attr/edit_text_color"
+                        android:minHeight="30dp"/>
 
                     <TextView
                         android:id="@+id/servertitle"
@@ -120,7 +119,8 @@
                         android:layout_gravity="center_horizontal"
                         android:hint="@string/server_hint"
                         android:prompt="@string/server_hint"
-                        android:spinnerMode="dialog" />
+                        android:spinnerMode="dialog"
+                        android:minHeight="30dp"/>
 
                     <EditText
                         android:id="@+id/yourserver"

@@ -1261,6 +1261,6 @@
     <string name="note_to_self">Note to self</string>
     <string name="retract_message">Retract message</string>
     <string name="reply_to">Reply to</string>
-    <string name="or_use_another">Or choose another one below</string>
+    <string name="or_use_another">... or choose another one below</string>
     <string name="monocles_account_introduction">You can use monocles chat with every modern XMPP account or <b>get an affordable and secure monocles account, powered with regenerative energies!</b></string>
 </resources>

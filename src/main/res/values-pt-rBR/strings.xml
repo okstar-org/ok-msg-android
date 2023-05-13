@@ -1177,6 +1177,7 @@
     <string name="show_videos_images_only">Apenas imagens/vídeos</string>
     <string name="rtp_state_reconnecting">Reconectando</string>
     <string name="create_monocles_account"><a href="https://ocean.monocles.eu/apps/registration/">Obtenha uma conta Monocles!</a></string>
+    <string name="monocles_account_introduction">Você pode usar o Monocles Chat com todas as contas XMPP modernas ou obter uma conta de Monocles acessível e segura, hospedada na estação do servidor de Monocles e alimentada com energias renováveis!</string>
     <string name="error_moving_data">Ocorreu um erro ao mover seus dados antigos. Mova-os manualmente.</string>
     <string name="data_successfully_moved">Seus dados foram movidos com sucesso.</string>
     <string name="server_does_not_support_easy_onboarding_invites">O servidor não suporta a geração de convites</string>
@@ -1279,8 +1280,7 @@
     <string name="pref_enable_persistent_rooms_summary">Torne grupos e salas públicas persistentes e não os exclua do servidor depois que o último usuário sair do conversa.</string>
     <string name="pref_show_links_inside">Mostrar prévia de links na conversa</string>
     <string name="pref_enable_otr_summary">Ative a criptografia OTR para criptografia de mensagens. OTR ainda é altamente instável, por favor, use-o apenas se você souber o que está fazendo.</string>
-    <string name="magic_create_text">Você pode usar o Monocles Chat com todas as contas XMPP modernas ou obter uma conta de Monocles acessível e segura, hospedada na estação do servidor de Monocles e alimentada com energias renováveis!
-\n
+    <string name="magic_create_text">
 \n Isso inclui:
 \n● armazenamento de bate-papo temporário criptografado por dois meses
 \n● e-mail com 1 GB de armazenamento criptografado de ponta a ponta
@@ -1289,7 +1289,7 @@
 \n● 4 GB de armazenamento em nuvem (nextcloud)
 \n● calendário e sincronização de contatos
 \n● uma ferramenta de conferência segura
-\n● e mais em <a href="https://monocles.eu/more/">https://monocles.de/more/</a></string>
+\n● e mais em <a href="https://monocles.eu/more/">https://monocles.eu/more/</a></string>
     <string name="otr_warning">O suporte da criptografia OTR está no modo beta. Clique em leia mais para obter mais informações. Um link em um navegador será aberto.</string>
     <string name="please_enter_xmpp_address">Por favor, forneça um endereço XMPP</string>
     <string name="intro_desc_start_chatting">Se você concedeu permissões de contato, os contatos Jabber já existentes são exibidos automaticamente em sua lista de contatos. Caso contrário, basta adicionar os endereços.</string>
