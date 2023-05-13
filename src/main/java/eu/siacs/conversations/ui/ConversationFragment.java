@@ -2560,7 +2560,7 @@ public class ConversationFragment extends XmppFragment implements EditMessage.Ke
                 retractmessage.setTime(time);
                 retractmessage.setUuid(UUID.randomUUID().toString());
                 retractmessage.setCarbon(false);
-                retractmessage.setOob(false);
+                retractmessage.setOob(String.valueOf(false));
                 retractmessage.setRemoteMsgId(retractmessage.getUuid());
                 retractmessage.setMessageDeleted(true);
                 retractedMessage.setTime(time); //set new time here to keep orginal timestamps

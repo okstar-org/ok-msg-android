@@ -194,9 +194,10 @@ public class DatabaseBackend extends SQLiteOpenHelper {
     private static String CREATE_MESSAGE_UPDATE_TRIGGER = "CREATE TRIGGER after_message_update UPDATE OF uuid,body ON " + Message.TABLENAME + " BEGIN UPDATE messages_index SET body=NEW.body,uuid=NEW.uuid WHERE rowid=OLD.rowid; END;";
     private static final String CREATE_MESSAGE_DELETE_TRIGGER = "CREATE TRIGGER after_message_delete AFTER DELETE ON " + Message.TABLENAME + " BEGIN DELETE FROM messages_index WHERE rowid=OLD.rowid; END;";
     private static String COPY_PREEXISTING_ENTRIES = "INSERT INTO messages_index(messages_index) VALUES('rebuild');";
-
+    protected Context context;
     private DatabaseBackend(Context context) {
         super(context, DATABASE_NAME, null, DATABASE_VERSION);
+        this.context = context;
     }
 
     private static ContentValues createFingerprintStatusContentValues(FingerprintStatus.Trust trust, boolean active) {
@@ -222,6 +223,43 @@ public class DatabaseBackend extends SQLiteOpenHelper {
             instance = new DatabaseBackend(context);
         }
         return instance;
+    }
+
+    protected void monoclesMigrate(SQLiteDatabase db) {
+        db.beginTransaction();
+
+        try {
+            Cursor cursor = db.rawQuery("PRAGMA monocles.user_version", null);
+            cursor.moveToNext();
+            int monoclesVersion = cursor.getInt(0);
+            cursor.close();
+
+            if(monoclesVersion < 1) {
+                // No cross-DB foreign keys unfortunately
+                db.execSQL(
+                        "CREATE TABLE monocles." + Message.TABLENAME + "(" +
+                                Message.UUID + " TEXT PRIMARY KEY, " +
+                                "subject TEXT" +
+                                ")"
+                );
+                db.execSQL("PRAGMA monocles.user_version = 1");
+            }
+            if(monoclesVersion < 2) {
+                db.execSQL(
+                        "ALTER TABLE monocles." + Message.TABLENAME + " " +
+                                "ADD COLUMN oobUri TEXT"
+                );
+                db.execSQL(
+                        "ALTER TABLE monocles." + Message.TABLENAME + " " +
+                                "ADD COLUMN fileParams TEXT"
+                );
+                db.execSQL("PRAGMA monocles.user_version = 2");
+            }
+
+            db.setTransactionSuccessful();
+        } finally {
+            db.endTransaction();
+        }
     }
 
     @Override
@@ -261,6 +299,8 @@ public class DatabaseBackend extends SQLiteOpenHelper {
 
         db.rawQuery("PRAGMA secure_delete=ON", null).close();
         Log.d(Config.LOGTAG, "configure the DB in " + (SystemClock.elapsedRealtime() - start) + "ms");
+        db.execSQL("ATTACH DATABASE ? AS monocles", new Object[]{context.getDatabasePath("monocles").getPath()});
+        monoclesMigrate(db);
     }
 
     @Override
@@ -791,6 +831,7 @@ public class DatabaseBackend extends SQLiteOpenHelper {
     public void createMessage(Message message) {
         SQLiteDatabase db = this.getWritableDatabase();
         db.insert(Message.TABLENAME, null, message.getContentValues());
+        db.insert("monocles." + Message.TABLENAME, null, message.getmonoclesContentValues());
     }
 
     public void createAccount(Account account) {
@@ -899,16 +940,29 @@ public class DatabaseBackend extends SQLiteOpenHelper {
         SQLiteDatabase db = this.getReadableDatabase();
         Cursor cursor;
         if (timestamp == -1) {
-            String[] selectionArgs = {conversation.getUuid(), "1"};
-            cursor = db.query(Message.TABLENAME, null, Message.CONVERSATION
-                    + "=? and " + Message.DELETED + "<?", selectionArgs, null, null, Message.TIME_SENT
-                    + " DESC", String.valueOf(limit));
+            String[] selectionArgs = {conversation.getUuid()};
+            cursor = db.rawQuery(
+                    "SELECT * FROM " + Message.TABLENAME + " " +
+                            "LEFT JOIN monocles." + Message.TABLENAME +
+                            "  USING (" + Message.UUID + ")" +
+                            "WHERE " + Message.CONVERSATION + "=? " +
+                            "ORDER BY " + Message.TIME_SENT + " DESC " +
+                            "LIMIT " + String.valueOf(limit),
+                    selectionArgs
+            );
         } else {
-            String[] selectionArgs = {conversation.getUuid(), Long.toString(timestamp), "1"};
-            cursor = db.query(Message.TABLENAME, null, Message.CONVERSATION
-                            + "=? and " + Message.TIME_SENT + "<? and " + Message.DELETED + "<?", selectionArgs,
-                    null, null, Message.TIME_SENT + " DESC",
-                    String.valueOf(limit));
+            String[] selectionArgs = {conversation.getUuid(),
+                    Long.toString(timestamp)};
+            cursor = db.rawQuery(
+                    "SELECT * FROM " + Message.TABLENAME + " " +
+                            "LEFT JOIN monocles." + Message.TABLENAME +
+                            "  USING (" + Message.UUID + ")" +
+                            "WHERE " + Message.CONVERSATION + "=? AND " +
+                            Message.TIME_SENT + "<? " +
+                            "ORDER BY " + Message.TIME_SENT + " DESC " +
+                            "LIMIT " + String.valueOf(limit),
+                    selectionArgs
+            );
         }
         CursorUtils.upgradeCursorWindowSize(cursor);
         while (cursor.moveToNext()) {
@@ -1198,13 +1252,14 @@ public class DatabaseBackend extends SQLiteOpenHelper {
         if (!includeBody) {
             contentValues.remove(Message.BODY);
         }
-        return db.update(Message.TABLENAME, message.getContentValues(), Message.UUID + "=?", args) == 1;
-    }
+        return db.update(Message.TABLENAME, message.getContentValues(), Message.UUID + "=?", args) == 1 &&
+                db.update("monocles." + Message.TABLENAME, message.getmonoclesContentValues(), Message.UUID + "=?", args) == 1;    }
 
     public boolean updateMessage(Message message, String uuid) {
         SQLiteDatabase db = this.getWritableDatabase();
         String[] args = {uuid};
-        return db.update(Message.TABLENAME, message.getContentValues(), Message.UUID + "=?", args) == 1;
+        return db.update(Message.TABLENAME, message.getContentValues(), Message.UUID + "=?", args) == 1 &&
+                db.update("monocles." + Message.TABLENAME, message.getmonoclesContentValues(), Message.UUID + "=?", args) == 1;
     }
 
     public void readRoster(Roster roster) {

@@ -28,6 +28,8 @@ import de.monocles.chat.GetThumbnailForCid;
 import java.net.URI;
 import java.net.URISyntaxException;
 import java.util.HashSet;
+import java.net.URI;
+import java.net.URISyntaxException;
 
 import org.json.JSONException;
 
@@ -126,13 +128,16 @@ public class Message extends AbstractEntity implements AvatarService.Avatarable 
     protected Jid trueCounterpart;
     protected String body;
     protected String encryptedBody;
+    protected String subject;
+
     protected long timeSent;
     protected int encryption;
     protected int status;
     protected int type;
     protected boolean file_deleted = false;
     protected boolean carbon = false;
-    protected boolean oob = false;
+    private boolean oob = false;
+    protected URI oobUri = null;
     protected static List<Element> payloads = new ArrayList<>();
     protected List<Edit> edits = new ArrayList<>();
     protected String relativeFilePath;
@@ -196,6 +201,9 @@ public class Message extends AbstractEntity implements AvatarService.Avatarable 
                 false,
                 null,
                 null,
+                null,
+                null,
+                null,
                 null);
     }
 
@@ -224,6 +232,9 @@ public class Message extends AbstractEntity implements AvatarService.Avatarable 
                 false,
                 null,
                 null,
+                null,
+                null,
+                null,
                 null);
     }
 
@@ -233,7 +244,7 @@ public class Message extends AbstractEntity implements AvatarService.Avatarable 
                       final String remoteMsgId, final String relativeFilePath,
                       final String serverMsgId, final String fingerprint, final boolean read, final boolean deleted,
                       final String edited, final boolean oob, final String errorMessage, final Set<ReadByMarker> readByMarkers,
-                      final boolean markable, final boolean file_deleted, final String bodyLanguage, final String retractId, final List<Element> payloads) {
+                      final boolean markable, final boolean file_deleted, final String bodyLanguage, final String retractId, final String subject,  final String oobUri, final String fileParams, final List<Element> payloads) {
         this.conversation = conversation;
         this.uuid = uuid;
         this.conversationUuid = conversationUUid;
@@ -252,6 +263,7 @@ public class Message extends AbstractEntity implements AvatarService.Avatarable 
         this.read = read;
         this.deleted = deleted;
         this.edits = Edit.fromJson(edited);
+        setOob(oobUri);
         this.oob = oob;
         this.errorMessage = errorMessage;
         this.readByMarkers = readByMarkers == null ? new CopyOnWriteArraySet<>() : readByMarkers;
@@ -259,22 +271,12 @@ public class Message extends AbstractEntity implements AvatarService.Avatarable 
         this.file_deleted = file_deleted;
         this.bodyLanguage = bodyLanguage;
         this.retractId = retractId;
+        this.subject = subject;
+        if (fileParams != null) this.fileParams = new FileParams(fileParams);
         if (payloads != null) this.payloads = payloads;
     }
 
     public static Message fromCursor(Cursor cursor, Conversation conversation) {
-/*         String payloadsStr = cursor.getString(cursor.getColumnIndex("payloads"));
-        List<Element> payloads = new ArrayList<>();
-       if (payloadsStr != null) {
-            final XmlReader xmlReader = new XmlReader();
-            xmlReader.setInputStream(ByteSource.wrap(payloadsStr.getBytes()).openStream());
-            Tag tag;
-            while ((tag = xmlReader.readTag()) != null) {
-                payloads.add(xmlReader.readElement(tag));
-            }
-        }
-        //TODO: Handle payload and Xml Reader
-*/
         return new Message(conversation,
                 cursor.getString(cursor.getColumnIndex(UUID)),
                 cursor.getString(cursor.getColumnIndex(CONVERSATION)),
@@ -300,6 +302,9 @@ public class Message extends AbstractEntity implements AvatarService.Avatarable 
                 cursor.getInt(cursor.getColumnIndex(FILE_DELETED)) > 0,
                 cursor.getString(cursor.getColumnIndex(BODY_LANGUAGE)),
                 cursor.getString(cursor.getColumnIndex(RETRACT_ID)),
+                cursor.getString(cursor.getColumnIndex("subject")),
+                cursor.getString(cursor.getColumnIndex("oobUri")),
+                cursor.getString(cursor.getColumnIndex("fileParams")),
                 payloads
         );
     }
@@ -328,6 +333,14 @@ public class Message extends AbstractEntity implements AvatarService.Avatarable 
         message.setType(Message.TYPE_STATUS);
         message.body = "LOAD_MORE";
         return message;
+    }
+    public ContentValues getmonoclesContentValues() {
+        ContentValues values = new ContentValues();
+        values.put(UUID, uuid);
+        values.put("subject", subject);
+        values.put("oobUri", oobUri == null ? null : oobUri.toString());
+        values.put("fileParams", fileParams == null ? null : fileParams.toString());
+        return values;
     }
 
     @Override
@@ -503,8 +516,13 @@ public class Message extends AbstractEntity implements AvatarService.Avatarable 
     }
 
     public String getBody() {
-        return body;
+        if (oobUri != null) {
+            return body.replace(oobUri.toString(), "");
+        } else {
+            return body;
+        }
     }
+
     public synchronized void setBody(String body) {
         if (body == null) {
             throw new Error("You should not set the message body to null");
@@ -515,7 +533,13 @@ public class Message extends AbstractEntity implements AvatarService.Avatarable 
         this.isWebUri = null;
         this.isEmojisOnly = null;
         this.treatAsDownloadable = null;
-        this.fileParams = null;
+    }
+    public String getSubject() {
+        return subject;
+    }
+
+    public synchronized void setSubject(String subject) {
+        this.subject = subject;
     }
 
     public void setMucUser(MucOptions.User user) {
@@ -702,7 +726,6 @@ public class Message extends AbstractEntity implements AvatarService.Avatarable 
     }
 
     public synchronized void setTransferable(Transferable transferable) {
-        this.fileParams = null;
         this.transferable = transferable;
     }
 
@@ -835,6 +858,7 @@ public class Message extends AbstractEntity implements AvatarService.Avatarable 
                             message.getEncryption() != Message.ENCRYPTION_PGP &&
                             message.getEncryption() != Message.ENCRYPTION_DECRYPTION_FAILED &&
                             this.getType() == message.getType() &&
+                            this.getSubject() != null &&
                             //this.getStatus() == message.getStatus() &&
                             isStatusMergeable(this.getStatus(), message.getStatus()) &&
                             this.getEncryption() == message.getEncryption() &&
@@ -904,7 +928,7 @@ public class Message extends AbstractEntity implements AvatarService.Avatarable 
     }
 
     public boolean isOOb() {
-        return oob;
+        return oob || oobUri != null;
     }
 
     public static class MergeSeparator {
@@ -966,7 +990,19 @@ public class Message extends AbstractEntity implements AvatarService.Avatarable 
     }
 
     public SpannableStringBuilder getMergedBody() {
-        return getMergedBody(null, null);
+        SpannableStringBuilder body = new SpannableStringBuilder(MessageUtils.filterLtrRtl(getBody()).trim());
+        Message current = this;
+        while (current.mergeable(current.next())) {
+            current = current.next();
+            if (current == null) {
+                break;
+            }
+            body.append("\n\n");
+            body.setSpan(new MergeSeparator(), body.length() - 2, body.length(),
+                    SpannableStringBuilder.SPAN_EXCLUSIVE_EXCLUSIVE);
+            body.append(MessageUtils.filterLtrRtl(current.getBody()).trim());
+        }
+        return body;
     }
 
     public SpannableStringBuilder getMergedBody(GetThumbnailForCid thumbnailer, Drawable fallbackImg) {
@@ -1053,14 +1089,7 @@ public class Message extends AbstractEntity implements AvatarService.Avatarable 
             throw new IllegalStateException("Attempting to store unedited message");
         }
     }
-    public URI getOob() {
-        final String url = getFileParams().url;
-        try {
-            return url == null ? null : new URI(url);
-        } catch (final URISyntaxException e) {
-            return null;
-        }
-    }
+
     public List<Edit> getEditedList() {
         return edits;
     }
@@ -1073,9 +1102,19 @@ public class Message extends AbstractEntity implements AvatarService.Avatarable 
         }
     }
 
-    public void setOob(boolean isOob) {
-        this.oob = isOob;
+    public URI getOob() {
+        return oobUri;
     }
+
+    public void setOob(String oobUri) {
+        try {
+            this.oobUri = oobUri == null ? null : new URI(oobUri);
+        } catch (final URISyntaxException e) {
+            this.oobUri = null;
+        }
+        this.oob = this.oobUri != null;
+    }
+
     public void clearPayloads() {
         this.payloads.clear();
     }
@@ -1095,22 +1134,18 @@ public class Message extends AbstractEntity implements AvatarService.Avatarable 
         if (relativeFilePath != null) {
             extension = MimeUtils.extractRelevantExtension(relativeFilePath);
         } else {
-            try {
-                final String url = URL.tryParse(body.split("\n")[0]);
-                if (url == null) {
-                    return null;
-                }
-                extension = MimeUtils.extractRelevantExtension(url);
-            } catch (Exception e) {
+            final String url = URL.tryParse(oobUri == null ? body.split("\n")[0] : oobUri.toString());
+            if (url == null) {
                 return null;
             }
+            extension = MimeUtils.extractRelevantExtension(url);
         }
         return MimeUtils.guessMimeTypeFromExtension(extension);
     }
 
     public synchronized boolean treatAsDownloadable() {
         if (treatAsDownloadable == null) {
-            treatAsDownloadable = MessageUtils.treatAsDownloadable(this.body, this.oob);
+            treatAsDownloadable = MessageUtils.treatAsDownloadable(this.body, isOOb());
         }
         return treatAsDownloadable;
     }
@@ -1165,51 +1200,19 @@ public class Message extends AbstractEntity implements AvatarService.Avatarable 
         this.fileParams = fileParams;
     }
     public synchronized void setFileParams(FileParams fileParams) {
-        if (fileParams != null && this.fileParams != null && this.fileParams.sims != null && fileParams.sims == null) {
-            fileParams.sims = this.fileParams.sims;
-        }
         this.fileParams = fileParams;
     }
+
     public synchronized FileParams getFileParams() {
         if (fileParams == null) {
-            fileParams = new FileParams();
+            fileParams = new FileParams(this.body);
             if (this.transferable != null) {
                 fileParams.size = this.transferable.getFileSize();
             }
-            final String[] parts = body == null ? new String[0] : body.split("\\|");
-            switch (parts.length) {
-                case 1:
-                    try {
-                        fileParams.size = Long.parseLong(parts[0]);
-                    } catch (final NumberFormatException e) {
-                        fileParams.url = URL.tryParse(parts[0]);
-                    }
-                    break;
-                case 5:
-                    fileParams.width = parseInt(parts[2]);
-                    fileParams.height = parseInt(parts[3]);
-                    fileParams.runtime = parseInt(parts[4]);
-                case 4:
-                    fileParams.width = parseInt(parts[2]);
-                    fileParams.height = parseInt(parts[3]);
-                case 2:
-                    fileParams.url = URL.tryParse(parts[0]);
-                    fileParams.size = Longs.tryParse(parts[1]);
-                    break;
-                case 3:
-                    fileParams.size = Longs.tryParse(parts[0]);
-                    fileParams.width = parseInt(parts[1]);
-                    fileParams.height = parseInt(parts[2]);
-                    break;
-                case 6:
-                    fileParams.url = URL.tryParse(parts[0]);
-                    fileParams.size = Longs.tryParse(parts[1]);
-                    fileParams.runtime = parseInt(parts[4]);
-                    fileParams.subject = parseString(parts[5]);
-                    break;
 
+            if (oobUri != null && ("http".equalsIgnoreCase(oobUri.getScheme()) || "https".equalsIgnoreCase(oobUri.getScheme()))) {
+                fileParams.url = oobUri.toString();
             }
-            Log.d(Config.LOGTAG, "FileParams: " + body);
         }
         return fileParams;
     }
@@ -1268,9 +1271,46 @@ public class Message extends AbstractEntity implements AvatarService.Avatarable 
         public int runtime = 0;
         public String subject = "";
         public Element sims = null;
+        public FileParams() { }
 
+        public FileParams(String ser) {
+            final String[] parts = ser == null ? new String[0] : ser.split("\\|");
+            switch (parts.length) {
+                case 1:
+                    try {
+                        this.size = Long.parseLong(parts[0]);
+                    } catch (final NumberFormatException e) {
+                        this.url = URL.tryParse(parts[0]);
+                    }
+                    break;
+                case 5:
+                    this.runtime = parseInt(parts[4]);
+                case 4:
+                    this.width = parseInt(parts[2]);
+                    this.height = parseInt(parts[3]);
+                case 2:
+                    this.url = URL.tryParse(parts[0]);
+                    this.size = Longs.tryParse(parts[1]);
+                    break;
+                case 3:
+                    this.size = Longs.tryParse(parts[0]);
+                    this.width = parseInt(parts[1]);
+                    this.height = parseInt(parts[2]);
+                    break;
+            }
+        }
         public long getSize() {
             return size == null ? 0 : size;
+        }
+
+        public String toString() {
+            final StringBuilder builder = new StringBuilder();
+            if (url != null) builder.append(url);
+            if (size != null) builder.append('|').append(size.toString());
+            if (width > 0 || height > 0 || runtime > 0) builder.append('|').append(width);
+            if (height > 0 || runtime > 0) builder.append('|').append(height);
+            if (runtime > 0) builder.append('|').append(runtime);
+            return builder.toString();
         }
     }
 

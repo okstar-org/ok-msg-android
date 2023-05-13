@@ -1219,6 +1219,7 @@ public class MessageAdapter extends ArrayAdapter<Message> {
                     viewHolder.messageBody = view.findViewById(R.id.message_body);
                     viewHolder.user = view.findViewById(R.id.message_user);
                     viewHolder.time = view.findViewById(R.id.message_time);
+                    viewHolder.subject = view.findViewById(R.id.message_subject);
                     viewHolder.indicatorReceived = view.findViewById(R.id.indicator_received);
                     viewHolder.transfer = view.findViewById(R.id.transfer);
                     viewHolder.progressBar = view.findViewById(R.id.progressBar);
@@ -1243,6 +1244,7 @@ public class MessageAdapter extends ArrayAdapter<Message> {
                     viewHolder.messageBody = view.findViewById(R.id.message_body);
                     viewHolder.user = view.findViewById(R.id.message_user);
                     viewHolder.time = view.findViewById(R.id.message_time);
+                    viewHolder.subject = view.findViewById(R.id.message_subject);
                     viewHolder.indicatorReceived = view.findViewById(R.id.indicator_received);
                     viewHolder.encryption = view.findViewById(R.id.message_encryption);
                     viewHolder.transfer = view.findViewById(R.id.transfer);
@@ -1473,6 +1475,14 @@ public class MessageAdapter extends ArrayAdapter<Message> {
                 }
             }
         }
+        if (type == RECEIVED || type == SENT) {
+            if (message.getSubject() == null) {
+                viewHolder.subject.setVisibility(View.GONE);
+            } else {
+                viewHolder.subject.setVisibility(View.VISIBLE);
+                viewHolder.subject.setText(message.getSubject());
+            }
+        }
 
         if (type == SENT) {
             setBubbleBackgroundColor(viewHolder.message_box, type, message.isPrivateMessage(), isInValidSession);
@@ -1641,6 +1651,7 @@ public class MessageAdapter extends ArrayAdapter<Message> {
         protected ImageView indicator;
         protected ImageView indicatorReceived;
         protected TextView time;
+        protected TextView subject;
         protected TextView messageBody;
         protected TextView user;
         protected TextView username;
