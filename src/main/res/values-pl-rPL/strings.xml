@@ -157,7 +157,7 @@
 \nUsunięcie konta z serwera będzie skutkowało brakiem możliwości zalogowania do niego.</string>
     <string name="attach_record_voice">Nagraj głos</string>
     <string name="account_settings_jabber_id">chat address</string>
-    <string name="account_settings_example_jabber_id">nazwaużytkownika@monocles.de</string>
+    <string name="account_settings_example_jabber_id">nazwaużytkownika@monocles.eu</string>
     <string name="password">Hasło</string>
     <string name="invalid_jid">Wprowadzono niepoprawny chat address</string>
     <string name="error_out_of_memory">Brak pamięci, obraz jest za duży</string>

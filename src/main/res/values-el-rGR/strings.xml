@@ -766,7 +766,6 @@
     <string name="unpublish_pgp_message"></string>
     <string name="openpgp_has_been_published"></string>
     <string name="mgmt_account_delete_confirm_message"></string>
-    <string name="account_settings_example_jabber_id"></string>
     <string name="add_phone_book_text"></string>
     <string name="server_info_pep"></string>
     <string name="server_info_http_upload"></string>

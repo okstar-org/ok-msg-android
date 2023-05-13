@@ -176,7 +176,7 @@
 \nSe elimini l\'account dal server, tutto il tuo account sarà eliminato anche dal server, e non sarai in grado di accedere più finchè non registrerai un nuovo account.</string>
     <string name="attach_record_voice">Registra la voce</string>
     <string name="account_settings_jabber_id">ID Jabber</string>
-    <string name="account_settings_example_jabber_id">nomeutente@monocles.de</string>
+    <string name="account_settings_example_jabber_id">nomeutente@monocles.eu</string>
     <string name="password">Password</string>
     <string name="invalid_jid">Questo non è un ID Jabber valido</string>
     <string name="error_out_of_memory">Memoria esaurita. L’immagine è tropppo grande</string>

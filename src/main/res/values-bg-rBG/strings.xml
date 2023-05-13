@@ -956,7 +956,6 @@
     <string name="encryption_choice_pgp"></string>
     <string name="encryption_choice_omemo"></string>
     <string name="account_settings_jabber_id"></string>
-    <string name="account_settings_example_jabber_id"></string>
     <string name="server_info_mam"></string>
     <string name="server_info_push"></string>
     <string name="omemo_fingerprint_selected_message"></string>

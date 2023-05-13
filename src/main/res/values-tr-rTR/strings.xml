@@ -174,7 +174,7 @@
 \nEğer hesabınızı bu sunucudan silerseniz, tüm hesabımınız sunucudan da kaldırılacaktır ve Yeni bir hesap açana kadar oturum açamayacaksınız.</string>
     <string name="attach_record_voice">Kayıt sesi</string>
     <string name="account_settings_jabber_id">Jabber Kimliği</string>
-    <string name="account_settings_example_jabber_id">kullanıcıadı@monocles.de</string>
+    <string name="account_settings_example_jabber_id">kullanıcıadı@monocles.eu</string>
     <string name="password">Parola</string>
     <string name="invalid_jid">Bu geçerli bir chat address değil</string>
     <string name="error_out_of_memory">Bellek yetersiz. Görüntü çok büyük</string>

@@ -661,7 +661,6 @@
     <string name="action_account"></string>
     <string name="mgmt_account_delete_confirm_message"></string>
     <string name="account_settings_jabber_id"></string>
-    <string name="account_settings_example_jabber_id"></string>
     <string name="server_info_mam"></string>
     <string name="server_info_available"></string>
     <string name="server_info_unavailable"></string>

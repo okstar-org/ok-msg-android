@@ -1326,7 +1326,6 @@
     <string name="pref_mappreview_host_summary"></string>
     <string name="pref_mappreview_host"></string>
     <string name="webview_not_available"></string>
-    <string name="account_settings_example_jabber_id"></string>
     <string name="outgoing_call_timestamp"></string>
     <string name="note_to_self"></string>
     <string name="retract_message"></string>

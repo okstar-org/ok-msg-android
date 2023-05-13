@@ -174,7 +174,7 @@
 \nSi elimines el teu compte del servidor, serà eliminat del servidor tambè, no podràs entrar mai més fins que no registris un nou compte.</string>
     <string name="attach_record_voice">Gravar àudio</string>
     <string name="account_settings_jabber_id">Identificador Jabber</string>
-    <string name="account_settings_example_jabber_id">nom_d\'usuari@monocles chat</string>
+    <string name="account_settings_example_jabber_id">nom_d\'usuari@monocles.eu</string>
     <string name="password">Contrasenya</string>
     <string name="invalid_jid">L\'identificador jabber- ID no és vàlid</string>
     <string name="error_out_of_memory">Sense memòria. La imatge és massa gran</string>

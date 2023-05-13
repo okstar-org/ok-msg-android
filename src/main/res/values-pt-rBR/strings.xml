@@ -175,7 +175,7 @@
 \nSe você apagar sua conta do servidor, todo o seu histórico também será apagado do servidor e você não poderá se conectar novamente enquanto não criar uma nova conta.</string>
     <string name="attach_record_voice">Gravar voz</string>
     <string name="account_settings_jabber_id">ID Jabber</string>
-    <string name="account_settings_example_jabber_id">nomedeusuario@monocles chat</string>
+    <string name="account_settings_example_jabber_id">nomedeusuario@monocles.eu</string>
     <string name="password">Senha</string>
     <string name="invalid_jid">Esse não é um ID Jabber válido</string>
     <string name="error_out_of_memory">Memória insuficiente. A imagem é muito grande</string>

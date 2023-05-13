@@ -176,7 +176,7 @@
 \nBij het verwijderen van het account op de server kan ook niet meer worden ingelogd met dit account.</string>
     <string name="attach_record_voice">Stem opnemen</string>
     <string name="account_settings_jabber_id">chat address:</string>
-    <string name="account_settings_example_jabber_id">gebruikersnaam@monocles.de</string>
+    <string name="account_settings_example_jabber_id">gebruikersnaam@monocles.eu</string>
     <string name="password">Wachtwoord</string>
     <string name="invalid_jid">Dit is geen geldige chat address</string>
     <string name="error_out_of_memory">Geen geheugen beschikbaar. Afbeelding is te groot</string>

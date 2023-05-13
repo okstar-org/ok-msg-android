@@ -177,7 +177,7 @@
 \nWenn du dein Konto vom Server löschst, wird dein gesamtes Benutzerkonto ebenfalls gelöscht, du wirst dich nicht mehr einloggen können bis du ein neues Konto erstellt hast.</string>
     <string name="attach_record_voice">Sprache aufzeichnen</string>
     <string name="account_settings_jabber_id">Chat Adresse</string>
-    <string name="account_settings_example_jabber_id">benutzer@monocles.de</string>
+    <string name="account_settings_example_jabber_id">benutzer@monocles.eu</string>
     <string name="password">Kennwort</string>
     <string name="invalid_jid">Ungültige Chat Adresse</string>
     <string name="error_out_of_memory">Zu wenig Speicher vorhanden. Das Bild ist zu groß</string>

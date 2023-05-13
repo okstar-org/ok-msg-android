@@ -177,7 +177,7 @@
 \nSi vous supprimez votre compte du serveur, votre compte sera entièrement supprimé, vous ne pourrez plus vous connecter jusqu\'à ce que vous ayez créé un nouveau compte.</string>
     <string name="attach_record_voice">Enregistrer un son</string>
     <string name="account_settings_jabber_id">Identifiant</string>
-    <string name="account_settings_example_jabber_id">nomutilisateur@monocles.de</string>
+    <string name="account_settings_example_jabber_id">nomutilisateur@monocles.eu</string>
     <string name="password">Mot de passe</string>
     <string name="invalid_jid">Cet identifiant n\'est pas valide</string>
     <string name="error_out_of_memory">Plus de mémoire disponible. L’image est trop grande</string>
