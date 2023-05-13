@@ -1253,8 +1253,8 @@ public class DatabaseBackend extends SQLiteOpenHelper {
             contentValues.remove(Message.BODY);
         }
         return db.update(Message.TABLENAME, message.getContentValues(), Message.UUID + "=?", args) == 1 &&
-                db.update("monocles." + Message.TABLENAME, message.getmonoclesContentValues(), Message.UUID + "=?", args) == 1;    }
-
+                db.update("monocles." + Message.TABLENAME, message.getmonoclesContentValues(), Message.UUID + "=?", args) == 1;
+    }
     public boolean updateMessage(Message message, String uuid) {
         SQLiteDatabase db = this.getWritableDatabase();
         String[] args = {uuid};
