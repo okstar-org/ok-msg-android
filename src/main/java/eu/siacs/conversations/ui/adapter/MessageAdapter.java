@@ -1411,8 +1411,6 @@ public class MessageAdapter extends ArrayAdapter<Message> {
         } else {
             if (message.isGeoUri()) {
                 displayLocationMessage(viewHolder, message, darkBackground, activity);
-            } else if (message.bodyIsOnlyEmojis() && message.getType() != Message.TYPE_PRIVATE) {
-                displayEmojiMessage(viewHolder, message.getBody().trim(), darkBackground);
             } else if (message.isXmppUri()) {
                 displayXmppMessage(viewHolder, message.getBody().trim());
             } else if (message.treatAsDownloadable()) {
@@ -1431,6 +1429,8 @@ public class MessageAdapter extends ArrayAdapter<Message> {
                                     UIHelper.getFileDescriptionString(activity, message)),
                             darkBackground);
                 }
+            } else if (message.bodyIsOnlyEmojis() && message.getType() != Message.TYPE_PRIVATE) {
+                displayEmojiMessage(viewHolder, message.getBody().trim(), darkBackground);
             } else {
                 displayTextMessage(viewHolder, message, darkBackground, type);
             }
