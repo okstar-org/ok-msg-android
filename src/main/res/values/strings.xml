@@ -517,7 +517,7 @@
     <string name="share_uri_with">Share URI with…</string>
     <string name="mgmt_account_reconnect">Reconnect</string>
     <string name="welcome_text">…is a privacy respecting and secure chat client.</string>
-    <string name="magic_create_text">You can use monocles chat with every modern XMPP account or get a affordable and secure monocles account, hosted on the monocles server station and powered with regenerative energies!\n\n This includes:\n● two month encrypted temporary chat storage\n● e-mail with 1 GB end-to-end encrypted storage\n\n optionally: \n● 4 GB cloud storage (nextcloud)\n● calendar and contact sync\n● a secure conferencing tool \n● and more on <a href="https://monocles.de/more/">https://monocles.de/more/</a></string>
+    <string name="magic_create_text">This includes:\n● one month encrypted temporary chat storage\n● e-mail with 1 GB end-to-end encrypted storage\n\n optionally: \n● 4 GB cloud storage (nextcloud)\n● calendar and contact sync\n● a secure conferencing tool \n and more on <a href="https://monocles.eu/more/">https://monocles.eu/more/</a></string>
     <string name="your_full_jid_will_be">Your chat adress will be: %s</string>
     <string name="create_account">Create new account</string>
     <string name="welcome_existing_account">I have an account</string>
@@ -1124,7 +1124,7 @@
     <string name="updated_to_monocles">We have successfully updated Monocles Messenger to monocles chat\n\nThe cooperation of the two projects monocles chat and Monocles Messenger was expanded in November 2020. In the future, the Android app Monocles Messenger will be continued under the name monocles chat.\n\nWhat you can expect:\n- Range of functions remains the same\n- Support chat rooms are merged\n- Colors and logos are adapted to monocles\n- App is still available for free in F-Droid Store\n\nYour monocles Team</string>
     <string name="updated_to_monocles_google">We have to apologize that we could not update directly to monocles chat. Under the following link you will receive instructions on how to transfer all your accounts from Monocles Messenger to monocles chat. By clicking on move data we try to move all sent and received files from Monocles Messenger to monocles chat. After a successfully migration keep in mind to remove Monocles Messenger from your device.</string>
     <string name="link">Link</string>
-    <string name="create_monocles_account">Get a monocles account!</string>
+    <string name="create_monocles_account"><a href="https://ocean.monocles.eu/apps/registration/">Sign up</a></string>
     <string name="no_application_found">No application found</string>
     <string name="move_data">Move  data</string>
     <string name="error_moving_data">An error occurred while moving your old data. Please move them manually.</string>
@@ -1261,4 +1261,6 @@
     <string name="note_to_self">Note to self</string>
     <string name="retract_message">Retract message</string>
     <string name="reply_to">Reply to</string>
+    <string name="or_use_another">Or choose another one below</string>
+    <string name="monocles_account_introduction">You can use monocles chat with every modern XMPP account or <b>get an affordable and secure monocles account, powered with regenerative energies!</b></string>
 </resources>

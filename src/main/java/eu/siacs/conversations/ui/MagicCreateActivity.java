@@ -5,10 +5,12 @@ import android.content.pm.ActivityInfo;
 import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextWatcher;
+import android.text.method.LinkMovementMethod;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.CompoundButton;
+import android.widget.TextView;
 
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.widget.Toolbar;
@@ -41,6 +43,16 @@ public class MagicCreateActivity extends XmppActivity implements TextWatcher, Ad
     private String domain;
     private String username;
     private String preAuth;
+
+
+    private void setupHyperlink() {
+        TextView linkTextView = findViewById(R.id.activity_main_link);
+        TextView link2TextView = findViewById(R.id.instructions);
+        linkTextView.setMovementMethod(LinkMovementMethod.getInstance());
+        link2TextView.setMovementMethod(LinkMovementMethod.getInstance());
+
+    }
+
 
     @Override
     protected void refreshUiReal() {
@@ -182,6 +194,7 @@ public class MagicCreateActivity extends XmppActivity implements TextWatcher, Ad
             }
         });
         binding.username.addTextChangedListener(this);
+        setupHyperlink();
     }
 
     private String updateDomain() {

@@ -99,7 +99,7 @@
     <string name="install">Installieren</string>
     <string name="offering">angeboten…</string>
     <string name="waiting">warten…</string>
-    <string name="create_monocles_account"><a href="https://ocean.monocles.de/apps/registration/">Bekomme einen monocles account!</a></string>
+    <string name="create_monocles_account"><a href="https://ocean.monocles.eu/apps/registration/">Bekomme einen monocles account!</a></string>
     <string name="no_pgp_key">Kein OpenPGP-Schlüssel gefunden</string>
     <string name="contact_has_no_pgp_key">monocles chat ist nicht in der Lage, deine Nachrichten zu verschlüsseln, weil dein Kontakt seinen Schlüssel nicht preisgibt.
 \n
@@ -560,7 +560,7 @@
 \n ● 4 GB Cloud-Speicher (Nextcloud)
 \n ● Kalender und Kontakt Synchronisation
 \n ● Ein sicheres Conferencing-Tool
-\n ● und mehr auf <a href="https://monocles.de/more/">https://monocles.de/more/</a></string>
+\n ● und mehr auf <a href="https://monocles.eu/more/">https://monocles.de/more/</a></string>
     <string name="your_full_jid_will_be">Deine Chat Adresse lautet: %s</string>
     <string name="create_account">Neues Konto erstellen</string>
     <string name="welcome_existing_account">Ich habe ein Konto</string>

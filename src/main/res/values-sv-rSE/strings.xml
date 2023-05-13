@@ -520,7 +520,6 @@
     <string name="account_status_tls_error_domain"></string>
     <string name="pref_use_bundled_emoji"></string>
     <string name="unable_to_save_recording"></string>
-    <string name="magic_create_text"></string>
     <string name="strikethrough"></string>
     <string name="grant"></string>
     <string name="no_manage_storage_permission"></string>

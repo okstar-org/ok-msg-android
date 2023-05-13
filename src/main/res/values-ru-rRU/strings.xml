@@ -493,11 +493,6 @@
     <string name="locating">Определение местоположения...</string>
     <string name="location">Местоположение</string>
     <string name="location_sharing_disabled">Возможность делиться местоположением отключена в настройках</string>
-    <string name="magic_create_text">You can use monocles chat with every modern XMPP account or get a affordable and secure monocles account, hosted on the monocles server station and powered with regenerative energies!
-\n
-\n This includes: ● two month encrypted temporary chat storage ● e-mail with 1 GB end-to-end encrypted storage
-\n
-\n optionally: ● 4 GB cloud storage (nextcloud) ● calendar and contact sync ● a secure conferencing tool ● and more on https://monocles.de/more/</string>
     <string name="magic_create_text_fixed">Вас пригласили в %1$s. Имя пользователя уже выбрано для Вас. Мы поможем Вам создать учетную запись. Вы сможете общаться с пользователями других серверов, сообщив им свой полный XMPP-адрес.</string>
     <string name="magic_create_text_on_x">Вас пригласили в %1$s. Мы поможем Вам создать учетную запись. Выбрав %1$s в качестве сервера, Вы сможете общаться с пользователями других серверов, сообщив им свой полный XMPP-адрес.</string>
     <string name="make_call">Звонить</string>

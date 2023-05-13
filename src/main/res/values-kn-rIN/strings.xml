@@ -477,7 +477,6 @@
     <string name="action_fix_to_location"></string>
     <string name="action_copy_location"></string>
     <string name="optimize_database"></string>
-    <string name="magic_create_text"></string>
     <string name="strikethrough"></string>
     <string name="grant"></string>
     <string name="no_manage_storage_permission"></string>

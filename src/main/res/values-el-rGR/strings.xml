@@ -329,7 +329,6 @@
         <item quantity="other"></item>
     </plurals>
     <string name="intro_required_permissions"></string>
-    <string name="magic_create_text"></string>
     <string name="help_format_text"></string>
     <string name="close_format_text"></string>
     <string name="port_example" translatable="false"></string>

@@ -890,7 +890,6 @@
         <item quantity="other"></item>
     </plurals>
     <string name="this_device_is_no_longer_in_use"></string>
-    <string name="magic_create_text"></string>
     <string name="strikethrough"></string>
     <string name="grant"></string>
     <string name="no_manage_storage_permission"></string>

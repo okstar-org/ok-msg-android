@@ -196,7 +196,6 @@
     <string name="verified"></string>
     <string name="smp_requested"></string>
     <string name="pref_create_backup_summary"></string>
-    <string name="magic_create_text"></string>
     <string name="help_format_text"></string>
     <string name="close_format_text"></string>
     <string name="port_example" translatable="false"></string>

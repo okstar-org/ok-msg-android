@@ -48,12 +48,43 @@
                             android:src="@drawable/logo_actionbar" />
                     </RelativeLayout>
 
+
+
+                    <TextView
+                        android:id="@+id/activity_main_link"
+                        android:layout_width="match_parent"
+                        android:gravity="center_vertical|center_horizontal"
+                        android:text="@string/create_monocles_account"
+                        android:textSize="23sp"
+                        android:layout_height="60dp" />
+
+                    <TextView
+                        android:id="@+id/monocles_account_introduction"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="8dp"
+                        android:text="@string/monocles_account_introduction"
+                        android:textAppearance="@style/TextAppearance.Conversations.Subhead" />
+
                     <TextView
                         android:id="@+id/instructions"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginTop="8dp"
                         android:text="@string/magic_create_text"
+                        android:textAppearance="@style/TextAppearance.Conversations.Subhead" />
+
+                    <View
+                        android:layout_width="match_parent"
+                        android:layout_height="19dp"
+                        android:layout_weight="1" />
+
+                    <TextView
+                        android:id="@+id/alternative"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="8dp"
+                        android:text="@string/or_use_another"
                         android:textAppearance="@style/TextAppearance.Conversations.Body1" />
 
                     <TextView
@@ -62,7 +93,7 @@
                         android:layout_height="wrap_content"
                         android:layout_marginTop="8dp"
                         android:text="@string/pick_your_username"
-                        android:textAppearance="@style/TextAppearance.Conversations.Subhead" />
+                        android:textAppearance="@style/TextAppearance.Conversations.Body1" />
 
                     <EditText
                         android:id="@+id/username"
@@ -80,7 +111,7 @@
                         android:layout_height="wrap_content"
                         android:layout_marginTop="8dp"
                         android:text="@string/choose_your_server"
-                        android:textAppearance="@style/TextAppearance.Conversations.Subhead" />
+                        android:textAppearance="@style/TextAppearance.Conversations.Body1" />
 
                     <Spinner
                         android:id="@+id/server"
