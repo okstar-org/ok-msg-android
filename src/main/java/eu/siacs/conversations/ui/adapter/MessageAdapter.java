@@ -766,8 +766,8 @@ public class MessageAdapter extends ArrayAdapter<Message> {
         }
     }
 
-    private void displayDownloadableMessage(ViewHolder viewHolder, final Message message, String text, final boolean darkBackground) {
-        toggleWhisperInfo(viewHolder, message, false, darkBackground);
+    private void displayDownloadableMessage(ViewHolder viewHolder, final Message message, String text, final boolean darkBackground, final int type) {
+        displayTextMessage(viewHolder, message, darkBackground, type);
         viewHolder.audioPlayer.setVisibility(View.GONE);
         showImages(false, viewHolder);
         viewHolder.richlinkview.setVisibility(View.GONE);
@@ -781,8 +781,8 @@ public class MessageAdapter extends ArrayAdapter<Message> {
         viewHolder.download_button.setOnClickListener(v -> ConversationFragment.downloadFile(activity, message));
     }
 
-    private void displayOpenableMessage(ViewHolder viewHolder, final Message message, final boolean darkBackground) {
-        toggleWhisperInfo(viewHolder, message, false, darkBackground);
+    private void displayOpenableMessage(ViewHolder viewHolder, final Message message, final boolean darkBackground, final int type) {
+        displayTextMessage(viewHolder, message, darkBackground, type);
         viewHolder.download_button.setVisibility(View.VISIBLE);
         viewHolder.audioPlayer.setVisibility(View.GONE);
         showImages(false, viewHolder);
@@ -924,8 +924,8 @@ public class MessageAdapter extends ArrayAdapter<Message> {
         }
     }
 
-    private void displayLocationMessage(final ViewHolder viewHolder, final Message message, final boolean darkBackground, Activity activity) {
-        toggleWhisperInfo(viewHolder, message, false, darkBackground);
+    private void displayLocationMessage(final ViewHolder viewHolder, final Message message, final boolean darkBackground, Activity activity, final int type) {
+        displayTextMessage(viewHolder, message, darkBackground, type);
         viewHolder.audioPlayer.setVisibility(View.GONE);
         final String url = GeoHelper.MapPreviewUri(message, activity);
         showImages(false, viewHolder);
@@ -970,10 +970,10 @@ public class MessageAdapter extends ArrayAdapter<Message> {
         }
     }
 
-    private void displayAudioMessage(ViewHolder viewHolder, Message message, boolean darkBackground) {
+    private void displayAudioMessage(ViewHolder viewHolder, Message message, boolean darkBackground, final int type) {
         final Resources res = activity.getResources();
         viewHolder.messageBody.setWidth((int) res.getDimension(R.dimen.audio_player_width));
-        toggleWhisperInfo(viewHolder, message, showTitle(message), darkBackground);
+        displayTextMessage(viewHolder, message, darkBackground, type);
         showImages(false, viewHolder);
         viewHolder.richlinkview.setVisibility(View.GONE);
         viewHolder.transfer.setVisibility(View.GONE);
@@ -1009,8 +1009,8 @@ public class MessageAdapter extends ArrayAdapter<Message> {
         return "";
     }
 
-    private void displayMediaPreviewMessage(ViewHolder viewHolder, final Message message, final boolean darkBackground) {
-        toggleWhisperInfo(viewHolder, message, false, darkBackground);
+    private void displayMediaPreviewMessage(ViewHolder viewHolder, final Message message, final boolean darkBackground, final int type) {
+        displayTextMessage(viewHolder, message,  darkBackground, type);
         viewHolder.download_button.setVisibility(View.GONE);
         viewHolder.audioPlayer.setVisibility(View.GONE);
         viewHolder.richlinkview.setVisibility(View.GONE);
@@ -1219,6 +1219,7 @@ public class MessageAdapter extends ArrayAdapter<Message> {
                     viewHolder.messageBody = view.findViewById(R.id.message_body);
                     viewHolder.user = view.findViewById(R.id.message_user);
                     viewHolder.time = view.findViewById(R.id.message_time);
+                    viewHolder.subject = view.findViewById(R.id.message_subject);
                     viewHolder.indicatorReceived = view.findViewById(R.id.indicator_received);
                     viewHolder.transfer = view.findViewById(R.id.transfer);
                     viewHolder.progressBar = view.findViewById(R.id.progressBar);
@@ -1243,6 +1244,7 @@ public class MessageAdapter extends ArrayAdapter<Message> {
                     viewHolder.messageBody = view.findViewById(R.id.message_body);
                     viewHolder.user = view.findViewById(R.id.message_user);
                     viewHolder.time = view.findViewById(R.id.message_time);
+                    viewHolder.subject = view.findViewById(R.id.message_subject);
                     viewHolder.indicatorReceived = view.findViewById(R.id.indicator_received);
                     viewHolder.encryption = view.findViewById(R.id.message_encryption);
                     viewHolder.transfer = view.findViewById(R.id.transfer);
@@ -1366,9 +1368,9 @@ public class MessageAdapter extends ArrayAdapter<Message> {
         final boolean unInitiatedButKnownSize = MessageUtils.unInitiatedButKnownSize(message);
         if (unInitiatedButKnownSize || message.isFileDeleted() || (transferable != null && transferable.getStatus() != Transferable.STATUS_UPLOADING)) {
             if (unInitiatedButKnownSize || transferable != null && transferable.getStatus() == Transferable.STATUS_OFFER) {
-                displayDownloadableMessage(viewHolder, message, activity.getString(R.string.download_x_file, UIHelper.getFileDescriptionString(activity, message)), darkBackground);
+                displayDownloadableMessage(viewHolder, message, activity.getString(R.string.download_x_file, UIHelper.getFileDescriptionString(activity, message)), darkBackground, type);
             } else if (transferable != null && transferable.getStatus() == Transferable.STATUS_OFFER_CHECK_FILESIZE) {
-                displayDownloadableMessage(viewHolder, message, activity.getString(R.string.check_x_filesize, UIHelper.getFileDescriptionString(activity, message)), darkBackground);
+                displayDownloadableMessage(viewHolder, message, activity.getString(R.string.check_x_filesize, UIHelper.getFileDescriptionString(activity, message)), darkBackground, type);
             } else {
                 /* todo why should we mark a file as deleted? --> causing strange side effects
                 if (!activity.xmppConnectionService.getFileBackend().getFile(message).exists() && !message.isFileDeleted()) {
@@ -1382,11 +1384,11 @@ public class MessageAdapter extends ArrayAdapter<Message> {
             }
         } else if (message.isFileOrImage() && message.getEncryption() != Message.ENCRYPTION_PGP && message.getEncryption() != Message.ENCRYPTION_DECRYPTION_FAILED) {
             if (message.getFileParams().width > 0 && message.getFileParams().height > 0) {
-                displayMediaPreviewMessage(viewHolder, message, darkBackground);
+                displayMediaPreviewMessage(viewHolder, message, darkBackground, type);
             } else if (message.getFileParams().runtime > 0 && (message.getFileParams().width == 0 && message.getFileParams().height == 0)) {
-                displayAudioMessage(viewHolder, message, darkBackground);
+                displayAudioMessage(viewHolder, message, darkBackground, type);
             } else {
-                displayOpenableMessage(viewHolder, message, darkBackground);
+                displayOpenableMessage(viewHolder, message, darkBackground, type);
             }
         } else if (message.getEncryption() == Message.ENCRYPTION_PGP) {
             if (account.isPgpDecryptionServiceConnected()) {
@@ -1408,27 +1410,27 @@ public class MessageAdapter extends ArrayAdapter<Message> {
             displayInfoMessage(viewHolder, activity.getString(R.string.omemo_decryption_failed), darkBackground, message);
         } else {
             if (message.isGeoUri()) {
-                displayLocationMessage(viewHolder, message, darkBackground, activity);
-            } else if (message.bodyIsOnlyEmojis() && message.getType() != Message.TYPE_PRIVATE) {
-                displayEmojiMessage(viewHolder, message.getBody().trim(), darkBackground);
+                displayLocationMessage(viewHolder, message, darkBackground, activity, type);
             } else if (message.isXmppUri()) {
                 displayXmppMessage(viewHolder, message.getBody().trim());
             } else if (message.treatAsDownloadable()) {
                 try {
-                    final URI uri = new URI(message.getBody());
+                    final URI uri = message.getOob();
                     displayDownloadableMessage(viewHolder,
                             message,
                             activity.getString(R.string.check_x_filesize_on_host,
                                     UIHelper.getFileDescriptionString(activity, message),
                                     uri.getHost()),
-                            darkBackground);
+                            darkBackground, type);
                 } catch (Exception e) {
                     displayDownloadableMessage(viewHolder,
                             message,
                             activity.getString(R.string.check_x_filesize,
                                     UIHelper.getFileDescriptionString(activity, message)),
-                            darkBackground);
+                            darkBackground, type);
                 }
+            } else if (message.bodyIsOnlyEmojis() && message.getType() != Message.TYPE_PRIVATE) {
+                displayEmojiMessage(viewHolder, message.getBody().trim(), darkBackground);
             } else {
                 displayTextMessage(viewHolder, message, darkBackground, type);
             }
@@ -1471,6 +1473,14 @@ public class MessageAdapter extends ArrayAdapter<Message> {
                 } else {
                     viewHolder.encryption.setText(CryptoHelper.encryptionTypeToText(message.getEncryption()));
                 }
+            }
+        }
+        if (type == RECEIVED || type == SENT) {
+            if (message.getSubject() == null) {
+                viewHolder.subject.setVisibility(View.GONE);
+            } else {
+                viewHolder.subject.setVisibility(View.VISIBLE);
+                viewHolder.subject.setText(message.getSubject());
             }
         }
 
@@ -1641,6 +1651,7 @@ public class MessageAdapter extends ArrayAdapter<Message> {
         protected ImageView indicator;
         protected ImageView indicatorReceived;
         protected TextView time;
+        protected TextView subject;
         protected TextView messageBody;
         protected TextView user;
         protected TextView username;

@@ -42,12 +42,15 @@ import android.widget.TextView;
 import android.content.res.loader.ResourcesLoader;
 import de.monocles.chat.ColorResourcesLoaderCreator;
 import java.util.HashMap;
+import android.util.Log;
+
 
 import androidx.annotation.StyleRes;
 import androidx.core.content.ContextCompat;
 
 import com.google.android.material.snackbar.Snackbar;
 
+import eu.siacs.conversations.Config;
 import eu.siacs.conversations.R;
 import eu.siacs.conversations.ui.SettingsActivity;
 import eu.siacs.conversations.ui.util.StyledAttributes;
@@ -64,7 +67,11 @@ public class ThemeHelper {
         if (colors.isEmpty()) return colors;
 
         ResourcesLoader loader = de.monocles.chat.ColorResourcesLoaderCreator.create(context, colors);
-        if (loader != null) context.getResources().addLoaders(loader);
+        try {
+            if (loader != null) context.getResources().addLoaders(loader);
+        } catch (final IllegalArgumentException e) {
+            Log.w(Config.LOGTAG, "Custom colour failed: " + e);
+        }
         return colors;
     }
     public static int find(final Context context) {
@@ -663,7 +670,7 @@ public class ThemeHelper {
             if (text != null && action != null) {
                 text.setTextSize(TypedValue.COMPLEX_UNIT_PX, size);
                 action.setTextSize(TypedValue.COMPLEX_UNIT_PX, size);
-                action.setTextColor(ContextCompat.getColor(context, R.color.deep_purple_a100));
+                action.setTextColor(ContextCompat.getColor(context, R.color.accent_monocles));
             }
         }
     }

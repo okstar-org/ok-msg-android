@@ -23,4 +23,4 @@
     android:paddingLeft="8dp"
     android:paddingEnd="8dp"
     android:paddingRight="8dp"
-    android:textAppearance="@style/TextAppearance.Conversations.Body1" />
+    android:background="@drawable/list_choice" />

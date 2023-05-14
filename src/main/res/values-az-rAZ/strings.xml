@@ -38,14 +38,14 @@
     <string name="moderator">Moderator</string>
     <string name="participant">İştirakçı</string>
     <string name="visitor">Ziyarətçi</string>
-    <string name="remove_contact_text">%s şəxsini siyahınızdan çıxartmaq istəyirsiniz? Bu şəxslə əlaqəli danışıq çıxarıla bilməz.</string>
-    <string name="block_contact_text">%s şəxsinin sizə mesaj göndərməsini əngəlləmək istəyirsiniz?</string>
-    <string name="unblock_contact_text">%s şəxsini mesaj göndərməsinə icazə vermək istəyirsiniz?</string>
-    <string name="block_domain_text">%s dəki bütün şəxslər əngəllənsin?</string>
-    <string name="unblock_domain_text">%s dəki bütün şəxslər əngəldən çıxarılsın?</string>
+    <string name="remove_contact_text">%s şəxsini siyahınızdan çıxartmaq istəyirsiniz\? Bu şəxslə əlaqəli danışıq çıxarıla bilməz.</string>
+    <string name="block_contact_text">%s şəxsinin sizə mesaj göndərməsini əngəlləmək istəyirsiniz\?</string>
+    <string name="unblock_contact_text">%s şəxsini mesaj göndərməsinə icazə vermək istəyirsiniz\?</string>
+    <string name="block_domain_text">%s dəki bütün şəxslər əngəllənsin\?</string>
+    <string name="unblock_domain_text">%s dəki bütün şəxslər əngəldən çıxarılsın\?</string>
     <string name="contact_blocked">Şəxs əngəlləndi</string>
     <string name="blocked">Əngəlləndi</string>
-    <string name="remove_bookmark_text">%s əlfəcinini çıxartmaq istəyirsiniz? Bu əlfəcinlə əlaqəli danışıqlar çıxarıla bilməz.</string>
+    <string name="remove_bookmark_text">%s əlfəcinini çıxartmaq istəyirsiniz\? Bu əlfəcinlə əlaqəli danışıqlar çıxarıla bilməz.</string>
     <string name="register_account">Serverdə yeni hesabla qeydiyyatdan keç</string>
     <string name="change_password_on_server">Serverdə şifrəni dəyişdir</string>
     <string name="share_with">Paylaş…</string>
@@ -62,20 +62,23 @@
     <string name="save">Saxla</string>
     <string name="ok">Oldu</string>
     <string name="crash_report_title">monocles chat qəzaya uğrayıb</string>
-    <string name="crash_report_message">Yığma izləri göndərməklə monocles chat-in davamlı inkişafına kömək edir\n&lt;b&gt;xəbərdarlıq:&lt;/ b&gt;Bu geliştirici yığını iz göndərmək üçün XMPP hesabı istifadə edəcək.</string>
+    <string name="crash_report_message">Yığma izləri göndərməklə monocles chat-in davamlı inkişafına kömək edir
+\n&lt;b&gt;xəbərdarlıq:&lt;/ b&gt;Bu geliştirici yığını iz göndərmək üçün XMPP hesabı istifadə edəcək.</string>
     <string name="send_now">İndi göndər</string>
     <string name="send_never">Bir daha soruşma</string>
     <string name="problem_connecting_to_account">Hesabla bağlantı qurula bilmədi</string>
     <string name="problem_connecting_to_accounts">Çoxlu hesabla bağlantı qurula bilmədi</string>
     <string name="touch_to_fix">Hesablarınızı idarə etmək üçün bura toxunun</string>
     <string name="attach_file">Fayl qoş</string>
-    <string name="not_in_roster">Əlaqə siyahınızda deyil. Əlavə etmək istərdinizmi?</string>
+    <string name="not_in_roster">Əlaqə siyahınızda deyil. Əlavə etmək istərdinizmi\?</string>
     <string name="add_contact">Şəxs əlavə et</string>
     <string name="send_failed">çatdırılma uğursuz</string>
     <string name="preparing_image">Köçürmə üçün təsvir hazırlanır</string>
     <string name="action_clear_history">Tarixçəni təmizlə</string>
     <string name="clear_conversation_history">Danışıq Tarixçəsini Təmizlə</string>
-    <string name="clear_histor_msg">Bu söhbətdəki bütün mesajları silmək istədiyinizə əminsiniz?\n\n&lt;b&gt;Xəbərdarlıq:&lt;b&gt; Bu digər cihazlarda və ya serverlərdə saxlanan həmin mesajların surətlərini silməyəcəkdir.</string>
+    <string name="clear_histor_msg">Bu söhbətdəki bütün mesajları silmək istədiyinizə əminsiniz\?
+\n
+\n&lt;b&gt;Xəbərdarlıq:&lt;b&gt; Bu digər cihazlarda və ya serverlərdə saxlanan həmin mesajların surətlərini silməyəcəkdir.</string>
     <string name="also_end_conversation">Sonradan bu söhbəti bitir</string>
     <string name="choose_presence">Cihaz seç</string>
     <string name="send_unencrypted_message">Şifrəsiz mesaj göndər</string>
@@ -87,15 +90,19 @@
     <string name="send_unencrypted">Şifrəsiz göndər</string>
     <string name="decryption_failed">Şifrəni açma uğursuz oldu. Bəlkə də, müvafiq özəl açarınız yoxdur.</string>
     <string name="openkeychain_required">OpenKeychain</string>
-    <string name="openkeychain_required_long">%1$s mesajları şifrələmək və şifrəni açmaq və açıq açarlarınızı idarə etmək üçün <b>OpenKeychain</b>; adlı üçüncü bir tətbiqdən istifadə edir.\n\nOpenKeychain GPLv3-lə lisenziyalıdır və F-Droid və Google Play-də mövcuddur.\n\n<small>(Zəhmət olmasa %1$s sonra yenidən başladın.)</small></string>
+    <string name="openkeychain_required_long">%1$s mesajları şifrələmək və şifrəni açmaq və açıq açarlarınızı idarə etmək üçün <b>OpenKeychain</b>; adlı üçüncü bir tətbiqdən istifadə edir.
+\n
+\nOpenKeychain GPLv3-lə lisenziyalıdır və F-Droid və Google Play-də mövcuddur.
+\n
+\n<small>(Zəhmət olmasa %1$s sonra yenidən başladın.)</small></string>
     <string name="restart">Yenidən başlat</string>
     <string name="install">Quraşdır</string>
     <string name="offering">təklif edilir…</string>
     <string name="waiting">gözləyir…</string>
     <string name="no_pgp_key">OpenPGP Açarı tapılmadı</string>
-    <string name="contact_has_no_pgp_key">monocles chat, mesajlarınızın şifrələməsinə imkan vermir, çünki kontaktınız onun ictimai anonsunu elan etmir. \n
- \n
- <small>OpenPGP-in qurulmasına müraciət edin.</small></string>
+    <string name="contact_has_no_pgp_key">monocles chat, mesajlarınızın şifrələməsinə imkan vermir, çünki kontaktınız onun ictimai anonsunu elan etmir.
+\n
+\n <small>OpenPGP-in qurulmasına müraciət edin.</small></string>
     <string name="no_pgp_keys">OpenPGP Açarı tapılmadı</string>
     <string name="pref_general">Ümumi</string>
     <string name="pref_accept_files_wifi">WiFi bağlantılarında faylları qəbul et</string>
@@ -129,8 +136,10 @@
     <string name="error_not_an_image_file">Seçdiyiniz fayl bir təsvir faylı deyil</string>
     <string name="error_compressing_image">Təsvir fayl çevirərkən xəta baş verdi</string>
     <string name="error_file_not_found">Fayl tapılmadı</string>
-    <string name="error_io_exception">Ümumi G/Ç xətası. Bəlkə anbar sahənizdə boş yer qalmayıb?</string>
-    <string name="error_security_exception_during_image_copy">Bu şəklii seçmək üçün istifadə etdiyiniz tətbiq, faylı oxumaq üçün bizə kifayət qədər icazə vermədi.\n\n<small>Şəkil seçmək üçün başqa bir fayl menecerindən istifadə edin</small></string>
+    <string name="error_io_exception">Ümumi G/Ç xətası. Bəlkə anbar sahənizdə boş yer qalmayıb\?</string>
+    <string name="error_security_exception_during_image_copy">Bu şəklii seçmək üçün istifadə etdiyiniz tətbiq, faylı oxumaq üçün bizə kifayət qədər icazə vermədi.
+\n
+\n<small>Şəkil seçmək üçün başqa bir fayl menecerindən istifadə edin</small></string>
     <string name="account_status_unknown">Bilinməyən</string>
     <string name="account_status_disabled">Müvəqqəti sıradan çıxarıldı</string>
     <string name="account_status_online">Xətdə</string>
@@ -154,21 +163,24 @@
     <string name="encryption_choice_omemo">OMEMO</string>
     <string name="action_account">Hesaba düzəliş et</string>
     <string name="mgmt_account_delete">Hesabı silmək</string>
-    <string name="mgmt_account_publish_avatar">Avatar (Profil şəkili) </string>
+    <string name="mgmt_account_publish_avatar">Avatar (Profil şəkili)</string>
     <string name="mgmt_account_publish_pgp">Dərc olunan OpenPGP açarı</string>
     <string name="unpublish_pgp">Dərc olunan OpenPGP açarı silmək</string>
-    <string name="unpublish_pgp_message">OpenPGP açıq açarınızı silmək istədiyinizə əminsiniz?\nKontaktlarınız artıq sizə OpenPGP şifrəli mesaj göndərə bilməyəcək.</string>
+    <string name="unpublish_pgp_message">OpenPGP açıq açarınızı silmək istədiyinizə əminsiniz\?
+\nKontaktlarınız artıq sizə OpenPGP şifrəli mesaj göndərə bilməyəcək.</string>
     <string name="openpgp_has_been_published">OpenPGP açıq açar dərc olundu.</string>
-    <string name="mgmt_account_are_you_sure">Əminsinizmi?</string>
-    <string name="mgmt_account_delete_confirm_message">Hesabınızı silsəniz, bütün yerli danışıq tarixçəniz itiriləcəkdir.\n\n Hesabınızı serverdən silmisinizsə, bütün hesabınız serverdən də silinəcəkdir, yeni bir hesab qeyd etməyinizə qədər artıq daxil ola bilməyəcəksiniz..</string>
+    <string name="mgmt_account_are_you_sure">Əminsinizmi\?</string>
+    <string name="mgmt_account_delete_confirm_message">Hesabınızı silsəniz, bütün yerli danışıq tarixçəniz itiriləcəkdir.
+\n
+\n Hesabınızı serverdən silmisinizsə, bütün hesabınız serverdən də silinəcəkdir, yeni bir hesab qeyd etməyinizə qədər artıq daxil ola bilməyəcəksiniz..</string>
     <string name="attach_record_voice">Səs yazmaq</string>
     <string name="account_settings_jabber_id">chat address</string>
-    <string name="account_settings_example_jabber_id">istifadəçininadı@monocles chat</string>
+    <string name="account_settings_example_jabber_id">istifadəçininadı@monocles.eu</string>
     <string name="password">Şifrə</string>
     <string name="invalid_jid">Bu etibarlı chat address deyil</string>
     <string name="error_out_of_memory">Yaddaş dolub. Şəkil çox böyükdür</string>
-    <string name="add_phone_book_text">Ünvan kitabınıza %s əlavə etmək istəyirsiniz?</string>
-    <string name="server_info_show_more">Server məlumatı </string>
+    <string name="add_phone_book_text">Ünvan kitabınıza %s əlavə etmək istəyirsiniz\?</string>
+    <string name="server_info_show_more">Server məlumatı</string>
     <string name="server_info_mam">XEP-0313: MAM</string>
     <string name="server_info_carbon_messages">XEP-0280: Message Carbons</string>
     <string name="server_info_csi">XEP-0352: Client State Indication</string>
@@ -242,12 +254,16 @@
     <string name="enable">Fəallaşdır</string>
     <string name="conference_requires_password">Qrup söhbəti şifrə tələb edir</string>
     <string name="enter_password">Şifrəni daxil et</string>
-    <string name="request_presence_updates">Zəhmət olmasa əvvəlcə kontaktınızdan mövcudluq yeniləmələrini tələb edin.\n\n<small>Bu, kontaktınızın hansı klient (lər) - dən istifadə etdiyini müəyyən etmək üçün istifadə ediləcəkdir.</small></string>
+    <string name="request_presence_updates">Zəhmət olmasa əvvəlcə kontaktınızdan mövcudluq yeniləmələrini tələb edin.
+\n
+\n<small>Bu, kontaktınızın hansı klient (lər) - dən istifadə etdiyini müəyyən etmək üçün istifadə ediləcəkdir.</small></string>
     <string name="request_now">İndi istəyin</string>
     <string name="delete_fingerprint">Barmaq izini sil</string>
-    <string name="sure_delete_fingerprint">Siz həqiqətən bu varlıqı silmək istəyirsiniz?</string>
+    <string name="sure_delete_fingerprint">Siz həqiqətən bu varlıqı silmək istəyirsiniz\?</string>
     <string name="ignore">Əhəmiyyət vermə</string>
-    <string name="without_mutual_presence_updates">&lt;b&gt;Xəbərdarlıq:&lt;b&gt; Qarşılıqlı iştirak yeniləmələri olmadan göndərmək gözlənilməz problemlərə səbəb ola bilər.\n\n&lt;small&gt;Mövcud abunəliklərinizi təsdiqləmək üçün əlaqə məlumatlarına gedin.&lt;/small&gt;</string>
+    <string name="without_mutual_presence_updates">&lt;b&gt;Xəbərdarlıq:&lt;b&gt; Qarşılıqlı iştirak yeniləmələri olmadan göndərmək gözlənilməz problemlərə səbəb ola bilər.
+\n
+\n&lt;small&gt;Mövcud abunəliklərinizi təsdiqləmək üçün əlaqə məlumatlarına gedin.&lt;/small&gt;</string>
     <string name="pref_security_settings">Təhlükəsizlik və məlumatların qorunması</string>
     <string name="pref_allow_message_correction">Mesaj düzəlişinə icazə verin</string>
     <string name="pref_allow_message_correction_summary">Kontaktlarınıza mesajlarını retroaktiv şəkildə redaktə etməyə icazə verin</string>
@@ -327,10 +343,12 @@
     <string name="copy_omemo_clipboard_description">OMEMO izini panoya kopiyalayın</string>
     <string name="regenerate_omemo_key">OMEMO açarını yenidən yaradın</string>
     <string name="clear_other_devices">Cihazları təmizləyin</string>
-    <string name="clear_other_devices_desc">OMEMO elanından bütün digər cihazları təmizləmək istədiyinizə əminsiniz? Cihazlarınız bir-birinə qoşulduqda, onlar özləri yenidən xəbər verəcəklər, lakin eyni zamanda göndərilən mesajları qəbul etməyəcəklər.</string>
+    <string name="clear_other_devices_desc">OMEMO elanından bütün digər cihazları təmizləmək istədiyinizə əminsiniz\? Cihazlarınız bir-birinə qoşulduqda, onlar özləri yenidən xəbər verəcəklər, lakin eyni zamanda göndərilən mesajları qəbul etməyəcəklər.</string>
     <string name="distrust_omemo_key">Etibarsız cihaz</string>
-    <string name="distrust_omemo_key_text">Bu cihaz üçün yoxlamanı silmək istədiyinizə əminsiniz?\nBu cihaz və cihazdan gələn mesajlar etibarsız olaraq qeyd ediləcək.</string>
-    <string name="error_no_keys_to_trust_server_error">Bu kontakt üçün istifadə edilə bilən açarlar yoxdur.\nServerdən yeni açarların alınması uğursuz oldu. Bəlkə kontaktlar serverinizdə səhv bir şey var.</string>
+    <string name="distrust_omemo_key_text">Bu cihaz üçün yoxlamanı silmək istədiyinizə əminsiniz\?
+\nBu cihaz və cihazdan gələn mesajlar etibarsız olaraq qeyd ediləcək.</string>
+    <string name="error_no_keys_to_trust_server_error">Bu kontakt üçün istifadə edilə bilən açarlar yoxdur.
+\nServerdən yeni açarların alınması uğursuz oldu. Bəlkə kontaktlar serverinizdə səhv bir şey var.</string>
     <string name="error_trustkeys_title">Bir şey yanlış getmişdir</string>
     <string name="fetching_history_from_server">Tarixçənin serverdən alınması</string>
     <string name="no_more_history_on_server">Artıq serverdə tarixçə yoxdur</string>
@@ -338,11 +356,14 @@
     <string name="password_changed">Parol dəyişdirildi!</string>
     <string name="could_not_change_password">Şifrəni dəyişmək alınmadı</string>
     <string name="ask_question">Sual soruş</string>
-    <string name="smp_explain_question">Əgər sizinlə kontaktınızın ortaq bir sirri varsa, başqa heç kim bilmir (daxili zarafat kimi və ya sadəcə son dəfə görüşdüyünüz günorta yeməyi), bu sirri bir-birinizin izlərini yoxlamaq üçün istifadə edə bilərsiniz.\n\nKontaktınıza həssas bir suala cavab verəcək bir işarə və ya bir sual verirsiniz.</string>
+    <string name="smp_explain_question">Əgər sizinlə kontaktınızın ortaq bir sirri varsa, başqa heç kim bilmir (daxili zarafat kimi və ya sadəcə son dəfə görüşdüyünüz günorta yeməyi), bu sirri bir-birinizin izlərini yoxlamaq üçün istifadə edə bilərsiniz.
+\n
+\nKontaktınıza həssas bir suala cavab verəcək bir işarə və ya bir sual verirsiniz.</string>
     <string name="smp_explain_answer">Kontaktınız izinizi ortaq bir gizli ilə sınayaraq təsdiqləmək istəyir. Kontaktınız bu sirr üçün aşağıdakı işarə və ya sual vermişdir.</string>
     <string name="shared_secret_hint_should_not_be_empty">İşarə boş olmamalıdır</string>
     <string name="shared_secret_can_not_be_empty">Paylaşılan sirriniz boş ola bilməz</string>
-    <string name="manual_verification_explanation">Aşağıda göstərilən izini kontaktınızın izi ilə diqqətlə müqayisə edin.\nDəyişdirmək üçün şifrəli bir e-poçt və ya telefon danışığı kimi etibarlı ünsiyyət formasını istifadə edə bilərsiniz.</string>
+    <string name="manual_verification_explanation">Aşağıda göstərilən izini kontaktınızın izi ilə diqqətlə müqayisə edin.
+\nDəyişdirmək üçün şifrəli bir e-poçt və ya telefon danışığı kimi etibarlı ünsiyyət formasını istifadə edə bilərsiniz.</string>
     <string name="change_password">Şifrəni dəyişin</string>
     <string name="current_password">İndiki parol</string>
     <string name="new_password">Yeni parol</string>
@@ -361,8 +382,8 @@
     <string name="could_not_change_affiliation">%s mənsubiyyətini dəyişə bilmədi</string>
     <string name="ban_from_conference">Qrup yığıncağından qadağan</string>
     <string name="kick_from_conference">Qrup söhbətindən çıxarın</string>
-    <string name="ban_from_public_conference_message">Siz ictimai kanaldan həmişəlik  %s qadağan etməyə çalışırsınız</string>
-    <string name="ban_from_conference_message">Siz qrup çatdan həmişəlik  %s qadağan etməyə çalışırsınız</string>
+    <string name="ban_from_public_conference_message">Siz ictimai kanaldan həmişəlik %s qadağan etməyə çalışırsınız</string>
+    <string name="ban_from_conference_message">Siz qrup çatdan həmişəlik %s qadağan etməyə çalışırsınız</string>
     <string name="kicking_from_public_conference">Siz ictimai kanaldan %s - ı çıxarmağa çalışırsınız.</string>
     <string name="kicking_from_conference">Siz qrup çatdan %s - ı çıxarmağa çalışırsınız.</string>
     <string name="ban_now">İndi qadağan etmək</string>
@@ -426,7 +447,11 @@
     <string name="download_failed_could_not_write_file">Yükləmə uğursuz oldu: Fayl yaza bilmədi</string>
     <string name="action_check_update">Yeniləməni yoxlayın</string>
     <string name="title_activity_updater">Yeniləmə servisi</string>
-    <string name="update_available">%1$s versiyası mövcuddur.\n\nFayllaşdırma: %2$s\n\n İndi %1$s versiyasına yeniləyin?</string>
+    <string name="update_available">%1$s versiyası mövcuddur.
+\n
+\nFayllaşdırma: %2$s
+\n
+\n İndi %1$s versiyasına yeniləyin\?</string>
     <string name="remind_later">sonra</string>
     <string name="update">yenilə</string>
     <string name="no_update_available">Yeniləmə mövcud deyil</string>
@@ -439,7 +464,9 @@
     <string name="pref_away_when_screen_off">Cihaz kilidlənmiş olduqda</string>
     <string name="pref_away_when_screen_off_summary">Cihaz kilidli olduqda resursunuzu olmayan kimi qeyd edir</string>
     <string name="pref_dnd_on_silent_mode">\"Narahat etməyin\" səssiz rejimdə</string>
-    <string name="update_info">monocles chat yeni versiyasını avtomatik yükləyir və quraşdırır.\n\nGözləyin…</string>
+    <string name="update_info">monocles chat yeni versiyasını avtomatik yükləyir və quraşdırır.
+\n
+\nGözləyin…</string>
     <string name="pref_dnd_on_silent_mode_summary">Cihaz səssiz rejimdə olduqda mənbəyinizi \"Narahat etməyin\" kimi qeyd edir</string>
     <string name="pref_treat_vibrate_as_silent">Titrəmə ilə səssiz rejim kimi davranın</string>
     <string name="pref_treat_vibrate_as_dnd_summary">Cihaz vibrasiya rejimdə olduqda mənbəyinizi \"Narahat etməyin\" kimi qeyd edir</string>
@@ -473,7 +500,11 @@
     <string name="load_more_messages">Daha çox mesaj yükləyin</string>
     <string name="no_storage_permission">monocles chat xarici yaddaşa izn tələb edir</string>
     <string name="sync_with_contacts">Kontaktlarla sinxronizasiya edin</string>
-    <string name="sync_with_contacts_long">monocles chat adlarınızı və avatarlarınızı göstərmək üçün XMPP siyahısınızı kontaktlarınızla uyğunlaşdırmaq istəyir.\n\nMonocles Messenger serverlərinizə yükləmədən yalnız kontaktlarınızı oxuyacaq və yerli uyğunlaşacaq.\n\nİndi edəcəksiniz əlaqələrinizə daxil olmaq üçün icazə verilməsini istənir.</string>
+    <string name="sync_with_contacts_long">monocles chat adlarınızı və avatarlarınızı göstərmək üçün XMPP siyahısınızı kontaktlarınızla uyğunlaşdırmaq istəyir.
+\n
+\nMonocles Messenger serverlərinizə yükləmədən yalnız kontaktlarınızı oxuyacaq və yerli uyğunlaşacaq.
+\n
+\nİndi edəcəksiniz əlaqələrinizə daxil olmaq üçün icazə verilməsini istənir.</string>
     <string name="notify_on_all_messages">Bütün mesajlarda bildirin</string>
     <string name="notify_only_when_highlighted">Yalnız qeyd edildikdə bildirin</string>
     <string name="notify_never">Bildirişlər deaktiv edilmişdir</string>
@@ -493,9 +524,11 @@
     <string name="battery_optimizations_enabled_explained">Cihazınız, monocles chatda gecikmiş bildirişlərə və hətta mesaj kaybına səbəb ola biləcək bəzi ağır batareya optimallaşdırır. Onları buraxmaq tövsiyə olunur.</string>
     <string name="battery_optimizations_enabled_dialog">Cihazınız, monocles chat-da gecikmiş bildirişlərə və hətta mesaj kaybına səbəb ola biləcək bəzi ağır batareya optimallaşdırır. İndi bunları aradan qaldırmaq istəniləcək.</string>
     <string name="install_from_unknown_sources_disabled">Naməlum mənbələrdən quraşdırılma deaktiv olunub</string>
-    <string name="install_from_unknown_sources_disabled_dialog">Cihazınız, Google PlayStore-dan başqa tətbiqlərin naməlum mənbələrdən quraşdırılmasına icazə verməmək üçün qurulmuşdur. Bu tətbiq yeniləyicisindəki problemlərə səbəb olacaq.\n\nİndi naməlum mənbələrdən tətbiq yükləmələrinə icazə verilməsini istəyəcək.</string>
+    <string name="install_from_unknown_sources_disabled_dialog">Cihazınız, Google PlayStore-dan başqa tətbiqlərin naməlum mənbələrdən quraşdırılmasına icazə verməmək üçün qurulmuşdur. Bu tətbiq yeniləyicisindəki problemlərə səbəb olacaq.
+\n
+\nİndi naməlum mənbələrdən tətbiq yükləmələrinə icazə verilməsini istəyəcək.</string>
     <string name="disable">Qeyri-aktiv</string>
-    <string name="cancel_update">Yeniləməni ləğv?</string>
+    <string name="cancel_update">Yeniləməni ləğv\?</string>
     <string name="yes">Bəli</string>
     <string name="no">Xeyr</string>
     <string name="no_accounts">(Aktivləşdirilmiş hesablar yoxdur)</string>
@@ -503,13 +536,15 @@
     <string name="correct_message">Doğru mesaj</string>
     <string name="send_corrected_message">Şifrəsiz mesaj göndər</string>
     <string name="no_keys_just_confirm">Artıq bu kontajta etibar edirsiniz. \"Tamamlandı\" seçərək sadəcə %s qrupunun bir hissəsi olduğunu təsdiqləyirsiniz.</string>
-    <string name="contacts_have_no_pgp_keys">monocles chat, əlaqələrinizin ictimai açarlarını açıqlamadığından mesajlarınızı şifrələndirə bilmir.\n\n</string>
+    <string name="contacts_have_no_pgp_keys">monocles chat, əlaqələrinizin ictimai açarlarını açıqlamadığından mesajlarınızı şifrələndirə bilmir.
+\n
+\n</string>
     <string name="this_account_is_disabled">Bu hesabı deaktiv etdiniz</string>
     <string name="no_application_to_share_uri">URI paylaşmaq üçün heç bir tətbiq tapılmadı</string>
     <string name="share_uri_with">URI paylaş…</string>
     <string name="mgmt_account_reconnect">Bağlantı yenidən qurulur</string>
     <string name="welcome_text">... azad və təhlükəsiz XMPP / Jabber müştərisidir.</string>
-    <string name="magic_create_text">You can use monocles chat with every modern XMPP account or get a affordable and secure monocles account, hosted on the monocles server station and powered with regenerative energies!\n\n This includes:\n● two month encrypted temporary chat storage\n● e-mail with 1 GB end-to-end encrypted storage\n\n optionally: \n● 4 GB cloud storage (nextcloud)\n● calendar and contact sync\n● a secure conferencing tool \n● and more on <a href="https://monocles.de/more/">https://monocles.de/more/</a></string>
+
     <string name="your_full_jid_will_be">Sizin Jabber-İD: %s</string>
     <string name="create_account">Yeni hesab yarat</string>
     <string name="welcome_existing_account">Mənim hesabım var</string>
@@ -529,7 +564,7 @@
     <string name="location_sharing_disabled">Məkan paylaşımı parametrlərdə deaktiv edilmişdir</string>
     <string name="locating">Axtarır…</string>
     <string name="action_end_conversation_muc">Qrup söhbətini buraxın</string>
-    <string name="leave_conference_warning">Həqiqətən bu qrup söhbətini tərk etmək istəyirsiniz? Yenidən qrup söhbətinə qoşulmayana qədər yeni mesajlar barədə xəbərdar olmayacaqsınız.</string>
+    <string name="leave_conference_warning">Həqiqətən bu qrup söhbətini tərk etmək istəyirsiniz\? Yenidən qrup söhbətinə qoşulmayana qədər yeni mesajlar barədə xəbərdar olmayacaqsınız.</string>
     <string name="show_password">Parolu göstər</string>
     <string name="registration_please_wait">Qeydiyyat alınmadı: daha sonra yenidən cəhd edin</string>
     <string name="registration_password_too_weak">Qeydiyyat alınmadı: parol çox zəifdir</string>
@@ -539,11 +574,13 @@
     <string name="import_database">Nüsxəni idxal et</string>
     <string name="invite_again">Yenidən dəvət et</string>
     <string name="inviteUser_Subject">vasitəsilə sizi dəvət etdi</string>
-    <string name="InviteText">Salam,\n\n %s istifadəçisi sizi monocles chat - a dəvət etdi. Yalnız aşağıdakı linki vurun…</string>
+    <string name="InviteText">Salam,
+\n
+\n %s istifadəçisi sizi monocles chat - a dəvət etdi. Yalnız aşağıdakı linki vurun…</string>
     <string name="pref_broadcast_last_activity">Son istifadəçinin qarşılıqlı əlaqəsi</string>
     <string name="pref_broadcast_last_activity_summary">monocles chat-i istifadə etdiyiniz zaman bütün kontaktlarınızı bildirin</string>
     <string name="request_permissions_message">monocles chatr bir neçə icazə verməyinizi xahiş edəcəkdir. Bütün bu icazələrin bu mesenjerin bütün xüsusiyyətlərindən istifadə etməsinə icazə verməyiniz vacibdir. Bu icazələrin hər hansı birini inkar etsəniz, tətbiq özünü bağlayacaqdır.</string>
-    <string name="request_permissions_message_again">monocles chat üçün lazım olan bəzi və ya bütün icazələri rədd etmisiniz. Parametrlərə tullanmaq və bu icazələrə icazə vermək istərdinizmi? Bu icazələrin hər hansı birini inkar etsəniz, tətbiq özünü bağlayacaqdır.</string>
+    <string name="request_permissions_message_again">monocles chat üçün lazım olan bəzi və ya bütün icazələri rədd etmisiniz. Parametrlərə tullanmaq və bu icazələrə icazə vermək istərdinizmi\? Bu icazələrin hər hansı birini inkar etsəniz, tətbiq özünü bağlayacaqdır.</string>
     <string name="unable_to_connect_to_keychain">OpenKeychain-ə qoşulmaq olmur</string>
     <string name="this_device_is_no_longer_in_use">Bu cihaz artıq istifadə edilmir</string>
     <string name="please_wait">Zəhmət olmasa gözləyin…</string>
@@ -552,7 +589,7 @@
     <string name="payment_required">Ödəniş tələb olunur</string>
     <string name="missing_internet_permission">Internet icazəsi yoxdur</string>
     <string name="me">Mən</string>
-    <string name="contact_asks_for_presence_subscription">Əlaqə  abunəliyi soruşur</string>
+    <string name="contact_asks_for_presence_subscription">Əlaqə abunəliyi soruşur</string>
     <string name="allow">İzn ver</string>
     <string name="no_permission_to_access_x">%s - a daxil olmaq icazəsi yoxdur</string>
     <string name="remote_server_not_found">Uzaqdan server tapılmadı</string>
@@ -571,7 +608,9 @@
     <string name="show_error_message">Xəta mesajını göstərin</string>
     <string name="error_message">Xəta mesajı</string>
     <string name="data_saver_enabled">Məlumat serveri aktivdir</string>
-    <string name="data_saver_enabled_explained">Əməliyyat sisteminiz monocles chat-in arxa planda olanda İnternetə girməsini məhdudlaşdırır. Yeni mesajların bildirişlərini almaq üçün Məlumat serveri aktiv olduqda monocles chat-ə məhdudiyyətsiz daxil olmağa icazə verməlisiniz.\n\nmonocles chat mümkün olduqda məlumatları qorumaq üçün səy göstərəcəkdir.</string>
+    <string name="data_saver_enabled_explained">Əməliyyat sisteminiz monocles chat-in arxa planda olanda İnternetə girməsini məhdudlaşdırır. Yeni mesajların bildirişlərini almaq üçün Məlumat serveri aktiv olduqda monocles chat-ə məhdudiyyətsiz daxil olmağa icazə verməlisiniz.
+\n
+\nmonocles chat mümkün olduqda məlumatları qorumaq üçün səy göstərəcəkdir.</string>
     <string name="device_does_not_support_data_saver">Cihazınız monocles chat üçün məlumat serverini deaktiv edilməsini dəstəkləmir.</string>
     <string name="add_to_contact_list">Kontakt siyahısına əlavə edin</string>
     <string name="contact">Əlaqə</string>
@@ -673,13 +712,14 @@
     <string name="pref_validate_hostname">Host adını DNSSEC ilə təsdiqləyin</string>
     <string name="pref_validate_hostname_summary">Təsdiq edilmiş host adını ehtiva edən server sertifikatları təsdiqlənmiş hesab olunur</string>
     <string name="certificate_does_not_contain_jid">Sertifikatda bir chat address yoxdur</string>
-    <string name="error_no_keys_to_trust_presence">Bu kontakt üçün istifadə edilə bilən açarlar mövcud deyil.\nQarşılıqlı iştirak abunə olduğunuzdan əmin olun.</string>
+    <string name="error_no_keys_to_trust_presence">Bu kontakt üçün istifadə edilə bilən açarlar mövcud deyil.
+\nQarşılıqlı iştirak abunə olduğunuzdan əmin olun.</string>
     <string name="mark_as_read">Oxunulmuş kimi qeyd edin</string>
     <string name="server_info_partial">hissəli</string>
     <string name="pref_show_foreground_service_summary">Bəzi Android cihazları bir müddət sonra bəzi tətbiqləri bağlayacaq və yeni mesajlar ala bilməyəcəksiniz. Bu cür problemləriniz varsa, ön planda olan xidməti aktivləşdirməyə çalışın. Ancaq unutmayın ki, bu seçim yoxlanılaraq daimi bir bildiriş olacaq.</string>
     <string name="pref_show_foreground_service">Ön plan xidmətləri</string>
     <string name="update_service">monocles chat serveri yenilədi</string>
-    <string name="install_update">Yeniləmə quraşdırılsın?</string>
+    <string name="install_update">Yeniləmə quraşdırılsın\?</string>
     <string name="highlight_in_muc">istifadəçi vurğulamaq</string>
     <string name="no_application_found_to_open_link">Link açmaq üçün heç bir tətbiq tapılmadı</string>
     <string name="contacts_have_read_up_to_this_point">%s bu nöqtəyə qədər oxudu</string>
@@ -694,20 +734,21 @@
     <string name="title_activity_share_via_account">Hesab vasitəsilə paylaşın</string>
     <string name="destroy_room">Qrup söhbəti məhv edin</string>
     <string name="conference_unknown_error">Bu qrup çatı artıq yoxdur</string>
-    <string name="destroy_room_dialog">%s qrup söhbətini silmək istəyirsiniz? Bu, qrup söhbətini birdəfəlik siləcək.</string>
+    <string name="destroy_room_dialog">%s qrup söhbətini silmək istəyirsiniz\? Bu, qrup söhbətini birdəfəlik siləcək.</string>
     <string name="destroy_room_succeed">Qrup söhbəti uğurla məhv edildi</string>
     <string name="destroy_room_failed">Qrup söhbəti məhv edilə bilmədi</string>
-    <string name="no_write_access_in_public_muc">Bu qrup söhbətində iştirak etmirsiniz və hazırda yazmaq imkanı yoxdur.\nXahiş edirəm &lt;b&gt;OK&lt;b&gt; düyməsini basın və yazma girişini istəmək üçün siyahının yuxarı/ön hissəsindəki üzvlərdən birini tıklayaraq moderator, idarəçi və ya sahibinə şəxsi mesaj göndərin.</string>
+    <string name="no_write_access_in_public_muc">Bu qrup söhbətində iştirak etmirsiniz və hazırda yazmaq imkanı yoxdur.
+\nXahiş edirəm &lt;b&gt;OK&lt;b&gt; düyməsini basın və yazma girişini istəmək üçün siyahının yuxarı/ön hissəsindəki üzvlərdən birini tıklayaraq moderator, idarəçi və ya sahibinə şəxsi mesaj göndərin.</string>
     <string name="snooze">Mürgülü</string>
     <string name="huawei_protected_apps">Qorunan Tətbiqlər</string>
     <string name="huawei_protected_apps_summary">Ekran söndürüldükdə belə bildirişləri qəbul etmək üçün monocles chatr-i qorunan tətbiqlər siyahısına əlavə etməlisiniz.</string>
     <string name="pref_enable_multi_accounts_title">Birdən çox hesabı aktivləşdirin</string>
-    <string name="pref_enable_multi_accounts_summary">Birdən çox hesab istifadə etmək istəyirsiniz?</string>
-    <string name="mtm_accept_cert">Naməlum Sertifikatı qəbul edirsiniz?</string>
+    <string name="pref_enable_multi_accounts_summary">Birdən çox hesab istifadə etmək istəyirsiniz\?</string>
+    <string name="mtm_accept_cert">Naməlum Sertifikatı qəbul edirsiniz\?</string>
     <string name="mtm_trust_anchor">Server sertifikatı məlum Sertifikat Təşkilatı tərəfindən imzalanmamışdır.</string>
-    <string name="mtm_accept_servername">Uyğunlaşmayan server adını qəbul edirsiniz?</string>
+    <string name="mtm_accept_servername">Uyğunlaşmayan server adını qəbul edirsiniz\?</string>
     <string name="mtm_hostname_mismatch">Server \"%s\"kimi autentifikasiya edilə bilməz. Sertifikat yalnız aşağıdakilər üçün etibarlıdır:</string>
-    <string name="mtm_connect_anyway">Hər halda qoşulmaq istəyirsən?</string>
+    <string name="mtm_connect_anyway">Hər halda qoşulmaq istəyirsən\?</string>
     <string name="mtm_cert_details">Sertifikat məlumatları:</string>
     <string name="once">Bir dəfə</string>
     <string name="qr_code_scanner_needs_access_to_camera">QR kod skanerinin kameraya girişi lazımdır</string>
@@ -724,7 +765,8 @@
     <string name="error_trustkey_device_list">Cihaz siyahısını əldə etmək olmur</string>
     <string name="error_trustkey_bundle">Cihaz paketlərini almaq olmur</string>
     <string name="error_trustkey_hint_mutual">Qeyd: Bəzi hallarda bu kontakt siyahılarınızı bir-birinizə əlavə etməklə düzəldilə bilər.</string>
-    <string name="disable_encryption_message">Bu söhbət üçün OMEMO şifrələməsini söndürmək istədiyinizə əminsinizmi?\nBu, server administratoruna mesajlarınızı oxumağa imkan verəcək, lakin bu, köhnəlmiş proqram istifadə edən İnsanlarla ünsiyyət qurmağın yeganə yolu ola bilər.</string>
+    <string name="disable_encryption_message">Bu söhbət üçün OMEMO şifrələməsini söndürmək istədiyinizə əminsinizmi\?
+\nBu, server administratoruna mesajlarınızı oxumağa imkan verəcək, lakin bu, köhnəlmiş proqram istifadə edən İnsanlarla ünsiyyət qurmağın yeganə yolu ola bilər.</string>
     <string name="disable_now">Indi söndür</string>
     <string name="draft">Qaralama:</string>
     <string name="pref_omemo_setting">OMEMO şifrələmə</string>
@@ -805,7 +847,9 @@
     <string name="action_open">Açıq</string>
     <string name="security_violation_not_attaching_file">Təhlükəsizlik pozuntusuna görə fayl buraxıldı.</string>
     <string name="delete_file_dialog">Faylı sil</string>
-    <string name="delete_file_dialog_msg">Bu faylı silmək istədiyinizə əminsinizmi?\n\n&lt;b&gt;Xəbərdarlıq:&lt;b&gt; Bu, digər cihazlar və ya server saxlanılır ki, bu fayl nüsxəsinin aradan qaldırılması deyil.</string>
+    <string name="delete_file_dialog_msg">Bu faylı silmək istədiyinizə əminsinizmi\?
+\n
+\n&lt;b&gt;Xəbərdarlıq:&lt;b&gt; Bu, digər cihazlar və ya server saxlanılır ki, bu fayl nüsxəsinin aradan qaldırılması deyil.</string>
     <string name="cancelled">ləğv edildi</string>
     <string name="remote_server_timeout">Serverin gözləmə müddəti</string>
     <string name="already_drafting_message">Siz artıq bir mesaj hazırlayırsınız.</string>
@@ -841,7 +885,7 @@
     <string name="enter_password_to_restore">Nüsxəni bərpa etmək üçün %s hesabı üçün parol daxil edin.</string>
     <string name="restore_warning">Cihazınızı köçürmək və ya itirmək halları istisna olmaqla, bərpa etmə xüsusiyyətini heç bir halda istifadə etməyin.</string>
     <string name="unable_to_restore_backup">Nüsxə bərpa edilə bilmədi.</string>
-    <string name="unable_to_decrypt_backup">Nüsxəni deşifrə etmək olmur. Parol düzgündür?</string>
+    <string name="unable_to_decrypt_backup">Nüsxəni deşifrə etmək olmur. Parol düzgündür\?</string>
     <string name="pref_prefer_xmpp_avatar_summary">İstifadəçi XMPP avatarına ünvan kitabınızdan daha çox üstünlük verin</string>
     <string name="pref_prefer_xmpp_avatar">XMPP avatarına üstünlük verin</string>
     <plurals name="view_users">
@@ -883,7 +927,7 @@
     <string name="ban_from_channel">Kanaldan qadağan</string>
     <string name="manage_permission">Imtiyazlar idarə olunması</string>
     <string name="destroy_channel">Kanalı silmək</string>
-    <string name="destroy_channel_dialog">%s kanalı silmək istəyirsiniz? Bu, kanalı birdəfəlik siləcək.</string>
+    <string name="destroy_channel_dialog">%s kanalı silmək istəyirsiniz\? Bu, kanalı birdəfəlik siləcək.</string>
     <string name="destroy_channel_succeed">Kanal uğurla silindi</string>
     <string name="destroy_channel_failed">Kanal silinmədi</string>
     <string name="action_end_conversation_channel">Kanaldan çıxın</string>
@@ -897,7 +941,7 @@
     <string name="file_too_large">Fayl çox böyükdür</string>
     <string name="mgmt_account_password_forgotten">Parol unuduldu</string>
     <string name="password_forgotten_title">Parol unuduldu</string>
-    <string name="password_forgotten_text">Hesab şifrənizi unutmusunuz? İndi provayderinizin dəstək saytını açmağa çalışacağıq.</string>
+    <string name="password_forgotten_text">Hesab şifrənizi unutmusunuz\? İndi provayderinizin dəstək saytını açmağa çalışacağıq.</string>
     <string name="set_settings_intro">Burada bəzi vacib məxfilik parametrlərini ehtiyaclarınıza uyğunlaşdıra bilərsiniz. Bütün parametrlər daha sonra dəyişdirilə bilər.</string>
     <string name="pref_show_mappreview_inside_summary">Xəritədə görüntüləri birbaşa chat görünüşü içərisində göstərin,monocles chat-Server ilə əlaqə qurulacaqdır.</string>
     <string name="pref_show_mappreview_inside">Çatda yerlərin əvvəlcədən görünməsini göstərin</string>
@@ -909,7 +953,7 @@
     <string name="discover_channels">Kanallar kəşf edin</string>
     <string name="search_channels">Kanal axtarışı</string>
     <string name="channel_discovery_opt_in_title">Gizlilik bildirişi</string>
-    <string name="channel_discover_opt_in_message"><![CDATA[Kanal kəşfi <a href="https://search.jabber.network">search.jabber.network</a>.<br><br> adlı üçüncü tərəf xidmətindən istifadə edir. Onun <a href="https://search.jabber.network/privacy">Xidmət şərtləri</a> ilə tanış ola bilərsiniz.]]></string>
+    <string name="channel_discover_opt_in_message">Kanal kəşfi &lt;a href=https://search.jabber.network&gt;search.jabber.network&lt;/a&gt;.&lt;br&gt;&lt;br&gt; adlı üçüncü tərəf xidmətindən istifadə edir. Onun &lt;a href=https://search.jabber.network/privacy&gt;Xidmət şərtləri&lt;/a&gt; ilə tanış ola bilərsiniz.</string>
     <string name="action_add_existing_account">Mövcud hesabı əlavə edin</string>
     <string name="use_own_provider">Öz provayderinizdən istifadə edin</string>
     <string name="this_looks_like_a_domain">Bu bir domen ünvanı kimi görünür</string>
@@ -949,7 +993,7 @@
     <string name="intro_desc_start_chatting">Əlaqə icazələrini vermiş olsanız, artıq mövcud olan Jabber kontaktları avtomatik olaraq ünvan kitabınızda göstəriləcək. Əks halda, yalnız chat address-ləri əlavə edin</string>
     <string name="intro_desc_open_chat">İndi çat etməyə, yerləri, faylları, videoları və şəkilləri paylaşa və ya səsli mesajlar göndərə bilərsiniz.</string>
     <string name="intro_chat_details">Çat məlumatları</string>
-    <string name="intro_desc_chat_details">Çat detallarını açmaq istəyirsiniz? Yuxarıda göstərilən chat adına toxunun.</string>
+    <string name="intro_desc_chat_details">Çat detallarını açmaq istəyirsiniz\? Yuxarıda göstərilən chat adına toxunun.</string>
     <string name="intro_highlight_user">İstifadəçini vurğulamaq</string>
     <string name="intro_desc_highlight_user">Bir qrup çatda bir istifadəçini vurğulamaq istəyirsinizsə, çatdaki istifadəçi avatarına toxunun. Alternativ olaraq, xüsusən istifadəçi çatda deyilsə, çatın detallarına keçin və istifadəçilər siyahısında istifadəçi axtarın.</string>
     <string name="intro_desc_open_chat_details">Chat məlumatlarını açdınız. Burada çat haqqında ətraflı məlumatı nəzərdən keçirə, yeni mesaj bildirişinin davranışını dəyişə, əlaqə siyahısından söhbət əlavə edə və ya silə bilərsiniz və daha çox.</string>
@@ -958,16 +1002,20 @@
     <string name="show_intro_again">Intro ekranları yenidən göstəriləcək</string>
     <string name="show_intro_again_failed">Intro ekranlarını sıfırlamaq alınmadı. Yenidən cəhd elə…</string>
     <string name="intro_desc_whats_xmpp">XMPP, həmçinin jabber adlanır, mərkəzləşdirilmiş kommunikasiya şəbəkəsidir və e-poçt kimi işləyir. Siz chat address, parol və messenger adlı bir ünvan lazımdır. Bu barədə daha ətraflı bir qədər sonra.</string>
-    <string name="intro_whats_xmpp">XMPP / Jabber / monocles chat nədir?</string>
+    <string name="intro_whats_xmpp">XMPP / Jabber / monocles chat nədir\?</string>
     <string name="intro_desc_optional_permissions">Ünvan kitabınızı oxumaq üçün icazələr kontaktlarınızdan chat address (əgər varsa) oxumaq üçün tələb olunur. Kontaktlar heç vaxt paylaşılmır, yüklənmir və kopyalanmır.</string>
     <string name="intro_desc_account2">Siz yalnız ləqəb yazaraq yeni bir monocles chat profil yarada bilərsiniz.</string>
     <string name="open_join_dialog">İctimai kanala qoşulun…</string>
     <string name="intro_optional_permissions">Könüllü icazələr</string>
-    <string name="intro_desc_optional_permissions2">Məkanınızı bölüşmək istəsəniz, yeriniz üçün icazələr lazımdır. \nSəsli mesajları paylaşmaq üçün mikrofonunuza giriş əldə etmək tələb olunur.</string>
-    <string name="intro_desc_account3">Mövcud hesabı idxal etmək seçiminiz var.\nƏgər ehtiyat nüsxə faylları varsa, onlar göstəriləcəkdir.</string>
+    <string name="intro_desc_optional_permissions2">Məkanınızı bölüşmək istəsəniz, yeriniz üçün icazələr lazımdır.
+\nSəsli mesajları paylaşmaq üçün mikrofonunuza giriş əldə etmək tələb olunur.</string>
+    <string name="intro_desc_account3">Mövcud hesabı idxal etmək seçiminiz var.
+\nƏgər ehtiyat nüsxə faylları varsa, onlar göstəriləcəkdir.</string>
     <string name="intro_desc_start_chatting2">Mucs adlanan-siz də əlavə edə, yarada və ya çatlara qoşula bilərsiniz. Onlar xüsusi qrup çatlar və ictimai qrup çatları arasında fərqləndirirlər - başqa sözdə kanallar.</string>
-    <string name="intro_desc_start_chatting3">Təbrik edirik! \nƏylənmək vaxtı çatdı…</string>
-    <string name="intro_privacy">Məxfiliyiniz\nSuvereniteniz</string>
+    <string name="intro_desc_start_chatting3">Təbrik edirik!
+\nƏylənmək vaxtı çatdı…</string>
+    <string name="intro_privacy">Məxfiliyiniz
+\nSuvereniteniz</string>
     <string name="intro_desc_privacy">monocles chatməlumatlarınızı nə satacaq, nə də təhlil etmir və hansı icazələrin veriləcəyinə siz qərar verirsiniz.</string>
     <string name="no_results">Nəticə yoxdur</string>
     <string name="file_transmission_cancelled">fayl ötürülməsi ləğv edildi</string>
@@ -991,9 +1039,11 @@
     <string name="pref_theme_black">Qara (AMOLED)</string>
     <string name="pref_theme_color_options_summary">Temanın rəng palitrasını seçin</string>
     <string name="pref_theme_color_options">Tema rəngi</string>
-    <string name="magic_create_text_on_x">Siz %1$s - yə dəvət olunmusunuz. Bir hesab yaratma müddətində sizə yol göstərəcəyik.\nTayerçi olaraq %1$s seçərkən digər provayderlərin istifadəçiləri ilə tam XMPP ünvanınızı verərək əlaqə qura biləcəksiniz.</string>
+    <string name="magic_create_text_on_x">Siz %1$s - yə dəvət olunmusunuz. Bir hesab yaratma müddətində sizə yol göstərəcəyik.
+\nTayerçi olaraq %1$s seçərkən digər provayderlərin istifadəçiləri ilə tam XMPP ünvanınızı verərək əlaqə qura biləcəksiniz.</string>
     <string name="account_status_regis_invalid_token">Yanlış qeydiyyat simvolu</string>
-    <string name="magic_create_text_fixed">Siz %1$s dəvət olunduz. Bütün hesab yaratma prosesi vasitəsilə sizi keçirəcəyik.\nYou, digər provayderlərin istifadəçiləri ilə tam XMPP ünvanını istifadə etməklə ünsiyyət qura bilərsiniz.</string>
+    <string name="magic_create_text_fixed">Siz %1$s dəvət olunduz. Bütün hesab yaratma prosesi vasitəsilə sizi keçirəcəyik.
+\nYou, digər provayderlərin istifadəçiləri ilə tam XMPP ünvanını istifadə etməklə ünsiyyət qura bilərsiniz.</string>
     <string name="your_server_invitation">Server dəvətiniz</string>
     <string name="pref_use_unicolored_chatbg_summary">Çatlarda rəngsiz fondan istifadə edin.</string>
     <string name="pref_use_unicolored_chatbg">Rəngsiz fon istifadə edin</string>
@@ -1079,7 +1129,17 @@
     <string name="n_missed_calls_from_m_contacts">%2$d kontaktdan %1$d cavabsız zəng</string>
     <string name="pref_invidious_host_summary">Əlavə invidious hostun istifadəsi</string>
     <string name="pref_invidious_host">Invidious hostu</string>
-    <string name="updated_to_monocles">Biz uğurla Monocles Messenger-dən monocles chat-ə keçdik\n\nİki layihənin əməkdaşlığı monocles chat- i düzəltdik. Monocles Messenger isə 2020-ci ilin noyabrında genişləndirilib. Gələcəkdə Monocles Messenger Android tətbiqi monocles chat adı altında davam edəcək.\n\nNə gözləmək olar:\n- Həmin funksiyalar qalır\n- Çat otağların köçürmə imkanı\n- Rənglər və loqotiplər monocles chat-ə uyğunlaşdırılmışdır\n- Tətbiq Google Play Store və F-Droid Store-da pulsuz olaraq mövcuddur\n\nSizin monocles chat Team</string>
+    <string name="updated_to_monocles">Biz uğurla Monocles Messenger-dən monocles chat-ə keçdik
+\n
+\nİki layihənin əməkdaşlığı monocles chat- i düzəltdik. Monocles Messenger isə 2020-ci ilin noyabrında genişləndirilib. Gələcəkdə Monocles Messenger Android tətbiqi monocles chat adı altında davam edəcək.
+\n
+\nNə gözləmək olar:
+\n- Həmin funksiyalar qalır
+\n- Çat otağların köçürmə imkanı
+\n- Rənglər və loqotiplər monocles chat-ə uyğunlaşdırılmışdır
+\n- Tətbiq Google Play Store və F-Droid Store-da pulsuz olaraq mövcuddur
+\n
+\nSizin monocles chat Team</string>
     <string name="updated_to_monocles_google">Birbaşa monocles chat-ə yeniləyə bilmədiyimiz üçün üzr istəməliyik. Aşağıdakı keçid altında bütün profillərinizi Monocles Messenger-dən monocles chat-ə köçürmək barədə təlimat alacaqsınız. Hərəkət məlumatlarına tıklayaraq göndərilən və alınan bütün sənədləri Monocles Messenger-dən monocles chat-ə köçürməyə çalışırıq. Uğurlu bir köçdən sonra Monocles Messenger\'i cihazınızdan silməyi unutmayın.</string>
     <string name="link">Link</string>
     <string name="no_application_found">Heç bir tətbiq tapılmadı</string>
@@ -1113,14 +1173,18 @@
     <string name="files_usage">Fayllardan yaddaş istifadəsi</string>
     <string name="audios_usage">Audiodan yaddaş istifadəsi</string>
     <string name="delete_files_dialog">Bərkidilən faylların silinməsi</string>
-    <string name="delete_files_dialog_msg">Həqiqətən bütün %s silmək istəyirsən?</string>
+    <string name="delete_files_dialog_msg">Həqiqətən bütün %s silmək istəyirsən\?</string>
     <string name="audios">səslər</string>
     <string name="images">şəkillər</string>
     <string name="videos">videolar</string>
     <string name="files">fayllar</string>
     <string name="all_media_files">media fayllar</string>
-    <string name="memory_warning">Mesenceriniz %1$s (%2$s) daxili yaddaşdan istifadə edir.\n\nSiz avtomatik qoşmanın silinməsi ilə əlaqədar avtomatik mesaj silinməsini aktivləşdirə və ya saxlanan medianı əl ilə silə bilərsiniz.</string>
-    <string name="memory_warning_force">Mesenceriniz %1$s (%2$s) daxili yaddaşdan istifadə edir.\n\nSiz avtomatik qoşmanın silinməsi ilə əlaqədar avtomatik mesaj silinməsini təmin etməli və ya saxlanan medianı əl ilə silməlisiniz!</string>
+    <string name="memory_warning">Mesenceriniz %1$s (%2$s) daxili yaddaşdan istifadə edir.
+\n
+\nSiz avtomatik qoşmanın silinməsi ilə əlaqədar avtomatik mesaj silinməsini aktivləşdirə və ya saxlanan medianı əl ilə silə bilərsiniz.</string>
+    <string name="memory_warning_force">Mesenceriniz %1$s (%2$s) daxili yaddaşdan istifadə edir.
+\n
+\nSiz avtomatik qoşmanın silinməsi ilə əlaqədar avtomatik mesaj silinməsini təmin etməli və ya saxlanan medianı əl ilə silməlisiniz!</string>
     <string name="open_settings">Ayarları açın</string>
     <string name="oldAndroidVersion">Köhnə Android versiyası</string>
     <string name="oldAndroidVersionMessage">Gələcək yeniləmələrdə artıq dəstəklənməyəcək köhnə bir Android versiyasından istifadə edirsiniz. monocles chat versiyası 1.0-dan yalnız Android 5 və ya daha yüksək olan cihazlara dəstək verilir. Zəhmət olmasa cihazınızın proqram təminatını yeniləyin.</string>
@@ -1130,15 +1194,128 @@
     <string name="pref_remove_all_individual_summary">Kontaktlarınız və qruplarınız üçün bütün fərdi bildirişləri silin.</string>
     <string name="pref_remove_all_individual_notifications_title">Bütün fərdi bildirişləri silin</string>
     <string name="remove_individual_notifications">Fərdi bildirişləri silin</string>
-    <string name="remove_individual_notifications_message">%s üçün fərdi bildirişləri silmək istəyirsiniz?</string>
-    <string name="remove_all_individual_notifications_message">Kontaktlarınız və qruplarınız üçün qurulmuş bütün fərdi bildirişləri silmək istəyirsiniz?</string>
+    <string name="remove_individual_notifications_message">%s üçün fərdi bildirişləri silmək istəyirsiniz\?</string>
+    <string name="remove_all_individual_notifications_message">Kontaktlarınız və qruplarınız üçün qurulmuş bütün fərdi bildirişləri silmək istəyirsiniz\?</string>
     <string name="exit">Çıxış</string>
     <string name="record_voice_mail">Səsli mesajı yazın</string>
     <string name="backup_started_message">Yedəkləmə başladıldı. Tamamlandıqdan sonra bildiriş alacaqsınız.</string>
     <string name="error_security_exception">Bu faylı paylaşdığınız tətbiq kifayət qədər icazələrə malik deyil.</string>
     <string name="unable_to_enable_video">Videonu aktiv etmək olmur.</string>
     <string name="plain_text_document">Normal mətn sənədi</string>
-    <string name="delete_recording_dialog_message">Həqiqətən yazını ləğv etmək və silmək istəyirsiniz?</string>
+    <string name="delete_recording_dialog_message">Həqiqətən yazını ləğv etmək və silmək istəyirsiniz\?</string>
     <string name="pref_pause_voice_on_move_from_ear">Səs mesajını avtomatik dayandırın</string>
     <string name="pref_pause_voice_on_move_from_ear_summary">Cihazınızı qulağınızdan uzaqlaşdırdığınız zaman səs mesajını dayandırın.</string>
+    <string name="otr_fingerprint_selected_message"></string>
+    <string name="import_backup_description"></string>
+    <string name="optimize_database"></string>
+    <string name="verifying_omemo_keys_trusted_source_account"></string>
+    <string name="download_failed_invalid_file"></string>
+    <string name="orbot_not_found"></string>
+    <string name="account_status_temporary_auth_failure"></string>
+    <string name="pref_resend_delay_summary"></string>
+    <string name="note_to_self"></string>
+    <string name="retract_message"></string>
+    <string name="pref_use_i2p"></string>
+    <string name="undo"></string>
+    <string name="reply_to"></string>
+    <string name="strikethrough"></string>
+    <string name="delete_avatar"></string>
+    <string name="pref_max_resend_time_summary"></string>
+    <string name="i_have_written"></string>
+    <string name="title_activity_about_x"></string>
+    <string name="x_has_written"></string>
+    <string name="choose_camera_app"></string>
+    <string name="pref_choose_camera_summary"></string>
+    <string name="vector_graphic"></string>
+    <string name="multimedia_file"></string>
+    <string name="title_undo_swipe_out_group_chat"></string>
+    <string name="title_undo_swipe_out_channel"></string>
+    <string name="title_undo_swipe_out_conversation"></string>
+    <string name="audio_video_disabled_tor"></string>
+    <string name="pref_enable_persistent_rooms_summary"></string>
+    <string name="pref_enable_persistent_rooms_title"></string>
+    <string name="switch_to_video"></string>
+    <string name="pref_up_push_account_title"></string>
+    <string name="pref_up_push_account_summary"></string>
+    <string name="pref_up_push_server_title"></string>
+    <string name="pref_up_push_server_summary"></string>
+    <string name="no_account_deactivated"></string>
+    <string name="pref_theme_custom"></string>
+    <string name="moderate_message"></string>
+    <string name="moderate_reason"></string>
+    <string name="unable_to_moderate"></string>
+    <string name="incoming_call_duration_timestamp"></string>
+    <string name="outgoing_call_duration_timestamp"></string>
+    <string name="outgoing_call_timestamp"></string>
+    <string name="conference_technical_problems"></string>
+    <string name="account_status_incompatible_client"></string>
+    <string name="enable_notifications"></string>
+    <string name="pref_allow_message_retraction"></string>
+    <string name="pref_allow_message_retraction_summary"></string>
+    <string name="conversations_foreground_service" translatable="false"></string>
+    <string name="receiving_file_x"></string>
+    <string name="sending_x_file_x"></string>
+    <string name="account_status_i2p_unavailable"></string>
+    <string name="transcoding_video_x"></string>
+    <string name="pref_use_i2p_summary"></string>
+    <string name="delete_message_dialog_msg"></string>
+    <string name="send_otr_message"></string>
+    <string name="unknown_otr_fingerprint"></string>
+    <string name="toast_message_otr_fingerprint"></string>
+    <string name="verify_otr"></string>
+    <string name="no_otr_session_found"></string>
+    <string name="are_you_sure_verify_fingerprint"></string>
+    <string name="copy_otr_clipboard_description"></string>
+    <string name="otr_session_not_started"></string>
+    <string name="pref_enable_otr_summary"></string>
+    <string name="pref_enable_otr"></string>
+    <string name="otr_warning"></string>
+    <string translatable="false" name="x_user_quote"></string>
+    <string name="me_quote"></string>
+    <string name="pref_use_inner_storage"></string>
+    <string name="pref_use_inner_storage_summary"></string>
+    <string name="pref_theme_White"></string>
+    <string name="rtp_state_reconnecting"></string>
+    <string name="rtp_state_content_add_video"></string>
+    <string name="rtp_state_content_add"></string>
+    <string name="no_i2p_calls"></string>
+    <string name="create_monocles_account"></string>
+    <string name="using_inner_storage"></string>
+    <string name="copy_file_to"></string>
+    <string name="pref_import_settings_summary"></string>
+    <string name="pref_import_settings"></string>
+    <string name="success_import_settings"></string>
+    <string name="error_import_settings"></string>
+    <string name="action_unfix_from_location"></string>
+    <string name="action_fix_to_location"></string>
+    <string name="action_copy_location"></string>
+    <string name="account_registrations_are_not_supported"></string>
+    <string name="no_xmpp_adddress_found"></string>
+    <string name="pref_allowmergemessages"></string>
+    <string name="pref_allowmergemessages_sum"></string>
+    <string name="show_edit_log"></string>
+    <string name="reconnecting_call"></string>
+    <string name="reconnecting_video_call"></string>
+    <string name="user"></string>
+    <string name="format_text"></string>
+    <string name="bold"></string>
+    <string name="italic"></string>
+    <string name="monospace"></string>
+    <string name="grant"></string>
+    <string name="no_manage_storage_permission"></string>
+    <string name="pref_showtextformatting_sum"></string>
+    <string name="pref_showtextformatting"></string>
+    <string name="help_format_text"></string>
+    <string name="close"></string>
+    <string name="close_format_text"></string>
+    <string name="port_example" translatable="false"></string>
+    <string name="pref_show_date_in_quotes_summary"></string>
+    <string name="pref_show_date_in_quotes"></string>
+    <string name="continue_btn"></string>
+    <string name="participants"></string>
+    <string name="pref_max_resend_time_title"></string>
+    <string name="pref_resend_delay_title"></string>
+    <string name="reject_switch_to_video"></string>
+    <string name="unified_push_distributor"></string>
+    <string name="otr_fingerprint"></string>
 </resources>

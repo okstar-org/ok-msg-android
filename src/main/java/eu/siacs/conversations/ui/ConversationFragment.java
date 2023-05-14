@@ -1,5 +1,9 @@
 package eu.siacs.conversations.ui;
 
+import java.util.Map;
+import eu.siacs.conversations.ui.adapter.CommandAdapter;
+import eu.siacs.conversations.xml.Element;
+import eu.siacs.conversations.xmpp.stanzas.IqPacket;
 import static android.view.ViewGroup.LayoutParams.MATCH_PARENT;
 import static android.view.ViewGroup.LayoutParams.WRAP_CONTENT;
 import static eu.siacs.conversations.ui.SettingsActivity.HIDE_YOU_ARE_NOT_PARTICIPATING;
@@ -220,6 +224,7 @@ public class ConversationFragment extends XmppFragment implements EditMessage.Ke
     public Uri mPendingEditorContent = null;
     public FragmentConversationBinding binding;
     protected MessageAdapter messageListAdapter;
+    protected CommandAdapter commandAdapter;
     private String lastMessageUuid = null;
     private Conversation conversation;
     private Toast messageLoaderToast;
@@ -1846,6 +1851,9 @@ public class ConversationFragment extends XmppFragment implements EditMessage.Ke
             case R.id.action_unmute:
                 unmuteConversation(conversation);
                 break;
+            case R.id.action_refresh_feature_discovery:
+                refreshFeatureDiscovery();
+                break;
             default:
                 break;
         }
@@ -1877,6 +1885,20 @@ public class ConversationFragment extends XmppFragment implements EditMessage.Ke
             activity.startActivity(intent);
         }
 
+    }
+
+    private void refreshFeatureDiscovery() {
+        for (Map.Entry<String, Presence> entry : conversation.getContact().getPresences().getPresencesMap().entrySet()) {
+            Jid jid = conversation.getContact().getJid();
+            if (!entry.getKey().equals("")) jid = jid.withResource(entry.getKey());
+            activity.xmppConnectionService.fetchCaps(conversation.getAccount(), jid, entry.getValue(), () -> {
+                if (activity == null) return;
+                activity.runOnUiThread(() -> {
+                    refresh();
+                    refreshCommands();
+                });
+            });
+        }
     }
 
     private void togglePinned() {
@@ -2538,7 +2560,7 @@ public class ConversationFragment extends XmppFragment implements EditMessage.Ke
                 retractmessage.setTime(time);
                 retractmessage.setUuid(UUID.randomUUID().toString());
                 retractmessage.setCarbon(false);
-                retractmessage.setOob(false);
+                retractmessage.setOob(String.valueOf(false));
                 retractmessage.setRemoteMsgId(retractmessage.getUuid());
                 retractmessage.setMessageDeleted(true);
                 retractedMessage.setTime(time); //set new time here to keep orginal timestamps
@@ -2925,6 +2947,16 @@ public class ConversationFragment extends XmppFragment implements EditMessage.Ke
         this.binding.messagesView.post(this::fireReadEvent);
         //TODO if we only do this when this fragment is running on main it won't *bing* in tablet layout which might be unnecessary since we can *see* it
         activity.xmppConnectionService.getNotificationService().setOpenConversation(this.conversation);
+        if (commandAdapter == null && conversation != null) {
+            conversation.setupViewPager(binding.conversationViewPager, binding.tabLayout);
+            commandAdapter = new CommandAdapter((XmppActivity) getActivity());
+            binding.commandsView.setAdapter(commandAdapter);
+            binding.commandsView.setOnItemClickListener((parent, view, position, id) -> {
+                conversation.startCommand(commandAdapter.getItem(position), activity.xmppConnectionService);
+            });
+            refreshCommands();
+        }
+
         return true;
     }
 
@@ -2955,6 +2987,32 @@ public class ConversationFragment extends XmppFragment implements EditMessage.Ke
                 builder.create().show();
             });
             showSnackbar(R.string.no_write_access_in_public_muc, R.string.ok, clickToMuc);
+        }
+    }
+    protected void refreshCommands() {
+        if (commandAdapter == null) return;
+
+        Jid commandJid = conversation.getContact().resourceWhichSupport(Namespace.COMMANDS);
+        if (commandJid == null) {
+            conversation.hideViewPager();
+        } else {
+            conversation.showViewPager();
+            activity.xmppConnectionService.fetchCommands(conversation.getAccount(), commandJid, (a, iq) -> {
+                if (activity == null) return;
+
+                activity.runOnUiThread(() -> {
+                    if (iq.getType() == IqPacket.TYPE.RESULT) {
+                        binding.commandsViewProgressbar.setVisibility(View.GONE);
+                        commandAdapter.clear();
+                        for (Element child : iq.query().getChildren()) {
+                            if (!"item".equals(child.getName()) || !Namespace.DISCO_ITEMS.equals(child.getNamespace())) continue;
+                            commandAdapter.add(child);
+                        }
+                    }
+
+                    if (commandAdapter.getCount() < 1) conversation.hideViewPager();
+                });
+            });
         }
     }
 

@@ -72,22 +72,22 @@ public class HttpDownloadConnection implements Transferable {
     }
 
     public void init(boolean interactive) {
+        final Message.FileParams fileParams = message.getFileParams();
         if (message.isFileDeleted()) {
             if (message.getType() == Message.TYPE_PRIVATE_FILE) {
                 message.setType(Message.TYPE_PRIVATE);
             } else if (message.isFileOrImage()) {
                 message.setType(Message.TYPE_TEXT);
             }
-            message.setOob(true);
+            message.setOob(fileParams.url);
             message.setFileDeleted(false);
             mXmppConnectionService.updateMessage(message);
         }
         this.message.setTransferable(this);
         try {
-            final Message.FileParams fileParams = message.getFileParams();
             if (message.hasFileOnRemoteHost()) {
                 mUrl = AesGcmURL.of(fileParams.url);
-            } else if (message.isOOb() && fileParams.url != null && fileParams.size != null) {
+            } else if (message.isOOb() && fileParams.url != null) {
                 mUrl = AesGcmURL.of(fileParams.url);
             } else {
                 mUrl = AesGcmURL.of(message.getBody().split("\n")[0]);
@@ -315,7 +315,7 @@ public class HttpDownloadConnection implements Transferable {
             }
             final Message.FileParams fileParams = message.getFileParams();
             FileBackend.updateFileParams(message, fileParams.url, size);
-            message.setOob(true);
+            message.setOob(fileParams.url);
             mXmppConnectionService.databaseBackend.updateMessage(message, true);
             file.setExpectedSize(size);
             message.resetFileParams();

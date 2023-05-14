@@ -710,7 +710,7 @@ public class MessageParser extends AbstractParser implements OnMessagePacketRece
                 }
             } else if (body == null && oobUrl != null) {
                 message = new Message(conversation, oobUrl, Message.ENCRYPTION_NONE, status);
-                message.setOob(true);
+                message.setOob(oobUrl);
                 if (CryptoHelper.isPgpEncryptedUrl(oobUrl)) {
                     message.setEncryption(Message.ENCRYPTION_DECRYPTED);
                 }
@@ -720,14 +720,14 @@ public class MessageParser extends AbstractParser implements OnMessagePacketRece
                     message.setBodyLanguage(body.language);
                 }
             }
-
+            message.setSubject(original.findChildContent("subject"));
             message.setCounterpart(counterpart);
             message.setRemoteMsgId(remoteMsgId);
             message.setServerMsgId(serverMsgId);
             message.setCarbon(isCarbon);
             message.setTime(timestamp);
-            if (body != null && body.content != null && body.content.equals(oobUrl)) {
-                message.setOob(true);
+            if (oobUrl != null) {
+                message.setOob(oobUrl);
                 if (CryptoHelper.isPgpEncryptedUrl(oobUrl)) {
                     message.setEncryption(Message.ENCRYPTION_DECRYPTED);
                 }

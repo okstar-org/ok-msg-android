@@ -50,7 +50,7 @@ import me.drakeet.support.toast.ToastCompat;
 @SuppressLint("ParcelCreator")
 public class FixedURLSpan extends URLSpan {
 
-    private FixedURLSpan(String url) {
+    public FixedURLSpan(String url) {
         super(url);
     }
 

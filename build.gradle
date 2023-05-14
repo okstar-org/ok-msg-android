@@ -100,7 +100,8 @@ dependencies {
     implementation project(':libs:AXML')
     implementation 'com.github.ipld:java-cid:v1.3.1'
     implementation 'com.github.woltapp:blurhash:master'
-
+    implementation 'org.tomlj:tomlj:1.1.0'
+    coreLibraryDesugaring 'com.android.tools:desugar_jdk_libs:1.1.5'
 }
 
 ext {
@@ -133,6 +134,7 @@ android {
         versionName grgit.describe(always: true)
         buildConfigField("String", "LOGTAG", '"monocles chat"')
         buildConfigField("String", "DOMAIN_LOCK", 'null')
+        buildConfigField("String", "MAGIC_CREATE_DOMAIN", '"monocles.eu"')
         buildConfigField("boolean", "SHOW_INTRO", 'true')
         buildConfigField("String", "UPDATE_URL", '"https://monocles.eu/chat/update/"')
         resValue "string", "applicationId", applicationId
@@ -156,6 +158,7 @@ android {
     }
 
     compileOptions {
+        coreLibraryDesugaringEnabled true
         sourceCompatibility JavaVersion.VERSION_1_8
         targetCompatibility JavaVersion.VERSION_1_8
     }

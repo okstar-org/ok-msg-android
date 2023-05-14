@@ -409,8 +409,10 @@
             android:windowSoftInputMode="stateVisible" />
         <activity
             android:name=".ui.MediaViewerActivity"
-            android:configChanges="orientation|screenSize"
-            android:launchMode="singleTask"
+            android:autoRemoveFromRecents="true"
+            android:configChanges="screenSize|smallestScreenSize|screenLayout|orientation"
+            android:launchMode="singleInstance"
+            android:supportsPictureInPicture="true"
             android:theme="@style/ConversationsTheme.FullScreen" />
         <activity
             android:name=".ui.TrustKeysActivity"

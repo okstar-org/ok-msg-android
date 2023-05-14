@@ -23,7 +23,7 @@
                 <LinearLayout
                     android:id="@+id/linearLayout"
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
+                    android:layout_height="match_parent"
                     android:layout_alignParentStart="true"
                     android:layout_alignParentLeft="true"
                     android:layout_alignParentBottom="true"
@@ -35,10 +35,26 @@
                     android:paddingRight="16dp"
                     android:paddingBottom="8dp">
 
-                    <Space
+                    <RelativeLayout
                         android:layout_width="match_parent"
-                        android:layout_height="0dp"
-                        android:layout_weight="1" />
+                        android:layout_height="wrap_content">
+
+                        <ImageView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_centerHorizontal="true"
+                            android:layout_centerVertical="true"
+                            android:padding="8dp"
+                            android:src="@drawable/logo_actionbar" />
+                    </RelativeLayout>
+
+                    <TextView
+                        android:id="@+id/monocles_account_introduction"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="8dp"
+                        android:text="@string/monocles_account_introduction"
+                        android:textAppearance="@style/TextAppearance.Conversations.Subhead" />
 
                     <TextView
                         android:id="@+id/instructions"
@@ -46,6 +62,27 @@
                         android:layout_height="wrap_content"
                         android:layout_marginTop="8dp"
                         android:text="@string/magic_create_text"
+                        android:textAppearance="@style/TextAppearance.Conversations.Subhead" />
+
+                    <TextView
+                        android:id="@+id/activity_main_link"
+                        android:layout_width="match_parent"
+                        android:gravity="center_vertical|center_horizontal"
+                        android:text="@string/create_monocles_account"
+                        android:textSize="19sp"
+                        android:layout_height="60dp" />
+
+                    <View
+                        android:layout_width="match_parent"
+                        android:layout_height="23dp"
+                        android:layout_weight="1" />
+
+                    <TextView
+                        android:id="@+id/alternative"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="8dp"
+                        android:text="@string/or_use_another"
                         android:textAppearance="@style/TextAppearance.Conversations.Body1" />
 
                     <TextView
@@ -54,7 +91,7 @@
                         android:layout_height="wrap_content"
                         android:layout_marginTop="8dp"
                         android:text="@string/pick_your_username"
-                        android:textAppearance="@style/TextAppearance.Conversations.Subhead" />
+                        android:textAppearance="@style/TextAppearance.Conversations.Body1" />
 
                     <EditText
                         android:id="@+id/username"
@@ -64,7 +101,8 @@
                         android:hint="@string/username_hint"
                         android:imeOptions="actionNext"
                         android:inputType="text"
-                        android:textColor="?attr/edit_text_color" />
+                        android:textColor="?attr/edit_text_color"
+                        android:minHeight="30dp"/>
 
                     <TextView
                         android:id="@+id/servertitle"
@@ -72,7 +110,7 @@
                         android:layout_height="wrap_content"
                         android:layout_marginTop="8dp"
                         android:text="@string/choose_your_server"
-                        android:textAppearance="@style/TextAppearance.Conversations.Subhead" />
+                        android:textAppearance="@style/TextAppearance.Conversations.Body1" />
 
                     <Spinner
                         android:id="@+id/server"
@@ -81,7 +119,8 @@
                         android:layout_gravity="center_horizontal"
                         android:hint="@string/server_hint"
                         android:prompt="@string/server_hint"
-                        android:spinnerMode="dialog" />
+                        android:spinnerMode="dialog"
+                        android:minHeight="30dp"/>
 
                     <EditText
                         android:id="@+id/yourserver"
@@ -120,22 +159,6 @@
                         android:textColor="?attr/colorAccent" />
 
                 </LinearLayout>
-
-                <RelativeLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:layout_above="@+id/linearLayout"
-                    android:layout_alignParentStart="true"
-                    android:layout_alignParentLeft="true">
-
-                    <ImageView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_centerHorizontal="true"
-                        android:layout_centerVertical="true"
-                        android:padding="8dp"
-                        android:src="@mipmap/ic_launcher_foreground" />
-                </RelativeLayout>
             </RelativeLayout>
         </ScrollView>
     </LinearLayout>

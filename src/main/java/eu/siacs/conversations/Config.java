@@ -12,7 +12,6 @@ import java.util.Random;
 
 import eu.siacs.conversations.BuildConfig;
 import eu.siacs.conversations.crypto.XmppDomainVerifier;
-import eu.siacs.conversations.services.ProviderService;
 import eu.siacs.conversations.xmpp.Jid;
 import eu.siacs.conversations.xmpp.chatstate.ChatState;
 
@@ -76,12 +75,12 @@ public final class Config {
     public static final String CHANGELOG_URL = "https://codeberg.org/Arne/monocles_chat/src/branch/master/CHANGELOG.md";
     public static final String GIT_URL = "https://codeberg.org/Arne/monocles_chat";
 
-    public static final String PROVIDER_URL = "https://data.xmpp.net/providers/v1/providers-A.json"; // https://invent.kde.org/melvo/xmpp-providers
+    public static final String PROVIDER_URL = "";// "https://data.xmpp.net/providers/v1/providers-A.json"; // https://invent.kde.org/melvo/xmpp-providers
     //or https://invent.kde.org/melvo/xmpp-providers/-/raw/master/providers.json
     public static final String XMPP_IP = null; //BuildConfig.XMPP_IP; // set to null means disable
     public static final Integer[] XMPP_Ports = null; //BuildConfig.XMPP_Ports; // set to null means disable
     public static final String DOMAIN_LOCK = BuildConfig.DOMAIN_LOCK; //only allow account creation for this domain
-    public static final String MAGIC_CREATE_DOMAIN = DOMAIN.getRandomServer();
+    public static final String MAGIC_CREATE_DOMAIN = BuildConfig.MAGIC_CREATE_DOMAIN; //"monocles.eu";
 
     public static final Jid QUICKSY_DOMAIN = Jid.of("quicksy.im");
     public static final String CHANNEL_DISCOVERY = "https://search.jabber.network";
@@ -182,7 +181,7 @@ public final class Config {
     public static final String UPDATE_URL = BuildConfig.UPDATE_URL;
     public static final long UPDATE_CHECK_TIMER = 24 * 60 * 60; // 24 h in seconds
 
-    public static final String ISSUE_URL = "xmpp://support@conference.monocles.de?join";
+    public static final String ISSUE_URL = "xmpp:support@conference.monocles.de?join";
 
     //only allow secure tls chipers now
     public static final String[] ENABLED_CIPHERS = {
@@ -211,40 +210,19 @@ public final class Config {
         //if the contacts domain matches one of the following domains OMEMO won’t be turned on automatically
         //can be used for well known, widely used gateways
         private static final List<String> CONTACT_DOMAINS = Arrays.asList(
+                "sip.cheogram.com",
+                "irc.cheogram.com",
+                "smtp.cheogram.com",
                 "cheogram.com",
+                "aria-net.org",
+                "matrix.org",
+                "monocles.de",
                 "monocles.eu",
                 "*.covid.monal.im"
         );
 
         public static boolean matchesContactDomain(final String domain) {
             return XmppDomainVerifier.matchDomain(domain, CONTACT_DOMAINS);
-        }
-    }
-
-    public static class DOMAIN {
-        // use this fallback server if provider list can't be updated automatically
-        public static final List<String> DOMAINS = Arrays.asList(
-                "monocles.de",
-                "monocles.eu",
-                "conversations.im"
-        );
-
-        // don't use these servers in provider list
-        public static final List<String> BLACKLISTED_DOMAINS = Arrays.asList(
-                "blabber.im"
-        );
-
-        // choose a random server for registration
-        public static String getRandomServer() {
-            try {
-                new ProviderService().execute();
-                final String domain = ProviderService.getProviders().get(new Random().nextInt(ProviderService.getProviders().size()));
-                Log.d(LOGTAG, "MagicCreate account on domain: " + domain);
-                return domain;
-            } catch (Exception e) {
-                Log.d(LOGTAG, "Error getting random server ", e);
-            }
-            return "conversations.im";
         }
     }
 
