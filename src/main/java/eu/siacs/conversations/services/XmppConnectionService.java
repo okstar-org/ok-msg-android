@@ -16,6 +16,7 @@ import static eu.siacs.conversations.ui.SettingsActivity.USE_INNER_STORAGE;
 import static eu.siacs.conversations.utils.RichPreview.RICH_LINK_METADATA;
 import static eu.siacs.conversations.utils.Random.SECURE_RANDOM;
 import static eu.siacs.conversations.utils.StorageHelper.getAppMediaDirectory;
+import eu.siacs.conversations.xmpp.OnGatewayPromptResult;
 import android.content.res.Resources;
 import android.os.Handler;
 import static eu.siacs.conversations.utils.Compatibility.s;
@@ -5376,6 +5377,22 @@ public class XmppConnectionService extends Service {
             }
             return result;
         }
+    }
+    public void fetchGatewayPrompt(Account account, final Jid jid, final OnGatewayPromptResult callback) {
+        IqPacket request = new IqPacket(IqPacket.TYPE.GET);
+        request.setTo(jid);
+        request.query("jabber:iq:gateway");
+        sendIqPacket(account, request, new OnIqPacketReceived() {
+            @Override
+            public void onIqPacketReceived(Account account, IqPacket packet) {
+                if (packet.getType() == IqPacket.TYPE.RESULT) {
+                    callback.onGatewayPromptResult(packet.query().findChildContent("prompt"), null);
+                } else {
+                    Element error = packet.findChild("error");
+                    callback.onGatewayPromptResult(null, error == null ? null : error.findChildContent("text"));
+                }
+            }
+        });
     }
 
     public void fetchCaps(Account account, final Jid jid, final Presence presence) {
