@@ -1,6 +1,8 @@
 package eu.siacs.conversations.ui.adapter;
 
 import de.monocles.chat.BobTransfer;
+import eu.siacs.conversations.entities.Contact;
+import eu.siacs.conversations.entities.Roster;
 import eu.siacs.conversations.ui.widget.ClickableMovementMethod;
 import io.ipfs.cid.Cid;
 import me.saket.bettermovementmethod.BetterLinkMovementMethod;
@@ -732,6 +734,20 @@ public class MessageAdapter extends ArrayAdapter<Message> {
                 displayRichLinkMessage(viewHolder, message, darkBackground);
             }
             MyLinkify.addLinks(body, message.getConversation().getAccount(), message.getConversation().getJid());
+            Roster roster = message.getConversation().getAccount().getRoster();
+            for (final URLSpan urlspan : body.getSpans(0, body.length() - 1, URLSpan.class)) {
+                Uri uri = Uri.parse(urlspan.getURL());
+                if ("xmpp".equals(uri.getScheme())) {
+                    try {
+                        Contact contact = roster.getContact(Jid.of(uri.getSchemeSpecificPart()));
+                        body.replace(
+                                body.getSpanStart(urlspan),
+                                body.getSpanEnd(urlspan),
+                                contact.getDisplayName()
+                        );
+                    } catch (final IllegalArgumentException e) { /* bad JID */ }
+                }
+            }
             viewHolder.messageBody.setText(body);
             viewHolder.messageBody.setAutoLinkMask(0);
             BetterLinkMovementMethod method = new BetterLinkMovementMethod() {
