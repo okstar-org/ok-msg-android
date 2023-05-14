@@ -7,6 +7,24 @@ import android.text.Editable;
 import android.text.TextWatcher;
 import android.view.View;
 import android.widget.ArrayAdapter;
+import android.content.DialogInterface.OnClickListener;
+import android.content.DialogInterface;
+import android.text.InputType;
+import android.util.Pair;
+import android.view.LayoutInflater;
+import android.view.ViewGroup;
+import android.widget.AdapterView;
+import android.widget.TextView;
+import android.widget.ToggleButton;
+import androidx.recyclerview.widget.RecyclerView;
+import java.util.Map;
+import org.solovyev.android.views.llm.LinearLayoutManager;
+import eu.siacs.conversations.entities.Account;
+import eu.siacs.conversations.entities.Contact;
+import eu.siacs.conversations.entities.Presence;
+import eu.siacs.conversations.entities.ServiceDiscoveryResult;
+import eu.siacs.conversations.xmpp.OnGatewayPromptResult;
+
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AlertDialog;
@@ -52,6 +70,8 @@ public class EnterJidDialog extends DialogFragment implements OnBackendConnected
     private boolean sanityCheckJid = false;
 
     private boolean issuedWarning = false;
+    private GatewayListAdapter gatewayListAdapter = new GatewayListAdapter();
+
 
     public static EnterJidDialog newInstance(final List<String> activatedAccounts,
                                              final String title, final String positiveButton,
@@ -128,6 +148,8 @@ public class EnterJidDialog extends DialogFragment implements OnBackendConnected
             adapter.setDropDownViewResource(R.layout.simple_list_item);
             binding.account.setAdapter(adapter);
         }
+        binding.gatewayList.setLayoutManager(new LinearLayoutManager(getActivity(), LinearLayoutManager.HORIZONTAL, false));
+        binding.gatewayList.setAdapter(gatewayListAdapter);
 
         builder.setView(binding.getRoot());
         builder.setNegativeButton(R.string.cancel, null);
@@ -271,5 +293,157 @@ public class EnterJidDialog extends DialogFragment implements OnBackendConnected
         }
         final String[] parts = domain.split("\\.");
         return parts.length >= 3 && SUSPICIOUS_DOMAINS.contains(parts[0]);
+    }
+
+    protected class GatewayListAdapter extends RecyclerView.Adapter<GatewayListAdapter.ViewHolder> {
+        protected class ViewHolder extends RecyclerView.ViewHolder {
+            protected ToggleButton button;
+            protected int index;
+
+            public ViewHolder(View view, int i) {
+                super(view);
+                this.button = (ToggleButton) view.findViewById(R.id.button);
+                setIndex(i);
+                button.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        button.setChecked(true); // Force visual not to flap to unchecked
+                        setSelected(index);
+                    }
+                });
+            }
+
+            public void setIndex(int i) {
+                this.index = i;
+                button.setChecked(selected == i);
+            }
+
+            public void useButton(int res) {
+                button.setText(res);
+                button.setTextOff(button.getText());
+                button.setTextOn(button.getText());
+                button.setChecked(selected == this.index);
+                binding.gatewayList.setVisibility(View.VISIBLE);
+                button.setVisibility(View.VISIBLE);
+            }
+
+            public void useButton(String txt) {
+                button.setTextOff(txt);
+                button.setTextOn(txt);
+                button.setChecked(selected == this.index);
+                binding.gatewayList.setVisibility(View.VISIBLE);
+                button.setVisibility(View.VISIBLE);
+            }
+        }
+
+        protected List<Pair<Contact,String>> gateways = new ArrayList();
+        protected int selected = 0;
+
+        @Override
+        public ViewHolder onCreateViewHolder(ViewGroup viewGroup, int i) {
+            View view = LayoutInflater.from(viewGroup.getContext()).inflate(R.layout.enter_jid_dialog_gateway_list_item, null);
+            return new ViewHolder(view, i);
+        }
+
+        @Override
+        public void onBindViewHolder(ViewHolder viewHolder, int i) {
+            viewHolder.setIndex(i);
+
+            if(i == 0) {
+                if(getItemCount() < 2) {
+                    binding.gatewayList.setVisibility(View.GONE);
+                } else {
+                    viewHolder.useButton(R.string.account_settings_jabber_id);
+                }
+            } else {
+                viewHolder.useButton(getLabel(i));
+            }
+        }
+
+        @Override
+        public int getItemCount() {
+            return this.gateways.size() + 1;
+        }
+
+        public void setSelected(int i) {
+            int old = this.selected;
+            this.selected = i;
+
+            if(i == 0) {
+                binding.jid.setThreshold(1);
+                binding.jid.setInputType(InputType.TYPE_CLASS_TEXT | InputType.TYPE_TEXT_VARIATION_EMAIL_ADDRESS | InputType.TYPE_TEXT_FLAG_AUTO_COMPLETE);
+                binding.jidLayout.setHint(R.string.account_settings_jabber_id);
+            } else {
+                binding.jid.setThreshold(999999); // do not autocomplete
+                binding.jid.setInputType(InputType.TYPE_CLASS_TEXT);
+                binding.jidLayout.setHint(this.gateways.get(i-1).second);
+                binding.jid.setHint(null);
+                binding.jid.setOnFocusChangeListener((v, hasFocus) -> {});
+            }
+
+            notifyItemChanged(old);
+            notifyItemChanged(i);
+        }
+
+        public String getLabel(int i) {
+            if (i == 0) return null;
+
+            for(Presence p : this.gateways.get(i-1).first.getPresences().getPresences()) {
+                ServiceDiscoveryResult.Identity id;
+                if(p.getServiceDiscoveryResult() != null && (id = p.getServiceDiscoveryResult().getIdentity("gateway", null)) != null) {
+                    return id.getType();
+                }
+            }
+
+            return gateways.get(i-1).first.getDisplayName();
+        }
+
+        public String getSelectedLabel() {
+            return getLabel(selected);
+        }
+
+        public Pair<String, Pair<Jid,Presence>> getSelected() {
+            if(this.selected == 0) {
+                return null; // No gateway, just use direct JID entry
+            }
+
+            Pair<Contact,String> gateway = this.gateways.get(this.selected - 1);
+
+            Pair<Jid,Presence> presence = null;
+            for (Map.Entry<String,Presence> e : gateway.first.getPresences().getPresencesMap().entrySet()) {
+                Presence p = e.getValue();
+                if (p.getServiceDiscoveryResult() != null) {
+                    if (p.getServiceDiscoveryResult().getFeatures().contains("jabber:iq:gateway")) {
+                        if (e.getKey().equals("")) {
+                            presence = new Pair<>(gateway.first.getJid(), p);
+                        } else {
+                            presence = new Pair<>(gateway.first.getJid().withResource(e.getKey()), p);
+                        }
+                        break;
+                    }
+                    if (p.getServiceDiscoveryResult().hasIdentity("gateway", null)) {
+                        if (e.getKey().equals("")) {
+                            presence = new Pair<>(gateway.first.getJid(), p);
+                        } else {
+                            presence = new Pair<>(gateway.first.getJid().withResource(e.getKey()), p);
+                        }
+                    }
+                }
+            }
+
+            return presence == null ? null : new Pair(gateway.second, presence);
+        }
+
+        public void clear() {
+            this.gateways.clear();
+            notifyDataSetChanged();
+            setSelected(0);
+        }
+
+        public void add(Contact gateway, String prompt) {
+            binding.gatewayList.setVisibility(View.VISIBLE);
+            this.gateways.add(new Pair<>(gateway, prompt));
+            notifyDataSetChanged();
+        }
     }
 }

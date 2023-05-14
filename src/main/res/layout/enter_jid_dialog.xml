@@ -27,6 +27,12 @@
             android:layout_height="wrap_content"
             android:visibility="gone" />
 
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/gateway_list"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content" />
+
+
         <com.google.android.material.textfield.TextInputLayout
             android:id="@+id/jid_layout"
             style="@style/Widget.Conversations.TextInputLayout.OutlinedBox"
