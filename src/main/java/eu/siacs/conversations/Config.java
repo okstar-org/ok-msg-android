@@ -216,8 +216,6 @@ public final class Config {
                 "cheogram.com",
                 "aria-net.org",
                 "matrix.org",
-                "monocles.de",
-                "monocles.eu",
                 "*.covid.monal.im"
         );
 
