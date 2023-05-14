@@ -154,6 +154,8 @@ public class EnterJidDialog extends DialogFragment implements OnBackendConnected
         }
         binding.gatewayList.setLayoutManager(new LinearLayoutManager(getActivity(), LinearLayoutManager.HORIZONTAL, false));
         binding.gatewayList.setAdapter(gatewayListAdapter);
+        gatewayListAdapter.setOnEmpty(() -> binding.gatewayList.setVisibility(View.GONE));
+        gatewayListAdapter.setOnNonEmpty(() -> binding.gatewayList.setVisibility(View.VISIBLE));
 
         binding.account.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
@@ -408,7 +410,8 @@ public class EnterJidDialog extends DialogFragment implements OnBackendConnected
 
         protected List<Pair<Contact,String>> gateways = new ArrayList();
         protected int selected = 0;
-
+        protected Runnable onEmpty = () -> {};
+        protected Runnable onNonEmpty = () -> {};
         @Override
         public ViewHolder onCreateViewHolder(ViewGroup viewGroup, int i) {
             View view = LayoutInflater.from(viewGroup.getContext()).inflate(R.layout.enter_jid_dialog_gateway_list_item, null);
@@ -420,11 +423,7 @@ public class EnterJidDialog extends DialogFragment implements OnBackendConnected
             viewHolder.setIndex(i);
 
             if(i == 0) {
-                if(getItemCount() < 2) {
-                    binding.gatewayList.setVisibility(View.GONE);
-                } else {
-                    viewHolder.useButton(R.string.account_settings_jabber_id);
-                }
+                viewHolder.useButton(R.string.account_settings_jabber_id);
             } else {
                 viewHolder.useButton(getLabel(i));
             }
@@ -528,14 +527,23 @@ public class EnterJidDialog extends DialogFragment implements OnBackendConnected
             return presence == null ? null : new Pair(gateway.second, presence);
         }
 
+        public void setOnEmpty(Runnable r) {
+            onEmpty = r;
+        }
+
+        public void setOnNonEmpty(Runnable r) {
+            onNonEmpty = r;
+        }
+
         public void clear() {
-            this.gateways.clear();
+            gateways.clear();
+            onEmpty.run();
             notifyDataSetChanged();
             setSelected(0);
         }
 
         public void add(Contact gateway, String prompt) {
-            binding.gatewayList.setVisibility(View.VISIBLE);
+            if (getItemCount() < 2) onNonEmpty.run();
             this.gateways.add(new Pair<>(gateway, prompt));
             Collections.sort(this.gateways, (x, y) -> getLabel(x.first).compareTo(getLabel(y.first)));
             notifyDataSetChanged();
