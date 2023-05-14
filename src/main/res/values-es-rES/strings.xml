@@ -475,9 +475,7 @@
     <string name="pref_away_when_screen_off">Ausente cuando el dispositivo está bloqueado</string>
     <string name="pref_away_when_screen_off_summary">Marca tu recurso como ausente cuando el dispositivo está bloqueado</string>
     <string name="pref_dnd_on_silent_mode">\"No molestar\" en modo silencio</string>
-    <string name="update_info">monocles chat está descargando e instalando la nueva versión automáticamente.
-\n
-\nPor favor, espere…</string>
+    <string name="update_info">monocles chat está descargando e instalando la nueva versión automáticamente.\n\nPor favor, espere…</string>
     <string name="pref_dnd_on_silent_mode_summary">Cambia tu estado a \"no molestar\" cuando el dispositivo está en modo silencio</string>
     <string name="pref_treat_vibrate_as_silent">Modo vibración como modo silencio</string>
     <string name="pref_treat_vibrate_as_dnd_summary">Cambia tu estado a \"no molestar\" cuando el dispositivo está en modo vibración</string>
@@ -512,11 +510,7 @@
     <string name="load_more_messages">Cargar más mensajes</string>
     <string name="no_storage_permission">monocles chat necesita acceso al almacenamiento externo</string>
     <string name="sync_with_contacts">Sincronizar contactos</string>
-    <string name="sync_with_contacts_long">monocles chat quiere cruzar tu lista de contactos de XMPP con tus contactos del móvil para mostrar sus nombres completos y sus fotos de perfil.
-\n
-\nmonocles chat solo leerá tus contactos y los cruzará localmente sin subirlos a tu servidor.
-\n
-\nEl sistema te preguntará ahora para conceder los permisos de acceso a tus contactos del móvil.</string>
+    <string name="sync_with_contacts_long">monocles chat quiere cruzar tu lista de contactos de XMPP con tus contactos del móvil para mostrar sus nombres completos y sus fotos de perfil.\n\nmonocles chat solo leerá tus contactos y los cruzará localmente sin subirlos a tu servidor.\n\nEl sistema te preguntará ahora para conceder los permisos de acceso a tus contactos del móvil.</string>
     <string name="notify_on_all_messages">Notificar para todos los mensajes</string>
     <string name="notify_only_when_highlighted">Notificar solo cuando eres mencionado</string>
     <string name="notify_never">Notificaciones deshabilitadas</string>
@@ -533,15 +527,10 @@
     <string name="always">Siempre</string>
     <string name="always_off">Siempre desactivado</string>
     <string name="battery_optimizations_enabled">Optimizaciones de uso de batería habilitadas</string>
-    <string name="battery_optimizations_enabled_explained">Tu dispositivo está realizando optimizaciones de uso de batería en monocles chat que pueden hacer que los mensajes se retrasen o incluso hacer que se pierdan.
-\nEs recomendable deshabilitarlas.</string>
-    <string name="battery_optimizations_enabled_dialog">El dispositivo está realizando importantes optimizaciones de la batería en monocles chat lo que podría generar retraso en las notificaciones o incluso pérdida de mensajes
-\n
-\n Se le consultará ahora para desactivarlas.</string>
+    <string name="battery_optimizations_enabled_explained">Tu dispositivo está realizando optimizaciones de uso de batería en monocles chat que pueden hacer que los mensajes se retrasen o incluso hacer que se pierdan.\nEs recomendable deshabilitarlas.</string>
+    <string name="battery_optimizations_enabled_dialog">El dispositivo está realizando importantes optimizaciones de la batería en monocles chat lo que podría generar retraso en las notificaciones o incluso pérdida de mensajes\n\n Se le consultará ahora para desactivarlas.</string>
     <string name="install_from_unknown_sources_disabled">Instalación desde orígenes desconocidos desactivada</string>
-    <string name="install_from_unknown_sources_disabled_dialog">El dispositivo está configurado para no permitir la instalación de aplicaciones desde orígenes desconocidos, salvo desde Google PlayStore.
-\n
-\nAhora se le pedirá que permita la instalación de aplicaciones desde orígenes desconocidos.</string>
+    <string name="install_from_unknown_sources_disabled_dialog">El dispositivo está configurado para no permitir la instalación de aplicaciones desde orígenes desconocidos, salvo desde Google PlayStore.\n\nAhora se le pedirá que permita la instalación de aplicaciones desde orígenes desconocidos.</string>
     <string name="disable">Deshabilitar</string>
     <string name="cancel_update">¿Cancelar actualización\?</string>
     <string name="yes">Sí</string>
@@ -551,9 +540,7 @@
     <string name="correct_message">Corregir mensaje</string>
     <string name="send_corrected_message">Enviar mensaje corregido</string>
     <string name="no_keys_just_confirm">Ya confías en este contacto. Seleccionando \'hecho\', estás confirmando que %s es parte de este grupo.</string>
-    <string name="contacts_have_no_pgp_keys">monocles chat no ha podido cifrar tus mensajes porque tus contactos no están anunciando sus claves públicas.
-\n
-\n</string>
+    <string name="contacts_have_no_pgp_keys">monocles chat no ha podido cifrar tus mensajes porque tus contactos no están anunciando sus claves públicas.\n\n</string>
     <string name="this_account_is_disabled">Has deshabilitado esta cuenta</string>
     <string name="no_application_to_share_uri">No se ha encontrado ninguna aplicación para compartir la URI</string>
     <string name="share_uri_with">Compartir URI con…</string>
@@ -1084,8 +1071,6 @@
     <string name="gp_medium">Medio</string>
     <string name="gp_long">Largo</string>
     <string translatable="false" name="x_user_quote">%s:</string>
-    <string name="create_monocles_account"><a href="https://ocean.monocles.eu/apps/registration/">¡Consigue una cuenta monocles!</a></string>
-    <string name="monocles_account_introduction">¡Puedes usar monocles chat con cualquier cuenta de XMPP u obtener una cuenta segura y asequible en monocles, alojada en el servidor de monocles alimentado con energía renovable!</string>
     <string name="copy_file_to">Copiar fichero a %s</string>
     <string name="pref_notification_grace_period">Periodo de gracia</string>
     <string name="pref_notification_grace_period_summary">Periodo de tiempo en el que se silencian las notificaciones después de detectar actividad en uno de tus otros dispositivos.</string>
@@ -1218,6 +1203,7 @@
 \nTu equipo de monocles chat</string>
     <string name="updated_to_monocles_google">Tenemos que disculparnos porque no pudimos actualizar directamente a monocles chat. En el siguiente enlace, recibirás instrucciones sobre cómo transferir todos tus perfiles de Monocles Messenger a monocles chat. Al hacer clic en mover datos, intentamos mover todos los archivos enviados y recibidos desde Monocles Messenger a monocles chat. Después de una migración exitosa, recuerda eliminar Monocles Messenger de su dispositivo.</string>
     <string name="link">Enlace</string>
+    <string name="create_monocles_account"><a href="https://ocean.monocles.eu/apps/registration/">Inscribete</a></string>
     <string name="no_application_found">No se encontró aplicación</string>
     <string name="move_data">Mover datos</string>
     <string name="error_moving_data">Se ha producido un error moviendo tus antiguos datos. Por favor, muévelos manualmente.</string>
@@ -1359,5 +1345,7 @@
     <string name="outgoing_call_timestamp">Llamada saliente · %s</string>
     <string name="note_to_self">Nota para mi</string>
     <string name="retract_message">Retractar mensaje</string>
-    <string name="reply_to"></string>
+    <string name="reply_to">Responder a</string>
+    <string name="or_use_another">... o escoger otro a continación</string>
+    <string name="monocles_account_introduction">¡Puedes usar monocles chat con cualquier cuenta de XMPP u <b>obtener una cuenta segura y asequible en monocles, alojada en el servidor de monocles alimentado con energía renovable!</b></string>
 </resources>
