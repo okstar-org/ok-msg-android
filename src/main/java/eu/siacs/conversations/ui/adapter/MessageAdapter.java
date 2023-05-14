@@ -643,7 +643,7 @@ public class MessageAdapter extends ArrayAdapter<Message> {
         viewHolder.richlinkview.setVisibility(View.GONE);
         viewHolder.transfer.setVisibility(View.GONE);
         viewHolder.audioPlayer.setVisibility(View.GONE);
-        viewHolder.messageBody.setVisibility(View.VISIBLE);
+        viewHolder.messageBody.setVisibility(View.GONE);
         if (darkBackground) {
             viewHolder.messageBody.setTextAppearance(getContext(), R.style.TextAppearance_Conversations_Body1_OnDark);
         } else {
@@ -651,7 +651,8 @@ public class MessageAdapter extends ArrayAdapter<Message> {
         }
         viewHolder.messageBody.setHighlightColor(darkBackground ? type == SENT ? StyledAttributes.getColor(activity, R.attr.colorAccent) : StyledAttributes.getColor(activity, R.attr.colorAccent) : StyledAttributes.getColor(activity, R.attr.colorAccent));
         viewHolder.messageBody.setTypeface(null, Typeface.NORMAL);
-        if (message.getBody() != null) {
+        if (message.getBody() != null && !message.getBody().equals("")) {
+            viewHolder.messageBody.setVisibility(View.VISIBLE);
             final SpannableString nick = UIHelper.getColoredUsername(activity.xmppConnectionService, message);
             SpannableStringBuilder body = new SpannableStringBuilder(replaceYoutube(activity.getApplicationContext(), message.getMergedBody()));
             if (message.getBody().equals(DELETED_MESSAGE_BODY)) {
