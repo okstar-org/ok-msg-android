@@ -151,6 +151,34 @@ public class EnterJidDialog extends DialogFragment implements OnBackendConnected
         binding.gatewayList.setLayoutManager(new LinearLayoutManager(getActivity(), LinearLayoutManager.HORIZONTAL, false));
         binding.gatewayList.setAdapter(gatewayListAdapter);
 
+        binding.account.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView accountSpinner, View view, int position, long id) {
+                XmppActivity context = (XmppActivity) getActivity();
+                if (context.xmppConnectionService == null || accountJid() == null) return;
+
+                gatewayListAdapter.clear();
+                final Account account = context.xmppConnectionService.findAccountByJid(accountJid());
+
+                for (final Contact contact : account.getRoster().getContacts()) {
+                    if (contact.showInRoster() && (contact.getPresences().anyIdentity("gateway", null) || contact.getPresences().anySupport("jabber:iq:gateway"))) {
+                        context.xmppConnectionService.fetchGatewayPrompt(account, contact.getJid(), (final String prompt, String errorMessage) -> {
+                            if (prompt == null) return;
+
+                            context.runOnUiThread(() -> {
+                                gatewayListAdapter.add(contact, prompt);
+                            });
+                        });
+                    }
+                }
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView accountSpinner) {
+                gatewayListAdapter.clear();
+            }
+        });
+
         builder.setView(binding.getRoot());
         builder.setNegativeButton(R.string.cancel, null);
         builder.setPositiveButton(getArguments().getString(POSITIVE_BUTTON_KEY), null);
@@ -170,20 +198,23 @@ public class EnterJidDialog extends DialogFragment implements OnBackendConnected
         return dialog;
     }
 
+    protected Jid accountJid() {
+        try {
+            if (Config.DOMAIN_LOCK != null) {
+                return Jid.ofEscaped((String) binding.account.getSelectedItem(), Config.DOMAIN_LOCK, null);
+            } else {
+                return Jid.ofEscaped((String) binding.account.getSelectedItem());
+            }
+        } catch (final IllegalArgumentException e) {
+            return null;
+        }
+    }
+
     private void handleEnter(EnterJidDialogBinding binding, String account) {
-        final Jid accountJid;
         if (!binding.account.isEnabled() && account == null) {
             return;
         }
-        try {
-            if (Config.DOMAIN_LOCK != null) {
-                accountJid = Jid.ofEscaped((String) binding.account.getSelectedItem(), Config.DOMAIN_LOCK, null);
-            } else {
-                accountJid = Jid.ofEscaped((String) binding.account.getSelectedItem());
-            }
-        } catch (final IllegalArgumentException e) {
-            return;
-        }
+        final Jid accountJid = accountJid();
         final Jid contactJid;
         try {
             contactJid = Jid.ofEscaped(binding.jid.getText().toString().trim());
@@ -375,7 +406,15 @@ public class EnterJidDialog extends DialogFragment implements OnBackendConnected
                 binding.jidLayout.setHint(R.string.account_settings_jabber_id);
             } else {
                 binding.jid.setThreshold(999999); // do not autocomplete
-                binding.jid.setInputType(InputType.TYPE_CLASS_TEXT);
+
+                String type = getType(i);
+                if (type.equals("pstn") || type.equals("sms")) {
+                    binding.jid.setInputType(InputType.TYPE_CLASS_PHONE);
+                } else if (type.equals("email") || type.equals("sip")) {
+                    binding.jid.setInputType(InputType.TYPE_CLASS_TEXT | InputType.TYPE_TEXT_VARIATION_EMAIL_ADDRESS);
+                } else {
+                    binding.jid.setInputType(InputType.TYPE_CLASS_TEXT | InputType.TYPE_TEXT_FLAG_NO_SUGGESTIONS);
+                }
                 binding.jidLayout.setHint(this.gateways.get(i-1).second);
                 binding.jid.setHint(null);
                 binding.jid.setOnFocusChangeListener((v, hasFocus) -> {});
@@ -388,6 +427,15 @@ public class EnterJidDialog extends DialogFragment implements OnBackendConnected
         public String getLabel(int i) {
             if (i == 0) return null;
 
+            String type = getType(i);
+            if (type != null) return type;
+
+            return gateways.get(i-1).first.getDisplayName();
+        }
+
+        public String getType(int i) {
+            if (i == 0) return null;
+
             for(Presence p : this.gateways.get(i-1).first.getPresences().getPresences()) {
                 ServiceDiscoveryResult.Identity id;
                 if(p.getServiceDiscoveryResult() != null && (id = p.getServiceDiscoveryResult().getIdentity("gateway", null)) != null) {
@@ -395,11 +443,7 @@ public class EnterJidDialog extends DialogFragment implements OnBackendConnected
                 }
             }
 
-            return gateways.get(i-1).first.getDisplayName();
-        }
-
-        public String getSelectedLabel() {
-            return getLabel(selected);
+            return null;
         }
 
         public Pair<String, Pair<Jid,Presence>> getSelected() {
