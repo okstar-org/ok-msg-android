@@ -835,9 +835,9 @@ public class EditAccountActivity extends OmemoActivity implements OnAccountUpdat
             }
         }
         SharedPreferences preferences = getPreferences();
-        mUseTor = QuickConversationsService.isConversations() && preferences.getBoolean("use_tor", getResources().getBoolean(R.bool.use_tor));
+        mUseTor = preferences.getBoolean("use_tor", getResources().getBoolean(R.bool.use_tor));
         mUseI2P = QuickConversationsService.isConversations() && preferences.getBoolean("use_i2p", getResources().getBoolean(R.bool.use_i2p));
-        this.mShowOptions = mUseTor || mUseI2P || (QuickConversationsService.isConversations() && preferences.getBoolean("show_connection_options", getResources().getBoolean(R.bool.show_connection_options)));
+        this.mShowOptions = mUseTor || mUseI2P || (preferences.getBoolean("show_connection_options", getResources().getBoolean(R.bool.show_connection_options)));
         this.binding.namePort.setVisibility(mShowOptions ? View.VISIBLE : View.GONE);
         if (mForceRegister != null) {
             this.binding.accountRegisterNew.setVisibility(View.GONE);

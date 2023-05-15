@@ -4781,15 +4781,15 @@ public class XmppConnectionService extends Service {
     }
 
     public boolean useTorToConnect() {
-        return QuickConversationsService.isConversations() && getBooleanPreference("use_tor", R.bool.use_tor);
+        return getBooleanPreference("use_tor", R.bool.use_tor);
     }
 
     public boolean useI2PToConnect() {
-        return QuickConversationsService.isConversations() && getBooleanPreference("use_i2p", R.bool.use_i2p);
+        return getBooleanPreference("use_i2p", R.bool.use_i2p);
     }
 
     public boolean showExtendedConnectionOptions() {
-        return QuickConversationsService.isConversations() && getBooleanPreference("show_connection_options", R.bool.show_connection_options);
+        return getBooleanPreference("show_connection_options", R.bool.show_connection_options);
     }
 
     public boolean warnUnecryptedChat() {
