@@ -69,6 +69,7 @@
         </intent>
         <!-- OpenKeyChain -->
         <package android:name="org.sufficientlysecure.keychain" />
+        <!-- Orbot -->
         <package android:name="org.torproject.android" />
 
         <intent>
