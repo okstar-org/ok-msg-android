@@ -232,7 +232,8 @@ public class WebRTCWrapper {
             PeerConnectionFactory.initialize(
                     PeerConnectionFactory.InitializationOptions.builder(service)
                             .setFieldTrials("WebRTC-BindUsingInterfaceName/Enabled/")
-                            .createInitializationOptions());
+                            .createInitializationOptions()
+            );
         } catch (final UnsatisfiedLinkError e) {
             throw new InitializationException("Unable to initialize PeerConnectionFactory", e);
         }

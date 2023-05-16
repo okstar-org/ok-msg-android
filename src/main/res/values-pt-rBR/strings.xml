@@ -1334,12 +1334,4 @@
 \nVocê pode usar as ferramentas diretamente enquanto digita, pressionando uma ferramenta irá inserir a chave na posição do cursor. Ou você pode marcar uma palavra ou um grupo de palavras e pressionar um botão de formatação.</string>
     <string name="pref_channel_discovery_summary">A maioria dos usuários deve escolher ‘jabber.network’ para melhores sugestões de todo o ecossistema público do XMPP.</string>
     <string name="pref_notification_grace_period_summary">O período de tempo em que as notificações são silenciadas após a detecção de atividade em um de seus outros dispositivos.</string>
-    <string name="server_info_external_service_discovery"></string>
-    <string name="updated_to_monocles"></string>
-    <string name="port_example" translatable="false"></string>
-    <string translatable="false" name="x_user_quote"></string>
-    <string name="intro_desc_start_chatting2"></string>
-    <string name="jabber_network"></string>
-    <string name="conversations_foreground_service" translatable="false"></string>
-    <string name="server_info_adhoc_invite"></string>
 </resources>

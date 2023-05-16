@@ -578,11 +578,11 @@ public abstract class XmppActivity extends ActionBarActivity {
     }
 
     private boolean useTor() {
-        return QuickConversationsService.isConversations() && getBooleanPreference("use_tor", R.bool.use_tor);
+        return getBooleanPreference("use_tor", R.bool.use_tor);
     }
 
     private boolean useI2P() {
-        return QuickConversationsService.isConversations() && getBooleanPreference("use_i2p", R.bool.use_i2p);
+        return getBooleanPreference("use_i2p", R.bool.use_i2p);
     }
 
     public SharedPreferences getPreferences() {

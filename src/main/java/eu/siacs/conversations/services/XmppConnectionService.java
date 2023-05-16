@@ -16,8 +16,8 @@ import static eu.siacs.conversations.ui.SettingsActivity.USE_INNER_STORAGE;
 import static eu.siacs.conversations.utils.RichPreview.RICH_LINK_METADATA;
 import static eu.siacs.conversations.utils.Random.SECURE_RANDOM;
 import static eu.siacs.conversations.utils.StorageHelper.getAppMediaDirectory;
-import android.content.res.Resources;
-import android.os.Handler;
+import eu.siacs.conversations.xmpp.OnGatewayResult;
+
 import static eu.siacs.conversations.utils.Compatibility.s;
 import android.Manifest;
 import androidx.annotation.RequiresApi;
@@ -90,9 +90,7 @@ import org.openintents.openpgp.IOpenPgpService2;
 import org.openintents.openpgp.util.OpenPgpApi;
 import org.openintents.openpgp.util.OpenPgpServiceConnection;
 import com.google.common.base.Optional;
-import java.text.ParseException;
-import eu.siacs.conversations.persistance.UnifiedPushDatabase;
-import eu.siacs.conversations.utils.AccountUtils;
+
 import eu.siacs.conversations.utils.Emoticons;
 
 import java.io.File;
@@ -187,7 +185,6 @@ import eu.siacs.conversations.utils.WakeLockHelper;
 import eu.siacs.conversations.utils.XmppUri;
 import eu.siacs.conversations.xml.Element;
 import eu.siacs.conversations.xml.LocalizedContent;
-import eu.siacs.conversations.xmpp.Jid;
 import eu.siacs.conversations.xmpp.OnBindListener;
 import eu.siacs.conversations.xmpp.OnContactStatusChanged;
 import eu.siacs.conversations.xmpp.OnIqPacketReceived;
@@ -4784,15 +4781,15 @@ public class XmppConnectionService extends Service {
     }
 
     public boolean useTorToConnect() {
-        return QuickConversationsService.isConversations() && getBooleanPreference("use_tor", R.bool.use_tor);
+        return getBooleanPreference("use_tor", R.bool.use_tor);
     }
 
     public boolean useI2PToConnect() {
-        return QuickConversationsService.isConversations() && getBooleanPreference("use_i2p", R.bool.use_i2p);
+        return getBooleanPreference("use_i2p", R.bool.use_i2p);
     }
 
     public boolean showExtendedConnectionOptions() {
-        return QuickConversationsService.isConversations() && getBooleanPreference("show_connection_options", R.bool.show_connection_options);
+        return getBooleanPreference("show_connection_options", R.bool.show_connection_options);
     }
 
     public boolean warnUnecryptedChat() {
@@ -5376,6 +5373,23 @@ public class XmppConnectionService extends Service {
             }
             return result;
         }
+    }
+    public void fetchFromGateway(Account account, final Jid jid, final String input, final OnGatewayResult callback) {
+        IqPacket request = new IqPacket(input == null ? IqPacket.TYPE.GET : IqPacket.TYPE.SET);
+        request.setTo(jid);
+        Element query = request.query("jabber:iq:gateway");
+        if (input != null) {
+            Element prompt = query.addChild("prompt");
+            prompt.setContent(input);
+        }
+        sendIqPacket(account, request, (Account acct, IqPacket packet) -> {
+            if (packet.getType() == IqPacket.TYPE.RESULT) {
+                callback.onGatewayResult(packet.query().findChildContent(input == null ? "prompt" : "jid"), null);
+            } else {
+                Element error = packet.findChild("error");
+                callback.onGatewayResult(null, error == null ? null : error.findChildContent("text"));
+            }
+        });
     }
 
     public void fetchCaps(Account account, final Jid jid, final Presence presence) {

@@ -154,6 +154,7 @@ public class JingleFileTransferConnection extends AbstractJingleConnection imple
                 if (message.getEncryption() == Message.ENCRYPTION_PGP || message.getEncryption() == Message.ENCRYPTION_DECRYPTED) {
                     file.delete();
                 }
+                disconnectSocks5Connections();
             }
             Log.d(Config.LOGTAG, "successfully transmitted file:" + file.getAbsolutePath() + " (" + CryptoHelper.bytesToHex(file.getSha1Sum()) + ")");
             if (message.getEncryption() != Message.ENCRYPTION_PGP) {
@@ -536,7 +537,9 @@ public class JingleFileTransferConnection extends AbstractJingleConnection imple
                     xmppConnectionService.getFileBackend().setupRelativeFilePath(message, filename);
                 }
                 long size = parseLong(fileSize, 0);
-                message.setBody(Long.toString(size));
+                Message.FileParams fp = new Message.FileParams();
+                fp.size = new Long(size);
+                message.setFileParams(fp);
                 conversation.add(message);
                 jingleConnectionManager.updateConversationUi(true);
                 this.file = this.xmppConnectionService.getFileBackend().getFile(message, false);
@@ -551,7 +554,6 @@ public class JingleFileTransferConnection extends AbstractJingleConnection imple
                         Log.d(Config.LOGTAG, "could not process KeyTransportMessage");
                     }
                 }
-                message.resetFileParams();
                 //legacy OMEMO encrypted file transfers reported the file size after encryption
                 //JET reports the plain text size. however lower levels of our receiving code still
                 //expect the cipher text size. so we just + 16 bytes (auth tag size) here
@@ -615,7 +617,6 @@ public class JingleFileTransferConnection extends AbstractJingleConnection imple
             content.addChild(security);
         }
         content.setDescription(this.description);
-        message.resetFileParams();
         try {
             this.mFileInputStream = new FileInputStream(file);
         } catch (FileNotFoundException e) {

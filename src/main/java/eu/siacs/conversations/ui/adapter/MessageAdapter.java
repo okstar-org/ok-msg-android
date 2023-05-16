@@ -1,6 +1,8 @@
 package eu.siacs.conversations.ui.adapter;
 
 import de.monocles.chat.BobTransfer;
+import eu.siacs.conversations.entities.Contact;
+import eu.siacs.conversations.entities.Roster;
 import eu.siacs.conversations.ui.widget.ClickableMovementMethod;
 import io.ipfs.cid.Cid;
 import me.saket.bettermovementmethod.BetterLinkMovementMethod;
@@ -643,7 +645,7 @@ public class MessageAdapter extends ArrayAdapter<Message> {
         viewHolder.richlinkview.setVisibility(View.GONE);
         viewHolder.transfer.setVisibility(View.GONE);
         viewHolder.audioPlayer.setVisibility(View.GONE);
-        viewHolder.messageBody.setVisibility(View.VISIBLE);
+        viewHolder.messageBody.setVisibility(View.GONE);
         if (darkBackground) {
             viewHolder.messageBody.setTextAppearance(getContext(), R.style.TextAppearance_Conversations_Body1_OnDark);
         } else {
@@ -651,7 +653,8 @@ public class MessageAdapter extends ArrayAdapter<Message> {
         }
         viewHolder.messageBody.setHighlightColor(darkBackground ? type == SENT ? StyledAttributes.getColor(activity, R.attr.colorAccent) : StyledAttributes.getColor(activity, R.attr.colorAccent) : StyledAttributes.getColor(activity, R.attr.colorAccent));
         viewHolder.messageBody.setTypeface(null, Typeface.NORMAL);
-        if (message.getBody() != null) {
+        if (message.getBody() != null && !message.getBody().equals("")) {
+            viewHolder.messageBody.setVisibility(View.VISIBLE);
             final SpannableString nick = UIHelper.getColoredUsername(activity.xmppConnectionService, message);
             SpannableStringBuilder body = new SpannableStringBuilder(replaceYoutube(activity.getApplicationContext(), message.getMergedBody()));
             if (message.getBody().equals(DELETED_MESSAGE_BODY)) {
@@ -731,6 +734,20 @@ public class MessageAdapter extends ArrayAdapter<Message> {
                 displayRichLinkMessage(viewHolder, message, darkBackground);
             }
             MyLinkify.addLinks(body, message.getConversation().getAccount(), message.getConversation().getJid());
+            Roster roster = message.getConversation().getAccount().getRoster();
+            for (final URLSpan urlspan : body.getSpans(0, body.length() - 1, URLSpan.class)) {
+                Uri uri = Uri.parse(urlspan.getURL());
+                if ("xmpp".equals(uri.getScheme())) {
+                    try {
+                        Contact contact = roster.getContact(Jid.of(uri.getSchemeSpecificPart()));
+                        body.replace(
+                                body.getSpanStart(urlspan),
+                                body.getSpanEnd(urlspan),
+                                contact.getDisplayName()
+                        );
+                    } catch (final IllegalArgumentException e) { /* bad JID */ }
+                }
+            }
             viewHolder.messageBody.setText(body);
             viewHolder.messageBody.setAutoLinkMask(0);
             BetterLinkMovementMethod method = new BetterLinkMovementMethod() {
