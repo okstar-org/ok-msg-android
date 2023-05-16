@@ -829,6 +829,18 @@ public class NotificationService {
             builder.setContentTitle(mXmppConnectionService.getString(R.string.rtp_state_incoming_call));
         }
         final Contact contact = id.getContact();
+        builder.addPerson(getPerson(contact));
+        ShortcutInfoCompat info = null;
+        if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.M) {
+            info = mXmppConnectionService.getShortcutService().getShortcutInfoCompat(contact);
+        }
+        builder.setShortcutInfo(info);
+        if (Build.VERSION.SDK_INT >= 30) {
+            mXmppConnectionService.getSystemService(ShortcutManager.class).pushDynamicShortcut(info.toShortcutInfo());
+        }
+        if (mXmppConnectionService.getAccounts().size() > 1) {
+            builder.setSubText(contact.getAccount().getJid().asBareJid().toString());
+        }
         builder.setLargeIcon(mXmppConnectionService.getAvatarService().get(
                 contact,
                 AvatarService.getSystemUiAvatarSize(mXmppConnectionService))
@@ -1272,6 +1284,9 @@ public class NotificationService {
                                 info.getNumberOfCalls(),
                                 info.getNumberOfCalls());
         builder.setContentTitle(title);
+        if (mXmppConnectionService.getAccounts().size() > 1) {
+            builder.setSubText(conversation.getAccount().getJid().asBareJid().toString());
+        }
         final String name = conversation.getContact().getDisplayName();
         if (publicVersion) {
             builder.setTicker(title);
@@ -1542,6 +1557,33 @@ public class NotificationService {
                 }
             }
             builder.setIcon(IconCompat.createWithBitmap(mXmppConnectionService.getAvatarService().get(message, AvatarService.getSystemUiAvatarSize(mXmppConnectionService), false)));
+        }
+        return builder.build();
+    }
+
+    private Person getPerson(Contact contact) {
+        final Person.Builder builder = new Person.Builder();
+        builder.setName(contact.getDisplayName());
+        final Uri uri = contact.getSystemAccount();
+        if (uri != null) {
+            builder.setUri(uri.toString());
+        }
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.P) {
+            final Jid jid = contact.getJid();
+            builder.setKey(jid.toString());
+            final Conversation c = mXmppConnectionService.find(contact.getAccount(), jid);
+            if (c != null) {
+                builder.setImportant(c.getBooleanAttribute(Conversation.ATTRIBUTE_PINNED_ON_TOP, false));
+            }
+            builder.setIcon(
+                    IconCompat.createWithBitmap(
+                            mXmppConnectionService
+                                    .getAvatarService()
+                                    .get(
+                                            contact,
+                                            AvatarService.getSystemUiAvatarSize(
+                                                    mXmppConnectionService),
+                                            false)));
         }
         return builder.build();
     }
