@@ -1265,4 +1265,5 @@
     <string name="monocles_account_introduction">You can use monocles chat with every modern XMPP account or <b>get an affordable and secure monocles account, powered with regenerative energies!</b></string>
     <string name="add_anway">Add anyway</string>
     <string name="receiving_x_file">Receiving %1$s (%2$d%% completed)</string>
+    <string name="refresh_feature_discovery">Refresh Feature Discovery</string>
 </resources>
