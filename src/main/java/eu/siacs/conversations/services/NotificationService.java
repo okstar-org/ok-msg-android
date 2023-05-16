@@ -1493,6 +1493,9 @@ public class NotificationService {
             mBuilder.setSmallIcon(R.drawable.ic_notification);
             mBuilder.setDeleteIntent(createDeleteIntent(conversation));
             mBuilder.setContentIntent(createContentIntent(conversation));
+            if (mXmppConnectionService.getAccounts().size() > 1) {
+                mBuilder.setSubText(conversation.getAccount().getJid().asBareJid().toString());
+            }
 
             ShortcutInfoCompat info = null;
             if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.M) {
