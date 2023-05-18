@@ -25,6 +25,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.content.ServiceConnection;
+import android.graphics.drawable.Icon;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.IBinder;
@@ -36,6 +37,7 @@ import com.intentfilter.androidpermissions.models.DeniedPermissions;
 
 import eu.siacs.conversations.entities.Account;
 import eu.siacs.conversations.services.AppRTCAudioManager;
+import eu.siacs.conversations.services.AvatarService;
 import eu.siacs.conversations.services.XmppConnectionService.XmppConnectionBinder;
 import eu.siacs.conversations.services.XmppConnectionService;
 import eu.siacs.conversations.ui.RtpSessionActivity;
@@ -124,19 +126,10 @@ public class ConnectionService extends android.telecom.ConnectionService {
             }
         });
 
+        connection.setInitializing();
         connection.setAddress(
                 Uri.fromParts("tel", tel, null), // Normalized tel as tel: URI
                 TelecomManager.PRESENTATION_ALLOWED
-        );
-        connection.setCallerDisplayName(
-                account.getDisplayName(),
-                TelecomManager.PRESENTATION_ALLOWED
-        );
-        connection.setAudioModeIsVoip(true);
-        connection.setRingbackRequested(true);
-        connection.setDialing();
-        connection.setConnectionCapabilities(
-                Connection.CAPABILITY_CAN_SEND_RESPONSE_VIA_CONNECTION
         );
 
         xmppConnectionService.setOnRtpConnectionUpdateListener(
@@ -151,6 +144,7 @@ public class ConnectionService extends android.telecom.ConnectionService {
         protected Jid with;
         protected String sessionId = null;
         protected Stack<String> postDial = new Stack();
+        protected Icon gatewayIcon;
         protected WeakReference<JingleRtpConnection> rtpConnection = null;
 
         CheogramConnection(Account account, Jid with, String postDialString) {
@@ -158,11 +152,26 @@ public class ConnectionService extends android.telecom.ConnectionService {
             this.account = account;
             this.with = with;
 
+            gatewayIcon = Icon.createWithBitmap(xmppConnectionService.getAvatarService().get(
+                    account.getRoster().getContact(Jid.of(with.getDomain())),
+                    AvatarService.getSystemUiAvatarSize(xmppConnectionService),
+                    false
+            ));
+
             if (postDialString != null) {
                 for (int i = postDialString.length() - 1; i >= 0; i--) {
                     postDial.push("" + postDialString.charAt(i));
                 }
             }
+
+            setCallerDisplayName(
+                    account.getDisplayName(),
+                    TelecomManager.PRESENTATION_ALLOWED
+            );
+            setAudioModeIsVoip(true);
+            setConnectionCapabilities(
+                    Connection.CAPABILITY_CAN_SEND_RESPONSE_VIA_CONNECTION
+            );
         }
 
         public void setSessionId(final String sessionId) {
@@ -177,7 +186,13 @@ public class ConnectionService extends android.telecom.ConnectionService {
                 rtpConnection = xmppConnectionService.getJingleConnectionManager().findJingleRtpConnection(account, with, sessionId);
             }
 
-            if (state == RtpEndUserState.CONNECTED) {
+            setStatusHints(new StatusHints(null, gatewayIcon, null));
+
+            if (state == RtpEndUserState.FINDING_DEVICE) {
+                setInitialized();
+            } else if (state == RtpEndUserState.RINGING) {
+                setDialing();
+            } else if (state == RtpEndUserState.CONNECTED) {
                 xmppConnectionService.setDiallerIntegrationActive(true);
                 setActive();
 
