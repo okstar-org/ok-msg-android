@@ -158,6 +158,7 @@ public class Bookmark extends Element implements ListItem {
     @Override
     public List<Tag> getTags(Context context) {
         ArrayList<Tag> tags = new ArrayList<>();
+        tags.add(new Tag("Group", UIHelper.getColorForName("channel",true), 0, account, false));
         for (Element element : getChildren()) {
             if (element.getName().equals("group") && element.getContent() != null) {
                 String group = element.getContent();
