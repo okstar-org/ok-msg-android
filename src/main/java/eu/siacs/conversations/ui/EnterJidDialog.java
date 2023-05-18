@@ -17,7 +17,6 @@ import android.widget.AdapterView;
 import android.widget.TextView;
 import android.widget.ToggleButton;
 
-import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import java.util.Map;
 import eu.siacs.conversations.entities.Account;
@@ -49,6 +48,51 @@ import eu.siacs.conversations.ui.interfaces.OnBackendConnected;
 import eu.siacs.conversations.ui.util.DelayedHintHelper;
 import eu.siacs.conversations.xmpp.Jid;
 import eu.siacs.conversations.utils.PhoneNumberUtilWrapper;
+
+import android.app.Activity;
+import android.app.Dialog;
+import android.content.DialogInterface.OnClickListener;
+import android.content.DialogInterface;
+import android.os.Bundle;
+import android.text.Editable;
+import android.text.InputType;
+import android.text.TextWatcher;
+import android.util.Pair;
+import android.view.LayoutInflater;
+import android.view.View;
+import android.view.ViewGroup;
+import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
+import android.widget.TextView;
+import android.widget.ToggleButton;
+
+import androidx.annotation.NonNull;
+import androidx.appcompat.app.AlertDialog;
+import androidx.databinding.DataBindingUtil;
+import androidx.fragment.app.DialogFragment;
+import androidx.recyclerview.widget.RecyclerView;
+
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collection;
+import java.util.Collections;
+import java.util.List;
+import java.util.Map;
+import org.solovyev.android.views.llm.LinearLayoutManager;
+
+import eu.siacs.conversations.Config;
+import eu.siacs.conversations.R;
+import eu.siacs.conversations.databinding.EnterJidDialogBinding;
+import eu.siacs.conversations.services.XmppConnectionService;
+import eu.siacs.conversations.entities.Account;
+import eu.siacs.conversations.entities.Contact;
+import eu.siacs.conversations.entities.Presence;
+import eu.siacs.conversations.entities.ServiceDiscoveryResult;
+import eu.siacs.conversations.ui.adapter.KnownHostsAdapter;
+import eu.siacs.conversations.ui.interfaces.OnBackendConnected;
+import eu.siacs.conversations.ui.util.DelayedHintHelper;
+import eu.siacs.conversations.xmpp.Jid;
+import eu.siacs.conversations.xmpp.OnGatewayPromptResult;
 
 public class EnterJidDialog extends DialogFragment implements OnBackendConnected, TextWatcher {
 
@@ -152,8 +196,10 @@ public class EnterJidDialog extends DialogFragment implements OnBackendConnected
             adapter.setDropDownViewResource(R.layout.simple_list_item);
             binding.account.setAdapter(adapter);
         }
+
         binding.gatewayList.setLayoutManager(new LinearLayoutManager(getActivity(), LinearLayoutManager.HORIZONTAL, false));
         binding.gatewayList.setAdapter(gatewayListAdapter);
+
         gatewayListAdapter.setOnEmpty(() -> binding.gatewayList.setVisibility(View.GONE));
         gatewayListAdapter.setOnNonEmpty(() -> binding.gatewayList.setVisibility(View.VISIBLE));
 
