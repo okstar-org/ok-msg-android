@@ -26,6 +26,7 @@ import org.webrtc.EglBase;
 import org.webrtc.IceCandidate;
 import org.webrtc.PeerConnection;
 import org.webrtc.VideoTrack;
+import org.webrtc.DtmfSender;
 
 import java.util.Arrays;
 import java.util.Collection;
@@ -268,6 +269,10 @@ public class JingleRtpConnection extends AbstractJingleConnection
             transitionOrThrow(State.TERMINATED_CONNECTIVITY_ERROR);
             finish();
         }
+    }
+
+    public boolean applyDtmfTone(String tone) {
+        return webRTCWrapper.applyDtmfTone(tone);
     }
 
     private void receiveSessionTerminate(final JinglePacket jinglePacket) {

@@ -293,6 +293,9 @@ public class XmppConnectionService extends Service {
                 }
             }
         }
+        if (contact.getPresences().anyIdentity("gateway", "pstn")) {
+            contact.registerAsPhoneAccount(this);
+        }
     };
     private final PresenceGenerator mPresenceGenerator = new PresenceGenerator(this);
     private List<Account> accounts;
@@ -342,15 +345,22 @@ public class XmppConnectionService extends Service {
         }
     };
     private final AtomicBoolean isPhoneInCall = new AtomicBoolean(false);
+    private final AtomicBoolean diallerIntegrationActive = new AtomicBoolean(false);
     private final PhoneStateListener phoneStateListener = new PhoneStateListener() {
         @Override
         public void onCallStateChanged(final int state, final String phoneNumber) {
+            if (diallerIntegrationActive.get()) return;
             isPhoneInCall.set(state != TelephonyManager.CALL_STATE_IDLE);
             if (state == TelephonyManager.CALL_STATE_OFFHOOK) {
                 mJingleConnectionManager.notifyPhoneCallStarted();
             }
         }
     };
+
+    public void setDiallerIntegrationActive(boolean active) {
+        diallerIntegrationActive.set(active);
+    }
+
     //Ui callback listeners
     private final Set<OnConversationUpdate> mOnConversationUpdates = Collections.newSetFromMap(new WeakHashMap<OnConversationUpdate, Boolean>());
     private final Set<OnShowErrorToast> mOnShowErrorToasts = Collections.newSetFromMap(new WeakHashMap<OnShowErrorToast, Boolean>());
@@ -2419,6 +2429,7 @@ public class XmppConnectionService extends Service {
     }
 
     public void syncRoster(final Account account) {
+        unregisterPhoneAccounts(account);
         mRosterSyncTaskManager.execute(account, () -> databaseBackend.writeRoster(account.getRoster()));
     }
 
@@ -4047,6 +4058,15 @@ public class XmppConnectionService extends Service {
             }
         }
     }
+
+    protected void unregisterPhoneAccounts(final Account account) {
+        for (final Contact contact : account.getRoster().getContacts()) {
+            if (!contact.showInRoster()) {
+                contact.unregisterAsPhoneAccount(this);
+            }
+        }
+    }
+
 
     public void createContact(final Contact contact, final boolean autoGrant) {
         createContact(contact, autoGrant, null);

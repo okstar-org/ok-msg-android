@@ -18,6 +18,7 @@ import eu.siacs.conversations.xmpp.chatstate.ChatState;
 public final class Config {
 
     public static final long MILLISECONDS_IN_DAY = 24 * 60 * 60 * 1000;
+    public static final long CONTACT_SYNC_RETRY_INTERVAL = 1000L * 60 * 5;
 
     private static final int UNENCRYPTED = 1;
     private static final int OPENPGP = 2;

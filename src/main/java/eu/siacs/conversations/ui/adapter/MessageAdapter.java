@@ -19,6 +19,8 @@ import static eu.siacs.conversations.ui.util.MyLinkify.removeTrailingBracket;
 import static eu.siacs.conversations.ui.util.MyLinkify.replaceYoutube;
 import eu.siacs.conversations.ui.util.ShareUtil;
 import de.monocles.chat.SwipeDetector;
+import android.net.Uri;
+import android.text.style.URLSpan;
 
 import android.Manifest;
 import android.annotation.SuppressLint;
@@ -75,6 +77,9 @@ import java.util.Locale;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
+import eu.siacs.conversations.entities.Contact;
+import eu.siacs.conversations.entities.Message;
+import eu.siacs.conversations.entities.Roster;
 import eu.siacs.conversations.Config;
 import eu.siacs.conversations.R;
 import eu.siacs.conversations.crypto.axolotl.FingerprintStatus;

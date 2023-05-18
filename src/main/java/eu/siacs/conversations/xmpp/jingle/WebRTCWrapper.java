@@ -5,6 +5,7 @@ import android.os.Build;
 import android.os.Handler;
 import android.os.Looper;
 import android.util.Log;
+import android.media.ToneGenerator;
 
 import com.google.common.base.Optional;
 import com.google.common.base.Preconditions;
@@ -13,6 +14,7 @@ import com.google.common.util.concurrent.Futures;
 import com.google.common.util.concurrent.ListenableFuture;
 import com.google.common.util.concurrent.MoreExecutors;
 import com.google.common.util.concurrent.SettableFuture;
+import com.google.common.collect.ImmutableMap;
 
 import org.webrtc.AudioSource;
 import org.webrtc.AudioTrack;
@@ -34,11 +36,13 @@ import org.webrtc.SessionDescription;
 import org.webrtc.VideoTrack;
 import org.webrtc.audio.JavaAudioDeviceModule;
 import org.webrtc.voiceengine.WebRtcAudioEffects;
+import org.webrtc.DtmfSender;
 
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Queue;
 import java.util.Set;
+import java.util.Map;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.concurrent.atomic.AtomicBoolean;
@@ -75,6 +79,25 @@ public class WebRTCWrapper {
                     .add("GT-I9515L") // Samsung Galaxy S4 Value Edition (jfvelte)
                     .add("GT-I9505") // Samsung Galaxy S4 (jfltexx)
                     .build();
+
+    private static final int TONE_DURATION = 200;
+    private static final Map<String,Integer> TONE_CODES;
+    static {
+        ImmutableMap.Builder<String,Integer> builder = new ImmutableMap.Builder<>();
+        builder.put("0", ToneGenerator.TONE_DTMF_0);
+        builder.put("1", ToneGenerator.TONE_DTMF_1);
+        builder.put("2", ToneGenerator.TONE_DTMF_2);
+        builder.put("3", ToneGenerator.TONE_DTMF_3);
+        builder.put("4", ToneGenerator.TONE_DTMF_4);
+        builder.put("5", ToneGenerator.TONE_DTMF_5);
+        builder.put("6", ToneGenerator.TONE_DTMF_6);
+        builder.put("7", ToneGenerator.TONE_DTMF_7);
+        builder.put("8", ToneGenerator.TONE_DTMF_8);
+        builder.put("9", ToneGenerator.TONE_DTMF_9);
+        builder.put("*", ToneGenerator.TONE_DTMF_S);
+        builder.put("#", ToneGenerator.TONE_DTMF_P);
+        TONE_CODES = builder.build();
+    }
 
     private final EventCallback eventCallback;
     private final AtomicBoolean readyToReceivedIceCandidates = new AtomicBoolean(false);
@@ -698,6 +721,15 @@ public class WebRTCWrapper {
             throw new IllegalStateException("Make sure PeerConnectionFactory is initialized");
         }
         return peerConnectionFactory;
+    }
+
+    public boolean applyDtmfTone(String tone) {
+        if (toneManager == null || peerConnection.getSenders().isEmpty()) {
+            return false;
+        }
+        peerConnection.getSenders().get(0).dtmf().insertDtmf(tone, TONE_DURATION, 100);
+        toneManager.startTone(TONE_CODES.get(tone), TONE_DURATION);
+        return true;
     }
 
     void addIceCandidate(IceCandidate iceCandidate) {

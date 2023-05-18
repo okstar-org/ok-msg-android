@@ -107,6 +107,7 @@ dependencies {
     coreLibraryDesugaring 'com.android.tools:desugar_jdk_libs:1.1.5'
     implementation 'androidx.recyclerview:recyclerview:1.1.0'
     implementation 'io.michaelrocks:libphonenumber-android:8.12.49'
+    implementation 'io.github.nishkarsh:android-permissions:2.0.54'
 }
 
 ext {
