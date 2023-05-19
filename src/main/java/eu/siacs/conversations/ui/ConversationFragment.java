@@ -247,7 +247,7 @@ public class ConversationFragment extends XmppFragment implements EditMessage.Ke
 
         @Override
         public void onClick(View v) {
-            ConferenceDetailsActivity.open(getActivity(), conversation);
+            ConferenceDetailsActivity.open(activity, conversation);
         }
     };
     private final OnClickListener leaveMuc = new OnClickListener() {
