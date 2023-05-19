@@ -72,6 +72,8 @@ import android.widget.ListView;
 import android.widget.TextView.OnEditorActionListener;
 import android.widget.Toast;
 import eu.siacs.conversations.utils.Emoticons;
+import de.monocles.chat.BobTransfer;
+import java.net.URISyntaxException;
 
 
 import androidx.annotation.IdRes;
@@ -2234,7 +2236,19 @@ public class ConversationFragment extends XmppFragment implements EditMessage.Ke
             ToastCompat.makeText(getActivity(), R.string.not_connected_try_again, ToastCompat.LENGTH_SHORT).show();
             return;
         }
-        activity.xmppConnectionService.getHttpConnectionManager().createNewDownloadConnection(message, true);
+        if (message.getOob() != null && message.getOob().getScheme().equalsIgnoreCase("cid")) {
+            try {
+                BobTransfer transfer = new BobTransfer.ForMessage(message, activity.xmppConnectionService);
+                message.setTransferable(transfer);
+                transfer.start();
+            } catch (URISyntaxException e) {
+                Log.d(Config.LOGTAG, "BobTransfer failed to parse URI");
+            }
+        } else {
+            activity.xmppConnectionService
+                    .getHttpConnectionManager()
+                    .createNewDownloadConnection(message, true);
+        }
     }
 
     private OnClickListener OTRwarning = new OnClickListener() {
