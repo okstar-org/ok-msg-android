@@ -599,6 +599,8 @@
     <string name="i_followed_this_link_from_a_trusted_source">Trafiłem na ten link w zaufanym źródle</string>
     <string name="verifying_omemo_keys_trusted_source">Zaraz zweryfikujesz klucz OMEMO %1$s klikając w link. Jest to bezpieczne jedynie, kiedy link pochodzi z zaufanego źródła gdzie tylko %2$s mógł go opublikować.</string>
     <string name="verify_omemo_keys">Zweryfikuj klucze OMEMO</string>
+    <string name="verifying_omemo_keys_trusted_source_account">Weryfikujesz właśnie klucze OMEMO własnego konta. To jest bezpieczne tylko jeśli kliknąłeś łącze w miejscu w którym jedynie ty mogłeś je zamieścić. </string>
+    <string name="continue_btn">Kontynuuj</string>
     <string name="show_inactive_devices">Pokaż nieaktywne</string>
     <string name="hide_inactive_devices">Ukryj nieaktywne</string>
     <string name="reply">Odpowiedz</string>
