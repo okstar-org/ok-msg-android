@@ -4,6 +4,7 @@ import de.monocles.chat.BobTransfer;
 import eu.siacs.conversations.entities.Contact;
 import eu.siacs.conversations.entities.Roster;
 import eu.siacs.conversations.ui.widget.ClickableMovementMethod;
+import eu.siacs.conversations.xml.Element;
 import io.ipfs.cid.Cid;
 import me.saket.bettermovementmethod.BetterLinkMovementMethod;
 import static android.view.ViewGroup.LayoutParams.WRAP_CONTENT;
@@ -119,6 +120,9 @@ import eu.siacs.conversations.xmpp.Jid;
 import eu.siacs.conversations.xmpp.mam.MamReference;
 import me.drakeet.support.toast.ToastCompat;
 import pl.droidsonroids.gif.GifImageView;
+import eu.siacs.conversations.xml.Element;
+import android.widget.ListView;
+
 
 public class MessageAdapter extends ArrayAdapter<Message> {
 
@@ -1191,6 +1195,7 @@ public class MessageAdapter extends ArrayAdapter<Message> {
         final boolean isInValidSession = message.isValidInSession() && (!omemoEncryption || message.isTrusted());
         final Conversational conversation = message.getConversation();
         final Account account = conversation.getAccount();
+        final List<Element> commands = message.getCommands();
         final int type = getItemViewType(position);
         ViewHolder viewHolder;
         if (view == null) {
@@ -1258,6 +1263,7 @@ public class MessageAdapter extends ArrayAdapter<Message> {
                     viewHolder.transfer = view.findViewById(R.id.transfer);
                     viewHolder.progressBar = view.findViewById(R.id.progressBar);
                     viewHolder.cancel_transfer = view.findViewById(R.id.cancel_transfer);
+                    viewHolder.commands_list = view.findViewById(R.id.commands_list);
                     break;
                 case STATUS:
                     view = activity.getLayoutInflater().inflate(R.layout.message_status, parent, false);
@@ -1445,6 +1451,15 @@ public class MessageAdapter extends ArrayAdapter<Message> {
         }
 
         if (type == RECEIVED) {
+            if (commands != null && conversation instanceof Conversation) {
+                CommandButtonAdapter adapter = new CommandButtonAdapter(activity);
+                adapter.addAll(commands);
+                viewHolder.commands_list.setAdapter(adapter);
+                viewHolder.commands_list.setVisibility(View.VISIBLE);
+                viewHolder.commands_list.setOnItemClickListener((p, v, pos, id) -> {
+                    ((Conversation) conversation).startCommand(adapter.getItem(pos), activity.xmppConnectionService);
+                });
+            }
             if (message.isPrivateMessage()) {
                 viewHolder.answer_button.setVisibility(View.VISIBLE);
                 Drawable icon = activity.getResources().getDrawable(R.drawable.ic_reply_circle_black_24dp);
@@ -1666,6 +1681,7 @@ public class MessageAdapter extends ArrayAdapter<Message> {
         protected ImageView contact_picture;
         protected TextView status_message;
         protected TextView encryption;
+        protected ListView commands_list;
         protected RelativeLayout transfer;
         protected ProgressBar progressBar;
         protected ImageButton cancel_transfer;

@@ -16,6 +16,11 @@ import android.util.Pair;
 import android.view.View;
 import eu.siacs.conversations.utils.Compatibility;
 
+import java.io.IOException;
+import java.util.stream.Collectors;
+import eu.siacs.conversations.xml.Element;
+import eu.siacs.conversations.xml.Tag;
+import eu.siacs.conversations.xml.XmlReader;
 import eu.siacs.conversations.ui.util.QuoteHelper;
 
 import com.google.common.base.Strings;
@@ -138,7 +143,7 @@ public class Message extends AbstractEntity implements AvatarService.Avatarable 
     protected boolean carbon = false;
     private boolean oob = false;
     protected URI oobUri = null;
-    protected static List<Element> payloads = new ArrayList<>();
+    protected List<Element> payloads = new ArrayList<>();
     protected List<Edit> edits = new ArrayList<>();
     protected String relativeFilePath;
     protected boolean read = true;
@@ -276,7 +281,18 @@ public class Message extends AbstractEntity implements AvatarService.Avatarable 
         if (payloads != null) this.payloads = payloads;
     }
 
-    public static Message fromCursor(Cursor cursor, Conversation conversation) {
+    public static Message fromCursor(Cursor cursor, Conversation conversation) throws IOException {
+        String payloadsStr = cursor.getString(cursor.getColumnIndex("payloads"));
+        List<Element> payloads = new ArrayList<>();
+        if (payloadsStr != null) {
+            final XmlReader xmlReader = new XmlReader();
+            xmlReader.setInputStream(ByteSource.wrap(payloadsStr.getBytes()).openStream());
+            Tag tag;
+            while ((tag = xmlReader.readTag()) != null) {
+                payloads.add(xmlReader.readElement(tag));
+            }
+        }
+
         return new Message(conversation,
                 cursor.getString(cursor.getColumnIndex(UUID)),
                 cursor.getString(cursor.getColumnIndex(CONVERSATION)),
@@ -340,6 +356,7 @@ public class Message extends AbstractEntity implements AvatarService.Avatarable 
         values.put("subject", subject);
         values.put("oobUri", oobUri == null ? null : oobUri.toString());
         values.put("fileParams", fileParams == null ? null : fileParams.toString());
+        values.put("payloads", payloads.size() < 1 ? null : payloads.stream().map(Object::toString).collect(Collectors.joining()));
         return values;
     }
 
@@ -1124,6 +1141,20 @@ public class Message extends AbstractEntity implements AvatarService.Avatarable 
 
         this.payloads.add(el);
     }
+
+    public List<Element> getCommands() {
+        if (this.payloads == null) return null;
+
+        for (Element el : this.payloads) {
+            if (el.getName().equals("query") && el.getNamespace().equals("http://jabber.org/protocol/disco#items") && el.getAttribute("node").equals("http://jabber.org/protocol/commands")) {
+                return el.getChildren();
+            }
+        }
+
+        return null;
+    }
+
+
 
     public List<Element> getPayloads() {
         return new ArrayList<>(this.payloads);
