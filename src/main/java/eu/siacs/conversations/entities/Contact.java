@@ -701,7 +701,7 @@ public class Contact implements ListItem, Blockable {
                 "/" + getJid().asBareJid().toString();
     }
 
-    protected PhoneAccountHandle phoneAccountHandle() {
+    public PhoneAccountHandle phoneAccountHandle() {
         ComponentName componentName = new ComponentName(
                 "de.monocles.chat",
                 "de.monocles.chat.ConnectionService"

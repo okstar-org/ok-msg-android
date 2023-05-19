@@ -3,6 +3,7 @@ package eu.siacs.conversations.services;
 import static eu.siacs.conversations.ui.util.MyLinkify.replaceYoutube;
 import static eu.siacs.conversations.utils.Compatibility.s;
 
+import android.Manifest;
 import android.app.Notification;
 import android.app.NotificationChannel;
 import android.app.NotificationChannelGroup;
@@ -11,6 +12,11 @@ import android.app.PendingIntent;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.content.pm.PackageManager;
+import android.os.Bundle;
+import android.os.Vibrator;
+import android.telecom.PhoneAccountHandle;
+import android.telecom.TelecomManager;
 import android.content.res.Resources;
 import android.graphics.Bitmap;
 import android.graphics.Typeface;
@@ -38,6 +44,7 @@ import androidx.core.app.RemoteInput;
 import androidx.core.content.ContextCompat;
 import androidx.core.graphics.drawable.IconCompat;
 
+import com.google.common.base.Strings;
 import com.google.common.collect.Iterables;
 
 import java.io.File;
@@ -51,7 +58,10 @@ import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
+import java.util.concurrent.Executors;
+import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.ScheduledFuture;
+import java.util.concurrent.TimeUnit;
 import java.util.concurrent.atomic.AtomicInteger;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -80,6 +90,7 @@ import eu.siacs.conversations.xmpp.jingle.Media;
 
 public class NotificationService {
 
+    private static final ScheduledExecutorService SCHEDULED_EXECUTOR_SERVICE = Executors.newSingleThreadScheduledExecutor();
     public static final Object CATCHUP_LOCK = new Object();
     public static final String MESSAGES_CHANNEL_ID = "messages";
     public static final String SILENT_MESSAGES_CHANNEL_ID = "silent_messages";
@@ -678,6 +689,113 @@ public class NotificationService {
                         .build();
         notify(notificationId, notification);
         notify(DELIVERY_FAILED_NOTIFICATION_ID, summaryNotification);
+    }
+
+    private synchronized boolean tryRingingWithDialerUI(final AbstractJingleConnection.Id id, final Set<Media> media) {
+        if (mXmppConnectionService.checkSelfPermission(Manifest.permission.RECORD_AUDIO) != PackageManager.PERMISSION_GRANTED) {
+            // We cannot request audio permission in Dialer UI
+            // when Dialer is shown over keyguard, the user cannot even necessarily
+            // see notifications.
+            return false;
+        }
+
+        if (media.size() != 1 || !media.contains(Media.AUDIO)) {
+            // Currently our ConnectionService only handles single audio calls
+            Log.w(Config.LOGTAG, "only audio calls can be handled by cheogram connection service");
+            return false;
+        }
+
+        PhoneAccountHandle handle = null;
+        for (Contact contact : id.account.getRoster().getContacts()) {
+            if (!contact.getJid().getDomain().equals(id.with.getDomain())) {
+                continue;
+            }
+
+            if (!contact.getPresences().anyIdentity("gateway", "pstn")) {
+                continue;
+            }
+
+            handle = contact.phoneAccountHandle();
+            break;
+        }
+
+        if (handle == null) {
+            Log.w(Config.LOGTAG, "Could not find phone account handle for " + id.account.getJid().toString());
+            return false;
+        }
+
+        Bundle callInfo = new Bundle();
+        callInfo.putString("account", id.account.getJid().toString());
+        callInfo.putString("with", id.with.toString());
+        callInfo.putString("sessionId", id.sessionId);
+
+        TelecomManager telecomManager = mXmppConnectionService.getSystemService(TelecomManager.class);
+
+        try {
+            telecomManager.addNewIncomingCall(handle, callInfo);
+        } catch (SecurityException e) {
+            // If the account is not registered or enabled, it could result in a security exception
+            // Just fall back to the built-in UI in this case.
+            Log.w(Config.LOGTAG, e);
+            return false;
+        }
+
+        return true;
+    }
+
+    public synchronized void startRinging(final AbstractJingleConnection.Id id, final Set<Media> media) {
+        if (tryRingingWithDialerUI(id, media)) {
+            return;
+        }
+
+        showIncomingCallNotification(id, media, toString());
+        final NotificationManager notificationManager = (NotificationManager) mXmppConnectionService.getSystemService(Context.NOTIFICATION_SERVICE);
+        final int currentInterruptionFilter;
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M && notificationManager != null) {
+            currentInterruptionFilter = notificationManager.getCurrentInterruptionFilter();
+        } else {
+            currentInterruptionFilter = 1; //INTERRUPTION_FILTER_ALL
+        }
+        if (currentInterruptionFilter != 1) {
+            Log.d(Config.LOGTAG, "do not ring or vibrate because interruption filter has been set to " + currentInterruptionFilter);
+            return;
+        }
+        final ScheduledFuture<?> currentVibrationFuture = this.vibrationFuture;
+        this.vibrationFuture = SCHEDULED_EXECUTOR_SERVICE.scheduleAtFixedRate(
+                new VibrationRunnable(),
+                0,
+                3,
+                TimeUnit.SECONDS
+        );
+        if (currentVibrationFuture != null) {
+            currentVibrationFuture.cancel(true);
+        }
+        final SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(mXmppConnectionService);
+        final Resources resources = mXmppConnectionService.getResources();
+        final String ringtonePreference = preferences.getString("call_ringtone", resources.getString(R.string.incoming_call_ringtone));
+        if (Strings.isNullOrEmpty(ringtonePreference)) {
+            Log.d(Config.LOGTAG, "ringtone has been set to none");
+            return;
+        }
+        final Uri uri = Uri.parse(ringtonePreference);
+        this.currentlyPlayingRingtone = RingtoneManager.getRingtone(mXmppConnectionService, uri);
+        if (this.currentlyPlayingRingtone == null) {
+            Log.d(Config.LOGTAG, "unable to find ringtone for uri " + uri);
+            return;
+        }
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.P) {
+            this.currentlyPlayingRingtone.setLooping(true);
+        }
+        this.currentlyPlayingRingtone.play();
+    }
+
+    private class VibrationRunnable implements Runnable {
+
+        @Override
+        public void run() {
+            final Vibrator vibrator = (Vibrator) mXmppConnectionService.getSystemService(Context.VIBRATOR_SERVICE);
+            vibrator.vibrate(CALL_PATTERN, -1);
+        }
     }
 
     public void showIncomingCallNotification(final AbstractJingleConnection.Id id, final Set<Media> media, final String uuid) {
