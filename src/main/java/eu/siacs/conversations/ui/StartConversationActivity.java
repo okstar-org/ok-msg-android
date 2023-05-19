@@ -35,6 +35,16 @@ import android.widget.ListView;
 import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
+import android.view.LayoutInflater;
+import androidx.recyclerview.widget.RecyclerView;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import java.util.Arrays;
+import java.util.Comparator;
+import java.util.HashSet;
+import java.util.Locale;
+import java.util.Map;
+import java.util.stream.Collectors;
+import eu.siacs.conversations.utils.UIHelper;
 
 import androidx.annotation.MenuRes;
 import androidx.annotation.NonNull;
@@ -107,6 +117,8 @@ public class StartConversationActivity extends XmppActivity implements XmppConne
     private ListItemAdapter mContactsAdapter;
     private final List<ListItem> conferences = new ArrayList<>();
     private ListItemAdapter mConferenceAdapter;
+    private TagsAdapter mTagsAdapter = new TagsAdapter();
+
     private final List<String> mActivatedAccounts = new ArrayList<>();
     private EditText mSearchEditText;
     private final AtomicBoolean mRequestedContactsPermission = new AtomicBoolean(false);
@@ -687,6 +699,9 @@ public class StartConversationActivity extends XmppActivity implements XmppConne
         mSearchEditText = mSearchView.findViewById(R.id.search_field);
         mSearchEditText.addTextChangedListener(mSearchTextWatcher);
         mSearchEditText.setOnEditorActionListener(mSearchDone);
+        RecyclerView tags = mSearchView.findViewById(R.id.tags);
+        tags.setLayoutManager(new LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false));
+        tags.setAdapter(mTagsAdapter);
         String initialSearchValue = mInitialSearchValue.pop();
         if (initialSearchValue != null) {
             mMenuSearchView.expandActionView();
@@ -984,6 +999,7 @@ public class StartConversationActivity extends XmppActivity implements XmppConne
 
     protected void filterContacts(String needle) {
         this.contacts.clear();
+        ArrayList<ListItem.Tag> tags = new ArrayList<>();
         final List<Account> accounts = xmppConnectionService.getAccounts();
         for (Account account : accounts) {
             if (account.getStatus() != Account.State.DISABLED) {
@@ -995,6 +1011,7 @@ public class StartConversationActivity extends XmppActivity implements XmppConne
                             || (needle != null && !needle.trim().isEmpty())
                             || s.compareTo(Presence.Status.OFFLINE) < 0)) {
                         this.contacts.add(contact);
+                        tags.addAll(contact.getTags(this));
                     }
                 }
 
@@ -1002,10 +1019,21 @@ public class StartConversationActivity extends XmppActivity implements XmppConne
                 if (self.match(this, needle)) {
                     self.setSystemName("Note to Self");
                     this.contacts.add(self);
+
                 }
 
             }
         }
+        Comparator<Map.Entry<ListItem.Tag,Integer>> sortTagsBy = Map.Entry.comparingByValue(Comparator.reverseOrder());
+        sortTagsBy = sortTagsBy.thenComparing(entry -> entry.getKey().getName());
+
+        mTagsAdapter.setTags(
+                tags.stream()
+                        .collect(Collectors.toMap((x) -> x, (t) -> 1, (c1, c2) -> c1 + c2))
+                        .entrySet().stream()
+                        .sorted(sortTagsBy)
+                        .map(e -> e.getKey()).collect(Collectors.toList())
+        );
         Collections.sort(this.contacts);
         mContactsAdapter.notifyDataSetChanged();
     }
@@ -1391,6 +1419,66 @@ public class StartConversationActivity extends XmppActivity implements XmppConne
                 return handleJid(this);
             }
             return false;
+        }
+    }
+
+    class TagsAdapter extends RecyclerView.Adapter<TagsAdapter.ViewHolder> {
+        class ViewHolder extends RecyclerView.ViewHolder {
+            protected TextView tv;
+
+            public ViewHolder(View v) {
+                super(v);
+                tv = (TextView) v;
+                tv.setOnClickListener(view -> {
+                    String needle = mSearchEditText.getText().toString();
+                    String tag = tv.getText().toString();
+                    String[] parts = needle.split("[,\\s]+");
+                    if(needle.isEmpty()) {
+                        needle = tag;
+                    } else if (tag.toLowerCase(Locale.US).contains(parts[parts.length-1])) {
+                        needle = needle.replace(parts[parts.length-1], tag);
+                    } else {
+                        needle += ", " + tag;
+                    }
+                    mSearchEditText.setText("");
+                    mSearchEditText.append(needle);
+                    filter(needle);
+                });
+            }
+
+            public void setTag(ListItem.Tag tag) {
+                tv.setText(tag.getName());
+                tv.setBackgroundColor(tag.getColor());
+            }
+        }
+
+        protected List<ListItem.Tag> tags = new ArrayList<>();
+
+        @Override
+        public ViewHolder onCreateViewHolder(ViewGroup viewGroup, int i) {
+            View view = LayoutInflater.from(viewGroup.getContext()).inflate(R.layout.list_item_tag, null);
+            return new ViewHolder(view);
+        }
+
+        @Override
+        public void onBindViewHolder(ViewHolder viewHolder, int i) {
+            viewHolder.setTag(tags.get(i));
+        }
+
+        @Override
+        public int getItemCount() {
+            return tags.size();
+        }
+
+        public void setTags(final List<ListItem.Tag> tags) {
+            ListItem.Tag channelTag = new ListItem.Tag("Room", UIHelper.getColorForName("channel", true), 0 , null, false);
+            String needle = mSearchEditText == null ? "" : mSearchEditText.getText().toString().toLowerCase(Locale.US).trim();
+            HashSet<String> parts = new HashSet<>(Arrays.asList(needle.split("[,\\s]+")));
+            this.tags = tags.stream().filter(
+                    tag -> !tag.equals(channelTag) && !parts.contains(tag.getName().toLowerCase(Locale.US))
+            ).collect(Collectors.toList());
+            if (!parts.contains("channel") && tags.contains(channelTag)) this.tags.add(0, channelTag);
+            notifyDataSetChanged();
         }
     }
 }
