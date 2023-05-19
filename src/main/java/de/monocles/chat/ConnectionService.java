@@ -79,7 +79,7 @@ public class ConnectionService extends android.telecom.ConnectionService {
         try {
             startService(intent);
         } catch (IllegalStateException e) {
-            Log.w("com.cheogram.android.ConnectionService", "unable to start service from " + getClass().getSimpleName());
+            Log.w(".ConnectionService", "unable to start service from " + getClass().getSimpleName());
         }
         bindService(intent, mConnection, Context.BIND_AUTO_CREATE);
     }
