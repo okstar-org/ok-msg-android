@@ -128,7 +128,7 @@ public class ConnectionService extends android.telecom.ConnectionService {
         }
 
         Jid with = Jid.ofLocalAndDomain(tel, gateway[1]);
-        CheogramConnection connection = new CheogramConnection(account, with, postDial);
+        monoclesConnection connection = new monoclesConnection(account, with, postDial);
 
         PermissionManager permissionManager = PermissionManager.getInstance(this);
         permissionManager.setNotificationSettings(
@@ -178,7 +178,7 @@ public class ConnectionService extends android.telecom.ConnectionService {
         Account account = xmppConnectionService.findAccountByJid(Jid.of(accountJid));
         Jid with = Jid.of(withJid);
 
-        CheogramConnection connection = new CheogramConnection(account, with, null);
+        monoclesConnection connection = new monoclesConnection(account, with, null);
         connection.setSessionId(sessionId);
         connection.setAddress(
                 Uri.fromParts("tel", with.getLocal(), null),
@@ -191,7 +191,7 @@ public class ConnectionService extends android.telecom.ConnectionService {
         return connection;
     }
 
-    public class CheogramConnection extends Connection implements XmppConnectionService.OnJingleRtpConnectionUpdate {
+    public class monoclesConnection extends Connection implements XmppConnectionService.OnJingleRtpConnectionUpdate {
         protected Account account;
         protected Jid with;
         protected String sessionId = null;
@@ -199,7 +199,7 @@ public class ConnectionService extends android.telecom.ConnectionService {
         protected Icon gatewayIcon;
         protected WeakReference<JingleRtpConnection> rtpConnection = null;
 
-        CheogramConnection(Account account, Jid with, String postDialString) {
+        monoclesConnection(Account account, Jid with, String postDialString) {
             super();
             this.account = account;
             this.with = with;
