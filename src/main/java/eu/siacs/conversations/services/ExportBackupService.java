@@ -2,6 +2,7 @@ package eu.siacs.conversations.services;
 
 import static eu.siacs.conversations.persistance.FileBackend.APP_DIRECTORY;
 import static eu.siacs.conversations.services.NotificationService.EXPORT_BACKUP_NOTIFICATION_ID;
+import static eu.siacs.conversations.services.NotificationService.NOTIFICATION_ID;
 import static eu.siacs.conversations.utils.Compatibility.runsTwentySix;
 import static eu.siacs.conversations.utils.StorageHelper.getAppLogsDirectory;
 import static eu.siacs.conversations.utils.StorageHelper.getBackupDirectory;
@@ -348,6 +349,30 @@ public class ExportBackupService extends Service {
         }
     }
 
+    private void messageExportmonocles(SQLiteDatabase db, String uuid, PrintWriter writer, Progress progress) {
+        Cursor cursor = db.rawQuery("select monocles.messages.* from messages joing monocles.messages using (uuid) join conversations on conversations.uuid=messages.conversationUuid where conversations.accountUuid=?", new String[]{uuid});
+        int size = cursor != null ? cursor.getCount() : 0;
+        Log.d(Config.LOGTAG, "exporting " + size + " monocles messages for account " + uuid);
+        int i = 0;
+        int p = 0;
+        while (cursor != null && cursor.moveToNext()) {
+            writer.write(cursorToString("monocles." + Message.TABLENAME, cursor, PAGE_SIZE, false));
+            if (i + PAGE_SIZE > size) {
+                i = size;
+            } else {
+                i += PAGE_SIZE;
+            }
+            final int percentage = i * 100 / size;
+            if (p < percentage) {
+                p = percentage;
+                notificationManager.notify(NOTIFICATION_ID, progress.build(p));
+            }
+        }
+        if (cursor != null) {
+            cursor.close();
+        }
+    }
+
     private List<File> export() throws Exception {
         wakeLock.acquire(15 * 60 * 1000L /*15 minutes*/);
         NotificationCompat.Builder mBuilder = new NotificationCompat.Builder(getBaseContext(), NotificationService.BACKUP_CHANNEL_ID);
@@ -400,6 +425,7 @@ public class ExportBackupService extends Service {
                 accountExport(db, uuid, writer);
                 simpleExport(db, Conversation.TABLENAME, Conversation.ACCOUNT, uuid, writer);
                 messageExport(db, uuid, writer, progress);
+                messageExportmonocles(db, uuid, writer, progress);
                 for (String table : Arrays.asList(SQLiteAxolotlStore.PREKEY_TABLENAME, SQLiteAxolotlStore.SIGNED_PREKEY_TABLENAME, SQLiteAxolotlStore.SESSION_TABLENAME, SQLiteAxolotlStore.IDENTITIES_TABLENAME)) {
                     simpleExport(db, table, SQLiteAxolotlStore.ACCOUNT, uuid, writer);
                 }
