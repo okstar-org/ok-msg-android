@@ -18,6 +18,7 @@ import eu.siacs.conversations.xmpp.chatstate.ChatState;
 public final class Config {
 
     public static final long MILLISECONDS_IN_DAY = 24 * 60 * 60 * 1000;
+    public static final long CONTACT_SYNC_RETRY_INTERVAL = 1000L * 60 * 5;
 
     private static final int UNENCRYPTED = 1;
     private static final int OPENPGP = 2;
@@ -53,7 +54,7 @@ public final class Config {
 
     public static String monocles() {
         //if (Locale.getDefault().getLanguage().equalsIgnoreCase("de")) {
-        return "https://ocean.monocles.de/apps/registration/";
+        return "https://monocles.chat";
         /*} else {
             return "blabber.im/en.html";
         }*/
@@ -64,7 +65,7 @@ public final class Config {
     public static final Jid BUG_REPORTS = Jid.of("support@monocles.de");
     public static final Uri HELP = Uri.parse("https://monocles.wiki");
 
-    public static final String inviteUserURL = monocles() + "/i/";
+    public static final String inviteUserURL = monocles() + "/?chat/";
     public static final String inviteMUCURL = monocles() + "/j/";
     public static final String inviteHostURL = monocles(); // without http(s)
     public static final String INVITE_DOMAIN = monocles();

@@ -181,6 +181,23 @@ public class Presences {
         return null;
     }
 
+    public boolean anyIdentity(final String category, final String type) {
+        synchronized (this.presences) {
+            if (this.presences.size() == 0) {
+                // https://github.com/iNPUTmice/Conversations/issues/4230
+                return false;
+            }
+            for (Presence presence : this.presences.values()) {
+                ServiceDiscoveryResult disco = presence.getServiceDiscoveryResult();
+                if (disco != null && disco.hasIdentity(category, type)) {
+                    return true;
+                }
+            }
+        }
+        return false;
+    }
+
+
     public Pair<Map<String, String>, Map<String, String>> toTypeAndNameMap() {
         Map<String, String> typeMap = new HashMap<>();
         Map<String, String> nameMap = new HashMap<>();
@@ -205,19 +222,4 @@ public class Presences {
         return new Pair<>(typeMap, nameMap);
     }
 
-    public boolean anyIdentity(final String category, final String type) {
-        synchronized (this.presences) {
-            if (this.presences.size() == 0) {
-                // https://github.com/iNPUTmice/Conversations/issues/4230
-                return false;
-            }
-            for (Presence presence : this.presences.values()) {
-                ServiceDiscoveryResult disco = presence.getServiceDiscoveryResult();
-                if (disco != null && disco.hasIdentity(category, type)) {
-                    return true;
-                }
-            }
-        }
-        return false;
-    }
 }

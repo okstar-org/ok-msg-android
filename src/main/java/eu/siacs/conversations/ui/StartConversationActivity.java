@@ -417,15 +417,10 @@ public class StartConversationActivity extends XmppActivity implements XmppConne
     }
 
     protected void openConversationForContact(int position) {
-        openConversation(contacts.get(position));
+        Contact contact = (Contact) contacts.get(position);
+        openConversationForContact(contact);
     }
-    protected void openConversation(ListItem item) {
-        if (item instanceof Contact) {
-            openConversationForContact((Contact) item);
-        } else {
-            openConversationsForBookmark((Bookmark) item);
-        }
-    }
+
     protected void openConversationForContact(Contact contact) {
         Conversation conversation = xmppConnectionService.findOrCreateConversation(contact.getAccount(), contact.getJid(), false, true);
         SoftKeyboardUtils.hideSoftKeyboard(this);
@@ -990,7 +985,6 @@ public class StartConversationActivity extends XmppActivity implements XmppConne
     protected void filterContacts(String needle) {
         this.contacts.clear();
         final List<Account> accounts = xmppConnectionService.getAccounts();
-        boolean foundSupport = false;
         for (Account account : accounts) {
             if (account.getStatus() != Account.State.DISABLED) {
                 for (Contact contact : account.getRoster().getContacts()) {
@@ -1003,14 +997,6 @@ public class StartConversationActivity extends XmppActivity implements XmppConne
                         this.contacts.add(contact);
                     }
                 }
-                for (Bookmark bookmark : account.getBookmarks()) {
-                    if (bookmark.match(this, needle)) {
-                        if (bookmark.getJid().toString().equals("support@conference.monocles.de")) {
-                            foundSupport = true;
-                        }
-                        this.contacts.add(bookmark);
-                    }
-                }
 
                 final Contact self = account.getSelfContact();
                 if (self.match(this, needle)) {
@@ -1021,17 +1007,6 @@ public class StartConversationActivity extends XmppActivity implements XmppConne
             }
         }
         Collections.sort(this.contacts);
-
-        if (!foundSupport && (needle == null || needle.equals(""))) {
-            Bookmark bookmark = new Bookmark(
-                    xmppConnectionService.getAccounts().get(0),
-                    Jid.of("support@conference.monocles.de")
-            );
-            bookmark.setBookmarkName("monocles support room");
-            bookmark.addChild("group").setContent("support");
-            this.contacts.add(0, bookmark);
-        }
-
         mContactsAdapter.notifyDataSetChanged();
     }
 

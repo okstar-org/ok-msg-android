@@ -3,6 +3,7 @@ package eu.siacs.conversations.ui;
 import static eu.siacs.conversations.utils.PermissionUtils.allGranted;
 import static eu.siacs.conversations.utils.PermissionUtils.readGranted;
 
+import android.content.ComponentName;
 import android.content.ActivityNotFoundException;
 import android.content.Intent;
 import android.os.Bundle;
@@ -29,6 +30,7 @@ import java.util.concurrent.atomic.AtomicBoolean;
 
 import eu.siacs.conversations.Config;
 import eu.siacs.conversations.R;
+import eu.siacs.conversations.entities.Contact;
 import eu.siacs.conversations.entities.Account;
 import eu.siacs.conversations.services.XmppConnectionService;
 import eu.siacs.conversations.services.XmppConnectionService.OnAccountUpdate;
@@ -72,6 +74,28 @@ public class ManageAccountActivity extends XmppActivity implements OnAccountUpda
         }
         invalidateOptionsMenu();
         mAccountAdapter.notifyDataSetChanged();
+
+
+        findViewById(R.id.phone_accounts).setVisibility(View.GONE);
+        findViewById(R.id.phone_accounts).setOnClickListener((View v) -> {
+            Intent intent = new Intent();
+            intent.setComponent(new ComponentName("com.android.server.telecom",
+                    "com.android.server.telecom.settings.EnableAccountPreferenceActivity"));
+            startActivity(intent);
+        });
+        findViewById(R.id.phone_accounts_settings).setOnClickListener((View v) -> {
+            startActivity(new Intent(android.telecom.TelecomManager.ACTION_CHANGE_PHONE_ACCOUNTS));
+        });
+
+        outer:
+        for (Account account : xmppConnectionService.getAccounts()) {
+            for (Contact contact : account.getRoster().getContacts()) {
+                if (contact.getPresences().anyIdentity("gateway", "pstn")) {
+                    findViewById(R.id.phone_accounts).setVisibility(View.VISIBLE);
+                    break outer;
+                }
+            }
+        }
     }
 
     @Override

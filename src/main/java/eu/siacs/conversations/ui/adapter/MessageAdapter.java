@@ -19,6 +19,8 @@ import static eu.siacs.conversations.ui.util.MyLinkify.removeTrailingBracket;
 import static eu.siacs.conversations.ui.util.MyLinkify.replaceYoutube;
 import eu.siacs.conversations.ui.util.ShareUtil;
 import de.monocles.chat.SwipeDetector;
+import android.net.Uri;
+import android.text.style.URLSpan;
 
 import android.Manifest;
 import android.annotation.SuppressLint;
@@ -75,6 +77,9 @@ import java.util.Locale;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
+import eu.siacs.conversations.entities.Contact;
+import eu.siacs.conversations.entities.Message;
+import eu.siacs.conversations.entities.Roster;
 import eu.siacs.conversations.Config;
 import eu.siacs.conversations.R;
 import eu.siacs.conversations.crypto.axolotl.FingerprintStatus;
@@ -783,8 +788,8 @@ public class MessageAdapter extends ArrayAdapter<Message> {
         }
     }
 
-    private void displayDownloadableMessage(ViewHolder viewHolder, final Message message, String text, final boolean darkBackground, final int type) {
-        displayTextMessage(viewHolder, message, darkBackground, type);
+    private void displayDownloadableMessage(ViewHolder viewHolder, final Message message, String text, final boolean darkBackground) {
+        toggleWhisperInfo(viewHolder, message, false, darkBackground);
         viewHolder.audioPlayer.setVisibility(View.GONE);
         showImages(false, viewHolder);
         viewHolder.richlinkview.setVisibility(View.GONE);
@@ -798,8 +803,8 @@ public class MessageAdapter extends ArrayAdapter<Message> {
         viewHolder.download_button.setOnClickListener(v -> ConversationFragment.downloadFile(activity, message));
     }
 
-    private void displayOpenableMessage(ViewHolder viewHolder, final Message message, final boolean darkBackground, final int type) {
-        displayTextMessage(viewHolder, message, darkBackground, type);
+    private void displayOpenableMessage(ViewHolder viewHolder, final Message message, final boolean darkBackground) {
+        toggleWhisperInfo(viewHolder, message, false, darkBackground);
         viewHolder.download_button.setVisibility(View.VISIBLE);
         viewHolder.audioPlayer.setVisibility(View.GONE);
         showImages(false, viewHolder);
@@ -941,8 +946,8 @@ public class MessageAdapter extends ArrayAdapter<Message> {
         }
     }
 
-    private void displayLocationMessage(final ViewHolder viewHolder, final Message message, final boolean darkBackground, Activity activity, final int type) {
-        displayTextMessage(viewHolder, message, darkBackground, type);
+    private void displayLocationMessage(final ViewHolder viewHolder, final Message message, final boolean darkBackground, Activity activity) {
+        toggleWhisperInfo(viewHolder, message, false, darkBackground);
         viewHolder.audioPlayer.setVisibility(View.GONE);
         final String url = GeoHelper.MapPreviewUri(message, activity);
         showImages(false, viewHolder);
@@ -987,10 +992,10 @@ public class MessageAdapter extends ArrayAdapter<Message> {
         }
     }
 
-    private void displayAudioMessage(ViewHolder viewHolder, Message message, boolean darkBackground, final int type) {
+    private void displayAudioMessage(ViewHolder viewHolder, Message message, boolean darkBackground) {
         final Resources res = activity.getResources();
         viewHolder.messageBody.setWidth((int) res.getDimension(R.dimen.audio_player_width));
-        displayTextMessage(viewHolder, message, darkBackground, type);
+        toggleWhisperInfo(viewHolder, message, showTitle(message), darkBackground);
         showImages(false, viewHolder);
         viewHolder.richlinkview.setVisibility(View.GONE);
         viewHolder.transfer.setVisibility(View.GONE);
@@ -1026,8 +1031,8 @@ public class MessageAdapter extends ArrayAdapter<Message> {
         return "";
     }
 
-    private void displayMediaPreviewMessage(ViewHolder viewHolder, final Message message, final boolean darkBackground, final int type) {
-        displayTextMessage(viewHolder, message,  darkBackground, type);
+    private void displayMediaPreviewMessage(ViewHolder viewHolder, final Message message, final boolean darkBackground) {
+        toggleWhisperInfo(viewHolder, message, false, darkBackground);
         viewHolder.download_button.setVisibility(View.GONE);
         viewHolder.audioPlayer.setVisibility(View.GONE);
         viewHolder.richlinkview.setVisibility(View.GONE);
@@ -1385,9 +1390,9 @@ public class MessageAdapter extends ArrayAdapter<Message> {
         final boolean unInitiatedButKnownSize = MessageUtils.unInitiatedButKnownSize(message);
         if (unInitiatedButKnownSize || message.isFileDeleted() || (transferable != null && transferable.getStatus() != Transferable.STATUS_UPLOADING)) {
             if (unInitiatedButKnownSize || transferable != null && transferable.getStatus() == Transferable.STATUS_OFFER) {
-                displayDownloadableMessage(viewHolder, message, activity.getString(R.string.download_x_file, UIHelper.getFileDescriptionString(activity, message)), darkBackground, type);
+                displayDownloadableMessage(viewHolder, message, activity.getString(R.string.download_x_file, UIHelper.getFileDescriptionString(activity, message)), darkBackground);
             } else if (transferable != null && transferable.getStatus() == Transferable.STATUS_OFFER_CHECK_FILESIZE) {
-                displayDownloadableMessage(viewHolder, message, activity.getString(R.string.check_x_filesize, UIHelper.getFileDescriptionString(activity, message)), darkBackground, type);
+                displayDownloadableMessage(viewHolder, message, activity.getString(R.string.check_x_filesize, UIHelper.getFileDescriptionString(activity, message)), darkBackground);
             } else {
                 /* todo why should we mark a file as deleted? --> causing strange side effects
                 if (!activity.xmppConnectionService.getFileBackend().getFile(message).exists() && !message.isFileDeleted()) {
@@ -1401,11 +1406,11 @@ public class MessageAdapter extends ArrayAdapter<Message> {
             }
         } else if (message.isFileOrImage() && message.getEncryption() != Message.ENCRYPTION_PGP && message.getEncryption() != Message.ENCRYPTION_DECRYPTION_FAILED) {
             if (message.getFileParams().width > 0 && message.getFileParams().height > 0) {
-                displayMediaPreviewMessage(viewHolder, message, darkBackground, type);
+                displayMediaPreviewMessage(viewHolder, message, darkBackground);
             } else if (message.getFileParams().runtime > 0 && (message.getFileParams().width == 0 && message.getFileParams().height == 0)) {
-                displayAudioMessage(viewHolder, message, darkBackground, type);
+                displayAudioMessage(viewHolder, message, darkBackground);
             } else {
-                displayOpenableMessage(viewHolder, message, darkBackground, type);
+                displayOpenableMessage(viewHolder, message, darkBackground);
             }
         } else if (message.getEncryption() == Message.ENCRYPTION_PGP) {
             if (account.isPgpDecryptionServiceConnected()) {
@@ -1427,7 +1432,7 @@ public class MessageAdapter extends ArrayAdapter<Message> {
             displayInfoMessage(viewHolder, activity.getString(R.string.omemo_decryption_failed), darkBackground, message);
         } else {
             if (message.isGeoUri()) {
-                displayLocationMessage(viewHolder, message, darkBackground, activity, type);
+                displayLocationMessage(viewHolder, message, darkBackground, activity);
             } else if (message.isXmppUri()) {
                 displayXmppMessage(viewHolder, message.getBody().trim());
             } else if (message.treatAsDownloadable()) {
@@ -1438,13 +1443,13 @@ public class MessageAdapter extends ArrayAdapter<Message> {
                             activity.getString(R.string.check_x_filesize_on_host,
                                     UIHelper.getFileDescriptionString(activity, message),
                                     uri.getHost()),
-                            darkBackground, type);
+                            darkBackground);
                 } catch (Exception e) {
                     displayDownloadableMessage(viewHolder,
                             message,
                             activity.getString(R.string.check_x_filesize,
                                     UIHelper.getFileDescriptionString(activity, message)),
-                            darkBackground, type);
+                            darkBackground);
                 }
             } else if (message.bodyIsOnlyEmojis() && message.getType() != Message.TYPE_PRIVATE) {
                 displayEmojiMessage(viewHolder, message.getBody().trim(), darkBackground);

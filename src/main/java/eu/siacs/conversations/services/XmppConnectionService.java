@@ -187,6 +187,7 @@ import eu.siacs.conversations.xml.Element;
 import eu.siacs.conversations.xml.LocalizedContent;
 import eu.siacs.conversations.xmpp.OnBindListener;
 import eu.siacs.conversations.xmpp.OnContactStatusChanged;
+import eu.siacs.conversations.xmpp.OnGatewayPromptResult;
 import eu.siacs.conversations.xmpp.OnIqPacketReceived;
 import eu.siacs.conversations.xmpp.OnKeyStatusUpdated;
 import eu.siacs.conversations.xmpp.OnMessageAcknowledged;
@@ -293,6 +294,9 @@ public class XmppConnectionService extends Service {
                 }
             }
         }
+        if (contact.getPresences().anyIdentity("gateway", "pstn")) {
+            contact.registerAsPhoneAccount(this);
+        }
     };
     private final PresenceGenerator mPresenceGenerator = new PresenceGenerator(this);
     private List<Account> accounts;
@@ -342,15 +346,22 @@ public class XmppConnectionService extends Service {
         }
     };
     private final AtomicBoolean isPhoneInCall = new AtomicBoolean(false);
+    private final AtomicBoolean diallerIntegrationActive = new AtomicBoolean(false);
     private final PhoneStateListener phoneStateListener = new PhoneStateListener() {
         @Override
         public void onCallStateChanged(final int state, final String phoneNumber) {
+            if (diallerIntegrationActive.get()) return;
             isPhoneInCall.set(state != TelephonyManager.CALL_STATE_IDLE);
             if (state == TelephonyManager.CALL_STATE_OFFHOOK) {
                 mJingleConnectionManager.notifyPhoneCallStarted();
             }
         }
     };
+
+    public void setDiallerIntegrationActive(boolean active) {
+        diallerIntegrationActive.set(active);
+    }
+
     //Ui callback listeners
     private final Set<OnConversationUpdate> mOnConversationUpdates = Collections.newSetFromMap(new WeakHashMap<OnConversationUpdate, Boolean>());
     private final Set<OnShowErrorToast> mOnShowErrorToasts = Collections.newSetFromMap(new WeakHashMap<OnShowErrorToast, Boolean>());
@@ -2419,6 +2430,7 @@ public class XmppConnectionService extends Service {
     }
 
     public void syncRoster(final Account account) {
+        unregisterPhoneAccounts(account);
         mRosterSyncTaskManager.execute(account, () -> databaseBackend.writeRoster(account.getRoster()));
     }
 
@@ -4048,6 +4060,15 @@ public class XmppConnectionService extends Service {
         }
     }
 
+    protected void unregisterPhoneAccounts(final Account account) {
+        for (final Contact contact : account.getRoster().getContacts()) {
+            if (!contact.showInRoster()) {
+                contact.unregisterAsPhoneAccount(this);
+            }
+        }
+    }
+
+
     public void createContact(final Contact contact, final boolean autoGrant) {
         createContact(contact, autoGrant, null);
     }
@@ -5391,6 +5412,24 @@ public class XmppConnectionService extends Service {
             }
         });
     }
+
+    public void fetchGatewayPrompt(Account account, final Jid jid, final OnGatewayPromptResult callback) {
+        IqPacket request = new IqPacket(IqPacket.TYPE.GET);
+        request.setTo(jid);
+        request.query("jabber:iq:gateway");
+        sendIqPacket(account, request, new OnIqPacketReceived() {
+            @Override
+            public void onIqPacketReceived(Account account, IqPacket packet) {
+                if (packet.getType() == IqPacket.TYPE.RESULT) {
+                    callback.onGatewayPromptResult(packet.query().findChildContent("prompt"), null);
+                } else {
+                    Element error = packet.findChild("error");
+                    callback.onGatewayPromptResult(null, error == null ? null : error.findChildContent("text"));
+                }
+            }
+        });
+    }
+
 
     public void fetchCaps(Account account, final Jid jid, final Presence presence) {
 

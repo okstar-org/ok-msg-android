@@ -303,8 +303,9 @@ public class UIHelper {
                     return new Pair<>(context.getString(R.string.checking_x,
                             getFileDescriptionString(context, message)), true);
                 case Transferable.STATUS_DOWNLOADING:
-                    return new Pair<>(context.getString(R.string.receiving_file_x,
-                            getFileDescriptionString(context, message), message.getTransferable().getProgress()), true);
+                    return new Pair<>(context.getString(R.string.receiving_x_file,
+                            getFileDescriptionString(context, message),
+                            d.getProgress()), true);
                 case Transferable.STATUS_OFFER:
                 case Transferable.STATUS_OFFER_CHECK_FILESIZE:
                     return new Pair<>(context.getString(R.string.x_file_offered_for_download,

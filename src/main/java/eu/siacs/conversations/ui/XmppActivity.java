@@ -1048,13 +1048,13 @@ public abstract class XmppActivity extends ActionBarActivity {
                     inviteURL = new getAdHocInviteUri(mAccount.getXmppConnection(), mAccount).execute().get();
                 } catch (ExecutionException e) {
                     e.printStackTrace();
-                    inviteURL = Config.inviteUserURL + user + "/" + domain;
+                    inviteURL = Config.inviteUserURL + user + "%40" + domain;
                 } catch (InterruptedException e) {
                     e.printStackTrace();
-                    inviteURL = Config.inviteUserURL + user + "/" + domain;
+                    inviteURL = Config.inviteUserURL + user + "%40" + domain;
                 }
                 if (inviteURL == null) {
-                    inviteURL = Config.inviteUserURL + user + "/" + domain;
+                    inviteURL = Config.inviteUserURL + user + "%40" + domain;
                 }
                 Log.d(Config.LOGTAG, "Invite uri = " + inviteURL);
                 final String inviteText = getString(R.string.InviteText, user);
@@ -1092,13 +1092,13 @@ public abstract class XmppActivity extends ActionBarActivity {
                                 inviteURL = new getAdHocInviteUri(mAccount.getXmppConnection(), mAccount).execute().get();
                             } catch (ExecutionException e) {
                                 e.printStackTrace();
-                                inviteURL = Config.inviteUserURL + user + "/" + domain;
+                                inviteURL = Config.inviteUserURL + user + "%40" + domain;
                             } catch (InterruptedException e) {
                                 e.printStackTrace();
-                                inviteURL = Config.inviteUserURL + user + "/" + domain;
+                                inviteURL = Config.inviteUserURL + user + "%40" + domain;
                             }
                             if (inviteURL == null) {
-                                inviteURL = Config.inviteUserURL + user + "/" + domain;
+                                inviteURL = Config.inviteUserURL + user + "%40" + domain;
                             }
                             Log.d(Config.LOGTAG, "Invite uri = " + inviteURL);
                             final String inviteText = getString(R.string.InviteText, user);

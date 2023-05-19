@@ -1,11 +1,26 @@
 package eu.siacs.conversations.entities;
 
+import android.content.ComponentName;
 import android.annotation.SuppressLint;
 import android.content.ContentValues;
 import android.content.Context;
 import android.database.Cursor;
 import android.net.Uri;
 import android.text.TextUtils;
+import android.os.Bundle;
+import android.telecom.PhoneAccount;
+import android.telecom.PhoneAccountHandle;
+import android.telecom.TelecomManager;
+import android.graphics.drawable.Icon;
+import eu.siacs.conversations.services.AvatarService;
+import eu.siacs.conversations.services.XmppConnectionService;
+
+import android.os.Bundle;
+import android.telecom.PhoneAccount;
+import android.telecom.PhoneAccountHandle;
+import android.telecom.TelecomManager;
+import android.content.ComponentName;
+
 
 import androidx.annotation.NonNull;
 
@@ -195,10 +210,16 @@ public class Contact implements ListItem, Blockable {
         for (final String group : getGroups(true)) {
             tags.add(new Tag(group, UIHelper.getColorForName(group), 0, account, isActive()));
         }
+        for (final String tag : getSystemTags(true)) {
+            tags.add(new Tag(tag, UIHelper.getColorForName(tag), 0, account, isActive()));
+        }
         Presence.Status status = getShownStatus();
         tags.add(UIHelper.getTagForStatus(context, status, account, isActive()));
         if (isBlocked()) {
             tags.add(new Tag(context.getString(R.string.blocked), 0xff2e2f3b, 0, account, isActive()));
+        }
+        if (!showInRoster() && getSystemAccount() != null) {
+            tags.add(new Tag("Android", UIHelper.getColorForName("Android"), 0, account, isActive()));
         }
         return new ArrayList<>(tags);
     }
@@ -322,6 +343,15 @@ public class Contact implements ListItem, Blockable {
         return !old.equals(getDisplayName());
     }
 
+    public boolean setSystemTags(Collection<String> systemTags) {
+        final JSONArray old = this.systemTags;
+        this.systemTags = new JSONArray();
+        for(String tag : systemTags) {
+            this.systemTags.put(tag);
+        }
+        return !old.equals(this.systemTags);
+    }
+
     public boolean setPresenceName(String presenceName) {
         final String old = getDisplayName();
         this.presenceName = presenceName;
@@ -361,6 +391,7 @@ public class Contact implements ListItem, Blockable {
         }
         return tags;
     }
+
     public ArrayList<String> getOtrFingerprints() {
         synchronized (this.keys) {
             final ArrayList<String> fingerprints = new ArrayList<String>();
@@ -663,6 +694,48 @@ public class Contact implements ListItem, Blockable {
             changed |= setSystemName(null);
         }
         return changed;
+    }
+
+    protected String phoneAccountLabel() {
+        return account.getJid().asBareJid().toString() +
+                "/" + getJid().asBareJid().toString();
+    }
+
+    protected PhoneAccountHandle phoneAccountHandle() {
+        ComponentName componentName = new ComponentName(
+                "de.monocles.chat",
+                "de.monocles.chat.ConnectionService"
+        );
+        return new PhoneAccountHandle(componentName, phoneAccountLabel());
+    }
+
+    // This Contact is a gateway to use for voice calls, register it with OS
+    public void registerAsPhoneAccount(XmppConnectionService ctx) {
+        TelecomManager telecomManager = ctx.getSystemService(TelecomManager.class);
+
+        PhoneAccount phoneAccount = PhoneAccount.builder(
+                phoneAccountHandle(),
+                account.getJid().asBareJid().toString()
+        ).setAddress(
+                Uri.fromParts("xmpp", account.getJid().asBareJid().toString(), null)
+        ).setIcon(
+                Icon.createWithBitmap(ctx.getAvatarService().get(this, AvatarService.getSystemUiAvatarSize(ctx) / 2, false))
+        ).setHighlightColor(
+                0x7401CF
+        ).setShortDescription(
+                getJid().asBareJid().toString()
+        ).setCapabilities(
+                PhoneAccount.CAPABILITY_CALL_PROVIDER
+        ).build();
+
+        telecomManager.registerPhoneAccount(phoneAccount);
+    }
+
+
+    // Unregister any associated PSTN gateway integration
+    public void unregisterAsPhoneAccount(Context ctx) {
+        TelecomManager telecomManager = ctx.getSystemService(TelecomManager.class);
+        telecomManager.unregisterPhoneAccount(phoneAccountHandle());
     }
 
     public static int getOption(Class<? extends AbstractPhoneContact> clazz) {

@@ -4,6 +4,7 @@ import static java.util.Arrays.asList;
 import static eu.siacs.conversations.utils.PermissionUtils.getFirstDenied;
 
 import android.Manifest;
+import org.jetbrains.annotations.NotNull;
 import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.app.PictureInPictureParams;
@@ -40,6 +41,7 @@ import com.google.common.collect.ImmutableSet;
 import com.google.common.util.concurrent.FutureCallback;
 import com.google.common.util.concurrent.Futures;
 
+import org.jetbrains.annotations.NotNull;
 import org.webrtc.RendererCommon;
 import org.webrtc.SurfaceViewRenderer;
 import org.webrtc.VideoTrack;
@@ -72,6 +74,10 @@ import eu.siacs.conversations.xmpp.jingle.JingleRtpConnection;
 import eu.siacs.conversations.xmpp.jingle.Media;
 import eu.siacs.conversations.xmpp.jingle.RtpEndUserState;
 
+import static eu.siacs.conversations.utils.PermissionUtils.getFirstDenied;
+import static java.util.Arrays.asList;
+
+
 public class RtpSessionActivity extends XmppActivity
         implements XmppConnectionService.OnJingleRtpConnectionUpdate,
                 eu.siacs.conversations.ui.widget.SurfaceViewRenderer.OnAspectRatioChanged {
@@ -86,8 +92,7 @@ public class RtpSessionActivity extends XmppActivity
 
     private static final int CALL_DURATION_UPDATE_INTERVAL = 333;
 
-    private static final List<RtpEndUserState> END_CARD =
-            Arrays.asList(
+    public static final List<RtpEndUserState> END_CARD = Arrays.asList(
                     RtpEndUserState.APPLICATION_ERROR,
                     RtpEndUserState.SECURITY_ERROR,
                     RtpEndUserState.DECLINED_OR_BUSY,
@@ -156,15 +161,23 @@ public class RtpSessionActivity extends XmppActivity
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        getWindow()
-                .addFlags(
-                        WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON
-                                | WindowManager.LayoutParams.FLAG_DISMISS_KEYGUARD
-                                | WindowManager.LayoutParams.FLAG_SHOW_WHEN_LOCKED
-                                | WindowManager.LayoutParams.FLAG_TURN_SCREEN_ON);
+        getWindow().addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON
+                | WindowManager.LayoutParams.FLAG_DISMISS_KEYGUARD
+                | WindowManager.LayoutParams.FLAG_SHOW_WHEN_LOCKED
+                | WindowManager.LayoutParams.FLAG_TURN_SCREEN_ON);
         this.binding = DataBindingUtil.setContentView(this, R.layout.activity_rtp_session);
         setSupportActionBar(binding.toolbar);
+
+        binding.dialpad.setClickConsumer(tag -> {
+            requireRtpConnection().applyDtmfTone(tag);
+        });
+
+        if (savedInstanceState != null) {
+            boolean dialpadVisible = savedInstanceState.getBoolean("dialpad_visible");
+            binding.dialpad.setVisibility(dialpadVisible ? View.VISIBLE : View.GONE);
+        }
     }
+
 
     @Override
     public boolean onCreateOptionsMenu(final Menu menu) {
@@ -172,9 +185,11 @@ public class RtpSessionActivity extends XmppActivity
         final MenuItem help = menu.findItem(R.id.action_help);
         final MenuItem gotoChat = menu.findItem(R.id.action_goto_chat);
         final MenuItem switchToVideo = menu.findItem(R.id.action_switch_to_video);
+        final MenuItem dialpad = menu.findItem(R.id.action_dialpad);
         help.setVisible(Config.HELP != null && isHelpButtonVisible());
         gotoChat.setVisible(isSwitchToConversationVisible());
         switchToVideo.setVisible(isSwitchToVideoVisible());
+        dialpad.setVisible(isAudioOnlyConversation());
         return super.onCreateOptionsMenu(menu);
     }
 
@@ -205,6 +220,14 @@ public class RtpSessionActivity extends XmppActivity
         }
     }
 
+    private boolean isAudioOnlyConversation() {
+        final JingleRtpConnection connection =
+                this.rtpConnectionReference != null ? this.rtpConnectionReference.get() : null;
+
+        return connection != null && !connection.getMedia().contains(Media.VIDEO);
+    }
+
+
     private boolean isSwitchToConversationVisible() {
         final JingleRtpConnection connection =
                 this.rtpConnectionReference != null ? this.rtpConnectionReference.get() : null;
@@ -229,6 +252,16 @@ public class RtpSessionActivity extends XmppActivity
         switchToConversation(conversation);
     }
 
+    private void toggleDialpadVisibility() {
+        if (binding.dialpad.getVisibility() == View.VISIBLE) {
+            binding.dialpad.setVisibility(View.GONE);
+        }
+        else {
+            binding.dialpad.setVisibility(View.VISIBLE);
+        }
+    }
+
+
     public boolean onOptionsItemSelected(final MenuItem item) {
         switch (item.getItemId()) {
             case R.id.action_help:
@@ -240,6 +273,9 @@ public class RtpSessionActivity extends XmppActivity
             case R.id.action_switch_to_video:
                 requestPermissionAndSwitchToVideo();
                 return true;
+            case R.id.action_dialpad:
+                toggleDialpadVisibility();
+                break;
         }
         return super.onOptionsItemSelected(item);
     }
@@ -617,6 +653,13 @@ public class RtpSessionActivity extends XmppActivity
                     .show();
         }
     }
+    @Override
+    protected void onSaveInstanceState(@NonNull @NotNull Bundle outState) {
+        super.onSaveInstanceState(outState);
+        int visibility = findViewById(R.id.dialpad).getVisibility();
+        outState.putInt("dialpad_visibility", visibility);
+    }
+
 
     @Override
     public void onStart() {

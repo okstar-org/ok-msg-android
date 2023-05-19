@@ -1351,4 +1351,5 @@
     <string name="outgoing_call_duration_timestamp">Исходящий звонок (%s) · %s</string>
     <string name="outgoing_call_timestamp">Исходящие звонки · %s</string>
     <string name="note_to_self">Примечание для себя</string>
+    <string name="refresh_feature_discovery">Обнаружение функций</string>
 </resources>
