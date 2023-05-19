@@ -264,6 +264,16 @@ public class DatabaseBackend extends SQLiteOpenHelper {
                 db.execSQL("PRAGMA monocles.user_version = 3");
             }
 
+            if(monoclesVersion < 4) {
+                db.execSQL(
+                        "CREATE TABLE monocles.cids (" +
+                                "cid TEXT NOT NULL PRIMARY KEY," +
+                                "path TEXT NOT NULL" +
+                                ")"
+                );
+                db.execSQL("PRAGMA monocles.user_version = 4");
+            }
+
 
             db.setTransactionSuccessful();
         } finally {

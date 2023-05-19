@@ -706,7 +706,7 @@ public class FileBackend {
             extension = "oga";
         }
         String filename = "Sent" + File.separator + fileDateFormat.format(new Date(message.getTimeSent())) + "_" + message.getUuid().substring(0, 4);
-        setupRelativeFilePath(message, String.format("%s.%s", filename, extension));
+        setupRelativeFilePath(message, uri, extension);
         copyFileToPrivateStorage(mXmppConnectionService.getFileBackend().getFile(message), uri);
     }
 
@@ -871,8 +871,42 @@ public class FileBackend {
                 throw new IllegalStateException("Unknown image format");
         }
         setupRelativeFilePath(message, filename);
-        copyImageToPrivateStorage(getFile(message), image);
-        updateFileParams(message);
+        final File tmp = getFile(message);
+        copyImageToPrivateStorage(tmp, image);
+        final String extension = MimeUtils.extractRelevantExtension(filename);
+        try {
+            setupRelativeFilePath(message, new FileInputStream(tmp), extension);
+        } catch (final FileNotFoundException e) {
+            throw new FileCopyException(R.string.error_file_not_found);
+        } catch (final IOException e) {
+            throw new FileCopyException(R.string.error_io_exception);
+        }
+        tmp.renameTo(getFile(message));
+        updateFileParams(message, null, false);
+    }
+
+    public void setupRelativeFilePath(final Message message, final Uri uri, final String extension) throws FileCopyException {
+        try {
+            setupRelativeFilePath(message, mXmppConnectionService.getContentResolver().openInputStream(uri), extension);
+        } catch (final FileNotFoundException e) {
+            throw new FileCopyException(R.string.error_file_not_found);
+        } catch (final IOException e) {
+            throw new FileCopyException(R.string.error_io_exception);
+        }
+    }
+
+    public void setupRelativeFilePath(final Message message, final InputStream is, final String extension) throws IOException {
+        Cid[] cids = calculateCids(is);
+
+        setupRelativeFilePath(message, String.format("%s.%s", cids[0], extension));
+        File file = getFile(message);
+        for (int i = 0; i < cids.length; i++) {
+            try {
+                mXmppConnectionService.saveCid(cids[i], file);
+            } catch (XmppConnectionService.BlockedMediaException e) {
+                throw new RuntimeException(e);
+            }
+        }
     }
 
     public void setupRelativeFilePath(final Message message, final String filename) {
@@ -1598,7 +1632,8 @@ public class FileBackend {
     public void updateFileParams(final Message message, final String url) {
         updateFileParams(message, url, true);
     }
-    public void updateFileParams(final Message message, String url, boolean updateCids) {
+
+    public void updateFileParams(final Message message, final String url, boolean updateCids) {
         final boolean encrypted =
                 message.getEncryption() == Message.ENCRYPTION_PGP
                         || message.getEncryption() == Message.ENCRYPTION_DECRYPTED;
@@ -1684,6 +1719,17 @@ public class FileBackend {
         message.setFileParams(fileParams);
         message.setFileDeleted(false);
         message.setType(privateMessage ? Message.TYPE_PRIVATE_FILE : (image ? Message.TYPE_IMAGE : Message.TYPE_FILE));
+        if (updateCids) {
+            try {
+                Cid[] cids = calculateCids(new FileInputStream(getFile(message)));
+                for (int i = 0; i < cids.length; i++) {
+                    mXmppConnectionService.saveCid(cids[i], file);
+                }
+            } catch (final IOException e) { } catch (
+                    XmppConnectionService.BlockedMediaException e) {
+                throw new RuntimeException(e);
+            }
+        }
     }
 
     private Dimensions getPDFDimensions(final File file) {
@@ -1958,6 +2004,34 @@ public class FileBackend {
             throw new AssertionError(e);
         }
     }
+
+    public void updateMediaScanner(File file) {
+        updateMediaScanner(file, null);
+    }
+
+    public void updateMediaScanner(File file, final Runnable callback) {
+        MediaScannerConnection.scanFile(
+                mXmppConnectionService,
+                new String[] {file.getAbsolutePath()},
+                null,
+                new MediaScannerConnection.MediaScannerConnectionClient() {
+                    @Override
+                    public void onMediaScannerConnected() {}
+
+                    @Override
+                    public void onScanCompleted(String path, Uri uri) {
+                        if (callback != null && file.getAbsolutePath().equals(path)) {
+                            callback.run();
+                        } else {
+                            Log.d(Config.LOGTAG, "media scanner scanned wrong file");
+                            if (callback != null) {
+                                callback.run();
+                            }
+                        }
+                    }
+                });
+    }
+
     private static class Dimensions {
         public final int width;
         public final int height;

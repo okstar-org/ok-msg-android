@@ -54,6 +54,8 @@ import eu.siacs.conversations.xmpp.jingle.stanzas.JinglePacket;
 import eu.siacs.conversations.xmpp.jingle.stanzas.Reason;
 import eu.siacs.conversations.xmpp.jingle.stanzas.S5BTransportInfo;
 import eu.siacs.conversations.xmpp.stanzas.IqPacket;
+import eu.siacs.conversations.utils.MimeUtils;
+
 
 public class JingleFileTransferConnection extends AbstractJingleConnection implements Transferable {
     private final SimpleDateFormat fileDateFormat = new SimpleDateFormat("yyyyMMdd_HHmmssSSS", Locale.US);
@@ -117,6 +119,8 @@ public class JingleFileTransferConnection extends AbstractJingleConnection imple
 
         @Override
         public void onFileTransmitted(DownloadableFile file) {
+            DownloadableFile finalFile;
+
             if (responding()) {
                 if (expectedHash.length > 0) {
                     if (Arrays.equals(expectedHash, file.getSha1Sum())) {
@@ -128,7 +132,17 @@ public class JingleFileTransferConnection extends AbstractJingleConnection imple
                     Log.d(Config.LOGTAG, id.account.getJid().asBareJid() + ": other party did not include file hash in file transfer");
                 }
                 sendSuccess();
-                xmppConnectionService.getFileBackend().updateFileParams(message);
+
+                final String extension = MimeUtils.extractRelevantExtension(file.getName());
+                try {
+                    xmppConnectionService.getFileBackend().setupRelativeFilePath(message, new FileInputStream(file), extension);
+                    finalFile = xmppConnectionService.getFileBackend().getFile(message);
+                    file.renameTo(finalFile);
+                } catch (final IOException e) {
+                    finalFile = file;
+                }
+
+                xmppConnectionService.getFileBackend().updateFileParams(message, null, false);
                 xmppConnectionService.databaseBackend.createMessage(message);
                 xmppConnectionService.markMessage(message, Message.STATUS_RECEIVED);
                 if (acceptedAutomatically) {
@@ -145,6 +159,8 @@ public class JingleFileTransferConnection extends AbstractJingleConnection imple
                     id.account.getPgpDecryptionService().decrypt(message, true);
                 }
             } else {
+                finalFile = file;
+
                 if (description.getVersion() == FileTransferDescription.Version.FT_5) { //older Conversations will break when receiving a session-info
                     sendHash();
                 }
@@ -152,13 +168,13 @@ public class JingleFileTransferConnection extends AbstractJingleConnection imple
                     id.account.getPgpDecryptionService().decrypt(message, false);
                 }
                 if (message.getEncryption() == Message.ENCRYPTION_PGP || message.getEncryption() == Message.ENCRYPTION_DECRYPTED) {
-                    file.delete();
+                    finalFile.delete();
                 }
                 disconnectSocks5Connections();
             }
-            Log.d(Config.LOGTAG, "successfully transmitted file:" + file.getAbsolutePath() + " (" + CryptoHelper.bytesToHex(file.getSha1Sum()) + ")");
+            Log.d(Config.LOGTAG, "successfully transmitted file:" + finalFile.getAbsolutePath() + " (" + CryptoHelper.bytesToHex(file.getSha1Sum()) + ")");
             if (message.getEncryption() != Message.ENCRYPTION_PGP) {
-                FileBackend.updateMediaScanner(xmppConnectionService, file);
+                xmppConnectionService.getFileBackend().updateMediaScanner(finalFile);
             }
         }
 
