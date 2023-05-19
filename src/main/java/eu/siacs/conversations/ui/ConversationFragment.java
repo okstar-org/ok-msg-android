@@ -1408,6 +1408,7 @@ public class ConversationFragment extends XmppFragment implements EditMessage.Ke
         Log.d(Config.LOGTAG, "ConversationFragment.onDestroyView()");
         messageListAdapter.setOnContactPictureClicked(null);
         messageListAdapter.setOnContactPictureLongClicked(null);
+        conversation.setupViewPager(null, null);
     }
 
     @Override
