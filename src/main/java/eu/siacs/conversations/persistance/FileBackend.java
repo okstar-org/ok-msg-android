@@ -753,7 +753,7 @@ public class FileBackend {
             if (cursor != null && cursor.moveToFirst()) {
                 filename = cursor.getString(0);
             }
-        } catch (final Exception e) {
+        } catch (final SecurityException | IllegalArgumentException e) {
             filename = null;
         }
         if (filename == null) {
