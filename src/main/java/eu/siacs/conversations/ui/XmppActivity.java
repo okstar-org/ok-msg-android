@@ -553,7 +553,7 @@ public abstract class XmppActivity extends ActionBarActivity {
             final ConnectivityManager cm = (ConnectivityManager) getSystemService(Context.CONNECTIVITY_SERVICE);
             return cm != null
                     && cm.isActiveNetworkMetered()
-                    && Compatibility.getRestrictBackgroundStatus(cm) == ConnectivityManager.RESTRICT_BACKGROUND_STATUS_ENABLED;
+                    && getRestrictBackgroundStatus(cm) == ConnectivityManager.RESTRICT_BACKGROUND_STATUS_ENABLED;
         } else {
             return false;
         }
@@ -564,10 +564,11 @@ public abstract class XmppActivity extends ActionBarActivity {
         try {
             return connectivityManager.getRestrictBackgroundStatus();
         } catch (final Exception e) {
-            Log.d(Config.LOGTAG, "platform bug detected. Unable to get restrict background status", e);
+            Log.d(Config.LOGTAG,"platform bug detected. Unable to get restrict background status",e);
             return -1;
         }
     }
+
 
     protected boolean usingEnterKey() {
         return getBooleanPreference("display_enter_key", R.bool.display_enter_key);
