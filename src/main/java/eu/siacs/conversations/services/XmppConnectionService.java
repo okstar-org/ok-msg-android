@@ -5450,6 +5450,10 @@ public class XmppConnectionService extends Service {
             if (contact.refreshRtpCapability()) {
                 syncRoster(account);
             }
+            if (disco.hasIdentity("gateway", "pstn")) {
+                contact.registerAsPhoneAccount(this);
+                mQuickConversationsService.considerSyncBackground(false);
+            }
         } else {
             final IqPacket request = new IqPacket(IqPacket.TYPE.GET);
             request.setTo(jid);
@@ -5466,6 +5470,11 @@ public class XmppConnectionService extends Service {
                     if (presence.getVer() == null || presence.getVer().equals(discoveryResult.getVer())) {
                         databaseBackend.insertDiscoveryResult(discoveryResult);
                         injectServiceDiscoveryResult(a.getRoster(), presence.getHash(), presence.getVer(), jid.getResource(), discoveryResult);
+                        if (discoveryResult.hasIdentity("gateway", "pstn")) {
+                            final Contact contact = account.getRoster().getContact(jid);
+                            contact.registerAsPhoneAccount(this);
+                            mQuickConversationsService.considerSyncBackground(false);
+                        }
                         if (cb != null) cb.run();
                     } else {
                         Log.d(Config.LOGTAG, a.getJid().asBareJid() + ": mismatch in caps for contact " + jid + " " + presence.getVer() + " vs " + discoveryResult.getVer());
