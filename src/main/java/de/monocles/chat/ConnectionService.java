@@ -220,7 +220,7 @@ public class ConnectionService extends android.telecom.ConnectionService {
             if (sessionId == null || !sessionId.equals(this.sessionId)) return;
             if (rtpConnection == null) {
                 this.with = with; // Store full JID of connection
-                rtpConnection = xmppConnectionService.getJingleConnectionManager().findJingleRtpConnection(account, with, sessionId);
+                findRtpConnection();
             }
 
             setStatusHints(new StatusHints(null, gatewayIcon, null));
@@ -249,7 +249,7 @@ public class ConnectionService extends android.telecom.ConnectionService {
 
         @Override
         public void onAudioDeviceChanged(AppRTCAudioManager.AudioDevice selectedAudioDevice, Set<AppRTCAudioManager.AudioDevice> availableAudioDevices) {
-            if (Build.VERSION.SDK_INT <= Build.VERSION_CODES.O) return;
+            if (Build.VERSION.SDK_INT < 26) return;
 
             switch(selectedAudioDevice) {
                 case SPEAKER_PHONE:
@@ -269,15 +269,20 @@ public class ConnectionService extends android.telecom.ConnectionService {
         public void onAnswer() {
             // For incoming calls, a connection update may not have been triggered before answering
             // so we have to acquire the rtp connection object here
-            this.rtpConnection = xmppConnectionService.getJingleConnectionManager().findJingleRtpConnection(account, with, sessionId);
-
-            rtpConnection.get().acceptCall();
+            findRtpConnection();
+            if (rtpConnection == null || rtpConnection.get() == null) {
+                close(new DisconnectCause(DisconnectCause.CANCELED));
+            } else {
+                rtpConnection.get().acceptCall();
+            }
         }
 
         @Override
         public void onReject() {
-            this.rtpConnection = xmppConnectionService.getJingleConnectionManager().findJingleRtpConnection(account, with, sessionId);
-            rtpConnection.get().rejectCall();
+            findRtpConnection();
+            if (rtpConnection != null && rtpConnection.get() != null) {
+                rtpConnection.get().rejectCall();
+            }
             close(new DisconnectCause(DisconnectCause.LOCAL));
         }
 
@@ -314,6 +319,12 @@ public class ConnectionService extends android.telecom.ConnectionService {
         @Override
         public void onPostDialContinue(boolean c) {
             if (c) postDial();
+        }
+
+        protected void findRtpConnection() {
+            if (rtpConnection != null) return;
+
+            rtpConnection = xmppConnectionService.getJingleConnectionManager().findJingleRtpConnection(account, with, sessionId);
         }
 
         protected void sleep(int ms) {
