@@ -502,17 +502,11 @@ public class MessageParser extends AbstractParser implements OnMessagePacketRece
         final Element oob = packet.findChild("x", Namespace.OOB);
         final String oobUrl = oob != null ? oob.findChildContent("url") : null;
         String replacementId = replaceElement == null ? null : replaceElement.getAttribute("id");
-        boolean replaceAsRetraction = false;
         if (replacementId == null) {
-            final Element fasten = packet.findChild("apply-to", "urn:xmpp:fasten:0");
-            if (fasten != null) {
-                replaceElement = fasten.findChild("retract", "urn:xmpp:message-retract:0");
-                if (replaceElement == null) replaceElement = fasten.findChild("moderated", "urn:xmpp:message-moderate:0");
-                if (replaceElement != null) {
-                    final String reason = replaceElement.findChildContent("reason", "urn:xmpp:message-moderate:0");
-                    replacementId = fasten.getAttribute("id");
-                    packet.setBody(reason == null ? "" : reason);
-                }
+            Element fasten = packet.findChild("apply-to", "urn:xmpp:fasten:0");
+            if (fasten != null && fasten.findChild("retract", "urn:xmpp:message-retract:0") != null) {
+                replacementId = fasten.getAttribute("id");
+                packet.setBody("");
             }
         }
         final Element applyToElement = packet.findChild("apply-to", "urn:xmpp:fasten:0");
