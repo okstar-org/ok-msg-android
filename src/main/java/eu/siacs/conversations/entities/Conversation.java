@@ -2201,15 +2201,13 @@ public class Conversation extends AbstractEntity implements Blockable, Comparabl
 
                 class JsObject {
                     @JavascriptInterface
-                    public void execute() {
-                        execute("execute");
-                    }
+                    public void execute() { execute("execute"); }
 
                     @JavascriptInterface
                     public void execute(String action) {
                         getView().post(() -> {
                             actionToWebview = null;
-                            if (CommandSession.this.execute(action)) {
+                            if(CommandSession.this.execute(action)) {
                                 removeSession(CommandSession.this);
                             }
                         });
