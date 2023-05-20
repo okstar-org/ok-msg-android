@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools">
+
     <uses-permission android:name="android.permission.BIND_TELECOM_CONNECTION_SERVICE" />
 
     <uses-permission android:name="android.permission.BLUETOOTH_CONNECT" />
@@ -116,7 +117,7 @@
         android:requestLegacyExternalStorage="true"
         android:supportsRtl="true"
         android:theme="@style/ConversationsTheme"
-        tools:ignore="GoogleAppIndexingWarning"
+        tools:ignore="GoogleAppIndexingWarning" android:hasFragileUserData="true"
         tools:replace="android:label, android:allowBackup"
         tools:targetApi="r">
 
