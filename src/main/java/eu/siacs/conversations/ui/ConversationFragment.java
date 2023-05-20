@@ -1644,37 +1644,15 @@ public class ConversationFragment extends XmppFragment implements EditMessage.Ke
                 correctMessage(selectedMessage);
                 return true;
             case R.id.retract_message:
-                new AlertDialog.Builder(activity)
-                        .setTitle(R.string.retract_message)
-                        .setMessage("Do you really want to retract this message?")
-                        .setPositiveButton(R.string.yes, (dialog, whichButton) -> {
-                            Message message = selectedMessage;
-                            while (message.mergeable(message.next())) {
-                                message = message.next();
-                            }
-                            Element reactions = message.getReactions();
-                            if (reactions != null) {
-                                final Message previousReaction = conversation.findMessageReactingTo(reactions.getAttribute("id"), null);
-                                if (previousReaction != null) reactions = previousReaction.getReactions();
-                                for (Element el : reactions.getChildren()) {
-                                    if (message.getQuoteableBody().endsWith(el.getContent())) {
-                                        reactions.removeChild(el);
-                                    }
-                                }
-                                message.setReactions(reactions);
-                                if (previousReaction != null) {
-                                    previousReaction.setReactions(reactions);
-                                    activity.xmppConnectionService.updateMessage(previousReaction);
-                                }
-                            }
-                            message.setBody(" ");
-                            message.putEdited(message.getUuid(), message.getServerMsgId(), message.getBody(), message.getTimeSent());
-                            message.setServerMsgId(null);
-                            message.setUuid(UUID.randomUUID().toString());
-                            sendMessage(message);
-                        })
-                        .setNegativeButton(R.string.no, null).show();
-                return true;
+                Message message = selectedMessage;
+                while (message.mergeable(message.next())) {
+                    message = message.next();
+                }
+                message.setBody(" ");
+                message.putEdited(message.getUuid(), message.getServerMsgId(), message.getBody(), message.getTimeSent());
+                message.setServerMsgId(null);
+                message.setUuid(UUID.randomUUID().toString());
+                sendMessage(message);
             case R.id.moderate_message:
                 activity.quickEdit("Spam", (reason) -> {
                     activity.xmppConnectionService.moderateMessage(conversation.getAccount(), selectedMessage, reason);
