@@ -532,7 +532,7 @@ public class MessageParser extends AbstractParser implements OnMessagePacketRece
             remoteMsgId = packet.getId();
         }
         boolean notify = false;
-        Element html = packet.findChild("html", "http://jabber.org/protocol/xhtml-im");
+        Element html = original.findChild("html", "http://jabber.org/protocol/xhtml-im");
         if (html != null && html.findChild("body", "http://www.w3.org/1999/xhtml") == null) {
             html = null;
         }

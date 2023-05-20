@@ -15,6 +15,10 @@ import android.util.Log;
 import android.util.Pair;
 import android.view.View;
 import eu.siacs.conversations.utils.Compatibility;
+import android.graphics.drawable.Drawable;
+import android.text.Html;
+import de.monocles.chat.BobTransfer;
+import de.monocles.chat.GetThumbnailForCid;
 
 import java.io.IOException;
 import java.util.stream.Collectors;
@@ -952,7 +956,7 @@ public class Message extends AbstractEntity implements AvatarService.Avatarable 
     }
     public SpannableStringBuilder getSpannableBody(GetThumbnailForCid thumbnailer, Drawable fallbackImg) {
         final Element html = getHtml();
-        if (html == null || Build.VERSION.SDK_INT < 24) {
+        if (html == null) {
             return new SpannableStringBuilder(MessageUtils.filterLtrRtl(getBody()).trim());
         } else {
             SpannableStringBuilder spannable = new SpannableStringBuilder(Html.fromHtml(
@@ -973,26 +977,13 @@ public class Message extends AbstractEntity implements AvatarService.Avatarable 
                     (opening, tag, output, xmlReader) -> {}
             ));
 
-            // Make images clickable and long-clickable with BetterLinkMovementMethod
-            ImageSpan[] imageSpans = spannable.getSpans(0, spannable.length(), ImageSpan.class);
-            for (ImageSpan span : imageSpans) {
-                final int start = spannable.getSpanStart(span);
-                final int end = spannable.getSpanEnd(span);
-
-                ClickableSpan click_span = new ClickableSpan() {
-                    @Override
-                    public void onClick(View widget) { }
-                };
-
-                spannable.setSpan(click_span, start, end, Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
-            }
-
             // https://stackoverflow.com/a/10187511/8611
             int i = spannable.length();
             while(--i >= 0 && Character.isWhitespace(spannable.charAt(i))) { }
             return (SpannableStringBuilder) spannable.subSequence(0, i+1);
         }
     }
+
 
     public Element getHtml() {
         if (this.payloads == null) return null;
@@ -1007,19 +998,7 @@ public class Message extends AbstractEntity implements AvatarService.Avatarable 
     }
 
     public SpannableStringBuilder getMergedBody() {
-        SpannableStringBuilder body = new SpannableStringBuilder(MessageUtils.filterLtrRtl(getBody()).trim());
-        Message current = this;
-        while (current.mergeable(current.next())) {
-            current = current.next();
-            if (current == null) {
-                break;
-            }
-            body.append("\n\n");
-            body.setSpan(new MergeSeparator(), body.length() - 2, body.length(),
-                    SpannableStringBuilder.SPAN_EXCLUSIVE_EXCLUSIVE);
-            body.append(MessageUtils.filterLtrRtl(current.getBody()).trim());
-        }
-        return body;
+        return getMergedBody(null, null);
     }
 
     public SpannableStringBuilder getMergedBody(GetThumbnailForCid thumbnailer, Drawable fallbackImg) {
