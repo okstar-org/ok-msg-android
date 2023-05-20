@@ -5,6 +5,8 @@ import org.jetbrains.annotations.NotNull;
 import java.util.ArrayList;
 import java.util.Hashtable;
 import java.util.List;
+import java.util.Collection;
+import java.util.stream.Collectors;
 
 import com.google.common.base.Optional;
 import com.google.common.primitives.Ints;
@@ -15,11 +17,10 @@ import eu.siacs.conversations.xmpp.Jid;
 import eu.siacs.conversations.xmpp.stanzas.MessagePacket;
 
 
-public class Element  implements Node {
+public class Element implements Node {
     private final String name;
     private Hashtable<String, String> attributes = new Hashtable<>();
-    private String content;
-    protected List<Element> children = new ArrayList<>();
+    private List<Element> children = new ArrayList<>();
     private List<Node> childNodes = new ArrayList<>();
 
 
@@ -32,30 +33,53 @@ public class Element  implements Node {
         this.setAttribute("xmlns", xmlns);
     }
 
-    public Element addChild(Element child) {
-        this.content = null;
-        children.add(child);
+    public Node prependChild(Node child) {
+        childNodes.add(0, child);
+        if (child instanceof Element) children.add(0, (Element) child);
+        return child;
+    }
+
+    public Node addChild(Node child) {
+        childNodes.add(child);
+        if (child instanceof Element) children.add((Element) child);
         return child;
     }
 
     public Element addChild(String name) {
-        this.content = null;
         Element child = new Element(name);
+        childNodes.add(child);
         children.add(child);
         return child;
     }
 
     public Element addChild(String name, String xmlns) {
-        this.content = null;
         Element child = new Element(name);
         child.setAttribute("xmlns", xmlns);
+        childNodes.add(child);
         children.add(child);
         return child;
     }
 
+    public void addChildren(final Collection<? extends Node> children) {
+        if (children == null) return;
+
+        this.childNodes.addAll(children);
+        for (Node node : children) {
+            if (node instanceof Element) {
+                this.children.add((Element) node);
+            }
+        }
+    }
+
+    public void removeChild(Node child) {
+        this.childNodes.remove(child);
+        if (child instanceof Element) this.children.remove(child);
+    }
+
+
     public Element setContent(String content) {
-        this.content = content;
-        this.children.clear();
+        clearChildren();
+        if (content != null) this.childNodes.add(new TextNode(content));
         return this;
     }
 
@@ -112,19 +136,19 @@ public class Element  implements Node {
         return findChild(name, xmlns) != null;
     }
 
-    public List<Element> getChildren() {
+    public final List<Element> getChildren() {
         return this.children;
     }
 
     public Element setChildren(List<Element> children) {
+        this.childNodes = new ArrayList(children);
         this.children = children;
         return this;
     }
 
     public final String getContent() {
-        return content;
+        return this.childNodes.stream().map(Node::getContent).filter(c -> c != null).collect(Collectors.joining());
     }
-
     public Element setAttribute(String name, String value) {
         if (name != null && value != null) {
             this.attributes.put(name, value);
@@ -182,22 +206,18 @@ public class Element  implements Node {
     @NotNull
     public String toString() {
         final StringBuilder elementOutput = new StringBuilder();
-        if ((content == null) && (children.size() == 0)) {
-            final Tag emptyTag = Tag.empty(name);
-            emptyTag.setAttributes(this.attributes);
-            elementOutput.append(emptyTag);
+        if (childNodes.size() == 0) {
+            Tag emptyTag = Tag.empty(name);
+            emptyTag.setAtttributes(this.attributes);
+            elementOutput.append(emptyTag.toString());
         } else {
-            final Tag startTag = Tag.start(name);
-            startTag.setAttributes(this.attributes);
+            Tag startTag = Tag.start(name);
+            startTag.setAtttributes(this.attributes);
             elementOutput.append(startTag);
-            if (content != null) {
-                elementOutput.append(XmlHelper.encodeEntities(content));
-            } else {
-                for (final Element child : children) {
-                    elementOutput.append(child.toString());
-                }
+            for (Node child : childNodes) {
+                elementOutput.append(child.toString());
             }
-            final Tag endTag = Tag.end(name);
+            Tag endTag = Tag.end(name);
             elementOutput.append(endTag);
         }
         return elementOutput.toString();
@@ -209,8 +229,8 @@ public class Element  implements Node {
 
     public void clearChildren() {
         this.children.clear();
+        this.childNodes.clear();
     }
-
     public void setAttribute(String name, long value) {
         this.setAttribute(name, Long.toString(value));
     }
@@ -228,10 +248,4 @@ public class Element  implements Node {
         return getAttribute("xmlns");
     }
 
-    public void removeChild(Node child) {
-        if (child == null) return;
-
-        this.childNodes.remove(child);
-        if (child instanceof Element) this.children.remove(child);
-    }
 }

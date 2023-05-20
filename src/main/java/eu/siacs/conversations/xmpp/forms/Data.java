@@ -4,7 +4,7 @@ import android.os.Bundle;
 
 import java.util.ArrayList;
 import java.util.Collection;
-import java.util.Iterator;
+import java.util.stream.Collectors;
 import java.util.List;
 
 import eu.siacs.conversations.xml.Namespace;
@@ -77,12 +77,7 @@ public class Data extends Element {
     }
 
     private void removeUnnecessaryChildren() {
-        for (Iterator<Element> iterator = this.children.iterator(); iterator.hasNext(); ) {
-            Element element = iterator.next();
-            if (!element.getName().equals("field") && !element.getName().equals("title")) {
-                iterator.remove();
-            }
-        }
+        setChildren(getChildren().stream().filter(element -> element.getName().equals("field") || element.getName().equals("title")).collect(Collectors.toList()));
     }
 
     public static Data parse(Element element) {
