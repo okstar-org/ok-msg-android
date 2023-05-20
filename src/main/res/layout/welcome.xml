@@ -21,7 +21,7 @@
                 <LinearLayout
                     android:id="@+id/linearLayout"
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
+                    android:layout_height="match_parent"
                     android:layout_alignParentStart="true"
                     android:layout_alignParentLeft="true"
                     android:layout_alignParentBottom="true"
@@ -33,14 +33,21 @@
                     android:paddingRight="16dp"
                     android:paddingBottom="8dp">
 
-                    <Space
+
+
+                    <ImageView
+                        android:id="@+id/myImageView"
                         android:layout_width="match_parent"
-                        android:layout_height="0dp"
-                        android:layout_weight="1" />
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center_horizontal"
+                        android:padding="50dp"
+                        android:src="@drawable/logo_actionbar"
+                        android:contentDescription="@string/app_name" />
 
                     <TextView
-                        android:layout_width="wrap_content"
+                        android:layout_width="match_parent"
                         android:layout_height="wrap_content"
+                        android:gravity="center"
                         android:text="@string/welcome_header"
                         android:textAppearance="@style/TextAppearance.Conversations.Title" />
 
@@ -61,54 +68,59 @@
                         android:textSize="?attr/TextSizeBody"
                         android:visibility="gone" />
 
-                    <Button
-                        android:id="@+id/use_existing_account"
-                        style="@style/Widget.Conversations.Button.Borderless"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_gravity="end"
-                        android:text="@string/welcome_existing_account"
-                        android:textColor="?attr/colorAccent" />
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:orientation="vertical"
+                        android:gravity = "center">
 
-                    <Button
-                        android:id="@+id/import_database"
-                        style="@style/Widget.Conversations.Button.Borderless"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_gravity="end"
-                        android:text="@string/import_database"
-                        android:textColor="?attr/colorAccent" />
+                        <Button
+                            android:id="@+id/use_existing_account"
+                            android:layout_width="250dp"
+                            android:layout_height="wrap_content"
+                            android:background="@drawable/button_have_account"
+                            android:text="@string/welcome_existing_account"
+                            android:textColor="@color/white"
+                            android:layout_margin="10dp"/>
 
-                    <Button
-                        android:id="@+id/create_account"
-                        style="@style/Widget.Conversations.Button.Borderless"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_gravity="end"
-                        android:text="@string/create_account"
-                        android:textColor="?attr/colorAccent" />
+                        <Button
+                            android:id="@+id/import_database"
+                            style="@style/Widget.Conversations.Button.Outline"
+                            android:shadowRadius="3"
+                            android:layout_width="250dp"
+                            android:layout_height="wrap_content"
+                            android:text="@string/import_database"
+                            android:textColor="@color/accent_monocles"
+                            android:layout_margin="10dp"/>
 
+                        <View
+                            android:layout_width="250dp"
+                            android:layout_height="1.5dp"
+                            android:background="@color/primary_monocles"
+                            android:layout_margin="10dp"/>
 
+                        <Button
+                            android:id="@+id/create_account"
+                            style="@style/Widget.Conversations.Button.Outline"
+                            android:layout_width="250dp"
+                            android:layout_height="wrap_content"
+                            android:text="@string/create_account"
+                            android:textColor="@color/accent_monocles"
+                            android:layout_margin="10dp"/>
+
+                        <Button
+                            android:id="@+id/use_snikket"
+                            style="@style/Widget.Conversations.Button.Outline"
+                            android:textAllCaps="false"
+                            android:layout_width="250dp"
+                            android:layout_height="wrap_content"
+                            android:text="@string/i_am_snikket_user"
+                            android:textColor="@color/accent_monocles"
+                            android:layout_margin="10dp"/>
+                        <!--           android:drawableLeft="@drawable/snikket"  TODO: Add icons -->
+
+                    </LinearLayout>
                 </LinearLayout>
-
-                <RelativeLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:layout_above="@+id/linearLayout"
-                    android:layout_alignParentStart="true"
-                    android:layout_alignParentLeft="true"
-                    android:layout_alignParentTop="true">
-
-                    <ImageView
-                        android:id="@+id/myImageView"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_centerHorizontal="true"
-                        android:layout_centerVertical="true"
-                        android:padding="8dp"
-                        android:src="@drawable/logo_actionbar" />
-
-                </RelativeLayout>
             </RelativeLayout>
         </ScrollView>
     </LinearLayout>

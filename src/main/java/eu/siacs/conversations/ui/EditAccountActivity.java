@@ -842,6 +842,9 @@ public class EditAccountActivity extends OmemoActivity implements OnAccountUpdat
         if (mForceRegister != null) {
             this.binding.accountRegisterNew.setVisibility(View.GONE);
         }
+        if (intent.getBooleanExtra("snikket", false)) {
+            this.binding.accountJidLayout.setHint("Snikket Address");
+        }
     }
 
     private void displayVerificationWarningDialog(final XmppUri xmppUri) {
