@@ -2284,6 +2284,8 @@ public class XmppConnectionService extends Service {
     }
 
     private void pushBookmarksPrivateXml(Account account) {
+        if (!account.areBookmarksLoaded()) return;
+
         Log.d(Config.LOGTAG, account.getJid().asBareJid() + ": pushing bookmarks via private xml");
         IqPacket iqPacket = new IqPacket(IqPacket.TYPE.SET);
         Element query = iqPacket.query("jabber:iq:private");
@@ -2295,6 +2297,8 @@ public class XmppConnectionService extends Service {
     }
 
     private void pushBookmarksPep(Account account) {
+        if (!account.areBookmarksLoaded()) return;
+
         Log.d(Config.LOGTAG, account.getJid().asBareJid() + ": pushing bookmarks via pep");
         final Element storage = new Element("storage", "storage:bookmarks");
         for (final Bookmark bookmark : account.getBookmarks()) {

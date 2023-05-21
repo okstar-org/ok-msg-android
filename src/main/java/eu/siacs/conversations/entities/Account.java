@@ -112,6 +112,8 @@ public class Account extends AbstractEntity implements AvatarService.Avatarable 
     private long mEndGracePeriod = 0L;
     private String otrFingerprint;
     private final Map<Jid, Bookmark> bookmarks = new HashMap<>();
+    private boolean bookmarksLoaded = false;
+
     private Presence.Status presenceStatus;
     private String presenceStatusMessage;
     private String pinnedMechanism;
@@ -658,11 +660,13 @@ public class Account extends AbstractEntity implements AvatarService.Avatarable 
             return ImmutableList.copyOf(this.bookmarks.values());
         }
     }
+    public boolean areBookmarksLoaded() { return bookmarksLoaded; }
 
-    public void setBookmarks(final Map<Jid, Bookmark> bookmarks) {
+    public void setBookmarks(Map<Jid, Bookmark> bookmarks) {
         synchronized (this.bookmarks) {
             this.bookmarks.clear();
             this.bookmarks.putAll(bookmarks);
+            this.bookmarksLoaded = true;
         }
     }
 
