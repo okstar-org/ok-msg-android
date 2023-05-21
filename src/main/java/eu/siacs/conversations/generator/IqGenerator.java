@@ -6,12 +6,20 @@ import static eu.siacs.conversations.ui.SettingsActivity.PERSISTENT_ROOM;
 import android.os.Bundle;
 import android.util.Base64;
 import android.util.Log;
+import android.util.Base64OutputStream;
+
+import de.monocles.chat.BobTransfer;
+
+import com.google.common.io.ByteStreams;
 
 import org.whispersystems.libsignal.IdentityKey;
 import org.whispersystems.libsignal.ecc.ECPublicKey;
 import org.whispersystems.libsignal.state.PreKeyRecord;
 import org.whispersystems.libsignal.state.SignedPreKeyRecord;
 
+import java.io.ByteArrayOutputStream;
+import java.io.FileInputStream;
+import java.io.IOException;
 import java.nio.ByteBuffer;
 import java.security.cert.CertificateEncodingException;
 import java.security.cert.X509Certificate;
@@ -21,6 +29,8 @@ import java.util.Locale;
 import java.util.Set;
 import java.util.TimeZone;
 import java.util.UUID;
+
+import io.ipfs.cid.Cid;
 
 import eu.siacs.conversations.Config;
 import eu.siacs.conversations.R;
@@ -631,5 +641,37 @@ public class IqGenerator extends AbstractGenerator {
 
     private static boolean persistentRoom() {
         return xmppConnectionService.getBooleanPreference(PERSISTENT_ROOM, R.bool.enable_persistent_rooms);
+    }
+
+    public IqPacket bobResponse(IqPacket request) {
+        try {
+            String bobCid = request.findChild("data", "urn:xmpp:bob").getAttribute("cid");
+            Cid cid = BobTransfer.cid(bobCid);
+            DownloadableFile f = mXmppConnectionService.getFileForCid(cid);
+            if (f == null || !f.canRead()) {
+                throw new IOException("No such file");
+            } else if (f.getSize() > 129000) {
+                final IqPacket response = request.generateResponse(IqPacket.TYPE.ERROR);
+                final Element error = response.addChild("error");
+                error.setAttribute("type", "cancel");
+                error.addChild("policy-violation", "urn:ietf:params:xml:ns:xmpp-stanzas");
+                return response;
+            } else {
+                final IqPacket response = request.generateResponse(IqPacket.TYPE.RESULT);
+                final Element data = response.addChild("data", "urn:xmpp:bob");
+                data.setAttribute("cid", bobCid);
+                data.setAttribute("type", f.getMimeType());
+                ByteArrayOutputStream b64 = new ByteArrayOutputStream((int) f.getSize() * 2);
+                ByteStreams.copy(new FileInputStream(f), new Base64OutputStream(b64, Base64.NO_WRAP));
+                data.setContent(b64.toString("utf-8"));
+                return response;
+            }
+        } catch (final IOException | IllegalStateException e) {
+            final IqPacket response = request.generateResponse(IqPacket.TYPE.ERROR);
+            final Element error = response.addChild("error");
+            error.setAttribute("type", "cancel");
+            error.addChild("item-not-found", "urn:ietf:params:xml:ns:xmpp-stanzas");
+            return response;
+        }
     }
 }
