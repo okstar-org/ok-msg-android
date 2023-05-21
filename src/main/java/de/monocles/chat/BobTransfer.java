@@ -1,11 +1,8 @@
 package de.monocles.chat;
 
-import android.net.Uri;
 import android.util.Base64;
 import android.util.Log;
 
-import java.util.Map;
-import java.util.HashMap;
 import java.io.ByteArrayInputStream;
 import java.io.File;
 import java.io.IOException;
@@ -15,7 +12,6 @@ import java.net.URISyntaxException;
 import java.security.NoSuchAlgorithmException;
 
 import io.ipfs.cid.Cid;
-import io.ipfs.multihash.Multihash;
 
 import eu.siacs.conversations.Config;
 import eu.siacs.conversations.R;
@@ -38,19 +34,10 @@ public class BobTransfer implements Transferable {
     protected Account account;
     protected Jid to;
     protected XmppConnectionService xmppConnectionService;
-    protected static Map<URI, Long> attempts = new HashMap<>();
-
-    public static Cid cid(Uri uri) {
-        if (uri == null || uri.getScheme() == null || !uri.getScheme().equals("cid")) return null;
-        return cid(uri.getSchemeSpecificPart());
-    }
 
     public static Cid cid(URI uri) {
-        if (uri == null || uri.getScheme() == null || !uri.getScheme().equals("cid")) return null;
-        return cid(uri.getSchemeSpecificPart());
-    }
-
-    public static Cid cid(String bobCid) {
+        if (!uri.getScheme().equals("cid")) return null;
+        String bobCid = uri.getSchemeSpecificPart();
         if (!bobCid.contains("@") || !bobCid.contains("+")) return null;
         String[] cidParts = bobCid.split("@")[0].split("\\+");
         try {
@@ -61,13 +48,7 @@ public class BobTransfer implements Transferable {
     }
 
     public static URI uri(Cid cid) throws NoSuchAlgorithmException, URISyntaxException {
-        return new URI("cid", multihashAlgo(cid.getType()) + "+" + CryptoHelper.bytesToHex(cid.getHash()) + "@bob.xmpp.org", null);
-    }
-
-    private static String multihashAlgo(Multihash.Type type) throws NoSuchAlgorithmException {
-        final String algo = CryptoHelper.multihashAlgo(type);
-        if (algo.equals("sha-1")) return "sha1";
-        return algo;
+        return new URI("cid", CryptoHelper.multihashAlgo(cid.getType()) + "+" + CryptoHelper.bytesToHex(cid.getHash()) + "@bob.xmpp.org", null);
     }
 
     public BobTransfer(URI uri, Account account, Jid to, XmppConnectionService xmppConnectionService) {
@@ -87,8 +68,7 @@ public class BobTransfer implements Transferable {
             return true;
         }
 
-        if (xmppConnectionService.hasInternetConnection() && attempts.getOrDefault(uri, 0L) + 10000L < System.currentTimeMillis()) {
-            attempts.put(uri, System.currentTimeMillis());
+        if (xmppConnectionService.hasInternetConnection()) {
             changeStatus(Transferable.STATUS_DOWNLOADING);
 
             IqPacket request = new IqPacket(IqPacket.TYPE.GET);
@@ -100,6 +80,7 @@ public class BobTransfer implements Transferable {
                 if (packet.getType() == IqPacket.TYPE.ERROR || data == null) {
                     Log.d(Config.LOGTAG, "BobTransfer failed: " + packet);
                     finish(null);
+                    xmppConnectionService.showErrorToastInUi(R.string.download_failed_file_not_found);
                 } else {
                     final String contentType = data.getAttribute("type");
                     String fileExtension = "dat";
@@ -117,19 +98,14 @@ public class BobTransfer implements Transferable {
                         }
 
                         final OutputStream outputStream = AbstractConnectionManager.createOutputStream(new DownloadableFile(file.getAbsolutePath()), false, false);
+                        outputStream.write(bytes);
+                        outputStream.flush();
+                        outputStream.close();
 
-                        if (outputStream != null && bytes != null) {
-                            outputStream.write(bytes);
-                            outputStream.flush();
-                            outputStream.close();
-                            finish(file);
-                        } else {
-                            Log.w(Config.LOGTAG, "Could not write BobTransfer, null outputStream");
-                            finish(null);
-                        }
-                    } catch (final IOException | XmppConnectionService.BlockedMediaException e) {
-                        Log.w(Config.LOGTAG, "Could not write BobTransfer: " + e);
+                        finish(file);
+                    } catch (IOException e) {
                         finish(null);
+                        xmppConnectionService.showErrorToastInUi(R.string.download_failed_could_not_write_file);
                     }
                 }
             });

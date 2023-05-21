@@ -80,6 +80,8 @@ import java.util.Locale;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 import java.io.IOException;
+import java.net.URISyntaxException;
+import java.security.NoSuchAlgorithmException;
 
 import eu.siacs.conversations.entities.Contact;
 import eu.siacs.conversations.entities.Message;
@@ -673,8 +675,14 @@ public class MessageAdapter extends ArrayAdapter<Message> {
             SpannableStringBuilder body =  new SpannableStringBuilder(replaceYoutube(activity.getApplicationContext(), message.getMergedBody((cid) -> {
                 try {
                     DownloadableFile f = activity.xmppConnectionService.getFileForCid(cid);
-                    if (f == null) return null;
+                    if (f == null || !f.canRead()) {
+                        if (!message.trusted() && !message.getConversation().canInferPresence()) return null;
 
+                        try {
+                            new BobTransfer(BobTransfer.uri(cid), message.getConversation().getAccount(), message.getCounterpart(), activity.xmppConnectionService).start();
+                        } catch (final NoSuchAlgorithmException | URISyntaxException e) { }
+                        return null;
+                    }
                     Drawable d = activity.xmppConnectionService.getFileBackend().getThumbnail(f, activity.getResources(), (int) (metrics.density * 288), true);
                     if (d == null) {
                         new ThumbnailTask().execute(f);
@@ -766,33 +774,7 @@ public class MessageAdapter extends ArrayAdapter<Message> {
             MyLinkify.addLinks(body, message.getConversation().getAccount(), message.getConversation().getJid());
             viewHolder.messageBody.setText(body);
             viewHolder.messageBody.setAutoLinkMask(0);
-            BetterLinkMovementMethod method = new BetterLinkMovementMethod() {
-                @Override
-                protected void dispatchUrlLongClick(TextView tv, ClickableSpan span) {
-                    if (span instanceof URLSpan || mOnInlineImageLongClickedListener == null) {
-                        tv.dispatchTouchEvent(MotionEvent.obtain(0, 0, MotionEvent.ACTION_CANCEL, 0f, 0f, 0));
-                        super.dispatchUrlLongClick(tv, span);
-                        return;
-                    }
-
-                    Spannable body = (Spannable) tv.getText();
-                    ImageSpan[] imageSpans = body.getSpans(body.getSpanStart(span), body.getSpanEnd(span), ImageSpan.class);
-                    if (imageSpans.length > 0) {
-                        Uri uri = Uri.parse(imageSpans[0].getSource());
-                        Cid cid = BobTransfer.cid(uri);
-                        if (cid == null) return;
-                        if (mOnInlineImageLongClickedListener.onInlineImageLongClicked(cid)) {
-                            tv.dispatchTouchEvent(MotionEvent.obtain(0, 0, MotionEvent.ACTION_CANCEL, 0f, 0f, 0));
-                        }
-                    }
-                }
-            };
-            method.setOnLinkLongClickListener((tv, url) -> {
-                tv.dispatchTouchEvent(MotionEvent.obtain(0, 0, MotionEvent.ACTION_CANCEL, 0f, 0f, 0));
-                ShareUtil.copyLinkToClipboard(activity, url);
-                return true;
-            });
-            viewHolder.messageBody.setMovementMethod(method);
+            viewHolder.messageBody.setMovementMethod(ClickableMovementMethod.getInstance());
         } else {
             viewHolder.messageBody.setText("");
             viewHolder.messageBody.setTextIsSelectable(false);
