@@ -8,6 +8,7 @@ import java.util.Locale;
 
 import eu.siacs.conversations.services.AvatarService;
 import eu.siacs.conversations.xmpp.Jid;
+import eu.siacs.conversations.entities.Account;
 
 public interface ListItem extends Comparable<ListItem>, AvatarService.Avatarable  {
     String getDisplayName();
