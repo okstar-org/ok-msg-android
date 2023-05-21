@@ -774,7 +774,13 @@ public class MessageAdapter extends ArrayAdapter<Message> {
             MyLinkify.addLinks(body, message.getConversation().getAccount(), message.getConversation().getJid());
             viewHolder.messageBody.setText(body);
             viewHolder.messageBody.setAutoLinkMask(0);
-            viewHolder.messageBody.setMovementMethod(ClickableMovementMethod.getInstance());
+            BetterLinkMovementMethod method = BetterLinkMovementMethod.newInstance();
+            method.setOnLinkLongClickListener((tv, url) -> {
+                tv.dispatchTouchEvent(MotionEvent.obtain(0, 0, MotionEvent.ACTION_CANCEL, 0f, 0f, 0));
+                ShareUtil.copyLinkToClipboard(activity, url);
+                return true;
+            });
+            viewHolder.messageBody.setMovementMethod(method);
         } else {
             viewHolder.messageBody.setText("");
             viewHolder.messageBody.setTextIsSelectable(false);
