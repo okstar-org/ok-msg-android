@@ -13,8 +13,10 @@ import android.text.format.DateUtils;
 import android.text.style.ForegroundColorSpan;
 import android.text.style.StyleSpan;
 import android.util.Pair;
+import android.graphics.drawable.Drawable;
 
 import androidx.annotation.ColorInt;
+import androidx.core.content.res.ResourcesCompat;
 
 import com.google.common.base.Strings;
 
@@ -359,7 +361,9 @@ public class UIHelper {
                 return new Pair<>(context.getString(R.string.x_file_offered_for_download,
                         getFileDescriptionString(context, message)), true);
             } else {
-                SpannableStringBuilder styledBody = new SpannableStringBuilder(MyLinkify.replaceYoutube(context, body));
+                Drawable fallbackImg = ResourcesCompat.getDrawable(context.getResources(), R.drawable.ic_attach_photo, null);
+                fallbackImg.setBounds(0, 0, fallbackImg.getIntrinsicWidth(), fallbackImg.getIntrinsicHeight());
+                SpannableStringBuilder styledBody = message.getSpannableBody(null, fallbackImg);  //TODO: ADD message.getSpannableBody(null, fallbackImg); somehow (commit: Actually display images we already have inline in XHTML-IM)
                 if (textColor != 0) {
                     StylingHelper.format(styledBody, 0, styledBody.length() - 1, textColor, true);
                 }

@@ -39,6 +39,7 @@ import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
 import android.database.ContentObserver;
 import android.graphics.Bitmap;
+import android.graphics.drawable.Drawable;
 import android.media.AudioManager;
 import android.net.ConnectivityManager;
 import android.net.Network;
@@ -357,6 +358,7 @@ public class XmppConnectionService extends Service {
             }
         }
     };
+    private LruCache<String, Drawable> mDrawableCache;
 
     public void setDiallerIntegrationActive(boolean active) {
         diallerIntegrationActive.set(active);
@@ -5736,6 +5738,10 @@ public class XmppConnectionService extends Service {
             throw new BlockedMediaException();
         }
         this.databaseBackend.saveCid(cid, file, url);
+    }
+
+    public LruCache<String, Drawable> getDrawableCache() {
+        return this.mDrawableCache;
     }
 
     public interface OnMamPreferencesFetched {

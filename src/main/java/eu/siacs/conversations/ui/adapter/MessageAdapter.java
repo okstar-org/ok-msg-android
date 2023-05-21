@@ -61,11 +61,13 @@ import android.widget.LinearLayout;
 import android.widget.ProgressBar;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
+import android.os.AsyncTask;
 
 import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
 import androidx.core.graphics.ColorUtils;
 import androidx.core.graphics.drawable.DrawableCompat;
+import androidx.core.content.res.ResourcesCompat;
 
 import com.google.common.base.Strings;
 import com.squareup.picasso.Picasso;
@@ -77,6 +79,7 @@ import java.util.List;
 import java.util.Locale;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
+import java.io.IOException;
 
 import eu.siacs.conversations.entities.Contact;
 import eu.siacs.conversations.entities.Message;
@@ -665,7 +668,25 @@ public class MessageAdapter extends ArrayAdapter<Message> {
         if (message.getBody() != null && !message.getBody().equals("")) {
             viewHolder.messageBody.setVisibility(View.VISIBLE);
             final SpannableString nick = UIHelper.getColoredUsername(activity.xmppConnectionService, message);
-            SpannableStringBuilder body = new SpannableStringBuilder(replaceYoutube(activity.getApplicationContext(), message.getMergedBody()));
+            Drawable fallbackImg = ResourcesCompat.getDrawable(activity.getResources(), activity.getThemeResource(R.attr.ic_attach_photo, R.drawable.ic_attach_photo), null);
+            fallbackImg.setBounds(FileBackend.rectForSize(fallbackImg.getIntrinsicWidth(), fallbackImg.getIntrinsicHeight(), (int) (metrics.density * 32)));
+            SpannableStringBuilder body =  new SpannableStringBuilder(replaceYoutube(activity.getApplicationContext(), message.getMergedBody((cid) -> {
+                try {
+                    DownloadableFile f = activity.xmppConnectionService.getFileForCid(cid);
+                    if (f == null) return null;
+
+                    Drawable d = activity.xmppConnectionService.getFileBackend().getThumbnail(f, activity.getResources(), (int) (metrics.density * 288), true);
+                    if (d == null) {
+                        new ThumbnailTask().execute(f);
+                    } else {
+                        d = d.getConstantState().newDrawable();
+                        d.setBounds(FileBackend.rectForSize(d.getIntrinsicWidth(), d.getIntrinsicHeight(), (int) (metrics.density * 32)));
+                    }
+                    return d;
+                } catch (final IOException e) {
+                    return fallbackImg;
+                }
+            }, fallbackImg)));
             if (message.getBody().equals(DELETED_MESSAGE_BODY)) {
                 body = body.replace(0, DELETED_MESSAGE_BODY.length(), activity.getString(R.string.message_deleted));
             } else if (message.getBody().equals(DELETED_MESSAGE_BODY_OLD)) {
@@ -1721,5 +1742,29 @@ public class MessageAdapter extends ArrayAdapter<Message> {
     }
     public interface OnInlineImageLongClicked {
         boolean onInlineImageLongClicked(Cid cid);
+    }
+
+    class ThumbnailTask extends AsyncTask<DownloadableFile, Void, Drawable[]> {
+        @Override
+        protected Drawable[] doInBackground(DownloadableFile... params) {
+            if (isCancelled()) return null;
+
+            Drawable[] d = new Drawable[params.length];
+            for (int i = 0; i < params.length; i++) {
+                try {
+                    d[i] = activity.xmppConnectionService.getFileBackend().getThumbnail(params[i], activity.getResources(), (int) (metrics.density * 288), false);
+                } catch (final IOException e) {
+                    d[i] = null;
+                }
+            }
+
+            return d;
+        }
+
+        @Override
+        protected void onPostExecute(final Drawable[] d) {
+            if (isCancelled()) return;
+            activity.xmppConnectionService.updateConversationUi();
+        }
     }
 }

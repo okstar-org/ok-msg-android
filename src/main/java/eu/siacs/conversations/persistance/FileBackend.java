@@ -13,15 +13,19 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
+import android.content.res.Resources;
 import android.database.Cursor;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Canvas;
 import android.graphics.Color;
+import android.graphics.ImageDecoder;
 import android.graphics.Matrix;
 import android.graphics.Movie;
 import android.graphics.Paint;
+import android.graphics.Rect;
 import android.graphics.RectF;
+import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.Drawable;
 import android.graphics.pdf.PdfRenderer;
 import android.media.MediaMetadataRetriever;
@@ -43,6 +47,7 @@ import android.util.DisplayMetrics;
 import android.util.Log;
 import android.util.LruCache;
 
+import androidx.annotation.RequiresApi;
 import androidx.annotation.StringRes;
 import androidx.core.content.FileProvider;
 import androidx.exifinterface.media.ExifInterface;
@@ -120,6 +125,7 @@ public class FileBackend {
     public static final String SENT_VIDEOS = "Videos" + File.separator + "Sent";
 
     public static final AtomicInteger STORAGE_INDEX = new AtomicInteger(0);
+    private static final float IGNORE_PADDING = 0.15f;
 
     private final XmppConnectionService mXmppConnectionService;
 
@@ -1088,18 +1094,11 @@ public class FileBackend {
         }
     }
 
-    private Dimensions scalePdfDimensions(final Dimensions dimensions) {
-        final DisplayMetrics displayMetrics = mXmppConnectionService.getResources().getDisplayMetrics();
+    private Dimensions scalePdfDimensions(Dimensions in) {
+        final DisplayMetrics displayMetrics =
+                mXmppConnectionService.getResources().getDisplayMetrics();
         final int target = (int) (displayMetrics.density * 288);
-        final int w, h;
-        if (dimensions.width <= dimensions.height) {
-            w = Math.max((int) (dimensions.width / ((double) dimensions.height / target)), 1);
-            h = target;
-        } else {
-            w = target;
-            h = Math.max((int) (dimensions.height / ((double) dimensions.width / target)), 1);
-        }
-        return new Dimensions(h, w);
+        return scalePdfDimensions(in, target, true);
     }
 
     private Bitmap getFullsizeImagePreview(File file, int size) {
@@ -2282,5 +2281,177 @@ public class FileBackend {
         } else {
             return getGlobalDocumentsPath() + File.separator + filename;
         }
+    }
+
+    public Drawable getThumbnail(Message message, Resources res, int size, boolean cacheOnly) throws IOException {
+        return getThumbnail(getFile(message), res, size, cacheOnly);
+    }
+
+    public Drawable getThumbnail(DownloadableFile file, Resources res, int size, boolean cacheOnly) throws IOException {
+        final LruCache<String, Drawable> cache = mXmppConnectionService.getDrawableCache();
+        Drawable thumbnail = cache.get(file.getAbsolutePath());
+        if ((thumbnail == null) && (!cacheOnly)) {
+            synchronized (THUMBNAIL_LOCK) {
+                thumbnail = cache.get(file.getAbsolutePath());
+                if (thumbnail != null) {
+                    return thumbnail;
+                }
+                final String mime = file.getMimeType();
+                if ("application/pdf".equals(mime)) {
+                    thumbnail = new BitmapDrawable(res, getPdfDocumentPreview(file, size));
+                } else if (mime.startsWith("video/")) {
+                    thumbnail = new BitmapDrawable(res, getVideoPreview(file, size));
+                } else {
+                    thumbnail = getImagePreview(file, res, size, mime);
+                    if (thumbnail == null) {
+                        throw new FileNotFoundException();
+                    }
+                }
+                cache.put(file.getAbsolutePath(), thumbnail);
+            }
+        }
+        return thumbnail;
+    }
+
+
+    public static Rect rectForSize(int w, int h, int size) {
+        int scalledW;
+        int scalledH;
+        if (w <= h) {
+            scalledW = Math.max((int) (w / ((double) h / size)), 1);
+            scalledH = size;
+        } else {
+            scalledW = size;
+            scalledH = Math.max((int) (h / ((double) w / size)), 1);
+        }
+
+        if (scalledW > w || scalledH > h) return new Rect(0, 0, w, h);
+
+        return new Rect(0, 0, scalledW, scalledH);
+    }
+
+    private Drawable getImagePreview(File file, Resources res, int size, final String mime) throws IOException {
+        if (android.os.Build.VERSION.SDK_INT >= 28) {
+            ImageDecoder.Source source = ImageDecoder.createSource(file);
+            return ImageDecoder.decodeDrawable(source, (decoder, info, src) -> {
+                int w = info.getSize().getWidth();
+                int h = info.getSize().getHeight();
+                Rect r = rectForSize(w, h, size);
+                decoder.setTargetSize(r.width(), r.height());
+            });
+        } else {
+            BitmapFactory.Options options = new BitmapFactory.Options();
+            options.inSampleSize = calcSampleSize(file, size);
+            Bitmap bitmap = null;
+            try {
+                bitmap = BitmapFactory.decodeFile(file.getAbsolutePath(), options);
+            } catch (OutOfMemoryError e) {
+                options.inSampleSize *= 2;
+                bitmap = BitmapFactory.decodeFile(file.getAbsolutePath(), options);
+            }
+            bitmap = resize(bitmap, size);
+            bitmap = rotate(bitmap, getRotation(file));
+            if (mime.equals("image/gif")) {
+                Bitmap withGifOverlay = bitmap.copy(Bitmap.Config.ARGB_8888, true);
+                drawOverlay(withGifOverlay, paintOverlayBlack(withGifOverlay) ? R.drawable.play_gif_black : R.drawable.play_gif_white, 1.0f);
+                bitmap.recycle();
+                bitmap = withGifOverlay;
+            }
+            return new BitmapDrawable(res, bitmap);
+        }
+    }
+
+    @RequiresApi(api = Build.VERSION_CODES.LOLLIPOP)
+    private Bitmap getPdfDocumentPreview(final File file, final int size) {
+        try {
+            final ParcelFileDescriptor fileDescriptor =
+                    ParcelFileDescriptor.open(file, ParcelFileDescriptor.MODE_READ_ONLY);
+            final Bitmap rendered = renderPdfDocument(fileDescriptor, size, true);
+            drawOverlay(
+                    rendered,
+                    paintOverlayBlackPdf(rendered)
+                            ? R.drawable.open_pdf_black
+                            : R.drawable.open_pdf_white,
+                    0.75f);
+            return rendered;
+        } catch (final IOException | SecurityException e) {
+            Log.d(Config.LOGTAG, "unable to render PDF document preview", e);
+            final Bitmap placeholder = Bitmap.createBitmap(size, size, Bitmap.Config.ARGB_8888);
+            placeholder.eraseColor(0xff000000);
+            return placeholder;
+        }
+    }
+
+
+    /** https://stackoverflow.com/a/3943023/210897 */
+    private boolean paintOverlayBlack(final Bitmap bitmap) {
+        final int h = bitmap.getHeight();
+        final int w = bitmap.getWidth();
+        int record = 0;
+        for (int y = Math.round(h * IGNORE_PADDING); y < h - Math.round(h * IGNORE_PADDING); ++y) {
+            for (int x = Math.round(w * IGNORE_PADDING);
+                 x < w - Math.round(w * IGNORE_PADDING);
+                 ++x) {
+                int pixel = bitmap.getPixel(x, y);
+                if ((Color.red(pixel) * 0.299
+                        + Color.green(pixel) * 0.587
+                        + Color.blue(pixel) * 0.114)
+                        > 186) {
+                    --record;
+                } else {
+                    ++record;
+                }
+            }
+        }
+        return record < 0;
+    }
+
+    private boolean paintOverlayBlackPdf(final Bitmap bitmap) {
+        final int h = bitmap.getHeight();
+        final int w = bitmap.getWidth();
+        int white = 0;
+        for (int y = 0; y < h; ++y) {
+            for (int x = 0; x < w; ++x) {
+                int pixel = bitmap.getPixel(x, y);
+                if ((Color.red(pixel) * 0.299
+                        + Color.green(pixel) * 0.587
+                        + Color.blue(pixel) * 0.114)
+                        > 186) {
+                    white++;
+                }
+            }
+        }
+        return white > (h * w * 0.4f);
+    }
+
+    @RequiresApi(api = Build.VERSION_CODES.LOLLIPOP)
+    private Bitmap renderPdfDocument(
+            ParcelFileDescriptor fileDescriptor, int targetSize, boolean fit) throws IOException {
+        final PdfRenderer pdfRenderer = new PdfRenderer(fileDescriptor);
+        final PdfRenderer.Page page = pdfRenderer.openPage(0);
+        final Dimensions dimensions =
+                scalePdfDimensions(
+                        new Dimensions(page.getHeight(), page.getWidth()), targetSize, fit);
+        final Bitmap rendered =
+                Bitmap.createBitmap(dimensions.width, dimensions.height, Bitmap.Config.ARGB_8888);
+        rendered.eraseColor(0xffffffff);
+        page.render(rendered, null, null, PdfRenderer.Page.RENDER_MODE_FOR_DISPLAY);
+        page.close();
+        pdfRenderer.close();
+        fileDescriptor.close();
+        return rendered;
+    }
+
+    private static Dimensions scalePdfDimensions(
+            final Dimensions in, final int target, final boolean fit) {
+        final int w, h;
+        if (fit == (in.width <= in.height)) {
+            w = Math.max((int) (in.width / ((double) in.height / target)), 1);
+            h = target;
+        } else {
+            w = target;
+            h = Math.max((int) (in.height / ((double) in.width / target)), 1);
+        }
+        return new Dimensions(h, w);
     }
 }
