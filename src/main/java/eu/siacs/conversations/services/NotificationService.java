@@ -34,6 +34,8 @@ import android.text.style.ForegroundColorSpan;
 import android.text.style.StyleSpan;
 import android.util.DisplayMetrics;
 import android.util.Log;
+import android.util.TypedValue;
+
 import com.google.common.base.Joiner;
 import androidx.annotation.RequiresApi;
 import androidx.core.app.NotificationCompat;
@@ -880,7 +882,7 @@ public class NotificationService {
         final String dismissString = mXmppConnectionService.getString(R.string.dismiss_call);
         final SpannableString dismiss = new SpannableString(dismissString);
         dismiss.setSpan(new ForegroundColorSpan(mXmppConnectionService.getResources().getColor(R.color.red700)), 0, dismissString.length(), Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
-        modifyIncomingCall(builder);
+        modifyIncomingCall(builder, contact.getAccount());
         final Notification notification = builder.build();
         notification.flags = notification.flags | Notification.FLAG_INSISTENT;
         notify(INCOMING_CALL_NOTIFICATION_ID, notification);
@@ -1075,8 +1077,16 @@ public class NotificationService {
         }
     }
 
-    private void setNotificationColor(final Builder mBuilder) {
-        mBuilder.setColor(ContextCompat.getColor(mXmppConnectionService, ThemeHelper.notificationColor(mXmppConnectionService)));
+    private void setNotificationColor(final Builder mBuilder, Account account) {
+        int color;
+        if (account != null && mXmppConnectionService.getAccounts().size() > 1) {
+            color = UIHelper.getColorForName(account.getJid().asBareJid().toString());
+        } else {
+            TypedValue typedValue = new TypedValue();
+            mXmppConnectionService.getTheme().resolveAttribute(R.attr.colorPrimary, typedValue, true);
+            color = typedValue.data;
+        }
+        mBuilder.setColor(color);
     }
 
     public void updateNotification() {
@@ -1105,15 +1115,16 @@ public class NotificationService {
             }
             final Builder mBuilder;
             if (notifications.size() == 1 && Build.VERSION.SDK_INT < Build.VERSION_CODES.N) {
-                mBuilder = buildSingleConversations(notifications.values().iterator().next(), notify, quiteHours);
-                modifyForSoundVibrationAndLight(mBuilder, notify, quiteHours, preferences);
+                ArrayList<Message> messages = notifications.values().iterator().next();
+                mBuilder = buildSingleConversations(messages, notify, quiteHours);
+                modifyForSoundVibrationAndLight(mBuilder, notify, quiteHours, preferences, messages.isEmpty() ? null : messages.get(0).getConversation().getAccount());
                 notify(NOTIFICATION_ID, mBuilder.build());
             } else {
                 mBuilder = buildMultipleConversation(notify, quiteHours);
                 if (notifyOnlyOneChild) {
                     mBuilder.setGroupAlertBehavior(NotificationCompat.GROUP_ALERT_CHILDREN);
                 }
-                modifyForSoundVibrationAndLight(mBuilder, notify, quiteHours, preferences);
+                modifyForSoundVibrationAndLight(mBuilder, notify, quiteHours, preferences, null);
                 if (!summaryOnly) {
                     for (Map.Entry<String, ArrayList<Message>> entry : notifications.entrySet()) {
                         String uuid = entry.getKey();
@@ -1122,9 +1133,8 @@ public class NotificationService {
                         if (!notifyOnlyOneChild) {
                             singleBuilder.setGroupAlertBehavior(NotificationCompat.GROUP_ALERT_SUMMARY);
                         }
-                        modifyForSoundVibrationAndLight(singleBuilder, notifyThis, quiteHours, preferences);
+                        modifyForSoundVibrationAndLight(singleBuilder, notifyThis, quiteHours, preferences, entry.getValue().isEmpty() ? null : entry.getValue().get(0).getConversation().getAccount());
                         singleBuilder.setGroup(MESSAGES_GROUP);
-                        setNotificationColor(singleBuilder);
                         notify(entry.getKey(), NOTIFICATION_ID, singleBuilder.build());
                     }
                 }
@@ -1158,7 +1168,8 @@ public class NotificationService {
         }
     }
 
-    private void modifyForSoundVibrationAndLight(Builder mBuilder, boolean notify, boolean quietHours, SharedPreferences preferences) {
+    private void modifyForSoundVibrationAndLight(
+            Builder mBuilder, boolean notify, boolean quietHours, SharedPreferences preferences, Account account) {
         final Resources resources = mXmppConnectionService.getResources();
         final String ringtone = preferences.getString("notification_ringtone", resources.getString(R.string.notification_ringtone));
         final boolean vibrate = preferences.getBoolean("vibrate_on_notification", resources.getBoolean(R.bool.vibrate_on_notification));
@@ -1181,14 +1192,14 @@ public class NotificationService {
         }
         mBuilder.setCategory(Notification.CATEGORY_MESSAGE);
         mBuilder.setPriority(notify ? (headsup ? NotificationCompat.PRIORITY_HIGH : NotificationCompat.PRIORITY_DEFAULT) : NotificationCompat.PRIORITY_LOW);
-        setNotificationColor(mBuilder);
+        setNotificationColor(mBuilder, account);
         mBuilder.setDefaults(0);
         if (led) {
             mBuilder.setLights(LED_COLOR, 2000, 3000);
         }
     }
 
-    private void modifyIncomingCall(Builder mBuilder) {
+    private void modifyIncomingCall(final Builder mBuilder, Account account) {
         final SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(mXmppConnectionService);
         final Resources resources = mXmppConnectionService.getResources();
         final String ringtone = preferences.getString("call_ringtone", resources.getString(R.string.incoming_call_ringtone));
@@ -1200,7 +1211,10 @@ public class NotificationService {
             Log.d(Config.LOGTAG, "unable to use custom notification sound " + uri.toString());
         }
         mBuilder.setPriority(NotificationCompat.PRIORITY_HIGH);
-        setNotificationColor(mBuilder);
+        setNotificationColor(mBuilder, account);
+        if (Build.VERSION.SDK_INT >= 26 && account != null && mXmppConnectionService.getAccounts().size() > 1) {
+            mBuilder.setColorized(true);
+        }
         mBuilder.setLights(LED_COLOR, 2000, 3000);
     }
 
@@ -1263,7 +1277,7 @@ public class NotificationService {
             builder.setContentIntent(createContentIntent(firstConversation));
         }
         builder.setDeleteIntent(createMissedCallsDeleteIntent(null));
-        modifyMissedCall(builder);
+        modifyMissedCall(builder, null);
         return builder;
     }
 
@@ -1319,11 +1333,11 @@ public class NotificationService {
                                     (Conversation) conversation,
                                     AvatarService.getSystemUiAvatarSize(mXmppConnectionService)));
         }
-        modifyMissedCall(builder);
+        modifyMissedCall(builder, conversation.getAccount());
         return builder;
     }
 
-    private void modifyMissedCall(final Builder builder) {
+    private void modifyMissedCall(final Builder builder, Account account) {
         final SharedPreferences preferences =
                 PreferenceManager.getDefaultSharedPreferences(mXmppConnectionService);
         final Resources resources = mXmppConnectionService.getResources();
@@ -1333,7 +1347,7 @@ public class NotificationService {
         }
         builder.setPriority(isQuietHours() ? NotificationCompat.PRIORITY_LOW : NotificationCompat.PRIORITY_HIGH);
         builder.setSound(null);
-        setNotificationColor(builder);
+        setNotificationColor(builder, account);
     }
 
     private Builder buildMultipleConversation(final boolean notify, final boolean quietHours) {
