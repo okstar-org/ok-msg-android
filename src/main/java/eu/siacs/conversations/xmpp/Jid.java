@@ -118,7 +118,8 @@ public interface Jid extends Comparable<Jid>, Serializable, CharSequence {
     static Jid ofEscaped(CharSequence jid) {
         try {
             return new WrappedJid(JidCreate.from(jid));
-        } catch (final XmppStringprepException e) {
+        } catch (XmppStringprepException e) {
+            e.printStackTrace();
             throw new IllegalArgumentException(e);
         }
     }
