@@ -204,25 +204,34 @@ public class Contact implements ListItem, Blockable {
         return jid;
     }
 
-    @Override
-    public List<Tag> getTags(Context context) {
-        final HashSet<Tag> tags = new HashSet<>();
+    public List<Tag> getGroupTags() {
+        final ArrayList<Tag> tags = new ArrayList<>();
         for (final String group : getGroups(true)) {
             tags.add(new Tag(group, UIHelper.getColorForName(group), 0, account, isActive()));
         }
+        return tags;
+    }
+
+    @Override
+    public List<Tag> getTags(Context context) {
+        final ArrayList<Tag> tags = new ArrayList<>();
+        tags.addAll(getGroupTags());
         for (final String tag : getSystemTags(true)) {
             tags.add(new Tag(tag, UIHelper.getColorForName(tag), 0, account, isActive()));
         }
         Presence.Status status = getShownStatus();
-        tags.add(UIHelper.getTagForStatus(context, status, account, isActive()));
+        if (status != Presence.Status.OFFLINE) {
+            tags.add(UIHelper.getTagForStatus(context, status, account, true));
+        }
         if (isBlocked()) {
-            tags.add(new Tag(context.getString(R.string.blocked), 0xff2e2f3b, 0, account, isActive()));
+            tags.add(new Tag(context.getString(R.string.blocked), 0xff2e2f3b, 0, account, true));
         }
         if (!showInRoster() && getSystemAccount() != null) {
-            tags.add(new Tag("Android", UIHelper.getColorForName("Android"), 0, account, isActive()));
+            tags.add(new Tag("Android", UIHelper.getColorForName("Android"), 0, account, true));
         }
-        return new ArrayList<>(tags);
+        return tags;
     }
+
 
     @Override
     public boolean getActive() {
@@ -364,6 +373,10 @@ public class Contact implements ListItem, Blockable {
 
     public void setSystemAccount(Uri lookupUri) {
         this.systemAccount = lookupUri;
+    }
+
+    public void setGroups(List<String> groups) {
+        this.groups = new JSONArray(groups);
     }
 
     private Collection<String> getGroups(final boolean unique) {

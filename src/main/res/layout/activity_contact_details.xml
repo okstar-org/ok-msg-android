@@ -110,6 +110,16 @@
                                         android:layout_marginBottom="4dp"
                                         android:orientation="horizontal" />
 
+                                    <de.monocles.chat.TagEditorView
+                                        android:id="@+id/edit_tags"
+                                        android:visibility="gone"
+                                        android:layout_width="match_parent"
+                                        android:layout_height="wrap_content"
+                                        android:layout_marginBottom="4dp"
+                                        android:layout_marginLeft="-4dp"
+                                        android:layout_marginTop="-4dp" />
+
+
                                     <TextView
                                         android:id="@+id/details_lastseen"
                                         android:layout_width="wrap_content"

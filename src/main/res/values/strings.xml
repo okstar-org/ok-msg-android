@@ -1269,4 +1269,5 @@
     <string name="refresh_feature_discovery">Refresh Feature Discovery</string>
     <string name="microphone_permission_for_call">Microphone permission required to complete call</string>
     <string name="i_am_snikket_user">I use Snikket</string>
+    <string name="action_edit_contact">Edit contact</string>
 </resources>

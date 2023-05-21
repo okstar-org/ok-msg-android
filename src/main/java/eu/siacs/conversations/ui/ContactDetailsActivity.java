@@ -27,8 +27,11 @@ import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.CompoundButton;
 import android.widget.CompoundButton.OnCheckedChangeListener;
+import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.TextView;
+import android.widget.ArrayAdapter;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.ActionBar;
@@ -45,7 +48,12 @@ import java.util.Collection;
 import java.util.Collections;
 import java.util.List;
 import java.util.concurrent.atomic.AtomicInteger;
+import java.util.ArrayList;
+import java.util.Comparator;
+import java.util.Map;
+import java.util.stream.Collectors;
 
+import eu.siacs.conversations.entities.Bookmark;
 import eu.siacs.conversations.Config;
 import eu.siacs.conversations.R;
 import eu.siacs.conversations.crypto.axolotl.AxolotlService;
@@ -91,6 +99,8 @@ public class ContactDetailsActivity extends OmemoActivity implements OnAccountUp
     private ConversationFragment mConversationFragment;
     ActivityContactDetailsBinding binding;
     private MediaAdapter mMediaAdapter;
+    protected MenuItem edit = null;
+    protected MenuItem save = null;
     private boolean mAdvancedMode = false;
     private boolean mIndividualNotifications = false;
     private DialogInterface.OnClickListener removeFromRoster = new DialogInterface.OnClickListener() {
@@ -331,6 +341,19 @@ public class ContactDetailsActivity extends OmemoActivity implements OnAccountUp
             }
     }
 
+    protected void saveEdits() {
+        binding.editTags.setVisibility(View.GONE);
+        if (edit != null) {
+            EditText text = edit.getActionView().findViewById(R.id.search_field);
+            contact.setServerName(text.getText().toString());
+            contact.setGroups(binding.editTags.getObjects().stream().map(tag -> tag.getName()).collect(Collectors.toList()));
+            ContactDetailsActivity.this.xmppConnectionService.pushContactToServer(contact);
+            populateView();
+            edit.collapseActionView();
+        }
+        if (save != null) save.setVisible(false);
+    }
+
     @Override
     public boolean onOptionsItemSelected(final MenuItem menuItem) {
         if (MenuDoubleTabUtil.shouldIgnoreTap()) {
@@ -356,6 +379,69 @@ public class ContactDetailsActivity extends OmemoActivity implements OnAccountUp
                 break;
             case R.id.action_share_uri:
                 shareLink(false);
+                break;
+            case R.id.action_delete_contact:
+                builder.setTitle(getString(R.string.action_delete_contact))
+                        .setMessage(JidDialog.style(this, R.string.remove_contact_text, contact.getJid().toEscapedString()))
+                        .setPositiveButton(getString(R.string.delete),
+                                removeFromRoster).create().show();
+                break;
+            case R.id.action_save:
+                saveEdits();
+                break;
+            case R.id.action_edit_contact:
+                Uri systemAccount = contact.getSystemAccount();
+                if (systemAccount == null) {
+                    menuItem.expandActionView();
+                    EditText text = menuItem.getActionView().findViewById(R.id.search_field);
+                    text.setOnEditorActionListener((v, actionId, event) -> {
+                        saveEdits();
+                        return true;
+                    });
+                    text.setText(contact.getServerName());
+                    text.requestFocus();
+                    binding.tags.setVisibility(View.GONE);
+                    binding.editTags.clearSync();
+                    for (final ListItem.Tag group : contact.getGroupTags()) {
+                        binding.editTags.addObjectSync(group);
+                    }
+                    ArrayList<ListItem.Tag> tags = new ArrayList<>();
+                    for (final Account account : xmppConnectionService.getAccounts()) {
+                        for (Contact contact : account.getRoster().getContacts()) {
+                            tags.addAll(contact.getTags(this));
+                        }
+                        for (Bookmark bookmark : account.getBookmarks()) {
+                            tags.addAll(bookmark.getTags(this));
+                        }
+                    }
+                    Comparator<Map.Entry<ListItem.Tag,Integer>> sortTagsBy = Map.Entry.comparingByValue(Comparator.reverseOrder());
+                    sortTagsBy = sortTagsBy.thenComparing(entry -> entry.getKey().getName());
+
+                    ArrayAdapter<ListItem.Tag> adapter = new ArrayAdapter<>(
+                            this,
+                            android.R.layout.simple_list_item_1,
+                            tags.stream()
+                                    .collect(Collectors.toMap((x) -> x, (t) -> 1, (c1, c2) -> c1 + c2))
+                                    .entrySet().stream()
+                                    .sorted(sortTagsBy)
+                                    .map(e -> e.getKey()).collect(Collectors.toList())
+                    );
+                    binding.editTags.setAdapter(adapter);
+                    binding.editTags.setVisibility(View.VISIBLE);
+                    if (save != null) save.setVisible(true);
+                } else {
+                    menuItem.collapseActionView();
+                    if (save != null) save.setVisible(false);
+                    Intent intent = new Intent(Intent.ACTION_EDIT);
+                    intent.setDataAndType(systemAccount, Contacts.CONTENT_ITEM_TYPE);
+                    intent.putExtra("finishActivityOnSaveCompleted", true);
+                    try {
+                        startActivity(intent);
+                    } catch (ActivityNotFoundException e) {
+                        Toast.makeText(ContactDetailsActivity.this, R.string.no_application_found_to_view_contact, Toast.LENGTH_SHORT).show();
+                    }
+
+                }
                 break;
             case R.id.action_block:
                 BlockContactDialog.show(this, contact);

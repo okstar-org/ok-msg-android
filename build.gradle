@@ -108,6 +108,7 @@ dependencies {
     implementation 'androidx.recyclerview:recyclerview:1.1.0'
     implementation 'io.michaelrocks:libphonenumber-android:8.12.49'
     implementation 'io.github.nishkarsh:android-permissions:2.1.6'
+    implementation 'com.splitwise:tokenautocomplete:3.0.2'
 }
 
 ext {
