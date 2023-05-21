@@ -72,6 +72,8 @@ import android.widget.ListView;
 import android.widget.TextView.OnEditorActionListener;
 import android.widget.Toast;
 import eu.siacs.conversations.utils.Emoticons;
+import de.monocles.chat.BobTransfer;
+import java.net.URISyntaxException;
 
 
 import androidx.annotation.IdRes;
@@ -245,7 +247,7 @@ public class ConversationFragment extends XmppFragment implements EditMessage.Ke
 
         @Override
         public void onClick(View v) {
-            ConferenceDetailsActivity.open(getActivity(), conversation);
+            ConferenceDetailsActivity.open(activity, conversation);
         }
     };
     private final OnClickListener leaveMuc = new OnClickListener() {
@@ -1406,6 +1408,7 @@ public class ConversationFragment extends XmppFragment implements EditMessage.Ke
         Log.d(Config.LOGTAG, "ConversationFragment.onDestroyView()");
         messageListAdapter.setOnContactPictureClicked(null);
         messageListAdapter.setOnContactPictureLongClicked(null);
+        if (conversation != null) conversation.setupViewPager(null, null);
     }
 
     @Override
@@ -1641,37 +1644,15 @@ public class ConversationFragment extends XmppFragment implements EditMessage.Ke
                 correctMessage(selectedMessage);
                 return true;
             case R.id.retract_message:
-                new AlertDialog.Builder(activity)
-                        .setTitle(R.string.retract_message)
-                        .setMessage("Do you really want to retract this message?")
-                        .setPositiveButton(R.string.yes, (dialog, whichButton) -> {
-                            Message message = selectedMessage;
-                            while (message.mergeable(message.next())) {
-                                message = message.next();
-                            }
-                            Element reactions = message.getReactions();
-                            if (reactions != null) {
-                                final Message previousReaction = conversation.findMessageReactingTo(reactions.getAttribute("id"), null);
-                                if (previousReaction != null) reactions = previousReaction.getReactions();
-                                for (Element el : reactions.getChildren()) {
-                                    if (message.getQuoteableBody().endsWith(el.getContent())) {
-                                        reactions.removeChild(el);
-                                    }
-                                }
-                                message.setReactions(reactions);
-                                if (previousReaction != null) {
-                                    previousReaction.setReactions(reactions);
-                                    activity.xmppConnectionService.updateMessage(previousReaction);
-                                }
-                            }
-                            message.setBody(" ");
-                            message.putEdited(message.getUuid(), message.getServerMsgId(), message.getBody(), message.getTimeSent());
-                            message.setServerMsgId(null);
-                            message.setUuid(UUID.randomUUID().toString());
-                            sendMessage(message);
-                        })
-                        .setNegativeButton(R.string.no, null).show();
-                return true;
+                Message message = selectedMessage;
+                while (message.mergeable(message.next())) {
+                    message = message.next();
+                }
+                message.setBody(" ");
+                message.putEdited(message.getUuid(), message.getServerMsgId(), message.getBody(), message.getTimeSent());
+                message.setServerMsgId(null);
+                message.setUuid(UUID.randomUUID().toString());
+                sendMessage(message);
             case R.id.moderate_message:
                 activity.quickEdit("Spam", (reason) -> {
                     activity.xmppConnectionService.moderateMessage(conversation.getAccount(), selectedMessage, reason);
@@ -2234,7 +2215,19 @@ public class ConversationFragment extends XmppFragment implements EditMessage.Ke
             ToastCompat.makeText(getActivity(), R.string.not_connected_try_again, ToastCompat.LENGTH_SHORT).show();
             return;
         }
-        activity.xmppConnectionService.getHttpConnectionManager().createNewDownloadConnection(message, true);
+        if (message.getOob() != null && message.getOob().getScheme().equalsIgnoreCase("cid")) {
+            try {
+                BobTransfer transfer = new BobTransfer.ForMessage(message, activity.xmppConnectionService);
+                message.setTransferable(transfer);
+                transfer.start();
+            } catch (URISyntaxException e) {
+                Log.d(Config.LOGTAG, "BobTransfer failed to parse URI");
+            }
+        } else {
+            activity.xmppConnectionService
+                    .getHttpConnectionManager()
+                    .createNewDownloadConnection(message, true);
+        }
     }
 
     private OnClickListener OTRwarning = new OnClickListener() {

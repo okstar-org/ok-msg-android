@@ -116,32 +116,6 @@ public class ShareUtil {
         }
     }
 
-    	public static void copyLinkToClipboard(final XmppActivity activity, final String url) {
-        		final Uri uri = Uri.parse(url);
-        		if ("xmpp".equals(uri.getScheme())) {
-            			try {
-                				final Jid jid = new XmppUri(uri).getJid();
-                				if (activity.copyTextToClipboard(jid.asBareJid().toString(), R.string.account_settings_jabber_id)) {
-                    					Toast.makeText(activity, R.string.jabber_id_copied_to_clipboard, Toast.LENGTH_SHORT).show();
-                    				}
-                			} catch (final Exception e) { }
-            		} else {
-            			if (activity.copyTextToClipboard(url, R.string.web_address)) {
-                				Toast.makeText(activity, R.string.url_copied_to_clipboard, Toast.LENGTH_SHORT).show();
-                			}
-            		}
-        	}
-
-
-    public static void copyLinkToClipboard(final XmppActivity activity, final Message message) {
-        final SpannableStringBuilder body = message.getMergedBody();
-        MyLinkify.addLinks(body, true);
-        for (final URLSpan urlspan : body.getSpans(0, body.length() - 1, URLSpan.class)) {
-            copyLinkToClipboard(activity, urlspan.getURL());
-            return;
-        }
-    }
-
     public static void copyLinkToClipboard(final Context context, final String url) {
         final Uri uri = Uri.parse(url);
         if ("xmpp".equals(uri.getScheme())) {
@@ -155,6 +129,15 @@ public class ShareUtil {
             if (copyTextToClipboard(context, url, R.string.web_address)) {
                 Toast.makeText(context, R.string.url_copied_to_clipboard, Toast.LENGTH_SHORT).show();
             }
+        }
+    }
+
+    public static void copyLinkToClipboard(final XmppActivity activity, final Message message) {
+        final SpannableStringBuilder body = message.getMergedBody();
+        MyLinkify.addLinks(body, true);
+        for (final URLSpan urlspan : body.getSpans(0, body.length() - 1, URLSpan.class)) {
+            copyLinkToClipboard(activity, urlspan.getURL());
+            return;
         }
     }
 

@@ -15,7 +15,16 @@ import android.util.Log;
 import android.util.Pair;
 import android.view.View;
 import eu.siacs.conversations.utils.Compatibility;
+import android.graphics.drawable.Drawable;
+import android.text.Html;
+import de.monocles.chat.BobTransfer;
+import de.monocles.chat.GetThumbnailForCid;
 
+import java.io.IOException;
+import java.util.stream.Collectors;
+import eu.siacs.conversations.xml.Element;
+import eu.siacs.conversations.xml.Tag;
+import eu.siacs.conversations.xml.XmlReader;
 import eu.siacs.conversations.ui.util.QuoteHelper;
 
 import com.google.common.base.Strings;
@@ -138,7 +147,7 @@ public class Message extends AbstractEntity implements AvatarService.Avatarable 
     protected boolean carbon = false;
     private boolean oob = false;
     protected URI oobUri = null;
-    protected static List<Element> payloads = new ArrayList<>();
+    protected List<Element> payloads = new ArrayList<>();
     protected List<Edit> edits = new ArrayList<>();
     protected String relativeFilePath;
     protected boolean read = true;
@@ -276,7 +285,18 @@ public class Message extends AbstractEntity implements AvatarService.Avatarable 
         if (payloads != null) this.payloads = payloads;
     }
 
-    public static Message fromCursor(Cursor cursor, Conversation conversation) {
+    public static Message fromCursor(Cursor cursor, Conversation conversation) throws IOException {
+        String payloadsStr = cursor.getString(cursor.getColumnIndex("payloads"));
+        List<Element> payloads = new ArrayList<>();
+        if (payloadsStr != null) {
+            final XmlReader xmlReader = new XmlReader();
+            xmlReader.setInputStream(ByteSource.wrap(payloadsStr.getBytes()).openStream());
+            Tag tag;
+            while ((tag = xmlReader.readTag()) != null) {
+                payloads.add(xmlReader.readElement(tag));
+            }
+        }
+
         return new Message(conversation,
                 cursor.getString(cursor.getColumnIndex(UUID)),
                 cursor.getString(cursor.getColumnIndex(CONVERSATION)),
@@ -340,6 +360,7 @@ public class Message extends AbstractEntity implements AvatarService.Avatarable 
         values.put("subject", subject);
         values.put("oobUri", oobUri == null ? null : oobUri.toString());
         values.put("fileParams", fileParams == null ? null : fileParams.toString());
+        values.put("payloads", payloads.size() < 1 ? null : payloads.stream().map(Object::toString).collect(Collectors.joining()));
         return values;
     }
 
@@ -935,7 +956,7 @@ public class Message extends AbstractEntity implements AvatarService.Avatarable 
     }
     public SpannableStringBuilder getSpannableBody(GetThumbnailForCid thumbnailer, Drawable fallbackImg) {
         final Element html = getHtml();
-        if (html == null || Build.VERSION.SDK_INT < 24) {
+        if (html == null) {
             return new SpannableStringBuilder(MessageUtils.filterLtrRtl(getBody()).trim());
         } else {
             SpannableStringBuilder spannable = new SpannableStringBuilder(Html.fromHtml(
@@ -956,26 +977,13 @@ public class Message extends AbstractEntity implements AvatarService.Avatarable 
                     (opening, tag, output, xmlReader) -> {}
             ));
 
-            // Make images clickable and long-clickable with BetterLinkMovementMethod
-            ImageSpan[] imageSpans = spannable.getSpans(0, spannable.length(), ImageSpan.class);
-            for (ImageSpan span : imageSpans) {
-                final int start = spannable.getSpanStart(span);
-                final int end = spannable.getSpanEnd(span);
-
-                ClickableSpan click_span = new ClickableSpan() {
-                    @Override
-                    public void onClick(View widget) { }
-                };
-
-                spannable.setSpan(click_span, start, end, Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
-            }
-
             // https://stackoverflow.com/a/10187511/8611
             int i = spannable.length();
             while(--i >= 0 && Character.isWhitespace(spannable.charAt(i))) { }
             return (SpannableStringBuilder) spannable.subSequence(0, i+1);
         }
     }
+
 
     public Element getHtml() {
         if (this.payloads == null) return null;
@@ -990,19 +998,7 @@ public class Message extends AbstractEntity implements AvatarService.Avatarable 
     }
 
     public SpannableStringBuilder getMergedBody() {
-        SpannableStringBuilder body = new SpannableStringBuilder(MessageUtils.filterLtrRtl(getBody()).trim());
-        Message current = this;
-        while (current.mergeable(current.next())) {
-            current = current.next();
-            if (current == null) {
-                break;
-            }
-            body.append("\n\n");
-            body.setSpan(new MergeSeparator(), body.length() - 2, body.length(),
-                    SpannableStringBuilder.SPAN_EXCLUSIVE_EXCLUSIVE);
-            body.append(MessageUtils.filterLtrRtl(current.getBody()).trim());
-        }
-        return body;
+        return getMergedBody(null, null);
     }
 
     public SpannableStringBuilder getMergedBody(GetThumbnailForCid thumbnailer, Drawable fallbackImg) {
@@ -1125,6 +1121,20 @@ public class Message extends AbstractEntity implements AvatarService.Avatarable 
         this.payloads.add(el);
     }
 
+    public List<Element> getCommands() {
+        if (this.payloads == null) return null;
+
+        for (Element el : this.payloads) {
+            if (el.getName().equals("query") && el.getNamespace().equals("http://jabber.org/protocol/disco#items") && el.getAttribute("node").equals("http://jabber.org/protocol/commands")) {
+                return el.getChildren();
+            }
+        }
+
+        return null;
+    }
+
+
+
     public List<Element> getPayloads() {
         return new ArrayList<>(this.payloads);
     }
@@ -1210,7 +1220,7 @@ public class Message extends AbstractEntity implements AvatarService.Avatarable 
                 fileParams.size = this.transferable.getFileSize();
             }
 
-            if (oobUri != null && ("http".equalsIgnoreCase(oobUri.getScheme()) || "https".equalsIgnoreCase(oobUri.getScheme()))) {
+            if (oobUri != null && ("http".equalsIgnoreCase(oobUri.getScheme()) || "https".equalsIgnoreCase(oobUri.getScheme()) || "cid".equalsIgnoreCase(oobUri.getScheme()))) {
                 fileParams.url = oobUri.toString();
             }
         }

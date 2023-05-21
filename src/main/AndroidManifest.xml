@@ -1,7 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools">
-    <uses-permission android:name="android.permission.BIND_TELECOM_CONNECTION_SERVICE" />
+
+    <uses-permission android:name="android.permission.BIND_TELECOM_CONNECTION_SERVICE"
+        tools:ignore="ProtectedPermissions" />
 
     <uses-permission android:name="android.permission.BLUETOOTH_CONNECT" />
     <uses-permission android:name="android.permission.READ_MEDIA_IMAGES" />
@@ -55,6 +57,12 @@
 
     <queries>
         <package android:name="org.sufficientlysecure.keychain"/>
+        <intent>
+            <action android:name="eu.siacs.conversations.location.request"/>
+        </intent>
+        <intent>
+            <action android:name="eu.siacs.conversations.location.show"/>
+        </intent>
     </queries>
 
     <queries>
@@ -110,7 +118,7 @@
         android:requestLegacyExternalStorage="true"
         android:supportsRtl="true"
         android:theme="@style/ConversationsTheme"
-        tools:ignore="GoogleAppIndexingWarning"
+        tools:ignore="GoogleAppIndexingWarning" android:hasFragileUserData="true"
         tools:replace="android:label, android:allowBackup"
         tools:targetApi="r">
 
@@ -128,7 +136,7 @@
             android:name="com.google.android.gms.car.application"
             android:resource="@xml/automotive_app_desc" />
 
-        <service android:name=".services.XmppConnectionService" />
+        <service android:name=".services.XmppConnectionService" android:foregroundServiceType="microphone" />
 
         <receiver android:name=".services.EventReceiver"
             android:exported="true">

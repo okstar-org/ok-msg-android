@@ -204,16 +204,25 @@ public class HttpDownloadConnection implements Transferable {
     }
 
     private void finish() {
-        message.setTransferable(null);
-        mHttpConnectionManager.finishConnection(this);
         boolean notify = acceptedAutomatically && !message.isRead();
         if (message.getEncryption() == Message.ENCRYPTION_PGP) {
             notify = message.getConversation().getAccount().getPgpDecryptionService().decrypt(message, notify);
         }
-        mHttpConnectionManager.updateConversationUi(true);
+        DownloadableFile file;
+        final DownloadableFile tmp = mXmppConnectionService.getFileBackend().getFile(message);
+        final String extension = MimeUtils.extractRelevantExtension(tmp.getName());
+        try {
+            mXmppConnectionService.getFileBackend().setupRelativeFilePath(message, new FileInputStream(tmp), extension);
+            file = mXmppConnectionService.getFileBackend().getFile(message);
+            tmp.renameTo(file);
+        } catch (final IOException e) {
+            file = tmp;
+        }
+        message.setTransferable(null);
+        mXmppConnectionService.updateMessage(message);
+        mHttpConnectionManager.finishConnection(this);
         final boolean notifyAfterScan = notify;
-        final DownloadableFile file = mXmppConnectionService.getFileBackend().getFile(message, true);
-        FileBackend.updateMediaScanner(mXmppConnectionService, file, () -> {
+        mXmppConnectionService.getFileBackend().updateMediaScanner(file, () -> {
             if (notifyAfterScan) {
                 mXmppConnectionService.getNotificationService().push(message);
             }
@@ -391,8 +400,8 @@ public class HttpDownloadConnection implements Transferable {
                 changeStatus(STATUS_DOWNLOADING);
                 download();
                 decryptIfNeeded();
-                updateImageBounds();
                 finish();
+                updateImageBounds();
             } catch (final SSLHandshakeException e) {
                 changeStatus(STATUS_OFFER);
             } catch (final Exception e) {

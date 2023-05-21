@@ -1268,4 +1268,5 @@
     <string name="receiving_x_file">Receiving %1$s (%2$d%% completed)</string>
     <string name="refresh_feature_discovery">Refresh Feature Discovery</string>
     <string name="microphone_permission_for_call">Microphone permission required to complete call</string>
+    <string name="i_am_snikket_user">I use Snikket</string>
 </resources>

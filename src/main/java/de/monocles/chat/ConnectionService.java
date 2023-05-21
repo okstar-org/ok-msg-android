@@ -5,9 +5,12 @@ import java.util.Collections;
 import java.util.HashSet;
 import java.util.Set;
 import java.util.Stack;
+import java.util.Vector;
 
+import com.google.common.base.Joiner;
 import com.google.common.collect.ImmutableSet;
 
+import android.os.Build;
 import android.telecom.CallAudioState;
 import android.telecom.Connection;
 import android.telecom.ConnectionRequest;
@@ -19,6 +22,8 @@ import android.telecom.TelecomManager;
 import android.telephony.PhoneNumberUtils;
 
 import android.Manifest;
+
+import androidx.annotation.RequiresApi;
 import androidx.core.content.ContextCompat;
 import android.content.ComponentName;
 import android.content.Context;
@@ -35,6 +40,7 @@ import android.util.Log;
 import com.intentfilter.androidpermissions.PermissionManager;
 import com.intentfilter.androidpermissions.NotificationSettings;
 import com.intentfilter.androidpermissions.models.DeniedPermissions;
+import io.michaelrocks.libphonenumber.android.NumberParseException;
 
 import eu.siacs.conversations.R;
 import eu.siacs.conversations.entities.Account;
@@ -43,11 +49,13 @@ import eu.siacs.conversations.services.AvatarService;
 import eu.siacs.conversations.services.XmppConnectionService.XmppConnectionBinder;
 import eu.siacs.conversations.services.XmppConnectionService;
 import eu.siacs.conversations.ui.RtpSessionActivity;
+import eu.siacs.conversations.utils.PhoneNumberUtilWrapper;
 import eu.siacs.conversations.xmpp.Jid;
 import eu.siacs.conversations.xmpp.jingle.JingleRtpConnection;
 import eu.siacs.conversations.xmpp.jingle.Media;
 import eu.siacs.conversations.xmpp.jingle.RtpEndUserState;
 
+@RequiresApi(Build.VERSION_CODES.M)
 public class ConnectionService extends android.telecom.ConnectionService {
     public XmppConnectionService xmppConnectionService = null;
     protected ServiceConnection mConnection = new ServiceConnection() {
@@ -71,7 +79,7 @@ public class ConnectionService extends android.telecom.ConnectionService {
         try {
             startService(intent);
         } catch (IllegalStateException e) {
-            Log.w("com.cheogram.android.ConnectionService", "unable to start service from " + getClass().getSimpleName());
+            Log.w(".ConnectionService", "unable to start service from " + getClass().getSimpleName());
         }
         bindService(intent, mConnection, Context.BIND_AUTO_CREATE);
     }
@@ -88,15 +96,25 @@ public class ConnectionService extends android.telecom.ConnectionService {
     ) {
         String[] gateway = phoneAccountHandle.getId().split("/", 2);
 
-        String rawTel = request.getAddress().getSchemeSpecificPart();
+        String rawTel = "";
+        if (request.getAddress() != null) {
+            rawTel = request.getAddress().getSchemeSpecificPart();
+        }
         String postDial = PhoneNumberUtils.extractPostDialPortion(rawTel);
 
-        // TODO: jabber:iq:gateway
         String tel = PhoneNumberUtils.extractNetworkPortion(rawTel);
-        if (tel.startsWith("1")) {
-            tel = "+" + tel;
-        } else if (!tel.startsWith("+")) {
-            tel = "+1" + tel;
+        try {
+            tel = PhoneNumberUtilWrapper.normalize(this, tel);
+        } catch (IllegalArgumentException | NumberParseException e) {
+            return Connection.createFailedConnection(
+                    new DisconnectCause(DisconnectCause.ERROR)
+            );
+        }
+
+        if (xmppConnectionService == null) {
+            return Connection.createFailedConnection(
+                    new DisconnectCause(DisconnectCause.ERROR)
+            );
         }
 
         if (xmppConnectionService.getJingleConnectionManager().isBusy()) {
@@ -106,8 +124,14 @@ public class ConnectionService extends android.telecom.ConnectionService {
         }
 
         Account account = xmppConnectionService.findAccountByJid(Jid.of(gateway[0]));
+        if (account == null) {
+            return Connection.createFailedConnection(
+                    new DisconnectCause(DisconnectCause.ERROR)
+            );
+        }
+
         Jid with = Jid.ofLocalAndDomain(tel, gateway[1]);
-        CheogramConnection connection = new CheogramConnection(account, with, postDial);
+        monoclesConnection connection = new monoclesConnection(account, with, postDial);
 
         PermissionManager permissionManager = PermissionManager.getInstance(this);
         permissionManager.setNotificationSettings(
@@ -116,7 +140,7 @@ public class ConnectionService extends android.telecom.ConnectionService {
                         .withSmallIcon(R.drawable.ic_notification).build()
         );
 
-        Set<String> permissions = new HashSet();
+        Set<String> permissions = new HashSet<>();
         permissions.add(Manifest.permission.RECORD_AUDIO);
         permissionManager.checkPermissions(permissions, new PermissionManager.PermissionRequestListener() {
             @Override
@@ -130,41 +154,57 @@ public class ConnectionService extends android.telecom.ConnectionService {
 
             @Override
             public void onPermissionDenied(DeniedPermissions deniedPermissions) {
-                connection.setDisconnected(new DisconnectCause(DisconnectCause.ERROR));
+                connection.close(new DisconnectCause(DisconnectCause.ERROR));
             }
         });
 
+        connection.setInitializing();
         connection.setAddress(
                 Uri.fromParts("tel", tel, null), // Normalized tel as tel: URI
                 TelecomManager.PRESENTATION_ALLOWED
-        );
-        connection.setCallerDisplayName(
-                account.getDisplayName(),
-                TelecomManager.PRESENTATION_ALLOWED
-        );
-        connection.setAudioModeIsVoip(true);
-        connection.setRingbackRequested(true);
-        connection.setDialing();
-        connection.setConnectionCapabilities(
-                Connection.CAPABILITY_CAN_SEND_RESPONSE_VIA_CONNECTION
         );
 
         xmppConnectionService.setOnRtpConnectionUpdateListener(
                 (XmppConnectionService.OnJingleRtpConnectionUpdate) connection
         );
 
+        xmppConnectionService.setDiallerIntegrationActive(true);
         return connection;
     }
 
-    public class CheogramConnection extends Connection implements XmppConnectionService.OnJingleRtpConnectionUpdate {
+    @Override
+    public Connection onCreateIncomingConnection(PhoneAccountHandle handle, ConnectionRequest request) {
+        Bundle extras = request.getExtras();
+        String accountJid = extras.getString("account");
+        String withJid = extras.getString("with");
+        String sessionId = extras.getString("sessionId");
+
+        Account account = xmppConnectionService.findAccountByJid(Jid.of(accountJid));
+        Jid with = Jid.of(withJid);
+
+        monoclesConnection connection = new monoclesConnection(account, with, null);
+        connection.setSessionId(sessionId);
+        connection.setAddress(
+                Uri.fromParts("tel", with.getLocal(), null),
+                TelecomManager.PRESENTATION_ALLOWED
+        );
+        connection.setRinging();
+
+        xmppConnectionService.setOnRtpConnectionUpdateListener(connection);
+
+        return connection;
+    }
+
+    public class monoclesConnection extends Connection implements XmppConnectionService.OnJingleRtpConnectionUpdate {
         protected Account account;
         protected Jid with;
         protected String sessionId = null;
-        protected Stack<String> postDial = new Stack();
+        protected Stack<String> postDial = new Stack<>();
         protected Icon gatewayIcon;
+        protected CallAudioState pendingState = null;
         protected WeakReference<JingleRtpConnection> rtpConnection = null;
 
-        CheogramConnection(Account account, Jid with, String postDialString) {
+        monoclesConnection(Account account, Jid with, String postDialString) {
             super();
             this.account = account;
             this.with = with;
@@ -180,6 +220,16 @@ public class ConnectionService extends android.telecom.ConnectionService {
                     postDial.push("" + postDialString.charAt(i));
                 }
             }
+
+            setCallerDisplayName(
+                    account.getDisplayName(),
+                    TelecomManager.PRESENTATION_ALLOWED
+            );
+            setAudioModeIsVoip(true);
+            setConnectionCapabilities(
+                    Connection.CAPABILITY_CAN_SEND_RESPONSE_VIA_CONNECTION |
+                            Connection.CAPABILITY_MUTE
+            );
         }
 
         public void setSessionId(final String sessionId) {
@@ -191,29 +241,44 @@ public class ConnectionService extends android.telecom.ConnectionService {
             if (sessionId == null || !sessionId.equals(this.sessionId)) return;
             if (rtpConnection == null) {
                 this.with = with; // Store full JID of connection
-                rtpConnection = xmppConnectionService.getJingleConnectionManager().findJingleRtpConnection(account, with, sessionId);
+                findRtpConnection();
             }
 
-            setStatusHints(new StatusHints(null, gatewayIcon, null));
+            String statusLabel = null;
 
-            if (state == RtpEndUserState.CONNECTED) {
+            if (state == RtpEndUserState.FINDING_DEVICE) {
+                setInitialized();
+            } else if (state == RtpEndUserState.RINGING) {
+                setDialing();
+            } else if (state == RtpEndUserState.INCOMING_CALL) {
+                setRinging();
+            } else if (state == RtpEndUserState.CONNECTING) {
                 xmppConnectionService.setDiallerIntegrationActive(true);
                 setActive();
-
+                statusLabel = getString(R.string.rtp_state_connecting);
+            } else if (state == RtpEndUserState.CONNECTED) {
+                xmppConnectionService.setDiallerIntegrationActive(true);
+                setActive();
                 postDial();
             } else if (state == RtpEndUserState.DECLINED_OR_BUSY) {
-                setDisconnected(new DisconnectCause(DisconnectCause.BUSY));
+                close(new DisconnectCause(DisconnectCause.BUSY));
             } else if (state == RtpEndUserState.ENDED) {
-                setDisconnected(new DisconnectCause(DisconnectCause.LOCAL));
+                close(new DisconnectCause(DisconnectCause.LOCAL));
             } else if (state == RtpEndUserState.RETRACTED) {
-                setDisconnected(new DisconnectCause(DisconnectCause.CANCELED));
+                close(new DisconnectCause(DisconnectCause.CANCELED));
             } else if (RtpSessionActivity.END_CARD.contains(state)) {
-                setDisconnected(new DisconnectCause(DisconnectCause.ERROR));
+                close(new DisconnectCause(DisconnectCause.ERROR));
             }
+
+            setStatusHints(new StatusHints(statusLabel, gatewayIcon, null));
         }
 
         @Override
         public void onAudioDeviceChanged(AppRTCAudioManager.AudioDevice selectedAudioDevice, Set<AppRTCAudioManager.AudioDevice> availableAudioDevices) {
+            if (Build.VERSION.SDK_INT < 26) return;
+
+            if (pendingState != null) onCallAudioStateChanged(pendingState);
+
             switch(selectedAudioDevice) {
                 case SPEAKER_PHONE:
                     setAudioRoute(CallAudioState.ROUTE_SPEAKER);
@@ -229,17 +294,60 @@ public class ConnectionService extends android.telecom.ConnectionService {
         }
 
         @Override
+        public void onCallAudioStateChanged(CallAudioState state) {
+            pendingState = null;
+            if (rtpConnection == null || rtpConnection.get() == null) {
+                pendingState = state;
+                return;
+            }
+
+            try {
+                rtpConnection.get().setMicrophoneEnabled(!state.isMuted());
+            } catch (final IllegalStateException e) {
+                pendingState = state;
+                Log.w(".monoclesConnection", "Could not set microphone mute to " + (state.isMuted() ? "true" : "false") + ": " + e.toString());
+            }
+        }
+
+        @Override
+        public void onAnswer() {
+            // For incoming calls, a connection update may not have been triggered before answering
+            // so we have to acquire the rtp connection object here
+            findRtpConnection();
+            if (rtpConnection == null || rtpConnection.get() == null) {
+                close(new DisconnectCause(DisconnectCause.CANCELED));
+            } else {
+                rtpConnection.get().acceptCall();
+            }
+        }
+
+        @Override
+        public void onReject() {
+            findRtpConnection();
+            if (rtpConnection != null && rtpConnection.get() != null) {
+                rtpConnection.get().rejectCall();
+            }
+            close(new DisconnectCause(DisconnectCause.LOCAL));
+        }
+
+        // Set the connection to the disconnected state and clean up the resources
+        // Note that we cannot do this from onStateChanged() because calling destroy
+        // there seems to trigger a deadlock somewhere in the telephony stack.
+        public void close(DisconnectCause reason) {
+            setDisconnected(reason);
+            destroy();
+            xmppConnectionService.setDiallerIntegrationActive(false);
+            xmppConnectionService.removeRtpConnectionUpdateListener(this);
+        }
+
+        @Override
         public void onDisconnect() {
             if (rtpConnection == null || rtpConnection.get() == null) {
                 xmppConnectionService.getJingleConnectionManager().retractSessionProposal(account, with.asBareJid());
+                close(new DisconnectCause(DisconnectCause.LOCAL));
             } else {
                 rtpConnection.get().endCall();
             }
-            destroy();
-            xmppConnectionService.setDiallerIntegrationActive(false);
-            xmppConnectionService.removeRtpConnectionUpdateListener(
-                    (XmppConnectionService.OnJingleRtpConnectionUpdate) this
-            );
         }
 
         @Override
@@ -257,6 +365,12 @@ public class ConnectionService extends android.telecom.ConnectionService {
             if (c) postDial();
         }
 
+        protected void findRtpConnection() {
+            if (rtpConnection != null) return;
+
+            rtpConnection = xmppConnectionService.getJingleConnectionManager().findJingleRtpConnection(account, with, sessionId);
+        }
+
         protected void sleep(int ms) {
             try {
                 Thread.sleep(ms);
@@ -269,9 +383,9 @@ public class ConnectionService extends android.telecom.ConnectionService {
             while (!postDial.empty()) {
                 String next = postDial.pop();
                 if (next.equals(";")) {
-                    Stack v = (Stack) postDial.clone();
+                    Vector<String> v = new Vector<>(postDial);
                     Collections.reverse(v);
-                    setPostDialWait(String.join("", v));
+                    setPostDialWait(Joiner.on("").join(v));
                     return;
                 } else if (next.equals(",")) {
                     sleep(2000);

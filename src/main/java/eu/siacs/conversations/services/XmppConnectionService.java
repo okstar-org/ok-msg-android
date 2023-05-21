@@ -1687,10 +1687,11 @@ public class XmppConnectionService extends Service {
     private void toggleForegroundService(boolean force) {
         final boolean status;
         final OngoingCall ongoing = ongoingCall.get();
-        if (force || mForceDuringOnCreate.get() || mForceForegroundService.get() || ongoing != null || (Compatibility.keepForegroundService(this) && hasEnabledAccounts())) {
+        final boolean showOngoing = ongoing != null && !diallerIntegrationActive.get();
+        if (force || mForceDuringOnCreate.get() || mForceForegroundService.get() || showOngoing || (Compatibility.keepForegroundService(this) && hasEnabledAccounts())) {
             final Notification notification;
             final int id;
-            if (ongoing != null) {
+            if (showOngoing) {
                 notification = this.mNotificationService.getOngoingCallNotification(ongoing);
                 id = NotificationService.ONGOING_CALL_NOTIFICATION_ID;
                 startForeground(id, notification);
@@ -1712,7 +1713,7 @@ public class XmppConnectionService extends Service {
         if (!mForceForegroundService.get()) {
             mNotificationService.cancel(NotificationService.FOREGROUND_NOTIFICATION_ID);
         }
-        if (ongoing == null) {
+        if (!showOngoing) {
             mNotificationService.cancel(NotificationService.ONGOING_CALL_NOTIFICATION_ID);
         }
         Log.d(Config.LOGTAG, "ForegroundService: " + (status ? "on" : "off"));
@@ -2955,6 +2956,11 @@ public class XmppConnectionService extends Service {
                     mNotificationService.clear(conversation);
                 }
             }
+            new Thread(() -> {
+                for (final Contact contact : account.getRoster().getContacts()) {
+                    contact.unregisterAsPhoneAccount(this);
+                }
+            }).start();
             if (account.getXmppConnection() != null) {
                 new Thread(() -> disconnect(account, !connected)).start();
             }
@@ -5445,6 +5451,10 @@ public class XmppConnectionService extends Service {
             if (contact.refreshRtpCapability()) {
                 syncRoster(account);
             }
+            if (disco.hasIdentity("gateway", "pstn")) {
+                contact.registerAsPhoneAccount(this);
+                mQuickConversationsService.considerSyncBackground(false);
+            }
         } else {
             final IqPacket request = new IqPacket(IqPacket.TYPE.GET);
             request.setTo(jid);
@@ -5461,6 +5471,11 @@ public class XmppConnectionService extends Service {
                     if (presence.getVer() == null || presence.getVer().equals(discoveryResult.getVer())) {
                         databaseBackend.insertDiscoveryResult(discoveryResult);
                         injectServiceDiscoveryResult(a.getRoster(), presence.getHash(), presence.getVer(), jid.getResource(), discoveryResult);
+                        if (discoveryResult.hasIdentity("gateway", "pstn")) {
+                            final Contact contact = account.getRoster().getContact(jid);
+                            contact.registerAsPhoneAccount(this);
+                            mQuickConversationsService.considerSyncBackground(false);
+                        }
                         if (cb != null) cb.run();
                     } else {
                         Log.d(Config.LOGTAG, a.getJid().asBareJid() + ": mismatch in caps for contact " + jid + " " + presence.getVer() + " vs " + discoveryResult.getVer());

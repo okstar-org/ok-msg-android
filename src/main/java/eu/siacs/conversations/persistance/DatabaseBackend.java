@@ -256,6 +256,25 @@ public class DatabaseBackend extends SQLiteOpenHelper {
                 db.execSQL("PRAGMA monocles.user_version = 2");
             }
 
+            if(monoclesVersion < 3) {
+                db.execSQL(
+                        "ALTER TABLE monocles." + Message.TABLENAME + " " +
+                                "ADD COLUMN payloads TEXT"
+                );
+                db.execSQL("PRAGMA monocles.user_version = 3");
+            }
+
+            if(monoclesVersion < 4) {
+                db.execSQL(
+                        "CREATE TABLE monocles.cids (" +
+                                "cid TEXT NOT NULL PRIMARY KEY," +
+                                "path TEXT NOT NULL" +
+                                ")"
+                );
+                db.execSQL("PRAGMA monocles.user_version = 4");
+            }
+
+
             db.setTransactionSuccessful();
         } finally {
             db.endTransaction();
@@ -1012,7 +1031,12 @@ public class DatabaseBackend extends SQLiteOpenHelper {
 
                 @Override
                 public Message next() {
-                    Message message = Message.fromCursor(cursor, conversation);
+                    Message message;
+                    try {
+                        message = Message.fromCursor(cursor, conversation);
+                    } catch (IOException e) {
+                        throw new RuntimeException(e);  // TODO: FIX THIS!
+                    }
                     cursor.moveToNext();
                     return message;
                 }

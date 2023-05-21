@@ -234,7 +234,7 @@ public class Contact implements ListItem, Blockable {
             return true;
         }
         needle = needle.toLowerCase(Locale.US).trim();
-        String[] parts = needle.split("\\s+");
+        String[] parts = needle.split("[,\\s]+");
         if (parts.length > 1) {
             for (String part : parts) {
                 if (!match(context, part)) {
@@ -243,9 +243,9 @@ public class Contact implements ListItem, Blockable {
             }
             return true;
         } else {
-            return jid.toString().contains(needle) ||
-                    getDisplayName().toLowerCase(Locale.US).contains(needle) ||
-                    matchInTag(context, needle);
+            return jid.toString().contains(parts[0]) ||
+                    getDisplayName().toLowerCase(Locale.US).contains(parts[0]) ||
+                    matchInTag(context, parts[0]);
         }
     }
 
@@ -701,7 +701,7 @@ public class Contact implements ListItem, Blockable {
                 "/" + getJid().asBareJid().toString();
     }
 
-    protected PhoneAccountHandle phoneAccountHandle() {
+    public PhoneAccountHandle phoneAccountHandle() {
         ComponentName componentName = new ComponentName(
                 "de.monocles.chat",
                 "de.monocles.chat.ConnectionService"

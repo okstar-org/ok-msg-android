@@ -3,6 +3,11 @@ package eu.siacs.conversations.parser;
 import android.util.Log;
 import android.util.Pair;
 
+
+
+import de.monocles.chat.BobTransfer;
+
+import java.net.URISyntaxException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -497,17 +502,11 @@ public class MessageParser extends AbstractParser implements OnMessagePacketRece
         final Element oob = packet.findChild("x", Namespace.OOB);
         final String oobUrl = oob != null ? oob.findChildContent("url") : null;
         String replacementId = replaceElement == null ? null : replaceElement.getAttribute("id");
-        boolean replaceAsRetraction = false;
         if (replacementId == null) {
-            final Element fasten = packet.findChild("apply-to", "urn:xmpp:fasten:0");
-            if (fasten != null) {
-                replaceElement = fasten.findChild("retract", "urn:xmpp:message-retract:0");
-                if (replaceElement == null) replaceElement = fasten.findChild("moderated", "urn:xmpp:message-moderate:0");
-                if (replaceElement != null) {
-                    final String reason = replaceElement.findChildContent("reason", "urn:xmpp:message-moderate:0");
-                    replacementId = fasten.getAttribute("id");
-                    packet.setBody(reason == null ? "" : reason);
-                }
+            Element fasten = packet.findChild("apply-to", "urn:xmpp:fasten:0");
+            if (fasten != null && (fasten.findChild("retract", "urn:xmpp:message-retract:0") != null || fasten.findChild("urn:xmpp:message-moderate:0") != null)) {
+                replacementId = fasten.getAttribute("id");
+                packet.setBody("");
             }
         }
         final Element applyToElement = packet.findChild("apply-to", "urn:xmpp:fasten:0");
@@ -533,7 +532,7 @@ public class MessageParser extends AbstractParser implements OnMessagePacketRece
             remoteMsgId = packet.getId();
         }
         boolean notify = false;
-        Element html = packet.findChild("html", "http://jabber.org/protocol/xhtml-im");
+        Element html = original.findChild("html", "http://jabber.org/protocol/xhtml-im");
         if (html != null && html.findChild("body", "http://www.w3.org/1999/xhtml") == null) {
             html = null;
         }
@@ -734,6 +733,11 @@ public class MessageParser extends AbstractParser implements OnMessagePacketRece
             }
             message.markable = packet.hasChild("markable", "urn:xmpp:chat-markers:0");
             if (reactions != null) message.addPayload(reactions);
+            for (Element el : packet.getChildren()) {
+                if (el.getName().equals("query") && el.getNamespace().equals("http://jabber.org/protocol/disco#items") && el.getAttribute("node").equals("http://jabber.org/protocol/commands")) {
+                    message.addPayload(el);
+                }
+            }
             if (conversationMultiMode) {
                 message.setMucUser(conversation.getMucOptions().findUserByFullJid(counterpart));
                 final Jid fallback = conversation.getMucOptions().getTrueCounterpart(counterpart);
@@ -985,7 +989,17 @@ public class MessageParser extends AbstractParser implements OnMessagePacketRece
             mXmppConnectionService.databaseBackend.createMessage(message);
             final HttpConnectionManager manager = this.mXmppConnectionService.getHttpConnectionManager();
             if ((mXmppConnectionService.easyDownloader() || message.trusted()) && message.treatAsDownloadable() && manager.getAutoAcceptFileSize() > 0) {
-                manager.createNewDownloadConnection(message);
+                if (message.getOob() != null && message.getOob().getScheme().equalsIgnoreCase("cid")) {
+                    try {
+                        BobTransfer transfer = new BobTransfer.ForMessage(message, mXmppConnectionService);
+                        message.setTransferable(transfer);
+                        transfer.start();
+                    } catch (URISyntaxException e) {
+                        Log.d(Config.LOGTAG, "BobTransfer failed to parse URI");
+                    }
+                } else {
+                    manager.createNewDownloadConnection(message);
+                }
             } else if (notify) {
                 if (query != null && query.isCatchup()) {
                     mXmppConnectionService.getNotificationService().pushFromBacklog(message);

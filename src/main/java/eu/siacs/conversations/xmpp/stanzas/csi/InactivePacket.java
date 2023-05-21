@@ -1,4 +1,5 @@
 package eu.siacs.conversations.xmpp.stanzas.csi;
+
 import eu.siacs.conversations.xml.Namespace;
 import eu.siacs.conversations.xmpp.stanzas.AbstractStanza;
 

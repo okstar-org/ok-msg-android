@@ -329,7 +329,9 @@ public class ConversationsOverviewFragment extends XmppFragment {
         activity.getMenuInflater().inflate(R.menu.conversations, menu);
         final XmppActivity activity = XmppActivity.find(view);
         final Object tag = view.getTag();
-        Conversation conversation = conversations.get(((AdapterContextMenuInfo) menuInfo).position);
+        int pos = ((AdapterContextMenuInfo) menuInfo).position;
+        if (pos < 0) return;
+        Conversation conversation = conversations.get(pos);
         String name;
         if (tag instanceof MucOptions.User && activity != null) {
             activity.getMenuInflater().inflate(R.menu.muc_details_context, menu);
@@ -385,6 +387,9 @@ public class ConversationsOverviewFragment extends XmppFragment {
 
     @Override
     public boolean onContextItemSelected(MenuItem item) {
+        int pos = ((AdapterContextMenuInfo) item.getMenuInfo()).position;
+        if (conversations == null || conversations.size() < pos || pos < 0) return false;
+
         Conversation conversation = conversations.get(((AdapterContextMenuInfo) item.getMenuInfo()).position);
         ConversationFragment fragment = new ConversationFragment();
         fragment.setHasOptionsMenu(false);

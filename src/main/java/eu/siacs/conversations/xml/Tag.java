@@ -42,17 +42,18 @@ public class Tag {
         return name;
     }
 
-    public String getAttribute(final String attrName) {
+    public String getAttribute(String attrName) {
         return this.attributes.get(attrName);
     }
 
-    public Tag setAttribute(final String attrName, final String attrValue) {
+    public Tag setAttribute(String attrName, String attrValue) {
         this.attributes.put(attrName, attrValue);
         return this;
     }
 
-    public void setAttributes(final Hashtable<String, String> attributes) {
+    public Tag setAtttributes(Hashtable<String, String> attributes) {
         this.attributes = attributes;
+        return this;
     }
 
     public boolean isStart(final String needle) {
