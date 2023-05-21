@@ -79,7 +79,6 @@ public class HttpDownloadConnection implements Transferable {
             } else if (message.isFileOrImage()) {
                 message.setType(Message.TYPE_TEXT);
             }
-            message.setOob(fileParams.url);
             message.setFileDeleted(false);
             mXmppConnectionService.updateMessage(message);
         }
@@ -324,7 +323,6 @@ public class HttpDownloadConnection implements Transferable {
             }
             final Message.FileParams fileParams = message.getFileParams();
             FileBackend.updateFileParams(message, fileParams.url, size);
-            message.setOob(fileParams.url);
             mXmppConnectionService.databaseBackend.updateMessage(message, true);
             file.setExpectedSize(size);
             message.resetFileParams();
