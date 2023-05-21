@@ -18,6 +18,7 @@ import androidx.annotation.NonNull;
 import androidx.core.content.ContextCompat;
 import androidx.databinding.DataBindingUtil;
 import androidx.recyclerview.widget.RecyclerView;
+import androidx.core.graphics.ColorUtils;
 
 import com.google.common.base.Optional;
 import com.google.common.base.Strings;
@@ -92,12 +93,11 @@ public class ConversationAdapter
             viewHolder.binding.account.setVisibility(View.GONE);
         }
 
-        if (conversation == ConversationFragment.getConversation(activity)) {
-            viewHolder.binding.frame.setBackgroundColor(
-                    StyledAttributes.getColor(activity, R.attr.color_background_tertiary));
-        } else {
-            viewHolder.binding.frame.setBackgroundColor(
-                    StyledAttributes.getColor(activity, R.attr.color_background_secondary));
+        if (activity.xmppConnectionService != null && activity.xmppConnectionService.getAccounts().size() > 1) {
+            viewHolder.binding.frame.setBackgroundColor(ColorUtils.setAlphaComponent(
+                    UIHelper.getColorForName(conversation.getAccount().getJid().asBareJid().toString()),
+                    activity.isDarkTheme() ? 20 : 10
+            ));
         }
 
         final Message message = conversation.getLatestMessage();
