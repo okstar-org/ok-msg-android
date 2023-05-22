@@ -130,6 +130,8 @@ public class ConversationsActivity extends XmppActivity implements OnConversatio
     public static final int REQUEST_OPEN_MESSAGE = 0x9876;
     public static final int REQUEST_PLAY_PAUSE = 0x5432;
     public static final String EXTRA_TYPE = "type";
+    public static final String EXTRA_NODE = "node";
+
 
     private static final List<String> VIEW_AND_SHARE_ACTIONS = Arrays.asList(
             ACTION_VIEW_CONVERSATION,
