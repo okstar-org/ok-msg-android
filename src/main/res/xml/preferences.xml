@@ -320,7 +320,9 @@
             android:key="camera_choice"
             android:summary="@string/pref_choose_camera_summary"
             android:title="@string/choose_camera_app" />
-
+        <Preference
+            android:title="Change Stickers Location"
+            android:key="sticker_directory" />
     </PreferenceScreen>
     <!--status-->
     <PreferenceScreen
