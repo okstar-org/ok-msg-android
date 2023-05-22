@@ -980,6 +980,7 @@ public class ConversationFragment extends XmppFragment implements EditMessage.Ke
     }
 
     private void sendMessage() {
+        conversation.setUserSelectedThread(false);
         if (mediaPreviewAdapter.hasAttachments()) {
             commitAttachments();
             return;
@@ -1091,6 +1092,7 @@ public class ConversationFragment extends XmppFragment implements EditMessage.Ke
                 getActivity().invalidateOptionsMenu();
             }
         }
+        binding.messagesView.post(this::updateThreadFromLastMessage);
     }
 
     private boolean isPrivateMessage() {
@@ -1396,6 +1398,12 @@ public class ConversationFragment extends XmppFragment implements EditMessage.Ke
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
             this.binding.textinput.setCustomInsertionActionModeCallback(new EditMessageActionModeCallback(this.binding.textinput));
         }
+
+        binding.threadIdenticon.setOnClickListener(v -> {
+            newThread();
+            conversation.setUserSelectedThread(true);
+        });
+
         messageListAdapter.setOnMessageBoxSwiped(message -> {
             String user = null;
             quoteMessage(message, user);
@@ -1474,6 +1482,7 @@ public class ConversationFragment extends XmppFragment implements EditMessage.Ke
 
     private void quoteMessage(Message message, @Nullable String user) {
         setThread(message.getThread());
+        conversation.setUserSelectedThread(true);
         if (message.isGeoUri()) {
             quoteGeoUri(message, user);
         }
@@ -2475,7 +2484,29 @@ public class ConversationFragment extends XmppFragment implements EditMessage.Ke
         }
     }
 
+    private void newThread() {
+        Element thread = new Element("thread", "jabber:client");
+        thread.setContent(UUID.randomUUID().toString());
+        setThread(thread);
+    }
+
+    private void updateThreadFromLastMessage() {
+        if (this.conversation != null && !this.conversation.getUserSelectedThread() && TextUtils.isEmpty(binding.textinput.getText())) {
+            Message message = getLastVisibleMessage();
+            if (message == null) {
+                newThread();
+            } else {
+                setThread(message.getThread());
+            }
+        }
+    }
+
     private String getLastVisibleMessageUuid() {
+        Message message =  getLastVisibleMessage();
+        return message == null ? null : message.getUuid();
+    }
+
+    private Message getLastVisibleMessage() {
         if (binding == null) {
             return null;
         }
@@ -2487,7 +2518,8 @@ public class ConversationFragment extends XmppFragment implements EditMessage.Ke
                     try {
                         message = (Message) binding.messagesView.getItemAtPosition(i);
                     } catch (IndexOutOfBoundsException e) {
-                        //should not happen if we synchronize properly. however if that fails we just gonna try item -1
+                        // should not happen if we synchronize properly. however if that fails we
+                        // just gonna try item -1
                         continue;
                     }
                     if (message.getType() != Message.TYPE_STATUS) {
@@ -2498,12 +2530,13 @@ public class ConversationFragment extends XmppFragment implements EditMessage.Ke
                     while (message.next() != null && message.next().wasMergedIntoPrevious()) {
                         message = message.next();
                     }
-                    return message.getUuid();
+                    return message;
                 }
             }
         }
         return null;
     }
+
 
     private void openWith(final Message message) {
         if (message.isGeoUri()) {
@@ -4022,6 +4055,8 @@ public class ConversationFragment extends XmppFragment implements EditMessage.Ke
     @Override
     public void onContactPictureClicked(Message message) {
         setThread(message.getThread());
+        conversation.setUserSelectedThread(true);
+
         final boolean received = message.getStatus() <= Message.STATUS_RECEIVED;
         if (received) {
             if (message.getConversation() instanceof Conversation && message.getConversation().getMode() == Conversation.MODE_MULTI) {

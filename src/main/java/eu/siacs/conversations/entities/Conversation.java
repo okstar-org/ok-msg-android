@@ -172,7 +172,7 @@ public class Conversation extends AbstractEntity implements Blockable, Comparabl
     protected ConversationPagerAdapter pagerAdapter = new ConversationPagerAdapter();
     protected Message replyTo = null;
     protected Element thread = null;
-
+    protected boolean userSelectedThread = false;
 
 
     public Conversation(final String name, final Account account, final Jid contactJid,
@@ -823,6 +823,14 @@ public class Conversation extends AbstractEntity implements Blockable, Comparabl
 
     public void setDraftMessage(String draftMessage) {
         this.draftMessage = draftMessage;
+    }
+
+    public void setUserSelectedThread(boolean flag) {
+        this.userSelectedThread = flag;
+    }
+
+    public boolean getUserSelectedThread() {
+        return this.userSelectedThread;
     }
 
     public boolean isRead() {
