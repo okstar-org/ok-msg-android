@@ -58,7 +58,7 @@
                 android:id="@+id/message_content"
                 layout="@layout/message_content" />
 
-            <LinearLayout
+            <com.wefika.flowlayout.FlowLayout
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="start"
@@ -130,7 +130,7 @@
                     android:text="@string/sending"
                     android:textAppearance="@style/TextAppearance.Conversations.Caption"
                     tools:ignore="UnusedAttribute" />
-            </LinearLayout>
+            </com.wefika.flowlayout.FlowLayout>
         </LinearLayout>
     </LinearLayout>
 </RelativeLayout>

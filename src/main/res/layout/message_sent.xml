@@ -78,7 +78,7 @@
                 android:longClickable="true"
                 android:visibility="gone" />
 
-            <LinearLayout
+            <com.wefika.flowlayout.FlowLayout
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="end"
@@ -150,7 +150,7 @@
                     android:gravity="center_vertical"
                     android:padding="1dp"
                     android:src="@drawable/ic_check_black_18dp" />
-            </LinearLayout>
+            </com.wefika.flowlayout.FlowLayout>
         </LinearLayout>
     </LinearLayout>
 </RelativeLayout>
