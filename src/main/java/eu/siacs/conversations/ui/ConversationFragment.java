@@ -1399,6 +1399,11 @@ public class ConversationFragment extends XmppFragment implements EditMessage.Ke
             this.binding.textinput.setCustomInsertionActionModeCallback(new EditMessageActionModeCallback(this.binding.textinput));
         }
 
+        messageListAdapter.setOnMessageBoxClicked(message -> {
+            setThread(message.getThread());
+            conversation.setUserSelectedThread(true);
+        });
+
         binding.threadIdenticon.setOnClickListener(v -> {
             newThread();
             conversation.setUserSelectedThread(true);

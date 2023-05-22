@@ -147,6 +147,7 @@ public class MessageAdapter extends ArrayAdapter<Message> {
     private List<String> highlightedTerm = null;
     private final DisplayMetrics metrics;
     private OnContactPictureClicked mOnContactPictureClickedListener;
+    private OnContactPictureClicked mOnMessageBoxClickedListener;
     private OnContactPictureClicked mOnMessageBoxSwipedListener;
 
     private OnContactPictureLongClicked mOnContactPictureLongClickedListener;
@@ -214,6 +215,10 @@ public class MessageAdapter extends ArrayAdapter<Message> {
     }
     public void setOnMessageBoxSwiped(OnContactPictureClicked listener) {
         this.mOnMessageBoxSwipedListener = listener;
+    }
+
+    public void setOnMessageBoxClicked(OnContactPictureClicked listener) {
+        this.mOnMessageBoxClickedListener = listener;
     }
 
     public Activity getActivity() {
@@ -1382,6 +1387,18 @@ public class MessageAdapter extends ArrayAdapter<Message> {
 
         resetClickListener(viewHolder.message_box, viewHolder.messageBody);
 
+        viewHolder.message_box.setOnClickListener(v -> {
+            if (MessageAdapter.this.mOnMessageBoxClickedListener != null) {
+                MessageAdapter.this.mOnMessageBoxClickedListener
+                        .onContactPictureClicked(message);
+            }
+        });
+        viewHolder.messageBody.setOnClickListener(v -> {
+            if (MessageAdapter.this.mOnMessageBoxClickedListener != null) {
+                MessageAdapter.this.mOnMessageBoxClickedListener
+                        .onContactPictureClicked(message);
+            }
+        });
         viewHolder.contact_picture.setOnClickListener(v -> {
             if (MessageAdapter.this.mOnContactPictureClickedListener != null) {
                 MessageAdapter.this.mOnContactPictureClickedListener.onContactPictureClicked(message);
