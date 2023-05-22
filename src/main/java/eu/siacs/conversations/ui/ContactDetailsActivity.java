@@ -615,6 +615,7 @@ public class ContactDetailsActivity extends OmemoActivity implements OnAccountUp
         if (contact == null) {
             return;
         }
+        if (binding.editTags.getVisibility() != View.GONE) return;
         int ic_notifications = getThemeResource(R.attr.icon_notifications, R.drawable.ic_notifications_black_24dp);
         int ic_notifications_off = getThemeResource(R.attr.icon_notifications_off, R.drawable.ic_notifications_off_black_24dp);
         int ic_notifications_paused = getThemeResource(R.attr.icon_notifications_paused, R.drawable.ic_notifications_paused_black_24dp);
