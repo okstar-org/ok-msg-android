@@ -3076,6 +3076,11 @@ public class ConversationFragment extends XmppFragment implements EditMessage.Ke
             showSnackbar(R.string.no_write_access_in_public_muc, R.string.ok, clickToMuc);
         }
     }
+
+    public void refreshForNewCaps() {
+        refreshCommands();
+    }
+
     protected void refreshCommands() {
         if (commandAdapter == null) return;
 

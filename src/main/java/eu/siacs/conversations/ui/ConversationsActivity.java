@@ -154,6 +154,7 @@ public class ConversationsActivity extends XmppActivity implements OnConversatio
     private ActivityConversationsBinding binding;
     private boolean mActivityPaused = true;
     private AtomicBoolean mRedirectInProcess = new AtomicBoolean(false);
+    private boolean refreshForNewCaps = false;
 
     private static boolean isViewOrShareIntent(Intent i) {
         Log.d(Config.LOGTAG, "action: " + (i == null ? null : i.getAction()));
@@ -174,6 +175,7 @@ public class ConversationsActivity extends XmppActivity implements OnConversatio
         for (@IdRes int id : FRAGMENT_ID_NOTIFICATION_ORDER) {
             refreshFragment(id);
         }
+        refreshForNewCaps = false;
     }
 
     @Override
@@ -455,6 +457,7 @@ public class ConversationsActivity extends XmppActivity implements OnConversatio
         final Fragment fragment = getFragmentManager().findFragmentById(id);
         if (fragment instanceof XmppFragment) {
             ((XmppFragment) fragment).refresh();
+            if (refreshForNewCaps) ((XmppFragment) fragment).refreshForNewCaps();
         }
     }
 
@@ -1065,15 +1068,17 @@ public class ConversationsActivity extends XmppActivity implements OnConversatio
     }
 
     @Override
-    public void onConversationUpdate() {
+    public void onConversationUpdate(boolean newCaps) {
         if (performRedirectIfNecessary(false)) {
             return;
         }
+        refreshForNewCaps = newCaps;
         this.refreshUi();
     }
 
     @Override
     public void onRosterUpdate() {
+        refreshForNewCaps = true;
         this.refreshUi();
     }
 
