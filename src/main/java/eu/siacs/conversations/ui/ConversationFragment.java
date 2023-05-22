@@ -1609,6 +1609,7 @@ public class ConversationFragment extends XmppFragment implements EditMessage.Ke
             deleteMessage.setVisible(true);
             if (!encrypted && !m.getBody().equals("")) {
                 copyMessage.setVisible(true);
+                quoteMessage.setVisible(!showError && MessageUtils.prepareQuote(m).length() > 0);
             }
             quoteMessage.setVisible(!encrypted && !showError);
             if (m.getEncryption() == Message.ENCRYPTION_DECRYPTION_FAILED && !fileDeleted) {
