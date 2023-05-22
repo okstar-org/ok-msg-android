@@ -1,6 +1,7 @@
 package eu.siacs.conversations.ui;
 
 import static eu.siacs.conversations.ui.SettingsActivity.USE_INTERNAL_UPDATER;
+import android.telephony.TelephonyManager;
 import eu.siacs.conversations.utils.Compatibility;
 import androidx.annotation.RequiresApi;
 import android.Manifest;
