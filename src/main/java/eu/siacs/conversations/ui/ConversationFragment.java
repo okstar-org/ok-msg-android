@@ -1417,6 +1417,7 @@ public class ConversationFragment extends XmppFragment implements EditMessage.Ke
             } else {
                 newThread();
                 conversation.setUserSelectedThread(true);
+                newThreadTutorialToast("Switched to new thread");
             }
         });
 
@@ -1426,6 +1427,7 @@ public class ConversationFragment extends XmppFragment implements EditMessage.Ke
             setThread(null);
             conversation.setUserSelectedThread(true);
             if (wasLocked) refresh();
+            newThreadTutorialToast("Cleared thread");
             return true;
         });
 
@@ -1434,6 +1436,15 @@ public class ConversationFragment extends XmppFragment implements EditMessage.Ke
             quoteMessage(message, user);
         });
         return binding.getRoot();
+    }
+
+    protected void newThreadTutorialToast(String s) {
+        final SharedPreferences p = PreferenceManager.getDefaultSharedPreferences(activity);
+        final int tutorialCount = p.getInt("thread_tutorial", 0);
+        if (tutorialCount < 5) {
+            Toast.makeText(activity, s, Toast.LENGTH_SHORT).show();
+            p.edit().putInt("thread_tutorial", tutorialCount + 1).apply();
+        }
     }
 
     @Override
