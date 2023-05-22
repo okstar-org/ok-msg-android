@@ -2247,6 +2247,7 @@ public class Conversation extends AbstractEntity implements Blockable, Comparabl
                         public View getView(int position, View convertView, ViewGroup parent) {
                             Button v = (Button) super.getView(position, convertView, parent);
                             v.setOnClickListener((view) -> {
+                                loading = true;
                                 mValue.setContent(getItem(position).getValue());
                                 execute();
                             });
@@ -2303,6 +2304,7 @@ public class Conversation extends AbstractEntity implements Blockable, Comparabl
                         dialog.setOnShowListener(d -> SoftKeyboardUtils.showKeyboard(dialogBinding.inputEditText));
                         dialog.show();
                         View.OnClickListener clickListener = v -> {
+                            loading = true;
                             String value = dialogBinding.inputEditText.getText().toString();
                             mValue.setContent(value);
                             SoftKeyboardUtils.hideSoftKeyboard(dialogBinding.inputEditText);
@@ -2349,6 +2351,7 @@ public class Conversation extends AbstractEntity implements Blockable, Comparabl
 
                         binding.defaultButton.setText(defaultOption.toString());
                         binding.defaultButton.setOnClickListener((view) -> {
+                            loading = true;
                             mValue.setContent(defaultOption.getValue());
                             execute();
                         });
