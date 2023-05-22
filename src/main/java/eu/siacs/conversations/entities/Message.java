@@ -1206,7 +1206,7 @@ public class Message extends AbstractEntity implements AvatarService.Avatarable 
 
     public synchronized FileParams getFileParams() {
         if (fileParams == null) {
-            fileParams = new FileParams(this.body);
+            fileParams = new FileParams(oob ? this.body : "");
             if (this.transferable != null) {
                 fileParams.size = this.transferable.getFileSize();
             }
