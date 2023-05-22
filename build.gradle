@@ -134,7 +134,7 @@ android {
 
         //versionNameSuffix " beta_(2023-01-10)" // " beta_(XXXX-XX-XX)" // activate for beta versions
         versionCode 132
-        versionName "1.6.5"
+        versionName "1.7"
         //resConfigs "en"
 
         archivesBaseName += "-$versionName"
