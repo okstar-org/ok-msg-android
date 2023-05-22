@@ -4,6 +4,7 @@ import android.content.ContentValues;
 import android.database.Cursor;
 import android.os.SystemClock;
 import android.util.Log;
+import android.net.Uri;
 
 import com.google.common.base.Strings;
 import com.google.common.collect.ImmutableList;
@@ -729,7 +730,7 @@ public class Account extends AbstractEntity implements AvatarService.Avatarable 
 
     public String getShareableUri() {
         List<XmppUri.Fingerprint> fingerprints = this.getFingerprints();
-        String uri = "xmpp:" + this.getJid().asBareJid().toEscapedString();
+        String uri = "xmpp:" + Uri.encode(getJid().asBareJid().toEscapedString(), "@/");
         if (fingerprints.size() > 0) {
             return XmppUri.getFingerprintUri(uri, fingerprints, ';');
         } else {
