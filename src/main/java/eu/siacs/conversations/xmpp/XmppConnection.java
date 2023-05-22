@@ -757,7 +757,6 @@ public class XmppConnection implements Runnable {
             throw new StateChangingException(Account.State.INCOMPATIBLE_SERVER);
         }
         final String challenge;
-
         if (version == SaslMechanism.Version.SASL) {
             challenge = success.getContent();
         } else if (version == SaslMechanism.Version.SASL_2) {
@@ -815,7 +814,6 @@ public class XmppConnection implements Runnable {
                         account.getJid().asBareJid()
                                 + ": jid changed during SASL 2.0. updating database");
             }
-            final boolean nopStreamFeatures;
             final Element bound = success.findChild("bound", Namespace.BIND2);
             final Element resumed = success.findChild("resumed", Namespace.STREAM_MANAGEMENT);
             final Element failed = success.findChild("failed", Namespace.STREAM_MANAGEMENT);
@@ -828,7 +826,7 @@ public class XmppConnection implements Runnable {
                                 + ": server sent bound and resumed in SASL2 success");
                 throw new StateChangingException(Account.State.INCOMPATIBLE_SERVER);
             }
-            final boolean processNopStreamFeatures = (resumed != null && streamId != null) || bound != null;
+            final boolean processNopStreamFeatures;
             if (resumed != null && streamId != null) {
                 if (this.boundStreamFeatures != null) {
                     this.streamFeatures = this.boundStreamFeatures;
@@ -860,6 +858,9 @@ public class XmppConnection implements Runnable {
                     features.carbonsEnabled = true;
                 }
                 sendPostBindInitialization(waitForDisco, carbonsEnabled != null);
+                processNopStreamFeatures = true;
+            } else {
+                processNopStreamFeatures = false;
             }
             final HashedToken.Mechanism tokenMechanism;
             if (SaslMechanism.hashedToken(currentSaslMechanism)) {
@@ -880,9 +881,6 @@ public class XmppConnection implements Runnable {
                         account.getJid().asBareJid()
                                 + ": no response to our hashed token request "
                                 + this.hashTokenRequest);
-            }
-            if (processNopStreamFeatures) {
-                processNopStreamFeatures();
             }
             // a successful resume will not send stream features
             if (processNopStreamFeatures) {
@@ -1464,7 +1462,8 @@ public class XmppConnection implements Runnable {
     }
 
     private void authenticate() throws IOException {
-        final boolean isSecure = isSecure();
+        final boolean isSecure =
+                features.encryptionEnabled || Config.ALLOW_NON_TLS_CONNECTIONS || account.isOnion();
         if (isSecure && this.streamFeatures.hasChild("authentication", Namespace.SASL_2)) {authenticate(SaslMechanism.Version.SASL_2);
         } else if (isSecure && this.streamFeatures.hasChild("mechanisms", Namespace.SASL)) {
             authenticate(SaslMechanism.Version.SASL);
