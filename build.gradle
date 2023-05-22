@@ -112,6 +112,7 @@ dependencies {
     implementation 'com.github.singpolyma:android-identicons:master-SNAPSHOT'
     implementation 'com.github.woltapp:blurhash:master'
     implementation 'androidx.documentfile:documentfile:1.0.1'
+    implementation 'com.caverock:androidsvg-aar:1.4'
 }
 
 ext {
