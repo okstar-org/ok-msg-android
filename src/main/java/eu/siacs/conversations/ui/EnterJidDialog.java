@@ -53,7 +53,8 @@ import eu.siacs.conversations.utils.PhoneNumberUtilWrapper;
 public class EnterJidDialog extends DialogFragment implements OnBackendConnected, TextWatcher {
 
 
-    private static final List<String> SUSPICIOUS_DOMAINS = Arrays.asList("conference", "muc", "room", "rooms", "chat");
+    private static final List<String> SUSPICIOUS_DOMAINS =
+            Arrays.asList("conference", "muc", "room", "rooms");
 
     private OnEnterJidDialogPositiveListener mListener = null;
 
