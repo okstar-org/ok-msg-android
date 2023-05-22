@@ -459,6 +459,7 @@ public class Message extends AbstractEntity implements AvatarService.Avatarable 
 
         return null;
     }
+
     public synchronized void clearFallbacks() {
         this.payloads.removeAll(getFallbacks());
     }
