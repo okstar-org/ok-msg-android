@@ -274,6 +274,14 @@ public class DatabaseBackend extends SQLiteOpenHelper {
                 db.execSQL("PRAGMA monocles.user_version = 4");
             }
 
+            if(monoclesVersion < 5) {
+                db.execSQL(
+                        "ALTER TABLE monocles." + Message.TABLENAME + " " +
+                                "ADD COLUMN timeReceived NUMBER"
+                );
+                db.execSQL("CREATE INDEX monocles.message_time_received_index ON " + Message.TABLENAME + " (timeReceived)");
+                db.execSQL("PRAGMA monocles.user_version = 5");
+            }
 
             db.setTransactionSuccessful();
         } finally {
