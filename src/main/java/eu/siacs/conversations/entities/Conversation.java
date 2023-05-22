@@ -2637,7 +2637,7 @@ public class Conversation extends AbstractEntity implements Blockable, Comparabl
                         }
 
                         if (el.getName().equals("reported") || el.getName().equals("item")) {
-                            if ((layoutManager == null ? 1 : layoutManager.getSpanCount()) < 2) {
+                            if ((layoutManager == null ? 1 : layoutManager.getSpanCount()) < reported.size()) {
                                 if (el.getName().equals("reported")) continue;
                                 i += 1;
                             } else {
@@ -2674,7 +2674,7 @@ public class Conversation extends AbstractEntity implements Blockable, Comparabl
                                 Cell cell = null;
 
                                 if (reported != null) {
-                                    if ((layoutManager == null ? 1 : layoutManager.getSpanCount()) < 2) {
+                                    if ((layoutManager == null ? 1 : layoutManager.getSpanCount()) < reported.size()) {
                                         if (el.getName().equals("reported")) continue;
                                         if (i == position) {
                                             items.put(position, new Item(el, TYPE_ITEM_CARD));
