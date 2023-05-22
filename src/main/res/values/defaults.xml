@@ -104,6 +104,7 @@
     <bool name="enable_persistent_rooms">true</bool>
     <string name="default_push_server">up.conversations.im</string>
     <string name="default_push_account">none</string>
+    <bool name="dialler_integration_incoming">true</bool>
 
 
     <string-array name="domains">

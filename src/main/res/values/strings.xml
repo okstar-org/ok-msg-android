@@ -1270,4 +1270,6 @@
     <string name="microphone_permission_for_call">Microphone permission required to complete call</string>
     <string name="i_am_snikket_user">I use Snikket</string>
     <string name="action_edit_contact">Edit contact</string>
+    <string name="pref_dialler_integration_incoming">Use Phone Accounts for Incoming Calls</string>
+    <string name="pref_dialler_integration_incoming_summary">Incoming calls from phone numbers may ring with your system dialler instead of this app\'s notification settings</string>
 </resources>
