@@ -1073,12 +1073,14 @@ public class ConversationFragment extends XmppFragment implements EditMessage.Ke
             this.binding.textInputHint.setVisibility(View.VISIBLE);
             this.binding.textInputHint.setText(R.string.send_corrected_message);
             this.binding.textinput.setHint(R.string.send_corrected_message);
+            binding.conversationViewPager.setCurrentItem(0);
         } else if (isPrivateMessage()) {
             this.binding.textinput.setHint(R.string.send_unencrypted_message);
             this.binding.textInputHint.setVisibility(View.VISIBLE);
             SpannableStringBuilder hint = new SpannableStringBuilder(getString(R.string.send_private_message_to, conversation.getNextCounterpart().getResource()));
             hint.setSpan(new StyleSpan(Typeface.BOLD), 0, hint.length(), Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
             this.binding.textInputHint.setText(hint);
+            binding.conversationViewPager.setCurrentItem(0);
         } else if (multi && !conversation.getMucOptions().participating()) {
             this.binding.textInputHint.setVisibility(View.VISIBLE);
             this.binding.textInputHint.setText(R.string.ask_for_writeaccess);
@@ -2875,6 +2877,7 @@ public class ConversationFragment extends XmppFragment implements EditMessage.Ke
         if (conversation == null) {
             return false;
         }
+        final Conversation originalConversation = this.conversation;
         this.conversation = conversation;
         //once we set the conversation all is good and it will automatically do the right thing in onStart()
         if (this.activity == null || this.binding == null) {
@@ -2939,6 +2942,12 @@ public class ConversationFragment extends XmppFragment implements EditMessage.Ke
         this.binding.messagesView.post(this::fireReadEvent);
         //TODO if we only do this when this fragment is running on main it won't *bing* in tablet layout which might be unnecessary since we can *see* it
         activity.xmppConnectionService.getNotificationService().setOpenConversation(this.conversation);
+
+        if (commandAdapter != null && conversation != originalConversation) {
+            originalConversation.setupViewPager(null, null);
+            conversation.setupViewPager(binding.conversationViewPager, binding.tabLayout);
+            refreshCommands();
+        }
         if (commandAdapter == null && conversation != null) {
             conversation.setupViewPager(binding.conversationViewPager, binding.tabLayout);
             commandAdapter = new CommandAdapter((XmppActivity) getActivity());
@@ -3409,6 +3418,9 @@ public class ConversationFragment extends XmppFragment implements EditMessage.Ke
         final Activity activity = getActivity();
         if (activity != null) {
             this.binding.textSendButton.setImageResource(SendButtonTool.getSendButtonImageResource(activity, action, status));
+        }
+        if (hasAttachments || binding.textinput.getText().length() > 0) {
+            binding.conversationViewPager.setCurrentItem(0);
         }
         updateSnackBar(conversation);
         updateChatMsgHint();
