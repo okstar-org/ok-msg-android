@@ -9,8 +9,8 @@ import android.os.Build;
 import android.text.Html;
 import android.text.SpannableStringBuilder;
 import android.text.Spanned;
-import android.text.style.ClickableSpan;
 import android.text.style.ImageSpan;
+import android.text.style.ClickableSpan;
 import android.util.Log;
 import android.util.Base64;
 import android.util.Pair;
@@ -19,6 +19,7 @@ import eu.siacs.conversations.utils.Compatibility;
 import android.graphics.drawable.Drawable;
 import android.text.Html;
 import android.util.Pair;
+import android.view.View;
 
 import de.monocles.chat.BobTransfer;
 import de.monocles.chat.GetThumbnailForCid;
@@ -1022,6 +1023,19 @@ public class Message extends AbstractEntity implements AvatarService.Avatarable 
                     },
                     (opening, tag, output, xmlReader) -> {}
             ));
+            // Make images clickable and long-clickable with BetterLinkMovementMethod
+            ImageSpan[] imageSpans = spannable.getSpans(0, spannable.length(), ImageSpan.class);
+            for (ImageSpan span : imageSpans) {
+                final int start = spannable.getSpanStart(span);
+                final int end = spannable.getSpanEnd(span);
+
+                ClickableSpan click_span = new ClickableSpan() {
+                    @Override
+                    public void onClick(View widget) { }
+                };
+
+                spannable.setSpan(click_span, start, end, Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
+            }
 
             // https://stackoverflow.com/a/10187511/8611
             int i = spannable.length();

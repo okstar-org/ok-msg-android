@@ -186,10 +186,15 @@ import eu.siacs.conversations.xmpp.chatstate.ChatState;
 import eu.siacs.conversations.xmpp.jingle.JingleFileTransferConnection;
 import eu.siacs.conversations.xmpp.jingle.OngoingRtpSession;
 import eu.siacs.conversations.xmpp.jingle.RtpCapability;
+import io.ipfs.cid.Cid;
 import me.drakeet.support.toast.ToastCompat;
 import net.java.otr4j.session.SessionStatus;
 
-public class ConversationFragment extends XmppFragment implements EditMessage.KeyboardListener, MessageAdapter.OnContactPictureLongClicked, MessageAdapter.OnContactPictureClicked {
+public class ConversationFragment extends XmppFragment
+        implements EditMessage.KeyboardListener,
+        MessageAdapter.OnContactPictureLongClicked,
+        MessageAdapter.OnContactPictureClicked,
+        MessageAdapter.OnInlineImageLongClicked {
 
     public static final int REQUEST_SEND_MESSAGE = 0x0201;
     public static final int REQUEST_DECRYPT_PGP = 0x0202;
@@ -1432,6 +1437,7 @@ public class ConversationFragment extends XmppFragment implements EditMessage.Ke
         messageListAdapter = new MessageAdapter((XmppActivity) getActivity(), this.messageList);
         messageListAdapter.setOnContactPictureClicked(this);
         messageListAdapter.setOnContactPictureLongClicked(this);
+        messageListAdapter.setOnInlineImageLongClicked(this);
         binding.messagesView.setAdapter(messageListAdapter);
         registerForContextMenu(binding.messagesView);
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
@@ -1491,6 +1497,7 @@ public class ConversationFragment extends XmppFragment implements EditMessage.Ke
         Log.d(Config.LOGTAG, "ConversationFragment.onDestroyView()");
         messageListAdapter.setOnContactPictureClicked(null);
         messageListAdapter.setOnContactPictureLongClicked(null);
+        messageListAdapter.setOnInlineImageLongClicked(null);
         if (conversation != null) conversation.setupViewPager(null, null);
     }
 
@@ -2735,6 +2742,14 @@ public class ConversationFragment extends XmppFragment implements EditMessage.Ke
             refresh();
         });
         builder.create().show();
+    }
+
+    public boolean onInlineImageLongClicked(Cid cid) {
+        DownloadableFile f = activity.xmppConnectionService.getFileForCid(cid);
+        if (f == null) return false;
+
+        saveAsSticker(f, null);
+        return true;
     }
 
     private void saveAsSticker(final Message m) {
