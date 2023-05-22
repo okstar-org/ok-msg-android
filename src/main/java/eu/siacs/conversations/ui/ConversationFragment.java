@@ -1404,14 +1404,20 @@ public class ConversationFragment extends XmppFragment implements EditMessage.Ke
             conversation.setUserSelectedThread(true);
         });
 
-        binding.threadIdenticon.setOnClickListener(v -> {
+        binding.threadIdenticonLayout.setOnClickListener(v -> {
+            boolean wasLocked = conversation.getLockThread();
+            conversation.setLockThread(false);
             newThread();
             conversation.setUserSelectedThread(true);
+            if (wasLocked) refresh();
         });
 
-        binding.threadIdenticon.setOnLongClickListener(v -> {
+        binding.threadIdenticonLayout.setOnLongClickListener(v -> {
+            boolean wasLocked = conversation.getLockThread();
+            conversation.setLockThread(false);
             setThread(null);
             conversation.setUserSelectedThread(true);
+            if (wasLocked) refresh();
             return true;
         });
 
@@ -1503,6 +1509,7 @@ public class ConversationFragment extends XmppFragment implements EditMessage.Ke
     private void setThread(Element thread) {
         this.conversation.setThread(thread);
         binding.threadIdenticon.setAlpha(0f);
+        binding.threadIdenticonLock.setVisibility(this.conversation.getLockThread() ? View.VISIBLE : View.GONE);
         if (thread != null) {
             final String threadId = thread.getContent();
             if (threadId != null) {
@@ -1564,6 +1571,7 @@ public class ConversationFragment extends XmppFragment implements EditMessage.Ke
             MenuItem retryDecryption = menu.findItem(R.id.retry_decryption);
             MenuItem correctMessage = menu.findItem(R.id.correct_message);
             MenuItem retractMessage = menu.findItem(R.id.retract_message);
+            MenuItem onlyThisThread = menu.findItem(R.id.only_this_thread);
             MenuItem moderateMessage = menu.findItem(R.id.moderate_message);
             MenuItem deleteMessage = menu.findItem(R.id.delete_message);
             MenuItem shareWith = menu.findItem(R.id.share_with);
@@ -1575,6 +1583,7 @@ public class ConversationFragment extends XmppFragment implements EditMessage.Ke
             MenuItem showLog = menu.findItem(R.id.show_edit_log);
             MenuItem showErrorMessage = menu.findItem(R.id.show_error_message);
             MenuItem saveFile = menu.findItem(R.id.save_file);
+            onlyThisThread.setVisible(!conversation.getLockThread() && m.getThread() != null);
             final boolean unInitiatedButKnownSize = MessageUtils.unInitiatedButKnownSize(m);
             final boolean showError = m.getStatus() == Message.STATUS_SEND_FAILED && m.getErrorMessage() != null && !Message.ERROR_MESSAGE_CANCELLED.equals(m.getErrorMessage());
             final boolean messageDeleted = m.isMessageDeleted();
@@ -1743,6 +1752,12 @@ public class ConversationFragment extends XmppFragment implements EditMessage.Ke
                 return true;
             case R.id.show_edit_log:
                 openLog(selectedMessage);
+                return true;
+            case R.id.only_this_thread:
+                conversation.setLockThread(true);
+                setThread(selectedMessage.getThread());
+                refresh();
+                setThread(selectedMessage.getThread());
                 return true;
             default:
                 return super.onContextItemSelected(item);
