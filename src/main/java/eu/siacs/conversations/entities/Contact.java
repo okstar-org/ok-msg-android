@@ -737,8 +737,6 @@ public class Contact implements ListItem, Blockable {
             if (!ctx.getPackageManager().hasSystemFeature(PackageManager.FEATURE_CONNECTION_SERVICE)) return;
         }
 
-        if (!ctx.getPackageManager().hasSystemFeature(PackageManager.FEATURE_CONNECTION_SERVICE)) return;
-
         TelecomManager telecomManager = ctx.getSystemService(TelecomManager.class);
 
         PhoneAccount phoneAccount = PhoneAccount.builder(
