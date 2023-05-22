@@ -1462,7 +1462,8 @@ public class XmppConnection implements Runnable {
     }
 
     private void authenticate() throws IOException {
-        final boolean isSecure = isSecure();
+        final boolean isSecure =
+                features.encryptionEnabled || Config.ALLOW_NON_TLS_CONNECTIONS || account.isOnion();
         if (isSecure && this.streamFeatures.hasChild("authentication", Namespace.SASL_2)) {authenticate(SaslMechanism.Version.SASL_2);
         } else if (isSecure && this.streamFeatures.hasChild("mechanisms", Namespace.SASL)) {
             authenticate(SaslMechanism.Version.SASL);
@@ -1470,6 +1471,7 @@ public class XmppConnection implements Runnable {
             throw new StateChangingException(Account.State.INCOMPATIBLE_SERVER);
         }
     }
+
     private boolean isSecure() {
         return features.encryptionEnabled || Config.ALLOW_NON_TLS_CONNECTIONS || account.isOnion() || account.isI2P();
     }
