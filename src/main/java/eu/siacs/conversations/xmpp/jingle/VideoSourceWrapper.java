@@ -3,6 +3,7 @@ package eu.siacs.conversations.xmpp.jingle;
 import android.content.Context;
 import android.util.Log;
 
+import com.google.common.base.Optional;
 import com.google.common.collect.ImmutableSet;
 import com.google.common.collect.Iterables;
 import com.google.common.util.concurrent.ListenableFuture;
@@ -87,15 +88,7 @@ class VideoSourceWrapper {
     public void dispose() {
         this.cameraVideoCapturer.dispose();
         if (this.videoSource != null) {
-            dispose(this.videoSource);
-        }
-    }
-
-    private static void dispose(final VideoSource videoSource) {
-        try {
-            videoSource.dispose();
-        } catch (final IllegalStateException e) {
-            Log.e(Config.LOGTAG, "unable to dispose video source", e);
+            this.videoSource.dispose();
         }
     }
 
@@ -134,7 +127,7 @@ class VideoSourceWrapper {
             this.context = context;
         }
 
-        public VideoSourceWrapper create() {
+        public Optional<VideoSourceWrapper> create() {
             final CameraEnumerator enumerator = new Camera2Enumerator(context);
             final Set<String> deviceNames = ImmutableSet.copyOf(enumerator.getDeviceNames());
             for (final String deviceName : deviceNames) {
@@ -142,16 +135,17 @@ class VideoSourceWrapper {
                     final VideoSourceWrapper videoSourceWrapper =
                             of(enumerator, deviceName, deviceNames);
                     if (videoSourceWrapper == null) {
-                        return null;
+                        return Optional.absent();
                     }
                     videoSourceWrapper.isFrontCamera = true;
-                    return videoSourceWrapper;
+                    return Optional.of(videoSourceWrapper);
                 }
             }
             if (deviceNames.size() == 0) {
-                return null;
+                return Optional.absent();
             } else {
-                return of(enumerator, Iterables.get(deviceNames, 0), deviceNames);
+                return Optional.fromNullable(
+                        of(enumerator, Iterables.get(deviceNames, 0), deviceNames));
             }
         }
 
