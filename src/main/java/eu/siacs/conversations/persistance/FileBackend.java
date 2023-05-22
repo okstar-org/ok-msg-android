@@ -1659,7 +1659,8 @@ public class FileBackend {
                        | image/video/pdf | a/v/gif | vcard/apk/audio |
         url | filesize | width | height  | runtime | name            |
         */
-        Message.FileParams fileParams = new Message.FileParams();
+        Message.FileParams fileParams = message.getFileParams();
+        if (fileParams == null) fileParams = new Message.FileParams();
         if (url != null) {
             fileParams.url = url;
         }
