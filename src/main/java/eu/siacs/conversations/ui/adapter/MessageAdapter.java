@@ -472,6 +472,13 @@ public class MessageAdapter extends ArrayAdapter<Message> {
         }
     }
 
+    private void displayInfoMessage(ViewHolder viewHolder, CharSequence text, boolean darkBackground, final Message message, int type) {
+        displayDownloadableMessage(viewHolder, message, "", darkBackground, type);
+        int imageVisibility = viewHolder.image.getVisibility();
+        displayInfoMessage(viewHolder, text, darkBackground, message);
+        viewHolder.image.setVisibility(imageVisibility);
+    }
+
     private void displayInfoMessage(ViewHolder viewHolder, CharSequence text, boolean darkBackground, Message message) {
         viewHolder.download_button.setVisibility(View.GONE);
         viewHolder.audioPlayer.setVisibility(View.GONE);
