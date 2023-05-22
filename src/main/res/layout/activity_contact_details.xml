@@ -113,6 +113,7 @@
                                     <de.monocles.chat.TagEditorView
                                         android:id="@+id/edit_tags"
                                         android:visibility="gone"
+                                        android:hint="@string/tags"
                                         android:layout_width="match_parent"
                                         android:layout_height="wrap_content"
                                         android:layout_marginBottom="4dp"
