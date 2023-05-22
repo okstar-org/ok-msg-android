@@ -71,6 +71,7 @@ import java.io.OutputStream;
 import java.lang.ref.WeakReference;
 import java.net.ServerSocket;
 import java.net.Socket;
+import java.nio.ByteBuffer;
 import java.net.URL;
 import java.nio.channels.FileChannel;
 import java.nio.charset.StandardCharsets;
@@ -2317,7 +2318,46 @@ public class FileBackend {
     }
 
     public Drawable getThumbnail(Message message, Resources res, int size, boolean cacheOnly) throws IOException {
-        return getThumbnail(getFile(message), res, size, cacheOnly);
+        final LruCache<String, Drawable> cache = mXmppConnectionService.getDrawableCache();
+        DownloadableFile file = getFile(message);
+        Drawable thumbnail = cache.get(file.getAbsolutePath());
+        if (thumbnail != null) return thumbnail;
+
+        if ((thumbnail == null) && (!cacheOnly)) {
+            synchronized (THUMBNAIL_LOCK) {
+                List<Element> thumbs = message.getFileParams() != null ? message.getFileParams().getThumbnails() : null;
+                if (thumbs != null && !thumbs.isEmpty()) {
+                    for (Element thumb : thumbs) {
+                        Uri uri = Uri.parse(thumb.getAttribute("uri"));
+                        if (uri.getScheme().equals("data")) {
+                            if (android.os.Build.VERSION.SDK_INT < 28) continue;
+                            String[] parts = uri.getSchemeSpecificPart().split(",", 2);
+                            byte[] data;
+                            if (Arrays.asList(parts[0].split(";")).contains("base64")) {
+                                data = Base64.decode(parts[1], 0);
+                            } else {
+                                data = parts[1].getBytes("UTF-8");
+                            }
+
+                            ImageDecoder.Source source = ImageDecoder.createSource(ByteBuffer.wrap(data));
+                            thumbnail = ImageDecoder.decodeDrawable(source, (decoder, info, src) -> {
+                                int w = info.getSize().getWidth();
+                                int h = info.getSize().getHeight();
+                                Rect r = rectForSize(w, h, size);
+                                decoder.setTargetSize(r.width(), r.height());
+                            });
+
+                            if (thumbnail != null) {
+                                cache.put(file.getAbsolutePath(), thumbnail);
+                                return thumbnail;
+                            }
+                        }
+                    }
+                }
+            }
+        }
+
+        return getThumbnail(file, res, size, cacheOnly);
     }
 
     public Drawable getThumbnail(DownloadableFile file, Resources res, int size, boolean cacheOnly) throws IOException {
