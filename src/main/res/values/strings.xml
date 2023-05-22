@@ -1272,4 +1272,5 @@
     <string name="action_edit_contact">Edit contact</string>
     <string name="pref_dialler_integration_incoming">Use Phone Accounts for Incoming Calls</string>
     <string name="pref_dialler_integration_incoming_summary">Incoming calls from phone numbers may ring with your system dialler instead of this app\'s notification settings</string>
+    <string name="thread_marker">Thread Marker</string>
 </resources>

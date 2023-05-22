@@ -67,12 +67,16 @@ public class MessageGenerator extends AbstractGenerator {
         }
         if (message.edited() && !message.isMessageDeleted()) {
             packet.addChild("replace", "urn:xmpp:message-correct:0").setAttribute("id", message.getEditedIdWireFormat());
-        } else if (message.isMessageDeleted()) {
+        }
+        else if (message.isMessageDeleted()) {
             Element apply = packet.addChild("apply-to", "urn:xmpp:fasten:0").setAttribute("id", (message.getRetractId() != null ? message.getRetractId() : (message.getRemoteMsgId() != null ? message.getRemoteMsgId() : (message.getEditedIdWireFormat() != null ? message.getEditedIdWireFormat() : message.getUuid()))));
             apply.addChild("retract", "urn:xmpp:message-retract:0");
             packet.addChild("fallback", "urn:xmpp:fallback:0");
             packet.addChild("store", "urn:xmpp:hints");
             packet.setBody("This person attempted to retract a previous message, but it's unsupported by your client.");
+        }
+        for (Element el : message.getPayloads()) {
+            packet.addChild(el);
         }
         return packet;
     }

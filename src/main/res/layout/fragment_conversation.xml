@@ -138,7 +138,6 @@
                 android:paddingBottom="2dp"
                 android:background="?attr/color_background_primary">
 
-
                 <ImageButton
                     android:id="@+id/recordVoiceButton"
                     android:layout_width="32dp"
@@ -151,14 +150,25 @@
                     android:src="@drawable/ic_send_voice_offline"
                     android:visibility="gone" />
 
+                <com.lelloman.identicon.view.GithubIdenticonView
+                    android:id="@+id/thread_identicon"
+                    android:alpha="0"
+                    android:layout_width="32dp"
+                    android:layout_height="32dp"
+                    android:layout_marginLeft="32dp"
+                    android:layout_alignParentStart="true"
+                    android:layout_alignParentLeft="true"
+                    android:layout_centerVertical="true"
+                    android:contentDescription="@string/thread_marker" />
+
                 <LinearLayout
                     android:id="@+id/message_input_box"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_toStartOf="@+id/textSendButton"
                     android:layout_toLeftOf="@+id/textSendButton"
-                    android:layout_toEndOf="@+id/recordVoiceButton"
-                    android:layout_toRightOf="@+id/recordVoiceButton"
+                    android:layout_toEndOf="@+id/thread_identicon"
+                    android:layout_toRightOf="@+id/thread_identicon"
                     android:background="@drawable/message_bubble_sent"
                     android:orientation="vertical">
 

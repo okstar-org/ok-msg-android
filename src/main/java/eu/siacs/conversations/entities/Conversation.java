@@ -763,9 +763,11 @@ public class Conversation extends AbstractEntity implements Blockable, Comparabl
     public Element getThread() {
         return this.thread;
     }
+
     public void setThread(Element thread) {
         this.thread = thread;
     }
+
     public MamReference getLastClearHistory() {
         return MamReference.fromAttribute(getAttribute(ATTRIBUTE_LAST_CLEAR_HISTORY));
     }

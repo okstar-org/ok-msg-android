@@ -1011,15 +1011,14 @@ public class ConversationFragment extends XmppFragment implements EditMessage.Ke
             } else {
                 message = new Message(conversation, body, conversation.getNextEncryption());
             }
-            message.setThread(conversation.getThread());
             if (attention) {
                 message.addPayload(new Element("attention", "urn:xmpp:attention:0"));
             }
+            message.setThread(conversation.getThread());
             Message.configurePrivateMessage(message);
         } else {
             message = conversation.getCorrectingMessage();
             message.setBody(body);
-            message.setThread(conversation.getThread());
             message.putEdited(message.getUuid(), message.getServerMsgId(), message.getBody(), message.getTimeSent());
             message.setServerMsgId(null);
             message.setUuid(UUID.randomUUID().toString());
@@ -1474,10 +1473,24 @@ public class ConversationFragment extends XmppFragment implements EditMessage.Ke
     }
 
     private void quoteMessage(Message message, @Nullable String user) {
+        setThread(message.getThread());
         if (message.isGeoUri()) {
             quoteGeoUri(message, user);
         }
         setupReply(message);
+    }
+
+    private void setThread(Element thread) {
+        this.conversation.setThread(thread);
+        binding.threadIdenticon.setAlpha(0f);
+        if (thread != null) {
+            final String threadId = thread.getContent();
+            if (threadId != null) {
+                binding.threadIdenticon.setAlpha(1f);
+                binding.threadIdenticon.setColor(UIHelper.getColorForName(threadId));
+                binding.threadIdenticon.setHash(UIHelper.identiconHash(threadId));
+            }
+        }
     }
 
     private void setupReply(Message message) {
@@ -4008,12 +4021,7 @@ public class ConversationFragment extends XmppFragment implements EditMessage.Ke
 
     @Override
     public void onContactPictureClicked(Message message) {
-        String fingerprint;
-        if (message.getEncryption() == Message.ENCRYPTION_PGP || message.getEncryption() == Message.ENCRYPTION_DECRYPTED) {
-            fingerprint = "pgp";
-        } else {
-            fingerprint = message.getFingerprint();
-        }
+        setThread(message.getThread());
         final boolean received = message.getStatus() <= Message.STATUS_RECEIVED;
         if (received) {
             if (message.getConversation() instanceof Conversation && message.getConversation().getMode() == Conversation.MODE_MULTI) {
@@ -4030,15 +4038,8 @@ public class ConversationFragment extends XmppFragment implements EditMessage.Ke
                         ToastCompat.makeText(getActivity(), R.string.you_are_not_participating, ToastCompat.LENGTH_SHORT).show();
                     }
                 }
-                return;
-            } else {
-                if (!message.getContact().isSelf()) {
-                    activity.switchToContactDetails(message.getContact(), fingerprint);
-                    return;
-                }
             }
         }
-        activity.switchToAccount(message.getConversation().getAccount(), fingerprint);
     }
 
     private Activity requireActivity() {

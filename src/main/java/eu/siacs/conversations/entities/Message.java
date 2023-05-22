@@ -484,12 +484,7 @@ public class Message extends AbstractEntity implements AvatarService.Avatarable 
     public String getQuoteableBody() {
         return this.body;
     }
-    public void setThread(Element thread) {
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
-            payloads.removeIf(el -> el.getName().equals("thread") && el.getNamespace().equals("jabber:client"));
-        }
-        addPayload(thread);
-    }
+
     public Element getReactions() {
         if (this.payloads == null) return null;
 
@@ -562,6 +557,11 @@ public class Message extends AbstractEntity implements AvatarService.Avatarable 
 
     public synchronized void setSubject(String subject) {
         this.subject = subject;
+    }
+
+    public void setThread(Element thread) {
+        payloads.removeIf(el -> el.getName().equals("thread") && el.getNamespace().equals("jabber:client"));
+        addPayload(thread);
     }
 
     public void setMucUser(MucOptions.User user) {
@@ -1139,7 +1139,6 @@ public class Message extends AbstractEntity implements AvatarService.Avatarable 
     public List<Element> getPayloads() {
         return new ArrayList<>(this.payloads);
     }
-
     public String getMimeType() {
         String extension;
         if (relativeFilePath != null) {
