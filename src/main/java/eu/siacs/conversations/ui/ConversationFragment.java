@@ -244,6 +244,7 @@ public class ConversationFragment extends XmppFragment implements EditMessage.Ke
     private final SimpleDateFormat df = new SimpleDateFormat("yyyy-MM-dd  hh:mm (z)", Locale.US);
 
     private boolean reInitRequiredOnStart = true;
+    private int identiconWidth = -1;
     private MediaPreviewAdapter mediaPreviewAdapter;
     private final OnClickListener clickToMuc = new OnClickListener() {
 
@@ -1549,6 +1550,7 @@ public class ConversationFragment extends XmppFragment implements EditMessage.Ke
                 binding.threadIdenticon.setHash(UIHelper.identiconHash(threadId));
             }
         }
+        updateSendButton();
     }
 
     private void setupReply(Message message) {
@@ -3598,9 +3600,15 @@ public class ConversationFragment extends XmppFragment implements EditMessage.Ke
         if (activity != null) {
             this.binding.textSendButton.setImageResource(SendButtonTool.getSendButtonImageResource(activity, action, status));
         }
+        ViewGroup.LayoutParams params = binding.threadIdenticonLayout.getLayoutParams();
+        if (identiconWidth < 0) identiconWidth = params.width;
         if (hasAttachments || binding.textinput.getText().length() > 0) {
             binding.conversationViewPager.setCurrentItem(0);
+            params.width = conversation.getThread() == null ? 0 : identiconWidth;
+        } else {
+            params.width = identiconWidth;
         }
+        binding.threadIdenticonLayout.setLayoutParams(params);
         updateSnackBar(conversation);
         updateChatMsgHint();
         updateTextFormat(canSendMeCommand());
