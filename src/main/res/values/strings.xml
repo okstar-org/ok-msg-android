@@ -1278,4 +1278,5 @@
     <string name="tags">Tags</string>
     <string name="save_as_sticker">Save as Sticker</string>
     <string name="sticker_name">Sticker Name</string>
+    <string name="action_execute">Go</string>
 </resources>
