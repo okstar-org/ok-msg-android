@@ -57,6 +57,8 @@ import com.google.common.io.ByteStreams;
 
 import com.wolt.blurhashkt.BlurHashDecoder;
 
+import de.monocles.chat.BobTransfer;
+
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.Closeable;
@@ -2350,6 +2352,13 @@ public class FileBackend {
                             if (thumbnail != null) {
                                 cache.put(file.getAbsolutePath(), thumbnail);
                                 return thumbnail;
+                            }
+                        } else if (uri.getScheme().equals("cid")) {
+                            Cid cid = BobTransfer.cid(uri);
+                            if (cid == null) continue;
+                            DownloadableFile f = mXmppConnectionService.getFileForCid(cid);
+                            if (f != null && f.canRead()) {
+                                return getThumbnail(f, res, size, cacheOnly);
                             }
                         }
                     }
