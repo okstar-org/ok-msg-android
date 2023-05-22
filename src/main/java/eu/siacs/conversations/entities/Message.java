@@ -18,6 +18,8 @@ import android.view.View;
 import eu.siacs.conversations.utils.Compatibility;
 import android.graphics.drawable.Drawable;
 import android.text.Html;
+import android.util.Pair;
+
 import de.monocles.chat.BobTransfer;
 import de.monocles.chat.GetThumbnailForCid;
 
@@ -549,10 +551,29 @@ public class Message extends AbstractEntity implements AvatarService.Avatarable 
     }
 
     public String getBody() {
-        if (getOob() != null) {
-            return body.replace(getOob().toString(), "");
+        StringBuilder body = new StringBuilder(this.body);
+
+        List<Element> fallbacks = getFallbacks();
+        List<Pair<Integer, Integer>> spans = new ArrayList<>();
+        for (Element fallback : fallbacks) {
+            for (Element span : fallback.getChildren()) {
+                if (!span.getName().equals("body") && !span.getNamespace().equals("urn:xmpp:fallback:0")) continue;
+                if (span.getAttribute("start") == null || span.getAttribute("end") == null) return "";
+                spans.add(new Pair(parseInt(span.getAttribute("start")), parseInt(span.getAttribute("end"))));
+            }
+        }
+        // Do them in reverse order so that span deletions don't affect the indexes of other spans
+        spans.sort((x, y) -> y.first.compareTo(x.first));
+        try {
+            for (Pair<Integer, Integer> span : spans) {
+                body.delete(span.first, span.second);
+            }
+        } catch (final StringIndexOutOfBoundsException e) { spans.clear(); }
+
+        if (spans.isEmpty() && getOob() != null) {
+            return body.toString().replace(getOob().toString(), "");
         } else {
-            return body;
+            return body.toString();
         }
     }
 
