@@ -118,7 +118,7 @@
         android:requestLegacyExternalStorage="true"
         android:supportsRtl="true"
         android:theme="@style/ConversationsTheme"
-        tools:ignore="GoogleAppIndexingWarning" android:hasFragileUserData="true"
+        tools:ignore="GoogleAppIndexingWarning"
         tools:replace="android:label, android:allowBackup"
         tools:targetApi="r">
 
