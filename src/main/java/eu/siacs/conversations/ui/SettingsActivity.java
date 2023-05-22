@@ -385,7 +385,7 @@ public class SettingsActivity extends XmppActivity implements OnSharedPreference
             createBackupPreference.setSummary(getString(R.string.pref_create_backup_summary, getBackupDirectory(null)));
             createBackupPreference.setOnPreferenceClickListener(preference -> {
                 if (hasStoragePermission(REQUEST_CREATE_BACKUP)) {
-                    createBackup(true);
+                    createBackup();
                 }
                 return true;
             });
@@ -728,7 +728,7 @@ public class SettingsActivity extends XmppActivity implements OnSharedPreference
         if (grantResults.length > 0) {
             if (grantResults[0] == PackageManager.PERMISSION_GRANTED) {
                 if (requestCode == REQUEST_CREATE_BACKUP) {
-                    createBackup(true);
+                    createBackup();
                 }
                 if (requestCode == REQUEST_IMPORT_SETTINGS) {
                     importSettings();
@@ -743,8 +743,21 @@ public class SettingsActivity extends XmppActivity implements OnSharedPreference
         }
     }
 
-    private void createBackup(boolean notify) {
-        final Intent intent = new Intent(this, ExportBackupService.class);
+    private void createBackup() {
+        new AlertDialog.Builder(this)
+                .setTitle("Create Backup")
+                .setMessage("Export extra monocles-only data (backup will not import into other apps then)?")
+                .setPositiveButton(R.string.yes, (dialog, whichButton) -> {
+                    createBackup(true, true);
+                })
+                .setNegativeButton(R.string.no, (dialog, whichButton) -> {
+                    createBackup(false, false);
+                }).show();
+    }
+
+    private void createBackup(boolean notify, boolean withmonoclesDb) {
+        Intent intent = new Intent(this, ExportBackupService.class);
+        intent.putExtra("monocles_db", withmonoclesDb);
         intent.putExtra("NOTIFY_ON_BACKUP_COMPLETE", notify);
         ContextCompat.startForegroundService(this, intent);
         final AlertDialog.Builder builder = new AlertDialog.Builder(this);

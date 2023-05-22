@@ -265,7 +265,7 @@ public class ExportBackupService extends Service {
                 boolean success;
                 List<File> files;
                 try {
-                    files = export();
+                    files = export(intent.getBooleanExtra("monocles_db", true));
                     success = files != null;
                 } catch (final Exception e) {
                     Log.d(Config.LOGTAG, "unable to create backup", e);
@@ -373,7 +373,7 @@ public class ExportBackupService extends Service {
         }
     }
 
-    private List<File> export() throws Exception {
+    private List<File> export(boolean withmonoclesDb) throws Exception {
         wakeLock.acquire(15 * 60 * 1000L /*15 minutes*/);
         NotificationCompat.Builder mBuilder = new NotificationCompat.Builder(getBaseContext(), NotificationService.BACKUP_CHANNEL_ID);
         mBuilder.setContentTitle(getString(R.string.notification_create_backup_title))
@@ -425,7 +425,7 @@ public class ExportBackupService extends Service {
                 accountExport(db, uuid, writer);
                 simpleExport(db, Conversation.TABLENAME, Conversation.ACCOUNT, uuid, writer);
                 messageExport(db, uuid, writer, progress);
-                messageExportmonocles(db, uuid, writer, progress);
+                if (withmonoclesDb) messageExportmonocles(db, uuid, writer, progress);
                 for (String table : Arrays.asList(SQLiteAxolotlStore.PREKEY_TABLENAME, SQLiteAxolotlStore.SIGNED_PREKEY_TABLENAME, SQLiteAxolotlStore.SESSION_TABLENAME, SQLiteAxolotlStore.IDENTITIES_TABLENAME)) {
                     simpleExport(db, table, SQLiteAxolotlStore.ACCOUNT, uuid, writer);
                 }
