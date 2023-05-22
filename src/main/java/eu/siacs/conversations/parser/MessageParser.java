@@ -548,7 +548,7 @@ public class MessageParser extends AbstractParser implements OnMessagePacketRece
             remoteMsgId = packet.getId();
         }
         boolean notify = false;
-        Element html = original.findChild("html", "http://jabber.org/protocol/xhtml-im");
+        Element html = packet.findChild("html", "http://jabber.org/protocol/xhtml-im");
         if (html != null && html.findChild("body", "http://www.w3.org/1999/xhtml") == null) {
             html = null;
         }
@@ -726,8 +726,8 @@ public class MessageParser extends AbstractParser implements OnMessagePacketRece
             } else if (body == null && !attachments.isEmpty()) {
                 message = new Message(conversation, "", Message.ENCRYPTION_NONE, status);
             } else {
-                message = new Message(conversation, body.content, Message.ENCRYPTION_NONE, status);
-                if (body.count > 1) {
+                message = new Message(conversation, body == null ? "HTML-only message" : body.content, Message.ENCRYPTION_NONE, status);
+                if (body != null && body.count > 1) {
                     message.setBodyLanguage(body.language);
                 }
             }
@@ -747,8 +747,8 @@ public class MessageParser extends AbstractParser implements OnMessagePacketRece
                     }
                 }
             }
-
-            message.setSubject(original.findChildContent("subject"));
+            if (html != null) message.addPayload(html);
+            message.setSubject(packet.findChildContent("subject"));
             message.setCounterpart(counterpart);
             message.setRemoteMsgId(remoteMsgId);
             message.setServerMsgId(serverMsgId);
