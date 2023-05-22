@@ -88,6 +88,8 @@ import androidx.core.content.ContextCompat;
 import androidx.core.view.inputmethod.InputConnectionCompat;
 import androidx.core.view.inputmethod.InputContentInfoCompat;
 import androidx.databinding.DataBindingUtil;
+import androidx.viewpager.widget.PagerAdapter;
+
 import android.text.SpannableStringBuilder;
 
 import com.google.common.base.Optional;
@@ -3136,6 +3138,7 @@ public class ConversationFragment extends XmppFragment implements EditMessage.Ke
         final String downloadUuid = extras.getString(ConversationsActivity.EXTRA_DOWNLOAD_UUID);
         final String text = extras.getString(Intent.EXTRA_TEXT);
         final String nick = extras.getString(ConversationsActivity.EXTRA_NICK);
+        final String node = extras.getString(ConversationsActivity.EXTRA_NODE);
         final String postInitAction = extras.getString(ConversationsActivity.EXTRA_POST_INIT_ACTION);
         final boolean asQuote = extras.getBoolean(ConversationsActivity.EXTRA_AS_QUOTE);
         final String user = extras.getString(ConversationsActivity.EXTRA_USER);
@@ -3181,6 +3184,34 @@ public class ConversationFragment extends XmppFragment implements EditMessage.Ke
         }
         if (ConversationsActivity.POST_ACTION_RECORD_VOICE.equals(postInitAction)) {
             attachFile(ATTACHMENT_CHOICE_RECORD_VOICE, false);
+            return;
+        }
+        if ("message".equals(postInitAction)) {
+            binding.conversationViewPager.post(() -> {
+                binding.conversationViewPager.setCurrentItem(0);
+            });
+        }
+        if ("command".equals(postInitAction)) {
+            binding.conversationViewPager.post(() -> {
+                PagerAdapter adapter = binding.conversationViewPager.getAdapter();
+                if (adapter != null && adapter.getCount() > 1) {
+                    binding.conversationViewPager.setCurrentItem(1);
+                }
+                final String jid = extras.getString(ConversationsActivity.EXTRA_JID);
+                Jid commandJid = null;
+                if (jid != null) {
+                    try {
+                        commandJid = Jid.of(jid);
+                    } catch (final IllegalArgumentException e) { }
+                }
+                if (commandJid == null || !commandJid.isFullJid()) {
+                    final Jid discoJid = conversation.getContact().resourceWhichSupport(Namespace.COMMANDS);
+                    if (discoJid != null) commandJid = discoJid;
+                }
+                if (node != null && commandJid != null) {
+                    conversation.startCommand(commandFor(commandJid, node), activity.xmppConnectionService);
+                }
+            });
             return;
         }
         final Message message = downloadUuid == null ? null : conversation.findMessageWithFileAndUuid(downloadUuid);
