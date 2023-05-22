@@ -73,6 +73,7 @@ import androidx.core.content.res.ResourcesCompat;
 
 import com.google.common.base.Strings;
 import com.squareup.picasso.Picasso;
+import com.lelloman.identicon.view.GithubIdenticonView;
 
 import java.io.UnsupportedEncodingException;
 import java.lang.ref.WeakReference;
@@ -1275,6 +1276,7 @@ public class MessageAdapter extends ArrayAdapter<Message> {
                     viewHolder.progressBar = view.findViewById(R.id.progressBar);
                     viewHolder.cancel_transfer = view.findViewById(R.id.cancel_transfer);
                     viewHolder.commands_list = view.findViewById(R.id.commands_list);
+                    viewHolder.thread_identicon = view.findViewById(R.id.thread_identicon);
                     break;
                 case STATUS:
                     view = activity.getLayoutInflater().inflate(R.layout.message_status, parent, false);
@@ -1290,6 +1292,19 @@ public class MessageAdapter extends ArrayAdapter<Message> {
             viewHolder = (ViewHolder) view.getTag();
             if (viewHolder == null) {
                 return view;
+            }
+        }
+
+        if (viewHolder.thread_identicon != null) {
+            viewHolder.thread_identicon.setVisibility(View.GONE);
+            final Element thread = message.getThread();
+            if (thread != null) {
+                final String threadId = thread.getContent();
+                if (threadId != null) {
+                    viewHolder.thread_identicon.setVisibility(View.VISIBLE);
+                    viewHolder.thread_identicon.setColor(UIHelper.getColorForName(threadId));
+                    viewHolder.thread_identicon.setHash(UIHelper.identiconHash(threadId));
+                }
             }
         }
 
@@ -1702,6 +1717,7 @@ public class MessageAdapter extends ArrayAdapter<Message> {
         protected TextView status_message;
         protected TextView encryption;
         protected ListView commands_list;
+        protected GithubIdenticonView thread_identicon;
         protected RelativeLayout transfer;
         protected ProgressBar progressBar;
         protected ImageButton cancel_transfer;
