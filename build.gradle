@@ -111,6 +111,7 @@ dependencies {
     implementation 'com.splitwise:tokenautocomplete:3.0.2'
     implementation 'com.github.singpolyma:android-identicons:master-SNAPSHOT'
     implementation 'com.github.woltapp:blurhash:master'
+    implementation 'androidx.documentfile:documentfile:1.0.1'
 }
 
 ext {

@@ -1394,6 +1394,13 @@ public class Message extends AbstractEntity implements AvatarService.Avatarable 
             return size == null ? 0 : size;
         }
 
+        public String getName() {
+            Element file = getFileElement();
+            if (file == null) return null;
+
+            return file.findChildContent("name", file.getNamespace());
+        }
+
         public Element toSims() {
             if (sims == null) sims = new Element("reference", "urn:xmpp:reference:0");
             sims.setAttribute("type", "data");

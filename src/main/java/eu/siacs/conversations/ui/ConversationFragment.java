@@ -74,6 +74,9 @@ import android.widget.Toast;
 import eu.siacs.conversations.utils.Emoticons;
 import de.monocles.chat.BobTransfer;
 import java.net.URISyntaxException;
+import android.os.Environment;
+import android.os.storage.StorageManager;
+import androidx.documentfile.provider.DocumentFile;
 
 import androidx.activity.OnBackPressedCallback;
 import androidx.annotation.IdRes;
@@ -96,6 +99,7 @@ import com.google.common.base.Optional;
 
 import org.jetbrains.annotations.NotNull;
 import org.w3c.dom.Node;
+import java.io.File;
 
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -198,6 +202,7 @@ public class ConversationFragment extends XmppFragment implements EditMessage.Ke
     public static final int ATTACHMENT_CHOICE = 0x0300;
     public static final int REQUEST_START_AUDIO_CALL = 0x213;
     public static final int REQUEST_START_VIDEO_CALL = 0x214;
+    public static final int REQUEST_SAVE_STICKER = 0x215;
     public static final int ATTACHMENT_CHOICE_CHOOSE_IMAGE = 0x0301;
     public static final int ATTACHMENT_CHOICE_TAKE_PHOTO = 0x0302;
     public static final int ATTACHMENT_CHOICE_CHOOSE_FILE = 0x0303;
@@ -245,6 +250,8 @@ public class ConversationFragment extends XmppFragment implements EditMessage.Ke
 
     private boolean reInitRequiredOnStart = true;
     private int identiconWidth = -1;
+    private File savingAsSticker = null;
+    private String savingAsStickerName = null;
     private MediaPreviewAdapter mediaPreviewAdapter;
     private final OnClickListener clickToMuc = new OnClickListener() {
 
@@ -1126,6 +1133,24 @@ public class ConversationFragment extends XmppFragment implements EditMessage.Ke
 
     private void handlePositiveActivityResult(int requestCode, final Intent data) {
         switch (requestCode) {
+            case REQUEST_SAVE_STICKER:
+                final DocumentFile df = DocumentFile.fromTreeUri(activity, data.getData());
+                final File f = savingAsSticker;
+                final String existingName = savingAsStickerName;
+                savingAsSticker = null;
+                savingAsStickerName = null;
+                activity.quickEdit(existingName, R.string.sticker_name, (name) -> {
+                    try {
+                        activity.xmppConnectionService.getFileBackend().copyFileToDocumentFile(activity, f, df, name);
+                    } catch (final FileBackend.FileCopyException e) {
+                        Toast.makeText(activity, e.getResId(), Toast.LENGTH_SHORT).show();
+                        return null;
+                    }
+
+                    Toast.makeText(activity, "Sticker saved", Toast.LENGTH_SHORT).show();
+                    return null;
+                });
+                break;
             case REQUEST_TRUST_KEYS_TEXT:
                 sendMessage();
                 break;
@@ -1610,6 +1635,7 @@ public class ConversationFragment extends XmppFragment implements EditMessage.Ke
             MenuItem shareWith = menu.findItem(R.id.share_with);
             MenuItem sendAgain = menu.findItem(R.id.send_again);
             MenuItem copyUrl = menu.findItem(R.id.copy_url);
+            MenuItem saveAsSticker = menu.findItem(R.id.save_as_sticker);
             MenuItem cancelTransmission = menu.findItem(R.id.cancel_transmission);
             MenuItem downloadFile = menu.findItem(R.id.download_file);
             MenuItem deleteFile = menu.findItem(R.id.delete_file);
@@ -1677,6 +1703,7 @@ public class ConversationFragment extends XmppFragment implements EditMessage.Ke
                 final String path = m.getRelativeFilePath();
                 Log.d(Config.LOGTAG, "Path = " + path);
                 if (path == null || !path.startsWith("/") || path.contains(getConversationsDirectory(this.activity, "null").getAbsolutePath())) {
+                    saveAsSticker.setVisible(true);
                     deleteFile.setVisible(true);
                     deleteFile.setTitle(activity.getString(R.string.delete_x_file, UIHelper.getFileDescriptionString(activity, m)));
                 }
@@ -1759,6 +1786,9 @@ public class ConversationFragment extends XmppFragment implements EditMessage.Ke
                 return true;
             case R.id.copy_url:
                 ShareUtil.copyUrlToClipboard(activity, selectedMessage);
+                return true;
+            case R.id.save_as_sticker:
+                saveAsSticker(selectedMessage);
                 return true;
             case R.id.download_file:
                 startDownloadable(selectedMessage);
@@ -2705,6 +2735,32 @@ public class ConversationFragment extends XmppFragment implements EditMessage.Ke
             refresh();
         });
         builder.create().show();
+    }
+
+    private void saveAsSticker(final Message m) {
+        String existingName = m.getFileParams() != null && m.getFileParams().getName() != null ? m.getFileParams().getName() : "";
+        existingName = existingName.lastIndexOf(".") == -1 ? existingName : existingName.substring(0, existingName.lastIndexOf("."));
+        saveAsSticker(activity.xmppConnectionService.getFileBackend().getFile(m), existingName);
+    }
+
+    private void saveAsSticker(final File file, final String name) {
+        savingAsSticker = file;
+        savingAsStickerName = name;
+
+        Intent intent = ((StorageManager) activity.getSystemService(Context.STORAGE_SERVICE)).getPrimaryStorageVolume().createOpenDocumentTreeIntent();
+
+        SharedPreferences p = PreferenceManager.getDefaultSharedPreferences(activity);
+        final String dir = p.getString("sticker_directory", "Stickers");
+        if (dir.startsWith("content://")) {
+            intent.putExtra("android.provider.extra.INITIAL_URI", Uri.parse(dir));
+        } else {
+            new File(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_PICTURES) + "/" + dir + "/User Pack").mkdirs();
+            Uri uri = intent.getParcelableExtra("android.provider.extra.INITIAL_URI");
+            intent.putExtra("android.provider.extra.INITIAL_URI", Uri.parse(uri.toString().replace("/root/", "/document/") + "%3APictures%2F" + dir));
+        }
+
+        Toast.makeText(activity, "Choose a sticker pack to add this sticker to", Toast.LENGTH_SHORT).show();
+        startActivityForResult(Intent.createChooser(intent, "Choose sticker pack"), REQUEST_SAVE_STICKER);
     }
 
     private void deleteFile(final Message message) {
