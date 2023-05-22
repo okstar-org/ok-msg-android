@@ -62,6 +62,8 @@ import android.widget.ProgressBar;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.os.AsyncTask;
+import android.widget.ListAdapter;
+
 
 import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
@@ -1468,6 +1470,14 @@ public class MessageAdapter extends ArrayAdapter<Message> {
                 viewHolder.commands_list.setOnItemClickListener((p, v, pos, id) -> {
                     ((Conversation) conversation).startCommand(adapter.getItem(pos), activity.xmppConnectionService);
                 });
+            } else {
+                // It's unclear if we can set this to null...
+                ListAdapter adapter = viewHolder.commands_list.getAdapter();
+                if (adapter instanceof ArrayAdapter) {
+                    ((ArrayAdapter<?>) adapter).clear();
+                }
+                viewHolder.commands_list.setVisibility(View.GONE);
+                viewHolder.commands_list.setOnItemClickListener(null);
             }
             if (message.isPrivateMessage()) {
                 viewHolder.answer_button.setVisibility(View.VISIBLE);
