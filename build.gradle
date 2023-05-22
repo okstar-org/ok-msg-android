@@ -125,7 +125,7 @@ def tags = grgit.tag.list().findAll { it.dateTime != null }.sort { it.dateTime }
 android {
     namespace 'eu.siacs.conversations'
     //noinspection GradleCompatible
-    compileSdkVersion 32
+    compileSdkVersion 33
 
     defaultConfig {
         minSdkVersion 21
