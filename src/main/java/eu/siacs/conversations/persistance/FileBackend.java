@@ -1985,7 +1985,6 @@ public class FileBackend {
         } catch (final IOException e) {
             throw new NotAVideoFile();
         }
-        metadataRetriever.release();
         Log.d(Config.LOGTAG, "extracted video dims " + width + "x" + height);
         return rotated ? new Dimensions(width, height) : new Dimensions(height, width);
     }
