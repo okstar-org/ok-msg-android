@@ -1408,9 +1408,14 @@ public class ConversationFragment extends XmppFragment implements EditMessage.Ke
         binding.threadIdenticonLayout.setOnClickListener(v -> {
             boolean wasLocked = conversation.getLockThread();
             conversation.setLockThread(false);
-            newThread();
-            conversation.setUserSelectedThread(true);
-            if (wasLocked) refresh();
+            if (wasLocked) {
+                conversation.setUserSelectedThread(false);
+                refresh();
+                updateThreadFromLastMessage();
+            } else {
+                newThread();
+                conversation.setUserSelectedThread(true);
+            }
         });
 
         binding.threadIdenticonLayout.setOnLongClickListener(v -> {
