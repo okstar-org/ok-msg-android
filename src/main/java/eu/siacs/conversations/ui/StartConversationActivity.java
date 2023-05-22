@@ -152,6 +152,7 @@ public class StartConversationActivity extends XmppActivity implements XmppConne
             SoftKeyboardUtils.hideSoftKeyboard(StartConversationActivity.this);
             mSearchEditText.setText("");
             filter(null);
+            navigateBack();
             return true;
         }
     };
