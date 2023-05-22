@@ -532,6 +532,11 @@ public class Message extends AbstractEntity implements AvatarService.Avatarable 
 
     public Contact getContact() {
         if (this.conversation.getMode() == Conversation.MODE_SINGLE) {
+            if (this.trueCounterpart != null) {
+                return this.conversation.getAccount().getRoster()
+                        .getContact(this.trueCounterpart);
+            }
+
             return this.conversation.getContact();
         } else {
             if (this.trueCounterpart == null) {

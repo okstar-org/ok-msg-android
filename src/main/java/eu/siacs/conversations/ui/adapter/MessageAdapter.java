@@ -357,7 +357,7 @@ public class MessageAdapter extends ArrayAdapter<Message> {
                 error = true;
                 break;
             default:
-                if (mForceNames || multiReceived) {
+                if (mForceNames || multiReceived || (message.getTrueCounterpart() != null && message.getContact() != null)) {
                     final int shadowSize = 10;
                     showUsername(viewHolder, message, darkBackground);
                 } else if (singleReceived) {
