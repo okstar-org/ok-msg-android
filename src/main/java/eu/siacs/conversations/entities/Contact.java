@@ -4,8 +4,10 @@ import android.content.ComponentName;
 import android.annotation.SuppressLint;
 import android.content.ContentValues;
 import android.content.Context;
+import android.content.pm.PackageManager;
 import android.database.Cursor;
 import android.net.Uri;
+import android.os.Build;
 import android.text.TextUtils;
 import android.os.Bundle;
 import android.telecom.PhoneAccount;
@@ -728,6 +730,9 @@ public class Contact implements ListItem, Blockable {
 
     // This Contact is a gateway to use for voice calls, register it with OS
     public void registerAsPhoneAccount(XmppConnectionService ctx) {
+        if (Build.VERSION.SDK_INT < 23) return;
+        if (!ctx.getPackageManager().hasSystemFeature(PackageManager.FEATURE_CONNECTION_SERVICE)) return;
+
         TelecomManager telecomManager = ctx.getSystemService(TelecomManager.class);
 
         PhoneAccount phoneAccount = PhoneAccount.builder(
@@ -748,9 +753,11 @@ public class Contact implements ListItem, Blockable {
         telecomManager.registerPhoneAccount(phoneAccount);
     }
 
-
     // Unregister any associated PSTN gateway integration
     public void unregisterAsPhoneAccount(Context ctx) {
+        if (Build.VERSION.SDK_INT < 23) return;
+        if (!ctx.getPackageManager().hasSystemFeature(PackageManager.FEATURE_CONNECTION_SERVICE)) return;
+
         TelecomManager telecomManager = ctx.getSystemService(TelecomManager.class);
         telecomManager.unregisterPhoneAccount(phoneAccountHandle());
     }
