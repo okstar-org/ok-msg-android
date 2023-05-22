@@ -55,6 +55,8 @@ import androidx.exifinterface.media.ExifInterface;
 import com.google.common.base.Strings;
 import com.google.common.io.ByteStreams;
 
+import com.wolt.blurhashkt.BlurHashDecoder;
+
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.Closeable;
@@ -106,6 +108,7 @@ import ezvcard.Ezvcard;
 import ezvcard.VCard;
 import io.ipfs.cid.Cid;
 import me.drakeet.support.toast.ToastCompat;
+import eu.siacs.conversations.xml.Element;
 
 public class FileBackend {
 
@@ -2276,6 +2279,41 @@ public class FileBackend {
         } else {
             return getGlobalDocumentsPath() + File.separator + filename;
         }
+    }
+
+    public BitmapDrawable getFallbackThumbnail(final Message message, int size) {
+        List<Element> thumbs = message.getFileParams() != null ? message.getFileParams().getThumbnails() : null;
+        if (thumbs != null && !thumbs.isEmpty()) {
+            for (Element thumb : thumbs) {
+                Uri uri = Uri.parse(thumb.getAttribute("uri"));
+                if (uri.getScheme().equals("data")) {
+                    String[] parts = uri.getSchemeSpecificPart().split(",", 2);
+                    if (parts[0].equals("image/blurhash")) {
+                        final LruCache<String, Drawable> cache = mXmppConnectionService.getDrawableCache();
+                        BitmapDrawable cached = (BitmapDrawable) cache.get(parts[1]);
+                        if (cached != null) return cached;
+
+                        int width = message.getFileParams().width;
+                        if (width < 1 && thumb.getAttribute("width") != null) width = Integer.parseInt(thumb.getAttribute("width"));
+                        if (width < 1) width = 1920;
+
+                        int height = message.getFileParams().height;
+                        if (height < 1 && thumb.getAttribute("height") != null) height = Integer.parseInt(thumb.getAttribute("height"));
+                        if (height < 1) height = 1080;
+                        Rect r = rectForSize(width, height, size);
+
+                        Bitmap blurhash = BlurHashDecoder.INSTANCE.decode(parts[1], r.width(), r.height(), 1.0f, false);
+                        if (blurhash != null) {
+                            cached = new BitmapDrawable(blurhash);
+                            cache.put(parts[1], cached);
+                            return cached;
+                        }
+                    }
+                }
+            }
+        }
+
+        return null;
     }
 
     public Drawable getThumbnail(Message message, Resources res, int size, boolean cacheOnly) throws IOException {

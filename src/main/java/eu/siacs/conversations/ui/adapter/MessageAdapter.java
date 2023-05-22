@@ -799,6 +799,34 @@ public class MessageAdapter extends ArrayAdapter<Message> {
         toggleWhisperInfo(viewHolder, message, false, darkBackground);
         viewHolder.audioPlayer.setVisibility(View.GONE);
         showImages(false, viewHolder);
+        List<Element> thumbs = message.getFileParams() != null ? message.getFileParams().getThumbnails() : null;
+        if (thumbs != null && !thumbs.isEmpty()) {
+            for (Element thumb : thumbs) {
+                Uri uri = Uri.parse(thumb.getAttribute("uri"));
+                if (uri.getScheme().equals("data")) {
+                    String[] parts = uri.getSchemeSpecificPart().split(",", 2);
+                    parts = parts[0].split(";");
+                    if (!parts[0].equals("image/blurhash")) continue;
+                } else {
+                    continue;
+                }
+
+                int width = message.getFileParams().width;
+                if (width < 1 && thumb.getAttribute("width") != null) width = Integer.parseInt(thumb.getAttribute("width"));
+                if (width < 1) width = 1920;
+
+                int height = message.getFileParams().height;
+                if (height < 1 && thumb.getAttribute("height") != null) height = Integer.parseInt(thumb.getAttribute("height"));
+                if (height < 1) height = 1080;
+
+                viewHolder.image.setVisibility(View.VISIBLE);
+                imagePreviewLayout(width, height, viewHolder.image);
+                activity.loadBitmap(message, viewHolder.image);
+                viewHolder.image.setOnClickListener(v -> ConversationFragment.downloadFile(activity, message));
+
+                break;
+            }
+        }
         viewHolder.richlinkview.setVisibility(View.GONE);
         viewHolder.transfer.setVisibility(View.GONE);
         viewHolder.download_button.setVisibility(View.VISIBLE);
@@ -1038,72 +1066,37 @@ public class MessageAdapter extends ArrayAdapter<Message> {
         return "";
     }
 
-    private void displayMediaPreviewMessage(ViewHolder viewHolder, final Message message, final boolean darkBackground) {
-        toggleWhisperInfo(viewHolder, message, false, darkBackground);
+    private void displayMediaPreviewMessage(ViewHolder viewHolder, final Message message, final boolean darkBackground, final int type) {
+        displayTextMessage(viewHolder, message, darkBackground, type);
         viewHolder.download_button.setVisibility(View.GONE);
         viewHolder.audioPlayer.setVisibility(View.GONE);
-        viewHolder.richlinkview.setVisibility(View.GONE);
-        viewHolder.transfer.setVisibility(View.GONE);
-        final DownloadableFile file = activity.xmppConnectionService.getFileBackend().getFile(message);
-        if (file != null && !file.exists() && !message.isFileDeleted()) {
-            new Thread(new markFileDeletedFinisher(message, activity)).start();
-            displayInfoMessage(viewHolder, activity.getString(R.string.file_deleted), darkBackground, message);
-            ToastCompat.makeText(activity, R.string.file_deleted, ToastCompat.LENGTH_SHORT).show();
-            return;
-        }
-        final String mime = file.getMimeType();
-        final boolean isGif = mime != null && mime.equals("image/gif");
-        final int mediaRuntime = message.getFileParams().runtime;
-        if (isGif && mPlayGifInside) {
-            showImages(true, mediaRuntime, true, viewHolder);
-            Log.d(Config.LOGTAG, "Gif Image file");
-            final FileParams params = message.getFileParams();
-            final float target = activity.getResources().getDimension(R.dimen.image_preview_width);
-            final int scaledW;
-            final int scaledH;
-            if (Math.max(params.height, params.width) * metrics.density <= target) {
-                scaledW = (int) (params.width * metrics.density);
-                scaledH = (int) (params.height * metrics.density);
-            } else if (Math.max(params.height, params.width) <= target) {
-                scaledW = params.width;
-                scaledH = params.height;
-            } else if (params.width <= params.height) {
-                scaledW = (int) (params.width / ((double) params.height / target));
-                scaledH = (int) target;
-            } else {
-                scaledW = (int) target;
-                scaledH = (int) (params.height / ((double) params.width / target));
-            }
-            final LinearLayout.LayoutParams layoutParams = new LinearLayout.LayoutParams(scaledW, scaledH);
-            layoutParams.setMargins(0, (int) (metrics.density * 4), 0, (int) (metrics.density * 4));
-            viewHolder.images.setLayoutParams(layoutParams);
-            activity.loadGif(file, viewHolder.gifImage);
-            viewHolder.gifImage.setOnClickListener(v -> openDownloadable(message));
+        viewHolder.image.setVisibility(View.VISIBLE);
+        final FileParams params = message.getFileParams();
+        imagePreviewLayout(params.width, params.height, viewHolder.image);
+        activity.loadBitmap(message, viewHolder.image);
+        viewHolder.image.setOnClickListener(v -> openDownloadable(message));
+    }
+
+    private void imagePreviewLayout(int w, int h, ImageView image) {
+        final float target = activity.getResources().getDimension(R.dimen.image_preview_width);
+        final int scaledW;
+        final int scaledH;
+        if (Math.max(h, w) * metrics.density <= target) {
+            scaledW = (int) (w * metrics.density);
+            scaledH = (int) (h * metrics.density);
+        } else if (Math.max(h, w) <= target) {
+            scaledW = w;
+            scaledH = h;
+        } else if (w <= h) {
+            scaledW = (int) (w / ((double) h / target));
+            scaledH = (int) target;
         } else {
-            showImages(true, mediaRuntime, false, viewHolder);
-            FileParams params = message.getFileParams();
-            final float target = activity.getResources().getDimension(R.dimen.image_preview_width);
-            final int scaledW;
-            final int scaledH;
-            if (Math.max(params.height, params.width) * metrics.density <= target) {
-                scaledW = (int) (params.width * metrics.density);
-                scaledH = (int) (params.height * metrics.density);
-            } else if (Math.max(params.height, params.width) <= target) {
-                scaledW = params.width;
-                scaledH = params.height;
-            } else if (params.width <= params.height) {
-                scaledW = (int) (params.width / ((double) params.height / target));
-                scaledH = (int) target;
-            } else {
-                scaledW = (int) target;
-                scaledH = (int) (params.height / ((double) params.width / target));
-            }
-            LinearLayout.LayoutParams layoutParams = new LinearLayout.LayoutParams(scaledW, scaledH);
-            layoutParams.setMargins(0, (int) (metrics.density * 4), 0, (int) (metrics.density * 4));
-            viewHolder.images.setLayoutParams(layoutParams);
-            activity.loadBitmap(message, viewHolder.image);
-            viewHolder.image.setOnClickListener(v -> openDownloadable(message));
+            scaledW = (int) target;
+            scaledH = (int) (h / ((double) w / target));
         }
+        final LinearLayout.LayoutParams layoutParams = new LinearLayout.LayoutParams(scaledW, scaledH);
+        layoutParams.setMargins(0, (int) (metrics.density * 4), 0, (int) (metrics.density * 4));
+        image.setLayoutParams(layoutParams);
     }
 
     private void showImages(final boolean show, final ViewHolder viewHolder) {
@@ -1442,7 +1435,7 @@ public class MessageAdapter extends ArrayAdapter<Message> {
             }
         } else if (message.isFileOrImage() && message.getEncryption() != Message.ENCRYPTION_PGP && message.getEncryption() != Message.ENCRYPTION_DECRYPTION_FAILED) {
             if (message.getFileParams().width > 0 && message.getFileParams().height > 0) {
-                displayMediaPreviewMessage(viewHolder, message, darkBackground);
+                displayMediaPreviewMessage(viewHolder, message, darkBackground, type);
             } else if (message.getFileParams().runtime > 0 && (message.getFileParams().width == 0 && message.getFileParams().height == 0)) {
                 displayAudioMessage(viewHolder, message, darkBackground);
             } else {

@@ -110,6 +110,7 @@ dependencies {
     implementation 'io.github.nishkarsh:android-permissions:2.1.6'
     implementation 'com.splitwise:tokenautocomplete:3.0.2'
     implementation 'com.github.singpolyma:android-identicons:master-SNAPSHOT'
+    implementation 'com.github.woltapp:blurhash:master'
 }
 
 ext {
