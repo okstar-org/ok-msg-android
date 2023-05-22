@@ -1404,6 +1404,12 @@ public class ConversationFragment extends XmppFragment implements EditMessage.Ke
             conversation.setUserSelectedThread(true);
         });
 
+        binding.threadIdenticon.setOnLongClickListener(v -> {
+            setThread(null);
+            conversation.setUserSelectedThread(true);
+            return true;
+        });
+
         messageListAdapter.setOnMessageBoxSwiped(message -> {
             String user = null;
             quoteMessage(message, user);
