@@ -521,7 +521,9 @@ public class ExportBackupService extends Service {
         if (shareFilesIntent != null) {
             mBuilder.addAction(R.drawable.ic_share_white_24dp, getString(R.string.share_backup_files), shareFilesIntent);
         }
-        notificationManager.notify(EXPORT_BACKUP_NOTIFICATION_ID, mBuilder.build());
+
+        try { Thread.sleep(500); } catch (final Exception e) { }
+        notificationManager.notify(NOTIFICATION_ID, mBuilder.build());
     }
 
     private void notifyError() {
