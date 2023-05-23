@@ -826,46 +826,6 @@ public class MessageAdapter extends ArrayAdapter<Message> {
         displayTextMessage(viewHolder, message, darkBackground, type);
         viewHolder.audioPlayer.setVisibility(View.GONE);
         showImages(false, viewHolder);
-        List<Element> thumbs = message.getFileParams() != null ? message.getFileParams().getThumbnails() : null;
-        if (thumbs != null && !thumbs.isEmpty()) {
-            for (Element thumb : thumbs) {
-                Uri uri = Uri.parse(thumb.getAttribute("uri"));
-                if (uri.getScheme().equals("data")) {
-                    String[] parts = uri.getSchemeSpecificPart().split(",", 2);
-                    parts = parts[0].split(";");
-                    if (!parts[0].equals("image/blurhash") && !parts[0].equals("image/jpeg") && !parts[0].equals("image/png") && !parts[0].equals("image/webp") && !parts[0].equals("image/gif")) continue;
-                } else if (uri.getScheme().equals("cid")) {
-                    Cid cid = BobTransfer.cid(uri);
-                    if (cid == null) continue;
-                    DownloadableFile f = activity.xmppConnectionService.getFileForCid(cid);
-                    if (f == null || !f.canRead()) {
-                        if (!message.trusted() && !message.getConversation().canInferPresence()) continue;
-
-                        try {
-                            new BobTransfer(BobTransfer.uri(cid), message.getConversation().getAccount(), message.getCounterpart(), activity.xmppConnectionService).start();
-                        } catch (final NoSuchAlgorithmException | URISyntaxException e) { }
-                        continue;
-                    }
-                } else {
-                    continue;
-                }
-
-                int width = message.getFileParams().width;
-                if (width < 1 && thumb.getAttribute("width") != null) width = Integer.parseInt(thumb.getAttribute("width"));
-                if (width < 1) width = 1920;
-
-                int height = message.getFileParams().height;
-                if (height < 1 && thumb.getAttribute("height") != null) height = Integer.parseInt(thumb.getAttribute("height"));
-                if (height < 1) height = 1080;
-
-                viewHolder.image.setVisibility(View.VISIBLE);
-                imagePreviewLayout(width, height, viewHolder.image);
-                activity.loadBitmap(message, viewHolder.image);
-                viewHolder.image.setOnClickListener(v -> ConversationFragment.downloadFile(activity, message));
-
-                break;
-            }
-        }
         viewHolder.richlinkview.setVisibility(View.GONE);
         viewHolder.transfer.setVisibility(View.GONE);
         viewHolder.download_button.setVisibility(View.VISIBLE);
@@ -1109,33 +1069,68 @@ public class MessageAdapter extends ArrayAdapter<Message> {
         displayTextMessage(viewHolder, message, darkBackground, type);
         viewHolder.download_button.setVisibility(View.GONE);
         viewHolder.audioPlayer.setVisibility(View.GONE);
-        viewHolder.image.setVisibility(View.VISIBLE);
-        final FileParams params = message.getFileParams();
-        imagePreviewLayout(params.width, params.height, viewHolder.image);
-        activity.loadBitmap(message, viewHolder.image);
-        viewHolder.image.setOnClickListener(v -> openDownloadable(message));
-    }
-
-    private void imagePreviewLayout(int w, int h, ImageView image) {
-        final float target = activity.getResources().getDimension(R.dimen.image_preview_width);
-        final int scaledW;
-        final int scaledH;
-        if (Math.max(h, w) * metrics.density <= target) {
-            scaledW = (int) (w * metrics.density);
-            scaledH = (int) (h * metrics.density);
-        } else if (Math.max(h, w) <= target) {
-            scaledW = w;
-            scaledH = h;
-        } else if (w <= h) {
-            scaledW = (int) (w / ((double) h / target));
-            scaledH = (int) target;
-        } else {
-            scaledW = (int) target;
-            scaledH = (int) (h / ((double) w / target));
+        viewHolder.richlinkview.setVisibility(View.GONE);
+        viewHolder.transfer.setVisibility(View.GONE);
+        final DownloadableFile file = activity.xmppConnectionService.getFileBackend().getFile(message);
+        if (file != null && !file.exists() && !message.isFileDeleted()) {
+            new Thread(new markFileDeletedFinisher(message, activity)).start();
+            displayInfoMessage(viewHolder, activity.getString(R.string.file_deleted), darkBackground, message);
+            ToastCompat.makeText(activity, R.string.file_deleted, ToastCompat.LENGTH_SHORT).show();
+            return;
         }
-        final LinearLayout.LayoutParams layoutParams = new LinearLayout.LayoutParams(scaledW, scaledH);
-        layoutParams.setMargins(0, (int) (metrics.density * 4), 0, (int) (metrics.density * 4));
-        image.setLayoutParams(layoutParams);
+        final String mime = file.getMimeType();
+        final boolean isGif = mime != null && mime.equals("image/gif");
+        final int mediaRuntime = message.getFileParams().runtime;
+        if (isGif && mPlayGifInside) {
+            showImages(true, mediaRuntime, true, viewHolder);
+            Log.d(Config.LOGTAG, "Gif Image file");
+            final FileParams params = message.getFileParams();
+            final float target = activity.getResources().getDimension(R.dimen.image_preview_width);
+            final int scaledW;
+            final int scaledH;
+            if (Math.max(params.height, params.width) * metrics.density <= target) {
+                scaledW = (int) (params.width * metrics.density);
+                scaledH = (int) (params.height * metrics.density);
+            } else if (Math.max(params.height, params.width) <= target) {
+                scaledW = params.width;
+                scaledH = params.height;
+            } else if (params.width <= params.height) {
+                scaledW = (int) (params.width / ((double) params.height / target));
+                scaledH = (int) target;
+            } else {
+                scaledW = (int) target;
+                scaledH = (int) (params.height / ((double) params.width / target));
+            }
+            final LinearLayout.LayoutParams layoutParams = new LinearLayout.LayoutParams(scaledW, scaledH);
+            layoutParams.setMargins(0, (int) (metrics.density * 4), 0, (int) (metrics.density * 4));
+            viewHolder.images.setLayoutParams(layoutParams);
+            activity.loadGif(file, viewHolder.gifImage);
+            viewHolder.gifImage.setOnClickListener(v -> openDownloadable(message));
+        } else {
+            showImages(true, mediaRuntime, false, viewHolder);
+            FileParams params = message.getFileParams();
+            final float target = activity.getResources().getDimension(R.dimen.image_preview_width);
+            final int scaledW;
+            final int scaledH;
+            if (Math.max(params.height, params.width) * metrics.density <= target) {
+                scaledW = (int) (params.width * metrics.density);
+                scaledH = (int) (params.height * metrics.density);
+            } else if (Math.max(params.height, params.width) <= target) {
+                scaledW = params.width;
+                scaledH = params.height;
+            } else if (params.width <= params.height) {
+                scaledW = (int) (params.width / ((double) params.height / target));
+                scaledH = (int) target;
+            } else {
+                scaledW = (int) target;
+                scaledH = (int) (params.height / ((double) params.width / target));
+            }
+            LinearLayout.LayoutParams layoutParams = new LinearLayout.LayoutParams(scaledW, scaledH);
+            layoutParams.setMargins(0, (int) (metrics.density * 4), 0, (int) (metrics.density * 4));
+            viewHolder.images.setLayoutParams(layoutParams);
+            activity.loadBitmap(message, viewHolder.image);
+            viewHolder.image.setOnClickListener(v -> openDownloadable(message));
+        }
     }
 
     private void showImages(final boolean show, final ViewHolder viewHolder) {
