@@ -601,7 +601,7 @@ public class MessageParser extends AbstractParser implements OnMessagePacketRece
             if (reactions != null && reactions.getAttribute("id") != null) {
                 final Conversation conversation = mXmppConnectionService.find(account, counterpart.asBareJid());
                 if (conversation != null) {
-                    final Message reactionTo = conversation.findMessageWithRemoteIdAndCounterpart(reactions.getAttribute("id"), null); //TODO: Correct reactions later
+                    final Message reactionTo = conversation.findMessageWithRemoteIdAndCounterpart(reactions.getAttribute("id"), null);
                     if (reactionTo != null) {
                         String bodyS = reactionTo.reply().getBody();
                         for (Element el : reactions.getChildren()) {
@@ -829,7 +829,7 @@ public class MessageParser extends AbstractParser implements OnMessagePacketRece
                             replacedMessage.setUuid(UUID.randomUUID().toString());
                             replacedMessage.setBody(message.getBody());
                             replacedMessage.setRemoteMsgId(remoteMsgId);
-                            if (!replaceElement.getName().equals("replace")) {
+                            if (replaceElement != null && !replaceElement.getName().equals("replace")) {
                                 mXmppConnectionService.getFileBackend().deleteFile(replacedMessage);
                                 mXmppConnectionService.evictPreview(message.getUuid());
                                 replacedMessage.clearPayloads();

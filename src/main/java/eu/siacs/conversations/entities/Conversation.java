@@ -617,7 +617,7 @@ public class Conversation extends AbstractEntity implements Blockable, Comparabl
             for (int i = this.messages.size() - 1; i >= 0; --i) {
                 final Message message = messages.get(i);
                 final Jid mcp = message.getCounterpart();
-                if (mcp == null) {
+                if (mcp == null && counterpart != null) {
                     continue;
                 }
                 if (mcp.equals(counterpart) || mcp.asBareJid().equals(counterpart)) {
@@ -698,6 +698,7 @@ public class Conversation extends AbstractEntity implements Blockable, Comparabl
         });
         return result;
     }
+
     public Message findMessageReactingTo(String id, Jid reactor) {
         synchronized (this.messages) {
             for (int i = this.messages.size() - 1; i >= 0; --i) {
@@ -718,29 +719,6 @@ public class Conversation extends AbstractEntity implements Blockable, Comparabl
         Set<String> reactionEmoji = new HashSet<>();
         Message reactM = findMessageReactingTo(id, reactor);
         Element reactions = reactM == null ? null : reactM.getReactions();
-        if (reactions != null) {
-            for (Element el : reactions.getChildren()) {
-                if (el.getName().equals("reaction") && el.getNamespace().equals("urn:xmpp:reactions:0")) {
-                    reactionEmoji.add(el.getContent());
-                }
-            }
-        }
-        return reactionEmoji;
-    }
-
-    public Set<String> findOwnReactionsTo(String id) {
-        Set<String> reactionEmoji = new HashSet<>();
-        Element reactions = null;
-        synchronized (this.messages) {
-            for (Message message : this.messages) {
-                if (message.getStatus() < Message.STATUS_SEND) continue;
-
-                final Element r = message.getReactions();
-                if (r != null && r.getAttribute("id") != null && id.equals(r.getAttribute("id"))) {
-                    reactions = r;
-                }
-            }
-        }
         if (reactions != null) {
             for (Element el : reactions.getChildren()) {
                 if (el.getName().equals("reaction") && el.getNamespace().equals("urn:xmpp:reactions:0")) {

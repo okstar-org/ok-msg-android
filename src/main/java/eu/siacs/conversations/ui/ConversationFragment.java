@@ -1773,6 +1773,21 @@ public class ConversationFragment extends XmppFragment
                             while (message.mergeable(message.next())) {
                                 message = message.next();
                             }
+                            Element reactions = message.getReactions();
+                            if (reactions != null) {
+                                final Message previousReaction = conversation.findMessageReactingTo(reactions.getAttribute("id"), null);
+                                if (previousReaction != null) reactions = previousReaction.getReactions();
+                                for (Element el : reactions.getChildren()) {
+                                    if (message.getQuoteableBody().endsWith(el.getContent())) {
+                                        reactions.removeChild(el);
+                                    }
+                                }
+                                message.setReactions(reactions);
+                                if (previousReaction != null) {
+                                    previousReaction.setReactions(reactions);
+                                    activity.xmppConnectionService.updateMessage(previousReaction);
+                                }
+                            }
                             message.setBody(" ");
                             message.putEdited(message.getUuid(), message.getServerMsgId(), message.getBody(), message.getTimeSent());
                             message.setServerMsgId(null);
