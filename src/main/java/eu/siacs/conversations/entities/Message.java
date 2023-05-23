@@ -1266,12 +1266,13 @@ public class Message extends AbstractEntity implements AvatarService.Avatarable 
     }
 
     public synchronized void resetFileParams() {
+        this.fileParams = null;
+    }
+
+    public synchronized void setFileParams(FileParams fileParams) {
         if (fileParams != null && this.fileParams != null && this.fileParams.sims != null && fileParams.sims == null) {
             fileParams.sims = this.fileParams.sims;
         }
-        this.fileParams = fileParams;
-    }
-    public synchronized void setFileParams(FileParams fileParams) {
         this.fileParams = fileParams;
     }
 

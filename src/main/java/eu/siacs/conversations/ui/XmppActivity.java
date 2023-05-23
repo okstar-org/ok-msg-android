@@ -893,16 +893,18 @@ public abstract class XmppActivity extends ActionBarActivity {
     protected void quickPasswordEdit(String previousValue, OnValueEdited callback) {
         quickEdit(previousValue, callback, R.string.password, true, false);
     }
+
     protected void quickEdit(final String previousValue, final OnValueEdited callback, final @StringRes int hint, boolean password, boolean permitEmpty) {
         quickEdit(previousValue, callback, hint, password, permitEmpty, false);
     }
+
     @SuppressLint("InflateParams")
-    void quickEdit(final String previousValue,
-                   final OnValueEdited callback,
-                   final @StringRes int hint,
-                   boolean password,
-                   boolean permitEmpty,
-                   boolean alwaysCallback) {
+    protected void quickEdit(final String previousValue,
+                             final OnValueEdited callback,
+                             final @StringRes int hint,
+                             boolean password,
+                             boolean permitEmpty,
+                             boolean alwaysCallback) {
         final AlertDialog.Builder builder = new AlertDialog.Builder(this);
         DialogQuickeditBinding binding = DataBindingUtil.inflate(getLayoutInflater(), R.layout.dialog_quickedit, null, false);
         if (password) {

@@ -518,11 +518,13 @@ public class MessageParser extends AbstractParser implements OnMessagePacketRece
             }
         }
         String replacementId = replaceElement == null ? null : replaceElement.getAttribute("id");
+        boolean replaceAsRetraction = false;
         if (replacementId == null) {
             Element fasten = packet.findChild("apply-to", "urn:xmpp:fasten:0");
-            if (fasten != null && (fasten.findChild("retract", "urn:xmpp:message-retract:0") != null || fasten.findChild("urn:xmpp:message-moderate:0") != null)) {
+            if (fasten != null && (fasten.findChild("retract", "urn:xmpp:message-retract:0") != null || fasten.findChild("moderated", "urn:xmpp:message-moderate:0") != null)) {
                 replacementId = fasten.getAttribute("id");
                 packet.setBody("");
+                replaceAsRetraction = true;
             }
         }
         final Element applyToElement = packet.findChild("apply-to", "urn:xmpp:fasten:0");
@@ -596,7 +598,7 @@ public class MessageParser extends AbstractParser implements OnMessagePacketRece
             if (reactions != null && reactions.getAttribute("id") != null) {
                 final Conversation conversation = mXmppConnectionService.find(account, counterpart.asBareJid());
                 if (conversation != null) {
-                    final Message reactionTo = conversation.findMessageWithRemoteIdAndCounterpart(reactions.getAttribute("id"), null, false, false);
+                    final Message reactionTo = conversation.findMessageWithRemoteIdAndCounterpart(reactions.getAttribute("id"), null); //TODO: Correct reactions later
                     if (reactionTo != null) {
                         String bodyS = reactionTo.reply().getBody();
                         for (Element el : reactions.getChildren()) {
@@ -801,10 +803,7 @@ public class MessageParser extends AbstractParser implements OnMessagePacketRece
             }
 
             if (replacementId != null && mXmppConnectionService.allowMessageCorrection()) {
-                Message replacedMessage = conversation.findMessageWithRemoteIdAndCounterpart(replacementId,
-                        counterpart,
-                        message.getStatus() == Message.STATUS_RECEIVED,
-                        message.isCarbon());
+                Message replacedMessage = conversation.findMessageWithRemoteIdAndCounterpart(replacementId, counterpart);
 
                 if (replacedMessage == null) {
                     replacedMessage = conversation.findSentMessageWithUuidOrRemoteId(replacementId, true, true);
@@ -827,13 +826,12 @@ public class MessageParser extends AbstractParser implements OnMessagePacketRece
                             replacedMessage.setUuid(UUID.randomUUID().toString());
                             replacedMessage.setBody(message.getBody());
                             replacedMessage.setRemoteMsgId(remoteMsgId);
-                            if (replaceElement != null && !replaceElement.getName().equals("replace")) {
+                            if (replaceAsRetraction) {
                                 mXmppConnectionService.getFileBackend().deleteFile(replacedMessage);
                                 mXmppConnectionService.evictPreview(message.getUuid());
                                 replacedMessage.clearPayloads();
                                 replacedMessage.setFileParams(null);
                                 replacedMessage.setDeleted(true);
-                                replacedMessage.addPayload(replaceElement);
                             }
                             if (replacedMessage.getServerMsgId() == null || message.getServerMsgId() != null) {
                                 replacedMessage.setServerMsgId(message.getServerMsgId());

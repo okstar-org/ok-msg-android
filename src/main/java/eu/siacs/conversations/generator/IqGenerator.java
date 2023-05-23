@@ -7,6 +7,7 @@ import android.os.Bundle;
 import android.util.Base64;
 import android.util.Log;
 import android.util.Base64OutputStream;
+import eu.siacs.conversations.entities.Message;
 
 import de.monocles.chat.BobTransfer;
 
@@ -424,6 +425,18 @@ public class IqGenerator extends AbstractGenerator {
         item.setAttribute("role", role);
         return packet;
     }
+
+    public IqPacket destroyRoom(Conversation conference) {
+        IqPacket packet = new IqPacket(IqPacket.TYPE.SET);
+        packet.setTo(conference.getJid().asBareJid());
+        packet.setFrom(conference.getAccount().getJid());
+        final Element query = packet.addChild("query", "http://jabber.org/protocol/muc#owner");
+        final Element destroy = query.addChild("destroy");
+        destroy.setAttribute("jid", conference.getJid().asBareJid().toString());
+        Log.d(Config.LOGTAG, "Destroy: " + packet.toString());
+        return packet;
+    }
+
     public IqPacket moderateMessage(Account account, Message m, String reason) {
         IqPacket packet = new IqPacket(IqPacket.TYPE.SET);
         packet.setTo(m.getConversation().getJid().asBareJid());
@@ -436,16 +449,7 @@ public class IqGenerator extends AbstractGenerator {
         moderate.addChild("reason", "urn:xmpp:message-moderate:0").setContent(reason);
         return packet;
     }
-    public IqPacket destroyRoom(Conversation conference) {
-        IqPacket packet = new IqPacket(IqPacket.TYPE.SET);
-        packet.setTo(conference.getJid().asBareJid());
-        packet.setFrom(conference.getAccount().getJid());
-        final Element query = packet.addChild("query", "http://jabber.org/protocol/muc#owner");
-        final Element destroy = query.addChild("destroy");
-        destroy.setAttribute("jid", conference.getJid().asBareJid().toString());
-        Log.d(Config.LOGTAG, "Destroy: " + packet.toString());
-        return packet;
-    }
+
 
     public IqPacket requestHttpUploadSlot(Jid host, DownloadableFile file, String mime) {
         IqPacket packet = new IqPacket(IqPacket.TYPE.GET);
