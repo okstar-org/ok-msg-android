@@ -20,6 +20,7 @@
         android:layout_alignParentLeft="true"
         android:layout_alignParentBottom="true"
         android:scaleType="fitXY"
+        app:strokeColor="@color/custom_theme_accent"
         app:riv_corner_radius="30dp" />
 
     <LinearLayout

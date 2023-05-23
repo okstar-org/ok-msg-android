@@ -372,6 +372,7 @@
                                     android:layout_alignParentEnd="false"
                                     android:layout_alignParentRight="false"
                                     android:padding="1dp"
+                                    app:strokeColor="@color/custom_theme_accent"
                                     app:riv_corner_radius="30dp" />
 
                                 <LinearLayout

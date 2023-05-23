@@ -302,6 +302,7 @@
                                 android:maxWidth="@dimen/avatar_on_details_screen_size"
                                 android:maxHeight="@dimen/avatar_on_details_screen_size"
                                 android:visibility="gone"
+                                app:strokeColor="@color/custom_theme_accent"
                                 app:riv_corner_radius="90dp" />
                         </RelativeLayout>
 
