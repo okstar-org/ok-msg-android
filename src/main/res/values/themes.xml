@@ -113,10 +113,13 @@
         <item name="icon_gps_fixed" type="reference">@drawable/ic_gps_fixed_black_24dp</item>
         <item name="icon_gps_not_fixed" type="reference">@drawable/ic_gps_not_fixed_black_24dp
         </item>
+        <item name="icon_link" type="reference">@drawable/link_black</item>
+        <item name="icon_email" type="reference">@drawable/email_black</item>
+        <item name="icon_org" type="reference">@drawable/business_black</item>
+        <item name="icon_chat" type="reference">@drawable/ic_chat_black_24dp</item>
         <item name="icon_add_group" type="reference">@drawable/ic_group_add_white_24dp</item>
         <item name="icon_add_person" type="reference">@drawable/ic_person_add_white_24dp</item>
         <item name="icon_cancel" type="reference">@drawable/ic_cancel_black_24dp</item>
-        <item name="icon_chat" type="reference">@drawable/ic_action_chat</item>
         <item name="icon_copy" type="reference">@drawable/ic_content_copy_grey600_24dp</item>
         <item name="icon_action_copy" type="reference">@drawable/ic_content_copy_white_24dp</item>
         <item name="icon_navigate" type="reference">@drawable/ic_navigation_white_24dp</item>
@@ -322,6 +325,10 @@
         <item name="icon_gps_fixed" type="reference">@drawable/ic_gps_fixed_white_24dp</item>
         <item name="icon_gps_not_fixed" type="reference">@drawable/ic_gps_not_fixed_white_24dp
         </item>
+        <item name="icon_link" type="reference">@drawable/link_white</item>
+        <item name="icon_email" type="reference">@drawable/email_white</item>
+        <item name="icon_org" type="reference">@drawable/business_white</item>
+        <item name="icon_chat" type="reference">@drawable/ic_chat_white_24dp</item>
         <item name="icon_add_group" type="reference">@drawable/ic_group_add_white_24dp</item>
         <item name="icon_add_person" type="reference">@drawable/ic_person_add_white_24dp</item>
         <item name="icon_cancel" type="reference">@drawable/ic_cancel_white_24dp</item>
