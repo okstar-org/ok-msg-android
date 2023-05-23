@@ -3946,7 +3946,7 @@ public class ConversationFragment extends XmppFragment
 
                     @Override
                     public void success(Message message) {
-                        //TODO the following two call can be made before the callback
+                        // TODO the following two call can be made before the callback
                         getActivity().runOnUiThread(() -> messageSent());
                     }
 
