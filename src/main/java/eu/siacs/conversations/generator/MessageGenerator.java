@@ -148,27 +148,18 @@ public class MessageGenerator extends AbstractGenerator {
 
     public MessagePacket generateChat(Message message) {
         MessagePacket packet = preparePacket(message);
+        String content;
         if (message.hasFileOnRemoteHost()) {
             final Message.FileParams fileParams = message.getFileParams();
-
-            if (message.getBody().equals("")) {
-                message.setBody(fileParams.url);
-                packet.addChild("fallback", "urn:xmpp:fallback:0").setAttribute("for", Namespace.OOB)
-                        .addChild("body", "urn:xmpp:fallback:0");
-            } else {
-                long start = message.getQuoteableBody().length();
-                message.appendBody(fileParams.url);
-                packet.addChild("fallback", "urn:xmpp:fallback:0").setAttribute("for", Namespace.OOB)
-                        .addChild("body", "urn:xmpp:fallback:0")
-                        .setAttribute("start", String.valueOf(start))
-                        .setAttribute("end", String.valueOf(start + fileParams.url.length()));
-            }
-
-            packet.addChild("x", Namespace.OOB).addChild("url").setContent(fileParams.url);
+            content = fileParams.url;
+            packet.addChild("x", Namespace.OOB).addChild("url").setContent(content);
             packet.addChild("fallback", "urn:xmpp:fallback:0").setAttribute("for", Namespace.OOB)
                     .addChild("body", "urn:xmpp:fallback:0");
+            message.setBody(content);
+        } else {
+            content = message.getBody();
         }
-        packet.setBody(message.getQuoteableBody());
+        packet.setBody(content);
         return packet;
     }
 
