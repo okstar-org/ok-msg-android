@@ -157,16 +157,22 @@ public class HttpConnectionManager extends AbstractConnectionManager {
         }
     }
 
+    public static OkHttpClient.Builder newBuilder(final boolean tor, final boolean i2p) {
+        final OkHttpClient.Builder builder = OK_HTTP_CLIENT.newBuilder();
+        builder.writeTimeout(30, TimeUnit.SECONDS);
+        builder.readTimeout(30, TimeUnit.SECONDS);
+        if (tor || i2p) {
+            builder.proxy(HttpConnectionManager.getProxy(i2p)).build();
+        }
+        return builder;
+    }
+
     public static InputStream open(final String url, final boolean tor, final boolean i2p) throws IOException {
         return open(HttpUrl.get(url), tor, i2p);
     }
 
     public static InputStream open(final HttpUrl httpUrl, final boolean tor, final boolean i2p) throws IOException {
-        final OkHttpClient.Builder builder = OK_HTTP_CLIENT.newBuilder();
-        if (tor || i2p) {
-            builder.proxy(HttpConnectionManager.getProxy(i2p)).build();
-        }
-        final OkHttpClient client = builder.build();
+        final OkHttpClient client = newBuilder(tor, i2p).build();
         final Request request = new Request.Builder().get().url(httpUrl).build();
         final ResponseBody body = client.newCall(request).execute().body();
         if (body == null) {
