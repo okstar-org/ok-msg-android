@@ -81,10 +81,13 @@ public final class MucDetailsContextMenuHelper {
             title.setVisible(false);
         }
         MenuItem sendPrivateMessage = menu.findItem(R.id.send_private_message);
+        MenuItem blockAvatar = menu.findItem(R.id.action_block_avatar);
+        if (user != null && user.getAvatar() != null) {
+            blockAvatar.setVisible(true);
+        }
         MenuItem blockUnblockMUCUser = menu.findItem(R.id.context_muc_contact_block_unblock);
         if (user != null && user.getRealJid() != null) {
             MenuItem showContactDetails = menu.findItem(R.id.action_contact_details);
-            MenuItem blockAvatar = menu.findItem(R.id.action_block_avatar);
             MenuItem startConversation = menu.findItem(R.id.start_conversation);
             MenuItem addToRoster = menu.findItem(R.id.add_contact);
             MenuItem giveMembership = menu.findItem(R.id.give_membership);
