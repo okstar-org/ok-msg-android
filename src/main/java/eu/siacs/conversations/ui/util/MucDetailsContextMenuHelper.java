@@ -84,6 +84,7 @@ public final class MucDetailsContextMenuHelper {
         MenuItem blockUnblockMUCUser = menu.findItem(R.id.context_muc_contact_block_unblock);
         if (user != null && user.getRealJid() != null) {
             MenuItem showContactDetails = menu.findItem(R.id.action_contact_details);
+            MenuItem blockAvatar = menu.findItem(R.id.action_block_avatar);
             MenuItem startConversation = menu.findItem(R.id.start_conversation);
             MenuItem addToRoster = menu.findItem(R.id.add_contact);
             MenuItem giveMembership = menu.findItem(R.id.give_membership);
@@ -106,6 +107,9 @@ public final class MucDetailsContextMenuHelper {
             final User self = conversation.getMucOptions().getSelf();
             addToRoster.setVisible(contact != null && !contact.showInRoster());
             showContactDetails.setVisible(contact == null || !contact.isSelf());
+            if (user.getAvatar() != null) {
+                blockAvatar.setVisible(true);
+            }
             if ((activity instanceof ConferenceDetailsActivity || activity instanceof MucUsersActivity) && user.getRole() == MucOptions.Role.NONE) {
                 invite.setVisible(true);
             }
@@ -176,6 +180,14 @@ public final class MucDetailsContextMenuHelper {
         final Account account = conversation.getAccount();
         final Contact contact = jid == null ? null : account.getRoster().getContact(jid);
         switch (item.getItemId()) {
+            case R.id.action_block_avatar:
+                activity.xmppConnectionService.getFileBackend().getAvatarFile(user.getAvatar()).delete();
+                activity.xmppConnectionService.blockMedia(user.getAvatarCid());
+                activity.avatarService().clear(user);
+                if (user.getContact() != null) activity.avatarService().clear(user.getContact());
+                user.setAvatar(null);
+                activity.xmppConnectionService.updateConversationUi();
+                return true;
             case R.id.action_show_avatar:
                 activity.ShowAvatarPopup(activity, user);
                 return true;

@@ -85,6 +85,7 @@ public class Avatar {
             return false;
         }
     }
+
     public Cid cid() {
         if (sha1sum == null) return null;
 
@@ -94,6 +95,7 @@ public class Avatar {
             return null;
         }
     }
+
     public static Avatar parsePresence(Element x) {
         String hash = x == null ? null : x.findChildContent("photo");
         if (hash == null) {

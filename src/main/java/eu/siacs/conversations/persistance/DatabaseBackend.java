@@ -1159,6 +1159,13 @@ public class DatabaseBackend extends SQLiteOpenHelper {
         return f;
     }
 
+    public void blockMedia(Cid cid) {
+        SQLiteDatabase db = this.getWritableDatabase();
+        ContentValues cv = new ContentValues();
+        cv.put("cid", cid.toString());
+        db.insertWithOnConflict("monocles.blocked_media", null, cv, SQLiteDatabase.CONFLICT_REPLACE);
+    }
+
     public boolean isBlockedMedia(Cid cid) {
         SQLiteDatabase db = this.getReadableDatabase();
         Cursor cursor = db.query("monocles.blocked_media", new String[]{"count(*)"}, "cid=?", new String[]{cid.toString()}, null, null, null);
@@ -1169,6 +1176,7 @@ public class DatabaseBackend extends SQLiteOpenHelper {
         cursor.close();
         return is;
     }
+
 
     public void saveCid(Cid cid, File file) {
         saveCid(cid, file, null);
