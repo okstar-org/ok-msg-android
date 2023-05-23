@@ -211,6 +211,9 @@ public final class Config {
         //if the contacts domain matches one of the following domains OMEMO won’t be turned on automatically
         //can be used for well known, widely used gateways
         private static final List<String> CONTACT_DOMAINS = Arrays.asList(
+                "whatsapp.monocles.eu",
+                "telegram.monocles.eu",
+                "signal.monocles.eu",
                 "sip.cheogram.com",
                 "irc.cheogram.com",
                 "smtp.cheogram.com",
