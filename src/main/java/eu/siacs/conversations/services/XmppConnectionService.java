@@ -1910,6 +1910,10 @@ public class XmppConnectionService extends Service {
 
         final boolean inProgressJoin = isJoinInProgress(conversation);
 
+        if (message.getCounterpart() == null && !message.isPrivateMessage()) {
+            message.setCounterpart(message.getConversation().getJid().asBareJid());
+        }
+
         if (account.isOnlineAndConnected() && !inProgressJoin) {
             switch (message.getEncryption()) {
                 case Message.ENCRYPTION_NONE:
@@ -5782,6 +5786,10 @@ public class XmppConnectionService extends Service {
 
     public DownloadableFile getFileForCid(Cid cid) {
         return this.databaseBackend.getFileForCid(cid);
+    }
+
+    public String getUrlForCid(Cid cid) {
+        return this.databaseBackend.getUrlForCid(cid);
     }
 
     public void saveCid(Cid cid, File file) throws BlockedMediaException {

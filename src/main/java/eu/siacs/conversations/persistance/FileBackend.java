@@ -632,6 +632,9 @@ public class FileBackend {
         BitmapFactory.Options options = new BitmapFactory.Options();
         options.inJustDecodeBounds = true;
         try {
+            for (Cid cid : calculateCids(uri)) {
+                if (mXmppConnectionService.getUrlForCid(cid) != null) return true;
+            }
             final InputStream inputStream = mXmppConnectionService.getContentResolver().openInputStream(uri);
             BitmapFactory.decodeStream(inputStream, null, options);
             close(inputStream);
@@ -639,7 +642,7 @@ public class FileBackend {
                 return false;
             }
             return (options.outWidth <= mXmppConnectionService.getCompressImageResolutionPreference() && options.outHeight <= mXmppConnectionService.getCompressImageResolutionPreference() && options.outMimeType.contains(Config.IMAGE_FORMAT.name().toLowerCase()));
-        } catch (FileNotFoundException e) {
+        } catch (final IOException e) {
             Log.d(Config.LOGTAG, "unable to get image dimensions", e);
             return false;
         }
@@ -1682,11 +1685,15 @@ public class FileBackend {
         updateFileParams(message, url, true);
     }
 
-    public void updateFileParams(final Message message, final String url, boolean updateCids) {
+    public void updateFileParams(final Message message, String url, boolean updateCids) {
         final boolean encrypted =
                 message.getEncryption() == Message.ENCRYPTION_PGP
                         || message.getEncryption() == Message.ENCRYPTION_DECRYPTED;
         final DownloadableFile file = getFile(message);
+        Cid[] cids = new Cid[0];
+        try {
+            cids = calculateCids(new FileInputStream(file));
+        } catch (final IOException e) { }
         final String mime = file.getMimeType();
         final boolean image =
                 message.getType() == Message.TYPE_IMAGE
@@ -1700,7 +1707,15 @@ public class FileBackend {
         */
         Message.FileParams fileParams = message.getFileParams();
         if (fileParams == null) fileParams = new Message.FileParams();
-        if (url != null) {
+        if (url == null) {
+            for (Cid cid : cids) {
+                url = mXmppConnectionService.getUrlForCid(cid);
+                if (url != null) {
+                    fileParams.url = url;
+                    break;
+                }
+            }
+        } else {
             fileParams.url = url;
         }
         if (encrypted && !file.exists()) {
@@ -1771,11 +1786,10 @@ public class FileBackend {
         message.setType(privateMessage ? Message.TYPE_PRIVATE_FILE : (image ? Message.TYPE_IMAGE : Message.TYPE_FILE));
         if (updateCids) {
             try {
-                Cid[] cids = calculateCids(new FileInputStream(getFile(message)));
                 for (int i = 0; i < cids.length; i++) {
-                    mXmppConnectionService.saveCid(cids[i], file);
+                    mXmppConnectionService.saveCid(cids[i], file, url);
                 }
-            } catch (final IOException | XmppConnectionService.BlockedMediaException e) { }
+            } catch (XmppConnectionService.BlockedMediaException e) { }
         }
     }
 
