@@ -1332,7 +1332,7 @@
     <string name="switch_to_video">Cambiar a vídeo</string>
     <string name="reject_switch_to_video">Rechazar peticiones de cambio a vídeo</string>
     <string name="unified_push_distributor">Distribuidor UnifiedPush</string>
-    <string name="pref_up_push_account_title">Cuenta XMPP</string>
+    <string name="pref_up_push_account_title">Cuenta</string>
     <string name="pref_up_push_account_summary">Cuenta a través de la cual se recibirán los mensajes push.</string>
     <string name="pref_up_push_server_title">Servidor Push</string>
     <string name="pref_up_push_server_summary">Servidor push elegido por el usuario para retransmitir mensajes messages vía XMPP a tu dispositivo.</string>
