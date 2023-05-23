@@ -558,6 +558,8 @@ public class ContactDetailsActivity extends OmemoActivity implements OnAccountUp
         final MenuItem menuVideoCall = menu.findItem(R.id.action_video_call);
         final MenuItem menuMessageNotification = menu.findItem(R.id.action_message_notifications);
         final MenuItem menuCallNotification = menu.findItem(R.id.action_call_notifications);
+        MenuItem edit = menu.findItem(R.id.action_edit_contact);
+        MenuItem delete = menu.findItem(R.id.action_delete_contact);
         if (contact == null) {
             return true;
         }
@@ -596,6 +598,12 @@ public class ContactDetailsActivity extends OmemoActivity implements OnAccountUp
             unblock.setVisible(false);
             block.setVisible(false);
         }
+
+        if (!contact.showInRoster()) {
+            edit.setVisible(false);
+            delete.setVisible(false);
+        }
+
         edit.setOnActionExpandListener(new MenuItem.OnActionExpandListener() {
             @Override
             public boolean onMenuItemActionCollapse(MenuItem item) {
