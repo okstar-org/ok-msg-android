@@ -1433,7 +1433,7 @@ public class ConversationFragment extends XmppFragment
         });
 
         messageListAdapter.setOnMessageBoxSwiped(message -> {
-            setupReply(message);
+            quoteMessage(message, null);
         });
 
         binding.threadIdenticonLayout.setOnClickListener(v -> {
