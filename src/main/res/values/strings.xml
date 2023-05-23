@@ -1281,5 +1281,6 @@
     <string name="action_execute">Go</string>
     <string name="block_avatar">Block avatar</string>
     <string name="block_media">Block media</string>
+    <string name="new_contact">New contact</string>
 
 </resources>
