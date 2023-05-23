@@ -859,6 +859,11 @@ public class DatabaseBackend extends SQLiteOpenHelper {
         cursor.close();
     }
 
+    public void clearBlockedMedia() {
+        SQLiteDatabase db = this.getWritableDatabase();
+        db.execSQL("DELETE FROM monocles.blocked_media");
+    }
+
     public void createConversation(Conversation conversation) {
         SQLiteDatabase db = this.getWritableDatabase();
         db.insert(Conversation.TABLENAME, null, conversation.getContentValues());

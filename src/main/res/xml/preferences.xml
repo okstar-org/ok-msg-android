@@ -323,6 +323,9 @@
         <Preference
             android:title="Change Stickers Location"
             android:key="sticker_directory" />
+        <Preference
+            android:title="Clear Blocked Media"
+            android:key="clear_blocked_media" />
     </PreferenceScreen>
     <!--status-->
     <PreferenceScreen

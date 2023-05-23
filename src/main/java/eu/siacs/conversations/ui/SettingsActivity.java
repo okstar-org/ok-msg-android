@@ -538,13 +538,6 @@ public class SettingsActivity extends XmppActivity implements OnSharedPreference
             });
             updateTheme();
         }
-        // TODO: handle skd<30
-       // final String theTheme = PreferenceManager.getDefaultSharedPreferences(this).getString(THEME, "");
-       // if (Build.VERSION.SDK_INT < 30 || !theTheme.equals("custom")) {
-        //    final PreferenceCategory uiCategory = (PreferenceCategory) mSettingsFragment.findPreference("UI");
-        //    final Preference customTheme = mSettingsFragment.findPreference("custom_theme");
-        //    if (customTheme != null) uiCategory.removePreference(customTheme);
-        //}
         final Preference stickerDir = mSettingsFragment.findPreference("sticker_directory");
         if (stickerDir != null) {
             stickerDir.setOnPreferenceClickListener((p) -> {
@@ -552,6 +545,22 @@ public class SettingsActivity extends XmppActivity implements OnSharedPreference
                 startActivityForResult(Intent.createChooser(intent, "Choose sticker location"), 0);
                 return true;
             });
+        }
+
+        final Preference clearBlockedMedia = mSettingsFragment.findPreference("clear_blocked_media");
+        if (clearBlockedMedia != null) {
+            clearBlockedMedia.setOnPreferenceClickListener((p) -> {
+                xmppConnectionService.clearBlockedMedia();
+                displayToast("Blocked media will be displayed again.");
+                return true;
+            });
+        }
+
+        final String theTheme = PreferenceManager.getDefaultSharedPreferences(this).getString(THEME, "");
+        if (Build.VERSION.SDK_INT < 30 || !theTheme.equals("custom")) {
+            final PreferenceCategory uiCategory = (PreferenceCategory) mSettingsFragment.findPreference("ui");
+            final Preference customTheme = mSettingsFragment.findPreference("custom_theme");
+            if (customTheme != null) uiCategory.removePreference(customTheme);
         }
     }
 
