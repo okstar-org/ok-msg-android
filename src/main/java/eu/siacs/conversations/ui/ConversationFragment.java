@@ -1970,7 +1970,7 @@ public class ConversationFragment extends XmppFragment
                 if (activity == null) return;
                 activity.runOnUiThread(() -> {
                     refresh();
-                    refreshCommands();
+                    refreshCommands(true);
                 });
             });
         }
@@ -3109,7 +3109,7 @@ public class ConversationFragment extends XmppFragment
         if (commandAdapter != null && conversation != originalConversation) {
             originalConversation.setupViewPager(null, null);
             conversation.setupViewPager(binding.conversationViewPager, binding.tabLayout);
-            refreshCommands();
+            refreshCommands(false);
         }
         if (commandAdapter == null && conversation != null) {
             conversation.setupViewPager(binding.conversationViewPager, binding.tabLayout);
@@ -3119,7 +3119,7 @@ public class ConversationFragment extends XmppFragment
                 final Element command = commandAdapter.getItem(position);
                 activity.startCommand(conversation.getAccount(), command.getAttributeAsJid("jid"), command.getAttribute("node"));
             });
-            refreshCommands();
+            refreshCommands(false);
         }
 
         return true;
@@ -3156,17 +3156,17 @@ public class ConversationFragment extends XmppFragment
     }
 
     public void refreshForNewCaps() {
-        refreshCommands();
+        refreshCommands(true);
     }
 
-    protected void refreshCommands() {
+    protected void refreshCommands(boolean delayShow) {
         if (commandAdapter == null) return;
 
         Jid commandJid = conversation.getContact().resourceWhichSupport(Namespace.COMMANDS);
         if (commandJid == null) {
             conversation.hideViewPager();
         } else {
-            conversation.showViewPager();
+            if (!delayShow) conversation.showViewPager();
             activity.xmppConnectionService.fetchCommands(conversation.getAccount(), commandJid, (a, iq) -> {
                 if (activity == null) return;
 
@@ -3180,7 +3180,11 @@ public class ConversationFragment extends XmppFragment
                         }
                     }
 
-                    if (commandAdapter.getCount() < 1) conversation.hideViewPager();
+                    if (commandAdapter.getCount() < 1) {
+                        conversation.hideViewPager();
+                    } else if (delayShow) {
+                        conversation.showViewPager();
+                    }
                 });
             });
         }
