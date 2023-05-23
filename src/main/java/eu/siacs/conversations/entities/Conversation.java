@@ -2,6 +2,8 @@ package eu.siacs.conversations.entities;
 
 import static eu.siacs.conversations.entities.Bookmark.printableValue;
 
+import android.content.Intent;
+import eu.siacs.conversations.ui.UriHandlerActivity;
 import android.content.DialogInterface;
 import android.content.Context;
 import android.annotation.SuppressLint;
@@ -2795,6 +2797,13 @@ public class Conversation extends AbstractEntity implements Blockable, Comparabl
                                 String scheme = Uri.parse(url).getScheme();
                                 if (scheme.equals("http") || scheme.equals("https")) {
                                     this.responseElement = el;
+                                    break;
+                                }
+                                if (scheme.equals("xmpp")) {
+                                    final Intent intent = new Intent(getView().getContext(), UriHandlerActivity.class);
+                                    intent.setAction(Intent.ACTION_VIEW);
+                                    intent.setData(Uri.parse(url));
+                                    getView().getContext().startActivity(intent);
                                     break;
                                 }
                             }
