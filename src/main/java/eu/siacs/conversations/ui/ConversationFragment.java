@@ -1023,8 +1023,12 @@ public class ConversationFragment extends XmppFragment
         final Message message;
         if (conversation.getCorrectingMessage() == null) {
             if (conversation.getReplyTo() != null) {
-                message = conversation.getReplyTo().reply();
-                message.appendBody(body);
+                if (Emoticons.isEmoji(body)) {
+                    message = conversation.getReplyTo().react(body);
+                } else {
+                    message = conversation.getReplyTo().reply();
+                    message.appendBody(body);
+                }
                 message.setEncryption(conversation.getNextEncryption());
             } else {
                 message = new Message(conversation, body, conversation.getNextEncryption());

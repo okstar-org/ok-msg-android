@@ -728,6 +728,29 @@ public class Conversation extends AbstractEntity implements Blockable, Comparabl
         return reactionEmoji;
     }
 
+    public Set<String> findOwnReactionsTo(String id) {
+        Set<String> reactionEmoji = new HashSet<>();
+        Element reactions = null;
+        synchronized (this.messages) {
+            for (Message message : this.messages) {
+                if (message.getStatus() < Message.STATUS_SEND) continue;
+
+                final Element r = message.getReactions();
+                if (r != null && r.getAttribute("id") != null && id.equals(r.getAttribute("id"))) {
+                    reactions = r;
+                }
+            }
+        }
+        if (reactions != null) {
+            for (Element el : reactions.getChildren()) {
+                if (el.getName().equals("reaction") && el.getNamespace().equals("urn:xmpp:reactions:0")) {
+                    reactionEmoji.add(el.getContent());
+                }
+            }
+        }
+        return reactionEmoji;
+    }
+
     public void populateWithMessages(final List<Message> messages) {
         synchronized (this.messages) {
             messages.clear();

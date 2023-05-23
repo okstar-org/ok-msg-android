@@ -423,13 +423,14 @@ public class Message extends AbstractEntity implements AvatarService.Avatarable 
     public String replyId() {
         return conversation.getMode() == Conversation.MODE_MULTI ? getServerMsgId() : getRemoteMsgId();
     }
+
     public Message reply() {
         Message m = new Message(conversation, QuoteHelper.quote(MessageUtils.prepareQuote(this)) + "\n", ENCRYPTION_NONE);
         m.setThread(getThread());
         m.addPayload(
                 new Element("reply", "urn:xmpp:reply:0")
                         .setAttribute("to", getCounterpart())
-                        .setAttribute("id", conversation.getMode() == Conversation.MODE_MULTI ? getServerMsgId() : getRemoteMsgId())
+                        .setAttribute("id", replyId())
         );
         final Element fallback = new Element("fallback", "urn:xmpp:fallback:0").setAttribute("for", "urn:xmpp:reply:0");
         fallback.addChild("body", "urn:xmpp:fallback:0")
@@ -441,7 +442,7 @@ public class Message extends AbstractEntity implements AvatarService.Avatarable 
 
     public Message react(String emoji) {
         Set<String> emojis = new HashSet<>();
-        if (conversation instanceof Conversation) emojis = ((Conversation) conversation).findReactionsTo(replyId(), null);
+        if (conversation instanceof Conversation) emojis = ((Conversation) conversation).findOwnReactionsTo(replyId());
         emojis.add(emoji);
         final Message m = reply();
         m.appendBody(emoji);
@@ -456,12 +457,18 @@ public class Message extends AbstractEntity implements AvatarService.Avatarable 
         return m;
     }
 
-    public void setReactions(Element reactions) {
-        if (this.payloads != null) {
-            this.payloads.remove(getReactions());
+    public Element getReactions() {
+        if (this.payloads == null) return null;
+
+        for (Element el : this.payloads) {
+            if (el.getName().equals("reactions") && el.getNamespace().equals("urn:xmpp:reactions:0")) {
+                return el;
+            }
         }
-        addPayload(reactions);
+
+        return null;
     }
+
 
     public Element getThread() {
         if (this.payloads == null) return null;
@@ -498,18 +505,6 @@ public class Message extends AbstractEntity implements AvatarService.Avatarable 
 
     public String getQuoteableBody() {
         return this.body;
-    }
-
-    public Element getReactions() {
-        if (this.payloads == null) return null;
-
-        for (Element el : this.payloads) {
-            if (el.getName().equals("reactions") && el.getNamespace().equals("urn:xmpp:reactions:0")) {
-                return el;
-            }
-        }
-
-        return null;
     }
 
     public String getConversationUuid() {
