@@ -129,6 +129,7 @@
         <item name="icon_done" type="reference">@drawable/ic_done_black_24dp</item>
         <item name="icon_group" type="reference">@drawable/ic_group_white_24dp</item>
         <item name="icon_new" type="reference">@drawable/ic_contacts_white_24dp</item>
+        <item name="icon_quote" type="reference">@drawable/ic_reply_black</item>
         <item name="icon_new_attachment" type="reference">@drawable/ic_attach_file_white_24dp</item>
         <item name="icon_not_secure" type="reference">@drawable/ic_lock_open_white_24dp</item>
         <item name="ic_make_audio_call" type="reference">@drawable/ic_call_black54_24dp</item>
@@ -137,7 +138,6 @@
         <item name="icon_ongoing_call" type="reference">@drawable/ic_phone_in_talk_white_24dp</item>
         <item name="ic_ongoing_call_hint" type="reference">@drawable/ic_phone_in_talk_black_18dp
         </item>
-        <item name="icon_quote" type="reference">@drawable/ic_reply_white_24dp</item>
         <item name="icon_refresh" type="reference">@drawable/ic_refresh_grey600_24dp</item>
         <item name="icon_remove" type="reference">@drawable/ic_delete_grey600_24dp</item>
         <item name="icon_search" type="reference">@drawable/ic_search_white_24dp</item>

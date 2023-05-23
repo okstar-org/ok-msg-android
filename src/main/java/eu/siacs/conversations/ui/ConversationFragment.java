@@ -1048,6 +1048,7 @@ public class ConversationFragment extends XmppFragment
             default:
                 sendMessage(message);
         }
+        setupReply(null);
     }
 
     private boolean trustKeysIfNeeded(final Conversation conversation, final int requestCode) {
@@ -1230,6 +1231,7 @@ public class ConversationFragment extends XmppFragment
         } else {
             activity.selectPresence(conversation, callback);
         }
+        setupReply(null);
     }
 
 
@@ -1548,7 +1550,21 @@ public class ConversationFragment extends XmppFragment
         if (message.isGeoUri()) {
             quoteGeoUri(message, user);
         }
+        if (message.getThread() == null) newThread();
+        setupReply(message);
+    }
+
+    private void setupReply(Message message, @Nullable String user) {
         conversation.setReplyTo(message);
+        if (message == null) {
+            binding.contextPreview.setVisibility(View.GONE);
+            return;
+        }
+
+        SpannableStringBuilder body = message.getSpannableBody(null, null);
+        messageListAdapter.handleTextQuotes(body, activity.isDarkTheme());
+        binding.contextPreviewText.setText(body);
+        binding.contextPreview.setVisibility(View.VISIBLE);
     }
 
     private void setThread(Element thread) {
