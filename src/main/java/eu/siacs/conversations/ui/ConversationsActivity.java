@@ -61,6 +61,8 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.TextView;
 import android.widget.Toast;
+import androidx.core.content.ContextCompat;
+import de.monocles.chat.DownloadDefaultStickers;
 
 import net.java.otr4j.session.SessionStatus;
 import androidx.appcompat.widget.PopupMenu;
@@ -135,6 +137,7 @@ public class ConversationsActivity extends XmppActivity implements OnConversatio
     public static final int REQUEST_PLAY_PAUSE = 0x5432;
     public static final int REQUEST_MICROPHONE = 0x5432f;
     public static final int DIALLER_INTEGRATION = 0x5432ff;
+    public static final int REQUEST_DOWNLOAD_STICKERS = 0xbf8702;
     public static final String EXTRA_TYPE = "type";
     public static final String EXTRA_NODE = "node";
     public static final String EXTRA_JID = "jid";
@@ -298,12 +301,11 @@ public class ConversationsActivity extends XmppActivity implements OnConversatio
         final Fragment fragment = getFragmentManager().findFragmentById(R.id.main_fragment);
         if (fragment instanceof ConversationsOverviewFragment) {
 
-            if (ExceptionHelper.checkForCrash(this)) {
-                return;
-            }
-            if (!offerToSetupDiallerIntegration()) {
-                openBatteryOptimizationDialogIfNeeded();
-            }
+            if (ExceptionHelper.checkForCrash(this)) return;
+            if (offerToSetupDiallerIntegration()) return;
+            if (offerToDownloadStickers()) return;
+            openBatteryOptimizationDialogIfNeeded();
+
             new showMemoryWarning(this).execute();
             showOutdatedVersionWarning();
         }
@@ -368,6 +370,25 @@ public class ConversationsActivity extends XmppActivity implements OnConversatio
         }
     }
 
+    private boolean offerToDownloadStickers() {
+        int offered = getPreferences().getInt("default_stickers_offered", 0);
+        if (offered > 0) return false;
+        getPreferences().edit().putInt("default_stickers_offered", 1).apply();
+
+        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        builder.setTitle("Download Stickers?");
+        builder.setMessage("Would you like to download some default sticker packs?");
+        builder.setPositiveButton(R.string.yes, (dialog, which) -> {
+            if (hasStoragePermission(REQUEST_DOWNLOAD_STICKERS)) {
+                downloadStickers();
+            }
+        });
+        builder.setNegativeButton(R.string.no, (dialog, which) -> { });
+        final AlertDialog dialog = builder.create();
+        dialog.setCanceledOnTouchOutside(false);
+        dialog.show();
+        return true;
+    }
 
     private boolean offerToSetupDiallerIntegration() {
         if (mRequestCode == DIALLER_INTEGRATION) {
@@ -400,7 +421,7 @@ public class ConversationsActivity extends XmppActivity implements OnConversatio
 
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
         builder.setTitle("Dialler Integration");
-        builder.setMessage("Cheogram Android is able to integrate with your system's dialler app to allow dialling calls via your configured gateway " + String.join(", ", pstnGateways) + ".\n\nEnabling this integration will require granting microphone permission to the app.  Would you like to enable it now?");
+        builder.setMessage("monocles chat is able to integrate with your system's dialler app to allow dialling calls via your configured gateway " + String.join(", ", pstnGateways) + ".\n\nEnabling this integration will require granting microphone permission to the app.  Would you like to enable it now?");
         builder.setPositiveButton(R.string.yes, (dialog, which) -> {
             final String[] permissions;
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.S) {
@@ -552,9 +573,19 @@ public class ConversationsActivity extends XmppActivity implements OnConversatio
                                 "com.android.server.telecom.settings.EnableAccountPreferenceActivity"));
                         startActivityForResult(intent, DIALLER_INTEGRATION);
                         break;
+                    case REQUEST_DOWNLOAD_STICKERS:
+                        downloadStickers();
+                        break;
                 }
             }
         }
+    }
+
+    private void downloadStickers() {
+        Intent intent = new Intent(this, DownloadDefaultStickers.class);
+        ContextCompat.startForegroundService(this, intent);
+        displayToast("Sticker download started");
+        showDialogsIfMainIsOverview();
     }
 
     @Override
