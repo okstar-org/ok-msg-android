@@ -216,7 +216,7 @@ public class Contact implements ListItem, Blockable {
 
     @Override
     public List<Tag> getTags(Context context) {
-        final ArrayList<Tag> tags = new ArrayList<>();
+        final HashSet<Tag> tags = new HashSet<>();
         tags.addAll(getGroupTags());
         for (final String tag : getSystemTags(true)) {
             tags.add(new Tag(tag, UIHelper.getColorForName(tag), 0, account, isActive()));
@@ -231,7 +231,7 @@ public class Contact implements ListItem, Blockable {
         if (!showInRoster() && getSystemAccount() != null) {
             tags.add(new Tag("Android", UIHelper.getColorForName("Android"), 0, account, true));
         }
-        return tags;
+        return new ArrayList<>(tags);
     }
 
 
