@@ -14,6 +14,7 @@ import android.provider.DocumentsContract;
 import android.preference.PreferenceManager;
 import android.provider.MediaStore;
 import android.util.Log;
+import android.media.MediaScannerConnection;
 
 import androidx.core.app.NotificationCompat;
 
@@ -95,6 +96,19 @@ public class DownloadDefaultStickers extends Service {
             Cid cid = Cid.decode(cids.getString(i));
             mDatabaseBackend.saveCid(cid, file, sticker.getString("url"));
         }
+
+        MediaScannerConnection.scanFile(
+                getBaseContext(),
+                new String[] { file.getAbsolutePath() },
+                null,
+                new MediaScannerConnection.MediaScannerConnectionClient() {
+                    @Override
+                    public void onMediaScannerConnected() {}
+
+                    @Override
+                    public void onScanCompleted(String path, Uri uri) {}
+                }
+        );
 
         try {
             File copyright = new File(mStickerDir.getAbsolutePath() + "/" + sticker.getString("pack") + "/copyright.txt");
