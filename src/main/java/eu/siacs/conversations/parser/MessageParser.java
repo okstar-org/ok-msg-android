@@ -860,7 +860,10 @@ public class MessageParser extends AbstractParser implements OnMessagePacketRece
                     } else {
                         Log.d(Config.LOGTAG, account.getJid().asBareJid() + ": received message correction but verification didn't check out");
                     }
-                } else if (message.getBody() == null || message.getBody().equals("") || message.getBody().equals(" ")) {
+                } else if (replaceAsRetraction) {
+                    return;
+                }
+                else if (message.getBody() == null || message.getBody().equals("") || message.getBody().equals(" ")) {
                     return;
                 }
             } else if (replacementId != null && !mXmppConnectionService.allowMessageCorrection() && (message.hasDeletedBody())) {
