@@ -417,12 +417,7 @@ public class ConversationFragment extends XmppFragment
             toggleScrollDownButton(view);
             synchronized (ConversationFragment.this.messageList) {
                 if (firstVisibleItem < 5 && conversation != null && conversation.messagesLoaded.compareAndSet(true, false) && messageList.size() > 0) {
-                    long timestamp;
-                    if (messageList.get(0).getType() == Message.TYPE_STATUS && messageList.size() >= 2) {
-                        timestamp = messageList.get(1).getTimeSent();
-                    } else {
-                        timestamp = messageList.get(0).getTimeSent();
-                    }
+                    long timestamp = conversation.loadMoreTimestamp();
                     activity.xmppConnectionService.loadMoreMessages(conversation, timestamp, new XmppConnectionService.OnMoreMessagesLoaded() {
                         @Override
                         public void onMoreMessagesLoaded(final int c, final Conversation conversation) {
