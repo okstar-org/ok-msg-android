@@ -28,8 +28,7 @@
         android:id="@+id/conversation_view_pager"
         android:layout_below="@id/tab_layout"
         android:layout_width="fill_parent"
-        android:layout_height="fill_parent"
-        android:background="?attr/color_background_secondary">
+        android:layout_height="fill_parent">
 
     <RelativeLayout
         android:layout_width="fill_parent"
@@ -404,7 +403,7 @@
                 android:layout_alignParentTop="true"
                 android:background="?attr/color_background_tertiary"
                 android:divider="@android:color/transparent"
-                android:dividerHeight="0dp"></ListView>
+                android:dividerHeight="0dp" />
 
             <ProgressBar
                 android:id="@+id/commands_view_progressbar"
