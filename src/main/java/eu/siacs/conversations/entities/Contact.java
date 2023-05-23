@@ -399,6 +399,7 @@ public class Contact implements ListItem, Blockable {
             this.groups.put(tag);
         }
     }
+
     private Collection<String> getSystemTags(final boolean unique) {
         final Collection<String> tags = unique ? new HashSet<>() : new ArrayList<>();
         for (int i = 0; i < this.systemTags.length(); ++i) {

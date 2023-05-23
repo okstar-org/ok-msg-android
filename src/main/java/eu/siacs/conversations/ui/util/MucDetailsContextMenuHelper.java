@@ -215,9 +215,9 @@ public final class MucDetailsContextMenuHelper {
             case R.id.start_conversation:
                 startConversation(user, activity);
                 return true;
-            case R.id.add_contact:
-                activity.showAddToRosterDialog(contact);
-                return true;
+          //  case R.id.add_contact:        // TODO: Re add it later again
+          //      activity.showAddToRosterDialog(contact);
+          //      return true;
             case R.id.give_admin_privileges:
                 activity.xmppConnectionService.changeAffiliationInConference(conversation, jid, MucOptions.Affiliation.ADMIN, onAffiliationChanged);
                 return true;
