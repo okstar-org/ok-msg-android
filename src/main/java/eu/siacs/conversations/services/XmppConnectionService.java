@@ -265,6 +265,7 @@ public class XmppConnectionService extends Service {
     public DatabaseBackend databaseBackend;
     private final ReplacingSerialSingleThreadExecutor mContactMergerExecutor = new ReplacingSerialSingleThreadExecutor("ContactMerger");
     private long mLastActivity = 0;
+    private long mLastMucPing = 0;
     public final FileBackend fileBackend = new FileBackend(this);
     private MemorizingTrustManager mMemorizingTrustManager;
     private final NotificationService mNotificationService = new NotificationService(this);
@@ -943,6 +944,15 @@ public class XmppConnectionService extends Service {
                     account.getXmppConnection().sendPing();
                     Log.d(Config.LOGTAG, account.getJid().asBareJid() + " send ping (action=" + action + ",lowTimeout=" + lowTimeout + ")");
                     scheduleWakeUpCall(lowTimeout ? Config.LOW_PING_TIMEOUT : Config.PING_TIMEOUT, account.getUuid().hashCode());
+                }
+                long msToMucPing = (mLastMucPing + (Config.PING_MAX_INTERVAL * 2000L)) - SystemClock.elapsedRealtime();
+                if (msToMucPing <= 0) {
+                    mLastMucPing = SystemClock.elapsedRealtime();
+                    for (Conversation c : getConversations()) {
+                        if (c.getMode() == Conversation.MODE_MULTI && c.getMucOptions().online()) {
+                            mucSelfPingAndRejoin(c);
+                        }
+                    }
                 }
             }
             WakeLockHelper.release(wakeLock);
