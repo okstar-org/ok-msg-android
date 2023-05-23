@@ -1789,7 +1789,7 @@ public class FileBackend {
         if (updateCids) {
             try {
                 for (int i = 0; i < cids.length; i++) {
-                    mXmppConnectionService.saveCid(cids[i], file, url);
+                    mXmppConnectionService.saveCid(cids[i], file);
                 }
             } catch (XmppConnectionService.BlockedMediaException e) { }
         }
