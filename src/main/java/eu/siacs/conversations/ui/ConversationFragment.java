@@ -305,91 +305,6 @@ public class ConversationFragment extends XmppFragment
             });
         }
     };
-
-    private final OnClickListener meCommand = v -> Objects.requireNonNull(binding.textinput.getText()).insert(0, Message.ME_COMMAND + " ");
-    private final OnClickListener quote = v -> insertQuote();
-    private final OnClickListener boldText = v -> insertFormatting("bold");
-    private final OnClickListener italicText = v -> insertFormatting("italic");
-    private final OnClickListener monospaceText = v -> insertFormatting("monospace");
-    private final OnClickListener strikethroughText = v -> insertFormatting("strikethrough");
-    private final OnClickListener help = v -> openHelp();
-    private final OnClickListener close = v -> closeFormatting();
-
-    private void openHelp() {
-        final AlertDialog.Builder builder = new AlertDialog.Builder(activity);
-        builder.setTitle(R.string.format_text);
-        builder.setMessage(R.string.help_format_text);
-        builder.setNeutralButton(getString(R.string.ok), null);
-        builder.create().show();
-    }
-
-    private void closeFormatting() {
-        final AlertDialog.Builder builder = new AlertDialog.Builder(activity);
-        builder.setTitle(R.string.close);
-        builder.setMessage(R.string.close_format_text);
-        builder.setPositiveButton(getString(R.string.close),
-                (dialog, which) -> {
-                    final SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(activity);
-                    preferences.edit().putBoolean("showtextformatting", false).apply();
-                    updateSendButton();
-                });
-        builder.setNegativeButton(getString(R.string.cancel), null);
-        builder.create().show();
-    }
-
-    private void insertFormatting(String format) {
-        final String BOLD = "*";
-        final String ITALIC = "_";
-        final String MONOSPACE = "`";
-        final String STRIKETHROUGH = "~";
-
-        int selStart = this.binding.textinput.getSelectionStart();
-        int selEnd = this.binding.textinput.getSelectionEnd();
-        int min = 0;
-        int max = this.binding.textinput.getText().length();
-        if (this.binding.textinput.isFocused()) {
-            selStart = this.binding.textinput.getSelectionStart();
-            selEnd = this.binding.textinput.getSelectionEnd();
-            min = Math.max(0, Math.min(selStart, selEnd));
-            max = Math.max(0, Math.max(selStart, selEnd));
-        }
-        final CharSequence selectedText = this.binding.textinput.getText().subSequence(min, max);
-
-        switch (format) {
-            case "bold":
-                if (selectedText.length() != 0) {
-                    this.binding.textinput.getText().replace(Math.min(selStart, selEnd), Math.max(selStart, selEnd),
-                            BOLD + selectedText + BOLD, 0, selectedText.length() + 2);
-                } else {
-                    this.binding.textinput.getText().insert(this.binding.textinput.getSelectionStart(), (BOLD));
-                }
-                return;
-            case "italic":
-                if (selectedText.length() != 0) {
-                    this.binding.textinput.getText().replace(Math.min(selStart, selEnd), Math.max(selStart, selEnd),
-                            ITALIC + selectedText + ITALIC, 0, selectedText.length() + 2);
-                } else {
-                    this.binding.textinput.getText().insert(this.binding.textinput.getSelectionStart(), (ITALIC));
-                }
-                return;
-            case "monospace":
-                if (selectedText.length() != 0) {
-                    this.binding.textinput.getText().replace(Math.min(selStart, selEnd), Math.max(selStart, selEnd),
-                            MONOSPACE + selectedText + MONOSPACE, 0, selectedText.length() + 2);
-                } else {
-                    this.binding.textinput.getText().insert(this.binding.textinput.getSelectionStart(), (MONOSPACE));
-                }
-                return;
-            case "strikethrough":
-                if (selectedText.length() != 0) {
-                    this.binding.textinput.getText().replace(Math.min(selStart, selEnd), Math.max(selStart, selEnd),
-                            STRIKETHROUGH + selectedText + STRIKETHROUGH, 0, selectedText.length() + 2);
-                } else {
-                    this.binding.textinput.getText().insert(this.binding.textinput.getSelectionStart(), (STRIKETHROUGH));
-                }
-                return;
-        }
-    }
     private void insertQuote() {
         int pos = 0;
         if (this.binding.textinput.getSelectionStart() == this.binding.textinput.getSelectionEnd()) {
@@ -4319,33 +4234,5 @@ public class ConversationFragment extends XmppFragment
             throw new IllegalStateException("Activity not attached");
         }
         return activity;
-    }
-
-    private void showTextFormat(final boolean me) {
-        this.binding.textformat.setVisibility(View.VISIBLE);
-        this.binding.me.setEnabled(me);
-        this.binding.me.setOnClickListener(meCommand);
-        this.binding.quote.setOnClickListener(quote);
-        this.binding.bold.setOnClickListener(boldText);
-        this.binding.italic.setOnClickListener(italicText);
-        this.binding.monospace.setOnClickListener(monospaceText);
-        this.binding.strikethrough.setOnClickListener(strikethroughText);
-        this.binding.help.setOnClickListener(help);
-        this.binding.close.setOnClickListener(close);
-        if (Compatibility.runsTwentyEight()) {
-            this.binding.me.setTooltipText(activity.getString(R.string.me));
-            this.binding.quote.setTooltipText(activity.getString(R.string.quote));
-            this.binding.bold.setTooltipText(activity.getString(R.string.bold));
-            this.binding.italic.setTooltipText(activity.getString(R.string.italic));
-            this.binding.monospace.setTooltipText(activity.getString(R.string.monospace));
-            this.binding.monospace.setTooltipText(activity.getString(R.string.monospace));
-            this.binding.strikethrough.setTooltipText(activity.getString(R.string.strikethrough));
-            this.binding.help.setTooltipText(activity.getString(R.string.help));
-            this.binding.close.setTooltipText(activity.getString(R.string.close));
-        }
-    }
-
-    private void hideTextFormat() {
-        this.binding.textformat.setVisibility(View.GONE);
     }
 }
