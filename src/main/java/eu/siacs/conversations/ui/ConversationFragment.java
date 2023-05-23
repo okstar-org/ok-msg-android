@@ -1411,6 +1411,7 @@ public class ConversationFragment extends XmppFragment
 
         binding.textSendButton.setOnClickListener(this.mSendButtonListener);
         binding.contextPreviewCancel.setOnClickListener((v) -> {
+            conversation.setUserSelectedThread(false);
             setupReply(null);
         });
         binding.textSendButton.setOnLongClickListener(this.mSendButtonLongListener);
