@@ -621,7 +621,7 @@
     <string name="copy_to_clipboard">In Zwischenablage kopieren</string>
     <string name="message_copied_to_clipboard">Nachricht in Zwischenablage kopiert</string>
     <string name="message">Nachricht</string>
-    <string name="quote">Zitieren</string>
+    <string name="quote">Antworten</string>
     <string name="show_error_message">Zeige Fehlermeldung</string>
     <string name="error_message">Fehlermeldung</string>
     <string name="data_saver_enabled">Datensparmodus aktiviert</string>

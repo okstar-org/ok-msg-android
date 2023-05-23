@@ -576,7 +576,7 @@
     <string name="copy_to_clipboard">Copy to clipboard</string>
     <string name="message_copied_to_clipboard">Message copied to clipboard</string>
     <string name="message">Message</string>
-    <string name="quote">Quote</string>
+    <string name="quote">Reply</string>
     <string name="show_error_message">Show error message</string>
     <string name="error_message">Error message</string>
     <string name="data_saver_enabled">Data saver enabled</string>
