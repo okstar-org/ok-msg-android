@@ -43,9 +43,14 @@ import android.util.Base64;
 import android.util.Log;
 import android.webkit.URLUtil;
 
+import com.google.common.collect.Collections2;
+import com.google.common.collect.ImmutableList;
+import com.google.common.collect.Lists;
+
 import java.net.URLDecoder;
 import java.nio.charset.StandardCharsets;
 import java.util.Arrays;
+import java.util.Collection;
 import java.util.Collections;
 import java.util.List;
 import java.util.Locale;
@@ -397,12 +402,12 @@ public class MyLinkify {
         for (final URLSpan urlspan : body.getSpans(0, body.length() - 1, URLSpan.class)) {
             Uri uri = Uri.parse(urlspan.getURL());
             if ("xmpp".equals(uri.getScheme())) {
-                try {
-                    if (!body.subSequence(body.getSpanStart(urlspan), body.getSpanEnd(urlspan)).toString().startsWith("xmpp:")) {
-                        // Already customized
-                        continue;
-                    }
+                if (!body.subSequence(body.getSpanStart(urlspan), body.getSpanEnd(urlspan)).toString().startsWith("xmpp:")) {
+                    // Already customized
+                    continue;
+                }
 
+                try {
                     XmppUri xmppUri = new XmppUri(uri);
                     Jid jid = xmppUri.getJid();
                     String display = xmppUri.toString();
@@ -420,8 +425,37 @@ public class MyLinkify {
                             body.getSpanEnd(urlspan),
                             display
                     );
-                } catch (final IllegalArgumentException | IndexOutOfBoundsException e) { /* bad JID or span gone */ }
+                } catch (final IllegalArgumentException e) { /* bad JID */ }
             }
+        }
+    }
+
+    public static List<String> extractLinks(final Editable body) {
+        MyLinkify.addLinks(body, false);
+        final Collection<URLSpan> spans =
+                Arrays.asList(body.getSpans(0, body.length() - 1, URLSpan.class));
+        final Collection<UrlWrapper> urlWrappers =
+                Collections2.filter(
+                        Collections2.transform(
+                                spans,
+                                s ->
+                                        s == null
+                                                ? null
+                                                : new UrlWrapper(body.getSpanStart(s), s.getURL())),
+                        uw -> uw != null);
+        List<UrlWrapper> sorted = ImmutableList.sortedCopyOf(
+                (a, b) -> Integer.compare(a.position, b.position), urlWrappers);
+        return Lists.transform(sorted, uw -> uw.url);
+
+    }
+
+    private static class UrlWrapper {
+        private final int position;
+        private final String url;
+
+        private UrlWrapper(int position, String url) {
+            this.position = position;
+            this.url = url;
         }
     }
 }
