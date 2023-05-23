@@ -583,6 +583,8 @@ public class ConversationsActivity extends XmppActivity implements OnConversatio
 
     private void downloadStickers() {
         Intent intent = new Intent(this, DownloadDefaultStickers.class);
+        intent.putExtra("tor", xmppConnectionService.useTorToConnect());
+        intent.putExtra("i2p", xmppConnectionService.useI2PToConnect());
         ContextCompat.startForegroundService(this, intent);
         displayToast("Sticker download started");
         showDialogsIfMainIsOverview();

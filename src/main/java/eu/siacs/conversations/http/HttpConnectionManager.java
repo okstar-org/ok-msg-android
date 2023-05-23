@@ -131,13 +131,9 @@ public class HttpConnectionManager extends AbstractConnectionManager {
         final String slotHostname = url.host();
         final boolean onionSlot = slotHostname.endsWith(".onion");
         final boolean I2PSlot = slotHostname.endsWith(".i2p");
-        final OkHttpClient.Builder builder = OK_HTTP_CLIENT.newBuilder();
-        builder.writeTimeout(30, TimeUnit.SECONDS);
+        final OkHttpClient.Builder builder = newBuilder(mXmppConnectionService.useTorToConnect() || account.isOnion() || onionSlot , mXmppConnectionService.useI2PToConnect() || account.isI2P() || I2PSlot);
         builder.readTimeout(readTimeout, TimeUnit.SECONDS);
         setupTrustManager(builder, interactive);
-        if (mXmppConnectionService.useTorToConnect() || account.isOnion() || onionSlot || mXmppConnectionService.useI2PToConnect() || account.isI2P() || I2PSlot) {
-            builder.proxy(HttpConnectionManager.getProxy(I2PSlot)).build();
-        }
         return builder.build();
     }
 
