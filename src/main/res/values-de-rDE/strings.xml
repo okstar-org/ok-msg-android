@@ -341,7 +341,7 @@
     <string name="could_not_verify_fingerprint">Fingerabdruck konnte nicht überprüft werden</string>
     <string name="manually_verify">Manuell überprüfen</string>
     <string name="pref_show_dynamic_tags">Dynamische Tags anzeigen</string>
-    <string name="pref_show_dynamic_tags_summary">Schreibgeschütze Tags unterhalb der Kontakte anzeigen</string>
+    <string name="pref_show_dynamic_tags_summary">Erlauben Sie das Organisieren mit Tags</string>
     <string name="no_conference_server_found">Es wurde kein Gruppenchat-Server gefunden</string>
     <string name="conference_creation_failed">Gruppenchat konnte nicht erstellt werden!</string>
     <string name="account_image_description">Kontobild</string>
