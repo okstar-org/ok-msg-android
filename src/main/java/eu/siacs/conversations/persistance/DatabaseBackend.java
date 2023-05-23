@@ -292,6 +292,15 @@ public class DatabaseBackend extends SQLiteOpenHelper {
                 db.execSQL("PRAGMA monocles.user_version = 6");
             }
 
+            if(monoclesVersion < 7) {
+                db.execSQL(
+                        "ALTER TABLE monocles.cids " +
+                                "ADD COLUMN url TEXT"
+                );
+                db.execSQL("PRAGMA monocles.user_version = 7");
+            }
+
+
             db.setTransactionSuccessful();
         } finally {
             db.endTransaction();
@@ -1191,11 +1200,9 @@ public class DatabaseBackend extends SQLiteOpenHelper {
         SQLiteDatabase db = this.getWritableDatabase();
         ContentValues cv = new ContentValues();
         cv.put("cid", cid.toString());
-        if (file != null) cv.put("path", file.getAbsolutePath());
-        if (url != null) cv.put("url", url);
-        if (db.update("monocles.cids", cv, "cid=?", new String[]{cid.toString()}) < 1) {
-            db.insertWithOnConflict("monocles.cids", null, cv, SQLiteDatabase.CONFLICT_REPLACE);
-        }
+        cv.put("path", file.getAbsolutePath());
+        cv.put("url", url);
+        db.insertWithOnConflict("monocles.cids", null, cv, SQLiteDatabase.CONFLICT_REPLACE);
     }
 
     public static class FilePath {

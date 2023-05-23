@@ -26,6 +26,7 @@ import android.preference.PreferenceManager;
 import android.preference.PreferenceScreen;
 import android.util.Log;
 import static eu.siacs.conversations.utils.CameraUtils.showCameraChooser;
+import de.monocles.chat.DownloadDefaultStickers;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AlertDialog;
 import androidx.core.content.ContextCompat;
@@ -109,7 +110,9 @@ public class SettingsActivity extends XmppActivity implements OnSharedPreference
     public static final String RESEND_DELAY = "resend_delay";
 
     public static final int REQUEST_CREATE_BACKUP = 0xbf8701;
-    public static final int REQUEST_IMPORT_SETTINGS = 0xbf8702;
+    public static final int REQUEST_DOWNLOAD_STICKERS = 0xbf8702;
+
+    // public static final int REQUEST_IMPORT_SETTINGS = 0xbf8702; Remove settings import for now
     Preference multiAccountPreference;
     Preference autoMessageExpiryPreference;
     Preference autoFileExpiryPreference;
@@ -401,17 +404,6 @@ public class SettingsActivity extends XmppActivity implements OnSharedPreference
             });
         }
 
-        final Preference importSettingsPreference = mSettingsFragment.findPreference("import_settings");
-        if (importSettingsPreference != null) {
-            importSettingsPreference.setSummary(getString(R.string.pref_import_settings_summary));
-            importSettingsPreference.setOnPreferenceClickListener(preference -> {
-                if (hasStoragePermission(REQUEST_IMPORT_SETTINGS)) {
-                    importSettings();
-                }
-                return true;
-            });
-        }
-
         final Preference prefereXmppAvatarPreference = mSettingsFragment.findPreference(PREFER_XMPP_AVATAR);
         if (prefereXmppAvatarPreference != null) {
             prefereXmppAvatarPreference.setOnPreferenceClickListener(preference -> {
@@ -550,6 +542,17 @@ public class SettingsActivity extends XmppActivity implements OnSharedPreference
                 PreferenceCategory expertMedia = (PreferenceCategory) mSettingsFragment.findPreference("expert_media");
                 expertMedia.removePreference(stickerDir);
             }
+        }
+
+        final Preference downloadDefaultStickers = mSettingsFragment.findPreference("download_default_stickers");
+        if (downloadDefaultStickers != null) {
+            downloadDefaultStickers.setOnPreferenceClickListener(
+                    preference -> {
+                        if (hasStoragePermission(REQUEST_DOWNLOAD_STICKERS)) {
+                            downloadStickers();
+                        }
+                        return true;
+                    });
         }
 
         final Preference clearBlockedMedia = mSettingsFragment.findPreference("clear_blocked_media");
@@ -762,8 +765,8 @@ public class SettingsActivity extends XmppActivity implements OnSharedPreference
                 if (requestCode == REQUEST_CREATE_BACKUP) {
                     createBackup();
                 }
-                if (requestCode == REQUEST_IMPORT_SETTINGS) {
-                    importSettings();
+                if (requestCode == REQUEST_DOWNLOAD_STICKERS) {
+                    downloadStickers();
                 }
             } else {
                 ToastCompat.makeText(
@@ -798,51 +801,10 @@ public class SettingsActivity extends XmppActivity implements OnSharedPreference
         builder.create().show();
     }
 
-    @SuppressWarnings({ "unchecked" })
-    private boolean importSettings() {
-        boolean success;
-        ObjectInputStream input = null;
-        try {
-            final File file = new File(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOCUMENTS) + File.separator + APP_DIRECTORY + File.separator + "Database" + File.separator, "settings.dat");
-            input = new ObjectInputStream(new FileInputStream(file));
-            SharedPreferences.Editor prefEdit = PreferenceManager.getDefaultSharedPreferences(getApplicationContext()).edit();
-            prefEdit.clear();
-            Map<String, ?> entries = (Map<String, ?>) input.readObject();
-            for (Map.Entry<String, ?> entry : entries.entrySet()) {
-                Object value = entry.getValue();
-                String key = entry.getKey();
-
-                if (value instanceof Boolean)
-                    prefEdit.putBoolean(key, ((Boolean) value).booleanValue());
-                else if (value instanceof Float)
-                    prefEdit.putFloat(key, ((Float) value).floatValue());
-                else if (value instanceof Integer)
-                    prefEdit.putInt(key, ((Integer) value).intValue());
-                else if (value instanceof Long)
-                    prefEdit.putLong(key, ((Long) value).longValue());
-                else if (value instanceof String)
-                    prefEdit.putString(key, ((String) value));
-            }
-            prefEdit.commit();
-            success = true;
-        } catch (Exception e) {
-            success = false;
-            e.printStackTrace();
-        } finally {
-            try {
-                if (input != null) {
-                    input.close();
-                }
-            } catch (IOException ex) {
-                ex.printStackTrace();
-            }
-        }
-        if (success) {
-            ToastCompat.makeText(this, R.string.success_import_settings, ToastCompat.LENGTH_SHORT).show();
-        } else {
-            ToastCompat.makeText(this, R.string.error_import_settings, ToastCompat.LENGTH_SHORT).show();
-        }
-        return success;
+    private void downloadStickers() {
+        Intent intent = new Intent(this, DownloadDefaultStickers.class);
+        ContextCompat.startForegroundService(this, intent);
+        displayToast("Sticker download started");
     }
 
     private void displayToast(final String msg) {

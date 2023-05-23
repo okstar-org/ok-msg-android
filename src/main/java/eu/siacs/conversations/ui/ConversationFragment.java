@@ -3652,6 +3652,7 @@ public class ConversationFragment extends XmppFragment
         return connection == null ? -1 : connection.getFeatures().getMaxHttpUploadSize();
     }
 
+    /*      TODO: temporary disabled text format feature
     private void updateTextFormat(final boolean me) {
         KeyboardUtils.addKeyboardToggleListener(activity, isVisible -> {
             Log.d(Config.LOGTAG, "keyboard visible: " + isVisible);
@@ -3662,7 +3663,7 @@ public class ConversationFragment extends XmppFragment
             }
         });
     }
-
+*/
     private void updateEditablity() {
         boolean canWrite = this.conversation.getMode() == Conversation.MODE_SINGLE || this.conversation.getMucOptions().participating() || this.conversation.getNextCounterpart() != null;
         this.binding.textinput.setFocusable(canWrite);
@@ -3712,7 +3713,7 @@ public class ConversationFragment extends XmppFragment
         binding.threadIdenticonLayout.setLayoutParams(params);
         updateSnackBar(conversation);
         updateChatMsgHint();
-        updateTextFormat(canSendMeCommand());
+      //  updateTextFormat(canSendMeCommand());     // TODO: temorary disabled text format feature
     }
 
     protected void updateStatusMessages() {

@@ -324,6 +324,9 @@
             android:title="Change Stickers Location"
             android:key="sticker_directory" />
         <Preference
+            android:title="Update Default Stickers"
+            android:key="download_default_stickers" />
+        <Preference
             android:title="Clear Blocked Media"
             android:key="clear_blocked_media" />
     </PreferenceScreen>
@@ -493,12 +496,6 @@
                 android:key="export_plain_text_logs"
                 android:summary="@string/pref_export_plain_text_logs_summary"
                 android:title="@string/pref_export_plain_text_logs" />
-        </PreferenceCategory>
-        <PreferenceCategory android:title="@string/pref_import_settings">
-            <Preference
-                android:key="import_settings"
-                android:summary="@string/pref_import_settings_summary"
-                android:title="@string/pref_import_settings" />
         </PreferenceCategory>
     </PreferenceScreen>
     <!--Expert-->
