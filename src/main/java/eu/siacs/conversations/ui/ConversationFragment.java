@@ -1432,6 +1432,10 @@ public class ConversationFragment extends XmppFragment
             conversation.setUserSelectedThread(true);
         });
 
+        messageListAdapter.setOnMessageBoxSwiped(message -> {
+            setupReply(message);
+        });
+
         binding.threadIdenticonLayout.setOnClickListener(v -> {
             boolean wasLocked = conversation.getLockThread();
             conversation.setLockThread(false);
@@ -1458,10 +1462,6 @@ public class ConversationFragment extends XmppFragment
             return true;
         });
 
-        messageListAdapter.setOnMessageBoxSwiped(message -> {
-            String user = null;
-            quoteMessage(message, user);
-        });
         return binding.getRoot();
     }
 
