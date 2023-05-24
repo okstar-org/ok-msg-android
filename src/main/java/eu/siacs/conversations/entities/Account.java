@@ -6,6 +6,8 @@ import android.os.SystemClock;
 import android.util.Log;
 import android.net.Uri;
 
+import androidx.core.graphics.ColorUtils;
+
 import com.google.common.base.Strings;
 import com.google.common.collect.ImmutableList;
 
@@ -121,6 +123,8 @@ public class Account extends AbstractEntity implements AvatarService.Avatarable 
     private String pinnedChannelBinding;
     private String fastMechanism;
     private String fastToken;
+    private Integer color = null;
+
 
     public Account(final Jid jid, final String password) {
         this(
@@ -246,6 +250,23 @@ public class Account extends AbstractEntity implements AvatarService.Avatarable 
 
     public boolean isPgpDecryptionServiceConnected() {
         return pgpDecryptionService != null && pgpDecryptionService.isConnected();
+    }
+
+    public void setColor(Integer color) {
+        this.color = color;
+    }
+
+    public int getColor(boolean dark) {
+        if (color != null) return color.intValue();
+
+        return ColorUtils.setAlphaComponent(
+                getAvatarBackgroundColor(),
+                dark ? 20 : 15
+        );
+    }
+
+    public Integer getColorToSave() {
+        return color;
     }
 
     public boolean setShowErrorNotification(boolean newValue) {

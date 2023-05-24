@@ -12,6 +12,7 @@ import android.content.Intent;
 import android.content.IntentSender;
 import android.content.SharedPreferences;
 import android.graphics.Bitmap;
+import android.graphics.drawable.ColorDrawable;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
@@ -43,6 +44,8 @@ import androidx.databinding.DataBindingUtil;
 
 import com.google.android.material.textfield.TextInputLayout;
 import com.google.common.base.CharMatcher;
+
+import com.rarepebble.colorpicker.ColorPickerView;
 
 import org.openintents.openpgp.util.OpenPgpUtils;
 
@@ -127,6 +130,12 @@ public class EditAccountActivity extends OmemoActivity implements OnAccountUpdat
             final String password = binding.accountPassword.getText().toString();
             final boolean wasDisabled = mAccount != null && mAccount.getStatus() == Account.State.DISABLED;
             final boolean accountInfoEdited = accountInfoEdited();
+
+            ColorDrawable previewColor = (ColorDrawable) binding.colorPreview.getBackground();
+            if (previewColor != null && previewColor.getColor() != mAccount.getColor(isDarkTheme())) {
+                mAccount.setColor(previewColor.getColor());
+            }
+
             if (mInitMode && mAccount != null) {
                 mAccount.setOption(Account.OPTION_DISABLED, false);
             }
@@ -632,9 +641,11 @@ public class EditAccountActivity extends OmemoActivity implements OnAccountUpdat
         if (this.mAccount == null) {
             return false;
         }
+        ColorDrawable previewColor = (ColorDrawable) binding.colorPreview.getBackground();
         return jidEdited() ||
                 !this.mAccount.getPassword().equals(binding.accountPassword.getText().toString()) ||
                 !this.mAccount.getHostname().equals(this.binding.hostname.getText().toString()) ||
+                this.mAccount.getColor(isDarkTheme()) != (previewColor == null ? 0 : previewColor.getColor()) ||
                 !String.valueOf(this.mAccount.getPort()).equals(this.binding.port.getText().toString());
     }
 
@@ -680,6 +691,9 @@ public class EditAccountActivity extends OmemoActivity implements OnAccountUpdat
         this.binding.saveButton.setOnClickListener(this.mSaveButtonClickListener);
         this.binding.cancelButton.setOnClickListener(this.mCancelButtonClickListener);
         this.binding.actionEditYourName.setOnClickListener(this::onEditYourNameClicked);
+        binding.accountColorBox.setOnClickListener((v) -> {
+            showColorDialog();
+        });
         this.binding.actionEditYourStatus.setOnClickListener(this::onEditYourStatusClicked);
         if (savedInstanceState != null && savedInstanceState.getBoolean("showMoreTable")) {
             changeMoreTableVisibility(true);
@@ -1207,6 +1221,26 @@ public class EditAccountActivity extends OmemoActivity implements OnAccountUpdat
         }
     }
 
+    void showColorDialog() {
+        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        final ColorPickerView picker = new ColorPickerView(this);
+
+        picker.setColor(mAccount.getColor(isDarkTheme()));
+        picker.showAlpha(true);
+        picker.showHex(true);
+        picker.showPreview(true);
+        builder
+                .setTitle(null)
+                .setView(picker)
+                .setPositiveButton(R.string.ok, (dialog, which) -> {
+                    final int color = picker.getColor();
+                    binding.colorPreview.setBackgroundColor(color);
+                    updateSaveButton();
+                })
+                .setNegativeButton(R.string.cancel, (dialog, which) -> {});
+        builder.show();
+    }
+
     private void updateAccountInformation(boolean init) {
         if (init) {
             this.binding.accountJid.getEditableText().clear();
@@ -1245,6 +1279,14 @@ public class EditAccountActivity extends OmemoActivity implements OnAccountUpdat
         final String presenceStatus = getPresenceStatus(mAccount.getPresenceStatus());
         final String presenceStatusMessage = mAccount.getPresenceStatusMessage();
         updatePresenceStatus(presenceStatus, presenceStatusMessage);
+
+        if (xmppConnectionService != null && xmppConnectionService.getAccounts().size() > 1) {
+            binding.accountColorBox.setVisibility(View.VISIBLE);
+            binding.colorPreview.setBackgroundColor(mAccount.getColor(isDarkTheme()));
+        } else {
+            binding.accountColorBox.setVisibility(View.GONE);
+        }
+
         final boolean togglePassword = mAccount.isOptionSet(Account.OPTION_MAGIC_CREATE) || !mAccount.isOptionSet(Account.OPTION_LOGGED_IN_SUCCESSFULLY);
         final boolean editPassword = !mAccount.isOptionSet(Account.OPTION_MAGIC_CREATE) || (!mAccount.isOptionSet(Account.OPTION_LOGGED_IN_SUCCESSFULLY) && QuickConversationsService.isConversations()) || mAccount.getLastErrorStatus() == Account.State.UNAUTHORIZED;
         this.binding.accountPasswordLayout.setPasswordVisibilityToggleEnabled(togglePassword);
