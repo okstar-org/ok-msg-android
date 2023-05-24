@@ -98,7 +98,10 @@ public class HttpDownloadConnection implements Transferable {
                     && message.getEncryption() != Message.ENCRYPTION_AXOLOTL) {
                 this.message.setEncryption(Message.ENCRYPTION_NONE);
             }
-            final String ext = extension.getExtension();
+            String ext = extension.getExtension();
+            if (ext == null && fileParams.getMediaType() != null) {
+                ext = MimeUtils.guessExtensionFromMimeType(fileParams.getMediaType());
+            }
             if (ext != null) {
                 if (message.getStatus() == Message.STATUS_RECEIVED) {
                     message.setRelativeFilePath(String.format("%s.%s", fileDateFormat.format(new Date(message.getTimeSent())) + "_" + message.getUuid().substring(0, 4), ext));
