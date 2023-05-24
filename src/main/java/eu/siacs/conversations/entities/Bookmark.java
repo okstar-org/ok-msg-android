@@ -218,7 +218,7 @@ public class Bookmark extends Element implements ListItem {
     @Override
     public List<Tag> getTags(Context context) {
         ArrayList<Tag> tags = new ArrayList<>();
-        tags.add(new Tag("Room", UIHelper.getColorForName("Channel",true), 0, account, true));
+        tags.add(new Tag("group", UIHelper.getColorForName("Channel",true), 0, account, true));
         tags.addAll(getGroupTags());
         return tags;
     }
