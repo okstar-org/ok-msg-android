@@ -3,6 +3,8 @@ package eu.siacs.conversations.ui;
 import static eu.siacs.conversations.utils.PermissionUtils.allGranted;
 import static eu.siacs.conversations.utils.PermissionUtils.readGranted;
 
+import android.app.KeyguardManager;
+import android.content.Context;
 import android.app.Activity;
 import android.app.PendingIntent;
 import android.content.ActivityNotFoundException;
@@ -98,6 +100,7 @@ public class EditAccountActivity extends OmemoActivity implements OnAccountUpdat
     private static final int REQUEST_DATA_SAVER = 0xf244;
     private static final int REQUEST_CHANGE_STATUS = 0xee11;
     private static final int REQUEST_ORBOT = 0xff22;
+    private static final int REQUEST_UNLOCK = 0xff23;
     private static final int REQUEST_IMPORT_BACKUP = 0x63fb;
     private AlertDialog mCaptchaDialog = null;
     private final AtomicBoolean mPendingReconnect = new AtomicBoolean(false);
@@ -315,6 +318,7 @@ public class EditAccountActivity extends OmemoActivity implements OnAccountUpdat
     private boolean mUseTor;
     private boolean mUseI2P;
     private ActivityEditAccountBinding binding;
+    private String newPassword = null;
 
     public void refreshUiReal() {
         invalidateOptionsMenu();
@@ -504,6 +508,13 @@ public class EditAccountActivity extends OmemoActivity implements OnAccountUpdat
                 generateSignature(data, template);
             } else {
                 Log.d(Config.LOGTAG, "pgp result not ok");
+            }
+        }
+        if (requestCode == REQUEST_UNLOCK) {
+            if (resultCode == RESULT_OK) {
+                openChangePassword(true);
+            } else {
+                this.newPassword = null;
             }
         }
     }
@@ -1053,11 +1064,24 @@ public class EditAccountActivity extends OmemoActivity implements OnAccountUpdat
     }
 
     private void gotoChangePassword(String newPassword) {
+        this.newPassword = newPassword;
+        KeyguardManager keyguardManager = (KeyguardManager) this.getSystemService(Context.KEYGUARD_SERVICE);
+        Intent credentialsIntent = keyguardManager.createConfirmDeviceCredentialIntent("Unlock required", "Please unlock in order to change your password");
+        if (credentialsIntent == null) {
+            openChangePassword(false);
+        } else {
+            startActivityForResult(credentialsIntent, REQUEST_UNLOCK);
+        }
+    }
+
+    private void openChangePassword(boolean didUnlock) {
         final Intent changePasswordIntent = new Intent(this, ChangePasswordActivity.class);
         changePasswordIntent.putExtra(EXTRA_ACCOUNT, mAccount.getJid().toEscapedString());
+        changePasswordIntent.putExtra("did_unlock", didUnlock);
         if (newPassword != null) {
             changePasswordIntent.putExtra("password", newPassword);
         }
+        this.newPassword = null;
         startActivity(changePasswordIntent);
         overridePendingTransition(R.animator.fade_in, R.animator.fade_out);
     }
