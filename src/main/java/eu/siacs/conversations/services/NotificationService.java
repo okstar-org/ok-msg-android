@@ -87,6 +87,8 @@ import eu.siacs.conversations.utils.UIHelper;
 import eu.siacs.conversations.xmpp.XmppConnection;
 import eu.siacs.conversations.xmpp.jingle.AbstractJingleConnection;
 import eu.siacs.conversations.xmpp.jingle.Media;
+import eu.siacs.conversations.entities.MucOptions;
+
 
 public class NotificationService {
 
@@ -1778,6 +1780,11 @@ public class NotificationService {
     private boolean wasHighlightedOrPrivate(final Message message) {
         if (message.getConversation() instanceof Conversation) {
             Conversation conversation = (Conversation) message.getConversation();
+            final MucOptions.User sender = conversation.getMucOptions().findUserByFullJid(message.getCounterpart());
+            if (sender != null && sender.getAffiliation().ranks(MucOptions.Affiliation.MEMBER) && message.isAttention()) {
+                return true;
+            }
+
             final String nick = conversation.getMucOptions().getActualNick();
             final Pattern highlight = generateNickHighlightPattern(nick);
             if (message.getBody() == null || nick == null) {
