@@ -63,6 +63,15 @@
     <implements rdf:resource="https://xmpp.org/rfcs/rfc7590.html"/>
 
 
+
+	<implements>
+		<xmpp:SupportedXep>
+			<xmpp:xep rdf:resource="https://xmpp.org/extensions/xep-0224.html"/>
+			<xmpp:status>partial</xmpp:status>
+			<xmpp:version>1.0</xmpp:version>
+			<xmpp:note xml:lang='en'>For MUC members</xmpp:note>
+		</xmpp:SupportedXep>
+	</implements>
 	<implements>
 		<xmpp:SupportedXep>
 			<xmpp:xep rdf:resource="https://xmpp.org/extensions/xep-0428.html"/>
