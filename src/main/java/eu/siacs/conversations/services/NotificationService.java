@@ -88,6 +88,7 @@ import eu.siacs.conversations.xmpp.XmppConnection;
 import eu.siacs.conversations.xmpp.jingle.AbstractJingleConnection;
 import eu.siacs.conversations.xmpp.jingle.Media;
 import eu.siacs.conversations.entities.MucOptions;
+import eu.siacs.conversations.xmpp.Jid;
 
 
 public class NotificationService {
@@ -1520,6 +1521,14 @@ public class NotificationService {
             builder.setName(UIHelper.getColoredUsername(mXmppConnectionService, message));
         }
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.P) {
+            final Jid jid = contact == null ? message.getCounterpart() : contact.getJid();
+            builder.setKey(jid.toString());
+            for (Conversation c : mXmppConnectionService.getConversations()) {
+                if (c.getAccount().equals(message.getConversation().getAccount()) && c.getJid().asBareJid().equals(jid)) {
+                    builder.setImportant(c.getBooleanAttribute(Conversation.ATTRIBUTE_PINNED_ON_TOP, false));
+                    break;
+                }
+            }
             builder.setIcon(IconCompat.createWithBitmap(mXmppConnectionService.getAvatarService().get(message, AvatarService.getSystemUiAvatarSize(mXmppConnectionService), false)));
         }
         return builder.build();
