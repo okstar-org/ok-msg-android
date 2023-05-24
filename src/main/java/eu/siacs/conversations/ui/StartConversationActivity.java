@@ -591,6 +591,9 @@ public class StartConversationActivity extends XmppActivity implements XmppConne
                     }
                     switchToConversationDoNotAppend(contact, invite == null ? null : invite.getBody());
                 }
+                try {
+                    dialog.dismiss();
+                } catch (final IllegalStateException e) { }
             });
 
             return true;
