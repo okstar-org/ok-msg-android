@@ -1356,6 +1356,7 @@ public class ConversationFragment extends XmppFragment
         }
 
         messageListAdapter.setOnMessageBoxClicked(message -> {
+            if (message.isPrivateMessage()) privateMessageWith(message.getCounterpart());
             setThread(message.getThread());
             conversation.setUserSelectedThread(true);
         });
@@ -1473,6 +1474,7 @@ public class ConversationFragment extends XmppFragment
     }
 
     private void quoteMessage(Message message, @Nullable String user) {
+        if (message.isPrivateMessage()) privateMessageWith(message.getCounterpart());
         setThread(message.getThread());
         conversation.setUserSelectedThread(true);
         if (message.isGeoUri()) {
@@ -4264,6 +4266,7 @@ public class ConversationFragment extends XmppFragment
 
     @Override
     public void onContactPictureClicked(Message message) {
+        if (message.isPrivateMessage()) privateMessageWith(message.getCounterpart());
         setThread(message.getThread());
         conversation.setUserSelectedThread(true);
 
