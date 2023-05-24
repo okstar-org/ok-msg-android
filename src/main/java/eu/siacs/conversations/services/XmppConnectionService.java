@@ -40,6 +40,7 @@ import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
 import android.database.ContentObserver;
 import android.graphics.Bitmap;
+import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.Drawable;
 import android.media.AudioManager;
 import android.net.ConnectivityManager;
@@ -1497,15 +1498,23 @@ public class XmppConnectionService extends Service {
         Resolver.init(this);
         this.mRandom = new SecureRandom();
         updateMemorizingTrustmanager();
-        final int DEFAULT_CACHE_SIZE_PROPORTION = 10;
+        final int maxMemory = (int) (Runtime.getRuntime().maxMemory() / 1024);
+        final int cacheSize = maxMemory / 10;
         ActivityManager manager = (ActivityManager) this.getSystemService(Context.ACTIVITY_SERVICE);
-        int memoryClass = manager.getMemoryClass();
-        int memoryClassInKilobytes = memoryClass * 1024;
-        int cacheSize = memoryClassInKilobytes / DEFAULT_CACHE_SIZE_PROPORTION;
         this.mBitmapCache = new LruCache<String, Bitmap>(cacheSize) {
             @Override
             protected int sizeOf(final String key, final Bitmap bitmap) {
                 return bitmap.getByteCount() / 1024;
+            }
+        };
+        this.mDrawableCache = new LruCache<String, Drawable>(cacheSize) {
+            @Override
+            protected int sizeOf(final String key, final Drawable drawable) {
+                if (drawable instanceof BitmapDrawable) {
+                    return ((BitmapDrawable) drawable).getBitmap().getByteCount() / 1024;
+                } else {
+                    return drawable.getIntrinsicWidth() * drawable.getIntrinsicHeight() * 40 / 1024;
+                }
             }
         };
         if (mLastActivity == 0) {
