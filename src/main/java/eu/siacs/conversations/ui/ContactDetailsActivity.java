@@ -32,6 +32,7 @@ import android.widget.ImageButton;
 import android.widget.TextView;
 import android.widget.ArrayAdapter;
 import android.widget.Toast;
+import android.view.inputmethod.InputMethodManager;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.ActionBar;
@@ -268,7 +269,6 @@ public class ContactDetailsActivity extends OmemoActivity implements OnAccountUp
 
     @Override
     protected void refreshUiReal() {
-        invalidateOptionsMenu();
         populateView();
     }
 
@@ -400,6 +400,10 @@ public class ContactDetailsActivity extends OmemoActivity implements OnAccountUp
                     });
                     text.setText(contact.getServerName());
                     text.requestFocus();
+                    InputMethodManager imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
+                    if (imm != null) {
+                        imm.showSoftInput(text, InputMethodManager.SHOW_IMPLICIT);
+                    }
                     binding.tags.setVisibility(View.GONE);
                     binding.editTags.clearSync();
                     for (final ListItem.Tag group : contact.getGroupTags()) {
