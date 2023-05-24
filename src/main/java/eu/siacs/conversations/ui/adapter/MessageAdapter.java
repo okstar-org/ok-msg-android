@@ -88,6 +88,8 @@ import java.io.IOException;
 import java.net.URISyntaxException;
 import java.security.NoSuchAlgorithmException;
 
+import de.monocles.chat.WebxdcUpdate;
+
 import eu.siacs.conversations.entities.Contact;
 import eu.siacs.conversations.entities.Message;
 import eu.siacs.conversations.entities.Roster;
@@ -837,6 +839,26 @@ public class MessageAdapter extends ArrayAdapter<Message> {
         viewHolder.download_button.setOnClickListener(v -> ConversationFragment.downloadFile(activity, message));
     }
 
+
+    private void displayWebxdcMessage(ViewHolder viewHolder, final Message message, final boolean darkBackground, final int type) {
+        displayTextMessage(viewHolder, message, darkBackground, type);
+        viewHolder.image.setVisibility(View.GONE);
+        viewHolder.audioPlayer.setVisibility(View.GONE);
+        viewHolder.download_button.setVisibility(View.VISIBLE);
+        viewHolder.download_button.setText("Open ChatApp");
+        viewHolder.download_button.setOnClickListener(v -> {
+            Conversation conversation = (Conversation) message.getConversation();
+            if (!conversation.switchToSession("webxdc\0" + message.getUuid())) {
+                conversation.startWebxdc(message.getFileParams().getCids().get(0), message, activity.xmppConnectionService);
+            }
+        });
+        WebxdcUpdate lastUpdate = activity.xmppConnectionService.findLastWebxdcUpdate(message);
+        if (lastUpdate != null && lastUpdate.getSummary() != null) {
+            viewHolder.messageBody.setVisibility(View.VISIBLE);
+            viewHolder.messageBody.setText(lastUpdate.getSummary());
+        }
+    }
+
     private void displayOpenableMessage(ViewHolder viewHolder, final Message message, final boolean darkBackground, final int type) {
         displayTextMessage(viewHolder, message, darkBackground, type);
         viewHolder.download_button.setVisibility(View.VISIBLE);
@@ -1472,6 +1494,8 @@ public class MessageAdapter extends ArrayAdapter<Message> {
                 displayMediaPreviewMessage(viewHolder, message, darkBackground, type);
             } else if (message.getFileParams().runtime > 0 && (message.getFileParams().width == 0 && message.getFileParams().height == 0)) {
                 displayAudioMessage(viewHolder, message, darkBackground, type);
+            } else if ("application/xdc+zip".equals(message.getFileParams().getMediaType()) && message.getConversation() instanceof Conversation) {
+                displayWebxdcMessage(viewHolder, message, darkBackground, type);
             } else {
                 displayOpenableMessage(viewHolder, message, darkBackground, type);
             }

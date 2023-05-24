@@ -828,6 +828,7 @@ public class ConversationFragment extends XmppFragment
         if (conversation == null) {
             return;
         }
+        if (type == "application/xdc+zip") newSubThread();
         final Toast prepareFileToast = ToastCompat.makeText(getActivity(), getText(R.string.preparing_file), ToastCompat.LENGTH_SHORT);
         prepareFileToast.show();
         activity.delegateUriPermissionsToService(uri);
@@ -2556,6 +2557,14 @@ public class ConversationFragment extends XmppFragment
         }
     }
 
+    private void newSubThread() {
+        Element oldThread = conversation.getThread();
+        Element thread = new Element("thread", "jabber:client");
+        thread.setContent(UUID.randomUUID().toString());
+        if (oldThread != null) thread.setAttribute("parent", oldThread.getContent());
+        setThread(thread);
+    }
+
     private void newThread() {
         Element thread = new Element("thread", "jabber:client");
         thread.setContent(UUID.randomUUID().toString());
@@ -3554,6 +3563,7 @@ public class ConversationFragment extends XmppFragment
                 updateEditablity();
             }
         }
+        conversation.refreshSessions();
     }
 
     protected void messageSent() {
