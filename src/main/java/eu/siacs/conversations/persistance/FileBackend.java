@@ -753,10 +753,30 @@ public class FileBackend {
         try {
             setupRelativeFilePath(message, uri, extension);
             copyFileToPrivateStorage(mXmppConnectionService.getFileBackend().getFile(message), uri);
+            final String name = getDisplayNameFromUri(uri);
+            if (name != null) {
+                message.getFileParams().setName(name);
+            }
         } catch (final XmppConnectionService.BlockedMediaException e) {
             message.setRelativeFilePath(null);
             message.setDeleted(true);
         }
+    }
+
+    private String getDisplayNameFromUri(final Uri uri) {
+        final String[] projection = {OpenableColumns.DISPLAY_NAME};
+        String filename = null;
+        try (final Cursor cursor =
+                     mXmppConnectionService
+                             .getContentResolver()
+                             .query(uri, projection, null, null, null)) {
+            if (cursor != null && cursor.moveToFirst()) {
+                filename = cursor.getString(0);
+            }
+        } catch (final Exception e) {
+            filename = null;
+        }
+        return filename;
     }
 
     public static void moveDirectory(XmppConnectionService mXmppConnectionService, File sourceLocation, File targetLocation) throws Exception {
