@@ -622,8 +622,8 @@ public class Conversation extends AbstractEntity implements Blockable, Comparabl
                 if (mcp == null && counterpart != null) {
                     continue;
                 }
-                if (mcp.equals(counterpart) || mcp.asBareJid().equals(counterpart)) {
-                    final boolean idMatch = id.equals(message.getRemoteMsgId()) || message.remoteMsgIdMatchInEdit(id) || (getMode() == MODE_MULTI && id.equals(message.getServerMsgId()));
+                if (counterpart == null || mcp.equals(counterpart) || mcp.asBareJid().equals(counterpart)) {
+                    final boolean idMatch = id.equals(message.getUuid()) || id.equals(message.getRemoteMsgId()) || message.remoteMsgIdMatchInEdit(id) || (getMode() == MODE_MULTI && id.equals(message.getServerMsgId()));
                     if (idMatch) return message;
                 }
             }
