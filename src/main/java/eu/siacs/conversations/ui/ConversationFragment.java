@@ -1405,7 +1405,7 @@ public class ConversationFragment extends XmppFragment
         messageListAdapter.setOnContactPictureClicked(null);
         messageListAdapter.setOnContactPictureLongClicked(null);
         messageListAdapter.setOnInlineImageLongClicked(null);
-        if (conversation != null) conversation.setupViewPager(null, null);
+        if (conversation != null) conversation.setupViewPager(null, null, false, null);
     }
 
     @Override
@@ -3124,12 +3124,11 @@ public class ConversationFragment extends XmppFragment
         activity.xmppConnectionService.getNotificationService().setOpenConversation(this.conversation);
 
         if (commandAdapter != null && conversation != originalConversation) {
-            originalConversation.setupViewPager(null, null);
-            conversation.setupViewPager(binding.conversationViewPager, binding.tabLayout);
+            conversation.setupViewPager(binding.conversationViewPager, binding.tabLayout, activity.xmppConnectionService.isOnboarding(), originalConversation);
             refreshCommands(false);
         }
         if (commandAdapter == null && conversation != null) {
-            conversation.setupViewPager(binding.conversationViewPager, binding.tabLayout);
+            conversation.setupViewPager(binding.conversationViewPager, binding.tabLayout, activity.xmppConnectionService.isOnboarding(), null);
             commandAdapter = new CommandAdapter((XmppActivity) getActivity());
             binding.commandsView.setAdapter(commandAdapter);
             binding.commandsView.setOnItemClickListener((parent, view, position, id) -> {

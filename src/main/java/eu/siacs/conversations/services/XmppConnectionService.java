@@ -5878,6 +5878,10 @@ public class XmppConnectionService extends Service {
         return this.mDrawableCache;
     }
 
+    public boolean isOnboarding() {
+        return getAccounts().size() == 1 && getAccounts().get(0).getJid().getDomain().equals(Config.ONBOARDING_DOMAIN);
+    }
+
     public interface OnMamPreferencesFetched {
         void onPreferencesFetched(Element prefs);
 
