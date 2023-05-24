@@ -1270,4 +1270,5 @@
     <string name="pref_enable_persistent_rooms_title">Persistente Chaträume</string>
     <string name="note_to_self">Notiz an mich</string>
     <string name="i_am_snikket_user">Ich nutze Snikket</string>
+    <string name="add_to_home_screen">Zum Startbildschirm hinzufügen</string>
 </resources>

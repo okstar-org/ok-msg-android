@@ -77,6 +77,8 @@ import java.net.URISyntaxException;
 import android.os.Environment;
 import android.os.storage.StorageManager;
 import androidx.documentfile.provider.DocumentFile;
+import androidx.core.content.pm.ShortcutInfoCompat;
+import androidx.core.content.pm.ShortcutManagerCompat;
 
 import androidx.activity.OnBackPressedCallback;
 import androidx.annotation.IdRes;
@@ -1916,6 +1918,9 @@ public class ConversationFragment extends XmppFragment
             case R.id.action_toggle_pinned:
                 togglePinned();
                 break;
+            case R.id.action_add_shortcut:
+                addShortcut();
+                break;
             case R.id.action_mute:
                 muteConversationDialog(conversation);
                 break;
@@ -1983,6 +1988,11 @@ public class ConversationFragment extends XmppFragment
                 });
             });
         }
+    }
+
+    private void addShortcut() {
+        ShortcutInfoCompat info = activity.xmppConnectionService.getShortcutService().getShortcutInfoCompat(conversation.getContact());
+        ShortcutManagerCompat.requestPinShortcut(activity, info, null);
     }
 
     private void togglePinned() {

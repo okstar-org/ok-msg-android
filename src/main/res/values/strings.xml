@@ -1282,5 +1282,5 @@
     <string name="block_avatar">Block avatar</string>
     <string name="block_media">Block media</string>
     <string name="new_contact">New contact</string>
-
+    <string name="add_to_home_screen">Add to home screen</string>
 </resources>
