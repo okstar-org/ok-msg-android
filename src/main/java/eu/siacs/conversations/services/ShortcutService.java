@@ -11,6 +11,7 @@ import android.os.Build;
 import android.util.Log;
 
 import androidx.annotation.NonNull;
+import androidx.annotation.RequiresApi;
 import androidx.core.content.pm.ShortcutInfoCompat;
 import androidx.core.graphics.drawable.IconCompat;
 
@@ -91,6 +92,7 @@ public class ShortcutService {
         }
     }
 
+    @RequiresApi(api = Build.VERSION_CODES.M)
     public ShortcutInfoCompat getShortcutInfoCompat(Contact contact) {
         return new ShortcutInfoCompat.Builder(xmppConnectionService, getShortcutId(contact))
                 .setShortLabel(contact.getDisplayName())

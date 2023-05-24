@@ -1479,7 +1479,10 @@ public class NotificationService {
             mBuilder.setDeleteIntent(createDeleteIntent(conversation));
             mBuilder.setContentIntent(createContentIntent(conversation));
 
-            ShortcutInfoCompat info = mXmppConnectionService.getShortcutService().getShortcutInfoCompat(conversation.getContact());
+            ShortcutInfoCompat info = null;
+            if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.M) {
+                info = mXmppConnectionService.getShortcutService().getShortcutInfoCompat(conversation.getContact());
+            }
             mBuilder.setShortcutInfo(info);
             if (Build.VERSION.SDK_INT >= 30) {
                 mXmppConnectionService.getSystemService(ShortcutManager.class).pushDynamicShortcut(info.toShortcutInfo());
