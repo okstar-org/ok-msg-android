@@ -299,7 +299,9 @@ public class WebxdcPage implements ConversationPage {
                         .setIntent(intent);
                 Drawable icon = getIcon();
                 if (icon != null && icon instanceof BitmapDrawable) {
-                    builder = builder.setIcon(IconCompat.createFromIcon(Icon.createWithBitmap(((BitmapDrawable) icon).getBitmap())));
+                    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+                        builder = builder.setIcon(IconCompat.createFromIcon(Icon.createWithBitmap(((BitmapDrawable) icon).getBitmap())));
+                    }
                 }
                 ShortcutManagerCompat.requestPinShortcut(xmppConnectionService, builder.build(), null);
             } else {
