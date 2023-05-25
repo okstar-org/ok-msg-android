@@ -91,6 +91,10 @@ public class Contact implements ListItem, Blockable {
     private String mLastPresence = null;
     private RtpCapability.Capability rtpCapability;
 
+    public Contact(Contact other) {
+        this(null, other.systemName, other.serverName, other.presenceName, other.jid, other.subscription, other.photoUri, other.systemAccount, other.keys == null ? null : other.keys.toString(), other.getAvatar() == null ? null : other.getAvatar().sha1sum, other.mLastseen, other.mLastPresence, other.groups == null ? null : other.groups.toString(), other.rtpCapability);
+        setAccount(other.getAccount());
+    }
 
     public Contact(final String account, final String systemName, final String serverName, final String presenceName,
                    final Jid jid, final int subscription, final String photoUri,
