@@ -937,7 +937,7 @@ public class ConversationFragment extends XmppFragment
         final Message message;
         if (conversation.getCorrectingMessage() == null) {
             boolean attention = false;
-            if (body.matches("\\A@here\\s.*")) {
+            if (Pattern.compile("\\A@here\\s.*").matcher(body).find()) {
                 attention = true;
                 body = body.replaceFirst("\\A@here\\s+", "");
             }
@@ -1998,7 +1998,10 @@ public class ConversationFragment extends XmppFragment
     }
 
     private void addShortcut() {
-        ShortcutInfoCompat info = activity.xmppConnectionService.getShortcutService().getShortcutInfoCompat(conversation.getContact());
+        ShortcutInfoCompat info = null;
+        if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.M) {
+            info = activity.xmppConnectionService.getShortcutService().getShortcutInfoCompat(conversation.getContact());
+        }
         ShortcutManagerCompat.requestPinShortcut(activity, info, null);
     }
 
@@ -2760,7 +2763,7 @@ public class ConversationFragment extends XmppFragment
         } else {
             new File(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_PICTURES) + "/" + dir + "/User Pack").mkdirs();
             Uri uri;
-            if (Build.VERSION.SDK_INT >= 24) {
+            if (Build.VERSION.SDK_INT >= 29) {
                 Intent tmp = ((StorageManager) activity.getSystemService(Context.STORAGE_SERVICE)).getPrimaryStorageVolume().createOpenDocumentTreeIntent();
                 uri = tmp.getParcelableExtra("android.provider.extra.INITIAL_URI");
                 uri = Uri.parse(uri.toString().replace("/root/", "/document/") + "%3APictures%2F" + dir);
