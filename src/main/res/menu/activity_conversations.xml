@@ -48,10 +48,4 @@
         android:orderInCategory="900"
         android:title="@string/create_issue"
         app:showAsAction="never" />
-    <item
-        android:id="@+id/action_cleanup"
-        android:orderInCategory="15"
-        android:title="@string/cleanup_conversations"
-        android:visible="true"
-        app:showAsAction="never" />
 </menu>
