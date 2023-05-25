@@ -15,7 +15,6 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import androidx.annotation.NonNull;
-import androidx.core.graphics.ColorUtils;
 import androidx.core.content.ContextCompat;
 import androidx.databinding.DataBindingUtil;
 import androidx.recyclerview.widget.RecyclerView;
@@ -93,11 +92,12 @@ public class ConversationAdapter
             viewHolder.binding.account.setVisibility(View.GONE);
         }
 
-        if (activity.xmppConnectionService != null && activity.xmppConnectionService.getAccounts().size() > 1) {
-            viewHolder.binding.frame.setBackgroundColor(ColorUtils.setAlphaComponent(
-                    UIHelper.getColorForName(conversation.getAccount().getJid().asBareJid().toString()),
-                    activity.isDarkTheme() ? 20 : 10
-            ));
+        if (conversation == ConversationFragment.getConversation(activity)) {
+            viewHolder.binding.frame.setBackgroundColor(
+                    StyledAttributes.getColor(activity, R.attr.color_background_tertiary));
+        } else {
+            viewHolder.binding.frame.setBackgroundColor(
+                    StyledAttributes.getColor(activity, R.attr.color_background_secondary));
         }
 
         final Message message = conversation.getLatestMessage();
