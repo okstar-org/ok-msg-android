@@ -80,11 +80,13 @@
     <style name="Widget.Conversations.Button.Outline" parent="@style/Widget.MaterialComponents.Button.OutlinedButton">
         <item name="android:textSize">?TextSizeBody2</item>
         <item name="strokeColor">?attr/colorAccent</item>
+        <item name="cornerRadius">20dp</item>
         <item name="android:textColor">@color/button_state_color</item>
     </style>
 
     <style name="Widget.Conversations.Button" parent="@style/Widget.MaterialComponents.Button">
         <item name="android:textSize">?TextSizeBody2</item>
+        <item name="cornerRadius">20dp</item>
         <item name="android:textColor">@color/button_state_color</item>
     </style>
 
