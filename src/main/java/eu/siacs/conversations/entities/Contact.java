@@ -736,14 +736,16 @@ public class Contact implements ListItem, Blockable {
                 "de.monocles.chat",
                 "de.monocles.chat.ConnectionService"
         );
-        return new PhoneAccountHandle(componentName, phoneAccountLabel());
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+            return new PhoneAccountHandle(componentName, phoneAccountLabel());
+        }
     }
 
     // This Contact is a gateway to use for voice calls, register it with OS
     public void registerAsPhoneAccount(XmppConnectionService ctx) {
         if (Build.VERSION.SDK_INT < 23) return;
         if (Build.VERSION.SDK_INT >= 33) {
-            if (!ctx.getPackageManager().hasSystemFeature(PackageManager.FEATURE_TELECOM)) return;
+            if (!ctx.getPackageManager().hasSystemFeature(PackageManager.FEATURE_TELECOM) && !ctx.getPackageManager().hasSystemFeature(PackageManager.FEATURE_CONNECTION_SERVICE)) return;
         } else {
             if (!ctx.getPackageManager().hasSystemFeature(PackageManager.FEATURE_CONNECTION_SERVICE)) return;
         }
@@ -772,7 +774,7 @@ public class Contact implements ListItem, Blockable {
     public void unregisterAsPhoneAccount(Context ctx) {
         if (Build.VERSION.SDK_INT < 23) return;
         if (Build.VERSION.SDK_INT >= 33) {
-            if (!ctx.getPackageManager().hasSystemFeature(PackageManager.FEATURE_TELECOM)) return;
+            if (!ctx.getPackageManager().hasSystemFeature(PackageManager.FEATURE_TELECOM) && !ctx.getPackageManager().hasSystemFeature(PackageManager.FEATURE_CONNECTION_SERVICE)) return;
         } else {
             if (!ctx.getPackageManager().hasSystemFeature(PackageManager.FEATURE_CONNECTION_SERVICE)) return;
         }
