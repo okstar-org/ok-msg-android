@@ -2410,7 +2410,12 @@ public class FileBackend {
                             return cached;
                         }
                     } else if (parts[0].equals("image/thumbhash")) {
-                        ThumbHash.Image image = ThumbHash.thumbHashToRGBA(data);
+                        ThumbHash.Image image;
+                        try {
+                            image = ThumbHash.thumbHashToRGBA(data);
+                        } catch (final Exception e) {
+                            continue;
+                        }
                         int[] pixels = new int[image.width * image.height];
                         for (int i = 0; i < pixels.length; i++) {
                             pixels[i] = Color.argb(image.rgba[(i*4)+3] & 0xff, image.rgba[i*4] & 0xff, image.rgba[(i*4)+1] & 0xff, image.rgba[(i*4)+2] & 0xff);
