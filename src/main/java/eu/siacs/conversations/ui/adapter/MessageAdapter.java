@@ -833,6 +833,47 @@ public class MessageAdapter extends ArrayAdapter<Message> {
 
     private void displayDownloadableMessage(ViewHolder viewHolder, final Message message, String text, final boolean darkBackground, final int type) {
         displayTextMessage(viewHolder, message, darkBackground, type);
+        viewHolder.image.setVisibility(View.GONE);
+        List<Element> thumbs = message.getFileParams() != null ? message.getFileParams().getThumbnails() : null;
+        if (thumbs != null && !thumbs.isEmpty()) {
+            for (Element thumb : thumbs) {
+                Uri uri = Uri.parse(thumb.getAttribute("uri"));
+                if (uri.getScheme().equals("data")) {
+                    String[] parts = uri.getSchemeSpecificPart().split(",", 2);
+                    parts = parts[0].split(";");
+                    if (!parts[0].equals("image/blurhash") && !parts[0].equals("image/thumbhash") && !parts[0].equals("image/jpeg") && !parts[0].equals("image/png") && !parts[0].equals("image/webp") && !parts[0].equals("image/gif")) continue;
+                } else if (uri.getScheme().equals("cid")) {
+                    Cid cid = BobTransfer.cid(uri);
+                    if (cid == null) continue;
+                    DownloadableFile f = activity.xmppConnectionService.getFileForCid(cid);
+                    if (f == null || !f.canRead()) {
+                        if (!message.trusted() && !message.getConversation().canInferPresence()) continue;
+
+                        try {
+                            new BobTransfer(BobTransfer.uri(cid), message.getConversation().getAccount(), message.getCounterpart(), activity.xmppConnectionService).start();
+                        } catch (final NoSuchAlgorithmException | URISyntaxException e) { }
+                        continue;
+                    }
+                } else {
+                    continue;
+                }
+
+                int width = message.getFileParams().width;
+                if (width < 1 && thumb.getAttribute("width") != null) width = Integer.parseInt(thumb.getAttribute("width"));
+                if (width < 1) width = 1920;
+
+                int height = message.getFileParams().height;
+                if (height < 1 && thumb.getAttribute("height") != null) height = Integer.parseInt(thumb.getAttribute("height"));
+                if (height < 1) height = 1080;
+
+                viewHolder.image.setVisibility(View.VISIBLE);
+                imagePreviewLayout(width, height, viewHolder.image);
+                activity.loadBitmap(message, viewHolder.image);
+                viewHolder.image.setOnClickListener(v -> ConversationFragment.downloadFile(activity, message));
+
+                break;
+            }
+        }
         viewHolder.audioPlayer.setVisibility(View.GONE);
         showImages(false, viewHolder);
         viewHolder.richlinkview.setVisibility(View.GONE);
@@ -1192,6 +1233,28 @@ public class MessageAdapter extends ArrayAdapter<Message> {
             activity.loadBitmap(message, viewHolder.image);
             viewHolder.image.setOnClickListener(v -> openDownloadable(message));
         }
+    }
+
+    private void imagePreviewLayout(int w, int h, ImageView image) {
+        final float target = activity.getResources().getDimension(R.dimen.image_preview_width);
+        final int scaledW;
+        final int scaledH;
+        if (Math.max(h, w) * metrics.density <= target) {
+            scaledW = (int) (w * metrics.density);
+            scaledH = (int) (h * metrics.density);
+        } else if (Math.max(h, w) <= target) {
+            scaledW = w;
+            scaledH = h;
+        } else if (w <= h) {
+            scaledW = (int) (w / ((double) h / target));
+            scaledH = (int) target;
+        } else {
+            scaledW = (int) target;
+            scaledH = (int) (h / ((double) w / target));
+        }
+        final LinearLayout.LayoutParams layoutParams = new LinearLayout.LayoutParams(scaledW, scaledH);
+        layoutParams.setMargins(0, (int) (metrics.density * 4), 0, (int) (metrics.density * 4));
+        image.setLayoutParams(layoutParams);
     }
 
     private void showImages(final boolean show, final ViewHolder viewHolder) {
