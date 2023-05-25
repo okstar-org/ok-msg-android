@@ -84,7 +84,7 @@ public class WebxdcPage implements ConversationPage {
         File f = xmppConnectionService.getFileForCid(cid);
         try {
             if (f != null) zip = new ZipFile(xmppConnectionService.getFileForCid(cid));
-            final ZipEntry manifestEntry = zip.getEntry("manifest.toml");
+            final ZipEntry manifestEntry = zip == null ? null : zip.getEntry("manifest.toml");
             if (manifestEntry != null) {
                 manifest = Toml.parse(zip.getInputStream(manifestEntry));
             }
