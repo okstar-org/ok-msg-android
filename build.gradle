@@ -109,7 +109,7 @@ dependencies {
     implementation 'io.michaelrocks:libphonenumber-android:8.12.49'
     implementation 'io.github.nishkarsh:android-permissions:2.1.6'
     implementation 'com.splitwise:tokenautocomplete:3.0.2'
-    implementation 'com.github.singpolyma:android-identicons:master-SNAPSHOT'
+    implementation 'com.github.singpolyma:android-identicons:3361281bd4'
     implementation 'com.github.woltapp:blurhash:master'
     implementation 'androidx.documentfile:documentfile:1.0.1'
     implementation 'com.caverock:androidsvg-aar:1.4'
