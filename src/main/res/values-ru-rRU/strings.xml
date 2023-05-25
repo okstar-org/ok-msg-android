@@ -794,7 +794,7 @@
     <string name="pref_omemo_setting">OMEMO шифрование</string>
     <string name="pref_omemo_setting_summary_always">OMEMO всегда будет использоваться для личных бесед и приватных групповых чатов.</string>
     <string name="pref_omemo_setting_summary_always_off">ОМЕМО никогда не будет использоваться.</string>
-    <string name="pref_omemo_setting_summary_default_off">OMEMO будет включен по умолчанию для новых разговоров.</string>
+    <string name="pref_omemo_setting_summary_default_off">OMEMO будет выключен по умолчанию для новых разговоров.</string>
     <string name="pref_omemo_setting_summary_default_on">OMEMO будет по умолчанию использоваться для новых бесед.</string>
     <string name="pref_pause_voice_on_move_from_ear">Автоматическая приостановка голосового сообщения</string>
     <string name="pref_pause_voice_on_move_from_ear_summary">Приостановить воспроизведение голосового сообщения, при удалении устройство от уха.</string>
@@ -1352,4 +1352,19 @@
     <string name="outgoing_call_timestamp">Исходящие звонки · %s</string>
     <string name="note_to_self">Примечание для себя</string>
     <string name="refresh_feature_discovery">Обнаружение функций</string>
+    <string name="i_am_snikket_user">Я использую Сниккет</string>
+    <string name="action_edit_contact">Изменить контакт</string>
+    <string name="only_this_thread">Показать только эту тему</string>
+    <string name="pref_dialler_integration_incoming">Используйте учетные записи телефонов для входящих вызовов</string>
+    <string name="pref_dialler_integration_incoming_summary">Входящие вызовы с телефонных номеров могут звонить с помощью системного номеронабирателя вместо настроек уведомлений этого приложения.</string>
+    <string name="thread_marker">Маркер нити</string>
+    <string name="thread_locked">Тема заблокирована</string>
+    <string name="tags">Теги</string>
+    <string name="save_as_sticker">Сохранить как стикер</string>
+    <string name="sticker_name">Название стикера</string>
+    <string name="action_execute">Идти</string>
+    <string name="block_avatar">Заблокировать аватар</string>
+    <string name="block_media">Блокировать медиа</string>
+    <string name="new_contact">Новый контакт</string>
+    <string name="add_to_home_screen">Добавить на домашний экран</string>
 </resources>
