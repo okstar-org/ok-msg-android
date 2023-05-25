@@ -1678,7 +1678,6 @@ public class Conversation extends AbstractEntity implements Blockable, Comparabl
         protected View page2 = null;
         protected boolean mOnboarding = false;
 
-
         public void setupViewPager(ViewPager pager, TabLayout tabs, boolean onboarding, Conversation oldConversation) {
             mPager = pager;
             mTabs = tabs;
@@ -1706,11 +1705,8 @@ public class Conversation extends AbstractEntity implements Blockable, Comparabl
             pager.post(() -> pager.setCurrentItem(getCurrentTab()));
 
             mPager.addOnPageChangeListener(new ViewPager.OnPageChangeListener() {
-                public void onPageScrollStateChanged(int state) {
-                }
-
-                public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
-                }
+                public void onPageScrollStateChanged(int state) { }
+                public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) { }
 
                 public void onPageSelected(int position) {
                     setCurrentTab(position);
@@ -1723,12 +1719,11 @@ public class Conversation extends AbstractEntity implements Blockable, Comparabl
                 sessions = new ArrayList<>();
                 notifyDataSetChanged();
             }
-            if (mTabs != null) mTabs.setVisibility(View.VISIBLE);
+            if (!mOnboarding && mTabs != null) mTabs.setVisibility(View.VISIBLE);
         }
 
         public void hide() {
-            if (sessions != null && !sessions.isEmpty())
-                return; // Do not hide during active session
+            if (sessions != null && !sessions.isEmpty()) return; // Do not hide during active session
             if (mPager != null) mPager.setCurrentItem(0);
             if (mTabs != null) mTabs.setVisibility(View.GONE);
             sessions = null;
@@ -1759,12 +1754,33 @@ public class Conversation extends AbstractEntity implements Blockable, Comparabl
             final Element c = packet.addChild("command", Namespace.COMMANDS);
             c.setAttribute("node", command.getAttribute("node"));
             c.setAttribute("action", "execute");
-            View v = mPager;
-            xmppConnectionService.sendIqPacket(getAccount(), packet, (a, iq) -> {
-                v.post(() -> {
-                    session.updateWithResponse(iq);
-                });
-            });
+
+            final TimerTask task = new TimerTask() {
+                @Override
+                public void run() {
+                    if (getAccount().getStatus() != Account.State.ONLINE) {
+                        final TimerTask self = this;
+                        new Timer().schedule(new TimerTask() {
+                            @Override
+                            public void run() {
+                                self.run();
+                            }
+                        }, 1000);
+                    } else {
+                        xmppConnectionService.sendIqPacket(getAccount(), packet, (a, iq) -> {
+                            session.updateWithResponse(iq);
+                        });
+                    }
+                }
+            };
+
+            if (command.getAttribute("node").equals("jabber:iq:register") && packet.getTo().asBareJid().equals(Jid.of("cheogram.com"))) {
+
+                    task.run();
+
+            } else {
+                task.run();
+            }
 
             sessions.add(session);
             notifyDataSetChanged();
@@ -1825,6 +1841,7 @@ public class Conversation extends AbstractEntity implements Blockable, Comparabl
                 container.removeView((View) o);
                 return;
             }
+
             container.removeView(((ConversationPage) o).getView());
         }
 
@@ -1920,8 +1937,7 @@ public class Conversation extends AbstractEntity implements Blockable, Comparabl
 
                         if (type.equals("text-private")) {
                             textinput.setInputType(flags | InputType.TYPE_CLASS_TEXT | InputType.TYPE_TEXT_VARIATION_PASSWORD);
-                            if (layout != null)
-                                layout.setEndIconMode(TextInputLayout.END_ICON_PASSWORD_TOGGLE);
+                            if (layout != null) layout.setEndIconMode(TextInputLayout.END_ICON_PASSWORD_TOGGLE);
                         }
                     }
 
@@ -1962,6 +1978,7 @@ public class Conversation extends AbstractEntity implements Blockable, Comparabl
                         textinput.setInputType(flags | InputType.TYPE_CLASS_TEXT | InputType.TYPE_TEXT_VARIATION_EMAIL_ADDRESS);
                     }
                 }
+
                 protected String formatValue(String datatype, String value, boolean compact) {
                     if ("xs:dateTime".equals(datatype)) {
                         ZonedDateTime zonedDateTime = null;
@@ -1988,9 +2005,7 @@ public class Conversation extends AbstractEntity implements Blockable, Comparabl
             }
 
             class ErrorViewHolder extends ViewHolder<CommandNoteBinding> {
-                public ErrorViewHolder(CommandNoteBinding binding) {
-                    super(binding);
-                }
+                public ErrorViewHolder(CommandNoteBinding binding) { super(binding); }
 
                 @Override
                 public void bind(Item iq) {
@@ -2007,9 +2022,7 @@ public class Conversation extends AbstractEntity implements Blockable, Comparabl
             }
 
             class NoteViewHolder extends ViewHolder<CommandNoteBinding> {
-                public NoteViewHolder(CommandNoteBinding binding) {
-                    super(binding);
-                }
+                public NoteViewHolder(CommandNoteBinding binding) { super(binding); }
 
                 @Override
                 public void bind(Item note) {
@@ -2023,9 +2036,7 @@ public class Conversation extends AbstractEntity implements Blockable, Comparabl
             }
 
             class ResultFieldViewHolder extends ViewHolder<CommandResultFieldBinding> {
-                public ResultFieldViewHolder(CommandResultFieldBinding binding) {
-                    super(binding);
-                }
+                public ResultFieldViewHolder(CommandResultFieldBinding binding) { super(binding); }
 
                 @Override
                 public void bind(Item item) {
@@ -2097,9 +2108,7 @@ public class Conversation extends AbstractEntity implements Blockable, Comparabl
             }
 
             class ResultCellViewHolder extends ViewHolder<CommandResultCellBinding> {
-                public ResultCellViewHolder(CommandResultCellBinding binding) {
-                    super(binding);
-                }
+                public ResultCellViewHolder(CommandResultCellBinding binding) { super(binding); }
 
                 @Override
                 public void bind(Item item) {
@@ -2130,6 +2139,7 @@ public class Conversation extends AbstractEntity implements Blockable, Comparabl
                     }
                 }
             }
+
             class ItemCardViewHolder extends ViewHolder<CommandItemCardBinding> {
                 public ItemCardViewHolder(CommandItemCardBinding binding) { super(binding); }
 
@@ -2172,7 +2182,6 @@ public class Conversation extends AbstractEntity implements Blockable, Comparabl
                     });
                     binding.checkbox.setOnCheckedChangeListener(this);
                 }
-
                 protected Element mValue = null;
 
                 @Override
@@ -2197,7 +2206,6 @@ public class Conversation extends AbstractEntity implements Blockable, Comparabl
                     super(binding);
                     binding.search.addTextChangedListener(this);
                 }
-
                 protected Element mValue = null;
                 List<Option> options = new ArrayList<>();
                 protected ArrayAdapter<Option> adapter;
@@ -2238,14 +2246,11 @@ public class Conversation extends AbstractEntity implements Blockable, Comparabl
                 }
 
                 @Override
-                public void beforeTextChanged(CharSequence s, int start, int count, int after) {
-                }
+                public void beforeTextChanged(CharSequence s, int start, int count, int after) { }
 
                 @Override
-                public void onTextChanged(CharSequence s, int start, int count, int after) {
-                }
+                public void onTextChanged(CharSequence s, int start, int count, int after) { }
 
-                @SuppressLint("NewApi")
                 protected void search(String s) {
                     List<Option> filteredOptions;
                     final String q = s.replaceAll("\\W", "").toLowerCase();
@@ -2277,11 +2282,9 @@ public class Conversation extends AbstractEntity implements Blockable, Comparabl
                         }
                     };
                 }
-
                 protected Element mValue = null;
                 protected ArrayAdapter<Option> options;
 
-                @SuppressLint("NewApi")
                 @Override
                 public void bind(Item item) {
                     Field field = (Field) item;
@@ -2342,12 +2345,10 @@ public class Conversation extends AbstractEntity implements Blockable, Comparabl
                 }
 
                 @Override
-                public void beforeTextChanged(CharSequence s, int start, int count, int after) {
-                }
+                public void beforeTextChanged(CharSequence s, int start, int count, int after) { }
 
                 @Override
-                public void onTextChanged(CharSequence s, int start, int count, int after) {
-                }
+                public void onTextChanged(CharSequence s, int start, int count, int after) { }
             }
 
             class SpinnerFieldViewHolder extends ViewHolder<CommandSpinnerFieldBinding> implements AdapterView.OnItemSelectedListener {
@@ -2355,7 +2356,6 @@ public class Conversation extends AbstractEntity implements Blockable, Comparabl
                     super(binding);
                     binding.spinner.setOnItemSelectedListener(this);
                 }
-
                 protected Element mValue = null;
 
                 @Override
@@ -2522,7 +2522,6 @@ public class Conversation extends AbstractEntity implements Blockable, Comparabl
                     super(binding);
                     binding.textinput.addTextChangedListener(this);
                 }
-
                 protected Field field = null;
 
                 @Override
@@ -2550,7 +2549,6 @@ public class Conversation extends AbstractEntity implements Blockable, Comparabl
                     String prefixLabel = field.el.findChildContent("x", "https://ns.cheogram.com/prefix-label");
                     binding.textinputLayout.setPrefixText(prefixLabel == null ? "" : prefixLabel);
 
-
                     binding.textinput.setText(String.join("\n", field.getValues()));
                     setupInputType(field.el, binding.textinput, binding.textinputLayout);
                 }
@@ -2563,19 +2561,14 @@ public class Conversation extends AbstractEntity implements Blockable, Comparabl
                 }
 
                 @Override
-                public void beforeTextChanged(CharSequence s, int start, int count, int after) {
-                }
+                public void beforeTextChanged(CharSequence s, int start, int count, int after) { }
 
                 @Override
-                public void onTextChanged(CharSequence s, int start, int count, int after) {
-                }
+                public void onTextChanged(CharSequence s, int start, int count, int after) { }
             }
 
             class WebViewHolder extends ViewHolder<CommandWebviewBinding> {
-                public WebViewHolder(CommandWebviewBinding binding) {
-                    super(binding);
-                }
-
+                public WebViewHolder(CommandWebviewBinding binding) { super(binding); }
                 protected String boundUrl = "";
 
                 @Override
@@ -2630,13 +2623,10 @@ public class Conversation extends AbstractEntity implements Blockable, Comparabl
             }
 
             class ProgressBarViewHolder extends ViewHolder<CommandProgressBarBinding> {
-                public ProgressBarViewHolder(CommandProgressBarBinding binding) {
-                    super(binding);
-                }
+                public ProgressBarViewHolder(CommandProgressBarBinding binding) { super(binding); }
 
                 @Override
-                public void bind(Item item) {
-                }
+                public void bind(Item item) { }
             }
 
             class Item {
@@ -2662,8 +2652,7 @@ public class Conversation extends AbstractEntity implements Blockable, Comparabl
                 public boolean validate() {
                     if (!super.validate()) return false;
                     if (el.findChild("required", "jabber:x:data") == null) return true;
-                    if (getValue().getContent() != null && !getValue().getContent().equals(""))
-                        return true;
+                    if (getValue().getContent() != null && !getValue().getContent().equals("")) return true;
 
                     error = "this value is required";
                     return false;
@@ -2856,7 +2845,6 @@ public class Conversation extends AbstractEntity implements Blockable, Comparabl
             final int TYPE_ITEM_CARD = 12;
             final int TYPE_BUTTON_GRID_FIELD = 13;
 
-
             protected boolean loading = false;
             protected Timer loadingTimer = new Timer();
             protected String mTitle;
@@ -2871,7 +2859,7 @@ public class Conversation extends AbstractEntity implements Blockable, Comparabl
             protected GridLayoutManager layoutManager;
             protected WebView actionToWebview = null;
             protected int fillableFieldCount = 0;
-
+            protected IqPacket pendingResponsePacket = null;
 
             CommandSession(String title, String node, XmppConnectionService xmppConnectionService) {
                 loading();
@@ -2889,8 +2877,7 @@ public class Conversation extends AbstractEntity implements Blockable, Comparabl
                     }
 
                     @Override
-                    public void onInvalidated() {
-                    }
+                    public void onInvalidated() {}
                 });
             }
 
@@ -2902,7 +2889,15 @@ public class Conversation extends AbstractEntity implements Blockable, Comparabl
                 return mNode;
             }
 
-            public void updateWithResponse(IqPacket iq) {
+            public void updateWithResponse(final IqPacket iq) {
+                if (getView() != null && getView().isAttachedToWindow()) {
+                    getView().post(() -> updateWithResponseUiThread(iq));
+                } else {
+                    pendingResponsePacket = iq;
+                }
+            }
+
+            protected void updateWithResponseUiThread(final IqPacket iq) {
                 this.loadingTimer.cancel();
                 this.loadingTimer = new Timer();
                 this.loading = false;
@@ -3029,7 +3024,7 @@ public class Conversation extends AbstractEntity implements Blockable, Comparabl
                     if (!actionsAdapter.isEmpty() || fillableFieldCount > 0) {
                         if ("completed".equals(command.getAttribute("status")) || "canceled".equals(command.getAttribute("status"))) {
                             actionsAdapter.add(Pair.create("close", "close"));
-                        } else if (actionsAdapter.getPosition("cancel") < 0) {
+                        } else if (actionsAdapter.getPosition("cancel") < 0 && !xmppConnectionService.isOnboarding()) {
                             actionsAdapter.insert(Pair.create("cancel", "cancel"), 0);
                         }
                     }
@@ -3039,6 +3034,25 @@ public class Conversation extends AbstractEntity implements Blockable, Comparabl
                     actionsAdapter.add(Pair.create("close", "close"));
                 }
 
+                actionsAdapter.sort((x, y) -> {
+                    if (x.first.equals("cancel")) return -1;
+                    if (y.first.equals("cancel")) return 1;
+                    if (x.first.equals("prev") && xmppConnectionService.isOnboarding()) return -1;
+                    if (y.first.equals("prev") && xmppConnectionService.isOnboarding()) return 1;
+                    return 0;
+                });
+
+                Data dataForm = null;
+                if (responseElement != null && responseElement.getName().equals("x") && responseElement.getNamespace().equals("jabber:x:data")) dataForm = Data.parse(responseElement);
+                if (mNode.equals("jabber:iq:register") &&
+                        xmppConnectionService.getPreferences().contains("onboarding_action") &&
+                        dataForm != null && dataForm.getFieldByName("gateway-jid") != null) {
+
+
+                    dataForm.put("gateway-jid", xmppConnectionService.getPreferences().getString("onboarding_action", ""));
+                    execute();
+                }
+                xmppConnectionService.getPreferences().edit().remove("onboarding_action").commit();
                 notifyDataSetChanged();
             }
 
@@ -3050,8 +3064,7 @@ public class Conversation extends AbstractEntity implements Blockable, Comparabl
 
                 reported = new ArrayList<>();
                 for (Element fieldEl : el.getChildren()) {
-                    if (!fieldEl.getName().equals("field") || !fieldEl.getNamespace().equals("jabber:x:data"))
-                        continue;
+                    if (!fieldEl.getName().equals("field") || !fieldEl.getNamespace().equals("jabber:x:data")) continue;
                     reported.add(mkField(fieldEl));
                 }
             }
@@ -3161,7 +3174,7 @@ public class Conversation extends AbstractEntity implements Blockable, Comparabl
 
             @Override
             public ViewHolder onCreateViewHolder(ViewGroup container, int viewType) {
-                switch (viewType) {
+                switch(viewType) {
                     case TYPE_ERROR: {
                         CommandNoteBinding binding = DataBindingUtil.inflate(LayoutInflater.from(container.getContext()), R.layout.command_note, container, false);
                         return new ErrorViewHolder(binding);
@@ -3225,6 +3238,7 @@ public class Conversation extends AbstractEntity implements Blockable, Comparabl
             }
 
             public View getView() {
+                if (mBinding == null) return null;
                 return mBinding.getRoot();
             }
 
@@ -3247,7 +3261,6 @@ public class Conversation extends AbstractEntity implements Blockable, Comparabl
                 return execute(actionsAdapter.getItem(actionPosition).first);
             }
 
-            @SuppressLint("NewApi")
             public boolean execute(String action) {
                 if (!action.equals("cancel") && !action.equals("prev") && !validate()) return false;
 
@@ -3255,8 +3268,7 @@ public class Conversation extends AbstractEntity implements Blockable, Comparabl
                 Element command = response.findChild("command", "http://jabber.org/protocol/commands");
                 if (command == null) return true;
                 String status = command.getAttribute("status");
-                if (status == null || (!status.equals("executing") && !action.equals("prev")))
-                    return true;
+                if (status == null || (!status.equals("executing") && !action.equals("prev"))) return true;
 
                 if (actionToWebview != null && !action.equals("cancel")) {
                     actionToWebview.postWebMessage(new WebMessage("xmpp_xep0050/" + action), Uri.parse("*"));
@@ -3306,16 +3318,16 @@ public class Conversation extends AbstractEntity implements Blockable, Comparabl
                 if (c.getAttribute("action") == null) c.setAttribute("action", action);
 
                 xmppConnectionService.sendIqPacket(getAccount(), packet, (a, iq) -> {
-                    getView().post(() -> {
-                        updateWithResponse(iq);
-                    });
+                    updateWithResponse(iq);
                 });
 
                 loading();
                 return false;
             }
 
-            public void refresh() { }
+            public void refresh() {
+                notifyDataSetChanged();
+            }
 
             protected void loading() {
                 View v = getView();
@@ -3332,7 +3344,6 @@ public class Conversation extends AbstractEntity implements Blockable, Comparabl
             }
 
             protected GridLayoutManager setupLayoutManager() {
-
                 int spanCount = 1;
 
                 Context ctx = mPager == null ? getView().getContext() : mPager.getContext();
@@ -3357,8 +3368,7 @@ public class Conversation extends AbstractEntity implements Blockable, Comparabl
                 layoutManager.setSpanSizeLookup(new GridLayoutManager.SpanSizeLookup() {
                     @Override
                     public int getSpanSize(int position) {
-                        if (getItemViewType(position) != TYPE_RESULT_CELL)
-                            return layoutManager.getSpanCount();
+                        if (getItemViewType(position) != TYPE_RESULT_CELL) return layoutManager.getSpanCount();
                         return 1;
                     }
                 });
@@ -3371,7 +3381,7 @@ public class Conversation extends AbstractEntity implements Blockable, Comparabl
                 mBinding.form.addOnItemTouchListener(new RecyclerView.OnItemTouchListener() {
                     @Override
                     public boolean onInterceptTouchEvent(RecyclerView rv, MotionEvent e) {
-                        if (rv.getChildCount() > 0) {
+                        if(rv.getChildCount() > 0) {
                             int[] location = new int[2];
                             rv.getLocationOnScreen(location);
                             View childView = rv.findChildViewUnder(e.getX(), e.getY());
@@ -3395,12 +3405,10 @@ public class Conversation extends AbstractEntity implements Blockable, Comparabl
                     }
 
                     @Override
-                    public void onRequestDisallowInterceptTouchEvent(boolean disallow) {
-                    }
+                    public void onRequestDisallowInterceptTouchEvent(boolean disallow) { }
 
                     @Override
-                    public void onTouchEvent(RecyclerView rv, MotionEvent e) {
-                    }
+                    public void onTouchEvent(RecyclerView rv, MotionEvent e) { }
                 });
                 mBinding.form.setLayoutManager(setupLayoutManager());
                 mBinding.form.setAdapter(this);
@@ -3412,6 +3420,12 @@ public class Conversation extends AbstractEntity implements Blockable, Comparabl
                 });
 
                 actionsAdapter.notifyDataSetChanged();
+
+                if (pendingResponsePacket != null) {
+                    final IqPacket pending = pendingResponsePacket;
+                    pendingResponsePacket = null;
+                    updateWithResponseUiThread(pending);
+                }
             }
 
             public View inflateUi(Context context, Consumer<ConversationPage> remover) {
@@ -3422,7 +3436,7 @@ public class Conversation extends AbstractEntity implements Blockable, Comparabl
 
             // https://stackoverflow.com/a/36037991/8611
             private View findViewAt(ViewGroup viewGroup, float x, float y) {
-                for (int i = 0; i < viewGroup.getChildCount(); i++) {
+                for(int i = 0; i < viewGroup.getChildCount(); i++) {
                     View child = viewGroup.getChildAt(i);
                     if (child instanceof ViewGroup && !(child instanceof AbsListView) && !(child instanceof WebView)) {
                         View foundView = findViewAt((ViewGroup) child, x, y);
@@ -3433,7 +3447,7 @@ public class Conversation extends AbstractEntity implements Blockable, Comparabl
                         int[] location = new int[2];
                         child.getLocationOnScreen(location);
                         Rect rect = new Rect(location[0], location[1], location[0] + child.getWidth(), location[1] + child.getHeight());
-                        if (rect.contains((int) x, (int) y)) {
+                        if (rect.contains((int)x, (int)y)) {
                             return child;
                         }
                     }
