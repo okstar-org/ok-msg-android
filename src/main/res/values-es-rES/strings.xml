@@ -345,7 +345,7 @@
     <string name="could_not_verify_fingerprint">No se puede verificar el contacto</string>
     <string name="manually_verify">Verificar manualmente</string>
     <string name="pref_show_dynamic_tags">Mostrar etiquetas</string>
-    <string name="pref_show_dynamic_tags_summary">Mostrar información en forma de etiquetas debajo de los contactos</string>
+    <string name="pref_show_dynamic_tags_summary">Permitir organizar con etiquetas</string>
     <string name="no_conference_server_found">Ningún servidor de chat de grupo encontrado</string>
     <string name="conference_creation_failed">¡Creación de grupo fallado!</string>
     <string name="account_image_description">Imagen de perfil</string>
@@ -616,7 +616,7 @@
     <string name="copy_to_clipboard">Copiar al portapapeles</string>
     <string name="message_copied_to_clipboard">Mensaje copiado al portapapeles</string>
     <string name="message">Mensaje</string>
-    <string name="quote">Citar</string>
+    <string name="quote">Responder</string>
     <string name="show_error_message">Mostrar mensaje de error</string>
     <string name="error_message">Mensaje de error</string>
     <string name="data_saver_enabled">Optimización de datos habilitado</string>
@@ -1353,4 +1353,18 @@
     <string name="refresh_feature_discovery">Refrescar Descubrimiento de características</string>
     <string name="microphone_permission_for_call">Se requiere permiso de micrófono para completar la llamada</string>
     <string name="i_am_snikket_user">Uso Snikket</string>
+    <string name="action_edit_contact">Editar contacto</string>
+    <string name="pref_dialler_integration_incoming">Usar cuentas del teléfono para llamadas entrantes</string>
+    <string name="pref_dialler_integration_incoming_summary">Las llamadas entrantes desde números de teléfono pueden sonar en el avisador del sistema en lugar de usar la configuración de notificación de la aplicación</string>
+    <string name="thread_marker">Marcador de hilo</string>
+    <string name="only_this_thread">Mostrar solo este hilo</string>
+    <string name="thread_locked">Hilo bloqueado</string>
+    <string name="tags">Etiquetas</string>
+    <string name="save_as_sticker">Guardar como pegatina</string>
+    <string name="sticker_name">Nombre de pegatina</string>
+    <string name="action_execute">Adelante</string>
+    <string name="block_avatar">Bloquear avatar</string>
+    <string name="block_media">Bloquear medio</string>
+    <string name="new_contact">Nuevo contacto</string>
+    <string name="add_to_home_screen">Añadir a la pantalla principal</string>
 </resources>
