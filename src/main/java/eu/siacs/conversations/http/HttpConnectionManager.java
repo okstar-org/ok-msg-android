@@ -23,6 +23,8 @@ import java.util.concurrent.TimeUnit;
 import javax.net.ssl.SSLSocketFactory;
 import javax.net.ssl.X509TrustManager;
 
+import eu.siacs.conversations.entities.DownloadableFile;
+import eu.siacs.conversations.utils.Consumer;
 import eu.siacs.conversations.BuildConfig;
 import eu.siacs.conversations.Config;
 import eu.siacs.conversations.R;
@@ -84,6 +86,10 @@ public class HttpConnectionManager extends AbstractConnectionManager {
     }
 
     public void createNewDownloadConnection(final Message message, boolean interactive) {
+        createNewDownloadConnection(message, interactive, null);
+    }
+
+    public void createNewDownloadConnection(final Message message, boolean interactive, Consumer<DownloadableFile> cb) {
         synchronized (this.downloadConnections) {
             for (HttpDownloadConnection connection : this.downloadConnections) {
                 if (connection.getMessage() == message) {
@@ -91,7 +97,7 @@ public class HttpConnectionManager extends AbstractConnectionManager {
                     return;
                 }
             }
-            final HttpDownloadConnection connection = new HttpDownloadConnection(message, this);
+            final HttpDownloadConnection connection = new HttpDownloadConnection(message, this, cb);
             connection.init(interactive);
             this.downloadConnections.add(connection);
         }

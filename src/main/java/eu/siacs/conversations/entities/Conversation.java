@@ -3,6 +3,8 @@ package eu.siacs.conversations.entities;
 import static eu.siacs.conversations.entities.Bookmark.printableValue;
 
 import android.content.Intent;
+
+import eu.siacs.conversations.http.HttpConnectionManager;
 import eu.siacs.conversations.ui.UriHandlerActivity;
 import android.content.DialogInterface;
 import android.content.Context;
@@ -10,6 +12,8 @@ import android.annotation.SuppressLint;
 import android.database.DataSetObserver;
 import android.graphics.Rect;
 import android.net.Uri;
+import android.graphics.drawable.Drawable;
+import android.util.LruCache;
 import android.telephony.PhoneNumberUtils;
 import android.graphics.drawable.BitmapDrawable;
 import android.graphics.Bitmap;
@@ -2028,6 +2032,42 @@ public class Conversation extends AbstractEntity implements Blockable, Comparabl
                     Field field = (Field) item;
                     setTextOrHide(binding.label, field.getLabel());
                     setTextOrHide(binding.desc, field.getDesc());
+
+                    Element media = field.el.findChild("media", "urn:xmpp:media-element");
+                    if (media == null) {
+                        binding.mediaImage.setVisibility(View.GONE);
+                    } else {
+                        final LruCache<String, Drawable> cache = xmppConnectionService.getDrawableCache();
+                        final HttpConnectionManager httpManager = xmppConnectionService.getHttpConnectionManager();
+                        for (Element uriEl : media.getChildren()) {
+                            if (!"uri".equals(uriEl.getName())) continue;
+                            if (!"urn:xmpp:media-element".equals(uriEl.getNamespace())) continue;
+                            String mimeType = uriEl.getAttribute("type");
+                            String uriS = uriEl.getContent();
+                            if (mimeType == null || uriS == null) continue;
+                            Uri uri = Uri.parse(uriS);
+                            if (mimeType.startsWith("image/") && "https".equals(uri.getScheme())) {
+                                final Drawable d = cache.get(uri.toString());
+                                if (d == null) {
+                                    int size = (int)(xmppConnectionService.getResources().getDisplayMetrics().density * 288);
+                                    Message dummy = new Message(Conversation.this, uri.toString(), Message.ENCRYPTION_NONE);
+                                    dummy.setFileParams(new Message.FileParams(uri.toString()));
+                                    httpManager.createNewDownloadConnection(dummy, true, (file) -> {
+                                        if (file == null) {
+                                            dummy.getTransferable().start();
+                                        } else {
+                                            try {
+                                                xmppConnectionService.getFileBackend().getThumbnail(file, xmppConnectionService.getResources(), size, false, uri.toString());
+                                            } catch (final Exception e) { }
+                                        }
+                                    });
+                                } else {
+                                    binding.mediaImage.setImageDrawable(d);
+                                    binding.mediaImage.setVisibility(View.VISIBLE);
+                                }
+                            }
+                        }
+                    }
 
                     Element validate = field.el.findChild("validate", "http://jabber.org/protocol/xdata-validate");
                     String datatype = validate == null ? null : validate.getAttribute("datatype");
