@@ -170,6 +170,9 @@ public class SettingsActivity extends XmppActivity implements OnSharedPreference
             Preference pref = mSettingsFragment.findPreference("dialler_integration_incoming");
             if (cat != null && pref != null) cat.removePreference(pref);
         }
+        final Preference accountPreference =
+                mSettingsFragment.findPreference(UnifiedPushDistributor.PREFERENCE_ACCOUNT);
+        reconfigureUpAccountPreference(accountPreference);
     }
 
 
