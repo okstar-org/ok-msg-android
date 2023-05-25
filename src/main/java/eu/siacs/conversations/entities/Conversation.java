@@ -2483,11 +2483,11 @@ public class Conversation extends AbstractEntity implements Blockable, Comparabl
                     binding.textinput.addTextChangedListener(this);
                 }
 
-                protected Element mValue = null;
+                protected Field field = null;
 
                 @Override
                 public void bind(Item item) {
-                    Field field = (Field) item;
+                    field = (Field) item;
                     binding.textinputLayout.setHint(field.getLabel().or(""));
 
                     binding.textinputLayout.setHelperTextEnabled(field.getDesc().isPresent());
@@ -2511,16 +2511,15 @@ public class Conversation extends AbstractEntity implements Blockable, Comparabl
                     binding.textinputLayout.setPrefixText(prefixLabel == null ? "" : prefixLabel);
 
 
-                    mValue = field.getValue();
-                    binding.textinput.setText(mValue.getContent());
+                    binding.textinput.setText(String.join("\n", field.getValues()));
                     setupInputType(field.el, binding.textinput, binding.textinputLayout);
                 }
 
                 @Override
                 public void afterTextChanged(Editable s) {
-                    if (mValue == null) return;
+                    if (field == null) return;
 
-                    mValue.setContent(s.toString());
+                    field.setValues(List.of(s.toString().split("\n")));
                 }
 
                 @Override
@@ -2654,6 +2653,28 @@ public class Conversation extends AbstractEntity implements Blockable, Comparabl
                         value = el.addChild("value", "jabber:x:data");
                     }
                     return value;
+                }
+
+                public void setValues(List<String> values) {
+                    for(Element child : el.getChildren()) {
+                        if ("value".equals(child.getName()) && "jabber:x:data".equals(child.getNamespace())) {
+                            el.removeChild(child);
+                        }
+                    }
+
+                    for (String value : values) {
+                        el.addChild("value", "jabber:x:data").setContent(value);
+                    }
+                }
+
+                public List<String> getValues() {
+                    List<String> values = new ArrayList<>();
+                    for(Element child : el.getChildren()) {
+                        if ("value".equals(child.getName()) && "jabber:x:data".equals(child.getNamespace())) {
+                            values.add(child.getContent());
+                        }
+                    }
+                    return values;
                 }
 
                 public List<Option> getOptions() {
