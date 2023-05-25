@@ -104,6 +104,7 @@ import org.w3c.dom.Node;
 import java.io.File;
 
 import java.text.SimpleDateFormat;
+import java.util.AbstractMap;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
@@ -1977,7 +1978,12 @@ public class ConversationFragment extends XmppFragment
     }
 
     private void refreshFeatureDiscovery() {
-        for (Map.Entry<String, Presence> entry : conversation.getContact().getPresences().getPresencesMap().entrySet()) {
+        Set<Map.Entry<String, Presence>> presences = conversation.getContact().getPresences().getPresencesMap().entrySet();
+        if (presences.isEmpty()) {
+            presences = new HashSet<>();
+            presences.add(new AbstractMap.SimpleEntry("", null));
+        }
+        for (Map.Entry<String, Presence> entry : presences) {
             Jid jid = conversation.getContact().getJid();
             if (!entry.getKey().equals("")) jid = jid.withResource(entry.getKey());
             activity.xmppConnectionService.fetchCaps(conversation.getAccount(), jid, entry.getValue(), () -> {
