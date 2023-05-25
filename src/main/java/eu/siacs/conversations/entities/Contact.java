@@ -739,6 +739,7 @@ public class Contact implements ListItem, Blockable {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
             return new PhoneAccountHandle(componentName, phoneAccountLabel());
         }
+        return null;
     }
 
     // This Contact is a gateway to use for voice calls, register it with OS
