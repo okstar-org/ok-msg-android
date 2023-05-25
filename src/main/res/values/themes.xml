@@ -45,7 +45,7 @@
         <item name="chat_bg">@drawable/bg_light_blue</item>
         <item name="icon_tint">@color/black54</item>
         <item name="color_background_primary">@color/grey50</item>
-        <item name="color_background_secondary">@color/grey200</item>
+        <item name="color_background_secondary">#FFFFFF</item>
         <item name="color_background_tertiary">@color/grey300</item>
         <item name="color_background_overlay">@color/grey300_40</item>
         <item name="color_warning">@color/red700</item>

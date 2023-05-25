@@ -57,30 +57,15 @@
         </menu>
     </item>
     <item
-        android:id="@+id/action_delete_contact"
-        android:orderInCategory="10"
-        app:showAsAction="never"
-        android:title="@string/action_delete_contact"/>
-    <item
         android:id="@+id/action_block"
-        android:icon="@drawable/ic_speaker_notes_off_white_24dp"
         android:orderInCategory="72"
-        android:title="@string/action_block_contact"
-        app:showAsAction="always" />
-
+        app:showAsAction="never"
+        android:title="@string/action_block_contact"/>
     <item
         android:id="@+id/action_unblock"
-        android:icon="@drawable/ic_speaker_notes_white_24dp"
         android:orderInCategory="73"
-        android:title="@string/action_unblock_contact"
-        app:showAsAction="always" />
-    <item
-        android:id="@+id/action_advanced_mode"
-        android:checkable="true"
-        android:checked="false"
-        android:orderInCategory="85"
-        android:title="@string/advanced_mode"
-        app:showAsAction="never" />
+        app:showAsAction="never"
+        android:title="@string/action_unblock_contact"/>
     <item
         android:id="@+id/action_activate_individual_notifications"
         android:checkable="true"

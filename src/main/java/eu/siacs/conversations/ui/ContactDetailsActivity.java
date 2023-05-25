@@ -74,6 +74,7 @@ import eu.siacs.conversations.ui.util.AvatarWorkerTask;
 import eu.siacs.conversations.ui.util.CallManager;
 import eu.siacs.conversations.ui.util.GridManager;
 import eu.siacs.conversations.ui.util.JidDialog;
+import eu.siacs.conversations.ui.util.SoftKeyboardUtils;
 import eu.siacs.conversations.utils.Compatibility;
 import eu.siacs.conversations.utils.Emoticons;
 import eu.siacs.conversations.utils.IrregularUnicodeDetector;
@@ -108,7 +109,6 @@ public class ContactDetailsActivity extends OmemoActivity implements OnAccountUp
     private MediaAdapter mMediaAdapter;
     protected MenuItem edit = null;
     protected MenuItem save = null;
-    private boolean mAdvancedMode = false;
     private boolean mIndividualNotifications = false;
     private DialogInterface.OnClickListener removeFromRoster = new DialogInterface.OnClickListener() {
 
@@ -284,7 +284,6 @@ public class ContactDetailsActivity extends OmemoActivity implements OnAccountUp
     @Override
     protected void onCreate(final Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        this.mAdvancedMode = getPreferences().getBoolean("advanced_mode", false);
         showInactiveOmemo = savedInstanceState != null && savedInstanceState.getBoolean("show_inactive_omemo", false);
         if (getIntent().getAction().equals(ACTION_VIEW_CONTACT)) {
             try {
@@ -387,12 +386,6 @@ public class ContactDetailsActivity extends OmemoActivity implements OnAccountUp
             case R.id.action_share_uri:
                 shareLink(false);
                 break;
-            case R.id.action_delete_contact:
-                builder.setTitle(getString(R.string.action_delete_contact))
-                        .setMessage(JidDialog.style(this, R.string.remove_contact_text, contact.getJid().toEscapedString()))
-                        .setPositiveButton(getString(R.string.delete),
-                                removeFromRoster).create().show();
-                break;
             case R.id.action_save:
                 saveEdits();
                 break;
@@ -455,13 +448,6 @@ public class ContactDetailsActivity extends OmemoActivity implements OnAccountUp
                 break;
             case R.id.action_unblock:
                 BlockContactDialog.show(this, contact);
-                break;
-            case R.id.action_advanced_mode:
-                this.mAdvancedMode = !menuItem.isChecked();
-                menuItem.setChecked(this.mAdvancedMode);
-                getPreferences().edit().putBoolean("advanced_mode", mAdvancedMode).apply();
-                invalidateOptionsMenu();
-                refreshUi();
                 break;
             case R.id.action_activate_individual_notifications:
                 if (!menuItem.isChecked()) {
@@ -544,8 +530,6 @@ public class ContactDetailsActivity extends OmemoActivity implements OnAccountUp
 
     @Override
     public boolean onPrepareOptionsMenu(Menu menu) {
-        MenuItem menuItemAdvancedMode = menu.findItem(R.id.action_advanced_mode);
-        menuItemAdvancedMode.setChecked(mAdvancedMode);
         MenuItem menuItemIndividualNotifications = menu.findItem(R.id.action_activate_individual_notifications);
         menuItemIndividualNotifications.setChecked(mIndividualNotifications);
         menuItemIndividualNotifications.setVisible(Compatibility.runsTwentySix());
@@ -565,8 +549,8 @@ public class ContactDetailsActivity extends OmemoActivity implements OnAccountUp
         final MenuItem menuVideoCall = menu.findItem(R.id.action_video_call);
         final MenuItem menuMessageNotification = menu.findItem(R.id.action_message_notifications);
         final MenuItem menuCallNotification = menu.findItem(R.id.action_call_notifications);
-        MenuItem edit = menu.findItem(R.id.action_edit_contact);
-        MenuItem delete = menu.findItem(R.id.action_delete_contact);
+        edit = menu.findItem(R.id.action_edit_contact);
+        save = menu.findItem(R.id.action_save);
         if (contact == null) {
             return true;
         }
@@ -605,15 +589,13 @@ public class ContactDetailsActivity extends OmemoActivity implements OnAccountUp
             unblock.setVisible(false);
             block.setVisible(false);
         }
-
         if (!contact.showInRoster()) {
             edit.setVisible(false);
-            delete.setVisible(false);
         }
-
         edit.setOnActionExpandListener(new MenuItem.OnActionExpandListener() {
             @Override
             public boolean onMenuItemActionCollapse(MenuItem item) {
+                SoftKeyboardUtils.hideSoftKeyboard(ContactDetailsActivity.this);
                 binding.editTags.setVisibility(View.GONE);
                 if (save != null) save.setVisible(false);
                 populateView();
@@ -652,7 +634,7 @@ public class ContactDetailsActivity extends OmemoActivity implements OnAccountUp
                 ab.setDisplayShowCustomEnabled(true);
                 TextView abtitle = findViewById(android.R.id.text1);
                 TextView absubtitle = findViewById(android.R.id.text2);
-                abtitle.setText(R.string.contact_details);
+                abtitle.setText(contact.getServerName());
                 abtitle.setSelected(true);
                 abtitle.setClickable(false);
                 absubtitle.setVisibility(View.GONE);
@@ -660,8 +642,6 @@ public class ContactDetailsActivity extends OmemoActivity implements OnAccountUp
             }
         }
         invalidateOptionsMenu();
-        binding.contactDisplayName.setText(contact.getDisplayName());
-        this.binding.jid.setVisibility(this.mAdvancedMode ? View.VISIBLE : View.GONE);
         if (contact.showInRoster()) {
             binding.detailsSendPresence.setVisibility(View.VISIBLE);
             binding.detailsSendPresence.setOnCheckedChangeListener(null);
@@ -677,10 +657,6 @@ public class ContactDetailsActivity extends OmemoActivity implements OnAccountUp
                         .setTitle(getString(R.string.action_delete_contact))
                         .setMessage(JidDialog.style(this, R.string.remove_contact_text, contact.getJid().toEscapedString()))
                         .setPositiveButton(getString(R.string.delete), removeFromRoster).create().show();
-            });
-            binding.editContactNameButton.setVisibility(View.VISIBLE);
-            binding.editContactNameButton.setOnClickListener(view -> {
-                editContact();
             });
             List<String> statusMessages = contact.getPresences().getStatusMessages();
             if (statusMessages.size() == 0) {
@@ -747,7 +723,6 @@ public class ContactDetailsActivity extends OmemoActivity implements OnAccountUp
             binding.detailsSendPresence.setOnCheckedChangeListener(this.mOnSendCheckedChange);
             binding.detailsReceivePresence.setOnCheckedChangeListener(this.mOnReceiveCheckedChange);
         } else {
-            binding.editContactNameButton.setVisibility(View.GONE);
             binding.addContactButton.setVisibility(View.VISIBLE);
             binding.addContactButton.setText(getString(R.string.add_contact));
             binding.addContactButton.getBackground().clearColorFilter();
@@ -940,7 +915,6 @@ public class ContactDetailsActivity extends OmemoActivity implements OnAccountUp
                     Util.justifyListViewHeightBasedOnChildren(binding.profileItems);
                 });
             });
-
             populateView();
         }
     }
@@ -968,7 +942,6 @@ public class ContactDetailsActivity extends OmemoActivity implements OnAccountUp
             mMediaAdapter.setAttachments(attachments.subList(0, Math.min(limit, attachments.size())));
             binding.mediaWrapper.setVisibility(attachments.size() > 0 ? View.VISIBLE : View.GONE);
         });
-
     }
 
     class VcardAdapter extends ArrayAdapter<Element> {
