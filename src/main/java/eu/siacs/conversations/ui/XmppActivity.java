@@ -1,6 +1,8 @@
 package eu.siacs.conversations.ui;
 
 import static eu.siacs.conversations.ui.SettingsActivity.USE_INTERNAL_UPDATER;
+
+import android.graphics.drawable.AnimatedImageDrawable;
 import android.telephony.TelephonyManager;
 import eu.siacs.conversations.utils.Compatibility;
 import androidx.annotation.RequiresApi;
@@ -1294,22 +1296,27 @@ public abstract class XmppActivity extends ActionBarActivity {
     }
 
     public void loadBitmap(Message message, ImageView imageView) {
-        Bitmap bm;
+        Drawable bm;
         try {
-            bm = xmppConnectionService.getFileBackend().getThumbnail(message, (int) (metrics.density * 288), true);
+            bm = xmppConnectionService.getFileBackend().getThumbnail(message, getResources(), (int) (metrics.density * 288), true);
         } catch (IOException e) {
             bm = null;
         }
         if (bm != null) {
             cancelPotentialWork(message, imageView);
-            imageView.setImageBitmap(bm);
+            imageView.setImageDrawable(bm);
             imageView.setBackgroundColor(0x00000000);
+            if (Build.VERSION.SDK_INT >= 28 && bm instanceof AnimatedImageDrawable) {
+                ((AnimatedImageDrawable) bm).start();
+            }
         } else {
             if (cancelPotentialWork(message, imageView)) {
                 imageView.setBackgroundColor(0xff333333);
                 imageView.setImageDrawable(null);
                 final BitmapWorkerTask task = new BitmapWorkerTask(imageView);
-                final AsyncDrawable asyncDrawable = new AsyncDrawable(getResources(), null, task);
+                final BitmapDrawable fallbackThumb = xmppConnectionService.getFileBackend().getFallbackThumbnail(message, (int) (metrics.density * 288), true);
+                final AsyncDrawable asyncDrawable = new AsyncDrawable(
+                        getResources(), fallbackThumb != null ? fallbackThumb.getBitmap() : null, task);
                 imageView.setImageDrawable(asyncDrawable);
                 try {
                     task.execute(message);
@@ -1360,7 +1367,7 @@ public abstract class XmppActivity extends ActionBarActivity {
         }
     }
 
-    static class BitmapWorkerTask extends AsyncTask<Message, Void, Bitmap> {
+    static class BitmapWorkerTask extends AsyncTask<Message, Void, Drawable> {
         private final WeakReference<ImageView> imageViewReference;
         private Message message = null;
 
@@ -1369,30 +1376,39 @@ public abstract class XmppActivity extends ActionBarActivity {
         }
 
         @Override
-        protected Bitmap doInBackground(Message... params) {
+        protected Drawable doInBackground(Message... params) {
             if (isCancelled()) {
                 return null;
             }
+            final XmppActivity activity = find(imageViewReference);
+            Drawable d = null;
             message = params[0];
             try {
-                final XmppActivity activity = find(imageViewReference);
                 if (activity != null && activity.xmppConnectionService != null) {
-                    return activity.xmppConnectionService.getFileBackend().getThumbnail(message, (int) (activity.metrics.density * 288), false);
-                } else {
-                    return null;
+                    d = activity.xmppConnectionService.getFileBackend().getThumbnail(message, imageViewReference.get().getContext().getResources(), (int) (activity.metrics.density * 288), false);
                 }
-            } catch (IOException e) {
-                return null;
+            } catch (IOException e) { }
+            if (activity != null && activity.xmppConnectionService != null) {
+                d =  d == null ? activity.xmppConnectionService.getFileBackend().getFallbackThumbnail(message, (int) (activity.metrics.density * 288), false) : d;
             }
+            return d;
         }
 
         @Override
-        protected void onPostExecute(final Bitmap bitmap) {
+        protected void onPostExecute(final Drawable drawable) {
             if (!isCancelled()) {
                 final ImageView imageView = imageViewReference.get();
                 if (imageView != null) {
-                    imageView.setImageBitmap(bitmap);
-                    imageView.setBackgroundColor(bitmap == null ? 0xff333333 : 0x00000000);
+                    Drawable old = imageView.getDrawable();
+                    if (drawable == null && old instanceof AsyncDrawable) {
+                        imageView.setImageDrawable(new BitmapDrawable(((AsyncDrawable) old).getBitmap()));
+                    } else {
+                        imageView.setImageDrawable(drawable);
+                    }
+                    imageView.setBackgroundColor(drawable == null ? 0xff333333 : 0x00000000);
+                    if (Build.VERSION.SDK_INT >= 28 && drawable instanceof AnimatedImageDrawable) {
+                        ((AnimatedImageDrawable) drawable).start();
+                    }
                 }
             }
         }
