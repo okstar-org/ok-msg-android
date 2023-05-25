@@ -11,6 +11,7 @@ import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
 import android.content.res.ColorStateList;
 import android.net.Uri;
+import android.preference.PreferenceManager;
 import android.os.Build;
 import android.os.Bundle;
 import android.text.Editable;
@@ -326,6 +327,10 @@ public class StartConversationActivity extends XmppActivity implements XmppConne
             intent = savedInstanceState.getParcelable("intent");
         }
 
+        if (intent.getBooleanExtra("init", false)) {
+            pendingViewIntent.push(intent);
+        }
+
         if (isViewIntent(intent)) {
             pendingViewIntent.push(intent);
             createdByViewIntent = true;
@@ -456,7 +461,7 @@ public class StartConversationActivity extends XmppActivity implements XmppConne
     public static void shareAsChannel(final Context context, final String address) {
         Intent shareIntent = new Intent();
         shareIntent.setAction(Intent.ACTION_SEND);
-        shareIntent.putExtra(Intent.EXTRA_TEXT, "xmpp:" + address + "?join");
+        shareIntent.putExtra(Intent.EXTRA_TEXT, "xmpp:" + Uri.encode(address, "@/+") + "?join");
         shareIntent.setType("text/plain");
         try {
             context.startActivity(Intent.createChooser(shareIntent, context.getText(R.string.share_uri_with)));
@@ -551,7 +556,7 @@ public class StartConversationActivity extends XmppActivity implements XmppConne
                 invite == null ? null : invite.account,
                 invite == null || !invite.hasFingerprints(),
                 multiAccount,
-                true
+                EnterJidDialog.SanityCheck.ALLOW_MUC
         );
 
         dialog.setOnEnterJidDialogPositiveListener((accountJid, contactJid) -> {
@@ -568,20 +573,30 @@ public class StartConversationActivity extends XmppActivity implements XmppConne
             if (invite != null && invite.getName() != null) {
                 contact.setServerName(invite.getName());
             }
-            if (contact.isSelf()) {
-                switchToConversation(contact);
-                return true;
-            } else if (contact.showInRoster()) {
-                throw new EnterJidDialog.JidError(getString(R.string.contact_already_exists));
-            } else {
-                final String preAuth = invite == null ? null : invite.getParameter(XmppUri.PARAMETER_PRE_AUTH);
-                xmppConnectionService.createContact(contact, true, preAuth);
-                if (invite != null && invite.hasFingerprints()) {
-                    xmppConnectionService.verifyFingerprints(contact, invite.getFingerprints());
-                }
+
+            if (contact.isSelf() || contact.showInRoster()) {
                 switchToConversationDoNotAppend(contact, invite == null ? null : invite.getBody());
                 return true;
             }
+
+            xmppConnectionService.checkIfMuc(account, contactJid, (isMuc) -> {
+                if (isMuc) {
+                    final Conversation conversation = xmppConnectionService.findOrCreateConversation(account, contactJid, true, true, true);
+                    switchToConversationDoNotAppend(conversation, invite == null ? null : invite.getBody());
+                } else {
+                    final String preAuth = invite == null ? null : invite.getParameter(XmppUri.PARAMETER_PRE_AUTH);
+                    xmppConnectionService.createContact(contact, true, preAuth);
+                    if (invite != null && invite.hasFingerprints()) {
+                        xmppConnectionService.verifyFingerprints(contact, invite.getFingerprints());
+                    }
+                    switchToConversationDoNotAppend(contact, invite == null ? null : invite.getBody());
+                }
+                try {
+                    dialog.dismiss();
+                } catch (final IllegalStateException e) { }
+            });
+
+            return true;
         });
         dialog.show(ft, FRAGMENT_TAG_DIALOG);
     }
@@ -699,9 +714,15 @@ public class StartConversationActivity extends XmppActivity implements XmppConne
         mSearchEditText = mSearchView.findViewById(R.id.search_field);
         mSearchEditText.addTextChangedListener(mSearchTextWatcher);
         mSearchEditText.setOnEditorActionListener(mSearchDone);
-        RecyclerView tags = mSearchView.findViewById(R.id.tags);
-        tags.setLayoutManager(new LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false));
-        tags.setAdapter(mTagsAdapter);
+
+        SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(this);
+        boolean showDynamicTags = preferences.getBoolean(SettingsActivity.SHOW_DYNAMIC_TAGS, getResources().getBoolean(R.bool.show_dynamic_tags));
+        if (showDynamicTags) {
+            RecyclerView tags = mSearchView.findViewById(R.id.tags);
+            tags.setLayoutManager(new LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false));
+            tags.setAdapter(mTagsAdapter);
+        }
+
         String initialSearchValue = mInitialSearchValue.pop();
         if (initialSearchValue != null) {
             mMenuSearchView.expandActionView();
@@ -894,6 +915,41 @@ public class StartConversationActivity extends XmppActivity implements XmppConne
         this.mActivatedAccounts.addAll(AccountUtils.getEnabledAccounts(xmppConnectionService));
         configureHomeButton();
         Intent intent = pendingViewIntent.pop();
+
+        if (intent != null && intent.getBooleanExtra("init", false)) {
+            Account selectedAccount = xmppConnectionService.getAccounts().get(0);
+            final String accountJid = intent.getStringExtra(EXTRA_ACCOUNT);
+            intent = null;
+            boolean hasPstnOrSms = false;
+            outer:
+            for (Account account : xmppConnectionService.getAccounts()) {
+                if (accountJid != null) {
+                    if(account.getJid().asBareJid().toEscapedString().equals(accountJid)) {
+                        selectedAccount = account;
+                    } else {
+                        continue;
+                    }
+                }
+
+                for (Contact contact : account.getRoster().getContacts()) {
+                    if (contact.getPresences().anyIdentity("gateway", "pstn")) {
+                        hasPstnOrSms = true;
+                        break outer;
+                    }
+                    if (contact.getPresences().anyIdentity("gateway", "sms")) {
+                        hasPstnOrSms = true;
+                        break outer;
+                    }
+                }
+            }
+
+            if (!hasPstnOrSms) {
+                startCommand(selectedAccount, Jid.of("cheogram.com/CHEOGRAM%jabber:iq:register"), "jabber:iq:register");
+                finish();
+                return;
+            }
+        }
+
         if (intent != null && processViewIntent(intent)) {
             filter(null);
         } else {

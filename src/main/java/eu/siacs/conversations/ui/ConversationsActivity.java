@@ -34,12 +34,14 @@ import static eu.siacs.conversations.ui.SettingsActivity.HIDE_MEMORY_WARNING;
 import static eu.siacs.conversations.ui.SettingsActivity.MIN_ANDROID_SDK21_SHOWN;
 import static eu.siacs.conversations.utils.StorageHelper.getAppMediaDirectory;
 
+import android.Manifest;
 import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.app.Fragment;
 import android.app.FragmentManager;
 import android.app.FragmentTransaction;
 import android.content.ActivityNotFoundException;
+import android.content.ComponentName;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
@@ -59,6 +61,8 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.TextView;
 import android.widget.Toast;
+import androidx.core.content.ContextCompat;
+import de.monocles.chat.DownloadDefaultStickers;
 
 import net.java.otr4j.session.SessionStatus;
 import androidx.appcompat.widget.PopupMenu;
@@ -74,8 +78,10 @@ import org.openintents.openpgp.util.OpenPgpApi;
 
 import java.io.File;
 import java.util.Arrays;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Locale;
+import java.util.Set;
 import java.util.concurrent.atomic.AtomicBoolean;
 
 import eu.siacs.conversations.Config;
@@ -129,7 +135,12 @@ public class ConversationsActivity extends XmppActivity implements OnConversatio
     public static final String ACTION_DESTROY_MUC = "eu.siacs.conversations.DESTROY_MUC";
     public static final int REQUEST_OPEN_MESSAGE = 0x9876;
     public static final int REQUEST_PLAY_PAUSE = 0x5432;
+    public static final int REQUEST_MICROPHONE = 0x5432f;
+    public static final int DIALLER_INTEGRATION = 0x5432ff;
+    public static final int REQUEST_DOWNLOAD_STICKERS = 0xbf8702;
     public static final String EXTRA_TYPE = "type";
+    public static final String EXTRA_NODE = "node";
+    public static final String EXTRA_JID = "jid";
 
     private static final List<String> VIEW_AND_SHARE_ACTIONS = Arrays.asList(
             ACTION_VIEW_CONVERSATION,
@@ -152,6 +163,9 @@ public class ConversationsActivity extends XmppActivity implements OnConversatio
     private ActivityConversationsBinding binding;
     private boolean mActivityPaused = true;
     private AtomicBoolean mRedirectInProcess = new AtomicBoolean(false);
+    private boolean refreshForNewCaps = false;
+    private int mRequestCode = -1;
+
 
     private static boolean isViewOrShareIntent(Intent i) {
         Log.d(Config.LOGTAG, "action: " + (i == null ? null : i.getAction()));
@@ -172,6 +186,7 @@ public class ConversationsActivity extends XmppActivity implements OnConversatio
         for (@IdRes int id : FRAGMENT_ID_NOTIFICATION_ORDER) {
             refreshFragment(id);
         }
+        refreshForNewCaps = false;
     }
 
     @Override
@@ -286,10 +301,11 @@ public class ConversationsActivity extends XmppActivity implements OnConversatio
         final Fragment fragment = getFragmentManager().findFragmentById(R.id.main_fragment);
         if (fragment instanceof ConversationsOverviewFragment) {
 
-            if (ExceptionHelper.checkForCrash(this)) {
-                return;
-            }
+            if (ExceptionHelper.checkForCrash(this)) return;
+            if (offerToSetupDiallerIntegration()) return;
+            if (offerToDownloadStickers()) return;
             openBatteryOptimizationDialogIfNeeded();
+
             new showMemoryWarning(this).execute();
             showOutdatedVersionWarning();
         }
@@ -352,6 +368,74 @@ public class ConversationsActivity extends XmppActivity implements OnConversatio
             dialog.setCanceledOnTouchOutside(false);
             dialog.show();
         }
+    }
+
+    private boolean offerToDownloadStickers() {
+        int offered = getPreferences().getInt("default_stickers_offered", 0);
+        if (offered > 0) return false;
+        getPreferences().edit().putInt("default_stickers_offered", 1).apply();
+
+        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        builder.setTitle("Download Stickers?");
+        builder.setMessage("Would you like to download some default sticker packs?");
+        builder.setPositiveButton(R.string.yes, (dialog, which) -> {
+            if (hasStoragePermission(REQUEST_DOWNLOAD_STICKERS)) {
+                downloadStickers();
+            }
+        });
+        builder.setNegativeButton(R.string.no, (dialog, which) -> { });
+        final AlertDialog dialog = builder.create();
+        dialog.setCanceledOnTouchOutside(false);
+        dialog.show();
+        return true;
+    }
+
+    private boolean offerToSetupDiallerIntegration() {
+        if (mRequestCode == DIALLER_INTEGRATION) {
+            mRequestCode = -1;
+            return true;
+        }
+        if (Build.VERSION.SDK_INT < 23) return false;
+        if (Build.VERSION.SDK_INT >= 33) {
+            if (!getPackageManager().hasSystemFeature(PackageManager.FEATURE_TELECOM)) return false;
+        } else {
+            if (!getPackageManager().hasSystemFeature(PackageManager.FEATURE_CONNECTION_SERVICE)) return false;
+        }
+
+        Set<String> pstnGateways = new HashSet<>();
+        for (Account account : xmppConnectionService.getAccounts()) {
+            for (Contact contact : account.getRoster().getContacts()) {
+                if (contact.getPresences().anyIdentity("gateway", "pstn")) {
+                    pstnGateways.add(contact.getJid().asBareJid().toEscapedString());
+                }
+            }
+        }
+
+        if (pstnGateways.size() < 1) return false;
+        Set<String> fromPrefs = getPreferences().getStringSet("pstn_gateways", Set.of("UPGRADE"));
+        getPreferences().edit().putStringSet("pstn_gateways", pstnGateways).apply();
+        pstnGateways.removeAll(fromPrefs);
+        if (pstnGateways.size() < 1) return false;
+
+        if (fromPrefs.contains("UPGRADE")) return false;
+
+        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        builder.setTitle("Dialler Integration");
+        builder.setMessage("monocles chat is able to integrate with your system's dialler app to allow dialling calls via your configured gateway " + String.join(", ", pstnGateways) + ".\n\nEnabling this integration will require granting microphone permission to the app.  Would you like to enable it now?");
+        builder.setPositiveButton(R.string.yes, (dialog, which) -> {
+            final String[] permissions;
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.S) {
+                permissions = new String[]{Manifest.permission.RECORD_AUDIO, Manifest.permission.BLUETOOTH_CONNECT};
+            } else {
+                permissions = new String[]{Manifest.permission.RECORD_AUDIO};
+            }
+            requestPermissions(permissions, REQUEST_MICROPHONE);
+        });
+        builder.setNegativeButton(R.string.no, (dialog, which) -> { });
+        final AlertDialog dialog = builder.create();
+        dialog.setCanceledOnTouchOutside(false);
+        dialog.show();
+        return true;
     }
 
     public class showMemoryWarning extends AsyncTask<Void, Void, Void> {
@@ -453,6 +537,7 @@ public class ConversationsActivity extends XmppActivity implements OnConversatio
         final Fragment fragment = getFragmentManager().findFragmentById(id);
         if (fragment instanceof XmppFragment) {
             ((XmppFragment) fragment).refresh();
+            if (refreshForNewCaps) ((XmppFragment) fragment).refreshForNewCaps();
         }
     }
 
@@ -482,14 +567,39 @@ public class ConversationsActivity extends XmppActivity implements OnConversatio
                     case REQUEST_PLAY_PAUSE:
                         ConversationFragment.startStopPending(this);
                         break;
+                    case REQUEST_MICROPHONE:
+                        Intent intent = new Intent();
+                        intent.setComponent(new ComponentName("com.android.server.telecom",
+                                "com.android.server.telecom.settings.EnableAccountPreferenceActivity"));
+                        startActivityForResult(intent, DIALLER_INTEGRATION);
+                        break;
+                    case REQUEST_DOWNLOAD_STICKERS:
+                        downloadStickers();
+                        break;
                 }
             }
         }
     }
 
+    private void downloadStickers() {
+        Intent intent = new Intent(this, DownloadDefaultStickers.class);
+        intent.putExtra("tor", xmppConnectionService.useTorToConnect());
+        intent.putExtra("i2p", xmppConnectionService.useI2PToConnect());
+        ContextCompat.startForegroundService(this, intent);
+        displayToast("Sticker download started");
+        showDialogsIfMainIsOverview();
+    }
+
     @Override
     public void onActivityResult(int requestCode, int resultCode, final Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
+
+        if (requestCode == DIALLER_INTEGRATION) {
+            mRequestCode = requestCode;
+            startActivity(new Intent(android.telecom.TelecomManager.ACTION_CHANGE_PHONE_ACCOUNTS));
+            return;
+        }
+
         ActivityResult activityResult = ActivityResult.of(requestCode, resultCode, data);
         if (xmppConnectionService != null) {
             handleActivityResult(activityResult);
@@ -683,7 +793,14 @@ public class ConversationsActivity extends XmppActivity implements OnConversatio
         if (xmppUri.isValidJid() && !xmppUri.hasFingerprints()) {
             final Conversation conversation = xmppConnectionService.findUniqueConversationByJid(xmppUri);
             if (conversation != null) {
-                openConversation(conversation, null);
+                if (xmppUri.isAction("command")) {
+                    startCommand(conversation.getAccount(), conversation.getJid(), xmppUri.getParameter("node"));
+                } else {
+                    Bundle extras = new Bundle();
+                    extras.putString(Intent.EXTRA_TEXT, xmppUri.getBody());
+                    if (xmppUri.isAction("message")) extras.putString(EXTRA_POST_INIT_ACTION, "message");
+                    openConversation(conversation, extras);
+                }
                 return true;
             }
         }
@@ -698,6 +815,14 @@ public class ConversationsActivity extends XmppActivity implements OnConversatio
         switch (item.getItemId()) {
             case android.R.id.home:
                 FragmentManager fm = getFragmentManager();
+                if (android.os.Build.VERSION.SDK_INT >= 26) {
+                    Fragment f = fm.getFragments().get(fm.getFragments().size() - 1);
+                    if (f != null && f instanceof ConversationFragment) {
+                        if (((ConversationFragment) f).onBackPressed()) {
+                            return true;
+                        }
+                    }
+                }
                 if (fm.getBackStackEntryCount() > 0) {
                     try {
                         fm.popBackStack();
@@ -1056,15 +1181,17 @@ public class ConversationsActivity extends XmppActivity implements OnConversatio
     }
 
     @Override
-    public void onConversationUpdate() {
+    public void onConversationUpdate(boolean newCaps) {
         if (performRedirectIfNecessary(false)) {
             return;
         }
+        refreshForNewCaps = newCaps;
         this.refreshUi();
     }
 
     @Override
     public void onRosterUpdate() {
+        refreshForNewCaps = true;
         this.refreshUi();
     }
 

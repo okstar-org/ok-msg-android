@@ -234,6 +234,7 @@ public final class MimeUtils {
         add("application/x-x509-server-cert", "crt");
         add("application/x-xcf", "xcf");
         add("application/x-xfig", "fig");
+        add("application/xdc+zip", "xdc");
         add("application/xhtml+xml", "xhtml");
         add("video/3gpp", "3gpp");
         add("video/3gpp", "3gp");
@@ -338,6 +339,7 @@ public final class MimeUtils {
         add("text/html", "html");
         add("text/h323", "323");
         add("text/iuls", "uls");
+        add("text/javascript", "js");
         add("text/mathml", "mml");
         // add ".txt" first so it will be the default for guessExtensionFromMimeType
         add("text/plain", "txt");

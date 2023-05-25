@@ -65,7 +65,7 @@
     <bool name="show_own_accounts">true</bool>
     <bool name="vibrate_in_chat">true</bool>
     <bool name="enable_otr">false</bool>
-    <bool name="showtextformatting">true</bool>
+    <bool name="showtextformatting">false</bool>
     <integer name="auto_accept_filesize_wifi">0</integer>
     <integer name="auto_accept_filesize_mobile">0</integer>
     <integer name="auto_accept_filesize_roaming">0</integer>
@@ -104,6 +104,7 @@
     <bool name="enable_persistent_rooms">true</bool>
     <string name="default_push_server">up.conversations.im</string>
     <string name="default_push_account">none</string>
+    <bool name="dialler_integration_incoming">true</bool>
 
 
     <string-array name="domains">

@@ -1,6 +1,7 @@
 package eu.siacs.conversations.ui;
 
 import static eu.siacs.conversations.ui.SettingsActivity.USE_INTERNAL_UPDATER;
+import android.telephony.TelephonyManager;
 import eu.siacs.conversations.utils.Compatibility;
 import androidx.annotation.RequiresApi;
 import android.Manifest;
@@ -584,6 +585,17 @@ public abstract class XmppActivity extends ActionBarActivity {
         return getPreferences().getBoolean(name, getResources().getBoolean(res));
     }
 
+    public void startCommand(final Account account, final Jid jid, final String node) {
+        Intent intent = new Intent(this, ConversationsActivity.class);
+        intent.setAction(ConversationsActivity.ACTION_VIEW_CONVERSATION);
+        intent.putExtra(ConversationsActivity.EXTRA_CONVERSATION, xmppConnectionService.findOrCreateConversation(account, jid, false, false).getUuid());
+        intent.putExtra(ConversationsActivity.EXTRA_POST_INIT_ACTION, "command");
+        intent.putExtra(ConversationsActivity.EXTRA_NODE, node);
+        intent.putExtra(ConversationsActivity.EXTRA_JID, (CharSequence) jid);
+        intent.setFlags(intent.getFlags() | Intent.FLAG_ACTIVITY_CLEAR_TOP);
+        startActivity(intent);
+    }
+
     protected String getStringPreference(String name, int res) {
         return getPreferences().getString(name, getResources().getString(res));
     }
@@ -621,7 +633,12 @@ public abstract class XmppActivity extends ActionBarActivity {
         switchToConversation(conversation, null, false, nick, true, false);
     }
 
-    private void switchToConversation(Conversation conversation, String text, boolean asQuote, String nick, boolean pm, boolean doNotAppend) {
+    public void switchToConversation(Conversation conversation, String text, boolean asQuote, String nick, boolean pm, boolean doNotAppend) {
+        switchToConversation(conversation, text, asQuote, nick, pm, doNotAppend, null);
+    }
+
+    public void switchToConversation(Conversation conversation, String text, boolean asQuote, String nick, boolean pm, boolean doNotAppend, String postInit) {
+        if (conversation == null) return;
         Intent intent = new Intent(this, ConversationsActivity.class);
         intent.setAction(ConversationsActivity.ACTION_VIEW_CONVERSATION);
         intent.putExtra(ConversationsActivity.EXTRA_CONVERSATION, conversation.getUuid());
@@ -639,6 +656,7 @@ public abstract class XmppActivity extends ActionBarActivity {
         if (doNotAppend) {
             intent.putExtra(ConversationsActivity.EXTRA_DO_NOT_APPEND, true);
         }
+        intent.putExtra(ConversationsActivity.EXTRA_POST_INIT_ACTION, postInit);
         intent.setFlags(intent.getFlags() | Intent.FLAG_ACTIVITY_CLEAR_TOP);
         startActivity(intent);
         overridePendingTransition(R.animator.fade_in, R.animator.fade_out);
@@ -816,18 +834,14 @@ public abstract class XmppActivity extends ActionBarActivity {
 
     }
 
-    public void showAddToRosterDialog(final Contact contact) {
-        if (contact == null) {
-            return;
-        }
-        final AlertDialog.Builder builder = new AlertDialog.Builder(this);
+    protected void showAddToRosterDialog(final Contact contact) {
+        AlertDialog.Builder builder = new AlertDialog.Builder(this);
         builder.setTitle(contact.getJid().toString());
         builder.setMessage(getString(R.string.not_in_roster));
         builder.setNegativeButton(getString(R.string.cancel), null);
         builder.setPositiveButton(getString(R.string.add_contact), (dialog, which) -> {
             contact.copySystemTagsToGroups();
             xmppConnectionService.createContact(contact, true);
-            recreate();
         });
         builder.create().show();
     }
@@ -875,16 +889,18 @@ public abstract class XmppActivity extends ActionBarActivity {
     protected void quickPasswordEdit(String previousValue, OnValueEdited callback) {
         quickEdit(previousValue, callback, R.string.password, true, false);
     }
+
     protected void quickEdit(final String previousValue, final OnValueEdited callback, final @StringRes int hint, boolean password, boolean permitEmpty) {
         quickEdit(previousValue, callback, hint, password, permitEmpty, false);
     }
+
     @SuppressLint("InflateParams")
-    void quickEdit(final String previousValue,
-                   final OnValueEdited callback,
-                   final @StringRes int hint,
-                   boolean password,
-                   boolean permitEmpty,
-                   boolean alwaysCallback) {
+    protected void quickEdit(final String previousValue,
+                             final OnValueEdited callback,
+                             final @StringRes int hint,
+                             boolean password,
+                             boolean permitEmpty,
+                             boolean alwaysCallback) {
         final AlertDialog.Builder builder = new AlertDialog.Builder(this);
         DialogQuickeditBinding binding = DataBindingUtil.inflate(getLayoutInflater(), R.layout.dialog_quickedit, null, false);
         if (password) {

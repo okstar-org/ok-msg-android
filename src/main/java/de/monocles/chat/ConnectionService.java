@@ -104,7 +104,7 @@ public class ConnectionService extends android.telecom.ConnectionService {
 
         String tel = PhoneNumberUtils.extractNetworkPortion(rawTel);
         try {
-            tel = PhoneNumberUtilWrapper.normalize(this, tel);
+            tel = PhoneNumberUtilWrapper.normalize(this, tel, true);
         } catch (IllegalArgumentException | NumberParseException e) {
             return Connection.createFailedConnection(
                     new DisconnectCause(DisconnectCause.ERROR)
@@ -277,17 +277,27 @@ public class ConnectionService extends android.telecom.ConnectionService {
         public void onAudioDeviceChanged(AppRTCAudioManager.AudioDevice selectedAudioDevice, Set<AppRTCAudioManager.AudioDevice> availableAudioDevices) {
             if (Build.VERSION.SDK_INT < 26) return;
 
-            if (pendingState != null) onCallAudioStateChanged(pendingState);
+            if (pendingState != null) {
+                Log.d(".monoclesConnection", "Try with pendingState: " + pendingState);
+                onCallAudioStateChanged(pendingState);
+                return;
+            }
+
+            Log.d("monoclesConnection", "onAudioDeviceChanged: " + selectedAudioDevice);
 
             switch(selectedAudioDevice) {
                 case SPEAKER_PHONE:
                     setAudioRoute(CallAudioState.ROUTE_SPEAKER);
+                    break;
                 case WIRED_HEADSET:
                     setAudioRoute(CallAudioState.ROUTE_WIRED_HEADSET);
+                    break;
                 case EARPIECE:
                     setAudioRoute(CallAudioState.ROUTE_EARPIECE);
+                    break;
                 case BLUETOOTH:
                     setAudioRoute(CallAudioState.ROUTE_BLUETOOTH);
+                    break;
                 default:
                     setAudioRoute(CallAudioState.ROUTE_WIRED_OR_EARPIECE);
             }
@@ -296,9 +306,28 @@ public class ConnectionService extends android.telecom.ConnectionService {
         @Override
         public void onCallAudioStateChanged(CallAudioState state) {
             pendingState = null;
-            if (rtpConnection == null || rtpConnection.get() == null) {
+            if (rtpConnection == null || rtpConnection.get() == null || rtpConnection.get().getAudioManager() == null) {
                 pendingState = state;
                 return;
+            }
+
+            Log.d("monoclesConnection", "onCallAudioStateChanged: " + state);
+
+            switch(state.getRoute()) {
+                case CallAudioState.ROUTE_SPEAKER:
+                    rtpConnection.get().getAudioManager().setDefaultAudioDevice(AppRTCAudioManager.AudioDevice.SPEAKER_PHONE);
+                    break;
+                case CallAudioState.ROUTE_WIRED_HEADSET:
+                    rtpConnection.get().getAudioManager().setDefaultAudioDevice(AppRTCAudioManager.AudioDevice.WIRED_HEADSET);
+                    break;
+                case CallAudioState.ROUTE_EARPIECE:
+                    rtpConnection.get().getAudioManager().setDefaultAudioDevice(AppRTCAudioManager.AudioDevice.EARPIECE);
+                    break;
+                case CallAudioState.ROUTE_BLUETOOTH:
+                    rtpConnection.get().getAudioManager().setDefaultAudioDevice(AppRTCAudioManager.AudioDevice.BLUETOOTH);
+                    break;
+                default:
+                    rtpConnection.get().getAudioManager().setDefaultAudioDevice(AppRTCAudioManager.AudioDevice.NONE);
             }
 
             try {
@@ -357,6 +386,11 @@ public class ConnectionService extends android.telecom.ConnectionService {
 
         @Override
         public void onPlayDtmfTone(char c) {
+            if (rtpConnection == null || rtpConnection.get() == null) {
+                postDial.push("" + c);
+                return;
+            }
+
             rtpConnection.get().applyDtmfTone("" + c);
         }
 

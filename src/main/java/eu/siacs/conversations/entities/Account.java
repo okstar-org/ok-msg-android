@@ -4,6 +4,7 @@ import android.content.ContentValues;
 import android.database.Cursor;
 import android.os.SystemClock;
 import android.util.Log;
+import android.net.Uri;
 
 import com.google.common.base.Strings;
 import com.google.common.collect.ImmutableList;
@@ -112,6 +113,8 @@ public class Account extends AbstractEntity implements AvatarService.Avatarable 
     private long mEndGracePeriod = 0L;
     private String otrFingerprint;
     private final Map<Jid, Bookmark> bookmarks = new HashMap<>();
+    private boolean bookmarksLoaded = false;
+
     private Presence.Status presenceStatus;
     private String presenceStatusMessage;
     private String pinnedMechanism;
@@ -658,11 +661,13 @@ public class Account extends AbstractEntity implements AvatarService.Avatarable 
             return ImmutableList.copyOf(this.bookmarks.values());
         }
     }
+    public boolean areBookmarksLoaded() { return bookmarksLoaded; }
 
-    public void setBookmarks(final Map<Jid, Bookmark> bookmarks) {
+    public void setBookmarks(Map<Jid, Bookmark> bookmarks) {
         synchronized (this.bookmarks) {
             this.bookmarks.clear();
             this.bookmarks.putAll(bookmarks);
+            this.bookmarksLoaded = true;
         }
     }
 
@@ -725,7 +730,7 @@ public class Account extends AbstractEntity implements AvatarService.Avatarable 
 
     public String getShareableUri() {
         List<XmppUri.Fingerprint> fingerprints = this.getFingerprints();
-        String uri = "xmpp:" + this.getJid().asBareJid().toEscapedString();
+        String uri = "xmpp:" + Uri.encode(getJid().asBareJid().toEscapedString(), "@/+");
         if (fingerprints.size() > 0) {
             return XmppUri.getFingerprintUri(uri, fingerprints, ';');
         } else {

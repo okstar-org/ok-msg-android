@@ -27,8 +27,11 @@ import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.CompoundButton;
 import android.widget.CompoundButton.OnCheckedChangeListener;
+import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.TextView;
+import android.widget.ArrayAdapter;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.ActionBar;
@@ -45,7 +48,12 @@ import java.util.Collection;
 import java.util.Collections;
 import java.util.List;
 import java.util.concurrent.atomic.AtomicInteger;
+import java.util.ArrayList;
+import java.util.Comparator;
+import java.util.Map;
+import java.util.stream.Collectors;
 
+import eu.siacs.conversations.entities.Bookmark;
 import eu.siacs.conversations.Config;
 import eu.siacs.conversations.R;
 import eu.siacs.conversations.crypto.axolotl.AxolotlService;
@@ -66,6 +74,7 @@ import eu.siacs.conversations.ui.util.AvatarWorkerTask;
 import eu.siacs.conversations.ui.util.CallManager;
 import eu.siacs.conversations.ui.util.GridManager;
 import eu.siacs.conversations.ui.util.JidDialog;
+import eu.siacs.conversations.ui.util.SoftKeyboardUtils;
 import eu.siacs.conversations.utils.Compatibility;
 import eu.siacs.conversations.utils.Emoticons;
 import eu.siacs.conversations.utils.IrregularUnicodeDetector;
@@ -78,6 +87,13 @@ import eu.siacs.conversations.xmpp.Jid;
 import eu.siacs.conversations.xmpp.OnKeyStatusUpdated;
 import eu.siacs.conversations.xmpp.OnUpdateBlocklist;
 import eu.siacs.conversations.xmpp.XmppConnection;
+import eu.siacs.conversations.xml.Element;
+import eu.siacs.conversations.ui.util.ShareUtil;
+import eu.siacs.conversations.databinding.CommandRowBinding;
+import de.monocles.chat.Util;
+import android.view.ViewGroup;
+import android.util.TypedValue;
+import android.graphics.drawable.Drawable;
 import eu.siacs.conversations.xmpp.jingle.OngoingRtpSession;
 import eu.siacs.conversations.xmpp.jingle.RtpCapability;
 import me.drakeet.support.toast.ToastCompat;
@@ -91,7 +107,8 @@ public class ContactDetailsActivity extends OmemoActivity implements OnAccountUp
     private ConversationFragment mConversationFragment;
     ActivityContactDetailsBinding binding;
     private MediaAdapter mMediaAdapter;
-    private boolean mAdvancedMode = false;
+    protected MenuItem edit = null;
+    protected MenuItem save = null;
     private boolean mIndividualNotifications = false;
     private DialogInterface.OnClickListener removeFromRoster = new DialogInterface.OnClickListener() {
 
@@ -258,16 +275,15 @@ public class ContactDetailsActivity extends OmemoActivity implements OnAccountUp
     @Override
     protected String getShareableUri(boolean http) {
         if (http) {
-            return Config.inviteUserURL + XmppUri.lameUrlEncode(contact.getJid().asBareJid().toEscapedString());
+            return "https://conversations.im/i/" + XmppUri.lameUrlEncode(contact.getJid().asBareJid().toEscapedString());
         } else {
-            return "xmpp:" + contact.getJid().asBareJid().toEscapedString();
+            return "xmpp:" + Uri.encode(contact.getJid().asBareJid().toEscapedString(), "@/+");
         }
     }
 
     @Override
     protected void onCreate(final Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        this.mAdvancedMode = getPreferences().getBoolean("advanced_mode", false);
         showInactiveOmemo = savedInstanceState != null && savedInstanceState.getBoolean("show_inactive_omemo", false);
         if (getIntent().getAction().equals(ACTION_VIEW_CONTACT)) {
             try {
@@ -331,6 +347,19 @@ public class ContactDetailsActivity extends OmemoActivity implements OnAccountUp
             }
     }
 
+    protected void saveEdits() {
+        binding.editTags.setVisibility(View.GONE);
+        if (edit != null) {
+            EditText text = edit.getActionView().findViewById(R.id.search_field);
+            contact.setServerName(text.getText().toString());
+            contact.setGroups(binding.editTags.getObjects().stream().map(tag -> tag.getName()).collect(Collectors.toList()));
+            ContactDetailsActivity.this.xmppConnectionService.pushContactToServer(contact);
+            populateView();
+            edit.collapseActionView();
+        }
+        if (save != null) save.setVisible(false);
+    }
+
     @Override
     public boolean onOptionsItemSelected(final MenuItem menuItem) {
         if (MenuDoubleTabUtil.shouldIgnoreTap()) {
@@ -357,18 +386,68 @@ public class ContactDetailsActivity extends OmemoActivity implements OnAccountUp
             case R.id.action_share_uri:
                 shareLink(false);
                 break;
+            case R.id.action_save:
+                saveEdits();
+                break;
+            case R.id.action_edit_contact:
+                Uri systemAccount = contact.getSystemAccount();
+                if (systemAccount == null) {
+                    menuItem.expandActionView();
+                    EditText text = menuItem.getActionView().findViewById(R.id.search_field);
+                    text.setOnEditorActionListener((v, actionId, event) -> {
+                        saveEdits();
+                        return true;
+                    });
+                    text.setText(contact.getServerName());
+                    text.requestFocus();
+                    binding.tags.setVisibility(View.GONE);
+                    binding.editTags.clearSync();
+                    for (final ListItem.Tag group : contact.getGroupTags()) {
+                        binding.editTags.addObjectSync(group);
+                    }
+                    ArrayList<ListItem.Tag> tags = new ArrayList<>();
+                    for (final Account account : xmppConnectionService.getAccounts()) {
+                        for (Contact contact : account.getRoster().getContacts()) {
+                            tags.addAll(contact.getTags(this));
+                        }
+                        for (Bookmark bookmark : account.getBookmarks()) {
+                            tags.addAll(bookmark.getTags(this));
+                        }
+                    }
+                    Comparator<Map.Entry<ListItem.Tag,Integer>> sortTagsBy = Map.Entry.comparingByValue(Comparator.reverseOrder());
+                    sortTagsBy = sortTagsBy.thenComparing(entry -> entry.getKey().getName());
+
+                    ArrayAdapter<ListItem.Tag> adapter = new ArrayAdapter<>(
+                            this,
+                            android.R.layout.simple_list_item_1,
+                            tags.stream()
+                                    .collect(Collectors.toMap((x) -> x, (t) -> 1, (c1, c2) -> c1 + c2))
+                                    .entrySet().stream()
+                                    .sorted(sortTagsBy)
+                                    .map(e -> e.getKey()).collect(Collectors.toList())
+                    );
+                    binding.editTags.setAdapter(adapter);
+                    if (showDynamicTags) binding.editTags.setVisibility(View.VISIBLE);
+                    if (save != null) save.setVisible(true);
+                } else {
+                    menuItem.collapseActionView();
+                    if (save != null) save.setVisible(false);
+                    Intent intent = new Intent(Intent.ACTION_EDIT);
+                    intent.setDataAndType(systemAccount, Contacts.CONTENT_ITEM_TYPE);
+                    intent.putExtra("finishActivityOnSaveCompleted", true);
+                    try {
+                        startActivity(intent);
+                    } catch (ActivityNotFoundException e) {
+                        Toast.makeText(ContactDetailsActivity.this, R.string.no_application_found_to_view_contact, Toast.LENGTH_SHORT).show();
+                    }
+
+                }
+                break;
             case R.id.action_block:
                 BlockContactDialog.show(this, contact);
                 break;
             case R.id.action_unblock:
                 BlockContactDialog.show(this, contact);
-                break;
-            case R.id.action_advanced_mode:
-                this.mAdvancedMode = !menuItem.isChecked();
-                menuItem.setChecked(this.mAdvancedMode);
-                getPreferences().edit().putBoolean("advanced_mode", mAdvancedMode).apply();
-                invalidateOptionsMenu();
-                refreshUi();
                 break;
             case R.id.action_activate_individual_notifications:
                 if (!menuItem.isChecked()) {
@@ -451,8 +530,6 @@ public class ContactDetailsActivity extends OmemoActivity implements OnAccountUp
 
     @Override
     public boolean onPrepareOptionsMenu(Menu menu) {
-        MenuItem menuItemAdvancedMode = menu.findItem(R.id.action_advanced_mode);
-        menuItemAdvancedMode.setChecked(mAdvancedMode);
         MenuItem menuItemIndividualNotifications = menu.findItem(R.id.action_activate_individual_notifications);
         menuItemIndividualNotifications.setChecked(mIndividualNotifications);
         menuItemIndividualNotifications.setVisible(Compatibility.runsTwentySix());
@@ -472,6 +549,8 @@ public class ContactDetailsActivity extends OmemoActivity implements OnAccountUp
         final MenuItem menuVideoCall = menu.findItem(R.id.action_video_call);
         final MenuItem menuMessageNotification = menu.findItem(R.id.action_message_notifications);
         final MenuItem menuCallNotification = menu.findItem(R.id.action_call_notifications);
+        edit = menu.findItem(R.id.action_edit_contact);
+        save = menu.findItem(R.id.action_save);
         if (contact == null) {
             return true;
         }
@@ -510,6 +589,22 @@ public class ContactDetailsActivity extends OmemoActivity implements OnAccountUp
             unblock.setVisible(false);
             block.setVisible(false);
         }
+        if (!contact.showInRoster()) {
+            edit.setVisible(false);
+        }
+        edit.setOnActionExpandListener(new MenuItem.OnActionExpandListener() {
+            @Override
+            public boolean onMenuItemActionCollapse(MenuItem item) {
+                SoftKeyboardUtils.hideSoftKeyboard(ContactDetailsActivity.this);
+                binding.editTags.setVisibility(View.GONE);
+                if (save != null) save.setVisible(false);
+                populateView();
+                return true;
+            }
+
+            @Override
+            public boolean onMenuItemActionExpand(MenuItem item) { return true; }
+        });
         return super.onCreateOptionsMenu(menu);
     }
 
@@ -517,6 +612,7 @@ public class ContactDetailsActivity extends OmemoActivity implements OnAccountUp
         if (contact == null) {
             return;
         }
+        if (binding.editTags.getVisibility() != View.GONE) return;
         int ic_notifications = getThemeResource(R.attr.icon_notifications, R.drawable.ic_notifications_black_24dp);
         int ic_notifications_off = getThemeResource(R.attr.icon_notifications_off, R.drawable.ic_notifications_off_black_24dp);
         int ic_notifications_paused = getThemeResource(R.attr.icon_notifications_paused, R.drawable.ic_notifications_paused_black_24dp);
@@ -538,7 +634,7 @@ public class ContactDetailsActivity extends OmemoActivity implements OnAccountUp
                 ab.setDisplayShowCustomEnabled(true);
                 TextView abtitle = findViewById(android.R.id.text1);
                 TextView absubtitle = findViewById(android.R.id.text2);
-                abtitle.setText(R.string.contact_details);
+                abtitle.setText(contact.getServerName());
                 abtitle.setSelected(true);
                 abtitle.setClickable(false);
                 absubtitle.setVisibility(View.GONE);
@@ -546,8 +642,6 @@ public class ContactDetailsActivity extends OmemoActivity implements OnAccountUp
             }
         }
         invalidateOptionsMenu();
-        binding.contactDisplayName.setText(contact.getDisplayName());
-        this.binding.jid.setVisibility(this.mAdvancedMode ? View.VISIBLE : View.GONE);
         if (contact.showInRoster()) {
             binding.detailsSendPresence.setVisibility(View.VISIBLE);
             binding.detailsSendPresence.setOnCheckedChangeListener(null);
@@ -563,10 +657,6 @@ public class ContactDetailsActivity extends OmemoActivity implements OnAccountUp
                         .setTitle(getString(R.string.action_delete_contact))
                         .setMessage(JidDialog.style(this, R.string.remove_contact_text, contact.getJid().toEscapedString()))
                         .setPositiveButton(getString(R.string.delete), removeFromRoster).create().show();
-            });
-            binding.editContactNameButton.setVisibility(View.VISIBLE);
-            binding.editContactNameButton.setOnClickListener(view -> {
-                editContact();
             });
             List<String> statusMessages = contact.getPresences().getStatusMessages();
             if (statusMessages.size() == 0) {
@@ -633,7 +723,6 @@ public class ContactDetailsActivity extends OmemoActivity implements OnAccountUp
             binding.detailsSendPresence.setOnCheckedChangeListener(this.mOnSendCheckedChange);
             binding.detailsReceivePresence.setOnCheckedChangeListener(this.mOnReceiveCheckedChange);
         } else {
-            binding.editContactNameButton.setVisibility(View.GONE);
             binding.addContactButton.setVisibility(View.VISIBLE);
             binding.addContactButton.setText(getString(R.string.add_contact));
             binding.addContactButton.getBackground().clearColorFilter();
@@ -786,6 +875,46 @@ public class ContactDetailsActivity extends OmemoActivity implements OnAccountUp
                 this.binding.showMedia.setOnClickListener((v) -> MediaBrowserActivity.launch(this, contact));
             }
             this.mIndividualNotifications = xmppConnectionService.hasIndividualNotification(mConversation);
+
+            final VcardAdapter items = new VcardAdapter();
+            binding.profileItems.setAdapter(items);
+            binding.profileItems.setOnItemClickListener((a0, v, pos, a3) -> {
+                final Uri uri = items.getUri(pos);
+                if (uri == null) return;
+
+                if (uri.getScheme().equals("xmpp")) {
+                    switchToConversation(xmppConnectionService.findOrCreateConversation(account, Jid.of(uri.getSchemeSpecificPart()), false, true));
+                } else {
+                    Intent intent = new Intent(Intent.ACTION_VIEW, uri);
+                    startActivity(intent);
+                }
+            });
+            binding.profileItems.setOnItemLongClickListener((a0, v, pos, a3) -> {
+                String toCopy = null;
+                final Uri uri = items.getUri(pos);
+                if (uri != null) toCopy = uri.toString();
+                if (toCopy == null) {
+                    toCopy = items.getItem(pos).findChildContent("text", Namespace.VCARD4);
+                }
+
+                if (toCopy == null) return false;
+                if (ShareUtil.copyTextToClipboard(ContactDetailsActivity.this, toCopy, R.string.message)) {
+                    Toast.makeText(ContactDetailsActivity.this, R.string.message_copied_to_clipboard, Toast.LENGTH_SHORT).show();
+                }
+                return true;
+            });
+            xmppConnectionService.fetchVcard4(account, contact, (vcard4) -> {
+                if (vcard4 == null) return;
+
+                runOnUiThread(() -> {
+                    for (Element el : vcard4.getChildren()) {
+                        if (el.findChildEnsureSingle("uri", Namespace.VCARD4) != null || el.findChildEnsureSingle("text", Namespace.VCARD4) != null) {
+                            items.add(el);
+                        }
+                    }
+                    Util.justifyListViewHeightBasedOnChildren(binding.profileItems);
+                });
+            });
             populateView();
         }
     }
@@ -813,5 +942,68 @@ public class ContactDetailsActivity extends OmemoActivity implements OnAccountUp
             mMediaAdapter.setAttachments(attachments.subList(0, Math.min(limit, attachments.size())));
             binding.mediaWrapper.setVisibility(attachments.size() > 0 ? View.VISIBLE : View.GONE);
         });
+    }
+
+    class VcardAdapter extends ArrayAdapter<Element> {
+        VcardAdapter() { super(ContactDetailsActivity.this, 0); }
+
+        private Drawable getDrawable(int attr) {
+            final TypedValue typedvalueattr = new TypedValue();
+            getTheme().resolveAttribute(attr, typedvalueattr, true);
+            return getResources().getDrawable(typedvalueattr.resourceId);
+        }
+
+        @Override
+        public View getView(int position, View view, @NonNull ViewGroup parent) {
+            final CommandRowBinding binding = DataBindingUtil.inflate(LayoutInflater.from(parent.getContext()), R.layout.command_row, parent, false);
+            final Element item = getItem(position);
+
+            if (item.getName().equals("org")) {
+                binding.command.setCompoundDrawablesRelativeWithIntrinsicBounds(getDrawable(R.attr.icon_org), null, null, null);
+                binding.command.setCompoundDrawablePadding(20);
+            } else if (item.getName().equals("impp")) {
+                binding.command.setCompoundDrawablesRelativeWithIntrinsicBounds(getDrawable(R.attr.icon_chat), null, null, null);
+                binding.command.setCompoundDrawablePadding(20);
+            } else if (item.getName().equals("url")) {
+                binding.command.setCompoundDrawablesRelativeWithIntrinsicBounds(getDrawable(R.attr.icon_link), null, null, null);
+                binding.command.setCompoundDrawablePadding(20);
+            }
+
+            final Uri uri = getUri(position);
+            if (uri != null && uri.getScheme() != null) {
+                if (uri.getScheme().equals("xmpp")) {
+                    binding.command.setText(uri.getSchemeSpecificPart());
+                    binding.command.setCompoundDrawablesRelativeWithIntrinsicBounds(getResources().getDrawable(R.drawable.intro_xmpp_icon), null, null, null);
+                    binding.command.setCompoundDrawablePadding(20);
+                } else if (uri.getScheme().equals("tel")) {
+                    binding.command.setText(uri.getSchemeSpecificPart());
+                    binding.command.setCompoundDrawablesRelativeWithIntrinsicBounds(getDrawable(R.attr.ic_make_audio_call), null, null, null);
+                    binding.command.setCompoundDrawablePadding(20);
+                } else if (uri.getScheme().equals("mailto")) {
+                    binding.command.setText(uri.getSchemeSpecificPart());
+                    binding.command.setCompoundDrawablesRelativeWithIntrinsicBounds(getDrawable(R.attr.icon_email), null, null, null);
+                    binding.command.setCompoundDrawablePadding(20);
+                } else if (uri.getScheme().equals("http") || uri.getScheme().equals("https")) {
+                    binding.command.setText(uri.toString());
+                    binding.command.setCompoundDrawablesRelativeWithIntrinsicBounds(getDrawable(R.attr.icon_link), null, null, null);
+                    binding.command.setCompoundDrawablePadding(20);
+                } else {
+                    binding.command.setText(uri.toString());
+                }
+            } else {
+                final String text = item.findChildContent("text", Namespace.VCARD4);
+                binding.command.setText(text);
+            }
+
+            return binding.getRoot();
+        }
+
+        public Uri getUri(int pos) {
+            final Element item = getItem(pos);
+            final String uriS = item.findChildContent("uri", Namespace.VCARD4);
+            if (uriS != null) return Uri.parse(uriS).normalizeScheme();
+            if (item.getName().equals("email")) return Uri.parse("mailto:" + item.findChildContent("text", Namespace.VCARD4));
+            return null;
+        }
     }
 }

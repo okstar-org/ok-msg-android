@@ -1049,7 +1049,7 @@
     <string name="switch_to_video">Mudar para vídeo</string>
     <string name="reject_switch_to_video">Rejeitar solicitação pra mudar para vídeo</string>
     <string name="unified_push_distributor">Distribuidor UnifiedPush</string>
-    <string name="pref_up_push_account_title">Conta XMPP</string>
+    <string name="pref_up_push_account_title">Conta</string>
     <string name="pref_up_push_account_summary">A conta através da qual as mensagens push serão recebidas.</string>
     <string name="pref_up_push_server_title">Servidor push</string>
     <string name="no_account_deactivated">Nenhum (desativado)</string>

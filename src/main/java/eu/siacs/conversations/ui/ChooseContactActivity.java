@@ -120,7 +120,7 @@ public class ChooseContactActivity extends AbstractSearchableListItemActivity im
 
         multiple = intent.getBooleanExtra(EXTRA_SELECT_MULTIPLE, false);
         if (multiple) {
-            getListView().setChoiceMode(ListView.CHOICE_MODE_MULTIPLE_MODAL);
+            getListView().setChoiceMode(ListView.CHOICE_MODE_MULTIPLE);
             getListView().setMultiChoiceModeListener(this);
         }
 
@@ -134,6 +134,16 @@ public class ChooseContactActivity extends AbstractSearchableListItemActivity im
         }
         final SharedPreferences preferences = getPreferences();
         this.startSearching = intent.getBooleanExtra("direct_search", false) && preferences.getBoolean("start_searching", getResources().getBoolean(R.bool.start_searching));
+
+        getListItemAdapter().refreshSettings();
+        getListItemAdapter().setOnTagClickedListener((tag) -> {
+            if (mMenuSearchView != null) {
+                mMenuSearchView.expandActionView();
+                mSearchEditText.setText("");
+                mSearchEditText.append(tag);
+                filterContacts(tag);
+            }
+        });
     }
 
     private void onFabClicked(View v) {
@@ -280,6 +290,9 @@ public class ChooseContactActivity extends AbstractSearchableListItemActivity im
         }
         Collections.sort(getListItems());
         getListItemAdapter().notifyDataSetChanged();
+        for (int i = 0; i < getListItemAdapter().getCount(); i++) {
+            getListView().setItemChecked(i, selected.contains(getListItemAdapter().getItem(i).getJid().toString()));
+        }
     }
 
     private String[] getSelectedContactJids() {
@@ -316,7 +329,7 @@ public class ChooseContactActivity extends AbstractSearchableListItemActivity im
                 getIntent().getStringExtra(EXTRA_ACCOUNT),
                 true,
                 true,
-                false
+                EnterJidDialog.SanityCheck.NO
         );
 
         dialog.setOnEnterJidDialogPositiveListener((accountJid, contactJid) -> {
@@ -387,8 +400,24 @@ public class ChooseContactActivity extends AbstractSearchableListItemActivity im
     @Override
     public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
         if (multiple) {
-            startActionMode(this);
-            getListView().setItemChecked(position, true);
+            if (getListView().isItemChecked(position)) {
+                selected.add(getListItemAdapter().getItem(position).getJid().toString());
+            } else {
+                selected.remove(getListItemAdapter().getItem(position).getJid().toString());
+            }
+
+            if (selected.isEmpty()) {
+                this.binding.fab.setImageResource(R.drawable.ic_person_add_white_24dp);
+                if (this.showEnterJid) {
+                    this.binding.fab.show();
+                } else {
+                    this.binding.fab.hide();
+                }
+            } else {
+                binding.fab.setImageResource(R.drawable.ic_forward_white_24dp);
+                binding.fab.show();
+            }
+
             return;
         }
         final InputMethodManager imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);

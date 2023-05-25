@@ -43,9 +43,15 @@ import android.util.Base64;
 import android.util.Log;
 import android.webkit.URLUtil;
 
+import com.google.common.collect.Collections2;
+import com.google.common.collect.ImmutableList;
+import com.google.common.collect.Lists;
+
+import java.lang.IndexOutOfBoundsException;
 import java.net.URLDecoder;
 import java.nio.charset.StandardCharsets;
 import java.util.Arrays;
+import java.util.Collection;
 import java.util.Collections;
 import java.util.List;
 import java.util.Locale;
@@ -422,6 +428,35 @@ public class MyLinkify {
                     );
                 } catch (final IllegalArgumentException | IndexOutOfBoundsException e) { /* bad JID or span gone */ }
             }
+        }
+    }
+
+    public static List<String> extractLinks(final Editable body) {
+        MyLinkify.addLinks(body, false);
+        final Collection<URLSpan> spans =
+                Arrays.asList(body.getSpans(0, body.length() - 1, URLSpan.class));
+        final Collection<UrlWrapper> urlWrappers =
+                Collections2.filter(
+                        Collections2.transform(
+                                spans,
+                                s ->
+                                        s == null
+                                                ? null
+                                                : new UrlWrapper(body.getSpanStart(s), s.getURL())),
+                        uw -> uw != null);
+        List<UrlWrapper> sorted = ImmutableList.sortedCopyOf(
+                (a, b) -> Integer.compare(a.position, b.position), urlWrappers);
+        return Lists.transform(sorted, uw -> uw.url);
+
+    }
+
+    private static class UrlWrapper {
+        private final int position;
+        private final String url;
+
+        private UrlWrapper(int position, String url) {
+            this.position = position;
+            this.url = url;
         }
     }
 }

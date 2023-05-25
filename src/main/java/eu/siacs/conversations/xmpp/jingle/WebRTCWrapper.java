@@ -542,8 +542,14 @@ public class WebRTCWrapper {
     }
 
     boolean isMicrophoneEnabled() {
-        final Optional<AudioTrack> audioTrack =
-                TrackWrapper.get(peerConnection, this.localAudioTrack);
+        Optional<AudioTrack> audioTrack = null;
+        try {
+            audioTrack = TrackWrapper.get(peerConnection, this.localAudioTrack);
+        } catch (final IllegalStateException e) {
+            Log.d(Config.LOGTAG, "unable to check microphone", e);
+            // ignoring race condition in case sender has been disposed
+            return false;
+        }
         if (audioTrack.isPresent()) {
             try {
                 return audioTrack.get().enabled();
@@ -558,8 +564,14 @@ public class WebRTCWrapper {
     }
 
     boolean setMicrophoneEnabled(final boolean enabled) {
-        final Optional<AudioTrack> audioTrack =
-                TrackWrapper.get(peerConnection, this.localAudioTrack);
+        Optional<AudioTrack> audioTrack = null;
+        try {
+            audioTrack = TrackWrapper.get(peerConnection, this.localAudioTrack);
+        } catch (final IllegalStateException e) {
+            Log.d(Config.LOGTAG, "unable to toggle microphone", e);
+            // ignoring race condition in case sender has been disposed
+            return false;
+        }
         if (audioTrack.isPresent()) {
             try {
                 audioTrack.get().setEnabled(enabled);
@@ -724,10 +736,10 @@ public class WebRTCWrapper {
     }
 
     public boolean applyDtmfTone(String tone) {
-        if (toneManager == null || peerConnection == null || peerConnection.getSenders().isEmpty()) {
+        if (toneManager == null || peerConnection == null || localAudioTrack == null) {
             return false;
         }
-        peerConnection.getSenders().get(0).dtmf().insertDtmf(tone, TONE_DURATION, 100);
+        localAudioTrack.rtpSender.dtmf().insertDtmf(tone, TONE_DURATION, 100);
         toneManager.startTone(TONE_CODES.get(tone), TONE_DURATION);
         return true;
     }

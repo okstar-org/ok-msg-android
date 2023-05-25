@@ -108,6 +108,12 @@ dependencies {
     implementation 'androidx.recyclerview:recyclerview:1.1.0'
     implementation 'io.michaelrocks:libphonenumber-android:8.12.49'
     implementation 'io.github.nishkarsh:android-permissions:2.1.6'
+    implementation 'com.splitwise:tokenautocomplete:3.0.2'
+    implementation 'com.github.singpolyma:android-identicons:master-SNAPSHOT'
+    implementation 'com.github.woltapp:blurhash:master'
+    implementation 'androidx.documentfile:documentfile:1.0.1'
+    implementation 'com.caverock:androidsvg-aar:1.4'
+    implementation 'org.tomlj:tomlj:1.1.0'
 }
 
 ext {
@@ -122,7 +128,7 @@ def tags = grgit.tag.list().findAll { it.dateTime != null }.sort { it.dateTime }
 android {
     namespace 'eu.siacs.conversations'
     //noinspection GradleCompatible
-    compileSdkVersion 32
+    compileSdkVersion 33
 
     defaultConfig {
         minSdkVersion 21
@@ -130,7 +136,7 @@ android {
 
         //versionNameSuffix " beta_(2023-01-10)" // " beta_(XXXX-XX-XX)" // activate for beta versions
         versionCode 132
-        versionName "1.6.5"
+        versionName "1.7"
         //resConfigs "en"
 
         archivesBaseName += "-$versionName"
@@ -165,8 +171,8 @@ android {
 
     compileOptions {
         coreLibraryDesugaringEnabled true
-        sourceCompatibility JavaVersion.VERSION_1_8
-        targetCompatibility JavaVersion.VERSION_1_8
+        sourceCompatibility JavaVersion.VERSION_1_9
+        targetCompatibility JavaVersion.VERSION_1_9
     }
 
     flavorDimensions("distribution")

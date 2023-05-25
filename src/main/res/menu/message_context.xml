@@ -13,6 +13,12 @@
         android:id="@+id/copy_message"
         android:title="@string/copy_to_clipboard"
         android:visible="false" />
+
+    <item
+        android:id="@+id/only_this_thread"
+        android:title="@string/only_this_thread"
+        android:visible="false" />
+
     <item
         android:id="@+id/retry_decryption"
         android:title="@string/retry_decryption"
@@ -42,6 +48,10 @@
         android:title="@string/copy_original_url"
         android:visible="false" />
     <item
+        android:id="@+id/save_as_sticker"
+        android:title="@string/save_as_sticker"
+        android:visible="false" />
+    <item
         android:id="@+id/show_error_message"
         android:title="@string/show_error_message"
         android:visible="false" />
@@ -60,6 +70,10 @@
     <item
         android:id="@+id/save_file"
         android:title="@string/save_x_file"
+        android:visible="false" />
+    <item
+        android:id="@+id/block_media"
+        android:title="@string/block_media"
         android:visible="false" />
     <item
         android:id="@+id/delete_file"

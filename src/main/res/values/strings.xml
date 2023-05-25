@@ -327,7 +327,7 @@
     <string name="could_not_verify_fingerprint">Could not verify fingerprint</string>
     <string name="manually_verify">Manually verify</string>
     <string name="pref_show_dynamic_tags">Show dynamic tags</string>
-    <string name="pref_show_dynamic_tags_summary">Display read-only tags underneath contacts</string>
+    <string name="pref_show_dynamic_tags_summary">Allow organizing with tags</string>
     <string name="no_conference_server_found">No group chat server found</string>
     <string name="conference_creation_failed">Group chat creation failed!</string>
     <string name="account_image_description">Account avatar</string>
@@ -576,7 +576,7 @@
     <string name="copy_to_clipboard">Copy to clipboard</string>
     <string name="message_copied_to_clipboard">Message copied to clipboard</string>
     <string name="message">Message</string>
-    <string name="quote">Quote</string>
+    <string name="quote">Reply</string>
     <string name="show_error_message">Show error message</string>
     <string name="error_message">Error message</string>
     <string name="data_saver_enabled">Data saver enabled</string>
@@ -1247,10 +1247,10 @@
     <string name="switch_to_video">Switch to video</string>
     <string name="reject_switch_to_video">Reject switch to video request</string>
     <string name="unified_push_distributor">UnifiedPush Distributor</string>
-    <string name="pref_up_push_account_title">XMPP Account</string>
+    <string name="pref_up_push_account_title">Account</string>
     <string name="pref_up_push_account_summary">The account through which push messages will be received.</string>
     <string name="pref_up_push_server_title">Push Server</string>
-    <string name="pref_up_push_server_summary">A user-chosen push server to relay push messages via XMPP to your device.</string>
+    <string name="pref_up_push_server_summary">A user-chosen push server to relay push messages to apps on your device.</string>
     <string name="no_account_deactivated">None (deactivated)</string>
     <string name="pref_theme_custom">Custom</string>
     <string name="moderate_message">Moderate</string>
@@ -1269,4 +1269,18 @@
     <string name="refresh_feature_discovery">Refresh Feature Discovery</string>
     <string name="microphone_permission_for_call">Microphone permission required to complete call</string>
     <string name="i_am_snikket_user">I use Snikket</string>
+    <string name="action_edit_contact">Edit contact</string>
+    <string name="only_this_thread">Show only this thread</string>
+    <string name="pref_dialler_integration_incoming">Use Phone Accounts for Incoming Calls</string>
+    <string name="pref_dialler_integration_incoming_summary">Incoming calls from phone numbers may ring with your system dialler instead of this app\'s notification settings</string>
+    <string name="thread_marker">Thread Marker</string>
+    <string name="thread_locked">Thread locked</string>
+    <string name="tags">Tags</string>
+    <string name="save_as_sticker">Save as Sticker</string>
+    <string name="sticker_name">Sticker Name</string>
+    <string name="action_execute">Go</string>
+    <string name="block_avatar">Block avatar</string>
+    <string name="block_media">Block media</string>
+    <string name="new_contact">New contact</string>
+    <string name="add_to_home_screen">Add to home screen</string>
 </resources>

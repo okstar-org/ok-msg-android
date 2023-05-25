@@ -106,6 +106,16 @@
                                         android:autoLink="web"
                                         android:textAppearance="@style/TextAppearance.Conversations.Subhead" />
 
+                                    <com.wefika.flowlayout.FlowLayout
+                                        android:id="@+id/tags"
+                                        android:layout_width="wrap_content"
+                                        android:layout_height="wrap_content"
+                                        android:layout_marginBottom="4dp"
+                                        android:layout_marginLeft="-2dp"
+                                        android:layout_marginTop="4dp"
+                                        android:orientation="horizontal"></com.wefika.flowlayout.FlowLayout>
+
+
                                 </LinearLayout>
 
                                 <LinearLayout
@@ -148,6 +158,13 @@
                                             android:hint="@string/topic"
                                             android:textAppearance="@style/Widget.Conversations.EditText" />
                                     </com.google.android.material.textfield.TextInputLayout>
+
+                                    <de.monocles.chat.TagEditorView
+                                        android:id="@+id/edit_tags"
+                                        android:layout_width="match_parent"
+                                        android:layout_height="wrap_content"
+                                        android:hint="Tags"
+                                        android:layout_marginBottom="4dp" />
 
                                 </LinearLayout>
 
@@ -355,6 +372,7 @@
                                     android:layout_alignParentEnd="false"
                                     android:layout_alignParentRight="false"
                                     android:padding="1dp"
+                                    app:strokeColor="@color/custom_theme_accent"
                                     app:riv_corner_radius="30dp" />
 
                                 <LinearLayout

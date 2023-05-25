@@ -11,6 +11,9 @@ import android.os.Build;
 import android.util.Log;
 
 import androidx.annotation.NonNull;
+import androidx.annotation.RequiresApi;
+import androidx.core.content.pm.ShortcutInfoCompat;
+import androidx.core.graphics.drawable.IconCompat;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -19,7 +22,9 @@ import java.util.List;
 import eu.siacs.conversations.Config;
 import eu.siacs.conversations.entities.Account;
 import eu.siacs.conversations.entities.Contact;
+import eu.siacs.conversations.entities.Conversation;
 import eu.siacs.conversations.ui.StartConversationActivity;
+import eu.siacs.conversations.ui.ConversationsActivity;
 import eu.siacs.conversations.utils.ReplacingSerialSingleThreadExecutor;
 import eu.siacs.conversations.xmpp.Jid;
 
@@ -87,14 +92,21 @@ public class ShortcutService {
         }
     }
 
-    @TargetApi(Build.VERSION_CODES.N_MR1)
-    private ShortcutInfo getShortcutInfo(Contact contact) {
-        return new ShortcutInfo.Builder(xmppConnectionService, getShortcutId(contact))
+    @RequiresApi(api = Build.VERSION_CODES.M)
+    public ShortcutInfoCompat getShortcutInfoCompat(Contact contact) {
+        return new ShortcutInfoCompat.Builder(xmppConnectionService, getShortcutId(contact))
                 .setShortLabel(contact.getDisplayName())
                 .setIntent(getShortcutIntent(contact))
-                .setIcon(Icon.createWithBitmap(xmppConnectionService.getAvatarService().getRoundedShortcut(contact)))
+                .setIcon(IconCompat.createFromIcon(Icon.createWithBitmap(xmppConnectionService.getAvatarService().getRoundedShortcut(contact))))
+                .setIsConversation()
                 .build();
     }
+
+    @TargetApi(Build.VERSION_CODES.N_MR1)
+    private ShortcutInfo getShortcutInfo(Contact contact) {
+        return getShortcutInfoCompat(contact).toShortcutInfo();
+    }
+
 
     private static boolean contactsChanged(List<Contact> needles, List<ShortcutInfo> haystack) {
         for (Contact needle : needles) {
@@ -120,6 +132,16 @@ public class ShortcutService {
     }
 
     private Intent getShortcutIntent(Contact contact) {
+        final Conversation conversation = xmppConnectionService.find(contact.getAccount(), contact.getJid());
+
+        if (conversation != null) {
+            Intent intent = new Intent(xmppConnectionService, ConversationsActivity.class);
+            intent.setAction(ConversationsActivity.ACTION_VIEW_CONVERSATION);
+            intent.putExtra(ConversationsActivity.EXTRA_CONVERSATION, conversation.getUuid());
+            intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP| Intent.FLAG_ACTIVITY_SINGLE_TOP);
+            return intent;
+        }
+
         Intent intent = new Intent(xmppConnectionService, StartConversationActivity.class);
         intent.setAction(Intent.ACTION_VIEW);
         intent.setData(Uri.parse("xmpp:" + contact.getJid().asBareJid().toEscapedString()));

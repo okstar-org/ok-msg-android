@@ -25,6 +25,8 @@ public class Bookmark extends Element implements ListItem {
     private Account account;
     private WeakReference<Conversation> conversation;
     private Jid jid;
+    protected Element extensions = new Element("extensions", Namespace.BOOKMARKS2);
+
 
     public Bookmark(final Account account, final Jid jid) {
         super("conference");
@@ -101,7 +103,46 @@ public class Bookmark extends Element implements ListItem {
         bookmark.setBookmarkName(conference.getAttribute("name"));
         bookmark.setAutojoin(conference.getAttributeAsBoolean("autojoin"));
         bookmark.setNick(conference.findChildContent("nick"));
+        bookmark.setPassword(conference.findChildContent("password"));
+        final Element extensions = conference.findChild("extensions", Namespace.BOOKMARKS2);
+        if (extensions != null) {
+            for (final Element ext : extensions.getChildren()) {
+                if (ext.getName().equals("group") && ext.getNamespace().equals("jabber:iq:roster")) {
+                    bookmark.addGroup(ext.getContent());
+                }
+            }
+            bookmark.extensions = extensions;
+        }
         return bookmark;
+    }
+
+    public Element getExtensions() {
+        return extensions;
+    }
+
+    public void addGroup(final String group) {
+        addChild("group", "jabber:iq:roster").setContent(group);
+        extensions.addChild("group", "jabber:iq:roster").setContent(group);
+    }
+
+    public void setGroups(List<String> groups) {
+        final List<Element> children = new ArrayList<>(getChildren());
+        for (final Element el : children) {
+            if (el.getName().equals("group")) {
+                removeChild(el);
+            }
+        }
+
+        final List<Element> extChildren = new ArrayList<>(extensions.getChildren());
+        for (final Element el : extChildren) {
+            if (el.getName().equals("group")) {
+                extensions.removeChild(el);
+            }
+        }
+
+        for (final String group : groups) {
+            addGroup(group);
+        }
     }
 
     public void setAutojoin(boolean autojoin) {
@@ -114,6 +155,12 @@ public class Bookmark extends Element implements ListItem {
 
     @Override
     public int compareTo(final @NonNull ListItem another) {
+        if (getJid().isDomainJid() && !another.getJid().isDomainJid()) {
+            return -1;
+        } else if (!getJid().isDomainJid() && another.getJid().isDomainJid()) {
+            return 1;
+        }
+
         return this.getDisplayName().compareToIgnoreCase(
                 another.getDisplayName());
     }
@@ -155,16 +202,24 @@ public class Bookmark extends Element implements ListItem {
         return jid == null || nick == null || nick.trim().isEmpty() ? jid : jid.withResource(nick);
     }
 
-    @Override
-    public List<Tag> getTags(Context context) {
+    public List<Tag> getGroupTags() {
         ArrayList<Tag> tags = new ArrayList<>();
-        tags.add(new Tag("Group", UIHelper.getColorForName("channel",true), 0, account, false));
+
         for (Element element : getChildren()) {
             if (element.getName().equals("group") && element.getContent() != null) {
                 String group = element.getContent();
-                tags.add(new Tag(group, UIHelper.getColorForName(group, true), 0, account, false));
+                tags.add(new Tag(group, UIHelper.getColorForName(group, true), 0, account, true));
             }
         }
+
+        return tags;
+    }
+
+    @Override
+    public List<Tag> getTags(Context context) {
+        ArrayList<Tag> tags = new ArrayList<>();
+        tags.add(new Tag("group", UIHelper.getColorForName("Channel",true), 0, account, true));
+        tags.addAll(getGroupTags());
         return tags;
     }
 
@@ -214,11 +269,15 @@ public class Bookmark extends Element implements ListItem {
                 }
             }
             return true;
-        } else {
+        } else if (parts.length > 0) {
             final Jid jid = getJid();
             return (jid != null && jid.toString().contains(parts[0])) ||
                     getDisplayName().toLowerCase(Locale.US).contains(parts[0]) ||
                     matchInTag(context, parts[0]);
+        } else {
+            final Jid jid = getJid();
+            return (jid != null && jid.toString().contains(needle)) ||
+                    getDisplayName().toLowerCase(Locale.US).contains(needle);
         }
     }
 

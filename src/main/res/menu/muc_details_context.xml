@@ -32,6 +32,11 @@
         android:title="@string/action_contact_details"
         android:visible="false" />
     <item
+        android:id="@+id/action_block_avatar"
+        android:orderInCategory="100"
+        android:title="@string/block_avatar"
+        android:visible="false" />
+    <item
         android:id="@+id/action_muc_contact_details"
         android:orderInCategory="100"
         android:title="@string/action_contact_details"

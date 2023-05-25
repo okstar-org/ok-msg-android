@@ -31,7 +31,8 @@
             android:layout_height="48dp"
             android:layout_alignParentLeft="true"
             android:src="@drawable/ic_call_white_48dp"
-            android:background="@color/yeller"
+            android:background="@color/accent_monocles"
+            app:strokeColor="@color/custom_theme_accent"
             app:riv_corner_radius="2dp" />
 
         <LinearLayout
@@ -65,6 +66,7 @@
             android:layout_centerVertical="true"
             android:paddingRight="16dp"
             android:src="?attr/icon_settings"
+            app:strokeColor="@null"
             app:riv_corner_radius="2dp" />
     </RelativeLayout>
 

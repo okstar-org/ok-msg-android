@@ -7,8 +7,10 @@ import android.content.pm.PackageManager;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
+import android.preference.PreferenceManager;
 import android.util.Log;
 import android.view.View;
+import android.widget.Toast;
 
 import androidx.annotation.StringRes;
 import androidx.appcompat.app.AppCompatActivity;
@@ -16,6 +18,8 @@ import androidx.core.content.ContextCompat;
 import androidx.databinding.DataBindingUtil;
 
 import com.google.common.base.Strings;
+
+import de.monocles.chat.DownloadDefaultStickers;
 
 import org.jetbrains.annotations.NotNull;
 
@@ -52,6 +56,7 @@ public class UriHandlerActivity extends AppCompatActivity {
     private static final Pattern LINK_HEADER_PATTERN = Pattern.compile("<(.*?)>");
     private ActivityUriHandlerBinding binding;
     private Call call;
+    private Uri stickers;
 
     public static void scan(final Activity activity) {
         scan(activity, false);
@@ -109,6 +114,27 @@ public class UriHandlerActivity extends AppCompatActivity {
         handleIntent(intent);
     }
 
+    @Override
+    public void onRequestPermissionsResult(int requestCode, String[] permissions, int[] grantResults) {
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults);
+        if (grantResults.length > 0) {
+            if (grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+                downloadStickers();
+            }
+        }
+        finish();
+    }
+
+    private void downloadStickers() {
+        Intent intent = new Intent(this, DownloadDefaultStickers.class);
+        intent.setData(stickers);
+        intent.putExtra("tor", PreferenceManager.getDefaultSharedPreferences(getApplicationContext()).getBoolean("use_tor", getResources().getBoolean(R.bool.use_tor)));
+        intent.putExtra("i2p", PreferenceManager.getDefaultSharedPreferences(getApplicationContext()).getBoolean("use_i2p", getResources().getBoolean(R.bool.use_i2p)));
+        ContextCompat.startForegroundService(this, intent);
+        Toast.makeText(this, "Sticker download started", Toast.LENGTH_SHORT).show();
+        finish();
+    }
+
     private boolean handleUri(final Uri uri) {
         return handleUri(uri, false);
     }
@@ -117,6 +143,22 @@ public class UriHandlerActivity extends AppCompatActivity {
         final Intent intent;
         final XmppUri xmppUri = new XmppUri(uri);
         final List<Jid> accounts = DatabaseBackend.getInstance(this).getAccountJids(true);
+
+        if (uri.getScheme().equals("sgnl")) {
+            stickers = Uri.parse("https://stickers.cheogram.com/signal/" + uri.getQueryParameter("pack_id") + "," + uri.getQueryParameter("pack_key"));
+            if (hasStoragePermission(1)) downloadStickers();
+            return false;
+        }
+
+        if (uri.getScheme().equals("https") && uri.getHost().equals("signal.art")) {
+            android.net.UrlQuerySanitizer q = new android.net.UrlQuerySanitizer();
+            q.setAllowUnregisteredParamaters(true);
+            q.parseQuery(uri.getFragment());
+            stickers = Uri.parse("https://stickers.cheogram.com/signal/" + q.getValue("pack_id") + "," + q.getValue("pack_key"));
+            if (hasStoragePermission(1)) downloadStickers();
+            return false;
+        }
+
         if (SignupUtils.isSupportTokenRegistry() && xmppUri.isValidJid()) {
             final String preAuth = xmppUri.getParameter(XmppUri.PARAMETER_PRE_AUTH);
             final Jid jid = xmppUri.getJid();
@@ -150,15 +192,14 @@ public class UriHandlerActivity extends AppCompatActivity {
                 return false;
             }
         }
-        if (xmppUri.isAction(XmppUri.ACTION_MESSAGE)) {
+        if (xmppUri.isAction(XmppUri.ACTION_MESSAGE) || xmppUri.isAction("command")) {
             final Jid jid = xmppUri.getJid();
             final String body = xmppUri.getBody();
             if (jid != null) {
                 final Class<?> clazz = findShareViaAccountClass();
                 if (clazz != null) {
                     intent = new Intent(this, clazz);
-                    intent.putExtra("contact", jid.toEscapedString());
-                    intent.putExtra("body", body);
+                    intent.setData(uri);
                 } else {
                     intent = new Intent(this, StartConversationActivity.class);
                     intent.setAction(Intent.ACTION_VIEW);
@@ -324,5 +365,18 @@ public class UriHandlerActivity extends AppCompatActivity {
     private static boolean looksLikeJsonObject(final String input) {
         final String trimmed = Strings.nullToEmpty(input).trim();
         return trimmed.charAt(0) == '{' && trimmed.charAt(trimmed.length() - 1) == '}';
+    }
+
+    protected boolean hasStoragePermission(int requestCode) {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+            if (checkSelfPermission(Manifest.permission.WRITE_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED) {
+                requestPermissions(new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE}, requestCode);
+                return false;
+            } else {
+                return true;
+            }
+        } else {
+            return true;
+        }
     }
 }

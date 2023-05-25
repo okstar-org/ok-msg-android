@@ -57,8 +57,6 @@
                                     android:layout_height="wrap_content"
                                     android:layout_alignParentStart="true"
                                     android:layout_alignParentLeft="true"
-                                    android:layout_toStartOf="@+id/edit_contact_name_button"
-                                    android:layout_toLeftOf="@+id/edit_contact_name_button"
                                     android:orientation="vertical">
 
                                     <LinearLayout
@@ -68,37 +66,23 @@
 
                                         <com.makeramen.roundedimageview.RoundedImageView
                                             android:id="@+id/details_contact_badge"
-                                            android:layout_width="@dimen/avatar_on_details_screen_size"
-                                            android:layout_height="@dimen/avatar_on_details_screen_size"
+                                            android:layout_width="130dp"
+                                            android:layout_height="130dp"
                                             android:layout_marginEnd="@dimen/avatar_item_distance"
                                             android:layout_marginRight="@dimen/avatar_item_distance"
                                             android:adjustViewBounds="true"
                                             android:background="?attr/color_border"
                                             android:padding="1dp"
-                                            app:riv_corner_radius="30dp"
+                                            app:riv_corner_radius="100dp"
                                             android:scaleType="centerCrop" />
-
-                                        <LinearLayout
-                                            android:layout_width="wrap_content"
-                                            android:layout_height="wrap_content"
-                                            android:orientation="vertical">
-
-                                            <TextView
-                                                android:id="@+id/contact_display_name"
-                                                android:layout_width="wrap_content"
-                                                android:layout_height="wrap_content"
-                                                android:textAppearance="@style/TextAppearance.Conversations.Title" />
-
-                                            <TextView
-                                                android:id="@+id/jid"
-                                                android:layout_width="wrap_content"
-                                                android:layout_height="wrap_content"
-                                                android:text="@string/account_settings_example_jabber_id"
-                                                android:textAppearance="@style/TextAppearance.Conversations.Body1"
-                                                android:textIsSelectable="true"
-                                                android:visibility="gone" />
-                                        </LinearLayout>
                                     </LinearLayout>
+
+                                    <TextView
+                                        android:id="@+id/jid"
+                                        android:layout_width="wrap_content"
+                                        android:layout_height="wrap_content"
+                                        android:text="@string/account_settings_example_jabber_id"
+                                        android:textAppearance="@style/TextAppearance.AppCompat" />
 
                                     <com.wefika.flowlayout.FlowLayout
                                         android:id="@+id/tags"
@@ -109,6 +93,17 @@
                                         android:layout_marginTop="4dp"
                                         android:layout_marginBottom="4dp"
                                         android:orientation="horizontal" />
+
+                                    <de.monocles.chat.TagEditorView
+                                        android:id="@+id/edit_tags"
+                                        android:visibility="gone"
+                                        android:hint="@string/tags"
+                                        android:layout_width="match_parent"
+                                        android:layout_height="wrap_content"
+                                        android:layout_marginBottom="4dp"
+                                        android:layout_marginLeft="-4dp"
+                                        android:layout_marginTop="-4dp" />
+
 
                                     <TextView
                                         android:id="@+id/details_lastseen"
@@ -134,18 +129,6 @@
                                         android:layout_marginBottom="4dp"
                                         android:textAppearance="@style/TextAppearance.Conversations.Status" />
                                 </LinearLayout>
-
-                                <ImageButton
-                                    android:id="@+id/edit_contact_name_button"
-                                    android:layout_width="wrap_content"
-                                    android:layout_height="wrap_content"
-                                    android:layout_alignParentTop="true"
-                                    android:layout_alignParentEnd="true"
-                                    android:layout_alignParentRight="true"
-                                    android:alpha="?attr/icon_alpha"
-                                    android:background="?attr/selectableItemBackgroundBorderless"
-                                    android:padding="@dimen/image_button_padding"
-                                    android:src="?attr/icon_edit_body" />
                             </RelativeLayout>
 
                             <RelativeLayout
@@ -241,6 +224,25 @@
                                 android:visibility="visible" />
                         </LinearLayout>
                     </LinearLayout>
+                </androidx.cardview.widget.CardView>
+
+                <androidx.cardview.widget.CardView
+                    android:id="@+id/profile"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="@dimen/activity_vertical_margin"
+                    android:layout_marginLeft="@dimen/activity_horizontal_margin"
+                    android:layout_marginRight="@dimen/activity_horizontal_margin"
+                    android:layout_marginTop="@dimen/activity_vertical_margin"
+                    card_view:cardBackgroundColor="?attr/color_background_secondary">
+
+                    <ListView
+                        android:id="@+id/profile_items"
+                        android:layout_width="fill_parent"
+                        android:layout_height="wrap_content"
+                        android:divider="@android:color/transparent"
+                        android:dividerHeight="0dp" />
+
                 </androidx.cardview.widget.CardView>
 
                 <androidx.cardview.widget.CardView

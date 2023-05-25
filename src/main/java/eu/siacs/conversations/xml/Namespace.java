@@ -59,11 +59,12 @@ public final class Namespace {
     public static final String PUSH = "urn:xmpp:push:0";
     public static final String COMMANDS = "http://jabber.org/protocol/commands";
     public static final String MUC_USER = "http://jabber.org/protocol/muc#user";
-    public static final String BOOKMARKS2 = "urn:xmpp:bookmarks:0";
+    public static final String BOOKMARKS2 = "urn:xmpp:bookmarks:1";
     public static final String BOOKMARKS2_COMPAT = BOOKMARKS2 + "#compat";
     public static final String INVITE = "urn:xmpp:invite";
     public static final String PARS = "urn:xmpp:pars:0";
     public static final String EASY_ONBOARDING_INVITE = "urn:xmpp:invite#invite";
     public static final String OMEMO_DTLS_SRTP_VERIFICATION = "http://gultsch.de/xmpp/drafts/omemo/dlts-srtp-verification";
     public static final String UNIFIED_PUSH = "http://gultsch.de/xmpp/drafts/unified-push";
+    public static final String VCARD4 = "urn:ietf:params:xml:ns:vcard-4.0";
 }

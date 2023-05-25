@@ -137,7 +137,6 @@
                 android:paddingBottom="2dp"
                 android:background="?attr/color_background_primary">
 
-
                 <ImageButton
                     android:id="@+id/recordVoiceButton"
                     android:layout_width="32dp"
@@ -150,14 +149,44 @@
                     android:src="@drawable/ic_send_voice_offline"
                     android:visibility="gone" />
 
+                <RelativeLayout
+                    android:id="@+id/thread_identicon_layout"
+                    android:layout_width="30dp"
+                    android:layout_height="30dp"
+                    android:layout_alignParentStart="true"
+                    android:layout_alignParentLeft="true"
+                    android:layout_centerVertical="true"
+                    android:layout_marginLeft="32dp"
+                    android:layout_marginRight="5dp">
+
+                    <com.lelloman.identicon.view.GithubIdenticonView
+                        android:id="@+id/thread_identicon"
+                        android:alpha="0"
+                        android:layout_width="24dp"
+                        android:layout_height="24dp"
+                        android:layout_centerVertical="true"
+                        android:contentDescription="@string/thread_marker" />
+                    <ImageView
+                        android:id="@+id/thread_identicon_lock"
+                        android:layout_width="12dp"
+                        android:layout_height="12dp"
+                        android:layout_alignParentTop="true"
+                        android:layout_alignParentEnd="true"
+                        android:layout_alignParentRight="true"
+                        android:visibility="gone"
+                        android:src="?attr/icon_small_lock"
+                        android:contentDescription="@string/thread_locked" />
+
+                </RelativeLayout>
+
                 <LinearLayout
                     android:id="@+id/message_input_box"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_toStartOf="@+id/textSendButton"
                     android:layout_toLeftOf="@+id/textSendButton"
-                    android:layout_toEndOf="@+id/recordVoiceButton"
-                    android:layout_toRightOf="@+id/recordVoiceButton"
+                    android:layout_toEndOf="@+id/thread_identicon_layout"
+                    android:layout_toRightOf="@+id/thread_identicon_layout"
                     android:background="@drawable/message_bubble_sent"
                     android:orientation="vertical">
 
@@ -218,98 +247,6 @@
                     android:contentDescription="@string/send_message"
                     android:src="@drawable/ic_send_text_offline" />
             </RelativeLayout>
-
-            <RelativeLayout
-                android:id="@+id/textformat"
-                android:layout_width="match_parent"
-                android:layout_height="48dp"
-                android:layout_below="@+id/textsend"
-                android:background="?attr/color_background_tertiary">
-
-                <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:gravity="center"
-                    android:orientation="horizontal">
-
-                    <TextView
-                        android:id="@+id/me"
-                        android:layout_width="48dp"
-                        android:layout_height="48dp"
-                        android:background="?attr/selectableItemBackgroundBorderless"
-                        android:contentDescription="@string/me"
-                        android:gravity="center"
-                        android:text="/me"
-                        android:textSize="18sp"
-                        android:visibility="visible" />
-
-                    <TextView
-                        android:id="@+id/quote"
-                        android:layout_width="48dp"
-                        android:layout_height="48dp"
-                        android:background="?attr/selectableItemBackgroundBorderless"
-                        android:contentDescription="@string/quote"
-                        android:gravity="center"
-                        android:text=">"
-                        android:textSize="18sp"
-                        android:visibility="visible" />
-
-                    <ImageButton
-                        android:id="@+id/bold"
-                        android:layout_width="48dp"
-                        android:layout_height="48dp"
-                        android:background="?attr/selectableItemBackgroundBorderless"
-                        android:contentDescription="@string/bold"
-                        android:src="?attr/ic_bold"
-                        android:visibility="visible" />
-
-                    <ImageButton
-                        android:id="@+id/italic"
-                        android:layout_width="48dp"
-                        android:layout_height="48dp"
-                        android:background="?attr/selectableItemBackgroundBorderless"
-                        android:contentDescription="@string/italic"
-                        android:src="?attr/ic_italic"
-                        android:visibility="visible" />
-
-                    <ImageButton
-                        android:id="@+id/monospace"
-                        android:layout_width="48dp"
-                        android:layout_height="48dp"
-                        android:background="?attr/selectableItemBackgroundBorderless"
-                        android:contentDescription="@string/monospace"
-                        android:src="?attr/ic_monospace"
-                        android:visibility="visible" />
-
-                    <ImageButton
-                        android:id="@+id/strikethrough"
-                        android:layout_width="48dp"
-                        android:layout_height="48dp"
-                        android:background="?attr/selectableItemBackgroundBorderless"
-                        android:contentDescription="@string/strikethrough"
-                        android:src="?attr/ic_strikethrough"
-                        android:visibility="visible" />
-
-                    <ImageButton
-                        android:id="@+id/help"
-                        android:layout_width="48dp"
-                        android:layout_height="48dp"
-                        android:background="?attr/selectableItemBackgroundBorderless"
-                        android:contentDescription="@string/format_text"
-                        android:src="?attr/ic_help"
-                        android:visibility="visible" />
-
-                    <ImageButton
-                        android:id="@+id/close"
-                        android:layout_width="24dp"
-                        android:layout_height="24dp"
-                        android:background="?attr/selectableItemBackgroundBorderless"
-                        android:contentDescription="@string/close"
-                        android:src="?attr/ic_close"
-                        android:visibility="visible" />
-                </LinearLayout>
-            </RelativeLayout>
-
         </RelativeLayout>
 
         <RelativeLayout
@@ -374,7 +311,7 @@
                 android:layout_alignParentTop="true"
                 android:background="?attr/color_background_tertiary"
                 android:divider="@android:color/transparent"
-                android:dividerHeight="0dp"></ListView>
+                android:dividerHeight="0dp" />
 
             <ProgressBar
                 android:id="@+id/commands_view_progressbar"

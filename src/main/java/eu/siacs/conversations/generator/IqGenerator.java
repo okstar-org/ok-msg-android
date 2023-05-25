@@ -6,12 +6,21 @@ import static eu.siacs.conversations.ui.SettingsActivity.PERSISTENT_ROOM;
 import android.os.Bundle;
 import android.util.Base64;
 import android.util.Log;
+import android.util.Base64OutputStream;
+import eu.siacs.conversations.entities.Message;
+
+import de.monocles.chat.BobTransfer;
+
+import com.google.common.io.ByteStreams;
 
 import org.whispersystems.libsignal.IdentityKey;
 import org.whispersystems.libsignal.ecc.ECPublicKey;
 import org.whispersystems.libsignal.state.PreKeyRecord;
 import org.whispersystems.libsignal.state.SignedPreKeyRecord;
 
+import java.io.ByteArrayOutputStream;
+import java.io.FileInputStream;
+import java.io.IOException;
 import java.nio.ByteBuffer;
 import java.security.cert.CertificateEncodingException;
 import java.security.cert.X509Certificate;
@@ -21,6 +30,8 @@ import java.util.Locale;
 import java.util.Set;
 import java.util.TimeZone;
 import java.util.UUID;
+
+import io.ipfs.cid.Cid;
 
 import eu.siacs.conversations.Config;
 import eu.siacs.conversations.R;
@@ -129,6 +140,12 @@ public class IqGenerator extends AbstractGenerator {
         if (item != null) {
             items.addChild(item);
         }
+        return packet;
+    }
+
+    public IqPacket retrieveVcard4(final Jid jid) {
+        final IqPacket packet = retrieve("urn:xmpp:vcard4", null);
+        packet.setTo(jid);
         return packet;
     }
 
@@ -261,6 +278,7 @@ public class IqGenerator extends AbstractGenerator {
     public Element publishBookmarkItem(final Bookmark bookmark) {
         final String name = bookmark.getBookmarkName();
         final String nick = bookmark.getNick();
+        final String password = bookmark.getPassword();
         final boolean autojoin = bookmark.autojoin();
         final Element conference = new Element("conference", Namespace.BOOKMARKS2);
         if (name != null) {
@@ -269,7 +287,11 @@ public class IqGenerator extends AbstractGenerator {
         if (nick != null) {
             conference.addChild("nick").setContent(nick);
         }
+        if (password != null) {
+            conference.addChild("password").setContent(password);
+        }
         conference.setAttribute("autojoin", String.valueOf(autojoin));
+        conference.addChild(bookmark.getExtensions());
         return conference;
     }
 
@@ -409,6 +431,18 @@ public class IqGenerator extends AbstractGenerator {
         item.setAttribute("role", role);
         return packet;
     }
+
+    public IqPacket destroyRoom(Conversation conference) {
+        IqPacket packet = new IqPacket(IqPacket.TYPE.SET);
+        packet.setTo(conference.getJid().asBareJid());
+        packet.setFrom(conference.getAccount().getJid());
+        final Element query = packet.addChild("query", "http://jabber.org/protocol/muc#owner");
+        final Element destroy = query.addChild("destroy");
+        destroy.setAttribute("jid", conference.getJid().asBareJid().toString());
+        Log.d(Config.LOGTAG, "Destroy: " + packet.toString());
+        return packet;
+    }
+
     public IqPacket moderateMessage(Account account, Message m, String reason) {
         IqPacket packet = new IqPacket(IqPacket.TYPE.SET);
         packet.setTo(m.getConversation().getJid().asBareJid());
@@ -421,16 +455,7 @@ public class IqGenerator extends AbstractGenerator {
         moderate.addChild("reason", "urn:xmpp:message-moderate:0").setContent(reason);
         return packet;
     }
-    public IqPacket destroyRoom(Conversation conference) {
-        IqPacket packet = new IqPacket(IqPacket.TYPE.SET);
-        packet.setTo(conference.getJid().asBareJid());
-        packet.setFrom(conference.getAccount().getJid());
-        final Element query = packet.addChild("query", "http://jabber.org/protocol/muc#owner");
-        final Element destroy = query.addChild("destroy");
-        destroy.setAttribute("jid", conference.getJid().asBareJid().toString());
-        Log.d(Config.LOGTAG, "Destroy: " + packet.toString());
-        return packet;
-    }
+
 
     public IqPacket requestHttpUploadSlot(Jid host, DownloadableFile file, String mime) {
         IqPacket packet = new IqPacket(IqPacket.TYPE.GET);
@@ -631,5 +656,37 @@ public class IqGenerator extends AbstractGenerator {
 
     private static boolean persistentRoom() {
         return xmppConnectionService.getBooleanPreference(PERSISTENT_ROOM, R.bool.enable_persistent_rooms);
+    }
+
+    public IqPacket bobResponse(IqPacket request) {
+        try {
+            String bobCid = request.findChild("data", "urn:xmpp:bob").getAttribute("cid");
+            Cid cid = BobTransfer.cid(bobCid);
+            DownloadableFile f = mXmppConnectionService.getFileForCid(cid);
+            if (f == null || !f.canRead()) {
+                throw new IOException("No such file");
+            } else if (f.getSize() > 129000) {
+                final IqPacket response = request.generateResponse(IqPacket.TYPE.ERROR);
+                final Element error = response.addChild("error");
+                error.setAttribute("type", "cancel");
+                error.addChild("policy-violation", "urn:ietf:params:xml:ns:xmpp-stanzas");
+                return response;
+            } else {
+                final IqPacket response = request.generateResponse(IqPacket.TYPE.RESULT);
+                final Element data = response.addChild("data", "urn:xmpp:bob");
+                data.setAttribute("cid", bobCid);
+                data.setAttribute("type", f.getMimeType());
+                ByteArrayOutputStream b64 = new ByteArrayOutputStream((int) f.getSize() * 2);
+                ByteStreams.copy(new FileInputStream(f), new Base64OutputStream(b64, Base64.NO_WRAP));
+                data.setContent(b64.toString("utf-8"));
+                return response;
+            }
+        } catch (final IOException | IllegalStateException e) {
+            final IqPacket response = request.generateResponse(IqPacket.TYPE.ERROR);
+            final Element error = response.addChild("error");
+            error.setAttribute("type", "cancel");
+            error.addChild("item-not-found", "urn:ietf:params:xml:ns:xmpp-stanzas");
+            return response;
+        }
     }
 }

@@ -81,6 +81,10 @@ public final class MucDetailsContextMenuHelper {
             title.setVisible(false);
         }
         MenuItem sendPrivateMessage = menu.findItem(R.id.send_private_message);
+        MenuItem blockAvatar = menu.findItem(R.id.action_block_avatar);
+        if (user != null && user.getAvatar() != null) {
+            blockAvatar.setVisible(true);
+        }
         MenuItem blockUnblockMUCUser = menu.findItem(R.id.context_muc_contact_block_unblock);
         if (user != null && user.getRealJid() != null) {
             MenuItem showContactDetails = menu.findItem(R.id.action_contact_details);
@@ -106,6 +110,9 @@ public final class MucDetailsContextMenuHelper {
             final User self = conversation.getMucOptions().getSelf();
             addToRoster.setVisible(contact != null && !contact.showInRoster());
             showContactDetails.setVisible(contact == null || !contact.isSelf());
+            if (user.getAvatar() != null) {
+                blockAvatar.setVisible(true);
+            }
             if ((activity instanceof ConferenceDetailsActivity || activity instanceof MucUsersActivity) && user.getRole() == MucOptions.Role.NONE) {
                 invite.setVisible(true);
             }
@@ -176,6 +183,22 @@ public final class MucDetailsContextMenuHelper {
         final Account account = conversation.getAccount();
         final Contact contact = jid == null ? null : account.getRoster().getContact(jid);
         switch (item.getItemId()) {
+            case R.id.action_block_avatar:
+                new AlertDialog.Builder(activity)
+                        .setTitle(R.string.block_media)
+                        .setMessage("Do you really want to block this avatar?")
+                        .setPositiveButton(R.string.yes, (dialog, whichButton) -> {
+                            activity.xmppConnectionService.blockMedia(
+                                    activity.xmppConnectionService.getFileBackend().getAvatarFile(user.getAvatar())
+                            );
+                            activity.xmppConnectionService.getFileBackend().getAvatarFile(user.getAvatar()).delete();
+                            activity.avatarService().clear(user);
+                            if (user.getContact() != null) activity.avatarService().clear(user.getContact());
+                            user.setAvatar(null);
+                            activity.xmppConnectionService.updateConversationUi();
+                        })
+                        .setNegativeButton(R.string.no, null).show();
+                return true;
             case R.id.action_show_avatar:
                 activity.ShowAvatarPopup(activity, user);
                 return true;
@@ -192,9 +215,9 @@ public final class MucDetailsContextMenuHelper {
             case R.id.start_conversation:
                 startConversation(user, activity);
                 return true;
-            case R.id.add_contact:
-                activity.showAddToRosterDialog(contact);
-                return true;
+          //  case R.id.add_contact:        // TODO: Re add it later again
+          //      activity.showAddToRosterDialog(contact);
+          //      return true;
             case R.id.give_admin_privileges:
                 activity.xmppConnectionService.changeAffiliationInConference(conversation, jid, MucOptions.Affiliation.ADMIN, onAffiliationChanged);
                 return true;

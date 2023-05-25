@@ -30,14 +30,13 @@
 package eu.siacs.conversations.ui.util;
 
 import android.content.ActivityNotFoundException;
+import android.content.ClipboardManager;
+import android.content.ClipData;
+import android.content.Context;
 import android.content.Intent;
 
 import java.util.regex.Matcher;
 
-
-import android.content.ClipData;
-import android.content.ClipboardManager;
-import android.content.Context;
 import eu.siacs.conversations.R;
 import eu.siacs.conversations.entities.DownloadableFile;
 import eu.siacs.conversations.entities.Message;

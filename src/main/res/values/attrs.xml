@@ -99,6 +99,7 @@
     <attr name="icon_goto_chat" format="reference" />
     <attr name="media_preview_image" format="reference" />
     <attr name="icon_secure" format="reference" />
+    <attr name="icon_small_lock" format="reference" />
     <attr name="icon_settings" format="reference" />
     <attr name="icon_share" format="reference" />
     <attr name="icon_action_share" format="reference" />
@@ -164,4 +165,10 @@
     <declare-styleable name="UnreadCountCustomView">
         <attr name="backgroundColor" format="reference|color" />
     </declare-styleable>
+
+        <attr name="icon_email" format="reference" />
+        <attr name="icon_link" format="reference" />
+        <attr name="icon_org" format="reference" />
+
 </resources>
+

@@ -26,6 +26,8 @@ import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.databinding.DataBindingUtil;
 import eu.siacs.conversations.databinding.DialpadBinding;
 import eu.siacs.conversations.R;
+import eu.siacs.conversations.utils.Consumer;
+
 
 public class DialpadView extends ConstraintLayout implements View.OnClickListener {
 
@@ -63,10 +65,5 @@ public class DialpadView extends ConstraintLayout implements View.OnClickListene
     @Override
     public void onClick(View v) {
         clickConsumer.accept(v.getTag().toString());
-    }
-
-    // Based on java.util.function.Consumer to avoid Android 24 dependency
-    public interface Consumer<T> {
-        void accept(T t);
     }
 }

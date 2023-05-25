@@ -60,9 +60,9 @@ public class MessageUtils {
             } else {
                 nick = UIHelper.getMessageDisplayName(message);
             }
-            body = nick + " " + message.getBody().substring(Message.ME_COMMAND.length());
+            body = nick + " " + message.getQuoteableBody().substring(Message.ME_COMMAND.length());
         } else {
-            body = message.getMergedBody().toString();
+            body = message.getQuoteableBody();
         }
         for (String line : body.split("\n")) {
             if (!(line.length() <= 0) && QuoteHelper.isNestedTooDeeply(line)) {
@@ -113,7 +113,7 @@ public class MessageUtils {
 
     public static boolean unInitiatedButKnownSize(Message message) {
         return message.getType() == Message.TYPE_TEXT && message.getTransferable() == null && message.isOOb() && message.getFileParams().url != null &&
-                (message.getFileParams().size != null || (message.getOob() != null && message.getOob().getScheme().equalsIgnoreCase("cid")));
+                (message.getFileParams().size != null || (message.getOob() != null && message.getOob().getScheme() != null && message.getOob().getScheme().equalsIgnoreCase("cid")));
     }
 
     public static boolean fileWithKnownSize(Message message) {

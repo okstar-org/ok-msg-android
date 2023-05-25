@@ -9,6 +9,7 @@ import java.util.Collection;
 import java.util.stream.Collectors;
 
 import com.google.common.base.Optional;
+import com.google.common.collect.ImmutableList;
 import com.google.common.primitives.Ints;
 
 import eu.siacs.conversations.utils.XmlHelper;
@@ -72,6 +73,8 @@ public class Element implements Node {
     }
 
     public void removeChild(Node child) {
+        if (child == null) return;
+
         this.childNodes.remove(child);
         if (child instanceof Element) this.children.remove(child);
     }
@@ -137,13 +140,27 @@ public class Element implements Node {
     }
 
     public final List<Element> getChildren() {
-        return this.children;
+        return ImmutableList.copyOf(this.children);
     }
 
+    // Deprecated: you probably want bindTo or replaceChildren
     public Element setChildren(List<Element> children) {
         this.childNodes = new ArrayList(children);
-        this.children = children;
+        this.children = new ArrayList(children);
         return this;
+    }
+
+    public void replaceChildren(List<Element> children) {
+        this.childNodes.clear();
+        this.childNodes.addAll(children);
+        this.children.clear();
+        this.children.addAll(children);
+    }
+
+    public void bindTo(Element original) {
+        this.attributes = original.attributes;
+        this.childNodes = original.childNodes;
+        this.children = original.children;
     }
 
     public final String getContent() {
@@ -214,7 +231,7 @@ public class Element implements Node {
             Tag startTag = Tag.start(name);
             startTag.setAtttributes(this.attributes);
             elementOutput.append(startTag);
-            for (Node child : childNodes) {
+            for (Node child : ImmutableList.copyOf(childNodes)) {
                 elementOutput.append(child.toString());
             }
             Tag endTag = Tag.end(name);

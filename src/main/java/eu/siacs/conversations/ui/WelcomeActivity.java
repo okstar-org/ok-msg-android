@@ -24,6 +24,7 @@ import androidx.databinding.DataBindingUtil;
 
 import java.util.Arrays;
 import java.util.List;
+import java.util.HashSet;
 
 import eu.siacs.conversations.Config;
 import eu.siacs.conversations.R;
@@ -116,6 +117,7 @@ public class WelcomeActivity extends XmppActivity implements XmppConnectionServi
             setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
         }
         super.onCreate(savedInstanceState);
+        getPreferences().edit().putStringSet("pstn_gateways", new HashSet<>()).apply();
         WelcomeBinding binding = DataBindingUtil.setContentView(this, R.layout.welcome);
         setSupportActionBar(findViewById(R.id.toolbar));
         final ActionBar ab = getSupportActionBar();

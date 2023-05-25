@@ -2,6 +2,7 @@ package eu.siacs.conversations.services;
 
 import static eu.siacs.conversations.services.NotificationService.IMPORT_BACKUP_NOTIFICATION_ID;
 import static eu.siacs.conversations.utils.StorageHelper.getBackupDirectory;
+import static eu.siacs.conversations.utils.Compatibility.s;
 
 import android.app.Notification;
 import android.app.NotificationManager;

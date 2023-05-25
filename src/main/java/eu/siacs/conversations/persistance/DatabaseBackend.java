@@ -15,6 +15,8 @@ import android.util.Log;
 
 import com.google.common.base.Stopwatch;
 
+import de.monocles.chat.WebxdcUpdate;
+
 import org.json.JSONException;
 import org.json.JSONObject;
 import org.whispersystems.libsignal.IdentityKey;
@@ -274,6 +276,59 @@ public class DatabaseBackend extends SQLiteOpenHelper {
                 db.execSQL("PRAGMA monocles.user_version = 4");
             }
 
+            if(monoclesVersion < 5) {
+                db.execSQL(
+                        "ALTER TABLE monocles." + Message.TABLENAME + " " +
+                                "ADD COLUMN timeReceived NUMBER"
+                );
+                db.execSQL("CREATE INDEX monocles.message_time_received_index ON " + Message.TABLENAME + " (timeReceived)");
+                db.execSQL("PRAGMA monocles.user_version = 5");
+            }
+
+            if(monoclesVersion < 6) {
+                db.execSQL(
+                        "CREATE TABLE monocles.blocked_media (" +
+                                "cid TEXT NOT NULL PRIMARY KEY" +
+                                ")"
+                );
+                db.execSQL("PRAGMA monocles.user_version = 6");
+            }
+
+            if(monoclesVersion < 7) {
+                db.execSQL(
+                        "ALTER TABLE monocles.cids " +
+                                "ADD COLUMN url TEXT"
+                );
+                db.execSQL("PRAGMA monocles.user_version = 7");
+            }
+
+
+            if(monoclesVersion < 8) {
+                db.execSQL(
+                        "CREATE TABLE monocles.webxdc_updates (" +
+                                "serial INTEGER PRIMARY KEY AUTOINCREMENT, " +
+                                Message.CONVERSATION + " TEXT NOT NULL, " +
+                                "sender TEXT NOT NULL, " +
+                                "thread TEXT NOT NULL, " +
+                                "threadParent TEXT, " +
+                                "info TEXT, " +
+                                "document TEXT, " +
+                                "summary TEXT, " +
+                                "payload TEXT" +
+                                ")"
+                );
+                db.execSQL("CREATE INDEX monocles.webxdc_index ON webxdc_updates (" + Message.CONVERSATION + ", thread)");
+                db.execSQL("PRAGMA monocles.user_version = 8");
+            }
+
+            if(monoclesVersion < 9) {
+                db.execSQL(
+                        "ALTER TABLE monocles.webxdc_updates " +
+                                "ADD COLUMN message_id TEXT"
+                );
+                db.execSQL("CREATE UNIQUE INDEX monocles.webxdc_message_id_index ON webxdc_updates (" + Message.CONVERSATION + ", message_id)");
+                db.execSQL("PRAGMA monocles.user_version = 9");
+            }
 
             db.setTransactionSuccessful();
         } finally {
@@ -842,6 +897,51 @@ public class DatabaseBackend extends SQLiteOpenHelper {
         cursor.close();
     }
 
+    public void clearBlockedMedia() {
+        SQLiteDatabase db = this.getWritableDatabase();
+        db.execSQL("DELETE FROM monocles.blocked_media");
+    }
+
+    public void insertWebxdcUpdate(final WebxdcUpdate update) {
+        SQLiteDatabase db = this.getWritableDatabase();
+        db.insertWithOnConflict("monocles.webxdc_updates", null, update.getContentValues(), SQLiteDatabase.CONFLICT_IGNORE);
+    }
+
+    public WebxdcUpdate findLastWebxdcUpdate(Message message) {
+        SQLiteDatabase db = this.getReadableDatabase();
+        String[] selectionArgs = {message.getConversation().getUuid(), message.getThread().getContent()};
+        Cursor cursor = db.query("monocles.webxdc_updates", null,
+                Message.CONVERSATION + "=? AND thread=?",
+                selectionArgs, null, null, "serial ASC");
+        WebxdcUpdate update = null;
+        if (cursor.moveToLast()) {
+            update = new WebxdcUpdate(cursor, cursor.getLong(cursor.getColumnIndex("serial")));
+        }
+        cursor.close();
+        return update;
+    }
+
+    public List<WebxdcUpdate> findWebxdcUpdates(Message message, long serial) {
+        SQLiteDatabase db = this.getReadableDatabase();
+        String[] selectionArgs = {message.getConversation().getUuid(), message.getThread().getContent(), String.valueOf(serial)};
+        Cursor cursor = db.query("monocles.webxdc_updates", null,
+                Message.CONVERSATION + "=? AND thread=? AND serial>?",
+                selectionArgs, null, null, "serial ASC");
+        long maxSerial = 0;
+        if (cursor.moveToLast()) {
+            maxSerial = cursor.getLong(cursor.getColumnIndex("serial"));
+        }
+        cursor.moveToFirst();
+        cursor.moveToPrevious();
+
+        List<WebxdcUpdate> updates = new ArrayList<>();
+        while (cursor.moveToNext()) {
+            updates.add(new WebxdcUpdate(cursor, maxSerial));
+        }
+        cursor.close();
+        return updates;
+    }
+
     public void createConversation(Conversation conversation) {
         SQLiteDatabase db = this.getWritableDatabase();
         db.insert(Conversation.TABLENAME, null, conversation.getContentValues());
@@ -1142,6 +1242,13 @@ public class DatabaseBackend extends SQLiteOpenHelper {
         return f;
     }
 
+    public void blockMedia(Cid cid) {
+        SQLiteDatabase db = this.getWritableDatabase();
+        ContentValues cv = new ContentValues();
+        cv.put("cid", cid.toString());
+        db.insertWithOnConflict("monocles.blocked_media", null, cv, SQLiteDatabase.CONFLICT_REPLACE);
+    }
+
     public boolean isBlockedMedia(Cid cid) {
         SQLiteDatabase db = this.getReadableDatabase();
         Cursor cursor = db.query("monocles.blocked_media", new String[]{"count(*)"}, "cid=?", new String[]{cid.toString()}, null, null, null);
@@ -1151,6 +1258,17 @@ public class DatabaseBackend extends SQLiteOpenHelper {
         }
         cursor.close();
         return is;
+    }
+
+    public String getUrlForCid(Cid cid) {
+        SQLiteDatabase db = this.getReadableDatabase();
+        Cursor cursor = db.query("monocles.cids", new String[]{"url"}, "cid=?", new String[]{cid.toString()}, null, null, null);
+        String url = null;
+        if (cursor.moveToNext()) {
+            url = cursor.getString(0);
+        }
+        cursor.close();
+        return url;
     }
 
     public void saveCid(Cid cid, File file) {

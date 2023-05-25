@@ -9,6 +9,7 @@ import com.google.common.collect.Lists;
 import android.app.FragmentManager;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.Context;
 import android.content.SharedPreferences;
 import android.content.SharedPreferences.OnSharedPreferenceChangeListener;
 import android.content.pm.PackageManager;
@@ -16,6 +17,7 @@ import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.Environment;
+import android.os.storage.StorageManager;
 import android.preference.CheckBoxPreference;
 import android.preference.ListPreference;
 import android.preference.Preference;
@@ -24,6 +26,7 @@ import android.preference.PreferenceManager;
 import android.preference.PreferenceScreen;
 import android.util.Log;
 import static eu.siacs.conversations.utils.CameraUtils.showCameraChooser;
+import de.monocles.chat.DownloadDefaultStickers;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AlertDialog;
 import androidx.core.content.ContextCompat;
@@ -43,6 +46,7 @@ import eu.siacs.conversations.Config;
 import eu.siacs.conversations.R;
 import eu.siacs.conversations.crypto.OmemoSetting;
 import eu.siacs.conversations.entities.Account;
+import eu.siacs.conversations.entities.Contact;
 import eu.siacs.conversations.persistance.FileBackend;
 import eu.siacs.conversations.services.ExportBackupService;
 import eu.siacs.conversations.services.MemorizingTrustManager;
@@ -106,7 +110,9 @@ public class SettingsActivity extends XmppActivity implements OnSharedPreference
     public static final String RESEND_DELAY = "resend_delay";
 
     public static final int REQUEST_CREATE_BACKUP = 0xbf8701;
-    public static final int REQUEST_IMPORT_SETTINGS = 0xbf8702;
+    public static final int REQUEST_DOWNLOAD_STICKERS = 0xbf8702;
+
+    // public static final int REQUEST_IMPORT_SETTINGS = 0xbf8702; Remove settings import for now
     Preference multiAccountPreference;
     Preference autoMessageExpiryPreference;
     Preference autoFileExpiryPreference;
@@ -137,11 +143,35 @@ public class SettingsActivity extends XmppActivity implements OnSharedPreference
     }
 
     @Override
-    void onBackendConnected() {
-        final Preference accountPreference =
-                mSettingsFragment.findPreference(UnifiedPushDistributor.PREFERENCE_ACCOUNT);
-        reconfigureUpAccountPreference(accountPreference);
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        if (data == null || data.getData() == null) return;
+
+        SharedPreferences p = PreferenceManager.getDefaultSharedPreferences(this);
+        p.edit().putString("sticker_directory", data.getData().toString()).commit();
     }
+
+    @Override
+    void onBackendConnected() {
+        boolean diallerIntegrationPossible = false;
+
+        if (Build.VERSION.SDK_INT >= 23) {
+            outer:
+            for (Account account : xmppConnectionService.getAccounts()) {
+                for (Contact contact : account.getRoster().getContacts()) {
+                    if (contact.getPresences().anyIdentity("gateway", "pstn")) {
+                        diallerIntegrationPossible = true;
+                        break outer;
+                    }
+                }
+            }
+        }
+        if (!diallerIntegrationPossible) {
+            PreferenceCategory cat = (PreferenceCategory) mSettingsFragment.findPreference("notification_category");
+            Preference pref = mSettingsFragment.findPreference("dialler_integration_incoming");
+            if (cat != null && pref != null) cat.removePreference(pref);
+        }
+    }
+
 
     private void reconfigureUpAccountPreference(final Preference preference) {
         final ListPreference listPreference;
@@ -368,18 +398,7 @@ public class SettingsActivity extends XmppActivity implements OnSharedPreference
             createBackupPreference.setSummary(getString(R.string.pref_create_backup_summary, getBackupDirectory(null)));
             createBackupPreference.setOnPreferenceClickListener(preference -> {
                 if (hasStoragePermission(REQUEST_CREATE_BACKUP)) {
-                    createBackup(true);
-                }
-                return true;
-            });
-        }
-
-        final Preference importSettingsPreference = mSettingsFragment.findPreference("import_settings");
-        if (importSettingsPreference != null) {
-            importSettingsPreference.setSummary(getString(R.string.pref_import_settings_summary));
-            importSettingsPreference.setOnPreferenceClickListener(preference -> {
-                if (hasStoragePermission(REQUEST_IMPORT_SETTINGS)) {
-                    importSettings();
+                    createBackup();
                 }
                 return true;
             });
@@ -511,15 +530,48 @@ public class SettingsActivity extends XmppActivity implements OnSharedPreference
             });
             updateTheme();
         }
-        // TODO: handle skd<30
-       // final String theTheme = PreferenceManager.getDefaultSharedPreferences(this).getString(THEME, "");
-       // if (Build.VERSION.SDK_INT < 30 || !theTheme.equals("custom")) {
-        //    final PreferenceCategory uiCategory = (PreferenceCategory) mSettingsFragment.findPreference("UI");
-        //    final Preference customTheme = mSettingsFragment.findPreference("custom_theme");
-        //    if (customTheme != null) uiCategory.removePreference(customTheme);
-        //}
-    }
+        final Preference stickerDir = mSettingsFragment.findPreference("sticker_directory");
+        if (stickerDir != null) {
+            if (Build.VERSION.SDK_INT >= 24) {
+                stickerDir.setOnPreferenceClickListener((p) -> {
+                    Intent intent = ((StorageManager) getSystemService(Context.STORAGE_SERVICE)).getPrimaryStorageVolume().createOpenDocumentTreeIntent();
+                    startActivityForResult(Intent.createChooser(intent, "Choose sticker location"), 0);
+                    return true;
+                });
+            } else {
+                PreferenceCategory expertMedia = (PreferenceCategory) mSettingsFragment.findPreference("expert_media");
+                expertMedia.removePreference(stickerDir);
+            }
+        }
 
+        final Preference downloadDefaultStickers = mSettingsFragment.findPreference("download_default_stickers");
+        if (downloadDefaultStickers != null) {
+            downloadDefaultStickers.setOnPreferenceClickListener(
+                    preference -> {
+                        if (hasStoragePermission(REQUEST_DOWNLOAD_STICKERS)) {
+                            downloadStickers();
+                        }
+                        return true;
+                    });
+        }
+
+        final Preference clearBlockedMedia = mSettingsFragment.findPreference("clear_blocked_media");
+        if (clearBlockedMedia != null) {
+            clearBlockedMedia.setOnPreferenceClickListener((p) -> {
+                xmppConnectionService.clearBlockedMedia();
+                displayToast("Blocked media will be displayed again.");
+                return true;
+            });
+        }
+/*
+        final String theTheme = PreferenceManager.getDefaultSharedPreferences(this).getString(THEME, "");  // TODO: Handle SDK < 30
+        if (Build.VERSION.SDK_INT < 30 || !theTheme.equals("custom")) {
+            final PreferenceCategory uiCategory = (PreferenceCategory) mSettingsFragment.findPreference("ui");
+            final Preference customTheme = mSettingsFragment.findPreference("custom_theme");
+            if (customTheme != null) uiCategory.removePreference(customTheme);
+        }
+        */
+    }
     private void updateTheme() {
         final int theme = findTheme();
         if (this.mTheme != theme) {
@@ -711,10 +763,10 @@ public class SettingsActivity extends XmppActivity implements OnSharedPreference
         if (grantResults.length > 0) {
             if (grantResults[0] == PackageManager.PERMISSION_GRANTED) {
                 if (requestCode == REQUEST_CREATE_BACKUP) {
-                    createBackup(true);
+                    createBackup();
                 }
-                if (requestCode == REQUEST_IMPORT_SETTINGS) {
-                    importSettings();
+                if (requestCode == REQUEST_DOWNLOAD_STICKERS) {
+                    downloadStickers();
                 }
             } else {
                 ToastCompat.makeText(
@@ -726,8 +778,21 @@ public class SettingsActivity extends XmppActivity implements OnSharedPreference
         }
     }
 
-    private void createBackup(boolean notify) {
-        final Intent intent = new Intent(this, ExportBackupService.class);
+    private void createBackup() {
+        new AlertDialog.Builder(this)
+                .setTitle("Create Backup")
+                .setMessage("Export extra monocles-only data (backup will not import into other apps then)?")
+                .setPositiveButton(R.string.yes, (dialog, whichButton) -> {
+                    createBackup(true, true);
+                })
+                .setNegativeButton(R.string.no, (dialog, whichButton) -> {
+                    createBackup(false, false);
+                }).show();
+    }
+
+    private void createBackup(boolean notify, boolean withmonoclesDb) {
+        Intent intent = new Intent(this, ExportBackupService.class);
+        intent.putExtra("monocles_db", withmonoclesDb);
         intent.putExtra("NOTIFY_ON_BACKUP_COMPLETE", notify);
         ContextCompat.startForegroundService(this, intent);
         final AlertDialog.Builder builder = new AlertDialog.Builder(this);
@@ -736,51 +801,12 @@ public class SettingsActivity extends XmppActivity implements OnSharedPreference
         builder.create().show();
     }
 
-    @SuppressWarnings({ "unchecked" })
-    private boolean importSettings() {
-        boolean success;
-        ObjectInputStream input = null;
-        try {
-            final File file = new File(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOCUMENTS) + File.separator + APP_DIRECTORY + File.separator + "Database" + File.separator, "settings.dat");
-            input = new ObjectInputStream(new FileInputStream(file));
-            SharedPreferences.Editor prefEdit = PreferenceManager.getDefaultSharedPreferences(getApplicationContext()).edit();
-            prefEdit.clear();
-            Map<String, ?> entries = (Map<String, ?>) input.readObject();
-            for (Map.Entry<String, ?> entry : entries.entrySet()) {
-                Object value = entry.getValue();
-                String key = entry.getKey();
-
-                if (value instanceof Boolean)
-                    prefEdit.putBoolean(key, ((Boolean) value).booleanValue());
-                else if (value instanceof Float)
-                    prefEdit.putFloat(key, ((Float) value).floatValue());
-                else if (value instanceof Integer)
-                    prefEdit.putInt(key, ((Integer) value).intValue());
-                else if (value instanceof Long)
-                    prefEdit.putLong(key, ((Long) value).longValue());
-                else if (value instanceof String)
-                    prefEdit.putString(key, ((String) value));
-            }
-            prefEdit.commit();
-            success = true;
-        } catch (Exception e) {
-            success = false;
-            e.printStackTrace();
-        } finally {
-            try {
-                if (input != null) {
-                    input.close();
-                }
-            } catch (IOException ex) {
-                ex.printStackTrace();
-            }
-        }
-        if (success) {
-            ToastCompat.makeText(this, R.string.success_import_settings, ToastCompat.LENGTH_SHORT).show();
-        } else {
-            ToastCompat.makeText(this, R.string.error_import_settings, ToastCompat.LENGTH_SHORT).show();
-        }
-        return success;
+    private void downloadStickers() {
+        Intent intent = new Intent(this, DownloadDefaultStickers.class);
+        intent.putExtra("tor", xmppConnectionService.useTorToConnect());
+        intent.putExtra("i2p", xmppConnectionService.useI2PToConnect());
+        ContextCompat.startForegroundService(this, intent);
+        displayToast("Sticker download started");
     }
 
     private void displayToast(final String msg) {

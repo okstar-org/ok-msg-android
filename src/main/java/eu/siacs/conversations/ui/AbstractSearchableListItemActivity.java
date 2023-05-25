@@ -28,9 +28,10 @@ import eu.siacs.conversations.ui.adapter.ListItemAdapter;
 public abstract class AbstractSearchableListItemActivity extends XmppActivity implements TextView.OnEditorActionListener {
     protected ActivityChooseContactBinding binding;
     private final List<ListItem> listItems = new ArrayList<>();
-    private ArrayAdapter<ListItem> mListItemsAdapter;
+    private ListItemAdapter mListItemsAdapter;
 
-    private EditText mSearchEditText;
+    protected MenuItem mMenuSearchView;
+    protected EditText mSearchEditText;
 
     private final MenuItem.OnActionExpandListener mOnActionExpandListener = new MenuItem.OnActionExpandListener() {
 
@@ -85,7 +86,7 @@ public abstract class AbstractSearchableListItemActivity extends XmppActivity im
         return mSearchEditText;
     }
 
-    public ArrayAdapter<ListItem> getListItemAdapter() {
+    public ListItemAdapter getListItemAdapter() {
         return mListItemsAdapter;
     }
 
@@ -103,13 +104,13 @@ public abstract class AbstractSearchableListItemActivity extends XmppActivity im
     @Override
     public boolean onCreateOptionsMenu(final Menu menu) {
         getMenuInflater().inflate(R.menu.choose_contact, menu);
-        final MenuItem menuSearchView = menu.findItem(R.id.action_search);
-        final View mSearchView = menuSearchView.getActionView();
+        mMenuSearchView = menu.findItem(R.id.action_search);
+        final View mSearchView = mMenuSearchView.getActionView();
         mSearchEditText = mSearchView.findViewById(R.id.search_field);
         mSearchEditText.addTextChangedListener(mSearchTextWatcher);
         mSearchEditText.setHint(R.string.search_contacts);
         mSearchEditText.setOnEditorActionListener(this);
-        menuSearchView.setOnActionExpandListener(mOnActionExpandListener);
+        mMenuSearchView.setOnActionExpandListener(mOnActionExpandListener);
         return true;
     }
 

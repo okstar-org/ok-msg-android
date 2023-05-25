@@ -82,7 +82,7 @@ public class BlocklistActivity extends AbstractSearchableListItemActivity implem
                 account.getJid().asBareJid().toEscapedString(),
                 true,
                 xmppConnectionService.multipleAccounts(),
-                false
+                EnterJidDialog.SanityCheck.NO
         );
 
         dialog.setOnEnterJidDialogPositiveListener((accountJid, contactJid) -> {

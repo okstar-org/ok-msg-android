@@ -152,11 +152,6 @@
             android:key="allowmergemessages"
             android:summary="@string/pref_allowmergemessages_sum"
             android:title="@string/pref_allowmergemessages" />
-        <CheckBoxPreference
-            android:defaultValue="@bool/showtextformatting"
-            android:key="showtextformatting"
-            android:summary="@string/pref_showtextformatting_sum"
-            android:title="@string/pref_showtextformatting" />
         <Preference
             android:key="show_intro"
             android:summary="@string/pref_show_intro_summary"
@@ -250,6 +245,11 @@
             android:ringtoneType="ringtone"
             android:summary="@string/pref_call_ringtone_summary"
             android:title="@string/pref_ringtone" />
+        <CheckBoxPreference
+            android:defaultValue="@bool/dialler_integration_incoming"
+            android:key="dialler_integration_incoming"
+            android:summary="@string/pref_dialler_integration_incoming_summary"
+            android:title="@string/pref_dialler_integration_incoming" />
     </PreferenceScreen>
     <!--Attachments-->
     <PreferenceScreen
@@ -315,7 +315,15 @@
             android:key="camera_choice"
             android:summary="@string/pref_choose_camera_summary"
             android:title="@string/choose_camera_app" />
-
+        <Preference
+            android:title="Change Stickers Location"
+            android:key="sticker_directory" />
+        <Preference
+            android:title="Update Default Stickers"
+            android:key="download_default_stickers" />
+        <Preference
+            android:title="Clear Blocked Media"
+            android:key="clear_blocked_media" />
     </PreferenceScreen>
     <!--status-->
     <PreferenceScreen
@@ -483,12 +491,6 @@
                 android:key="export_plain_text_logs"
                 android:summary="@string/pref_export_plain_text_logs_summary"
                 android:title="@string/pref_export_plain_text_logs" />
-        </PreferenceCategory>
-        <PreferenceCategory android:title="@string/pref_import_settings">
-            <Preference
-                android:key="import_settings"
-                android:summary="@string/pref_import_settings_summary"
-                android:title="@string/pref_import_settings" />
         </PreferenceCategory>
     </PreferenceScreen>
     <!--Expert-->

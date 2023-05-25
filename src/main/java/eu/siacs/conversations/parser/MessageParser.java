@@ -6,6 +6,8 @@ import android.util.Pair;
 
 
 import de.monocles.chat.BobTransfer;
+import de.monocles.chat.WebxdcUpdate;
+import java.io.File;
 
 import java.net.URISyntaxException;
 import java.text.SimpleDateFormat;
@@ -13,11 +15,14 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.Date;
+import java.util.LinkedHashSet;
 import java.util.List;
 import java.util.Locale;
 import java.util.Map;
 import java.util.Set;
 import java.util.UUID;
+
+import io.ipfs.cid.Cid;
 
 import android.os.Build;
 import android.text.Html;
@@ -499,14 +504,31 @@ public class MessageParser extends AbstractParser implements OnMessagePacketRece
         final Element mucUserElement = packet.findChild("x", Namespace.MUC_USER);
         final String pgpEncrypted = packet.findChildContent("x", "jabber:x:encrypted");
         Element replaceElement = packet.findChild("replace", "urn:xmpp:message-correct:0");
-        final Element oob = packet.findChild("x", Namespace.OOB);
-        final String oobUrl = oob != null ? oob.findChildContent("url") : null;
+        Set<Message.FileParams> attachments = new LinkedHashSet<>();
+        for (Element child : packet.getChildren()) {
+            // SIMS first so they get preference in the set
+            if (child.getName().equals("reference") && child.getNamespace().equals("urn:xmpp:reference:0")) {
+                if (child.findChild("media-sharing", "urn:xmpp:sims:1") != null) {
+                    attachments.add(new Message.FileParams(child));
+                }
+            }
+        }
+        for (Element child : packet.getChildren()) {
+            if (child.getName().equals("x") && child.getNamespace().equals(Namespace.OOB)) {
+                attachments.add(new Message.FileParams(child));
+            }
+        }
         String replacementId = replaceElement == null ? null : replaceElement.getAttribute("id");
         if (replacementId == null) {
-            Element fasten = packet.findChild("apply-to", "urn:xmpp:fasten:0");
-            if (fasten != null && (fasten.findChild("retract", "urn:xmpp:message-retract:0") != null || fasten.findChild("urn:xmpp:message-moderate:0") != null)) {
-                replacementId = fasten.getAttribute("id");
-                packet.setBody("");
+            final Element fasten = packet.findChild("apply-to", "urn:xmpp:fasten:0");
+            if (fasten != null) {
+                replaceElement = fasten.findChild("retract", "urn:xmpp:message-retract:0");
+                if (replaceElement == null) replaceElement = fasten.findChild("moderated", "urn:xmpp:message-moderate:0");
+                if (replaceElement != null) {
+                    final String reason = replaceElement.findChildContent("reason", "urn:xmpp:message-moderate:0");
+                    replacementId = fasten.getAttribute("id");
+                    packet.setBody(reason == null ? "" : reason);
+                }
             }
         }
         final Element applyToElement = packet.findChild("apply-to", "urn:xmpp:fasten:0");
@@ -532,7 +554,7 @@ public class MessageParser extends AbstractParser implements OnMessagePacketRece
             remoteMsgId = packet.getId();
         }
         boolean notify = false;
-        Element html = original.findChild("html", "http://jabber.org/protocol/xhtml-im");
+        Element html = packet.findChild("html", "http://jabber.org/protocol/xhtml-im");
         if (html != null && html.findChild("body", "http://www.w3.org/1999/xhtml") == null) {
             html = null;
         }
@@ -580,7 +602,7 @@ public class MessageParser extends AbstractParser implements OnMessagePacketRece
             if (reactions != null && reactions.getAttribute("id") != null) {
                 final Conversation conversation = mXmppConnectionService.find(account, counterpart.asBareJid());
                 if (conversation != null) {
-                    final Message reactionTo = conversation.findMessageWithRemoteIdAndCounterpart(reactions.getAttribute("id"), null, false, false);
+                    final Message reactionTo = conversation.findMessageWithRemoteIdAndCounterpart(reactions.getAttribute("id"), null);
                     if (reactionTo != null) {
                         String bodyS = reactionTo.reply().getBody();
                         for (Element el : reactions.getChildren()) {
@@ -590,15 +612,39 @@ public class MessageParser extends AbstractParser implements OnMessagePacketRece
                         }
                         body = new LocalizedContent(bodyS, "en", 1);
                         final Message previousReaction = conversation.findMessageReactingTo(reactions.getAttribute("id"), counterpart);
-                        Log.d("WUT", "" + previousReaction + "    " + counterpart);
                         if (previousReaction != null) replacementId = previousReaction.replyId();
                     }
                 }
             }
         }
 
-        if ((body != null || pgpEncrypted != null || (axolotlEncrypted != null && axolotlEncrypted.hasChild("payload")) || oobUrl != null) && !isMucStatusMessage) {
-            final boolean conversationIsProbablyMuc = isTypeGroupChat || mucUserElement != null || account.getXmppConnection().getMucServersWithholdAccount().contains(counterpart.getDomain().toEscapedString());
+        final boolean conversationIsProbablyMuc = isTypeGroupChat || mucUserElement != null || account.getXmppConnection().getMucServersWithholdAccount().contains(counterpart.getDomain().toEscapedString());
+        final Element webxdc = packet.findChild("x", "urn:xmpp:webxdc:0");
+        if (webxdc != null) {
+            final Conversation conversation = mXmppConnectionService.findOrCreateConversation(account, counterpart.asBareJid(), conversationIsProbablyMuc, false, query, false);
+            Jid webxdcSender = counterpart.asBareJid();
+            if (conversation.getMode() == Conversation.MODE_MULTI) {
+                if(conversation.getMucOptions().nonanonymous()) {
+                    webxdcSender = conversation.getMucOptions().getTrueCounterpart(counterpart);
+                } else {
+                    webxdcSender = counterpart;
+                }
+            }
+            mXmppConnectionService.insertWebxdcUpdate(new WebxdcUpdate(
+                    conversation,
+                    remoteMsgId,
+                    counterpart,
+                    packet.findChild("thread"),
+                    body == null ? null : body.content,
+                    webxdc.findChildContent("document", "urn:xmpp:webxdc:0"),
+                    webxdc.findChildContent("summary", "urn:xmpp:webxdc:0"),
+                    webxdc.findChildContent("json", "urn:xmpp:json:0")
+            ));
+
+            mXmppConnectionService.updateConversationUi();
+        }
+
+        if ((body != null || pgpEncrypted != null || (axolotlEncrypted != null && axolotlEncrypted.hasChild("payload")) || !attachments.isEmpty() || html != null) && !isMucStatusMessage) {
             final Conversation conversation = mXmppConnectionService.findOrCreateConversation(account, counterpart.asBareJid(), conversationIsProbablyMuc, false, query, false);
             final boolean conversationMultiMode = conversation.getMode() == Conversation.MODE_MULTI;
 
@@ -707,34 +753,58 @@ public class MessageParser extends AbstractParser implements OnMessagePacketRece
                 if (conversationMultiMode) {
                     message.setTrueCounterpart(origin);
                 }
-            } else if (body == null && oobUrl != null) {
-                message = new Message(conversation, oobUrl, Message.ENCRYPTION_NONE, status);
-                message.setOob(oobUrl);
-                if (CryptoHelper.isPgpEncryptedUrl(oobUrl)) {
-                    message.setEncryption(Message.ENCRYPTION_DECRYPTED);
-                }
+            } else if (body == null && !attachments.isEmpty()) {
+                message = new Message(conversation, "", Message.ENCRYPTION_NONE, status);
             } else {
-                message = new Message(conversation, body.content, Message.ENCRYPTION_NONE, status);
-                if (body.count > 1) {
+                message = new Message(conversation, body == null ? "HTML-only message" : body.content, Message.ENCRYPTION_NONE, status);
+                if (body != null && body.count > 1) {
                     message.setBodyLanguage(body.language);
                 }
             }
-            message.setSubject(original.findChildContent("subject"));
+
+            Element addresses = packet.findChild("addresses", "http://jabber.org/protocol/address");
+            if (status == Message.STATUS_RECEIVED && addresses != null) {
+                for (Element address : addresses.getChildren()) {
+                    if (!address.getName().equals("address") || !address.getNamespace().equals("http://jabber.org/protocol/address")) continue;
+
+                    if (address.getAttribute("type").equals("ofrom") && address.getAttribute("jid") != null) {
+                        Jid ofrom = address.getAttributeAsJid("jid");
+                        if (InvalidJid.isValid(ofrom) && ofrom.getDomain().equals(counterpart.getDomain()) &&
+                                conversation.getAccount().getRoster().getContact(counterpart.getDomain()).getPresences().anySupport("http://jabber.org/protocol/address")) {
+
+                            message.setTrueCounterpart(ofrom);
+                        }
+                    }
+                }
+            }
+            if (html != null) message.addPayload(html);
+            message.setSubject(packet.findChildContent("subject"));
             message.setCounterpart(counterpart);
             message.setRemoteMsgId(remoteMsgId);
             message.setServerMsgId(serverMsgId);
             message.setCarbon(isCarbon);
             message.setTime(timestamp);
-            if (oobUrl != null) {
-                message.setOob(oobUrl);
-                if (CryptoHelper.isPgpEncryptedUrl(oobUrl)) {
+            if (!attachments.isEmpty()) {
+                message.setFileParams(attachments.iterator().next());
+                if (CryptoHelper.isPgpEncryptedUrl(message.getFileParams().url)) {
                     message.setEncryption(Message.ENCRYPTION_DECRYPTED);
                 }
             }
             message.markable = packet.hasChild("markable", "urn:xmpp:chat-markers:0");
             if (reactions != null) message.addPayload(reactions);
             for (Element el : packet.getChildren()) {
-                if (el.getName().equals("query") && el.getNamespace().equals("http://jabber.org/protocol/disco#items") && el.getAttribute("node").equals("http://jabber.org/protocol/commands")) {
+                if ((el.getName().equals("query") && el.getNamespace().equals("http://jabber.org/protocol/disco#items") && el.getAttribute("node").equals("http://jabber.org/protocol/commands")) ||
+                        (el.getName().equals("fallback") && el.getNamespace().equals("urn:xmpp:fallback:0"))) {
+                    message.addPayload(el);
+                }
+                if (el.getName().equals("thread") && (el.getNamespace() == null || el.getNamespace().equals("jabber:client"))) {
+                    el.setAttribute("xmlns", "jabber:client");
+                    message.addPayload(el);
+                }
+                if (el.getName().equals("reply") && el.getNamespace() != null && el.getNamespace().equals("urn:xmpp:reply:0")) {
+                    message.addPayload(el);
+                }
+                if (el.getName().equals("attention") && el.getNamespace() != null && el.getNamespace().equals("urn:xmpp:attention:0")) {
                     message.addPayload(el);
                 }
             }
@@ -767,10 +837,7 @@ public class MessageParser extends AbstractParser implements OnMessagePacketRece
             }
 
             if (replacementId != null && mXmppConnectionService.allowMessageCorrection()) {
-                Message replacedMessage = conversation.findMessageWithRemoteIdAndCounterpart(replacementId,
-                        counterpart,
-                        message.getStatus() == Message.STATUS_RECEIVED,
-                        message.isCarbon());
+                Message replacedMessage = conversation.findMessageWithRemoteIdAndCounterpart(replacementId, counterpart);
 
                 if (replacedMessage == null) {
                     replacedMessage = conversation.findSentMessageWithUuidOrRemoteId(replacementId, true, true);
@@ -829,6 +896,9 @@ public class MessageParser extends AbstractParser implements OnMessagePacketRece
                         Log.d(Config.LOGTAG, account.getJid().asBareJid() + ": received message correction but verification didn't check out");
                     }
                 } else if (message.getBody() == null || message.getBody().equals("") || message.getBody().equals(" ")) {
+                    return;
+                }
+                else if (message.getBody() == null || message.getBody().equals("") || message.getBody().equals(" ")) {
                     return;
                 }
             } else if (replacementId != null && !mXmppConnectionService.allowMessageCorrection() && (message.hasDeletedBody())) {
@@ -986,9 +1056,22 @@ public class MessageParser extends AbstractParser implements OnMessagePacketRece
                 conversation.endOtrIfNeeded();
             }
 
+
+            if (message.getFileParams() != null) {
+                for (Cid cid : message.getFileParams().getCids()) {
+                    File f = mXmppConnectionService.getFileForCid(cid);
+                    if (f != null && f.canRead()) {
+                        message.setRelativeFilePath(f.getAbsolutePath());
+                        mXmppConnectionService.getFileBackend().updateFileParams(message, null, false);
+                        break;
+                    }
+                }
+            }
             mXmppConnectionService.databaseBackend.createMessage(message);
+
             final HttpConnectionManager manager = this.mXmppConnectionService.getHttpConnectionManager();
-            if ((mXmppConnectionService.easyDownloader() || message.trusted()) && message.treatAsDownloadable() && manager.getAutoAcceptFileSize() > 0) {
+
+            if ((mXmppConnectionService.easyDownloader() || message.getRelativeFilePath() == null && message.trusted()) && message.treatAsDownloadable() && manager.getAutoAcceptFileSize() > 0) {
                 if (message.getOob() != null && message.getOob().getScheme().equalsIgnoreCase("cid")) {
                     try {
                         BobTransfer transfer = new BobTransfer.ForMessage(message, mXmppConnectionService);

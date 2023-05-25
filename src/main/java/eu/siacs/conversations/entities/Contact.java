@@ -4,8 +4,10 @@ import android.content.ComponentName;
 import android.annotation.SuppressLint;
 import android.content.ContentValues;
 import android.content.Context;
+import android.content.pm.PackageManager;
 import android.database.Cursor;
 import android.net.Uri;
+import android.os.Build;
 import android.text.TextUtils;
 import android.os.Bundle;
 import android.telecom.PhoneAccount;
@@ -20,6 +22,7 @@ import android.telecom.PhoneAccount;
 import android.telecom.PhoneAccountHandle;
 import android.telecom.TelecomManager;
 import android.content.ComponentName;
+import android.util.Log;
 
 
 import androidx.annotation.NonNull;
@@ -204,25 +207,34 @@ public class Contact implements ListItem, Blockable {
         return jid;
     }
 
-    @Override
-    public List<Tag> getTags(Context context) {
-        final HashSet<Tag> tags = new HashSet<>();
+    public List<Tag> getGroupTags() {
+        final ArrayList<Tag> tags = new ArrayList<>();
         for (final String group : getGroups(true)) {
             tags.add(new Tag(group, UIHelper.getColorForName(group), 0, account, isActive()));
         }
+        return tags;
+    }
+
+    @Override
+    public List<Tag> getTags(Context context) {
+        final HashSet<Tag> tags = new HashSet<>();
+        tags.addAll(getGroupTags());
         for (final String tag : getSystemTags(true)) {
             tags.add(new Tag(tag, UIHelper.getColorForName(tag), 0, account, isActive()));
         }
         Presence.Status status = getShownStatus();
-        tags.add(UIHelper.getTagForStatus(context, status, account, isActive()));
+        if (status != Presence.Status.OFFLINE) {
+            tags.add(UIHelper.getTagForStatus(context, status, account, true));
+        }
         if (isBlocked()) {
-            tags.add(new Tag(context.getString(R.string.blocked), 0xff2e2f3b, 0, account, isActive()));
+            tags.add(new Tag(context.getString(R.string.blocked), 0xff2e2f3b, 0, account, true));
         }
         if (!showInRoster() && getSystemAccount() != null) {
-            tags.add(new Tag("Android", UIHelper.getColorForName("Android"), 0, account, isActive()));
+            tags.add(new Tag("Android", UIHelper.getColorForName("Android"), 0, account, true));
         }
         return new ArrayList<>(tags);
     }
+
 
     @Override
     public boolean getActive() {
@@ -242,10 +254,13 @@ public class Contact implements ListItem, Blockable {
                 }
             }
             return true;
-        } else {
+        } else if(parts.length > 0) {
             return jid.toString().contains(parts[0]) ||
                     getDisplayName().toLowerCase(Locale.US).contains(parts[0]) ||
                     matchInTag(context, parts[0]);
+        } else {
+            return jid.toString().contains(needle) ||
+                    getDisplayName().toLowerCase(Locale.US).contains(needle);
         }
     }
 
@@ -366,6 +381,10 @@ public class Contact implements ListItem, Blockable {
         this.systemAccount = lookupUri;
     }
 
+    public void setGroups(List<String> groups) {
+        this.groups = new JSONArray(groups);
+    }
+
     private Collection<String> getGroups(final boolean unique) {
         final Collection<String> groups = unique ? new HashSet<>() : new ArrayList<>();
         for (int i = 0; i < this.groups.length(); ++i) {
@@ -381,6 +400,7 @@ public class Contact implements ListItem, Blockable {
             this.groups.put(tag);
         }
     }
+
     private Collection<String> getSystemTags(final boolean unique) {
         final Collection<String> tags = unique ? new HashSet<>() : new ArrayList<>();
         for (int i = 0; i < this.systemTags.length(); ++i) {
@@ -471,6 +491,10 @@ public class Contact implements ListItem, Blockable {
         return ((this.subscription & (1 << option)) != 0);
     }
 
+    public boolean canInferPresence() {
+        return showInContactList() || isSelf();
+    }
+
     public boolean showInRoster() {
         return (this.getOption(Contact.Options.IN_ROSTER) && (!this
                 .getOption(Contact.Options.DIRTY_DELETE)))
@@ -550,6 +574,12 @@ public class Contact implements ListItem, Blockable {
 
     @Override
     public int compareTo(@NonNull final ListItem another) {
+        if (getJid().isDomainJid() && !another.getJid().isDomainJid()) {
+            return -1;
+        } else if (!getJid().isDomainJid() && another.getJid().isDomainJid()) {
+            return 1;
+        }
+
         return this.getDisplayName().compareToIgnoreCase(
                 another.getDisplayName());
     }
@@ -711,6 +741,13 @@ public class Contact implements ListItem, Blockable {
 
     // This Contact is a gateway to use for voice calls, register it with OS
     public void registerAsPhoneAccount(XmppConnectionService ctx) {
+        if (Build.VERSION.SDK_INT < 23) return;
+        if (Build.VERSION.SDK_INT >= 33) {
+            if (!ctx.getPackageManager().hasSystemFeature(PackageManager.FEATURE_TELECOM)) return;
+        } else {
+            if (!ctx.getPackageManager().hasSystemFeature(PackageManager.FEATURE_CONNECTION_SERVICE)) return;
+        }
+
         TelecomManager telecomManager = ctx.getSystemService(TelecomManager.class);
 
         PhoneAccount phoneAccount = PhoneAccount.builder(
@@ -731,11 +768,21 @@ public class Contact implements ListItem, Blockable {
         telecomManager.registerPhoneAccount(phoneAccount);
     }
 
-
     // Unregister any associated PSTN gateway integration
     public void unregisterAsPhoneAccount(Context ctx) {
+        if (Build.VERSION.SDK_INT < 23) return;
+        if (Build.VERSION.SDK_INT >= 33) {
+            if (!ctx.getPackageManager().hasSystemFeature(PackageManager.FEATURE_TELECOM)) return;
+        } else {
+            if (!ctx.getPackageManager().hasSystemFeature(PackageManager.FEATURE_CONNECTION_SERVICE)) return;
+        }
+
         TelecomManager telecomManager = ctx.getSystemService(TelecomManager.class);
-        telecomManager.unregisterPhoneAccount(phoneAccountHandle());
+        try {
+            telecomManager.unregisterPhoneAccount(phoneAccountHandle());
+        } catch (final SecurityException e) {
+            Log.w(Config.LOGTAG, "Could not unregister " + getJid() + " as phone account: " + e);
+        }
     }
 
     public static int getOption(Class<? extends AbstractPhoneContact> clazz) {

@@ -79,7 +79,6 @@ public class HttpDownloadConnection implements Transferable {
             } else if (message.isFileOrImage()) {
                 message.setType(Message.TYPE_TEXT);
             }
-            message.setOob(fileParams.url);
             message.setFileDeleted(false);
             mXmppConnectionService.updateMessage(message);
         }
@@ -99,7 +98,10 @@ public class HttpDownloadConnection implements Transferable {
                     && message.getEncryption() != Message.ENCRYPTION_AXOLOTL) {
                 this.message.setEncryption(Message.ENCRYPTION_NONE);
             }
-            final String ext = extension.getExtension();
+            String ext = extension.getExtension();
+            if (ext == null && fileParams.getMediaType() != null) {
+                ext = MimeUtils.guessExtensionFromMimeType(fileParams.getMediaType());
+            }
             if (ext != null) {
                 if (message.getStatus() == Message.STATUS_RECEIVED) {
                     message.setRelativeFilePath(String.format("%s.%s", fileDateFormat.format(new Date(message.getTimeSent())) + "_" + message.getUuid().substring(0, 4), ext));
@@ -214,9 +216,16 @@ public class HttpDownloadConnection implements Transferable {
         try {
             mXmppConnectionService.getFileBackend().setupRelativeFilePath(message, new FileInputStream(tmp), extension);
             file = mXmppConnectionService.getFileBackend().getFile(message);
-            tmp.renameTo(file);
+            boolean didRename = tmp.renameTo(file);
+            if (!didRename) throw new IOException("rename failed");
         } catch (final IOException e) {
+            Log.w(Config.LOGTAG, "Failed to rename downloaded file: " + e);
             file = tmp;
+            message.setRelativeFilePath(file.getAbsolutePath());
+        } catch (final XmppConnectionService.BlockedMediaException e) {
+            file = tmp;
+            tmp.delete();
+            message.setDeleted(true);
         }
         message.setTransferable(null);
         mXmppConnectionService.updateMessage(message);
@@ -324,7 +333,6 @@ public class HttpDownloadConnection implements Transferable {
             }
             final Message.FileParams fileParams = message.getFileParams();
             FileBackend.updateFileParams(message, fileParams.url, size);
-            message.setOob(fileParams.url);
             mXmppConnectionService.databaseBackend.updateMessage(message, true);
             file.setExpectedSize(size);
             message.resetFileParams();

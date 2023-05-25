@@ -13,6 +13,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
+import android.content.pm.ShortcutManager;
 import android.os.Bundle;
 import android.os.Vibrator;
 import android.telecom.PhoneAccountHandle;
@@ -42,6 +43,7 @@ import androidx.core.app.NotificationManagerCompat;
 import androidx.core.app.Person;
 import androidx.core.app.RemoteInput;
 import androidx.core.content.ContextCompat;
+import androidx.core.content.pm.ShortcutInfoCompat;
 import androidx.core.graphics.drawable.IconCompat;
 
 import com.google.common.base.Strings;
@@ -87,6 +89,9 @@ import eu.siacs.conversations.utils.UIHelper;
 import eu.siacs.conversations.xmpp.XmppConnection;
 import eu.siacs.conversations.xmpp.jingle.AbstractJingleConnection;
 import eu.siacs.conversations.xmpp.jingle.Media;
+import eu.siacs.conversations.entities.MucOptions;
+import eu.siacs.conversations.xmpp.Jid;
+
 
 public class NotificationService {
 
@@ -692,6 +697,10 @@ public class NotificationService {
     }
 
     private synchronized boolean tryRingingWithDialerUI(final AbstractJingleConnection.Id id, final Set<Media> media) {
+        if (Build.VERSION.SDK_INT < 23) return false;
+
+        if (!mXmppConnectionService.getPreferences().getBoolean("dialler_integration_incoming", true)) return false;
+
         if (mXmppConnectionService.checkSelfPermission(Manifest.permission.RECORD_AUDIO) != PackageManager.PERMISSION_GRANTED) {
             // We cannot request audio permission in Dialer UI
             // when Dialer is shown over keyguard, the user cannot even necessarily
@@ -1469,6 +1478,16 @@ public class NotificationService {
             mBuilder.setSmallIcon(R.drawable.ic_notification);
             mBuilder.setDeleteIntent(createDeleteIntent(conversation));
             mBuilder.setContentIntent(createContentIntent(conversation));
+
+            ShortcutInfoCompat info = null;
+            if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.M) {
+                info = mXmppConnectionService.getShortcutService().getShortcutInfoCompat(conversation.getContact());
+            }
+            mBuilder.setShortcutInfo(info);
+            if (Build.VERSION.SDK_INT >= 30) {
+                mXmppConnectionService.getSystemService(ShortcutManager.class).pushDynamicShortcut(info.toShortcutInfo());
+                // mBuilder.setBubbleMetadata(new NotificationCompat.BubbleMetadata.Builder(info.getId()).build());
+            }
         }
         return mBuilder;
     }
@@ -1514,6 +1533,14 @@ public class NotificationService {
             builder.setName(UIHelper.getColoredUsername(mXmppConnectionService, message));
         }
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.P) {
+            final Jid jid = contact == null ? message.getCounterpart() : contact.getJid();
+            builder.setKey(jid.toString());
+            for (Conversation c : mXmppConnectionService.getConversations()) {
+                if (c.getAccount().equals(message.getConversation().getAccount()) && c.getJid().asBareJid().equals(jid)) {
+                    builder.setImportant(c.getBooleanAttribute(Conversation.ATTRIBUTE_PINNED_ON_TOP, false));
+                    break;
+                }
+            }
             builder.setIcon(IconCompat.createWithBitmap(mXmppConnectionService.getAvatarService().get(message, AvatarService.getSystemUiAvatarSize(mXmppConnectionService), false)));
         }
         return builder.build();
@@ -1528,7 +1555,7 @@ public class NotificationService {
             }
             final Person me = meBuilder.build();
             NotificationCompat.MessagingStyle messagingStyle = new NotificationCompat.MessagingStyle(me);
-            final boolean multiple = conversation.getMode() == Conversation.MODE_MULTI;
+            final boolean multiple = conversation.getMode() == Conversation.MODE_MULTI || messages.get(0).getTrueCounterpart() != null;
             if (multiple) {
                 messagingStyle.setConversationTitle(conversation.getName());
             }
@@ -1548,7 +1575,7 @@ public class NotificationService {
             messagingStyle.setGroupConversation(multiple);
             builder.setStyle(messagingStyle);
         } else {
-            if (messages.get(0).getConversation().getMode() == Conversation.MODE_SINGLE) {
+            if (messages.get(0).getConversation().getMode() == Conversation.MODE_SINGLE && messages.get(0).getTrueCounterpart() == null) {
                 builder.setStyle(new NotificationCompat.BigTextStyle().bigText(getMergedBodies(messages)));
                 final CharSequence preview = UIHelper.getMessagePreview(mXmppConnectionService, messages.get(messages.size() - 1)).first;
                 builder.setContentText(preview);
@@ -1774,6 +1801,11 @@ public class NotificationService {
     private boolean wasHighlightedOrPrivate(final Message message) {
         if (message.getConversation() instanceof Conversation) {
             Conversation conversation = (Conversation) message.getConversation();
+            final MucOptions.User sender = conversation.getMucOptions().findUserByFullJid(message.getCounterpart());
+            if (sender != null && sender.getAffiliation().ranks(MucOptions.Affiliation.MEMBER) && message.isAttention()) {
+                return true;
+            }
+
             final String nick = conversation.getMucOptions().getActualNick();
             final Pattern highlight = generateNickHighlightPattern(nick);
             if (message.getBody() == null || nick == null) {

@@ -17,6 +17,7 @@ import static eu.siacs.conversations.utils.RichPreview.RICH_LINK_METADATA;
 import static eu.siacs.conversations.utils.Random.SECURE_RANDOM;
 import static eu.siacs.conversations.utils.StorageHelper.getAppMediaDirectory;
 import eu.siacs.conversations.xmpp.OnGatewayResult;
+import eu.siacs.conversations.utils.Consumer;
 
 import static eu.siacs.conversations.utils.Compatibility.s;
 import android.Manifest;
@@ -39,6 +40,8 @@ import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
 import android.database.ContentObserver;
 import android.graphics.Bitmap;
+import android.graphics.drawable.BitmapDrawable;
+import android.graphics.drawable.Drawable;
 import android.media.AudioManager;
 import android.net.ConnectivityManager;
 import android.net.Network;
@@ -85,6 +88,8 @@ import com.google.common.base.Objects;
 import com.google.common.base.Strings;
 import com.otaliastudios.transcoder.strategy.DefaultAudioStrategy;
 
+import de.monocles.chat.WebxdcUpdate;
+
 import org.conscrypt.Conscrypt;
 import org.openintents.openpgp.IOpenPgpService2;
 import org.openintents.openpgp.util.OpenPgpApi;
@@ -92,7 +97,8 @@ import org.openintents.openpgp.util.OpenPgpServiceConnection;
 import com.google.common.base.Optional;
 
 import eu.siacs.conversations.utils.Emoticons;
-
+import java.io.FileInputStream;
+import java.io.IOException;
 import java.io.File;
 import java.security.Security;
 import java.security.cert.CertificateException;
@@ -262,6 +268,7 @@ public class XmppConnectionService extends Service {
     public DatabaseBackend databaseBackend;
     private final ReplacingSerialSingleThreadExecutor mContactMergerExecutor = new ReplacingSerialSingleThreadExecutor("ContactMerger");
     private long mLastActivity = 0;
+    private long mLastMucPing = 0;
     public final FileBackend fileBackend = new FileBackend(this);
     private MemorizingTrustManager mMemorizingTrustManager;
     private final NotificationService mNotificationService = new NotificationService(this);
@@ -357,6 +364,7 @@ public class XmppConnectionService extends Service {
             }
         }
     };
+    private LruCache<String, Drawable> mDrawableCache;
 
     public void setDiallerIntegrationActive(boolean active) {
         diallerIntegrationActive.set(active);
@@ -598,6 +606,26 @@ public class XmppConnectionService extends Service {
         return this.fileBackend;
     }
 
+    public void blockMedia(Cid cid) {
+        this.databaseBackend.blockMedia(cid);
+    }
+
+    public void clearBlockedMedia() {
+        this.databaseBackend.clearBlockedMedia();
+    }
+
+    public void insertWebxdcUpdate(final WebxdcUpdate update) {
+        this.databaseBackend.insertWebxdcUpdate(update);
+    }
+
+    public WebxdcUpdate findLastWebxdcUpdate(Message message) {
+        return this.databaseBackend.findLastWebxdcUpdate(message);
+    }
+
+    public List<WebxdcUpdate> findWebxdcUpdates(Message message, long serial) {
+        return this.databaseBackend.findWebxdcUpdates(message, serial);
+    }
+
     public AvatarService getAvatarService() {
         return this.mAvatarService;
     }
@@ -608,6 +636,7 @@ public class XmppConnectionService extends Service {
             encryption = Message.ENCRYPTION_DECRYPTED;
         }
         Message message = new Message(conversation, uri.toString(), encryption);
+        message.setThread(conversation.getThread());
         Message.configurePrivateMessage(message);
         if (encryption == Message.ENCRYPTION_DECRYPTED) {
             getPgpEngine().encrypt(message, callback);
@@ -628,6 +657,7 @@ public class XmppConnectionService extends Service {
         if (conversation.getNextEncryption() == Message.ENCRYPTION_PGP) {
             message.setEncryption(Message.ENCRYPTION_DECRYPTED);
         }
+        message.setThread(conversation.getThread());
         if (!Message.configurePrivateFileMessage(message)) {
             message.setCounterpart(conversation.getNextCounterpart());
             message.setType(Message.TYPE_FILE);
@@ -669,7 +699,7 @@ public class XmppConnectionService extends Service {
         if (conversation.getNextEncryption() == Message.ENCRYPTION_PGP) {
             message.setEncryption(Message.ENCRYPTION_DECRYPTED);
         }
-
+        message.setThread(conversation.getThread());
         if (!Message.configurePrivateFileMessage(message)) {
             message.setCounterpart(conversation.getNextCounterpart());
             message.setType(Message.TYPE_IMAGE);
@@ -929,6 +959,15 @@ public class XmppConnectionService extends Service {
                     account.getXmppConnection().sendPing();
                     Log.d(Config.LOGTAG, account.getJid().asBareJid() + " send ping (action=" + action + ",lowTimeout=" + lowTimeout + ")");
                     scheduleWakeUpCall(lowTimeout ? Config.LOW_PING_TIMEOUT : Config.PING_TIMEOUT, account.getUuid().hashCode());
+                }
+                long msToMucPing = (mLastMucPing + (Config.PING_MAX_INTERVAL * 2000L)) - SystemClock.elapsedRealtime();
+                if (msToMucPing <= 0) {
+                    mLastMucPing = SystemClock.elapsedRealtime();
+                    for (Conversation c : getConversations()) {
+                        if (c.getMode() == Conversation.MODE_MULTI && c.getMucOptions().online()) {
+                            mucSelfPingAndRejoin(c);
+                        }
+                    }
                 }
             }
             WakeLockHelper.release(wakeLock);
@@ -1473,15 +1512,23 @@ public class XmppConnectionService extends Service {
         Resolver.init(this);
         this.mRandom = new SecureRandom();
         updateMemorizingTrustmanager();
-        final int DEFAULT_CACHE_SIZE_PROPORTION = 10;
+        final int maxMemory = (int) (Runtime.getRuntime().maxMemory() / 1024);
+        final int cacheSize = maxMemory / 10;
         ActivityManager manager = (ActivityManager) this.getSystemService(Context.ACTIVITY_SERVICE);
-        int memoryClass = manager.getMemoryClass();
-        int memoryClassInKilobytes = memoryClass * 1024;
-        int cacheSize = memoryClassInKilobytes / DEFAULT_CACHE_SIZE_PROPORTION;
         this.mBitmapCache = new LruCache<String, Bitmap>(cacheSize) {
             @Override
             protected int sizeOf(final String key, final Bitmap bitmap) {
                 return bitmap.getByteCount() / 1024;
+            }
+        };
+        this.mDrawableCache = new LruCache<String, Drawable>(cacheSize) {
+            @Override
+            protected int sizeOf(final String key, final Drawable drawable) {
+                if (drawable instanceof BitmapDrawable) {
+                    return ((BitmapDrawable) drawable).getBitmap().getByteCount() / 1024;
+                } else {
+                    return drawable.getIntrinsicWidth() * drawable.getIntrinsicHeight() * 40 / 1024;
+                }
             }
         };
         if (mLastActivity == 0) {
@@ -1879,7 +1926,7 @@ public class XmppConnectionService extends Service {
             }
         }
         MessagePacket packet = null;
-        final boolean addToConversation = !message.edited();
+        final boolean addToConversation = !message.edited() && message.getQuoteableBody() != null;
         boolean saveInDb = addToConversation;
         message.setStatus(Message.STATUS_WAITING);
 
@@ -1895,6 +1942,10 @@ public class XmppConnectionService extends Service {
         }
 
         final boolean inProgressJoin = isJoinInProgress(conversation);
+
+        if (message.getCounterpart() == null && !message.isPrivateMessage()) {
+            message.setCounterpart(message.getConversation().getJid().asBareJid());
+        }
 
         if (account.isOnlineAndConnected() && !inProgressJoin) {
             switch (message.getEncryption()) {
@@ -2259,6 +2310,7 @@ public class XmppConnectionService extends Service {
     public void deleteBookmark(final Account account, final Bookmark bookmark) {
         account.removeBookmark(bookmark);
         final XmppConnection connection = account.getXmppConnection();
+        if (connection == null) return;
         if (connection != null && connection.getFeatures().bookmarks2()) {
             IqPacket request = mIqGenerator.deleteItem(Namespace.BOOKMARKS2, bookmark.getJid().asBareJid().toEscapedString());
             sendIqPacket(account, request, (a, response) -> {
@@ -2282,6 +2334,8 @@ public class XmppConnectionService extends Service {
     }
 
     private void pushBookmarksPrivateXml(Account account) {
+        if (!account.areBookmarksLoaded()) return;
+
         Log.d(Config.LOGTAG, account.getJid().asBareJid() + ": pushing bookmarks via private xml");
         IqPacket iqPacket = new IqPacket(IqPacket.TYPE.SET);
         Element query = iqPacket.query("jabber:iq:private");
@@ -2293,6 +2347,8 @@ public class XmppConnectionService extends Service {
     }
 
     private void pushBookmarksPep(Account account) {
+        if (!account.areBookmarksLoaded()) return;
+
         Log.d(Config.LOGTAG, account.getJid().asBareJid() + ": pushing bookmarks via pep");
         final Element storage = new Element("storage", "storage:bookmarks");
         for (final Bookmark bookmark : account.getBookmarks()) {
@@ -2431,8 +2487,11 @@ public class XmppConnectionService extends Service {
     }
 
     public void syncRoster(final Account account) {
-        unregisterPhoneAccounts(account);
-        mRosterSyncTaskManager.execute(account, () -> databaseBackend.writeRoster(account.getRoster()));
+        mRosterSyncTaskManager.execute(account, () -> {
+            unregisterPhoneAccounts(account);
+            databaseBackend.writeRoster(account.getRoster());
+            try { Thread.sleep(500); } catch (InterruptedException e) { }
+        });
     }
 
     public List<Conversation> getConversations() {
@@ -3818,6 +3877,17 @@ public class XmppConnectionService extends Service {
         }
     }
 
+    public void checkIfMuc(final Account account, final Jid jid, Consumer<Boolean> cb) {
+        IqPacket request = mIqGenerator.queryDiscoInfo(jid.asBareJid());
+        sendIqPacket(account, request, (acct, reply) -> {
+            ServiceDiscoveryResult result = new ServiceDiscoveryResult(reply);
+            cb.accept(
+                    result.getFeatures().contains("http://jabber.org/protocol/muc") &&
+                            result.hasIdentity("conference", null)
+            );
+        });
+    }
+
     public void fetchConferenceConfiguration(final Conversation conversation) {
         fetchConferenceConfiguration(conversation, null);
     }
@@ -3980,6 +4050,7 @@ public class XmppConnectionService extends Service {
             }
         });
     }
+
 
     public void destroyRoom(final Conversation conversation, final OnRoomDestroy callback) {
         try {
@@ -4375,6 +4446,11 @@ public class XmppConnectionService extends Service {
     }
 
     public void fetchAvatar(Account account, final Avatar avatar, final UiCallback<Avatar> callback) {
+        if (databaseBackend.isBlockedMedia(avatar.cid())) {
+            if (callback != null) callback.error(0, null);
+            return;
+        }
+
         final String KEY = generateFetchKey(account, avatar);
         synchronized (this.mInProgressAvatarFetches) {
             if (mInProgressAvatarFetches.add(KEY)) {
@@ -4557,6 +4633,34 @@ public class XmppConnectionService extends Service {
         }
     }
 
+    public void fetchVcard4(Account account, final Contact contact, final Consumer<Element> callback) {
+        IqPacket packet = this.mIqGenerator.retrieveVcard4(contact.getJid());
+        sendIqPacket(account, packet, (a, result) -> {
+            if (result.getType() == IqPacket.TYPE.RESULT) {
+                final Element item = mIqParser.getItem(result);
+                if (item != null) {
+                    final Element vcard4 = item.findChild("vcard", Namespace.VCARD4);
+                    if (vcard4 != null) {
+                        if (callback != null) {
+                            callback.accept(vcard4);
+                        }
+                        return;
+                    }
+                }
+            } else {
+                Element error = result.findChild("error");
+                if (error == null) {
+                    Log.d(Config.LOGTAG, "fetchVcard4 (server error)");
+                } else {
+                    Log.d(Config.LOGTAG, "fetchVcard4 " + error.toString());
+                }
+            }
+            if (callback != null) {
+                callback.accept(null);
+            }
+
+        });
+    }
     public void deleteContactOnServer(Contact contact) {
         contact.resetOption(Contact.Options.PREEMPTIVE_GRANT);
         contact.resetOption(Contact.Options.DIRTY_PUSH);
@@ -4886,8 +4990,12 @@ public class XmppConnectionService extends Service {
     }
 
     public void updateConversationUi() {
+        updateConversationUi(false);
+    }
+
+    public void updateConversationUi(boolean newCaps) {
         for (OnConversationUpdate listener : threadSafeList(this.mOnConversationUpdates)) {
-            listener.onConversationUpdate();
+            listener.onConversationUpdate(newCaps);
         }
     }
 
@@ -4976,7 +5084,7 @@ public class XmppConnectionService extends Service {
     public Conversation findUniqueConversationByJid(XmppUri xmppUri) {
         List<Conversation> findings = new ArrayList<>();
         for (Conversation c : getConversations()) {
-            if (c.getAccount().isEnabled() && c.getJid().asBareJid().equals(xmppUri.getJid()) && ((c.getMode() == Conversational.MODE_MULTI) == xmppUri.isAction(XmppUri.ACTION_JOIN))) {
+            if (c.getAccount().isEnabled() && c.getJid().asBareJid().equals(xmppUri.getJid().asBareJid()) && ((c.getMode() == Conversational.MODE_MULTI) == xmppUri.isAction(XmppUri.ACTION_JOIN))) {
                 findings.add(c);
             }
         }
@@ -5455,6 +5563,7 @@ public class XmppConnectionService extends Service {
                 contact.registerAsPhoneAccount(this);
                 mQuickConversationsService.considerSyncBackground(false);
             }
+            updateConversationUi(true);
         } else {
             final IqPacket request = new IqPacket(IqPacket.TYPE.GET);
             request.setTo(jid);
@@ -5476,6 +5585,7 @@ public class XmppConnectionService extends Service {
                             contact.registerAsPhoneAccount(this);
                             mQuickConversationsService.considerSyncBackground(false);
                         }
+                        updateConversationUi(true);
                         if (cb != null) cb.run();
                     } else {
                         Log.d(Config.LOGTAG, a.getJid().asBareJid() + ": mismatch in caps for contact " + jid + " " + presence.getVer() + " vs " + discoveryResult.getVer());
@@ -5685,8 +5795,20 @@ public class XmppConnectionService extends Service {
         sendIqPacket(account, set, null);
     }
 
+    public void evictPreview(File f) {
+        if (mBitmapCache.remove(f.getAbsolutePath()) != null) {
+            Log.d(Config.LOGTAG, "deleted cached preview");
+        }
+        if (mDrawableCache.remove(f.getAbsolutePath()) != null) {
+            Log.d(Config.LOGTAG, "deleted cached preview");
+        }
+    }
+
     public void evictPreview(String uuid) {
         if (mBitmapCache.remove(uuid) != null) {
+            Log.d(Config.LOGTAG, "deleted cached preview");
+        }
+        if (mDrawableCache.remove(uuid) != null) {
             Log.d(Config.LOGTAG, "deleted cached preview");
         }
     }
@@ -5727,6 +5849,10 @@ public class XmppConnectionService extends Service {
         return this.databaseBackend.getFileForCid(cid);
     }
 
+    public String getUrlForCid(Cid cid) {
+        return this.databaseBackend.getUrlForCid(cid);
+    }
+
     public void saveCid(Cid cid, File file) throws BlockedMediaException {
         saveCid(cid, file, null);
     }
@@ -5736,6 +5862,24 @@ public class XmppConnectionService extends Service {
             throw new BlockedMediaException();
         }
         this.databaseBackend.saveCid(cid, file, url);
+    }
+
+
+    public void blockMedia(File f) {
+        try {
+            Cid[] cids = getFileBackend().calculateCids(new FileInputStream(f));
+            for (Cid cid : cids) {
+                blockMedia(cid);
+            }
+        } catch (final IOException e) { }
+    }
+
+    public LruCache<String, Drawable> getDrawableCache() {
+        return this.mDrawableCache;
+    }
+
+    public boolean isOnboarding() {
+        return getAccounts().size() == 1 && getAccounts().get(0).getJid().getDomain().equals(Config.ONBOARDING_DOMAIN);
     }
 
     public interface OnMamPreferencesFetched {
@@ -5775,7 +5919,8 @@ public class XmppConnectionService extends Service {
     }
 
     public interface OnConversationUpdate {
-        void onConversationUpdate();
+        default void onConversationUpdate() { onConversationUpdate(false); }
+        default void onConversationUpdate(boolean newCaps) { onConversationUpdate(); }
     }
 
     public interface OnJingleRtpConnectionUpdate {

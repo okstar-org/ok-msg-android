@@ -26,6 +26,7 @@
             android:layout_width="48dp"
             android:layout_height="48dp"
             android:scaleType="fitXY"
+            app:strokeColor="@color/custom_theme_accent"
             app:riv_corner_radius="30dp" />
 
         <View
@@ -78,7 +79,7 @@
                 android:longClickable="true"
                 android:visibility="gone" />
 
-            <LinearLayout
+            <com.wefika.flowlayout.FlowLayout
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="end"
@@ -108,6 +109,15 @@
                     android:text="@string/sending"
                     android:textAppearance="@style/TextAppearance.Conversations.Caption"
                     tools:ignore="UnusedAttribute" />
+
+                <com.lelloman.identicon.view.GithubIdenticonView
+                    android:id="@+id/thread_identicon"
+                    android:visibility="gone"
+                    android:layout_width="9dp"
+                    android:layout_height="9dp"
+                    android:layout_gravity="center_vertical"
+                    android:layout_marginRight="4sp"
+                    android:layout_marginBottom="-1dp" />
 
                 <ImageView
                     android:id="@+id/security_indicator"
@@ -150,7 +160,7 @@
                     android:gravity="center_vertical"
                     android:padding="1dp"
                     android:src="@drawable/ic_check_black_18dp" />
-            </LinearLayout>
+            </com.wefika.flowlayout.FlowLayout>
         </LinearLayout>
     </LinearLayout>
 </RelativeLayout>

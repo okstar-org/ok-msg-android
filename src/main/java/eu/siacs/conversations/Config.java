@@ -19,6 +19,7 @@ public final class Config {
 
     public static final long MILLISECONDS_IN_DAY = 24 * 60 * 60 * 1000;
     public static final long CONTACT_SYNC_RETRY_INTERVAL = 1000L * 60 * 5;
+    public static final Jid ONBOARDING_DOMAIN = Jid.of("onboarding.cheogram.com");
 
     private static final int UNENCRYPTED = 1;
     private static final int OPENPGP = 2;
@@ -143,7 +144,7 @@ public final class Config {
     public static final boolean AUTOMATICALLY_COMPLETE_SESSIONS = true;
     public static final boolean TWELVE_BYTE_IV = true;
 
-    public static final int MAX_DISPLAY_MESSAGE_CHARS = 2 * 4096; //why only 4096? --> increased
+    public static final int MAX_DISPLAY_MESSAGE_CHARS = 40000;
     public static final int MAX_STORAGE_MESSAGE_CHARS = 2 * 1024 * 1024; //2MB
 
     public static final boolean ExportLogs = true; // automatically export logs
@@ -211,6 +212,9 @@ public final class Config {
         //if the contacts domain matches one of the following domains OMEMO won’t be turned on automatically
         //can be used for well known, widely used gateways
         private static final List<String> CONTACT_DOMAINS = Arrays.asList(
+                "whatsapp.monocles.eu",
+                "telegram.monocles.eu",
+                "signal.monocles.eu",
                 "sip.cheogram.com",
                 "irc.cheogram.com",
                 "smtp.cheogram.com",

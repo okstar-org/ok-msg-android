@@ -341,7 +341,7 @@
     <string name="could_not_verify_fingerprint">Fingerabdruck konnte nicht überprüft werden</string>
     <string name="manually_verify">Manuell überprüfen</string>
     <string name="pref_show_dynamic_tags">Dynamische Tags anzeigen</string>
-    <string name="pref_show_dynamic_tags_summary">Schreibgeschütze Tags unterhalb der Kontakte anzeigen</string>
+    <string name="pref_show_dynamic_tags_summary">Erlauben Sie das Organisieren mit Tags</string>
     <string name="no_conference_server_found">Es wurde kein Gruppenchat-Server gefunden</string>
     <string name="conference_creation_failed">Gruppenchat konnte nicht erstellt werden!</string>
     <string name="account_image_description">Kontobild</string>
@@ -621,7 +621,7 @@
     <string name="copy_to_clipboard">In Zwischenablage kopieren</string>
     <string name="message_copied_to_clipboard">Nachricht in Zwischenablage kopiert</string>
     <string name="message">Nachricht</string>
-    <string name="quote">Zitieren</string>
+    <string name="quote">Antworten</string>
     <string name="show_error_message">Zeige Fehlermeldung</string>
     <string name="error_message">Fehlermeldung</string>
     <string name="data_saver_enabled">Datensparmodus aktiviert</string>
@@ -1270,4 +1270,5 @@
     <string name="pref_enable_persistent_rooms_title">Persistente Chaträume</string>
     <string name="note_to_self">Notiz an mich</string>
     <string name="i_am_snikket_user">Ich nutze Snikket</string>
+    <string name="add_to_home_screen">Zum Startbildschirm hinzufügen</string>
 </resources>
