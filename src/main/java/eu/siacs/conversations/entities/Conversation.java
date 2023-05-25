@@ -57,6 +57,7 @@ import com.google.android.material.textfield.TextInputLayout;
 import com.google.common.base.Optional;
 
 import de.monocles.chat.ConversationPage;
+import de.monocles.chat.Util;
 import de.monocles.chat.WebxdcPage;
 
 import eu.siacs.conversations.utils.Consumer;
@@ -2038,6 +2039,7 @@ public class Conversation extends AbstractEntity implements Blockable, Comparabl
                         }
                     }
                     binding.values.setAdapter(values);
+                    Util.justifyListViewHeightBasedOnChildren(binding.values);
 
                     if (field.getType().equals(Optional.of("jid-single")) || field.getType().equals(Optional.of("jid-multi"))) {
                         binding.values.setOnItemClickListener((arg0, arg1, pos, id) -> {
