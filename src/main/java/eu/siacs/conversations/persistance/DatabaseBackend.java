@@ -1457,6 +1457,7 @@ public class DatabaseBackend extends SQLiteOpenHelper {
         db.beginTransaction();
         final String[] args = {conversation.getUuid()};
         int num = db.delete(Message.TABLENAME, Message.CONVERSATION + "=?", args);
+        db.delete("monocles.webxdc_updates", Message.CONVERSATION + "=?", args);
         db.setTransactionSuccessful();
         db.endTransaction();
         Log.d(Config.LOGTAG, "deleted " + num + " messages for " + conversation.getJid().asBareJid() + " in " + (SystemClock.elapsedRealtime() - start) + "ms");
