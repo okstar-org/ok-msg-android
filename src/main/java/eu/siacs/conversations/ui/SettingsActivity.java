@@ -112,7 +112,7 @@ public class SettingsActivity extends XmppActivity implements OnSharedPreference
     public static final int REQUEST_CREATE_BACKUP = 0xbf8701;
     public static final int REQUEST_DOWNLOAD_STICKERS = 0xbf8702;
 
-    // public static final int REQUEST_IMPORT_SETTINGS = 0xbf8702; Remove settings import for now
+    // public static final int REQUEST_IMPORT_SETTINGS = 0xbf8702; //TODO: Reintegrate settings import
     Preference multiAccountPreference;
     Preference autoMessageExpiryPreference;
     Preference autoFileExpiryPreference;
@@ -144,6 +144,7 @@ public class SettingsActivity extends XmppActivity implements OnSharedPreference
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
         if (data == null || data.getData() == null) return;
 
         SharedPreferences p = PreferenceManager.getDefaultSharedPreferences(this);
@@ -537,7 +538,10 @@ public class SettingsActivity extends XmppActivity implements OnSharedPreference
         if (stickerDir != null) {
             if (Build.VERSION.SDK_INT >= 24) {
                 stickerDir.setOnPreferenceClickListener((p) -> {
-                    Intent intent = ((StorageManager) getSystemService(Context.STORAGE_SERVICE)).getPrimaryStorageVolume().createOpenDocumentTreeIntent();
+                    Intent intent = null;
+                    if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.Q) {
+                        intent = ((StorageManager) getSystemService(Context.STORAGE_SERVICE)).getPrimaryStorageVolume().createOpenDocumentTreeIntent();
+                    }
                     startActivityForResult(Intent.createChooser(intent, "Choose sticker location"), 0);
                     return true;
                 });
