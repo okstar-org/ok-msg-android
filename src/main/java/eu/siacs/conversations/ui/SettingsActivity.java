@@ -538,16 +538,12 @@ public class SettingsActivity extends XmppActivity implements OnSharedPreference
         if (stickerDir != null) {
             if (Build.VERSION.SDK_INT >= 24) {
                 stickerDir.setOnPreferenceClickListener((p) -> {
-                    Intent intent = null;
-                    if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.Q) {
-                        intent = ((StorageManager) getSystemService(Context.STORAGE_SERVICE)).getPrimaryStorageVolume().createOpenDocumentTreeIntent();
-                    }
+                    Intent intent = ((StorageManager) getSystemService(Context.STORAGE_SERVICE)).getPrimaryStorageVolume().createOpenDocumentTreeIntent();
                     startActivityForResult(Intent.createChooser(intent, "Choose sticker location"), 0);
                     return true;
                 });
             } else {
-                PreferenceCategory expertMedia = (PreferenceCategory) mSettingsFragment.findPreference("expert_media");
-                expertMedia.removePreference(stickerDir);
+                return;
             }
         }
 
