@@ -154,6 +154,7 @@ import eu.siacs.conversations.databinding.CommandSearchListFieldBinding;
 import eu.siacs.conversations.databinding.CommandSpinnerFieldBinding;
 import eu.siacs.conversations.databinding.CommandTextFieldBinding;
 import eu.siacs.conversations.databinding.CommandWebviewBinding;
+import eu.siacs.conversations.ui.UriHandlerActivity;
 import eu.siacs.conversations.databinding.DialogQuickeditBinding;
 import eu.siacs.conversations.persistance.DatabaseBackend;
 import eu.siacs.conversations.services.AvatarService;
@@ -968,7 +969,7 @@ public class Conversation extends AbstractEntity implements Blockable, Comparabl
                     return contactJid.getLocal() != null ? contactJid.getLocal() : contactJid;
                 }
             }
-        } else if ((QuickConversationsService.isConversations() || !JidHelper.isQuicksyDomain(contactJid.getDomain())) && isWithStranger()) {
+        } else if ((QuickConversationsService.isConversations() || !Config.QUICKSY_DOMAIN.equals(contactJid.getDomain())) && isWithStranger()) {
             return contactJid;
         } else {
             return this.getContact().getDisplayName();

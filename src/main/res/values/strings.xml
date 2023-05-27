@@ -73,7 +73,7 @@
     <string name="touch_to_fix">Touch here to manage your accounts</string>
     <string name="attach_file">Attach file</string>
     <string name="not_in_roster">The contact is not in your roster. Would you like to add it?</string>
-    <string name="add_contact">Add contact</string>
+    <string name="add_contact">Add contact or room</string>
     <string name="send_failed">delivery failed</string>
     <string name="preparing_image">Preparing image for transmission</string>
     <string name="action_clear_history">Clear history</string>
@@ -1284,4 +1284,6 @@
     <string name="new_contact">New contact</string>
     <string name="add_to_home_screen">Add to home screen</string>
     <string name="cleanup_conversations">Cleanup conversations</string>
+    <string name="save_as_contact_bookmark">Save as contact / bookmark</string>
+    <string name="call">Call</string>
 </resources>

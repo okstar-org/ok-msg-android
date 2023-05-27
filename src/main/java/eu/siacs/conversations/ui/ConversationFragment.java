@@ -3218,6 +3218,9 @@ public class ConversationFragment extends XmppFragment
         if (commandAdapter == null) return;
 
         Jid commandJid = conversation.getContact().resourceWhichSupport(Namespace.COMMANDS);
+        if (commandJid == null && conversation.getJid().isDomainJid()) {
+            commandJid = conversation.getJid();
+        }
         if (commandJid == null) {
             conversation.hideViewPager();
         } else {
@@ -3321,6 +3324,9 @@ public class ConversationFragment extends XmppFragment
             attachFile(ATTACHMENT_CHOICE_RECORD_VOICE, false);
             return;
         }
+        if ("call".equals(postInitAction)) {
+            checkPermissionAndTriggerAudioCall();
+        }
         if ("message".equals(postInitAction)) {
             binding.conversationViewPager.post(() -> {
                 binding.conversationViewPager.setCurrentItem(0);
@@ -3344,8 +3350,9 @@ public class ConversationFragment extends XmppFragment
                     if (discoJid != null) commandJid = discoJid;
                 }
                 if (node != null && commandJid != null) {
-                    conversation.startCommand(commandFor(commandJid, node), activity.xmppConnectionService);
-                }
+                    if (!conversation.switchToSession(node)) {
+                        conversation.startCommand(commandFor(commandJid, node), activity.xmppConnectionService);
+                    }                }
             });
             return;
         }
