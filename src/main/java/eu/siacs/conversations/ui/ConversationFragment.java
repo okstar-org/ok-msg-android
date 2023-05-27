@@ -3706,8 +3706,6 @@ public class ConversationFragment extends XmppFragment
         }
         binding.threadIdenticonLayout.setLayoutParams(params);
         updateSnackBar(conversation);
-        updateChatMsgHint();
-      //  updateTextFormat(canSendMeCommand());     // TODO: temorary disabled text format feature
     }
 
     protected void updateStatusMessages() {
