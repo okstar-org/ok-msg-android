@@ -22,7 +22,7 @@ import eu.siacs.conversations.xmpp.Jid;
 
 public class Bookmark extends Element implements ListItem {
 
-    private Account account;
+    private final Account account;
     private WeakReference<Conversation> conversation;
     private Jid jid;
     protected Element extensions = new Element("extensions", Namespace.BOOKMARKS2);
