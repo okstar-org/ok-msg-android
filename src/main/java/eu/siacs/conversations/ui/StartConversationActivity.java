@@ -1698,7 +1698,7 @@ public class StartConversationActivity extends XmppActivity implements XmppConne
         }
 
         public void setTags(final List<ListItem.Tag> tags) {
-            ListItem.Tag channelTag = new ListItem.Tag("Room", UIHelper.getColorForName("channel", true), 0 , null, false);
+            ListItem.Tag channelTag = new ListItem.Tag("group", UIHelper.getColorForName("Channel", true), 1, null, true);
             String needle = mSearchEditText == null ? "" : mSearchEditText.getText().toString().toLowerCase(Locale.US).trim();
             HashSet<String> parts = new HashSet<>(Arrays.asList(needle.split("[,\\s]+")));
             this.tags = tags.stream().filter(
