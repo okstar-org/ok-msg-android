@@ -111,8 +111,7 @@ public class StartConversationActivity extends XmppActivity implements XmppConne
     private final PendingItem<Intent> pendingViewIntent = new PendingItem<>();
     private final PendingItem<String> mInitialSearchValue = new PendingItem<>();
     private final AtomicBoolean oneShotKeyboardSuppress = new AtomicBoolean();
-    public int conference_context_id;
-    public int contact_context_id;
+    public ListItem contextItem;
     private ListPagerAdapter mListPagerAdapter;
     private final List<ListItem> contacts = new ArrayList<>();
     private ListItemAdapter mContactsAdapter;
@@ -217,7 +216,7 @@ public class StartConversationActivity extends XmppActivity implements XmppConne
             int pos = binding.startConversationViewPager.getCurrentItem();
             if (pos == 0) {
                 if (contacts.size() == 1) {
-                    openConversationForContact((Contact) contacts.get(0));
+                    openConversation(contacts.get(0));
                     return true;
                 } else if (contacts.size() == 0 && conferences.size() == 1) {
                     openConversationsForBookmark((Bookmark) conferences.get(0));
@@ -228,7 +227,7 @@ public class StartConversationActivity extends XmppActivity implements XmppConne
                     openConversationsForBookmark((Bookmark) conferences.get(0));
                     return true;
                 } else if (conferences.size() == 0 && contacts.size() == 1) {
-                    openConversationForContact((Contact) contacts.get(0));
+                    openConversation(contacts.get(0));
                     return true;
                 }
             }
@@ -432,8 +431,15 @@ public class StartConversationActivity extends XmppActivity implements XmppConne
     }
 
     protected void openConversationForContact(int position) {
-        Contact contact = (Contact) contacts.get(position);
-        openConversationForContact(contact);
+        openConversation(contacts.get(position));
+    }
+
+    protected void openConversation(ListItem item) {
+        if (item instanceof Contact) {
+            openConversationForContact((Contact) item);
+        } else {
+            openConversationsForBookmark((Bookmark) item);
+        }
     }
 
     protected void openConversationForContact(Contact contact) {
@@ -448,7 +454,7 @@ public class StartConversationActivity extends XmppActivity implements XmppConne
     }
 
     protected void shareBookmarkUri() {
-        shareBookmarkUri(conference_context_id);
+        shareAsChannel(this, contextItem.getJid().asBareJid().toEscapedString());
     }
 
     protected void shareBookmarkUri(int position) {
@@ -485,25 +491,19 @@ public class StartConversationActivity extends XmppActivity implements XmppConne
     }
 
     protected void openDetailsForContact() {
-        int position = contact_context_id;
-        Contact contact = (Contact) contacts.get(position);
-        switchToContactDetails(contact);
+        switchToContactDetails((Contact) contextItem);
     }
 
     protected void showQrForContact() {
-        int position = contact_context_id;
-        Contact contact = (Contact) contacts.get(position);
-        showQrCode("xmpp:" + contact.getJid().asBareJid().toEscapedString());
+        showQrCode("xmpp:" + contextItem.getJid().asBareJid().toEscapedString());
     }
 
     protected void toggleContactBlock() {
-        final int position = contact_context_id;
-        BlockContactDialog.show(this, (Contact) contacts.get(position));
+        BlockContactDialog.show(this, (Contact) contextItem);
     }
 
     protected void deleteContact() {
-        final int position = contact_context_id;
-        final Contact contact = (Contact) contacts.get(position);
+        final Contact contact = (Contact) contextItem;
         final AlertDialog.Builder builder = new AlertDialog.Builder(this);
         builder.setNegativeButton(R.string.cancel, null);
         builder.setTitle(R.string.action_delete_contact);
@@ -516,9 +516,9 @@ public class StartConversationActivity extends XmppActivity implements XmppConne
     }
 
     protected void deleteConference() {
-        int position = conference_context_id;
-        final Bookmark bookmark = (Bookmark) conferences.get(position);
-        final AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        final Bookmark bookmark = (Bookmark) contextItem;
+
+        AlertDialog.Builder builder = new AlertDialog.Builder(this);
         builder.setNegativeButton(R.string.cancel, null);
         builder.setTitle(R.string.delete_bookmark);
         builder.setMessage(JidDialog.style(this, R.string.remove_bookmark_text, bookmark.getJid().toEscapedString()));
@@ -1105,12 +1105,16 @@ public class StartConversationActivity extends XmppActivity implements XmppConne
         this.contacts.clear();
         ArrayList<ListItem.Tag> tags = new ArrayList<>();
         final List<Account> accounts = xmppConnectionService.getAccounts();
+        boolean foundSupport = false;
+        boolean foundWhatsapp = false;
+        boolean foundSignal = false;
+        boolean foundTelegram = false;
+        boolean foundSMS = false;
         for (Account account : accounts) {
             if (account.getStatus() != Account.State.DISABLED) {
                 for (Contact contact : account.getRoster().getContacts()) {
                     Presence.Status s = contact.getShownStatus();
-                    if (contact.showInContactList()
-                            && contact.match(this, needle)
+                    if (contact.showInContactList() && contact.match(this, needle)
                             && (!this.mHideOfflineContacts
                             || (needle != null && !needle.trim().isEmpty())
                             || s.compareTo(Presence.Status.OFFLINE) < 0)) {
@@ -1123,11 +1127,58 @@ public class StartConversationActivity extends XmppActivity implements XmppConne
                 self.setSystemName("Note to Self");
                 if (self.match(this, needle)) {
                     this.contacts.add(self);
-
                 }
 
+                for (Bookmark bookmark : account.getBookmarks()) {
+                    if (bookmark.match(this, needle)) {
+                        if (bookmark.getJid().toString().equals("support@conference.monocles.de")) {
+                            foundSupport = true;
+                        }
+                        this.contacts.add(bookmark);
+                        tags.addAll(bookmark.getTags(this));
+                    }
+                }
+                /*                  //TODO: Add bridges as contacts
+                for (Bookmark bookmark : account.getBookmarks()) {
+                    if (bookmark.match(this, needle)) {
+                        if (bookmark.getJid().toString().equals("whatsapp.monocles.eu")) {
+                            foundWhatsapp = true;
+                        }
+                        this.contacts.add(bookmark);
+                        tags.addAll(bookmark.getTags(this));
+                    }
+                }
+                for (Bookmark bookmark : account.getBookmarks()) {
+                    if (bookmark.match(this, needle)) {
+                        if (bookmark.getJid().toString().equals("signal.monocles.eu")) {
+                            foundSignal = true;
+                        }
+                        this.contacts.add(bookmark);
+                        tags.addAll(bookmark.getTags(this));
+                    }
+                }
+                for (Bookmark bookmark : account.getBookmarks()) {
+                    if (bookmark.match(this, needle)) {
+                        if (bookmark.getJid().toString().equals("telegram.monocles.eu")) {
+                            foundTelegram = true;
+                        }
+                        this.contacts.add(bookmark);
+                        tags.addAll(bookmark.getTags(this));
+                    }
+                }
+                for (Bookmark bookmark : account.getBookmarks()) {
+                    if (bookmark.match(this, needle)) {
+                        if (bookmark.getJid().toString().equals("cheogram.com")) {
+                            foundSMS = true;
+                        }
+                        this.contacts.add(bookmark);
+                        tags.addAll(bookmark.getTags(this));
+                    }
+                }
+                 */
             }
         }
+
         Comparator<Map.Entry<ListItem.Tag,Integer>> sortTagsBy = Map.Entry.comparingByValue(Comparator.reverseOrder());
         sortTagsBy = sortTagsBy.thenComparing(entry -> entry.getKey().getName());
 
@@ -1139,6 +1190,73 @@ public class StartConversationActivity extends XmppActivity implements XmppConne
                         .map(e -> e.getKey()).collect(Collectors.toList())
         );
         Collections.sort(this.contacts);
+
+        //MONOCLES SUPPORT ROOM
+        final boolean supportDeleted = getPreferences().getBoolean("monocles_support_bookmark_deleted", false);
+
+        if (!supportDeleted && !foundSupport && (needle == null || needle.equals("")) && xmppConnectionService.getAccounts().size() > 0) {
+            Bookmark bookmark = new Bookmark(
+                    xmppConnectionService.getAccounts().get(0),
+                    Jid.of("support@conference.monocles.de")
+            );
+            bookmark.setBookmarkName("monocles support room");
+            bookmark.addChild("group").setContent("support");
+            this.contacts.add(0, bookmark);
+        }
+/*                              //TODO: Add bridges as contacts
+        //Whatsapp bridge
+        final boolean whatsappDeleted = getPreferences().getBoolean("whatsapp_bridge_bookmark_deleted", false);
+
+        if (!whatsappDeleted && !foundWhatsapp && (needle == null || needle.equals("")) && xmppConnectionService.getAccounts().size() > 0) {
+            Bookmark bookmark = new Bookmark(
+                    xmppConnectionService.getAccounts().get(0),
+                    Jid.of("whatsapp.monocles.eu")
+            );
+            bookmark.setBookmarkName("Whatsapp bridge (monocles.eu)");
+            bookmark.addChild("group").setContent("bridge");
+            this.contacts.add(0, bookmark);
+        }
+
+        //Signal bridge
+        final boolean signalDeleted = getPreferences().getBoolean("signal_bridge_bookmark_deleted", false);
+
+        if (!signalDeleted && !foundSignal && (needle == null || needle.equals("")) && xmppConnectionService.getAccounts().size() > 0) {
+            Bookmark bookmark = new Bookmark(
+                    xmppConnectionService.getAccounts().get(0),
+                    Jid.of("signal.monocles.eu")
+            );
+            bookmark.setBookmarkName("Signal bridge (monocles.eu)");
+            bookmark.addChild("group").setContent("bridge");
+            this.contacts.add(0, bookmark);
+        }
+
+        //Telegram bridge
+        final boolean telegramDeleted = getPreferences().getBoolean("telegram_bridge_bookmark_deleted", false);
+
+        if (!telegramDeleted && !foundTelegram && (needle == null || needle.equals("")) && xmppConnectionService.getAccounts().size() > 0) {
+            Bookmark bookmark = new Bookmark(
+                    xmppConnectionService.getAccounts().get(0),
+                    Jid.of("telegram.monocles.eu")
+            );
+            bookmark.setBookmarkName("Telegram bridge (monocles.eu)");
+            bookmark.addChild("group").setContent("bridge");
+            this.contacts.add(0, bookmark);
+        }
+
+        //SMS bridge
+        final boolean smsDeleted = getPreferences().getBoolean("sms_bridge_bookmark_deleted", false);
+
+        if (!smsDeleted && !foundSMS && (needle == null || needle.equals("")) && xmppConnectionService.getAccounts().size() > 0) {
+            Bookmark bookmark = new Bookmark(
+                    xmppConnectionService.getAccounts().get(0),
+                    Jid.of("cheogram.com")
+            );
+            bookmark.setBookmarkName("SMS bridge (cheogram.com)");
+            bookmark.addChild("group").setContent("bridge");
+            this.contacts.add(0, bookmark);
+        }
+         */
+
         mContactsAdapter.notifyDataSetChanged();
     }
 
@@ -1352,17 +1470,22 @@ public class StartConversationActivity extends XmppActivity implements XmppConne
             if (activity == null) {
                 return;
             }
-            activity.getMenuInflater().inflate(mResContextMenu, menu);
             final AdapterView.AdapterContextMenuInfo acmi = (AdapterContextMenuInfo) menuInfo;
-            if (mResContextMenu == R.menu.conference_context) {
-                activity.conference_context_id = acmi.position;
-                final Bookmark bookmark = (Bookmark) activity.conferences.get(acmi.position);
+            activity.contextItem = null;
+            if (mResContextMenu == R.menu.contact_context) {
+                activity.contextItem = activity.contacts.get(acmi.position);
+            } else if (mResContextMenu == R.menu.conference_context) {
+                activity.contextItem = activity.conferences.get(acmi.position);
+            }
+            if (activity.contextItem instanceof Bookmark) {
+                activity.getMenuInflater().inflate(R.menu.conference_context, menu);
+                final Bookmark bookmark = (Bookmark) activity.contextItem;
                 final Conversation conversation = bookmark.getConversation();
                 final MenuItem share = menu.findItem(R.id.context_share_uri);
                 share.setVisible(conversation == null || !conversation.isPrivateAndNonAnonymous());
-            } else if (mResContextMenu == R.menu.contact_context) {
-                activity.contact_context_id = acmi.position;
-                final Contact contact = (Contact) activity.contacts.get(acmi.position);
+            } else if (activity.contextItem instanceof Contact) {
+                activity.getMenuInflater().inflate(R.menu.contact_context, menu);
+                final Contact contact = (Contact) activity.contextItem;
                 final MenuItem blockUnblockItem = menu.findItem(R.id.context_contact_block_unblock);
                 final MenuItem showContactDetailsItem = menu.findItem(R.id.context_contact_details);
                 final MenuItem deleteContactMenuItem = menu.findItem(R.id.context_delete_contact);

@@ -2311,17 +2311,36 @@ public class XmppConnectionService extends Service {
     }
 
     public void deleteBookmark(final Account account, final Bookmark bookmark) {
+        if (bookmark.getJid().toString().equals("support@conference.monocles.de")) {
+            getPreferences().edit().putBoolean("monocles_support_bookmark_deleted", true).apply();
+        }
+        /*              //TODO: Add bridges as contacts
+        if (bookmark.getJid().toString().equals("whatsapp.monocles.eu")) {
+            getPreferences().edit().putBoolean("whatsapp_bridge_bookmark_deleted", true).apply();
+        }
+        if (bookmark.getJid().toString().equals("signal.monocles.eu")) {
+            getPreferences().edit().putBoolean("signal_bridge_bookmark_deleted", true).apply();
+        }
+        if (bookmark.getJid().toString().equals("telegram.monocles.eu")) {
+            getPreferences().edit().putBoolean("telegram_bridge_bookmark_deleted", true).apply();
+        }
+        if (bookmark.getJid().toString().equals("cheogram.com")) {
+            getPreferences().edit().putBoolean("sms_bridge_bookmark_deleted", true).apply();
+        }
+         */
+
         account.removeBookmark(bookmark);
         final XmppConnection connection = account.getXmppConnection();
         if (connection == null) return;
-        if (connection != null && connection.getFeatures().bookmarks2()) {
+
+        if (connection.getFeatures().bookmarks2()) {
             IqPacket request = mIqGenerator.deleteItem(Namespace.BOOKMARKS2, bookmark.getJid().asBareJid().toEscapedString());
             sendIqPacket(account, request, (a, response) -> {
                 if (response.getType() == IqPacket.TYPE.ERROR) {
                     Log.d(Config.LOGTAG, a.getJid().asBareJid() + ": unable to delete bookmark " + response.getErrorCondition());
                 }
             });
-        } else if (connection != null && connection.getFeatures().bookmarksConversion()) {
+        } else if (connection.getFeatures().bookmarksConversion()) {
             pushBookmarksPep(account);
         } else {
             pushBookmarksPrivateXml(account);
