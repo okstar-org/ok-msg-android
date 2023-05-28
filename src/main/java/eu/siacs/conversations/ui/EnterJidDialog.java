@@ -273,13 +273,13 @@ public class EnterJidDialog extends DialogFragment implements OnBackendConnected
                 if (!issuedWarning && sanityCheckJid != SanityCheck.NO) {
                     if (contactJid.isDomainJid()) {
                         binding.jidLayout.setError(getActivity().getString(R.string.this_looks_like_a_domain));
-                        dialog.getButton(AlertDialog.BUTTON_POSITIVE).setText(R.string.add_anway);
+                        dialog.getButton(AlertDialog.BUTTON_POSITIVE).setText(R.string.add_anyway);
                         issuedWarning = true;
                         return;
                     }
                     if (sanityCheckJid != SanityCheck.ALLOW_MUC && suspiciousSubDomain(contactJid.getDomain().toEscapedString())) {
                         binding.jidLayout.setError(getActivity().getString(R.string.this_looks_like_channel));
-                        dialog.getButton(AlertDialog.BUTTON_POSITIVE).setText(R.string.add_anway);
+                        dialog.getButton(AlertDialog.BUTTON_POSITIVE).setText(R.string.add_anyway);
                         issuedWarning = true;
                         return;
                     }

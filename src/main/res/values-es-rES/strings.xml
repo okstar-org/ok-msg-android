@@ -1349,7 +1349,6 @@
     <string name="reply_to">Responder a</string>
     <string name="or_use_another">... o escoger otro a continación</string>
     <string name="monocles_account_introduction">¡Puedes usar monocles chat con cualquier cuenta de XMPP u <b>obtener una cuenta segura y asequible en monocles, alojada en el servidor de monocles alimentado con energía renovable!</b></string>
-    <string name="add_anway">Añadir cualquiera</string>
     <string name="refresh_feature_discovery">Refrescar Descubrimiento de características</string>
     <string name="microphone_permission_for_call">Se requiere permiso de micrófono para completar la llamada</string>
     <string name="i_am_snikket_user">Uso Snikket</string>
