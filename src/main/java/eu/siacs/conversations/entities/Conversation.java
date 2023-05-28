@@ -13,6 +13,7 @@ import android.database.DataSetObserver;
 import android.graphics.Rect;
 import android.net.Uri;
 import android.graphics.drawable.Drawable;
+import android.os.Build;
 import android.util.LruCache;
 import android.telephony.PhoneNumberUtils;
 import android.graphics.drawable.BitmapDrawable;
@@ -65,6 +66,7 @@ import de.monocles.chat.Util;
 import de.monocles.chat.WebxdcPage;
 
 import eu.siacs.conversations.utils.Consumer;
+import eu.siacs.conversations.xmpp.forms.Field;
 import io.ipfs.cid.Cid;
 
 import java.time.LocalDateTime;
@@ -1778,9 +1780,6 @@ public class Conversation extends AbstractEntity implements Blockable, Comparabl
             if (command.getAttribute("node").equals("jabber:iq:register") && packet.getTo().asBareJid().equals(Jid.of("cheogram.com"))) {
 
                     task.run();
-
-            } else {
-                task.run();
             }
 
             sessions.add(session);
@@ -3272,7 +3271,9 @@ public class Conversation extends AbstractEntity implements Blockable, Comparabl
                 if (status == null || (!status.equals("executing") && !action.equals("prev"))) return true;
 
                 if (actionToWebview != null && !action.equals("cancel")) {
-                    actionToWebview.postWebMessage(new WebMessage("xmpp_xep0050/" + action), Uri.parse("*"));
+                    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+                        actionToWebview.postWebMessage(new WebMessage("xmpp_xep0050/" + action), Uri.parse("*"));
+                    }
                     return false;
                 }
 
