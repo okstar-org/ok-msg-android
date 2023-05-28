@@ -1273,5 +1273,5 @@
     <string name="add_to_home_screen">Zum Startbildschirm hinzufügen</string>
     <string name="cleanup_conversations">Entferne Chats</string>
     <string name="call">Anruf</string>
-    <string name="join_room">Join room</string>
+    <string name="join_room">Raum beitreten</string>
 </resources>
