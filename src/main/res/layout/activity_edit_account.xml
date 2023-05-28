@@ -170,8 +170,7 @@
                                         android:layout_height="wrap_content"
                                         android:text="Account Color"
                                         android:textAppearance="@style/TextAppearance.Conversations.Body1"/>
-
-
+                                    
                                     <TextView
                                         android:layout_width="wrap_content"
                                         android:layout_height="wrap_content"
@@ -186,12 +185,6 @@
                                     android:background="@drawable/thumbnail_border"
                                     android:layout_alignParentRight="true"
                                     android:layout_centerVertical="true">
-
-                                    <ImageView
-                                        android:layout_margin="1dp"
-                                        android:layout_width="fill_parent"
-                                        android:layout_height="fill_parent"
-                                        android:src="@drawable/checker_background" />
 
                                     <View
                                         android:layout_margin="1dp"
