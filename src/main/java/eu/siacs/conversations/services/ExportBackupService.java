@@ -365,7 +365,7 @@ public class ExportBackupService extends Service {
             final int percentage = i * 100 / size;
             if (p < percentage) {
                 p = percentage;
-                notificationManager.notify(NOTIFICATION_ID, progress.build(p));
+                notificationManager.notify(EXPORT_BACKUP_NOTIFICATION_ID, progress.build(p));
             }
         }
         if (cursor != null) {
@@ -385,7 +385,7 @@ public class ExportBackupService extends Service {
             final int percentage = i * 100 / size;
             if (p < percentage) {
                 p = percentage;
-                notificationManager.notify(NOTIFICATION_ID, progress.build(p));
+                notificationManager.notify(EXPORT_BACKUP_NOTIFICATION_ID, progress.build(p));
             }
         }
         if (cursor != null) {
