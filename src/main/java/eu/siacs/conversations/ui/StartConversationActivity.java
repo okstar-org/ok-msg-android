@@ -1141,44 +1141,33 @@ public class StartConversationActivity extends XmppActivity implements XmppConne
                         tags.addAll(bookmark.getTags(this));
                     }
                 }
-                /*                  //TODO: Add bridges as contacts
-                for (Bookmark bookmark : account.getBookmarks()) {
-                    if (bookmark.match(this, needle)) {
-                        if (bookmark.getJid().toString().equals("whatsapp.monocles.eu")) {
-                            foundWhatsapp = true;
-                        }
-                        this.contacts.add(bookmark);
-                        tags.addAll(bookmark.getTags(this));
-                    }
+
+                /* //TODO: Add bridges as default contacts?
+
+                final Contact whatsapp = new Contact(account.getWhatsappContact());
+                signal.setSystemName("Whatsapp bridge (monocles.eu)");
+                if (whatsapp.match(this, needle)) {
+                    this.contacts.add(whatsapp);
                 }
-                for (Bookmark bookmark : account.getBookmarks()) {
-                    if (bookmark.match(this, needle)) {
-                        if (bookmark.getJid().toString().equals("signal.monocles.eu")) {
-                            foundSignal = true;
-                        }
-                        this.contacts.add(bookmark);
-                        tags.addAll(bookmark.getTags(this));
-                    }
+
+                final Contact signal = new Contact(account.getSignalContact());
+                signal.setSystemName("Signal bridge (monocles.eu)");
+                if (signal.match(this, needle)) {
+                    this.contacts.add(signal);
                 }
-                for (Bookmark bookmark : account.getBookmarks()) {
-                    if (bookmark.match(this, needle)) {
-                        if (bookmark.getJid().toString().equals("telegram.monocles.eu")) {
-                            foundTelegram = true;
-                        }
-                        this.contacts.add(bookmark);
-                        tags.addAll(bookmark.getTags(this));
-                    }
+
+                final Contact telegram = new Contact(account.getTelegramContact());
+                telegram.setSystemName("Telegram bridge (monocles.eu)");
+                if (telegram.match(this, needle)) {
+                    this.contacts.add(telegram);
                 }
-                for (Bookmark bookmark : account.getBookmarks()) {
-                    if (bookmark.match(this, needle)) {
-                        if (bookmark.getJid().toString().equals("cheogram.com")) {
-                            foundSMS = true;
-                        }
-                        this.contacts.add(bookmark);
-                        tags.addAll(bookmark.getTags(this));
-                    }
+
+                final Contact cheogram = new Contact(account.getCheogramContact());
+                cheogram.setSystemName("Cheogram bridge (monocles.eu)");
+                if (cheogram.match(this, needle)) {
+                    this.contacts.add(cheogram);
                 }
-                 */
+                */
             }
         }
 
@@ -1206,7 +1195,7 @@ public class StartConversationActivity extends XmppActivity implements XmppConne
             bookmark.addChild("group").setContent("support");
             this.contacts.add(0, bookmark);
         }
-/*                              //TODO: Add bridges as contacts
+/*                              //TODO: Make bridges deletable
         //Whatsapp bridge
         final boolean whatsappDeleted = getPreferences().getBoolean("whatsapp_bridge_bookmark_deleted", false);
 

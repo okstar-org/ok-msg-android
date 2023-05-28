@@ -2314,7 +2314,7 @@ public class XmppConnectionService extends Service {
         if (bookmark.getJid().toString().equals("support@conference.monocles.de")) {
             getPreferences().edit().putBoolean("monocles_support_bookmark_deleted", true).apply();
         }
-        /*              //TODO: Add bridges as contacts
+                        /*              //TODO: Add bridges as contacts
         if (bookmark.getJid().toString().equals("whatsapp.monocles.eu")) {
             getPreferences().edit().putBoolean("whatsapp_bridge_bookmark_deleted", true).apply();
         }

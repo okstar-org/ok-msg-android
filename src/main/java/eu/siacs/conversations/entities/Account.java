@@ -827,6 +827,22 @@ public class Account extends AbstractEntity implements AvatarService.Avatarable 
         throw new IllegalStateException("This method should not be called");
     }
 
+    public Contact getWhatsappContact() {
+        return getRoster().getContact(Jid.ofDomain("whatsapp.monocles.eu"));
+    }
+
+    public Contact getSignalContact() {
+        return getRoster().getContact(Jid.ofDomain("signal.monocles.eu"));
+    }
+
+    public Contact getTelegramContact() {
+        return getRoster().getContact(Jid.ofDomain("telegram.monocles.eu"));
+    }
+
+    public Contact getCheogramContact() {
+        return getRoster().getContact(Jid.ofDomain("cheogram.com"));
+    }
+
     public enum State {
         DISABLED(false, false),
         OFFLINE(false),
