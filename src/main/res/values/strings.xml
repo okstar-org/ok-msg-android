@@ -878,7 +878,7 @@
     <string name="message_deleted">Message was deleted</string>
     <string name="channel_details">Room details</string>
     <string name="join_public_channel">Join public room</string>
-    <string name="create_private_group_chat">Create private group chat</string>
+    <string name="create_private_group_chat">Create private room</string>
     <string name="create_public_channel">Create public room</string>
     <string name="create_dialog_channel_name">Room name</string>
     <string name="xmpp_address">XMPP address</string>
@@ -1286,4 +1286,5 @@
     <string name="save_as_contact_bookmark">Save as contact / bookmark</string>
     <string name="call">Call</string>
     <string name="new_contact_or_group">new contact or room</string>
+    <string name="join_room">Join room</string>
 </resources>

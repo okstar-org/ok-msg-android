@@ -917,7 +917,7 @@
     <string name="message_deleted">Nachricht wurde gelöscht</string>
     <string name="channel_details">Raum-Details</string>
     <string name="join_public_channel">Öffentlichem Raum beitreten</string>
-    <string name="create_private_group_chat">Privaten Gruppenchat erstellen</string>
+    <string name="create_private_group_chat">Privaten Raum erstellen</string>
     <string name="create_public_channel">Öffentlichen Raum erstellen</string>
     <string name="create_dialog_channel_name">Raum-Name</string>
     <string name="xmpp_address">XMPP-Adresse</string>
@@ -1273,5 +1273,5 @@
     <string name="add_to_home_screen">Zum Startbildschirm hinzufügen</string>
     <string name="cleanup_conversations">Entferne Chats</string>
     <string name="call">Anruf</string>
-    <string name="new_contact_or_group">Neuer Kontakt oder Raum</string>
+    <string name="join_room">Join room</string>
 </resources>
