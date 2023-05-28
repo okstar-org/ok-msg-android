@@ -855,6 +855,9 @@ public class EditAccountActivity extends OmemoActivity implements OnAccountUpdat
                         setTitle(R.string.action_add_existing_account);
                     }
                 }
+
+                this.binding.accountColorBox.setVisibility(View.GONE);
+
             }
         }
         SharedPreferences preferences = getPreferences();
