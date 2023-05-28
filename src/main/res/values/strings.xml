@@ -1285,4 +1285,5 @@
     <string name="cleanup_conversations">Cleanup conversations</string>
     <string name="save_as_contact_bookmark">Save as contact / bookmark</string>
     <string name="call">Call</string>
+    <string name="new_contact_or_group">new contact or room</string>
 </resources>
