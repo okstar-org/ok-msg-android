@@ -60,7 +60,7 @@
             android:layout_height="wrap_content"
             android:layout_marginTop="8dp"
             android:checked="true"
-            android:text="@string/save_as_contact_bookmark"/>
+            android:text="@string/add_to_contact_list"/>
 
     </LinearLayout>
 </layout>
