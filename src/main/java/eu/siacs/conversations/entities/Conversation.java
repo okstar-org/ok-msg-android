@@ -67,7 +67,9 @@ import de.monocles.chat.WebxdcPage;
 
 import eu.siacs.conversations.utils.Consumer;
 import eu.siacs.conversations.xmpp.forms.Field;
+
 import io.ipfs.cid.Cid;
+import io.michaelrocks.libphonenumber.android.NumberParseException;
 
 import java.time.LocalDateTime;
 import java.time.ZoneId;
@@ -93,6 +95,7 @@ import eu.siacs.conversations.databinding.CommandWebviewBinding;
 import eu.siacs.conversations.services.XmppConnectionService;
 import eu.siacs.conversations.ui.text.FixedURLSpan;
 import eu.siacs.conversations.ui.util.ShareUtil;
+import eu.siacs.conversations.utils.PhoneNumberUtilWrapper;
 import eu.siacs.conversations.databinding.CommandItemCardBinding;
 
 import eu.siacs.conversations.xml.Element;
@@ -2095,6 +2098,16 @@ public class Conversation extends AbstractEntity implements Blockable, Comparabl
                     if (field.getType().equals(Optional.of("jid-single")) || field.getType().equals(Optional.of("jid-multi"))) {
                         binding.values.setOnItemClickListener((arg0, arg1, pos, id) -> {
                             new FixedURLSpan("xmpp:" + Jid.ofEscaped(values.getItem(pos).getValue()).toEscapedString()).onClick(binding.values);
+                        });
+                    } else if ("xs:anyURI".equals(datatype)) {
+                        binding.values.setOnItemClickListener((arg0, arg1, pos, id) -> {
+                            new FixedURLSpan(values.getItem(pos).getValue()).onClick(binding.values);
+                        });
+                    } else if ("html:tel".equals(datatype)) {
+                        binding.values.setOnItemClickListener((arg0, arg1, pos, id) -> {
+                            try {
+                                new FixedURLSpan("tel:" + PhoneNumberUtilWrapper.normalize(binding.getRoot().getContext(), values.getItem(pos).getValue())).onClick(binding.values);
+                            } catch (final IllegalArgumentException | NumberParseException | NullPointerException e) { }
                         });
                     }
 
