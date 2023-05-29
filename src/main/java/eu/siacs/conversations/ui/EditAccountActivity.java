@@ -715,6 +715,12 @@ public class EditAccountActivity extends OmemoActivity implements OnAccountUpdat
             final Uri uri = Uri.parse("https://jabber.pix-art.de/termsofuse/");
             CustomTab.openTab(EditAccountActivity.this, uri, isDarkTheme());
         });
+        binding.quietHoursBox.setOnClickListener((v) -> {
+            Intent intent = new Intent(Intent.ACTION_VIEW, null, EditAccountActivity.this, SettingsActivity.class);
+            intent.putExtra("page", "quiet_hours");
+            intent.putExtra("suffix", ":" + mAccount.getUuid());
+            startActivity(intent);
+        });
     }
 
     private void onEditYourNameClicked(View view) {
@@ -1286,8 +1292,10 @@ public class EditAccountActivity extends OmemoActivity implements OnAccountUpdat
         if (xmppConnectionService != null && xmppConnectionService.getAccounts().size() > 1) {
             binding.accountColorBox.setVisibility(View.VISIBLE);
             binding.colorPreview.setBackgroundColor(mAccount.getColor(isDarkTheme()));
+            binding.quietHoursBox.setVisibility(View.VISIBLE);
         } else {
             binding.accountColorBox.setVisibility(View.GONE);
+            binding.quietHoursBox.setVisibility(View.GONE);
         }
 
         final boolean togglePassword = mAccount.isOptionSet(Account.OPTION_MAGIC_CREATE) || !mAccount.isOptionSet(Account.OPTION_LOGGED_IN_SUCCESSFULLY);
