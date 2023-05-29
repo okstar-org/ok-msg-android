@@ -542,7 +542,7 @@ public class SettingsActivity extends XmppActivity implements OnSharedPreference
         }
         final Preference stickerDir = mSettingsFragment.findPreference("sticker_directory");
         if (stickerDir != null) {
-            if (Build.VERSION.SDK_INT >= 24) {
+            if (Build.VERSION.SDK_INT >= 29) {
                 stickerDir.setOnPreferenceClickListener((p) -> {
                     Intent intent = ((StorageManager) getSystemService(Context.STORAGE_SERVICE)).getPrimaryStorageVolume().createOpenDocumentTreeIntent();
                     startActivityForResult(Intent.createChooser(intent, "Choose sticker location"), 0);

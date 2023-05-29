@@ -260,7 +260,6 @@ public class ConversationFragment extends XmppFragment
     private boolean reInitRequiredOnStart = true;
     private int identiconWidth = -1;
     private File savingAsSticker = null;
-    private String savingAsStickerName = null;
     private MediaPreviewAdapter mediaPreviewAdapter;
     private final OnClickListener clickToMuc = new OnClickListener() {
 
