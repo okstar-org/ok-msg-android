@@ -567,7 +567,7 @@ public class MessageParser extends AbstractParser implements OnMessagePacketRece
 
         boolean isTypeGroupChat = packet.getType() == MessagePacket.TYPE_GROUPCHAT;
         if (query != null && !query.muc() && isTypeGroupChat) {
-            Log.e(Config.LOGTAG, account.getJid().asBareJid() + ": received groupchat (" + from + ") message on regular MAM request. skipping");
+            Log.e(Config.LOGTAG, account.getJid().asBareJid() + ": received room (" + from + ") message on regular MAM request. skipping");
             return;
         }
         boolean isProperlyAddressed = (to != null) && (!to.isBareJid() || account.countPresences() == 0);

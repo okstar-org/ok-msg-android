@@ -823,7 +823,7 @@ public class StartConversationActivity extends XmppActivity implements XmppConne
                         // Ideally this would be based around XEP-0033 but until we think of a good fallback behaviour we keep using this gross commas thing
                         if (jids.stream().allMatch(jid -> jid.getDomain().toString().equals("cheogram.com"))) {
                             new AlertDialog.Builder(this)
-                                    .setMessage("You appear to be creating a group with only SMS contacts. Would you like to create a channel or an MMS group text?")
+                                    .setMessage("You appear to be creating a room with only SMS contacts. Would you like to create a channel or an MMS group text?")
                                     .setNeutralButton("Chat room", (d, w) -> {
                                         if (xmppConnectionService.createAdhocConference(account, name, jids, mAdhocConferenceCallback)) {
                                             mToast = Toast.makeText(this, R.string.creating_conference, Toast.LENGTH_LONG);
