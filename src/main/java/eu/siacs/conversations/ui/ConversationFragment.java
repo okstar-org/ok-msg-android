@@ -3360,6 +3360,13 @@ public class ConversationFragment extends XmppFragment
         if (message != null) {
             startDownloadable(message);
         }
+        /*      //TODO: Add bridges registration later
+        if (activity.xmppConnectionService.isOnboarding() && conversation.getJid().equals(Jid.of("cheogram.com"))) {
+            if (!conversation.switchToSession("jabber:iq:register")) {
+                conversation.startCommand(commandFor(Jid.of("cheogram.com/CHEOGRAM%jabber:iq:register"), "jabber:iq:register"), activity.xmppConnectionService);
+            }
+        }
+         */
     }
 
     private Element commandFor(final Jid jid, final String node) {
