@@ -30,7 +30,7 @@
             android:title="@string/pref_theme_color_options" />
         <PreferenceScreen
             android:key="custom_theme"
-            android:title="Custom Theme Options">
+            android:title="@string/custom_theme_options">
             <Preference
                 android:key="pref_static_field_key"
                 android:selectable="false"
@@ -44,20 +44,20 @@
                 <CheckBoxPreference
                     android:defaultValue="false"
                     android:key="custom_theme_dark"
-                    android:title="Custom Theme is Dark?" />
+                    android:title="@string/custom_theme_is_dark" />
                 <com.rarepebble.colorpicker.ColorPreference
                     android:key="custom_theme_primary"
-                    android:title="Custom Primary Color"
+                    android:title="@string/custom_primary_color"
                     android:defaultValue="@color/perpy"
                     app:colorpicker_showAlpha="false" />
                 <com.rarepebble.colorpicker.ColorPreference
                     android:key="custom_theme_primary_dark"
-                    android:title="Custom Primary Dark Color"
+                    android:title="@string/custom_primary_dark_color"
                     android:defaultValue="@color/black_perpy"
                     app:colorpicker_showAlpha="false" />
                 <com.rarepebble.colorpicker.ColorPreference
                     android:key="custom_theme_accent"
-                    android:title="Custom Accent Color"
+                    android:title="@string/custom_accent_color"
                     android:defaultValue="@color/black_perpy"
                     app:colorpicker_showAlpha="false" />
             </PreferenceCategory>
@@ -320,13 +320,13 @@
             android:summary="@string/pref_choose_camera_summary"
             android:title="@string/choose_camera_app" />
         <Preference
-            android:title="Change Stickers Location"
+            android:title="@string/change_stickers_location"
             android:key="sticker_directory" />
         <Preference
-            android:title="Update Default Stickers"
+            android:title="@string/update_default_stickers"
             android:key="download_default_stickers" />
         <Preference
-            android:title="Clear Blocked Media"
+            android:title="@string/clear_blocked_media"
             android:key="clear_blocked_media" />
     </PreferenceScreen>
     <!--status-->

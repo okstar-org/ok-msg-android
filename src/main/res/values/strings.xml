@@ -1287,4 +1287,12 @@
     <string name="call">Call</string>
     <string name="new_contact_or_group">new contact or room</string>
     <string name="join_room">Join room</string>
+    <string name="custom_theme_options">Custom theme options</string>
+    <string name="custom_theme_is_dark">Custom theme is dark?</string>
+    <string name="custom_primary_color">Custom primary color</string>
+    <string name="custom_primary_dark_color">Custom primary dark color</string>
+    <string name="custom_accent_color">Custom accent color</string>
+    <string name="change_stickers_location">Change stickers location</string>
+    <string name="update_default_stickers">Update default stickers</string>
+    <string name="clear_blocked_media">Clear blocked media</string>
 </resources>
