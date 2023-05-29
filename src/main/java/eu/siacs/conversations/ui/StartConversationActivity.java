@@ -1193,7 +1193,7 @@ public class StartConversationActivity extends XmppActivity implements XmppConne
                     Jid.of("support@conference.monocles.de")
             );
             bookmark.setBookmarkName("monocles support room");
-            bookmark.addChild("group").setContent("support");
+            bookmark.addChild("room").setContent("support");
             this.contacts.add(0, bookmark);
         }
 /*                              //TODO: Make bridges deletable
@@ -1206,7 +1206,7 @@ public class StartConversationActivity extends XmppActivity implements XmppConne
                     Jid.of("whatsapp.monocles.eu")
             );
             bookmark.setBookmarkName("Whatsapp bridge (monocles.eu)");
-            bookmark.addChild("group").setContent("bridge");
+            bookmark.addChild("room").setContent("bridge");
             this.contacts.add(0, bookmark);
         }
 
@@ -1219,7 +1219,7 @@ public class StartConversationActivity extends XmppActivity implements XmppConne
                     Jid.of("signal.monocles.eu")
             );
             bookmark.setBookmarkName("Signal bridge (monocles.eu)");
-            bookmark.addChild("group").setContent("bridge");
+            bookmark.addChild("room").setContent("bridge");
             this.contacts.add(0, bookmark);
         }
 
@@ -1232,7 +1232,7 @@ public class StartConversationActivity extends XmppActivity implements XmppConne
                     Jid.of("telegram.monocles.eu")
             );
             bookmark.setBookmarkName("Telegram bridge (monocles.eu)");
-            bookmark.addChild("group").setContent("bridge");
+            bookmark.addChild("room").setContent("bridge");
             this.contacts.add(0, bookmark);
         }
 
@@ -1245,7 +1245,7 @@ public class StartConversationActivity extends XmppActivity implements XmppConne
                     Jid.of("cheogram.com")
             );
             bookmark.setBookmarkName("SMS bridge (cheogram.com)");
-            bookmark.addChild("group").setContent("bridge");
+            bookmark.addChild("room").setContent("bridge");
             this.contacts.add(0, bookmark);
         }
          */
@@ -1691,13 +1691,13 @@ public class StartConversationActivity extends XmppActivity implements XmppConne
         }
 
         public void setTags(final List<ListItem.Tag> tags) {
-            ListItem.Tag channelTag = new ListItem.Tag("group", UIHelper.getColorForName("Channel", true), 1, null, true);
+            ListItem.Tag channelTag = new ListItem.Tag("room", UIHelper.getColorForName("Channel", true), 1, null, true);
             String needle = mSearchEditText == null ? "" : mSearchEditText.getText().toString().toLowerCase(Locale.US).trim();
             HashSet<String> parts = new HashSet<>(Arrays.asList(needle.split("[,\\s]+")));
             this.tags = tags.stream().filter(
                     tag -> !tag.equals(channelTag) && !parts.contains(tag.getName().toLowerCase(Locale.US))
             ).collect(Collectors.toList());
-            if (!parts.contains("channel") && tags.contains(channelTag)) this.tags.add(0, channelTag);
+            if (!parts.contains("room") && tags.contains(channelTag)) this.tags.add(0, channelTag);
             notifyDataSetChanged();
         }
     }
