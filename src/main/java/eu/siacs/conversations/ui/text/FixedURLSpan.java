@@ -45,13 +45,22 @@ import eu.siacs.conversations.R;
 import eu.siacs.conversations.ui.ConversationsActivity;
 import eu.siacs.conversations.ui.util.CustomTab;
 import eu.siacs.conversations.utils.ThemeHelper;
+import eu.siacs.conversations.entities.Account;
+
 import me.drakeet.support.toast.ToastCompat;
 
 @SuppressLint("ParcelCreator")
 public class FixedURLSpan extends URLSpan {
 
+    protected final Account account;
+
     public FixedURLSpan(String url) {
+        this(url, null);
+    }
+
+    public FixedURLSpan(String url, Account account) {
         super(url);
+        this.account = account;
     }
 
     public static void fix(final Editable editable) {
@@ -74,6 +83,14 @@ public class FixedURLSpan extends URLSpan {
                 return;
             }
         }
+
+        if (("sms".equals(uri.getScheme()) || "tel".equals(uri.getScheme())) && context instanceof ConversationsActivity) {
+            if (((ConversationsActivity) context).onTelUriClicked(uri, account)) {
+                widget.playSoundEffect(0);
+                return;
+            }
+        }
+
         try {
             CustomTab.openTab(context, uri, ThemeHelper.isDark(ThemeHelper.find(context)));
             widget.playSoundEffect(0);

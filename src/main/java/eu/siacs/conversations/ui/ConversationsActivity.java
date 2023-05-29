@@ -62,6 +62,7 @@ import android.view.View;
 import android.widget.TextView;
 import android.widget.Toast;
 import androidx.core.content.ContextCompat;
+
 import de.monocles.chat.DownloadDefaultStickers;
 
 import net.java.otr4j.session.SessionStatus;
@@ -75,6 +76,8 @@ import androidx.appcompat.widget.Toolbar;
 import androidx.databinding.DataBindingUtil;
 
 import org.openintents.openpgp.util.OpenPgpApi;
+
+import io.michaelrocks.libphonenumber.android.NumberParseException;
 
 import java.io.File;
 import java.util.Arrays;
@@ -113,11 +116,13 @@ import eu.siacs.conversations.xml.Namespace;
 import eu.siacs.conversations.utils.SignupUtils;
 import eu.siacs.conversations.utils.UIHelper;
 import eu.siacs.conversations.utils.XmppUri;
+import eu.siacs.conversations.utils.PhoneNumberUtilWrapper;
 import eu.siacs.conversations.xmpp.Jid;
 import eu.siacs.conversations.xmpp.OnUpdateBlocklist;
 import eu.siacs.conversations.xmpp.chatstate.ChatState;
 import me.drakeet.support.toast.ToastCompat;
 import eu.siacs.conversations.utils.ThemeHelper;
+
 import com.google.common.collect.ImmutableList;
 
 
@@ -813,6 +818,36 @@ public class ConversationsActivity extends XmppActivity implements OnConversatio
                 return true;
             }
         }
+        return false;
+    }
+
+    public boolean onTelUriClicked(Uri uri, Account acct) {
+        final String tel;
+        try {
+            tel = PhoneNumberUtilWrapper.normalize(this, uri.getSchemeSpecificPart());
+        } catch (final IllegalArgumentException | NumberParseException | NullPointerException e) {
+            return false;
+        }
+
+        Set<String> gateways = new HashSet<>();
+        for (Account account : (acct == null ? xmppConnectionService.getAccounts() : List.of(acct))) {
+            for (Contact contact : account.getRoster().getContacts()) {
+                if (contact.getPresences().anyIdentity("gateway", "pstn") || contact.getPresences().anyIdentity("gateway", "sms")) {
+                    if (acct == null) acct = account;
+                    gateways.add(contact.getJid().asBareJid().toEscapedString());
+                }
+            }
+        }
+
+        for (String gateway : gateways) {
+            if (onXmppUriClicked(Uri.parse("xmpp:" + tel + "@" + gateway))) return true;
+        }
+
+        if (gateways.size() == 1 && acct != null) {
+            openConversation(xmppConnectionService.findOrCreateConversation(acct, Jid.ofLocalAndDomain(tel, gateways.iterator().next()), false, true), null);
+            return true;
+        }
+
         return false;
     }
 
