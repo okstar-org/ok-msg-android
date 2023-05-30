@@ -216,7 +216,7 @@
     <string name="done">Fertig</string>
     <string name="verify">Überprüfen</string>
     <string name="decrypt">Entschlüsseln</string>
-    <string name="bookmarks">Gruppen</string>
+    <string name="bookmarks">Chat Räume</string>
     <string name="search">Suchen</string>
     <string name="enter_contact">Kontakt eingeben</string>
     <string name="delete_contact">Kontakt löschen</string>
@@ -1274,4 +1274,21 @@
     <string name="cleanup_conversations">Entferne Chats</string>
     <string name="call">Anruf</string>
     <string name="join_room">Raum beitreten</string>
+    <string name="unknown_otr_fingerprint">Unbekannter OTR Fingerabdruck</string>
+    <string name="otr_fingerprint_selected_message">OTR Fingerabdruck der Nachricht</string>
+    <string name="toast_message_otr_fingerprint">OTR Fingerabdruck in die Zwischenablage kopiert!</string>
+    <string name="verify_otr">Verifiziere OTR</string>
+    <string name="are_you_sure_verify_fingerprint">Bist du dir sicher, dass du den OTR Fingerabdruck deines Kontakts überprüfen willst\?</string>
+    <string name="copy_otr_clipboard_description">OTR Fingerabdruck in Zwischenablage kopieren</string>
+    <string name="account_status_incompatible_client">Inkompatibler Client</string>
+    <string name="action_dialpad">Wähltasten</string>
+    <string name="conference_technical_problems">Sie haben diesen Raum aus technischen Gründen verlassen</string>
+    <string name="enable_notifications">Benachrichtigungen aktivieren</string>
+    <string name="account_status_i2p_unavailable">I2P-Netzwerk nicht verfügbar</string>
+    <string name="pref_use_i2p">Über I2P verbinden</string>
+    <string name="pref_use_i2p_summary">Alle Verbindungen über das I2P-Netzwerk tunneln. Benötigt I2P Client</string>
+    <string name="send_otr_message">Sende OTR-verschlüsselte Nachricht</string>
+    <string name="no_otr_session_found">Es wurde keine gültige OTR Sitzung gefunden!</string>
+    <string name="otr_session_not_started">Schreibe eine Nachricht, um einen verschlüsselten Chat zu starten</string>
+    <string name="otr_fingerprint">OTR Fingerabdruck</string>
 </resources>
