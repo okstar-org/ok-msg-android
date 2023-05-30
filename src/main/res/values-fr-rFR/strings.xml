@@ -27,7 +27,7 @@
     <string name="minutes_ago">Il y a %d minutes</string>
     <plurals name="x_unread_conversations">
         <item quantity="one">%d conversation non lue</item>
-        <item quantity="many"></item>
+        <item quantity="many"/>
         <item quantity="other">%d conversations non lues</item>
     </plurals>
     <string name="sending">envoi en cours…</string>
@@ -430,7 +430,7 @@
     <string name="dialog_manage_certs_negativebutton">Annuler</string>
     <plurals name="toast_delete_certificates">
         <item quantity="one">%d certificat supprimé</item>
-        <item quantity="many"></item>
+        <item quantity="many"/>
         <item quantity="other">%d certificats supprimés</item>
     </plurals>
     <string name="pref_quick_action_summary">Remplacer le bouton Envoyer par une action rapide.</string>
@@ -499,7 +499,7 @@
     <string name="connected_accounts">%1$d compte(s) sur %2$d connecté(s)</string>
     <plurals name="x_messages">
         <item quantity="one">%d message</item>
-        <item quantity="many"></item>
+        <item quantity="many"/>
         <item quantity="other">%d messages</item>
     </plurals>
     <string name="load_more_messages">Charger plus de messages</string>
@@ -651,37 +651,37 @@
     <string name="not_fetching_history_retention_period">Aucun message récupéré, en raison de la configuration de la période de rétention.</string>
     <plurals name="seconds">
         <item quantity="one">%d seconde</item>
-        <item quantity="many"></item>
+        <item quantity="many"/>
         <item quantity="other">%d secondes</item>
     </plurals>
     <plurals name="minutes">
         <item quantity="one">%d minute</item>
-        <item quantity="many"></item>
+        <item quantity="many"/>
         <item quantity="other">%d minutes</item>
     </plurals>
     <plurals name="hours">
         <item quantity="one">%d heure</item>
-        <item quantity="many"></item>
+        <item quantity="many"/>
         <item quantity="other">%d heures</item>
     </plurals>
     <plurals name="days">
         <item quantity="one">%d jour</item>
-        <item quantity="many"></item>
+        <item quantity="many"/>
         <item quantity="other">%d jours</item>
     </plurals>
     <plurals name="weeks">
         <item quantity="one">%d semaine</item>
-        <item quantity="many"></item>
+        <item quantity="many"/>
         <item quantity="other">%d semaines</item>
     </plurals>
     <plurals name="months">
         <item quantity="one">%d mois</item>
-        <item quantity="many"></item>
+        <item quantity="many"/>
         <item quantity="other">%d mois</item>
     </plurals>
     <plurals name="years">
         <item quantity="one">%d an</item>
-        <item quantity="many"></item>
+        <item quantity="many"/>
         <item quantity="other">%d ans</item>
     </plurals>
     <string name="today">Aujourd’hui</string>
@@ -909,7 +909,7 @@
     <string name="pref_prefer_xmpp_avatar">Préférer l\'avatar XMPP</string>
     <plurals name="view_users">
         <item quantity="one">Voir %1$d participant⸱e</item>
-        <item quantity="many"></item>
+        <item quantity="many"/>
         <item quantity="other">Voir %1$d participant⸱e⸱s</item>
     </plurals>
     <string name="group_chat_members">Participant⸱e⸱s</string>
@@ -1244,4 +1244,14 @@
     <string name="show_edit_log">Historique des messages</string>
     <string name="reconnecting_call">Reconnexion en cours</string>
     <string name="reconnecting_video_call">Reconnexion en cours</string>
+    <string name="pref_use_i2p">Connexion via I2P</string>
+    <string name="action_dialpad">Clavier</string>
+    <string name="conference_technical_problems">Vous avez quitté ce groupe de discussion pour des raisons techniques</string>
+    <string name="pref_allow_message_retraction">Permettre la rétractation des messages</string>
+    <string name="pref_allow_message_retraction_summary">Permettre à vos contacts de se rétracter rétroactivement</string>
+    <string name="receiving_file_x">Réception de %1$s (%2$s %)</string>
+    <string name="sending_x_file_x">Envoi de %1$s (%2$s %)</string>
+    <string name="account_status_i2p_unavailable">Réseau I2P non disponible</string>
+    <string name="transcoding_video_x">Compression de la vidéo (%s %)</string>
+    <string name="account_status_incompatible_client">Client incompatible</string>
 </resources>
