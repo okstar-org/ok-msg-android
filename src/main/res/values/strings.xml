@@ -1298,4 +1298,5 @@
     <string name="choose_sticker_location">Choose sticker location</string>
     <string name="you_may_sometimes_have_to">You may sometimes have to force quit the app to get changes applied.</string>
     <string name="colors">Colors</string>
+    <string name="create_monocles_only_backup">Export extra monocles-only data (backup will not import into other apps then)?</string>
 </resources>

@@ -818,8 +818,8 @@ public class SettingsActivity extends XmppActivity implements OnSharedPreference
 
     private void createBackup() {
         new AlertDialog.Builder(this)
-                .setTitle("Create Backup")
-                .setMessage("Export extra monocles-only data (backup will not import into other apps then)?")
+                .setTitle(getString(R.string.pref_create_backup))
+                .setMessage(getString(R.string.create_monocles_only_backup))
                 .setPositiveButton(R.string.yes, (dialog, whichButton) -> {
                     createBackup(true, true);
                 })
