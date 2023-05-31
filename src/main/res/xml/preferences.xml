@@ -35,11 +35,11 @@
                 android:key="pref_static_field_key"
                 android:selectable="false"
                 android:persistent="false"
-                android:summary="You may sometimes have to force quit the app to get changes applied."/>
+                android:summary="@string/you_may_sometimes_have_to"/>
 
             <PreferenceCategory
                 android:key="custom_theme_colors"
-                android:title="Colors">
+                android:title="@string/colors">
 
                 <CheckBoxPreference
                     android:defaultValue="false"
@@ -568,11 +568,13 @@
                 android:key="show_dynamic_tags"
                 android:summary="@string/pref_show_dynamic_tags_summary"
                 android:title="@string/pref_show_dynamic_tags" />
+            <!-- TODO: add it later again?
             <CheckBoxPreference
                 android:defaultValue="@bool/show_date_in_quotes"
                 android:key="show_date_in_quotes"
                 android:summary="@string/pref_show_date_in_quotes_summary"
                 android:title="@string/pref_show_date_in_quotes" />
+                -->
             <CheckBoxPreference
                 android:defaultValue="@bool/use_bundled_emoji"
                 android:key="use_bundled_emoji"

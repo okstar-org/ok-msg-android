@@ -1296,4 +1296,6 @@
     <string name="update_default_stickers">Update default stickers</string>
     <string name="clear_blocked_media">Clear blocked media</string>
     <string name="choose_sticker_location">Choose sticker location</string>
+    <string name="you_may_sometimes_have_to">You may sometimes have to force quit the app to get changes applied.</string>
+    <string name="colors">Colors</string>
 </resources>
