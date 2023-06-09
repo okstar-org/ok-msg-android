@@ -251,21 +251,10 @@
                                 android:layout_height="wrap_content"
                                 android:orientation="vertical">
 
-                                <CheckBox
-                                    android:id="@+id/autojoin_checkbox"
-                                    style="@style/Widget.Conversations.CheckBox"
-                                    android:layout_width="wrap_content"
-                                    android:layout_height="wrap_content"
-                                    android:layout_marginStart="-6dp"
-                                    android:layout_marginLeft="-6dp"
-                                    android:layout_marginTop="4dp"
-                                    android:textAppearance="@style/TextAppearance.Conversations.Body1" />
-
                                 <RelativeLayout
                                     android:id="@+id/mam_box"
                                     android:layout_width="match_parent"
-                                    android:layout_height="wrap_content"
-                                    android:layout_below="@+id/autojoin_checkbox">
+                                    android:layout_height="wrap_content">
 
                                     <TextView
                                         android:layout_width="match_parent"

@@ -91,6 +91,10 @@ public class Contact implements ListItem, Blockable {
     private String mLastPresence = null;
     private RtpCapability.Capability rtpCapability;
 
+    public Contact(Contact other) {
+        this(null, other.systemName, other.serverName, other.presenceName, other.jid, other.subscription, other.photoUri, other.systemAccount, other.keys == null ? null : other.keys.toString(), other.getAvatar() == null ? null : other.getAvatar().sha1sum, other.mLastseen, other.mLastPresence, other.groups == null ? null : other.groups.toString(), other.rtpCapability);
+        setAccount(other.getAccount());
+    }
 
     public Contact(final String account, final String systemName, final String serverName, final String presenceName,
                    final Jid jid, final int subscription, final String photoUri,
@@ -175,6 +179,11 @@ public class Contact implements ListItem, Blockable {
             return this.systemName;
         } else if (!TextUtils.isEmpty(this.serverName)) {
             return this.serverName;
+        }
+
+        ListItem bookmark = account.getBookmark(jid);
+        if (bookmark != null) {
+            return bookmark.getDisplayName();
         } else if (!TextUtils.isEmpty(this.presenceName) && ((QuickConversationsService.isQuicksy() && JidHelper.isQuicksyDomain(jid.getDomain())) || mutualPresenceSubscription())) {
             return this.presenceName;
         } else if (jid.getLocal() != null) {
@@ -552,7 +561,7 @@ public class Contact implements ListItem, Blockable {
     public void parseGroupsFromElement(Element item) {
         this.groups = new JSONArray();
         for (Element element : item.getChildren()) {
-            if (element.getName().equals("group") && element.getContent() != null) {
+            if (element.getName().equals("room") && element.getContent() != null) {
                 this.groups.put(element.getContent());
             }
         }
@@ -567,7 +576,7 @@ public class Contact implements ListItem, Blockable {
             item.setAttribute("name", getDisplayName());
         }
         for (String group : getGroups(false)) {
-            item.addChild("group").setContent(group);
+            item.addChild("room").setContent(group);
         }
         return item;
     }
@@ -736,14 +745,17 @@ public class Contact implements ListItem, Blockable {
                 "de.monocles.chat",
                 "de.monocles.chat.ConnectionService"
         );
-        return new PhoneAccountHandle(componentName, phoneAccountLabel());
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+            return new PhoneAccountHandle(componentName, phoneAccountLabel());
+        }
+        return null;
     }
 
     // This Contact is a gateway to use for voice calls, register it with OS
     public void registerAsPhoneAccount(XmppConnectionService ctx) {
         if (Build.VERSION.SDK_INT < 23) return;
         if (Build.VERSION.SDK_INT >= 33) {
-            if (!ctx.getPackageManager().hasSystemFeature(PackageManager.FEATURE_TELECOM)) return;
+            if (!ctx.getPackageManager().hasSystemFeature(PackageManager.FEATURE_TELECOM) && !ctx.getPackageManager().hasSystemFeature(PackageManager.FEATURE_CONNECTION_SERVICE)) return;
         } else {
             if (!ctx.getPackageManager().hasSystemFeature(PackageManager.FEATURE_CONNECTION_SERVICE)) return;
         }
@@ -772,7 +784,7 @@ public class Contact implements ListItem, Blockable {
     public void unregisterAsPhoneAccount(Context ctx) {
         if (Build.VERSION.SDK_INT < 23) return;
         if (Build.VERSION.SDK_INT >= 33) {
-            if (!ctx.getPackageManager().hasSystemFeature(PackageManager.FEATURE_TELECOM)) return;
+            if (!ctx.getPackageManager().hasSystemFeature(PackageManager.FEATURE_TELECOM) && !ctx.getPackageManager().hasSystemFeature(PackageManager.FEATURE_CONNECTION_SERVICE)) return;
         } else {
             if (!ctx.getPackageManager().hasSystemFeature(PackageManager.FEATURE_CONNECTION_SERVICE)) return;
         }

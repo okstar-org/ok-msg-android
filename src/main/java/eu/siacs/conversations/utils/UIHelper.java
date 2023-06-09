@@ -333,7 +333,7 @@ public class UIHelper {
                         return new Pair<>(context.getString(R.string.offering_x_file,
                                 getFileDescriptionString(context, message)), true);
                     } else {
-                        return new Pair<>(context.getString(R.string.sending_x_file_x,
+                        return new Pair<>(context.getString(R.string.sending_x_file,
                                 getFileDescriptionString(context, message), message.getTransferable().getProgress()), true);
                     }
                 default:

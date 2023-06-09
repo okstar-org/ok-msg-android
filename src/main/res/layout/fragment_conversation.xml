@@ -151,13 +151,13 @@
 
                 <RelativeLayout
                     android:id="@+id/thread_identicon_layout"
-                    android:layout_width="30dp"
-                    android:layout_height="30dp"
-                    android:layout_alignParentStart="true"
-                    android:layout_alignParentLeft="true"
+                    android:layout_width="32dp"
+                    android:layout_height="32dp"
+                    android:layout_toEndOf="@+id/recordVoiceButton"
+                    android:layout_toRightOf="@+id/recordVoiceButton"
                     android:layout_centerVertical="true"
-                    android:layout_marginLeft="32dp"
-                    android:layout_marginRight="5dp">
+                    android:layout_marginEnd="3dp"
+                    android:visibility="visible">
 
                     <com.lelloman.identicon.view.GithubIdenticonView
                         android:id="@+id/thread_identicon"
@@ -170,13 +170,12 @@
                         android:id="@+id/thread_identicon_lock"
                         android:layout_width="12dp"
                         android:layout_height="12dp"
-                        android:layout_alignParentTop="true"
-                        android:layout_alignParentEnd="true"
-                        android:layout_alignParentRight="true"
+                        android:layout_alignTop="@+id/thread_identicon"
+                        android:layout_toEndOf="@+id/thread_identicon"
+                        android:layout_toRightOf="@+id/thread_identicon"
                         android:visibility="gone"
                         android:src="?attr/icon_small_lock"
                         android:contentDescription="@string/thread_locked" />
-
                 </RelativeLayout>
 
                 <LinearLayout

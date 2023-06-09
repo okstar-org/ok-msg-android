@@ -59,6 +59,7 @@ import com.google.common.io.ByteStreams;
 import com.wolt.blurhashkt.BlurHashDecoder;
 
 import de.monocles.chat.BobTransfer;
+import de.monocles.chat.ThumbHash;
 
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
@@ -982,8 +983,13 @@ public class FileBackend {
     public File getStorageLocation(final InputStream is, final String extension) throws IOException, XmppConnectionService.BlockedMediaException {
         final String mime = MimeUtils.guessMimeTypeFromExtension(extension);
         Cid[] cids = calculateCids(is);
+        String base = cids[0].toString();
 
-        File file = getStorageLocation(String.format("%s.%s", cids[0], extension), mime);
+        File file = null;
+        while (file == null || (file.exists() && !file.canRead())) {
+            file = getStorageLocation(String.format("%s.%s", base, extension), mime);
+            base += "_";
+        }
         for (int i = 0; i < cids.length; i++) {
             try {
                 mXmppConnectionService.saveCid(cids[i], file);
@@ -2362,18 +2368,32 @@ public class FileBackend {
         }
     }
 
-    public BitmapDrawable getFallbackThumbnail(final Message message, int size) {
+    public BitmapDrawable getFallbackThumbnail(final Message message, int size, boolean cacheOnly) {
         List<Element> thumbs = message.getFileParams() != null ? message.getFileParams().getThumbnails() : null;
         if (thumbs != null && !thumbs.isEmpty()) {
             for (Element thumb : thumbs) {
                 Uri uri = Uri.parse(thumb.getAttribute("uri"));
                 if (uri.getScheme().equals("data")) {
                     String[] parts = uri.getSchemeSpecificPart().split(",", 2);
-                    if (parts[0].equals("image/blurhash")) {
-                        final LruCache<String, Drawable> cache = mXmppConnectionService.getDrawableCache();
-                        BitmapDrawable cached = (BitmapDrawable) cache.get(parts[1]);
-                        if (cached != null) return cached;
 
+                    final LruCache<String, Drawable> cache = mXmppConnectionService.getDrawableCache();
+                    BitmapDrawable cached = (BitmapDrawable) cache.get(parts[1]);
+                    if (cached != null || cacheOnly) return cached;
+
+                    byte[] data;
+                    if (Arrays.asList(parts[0].split(";")).contains("base64")) {
+                        String[] parts2 = parts[0].split(";", 2);
+                        parts[0] = parts2[0];
+                        data = Base64.decode(parts[1], 0);
+                    } else {
+                        try {
+                            data = parts[1].getBytes("UTF-8");
+                        } catch (final IOException e) {
+                            data = new byte[0];
+                        }
+                    }
+
+                    if (parts[0].equals("image/blurhash")) {
                         int width = message.getFileParams().width;
                         if (width < 1 && thumb.getAttribute("width") != null) width = Integer.parseInt(thumb.getAttribute("width"));
                         if (width < 1) width = 1920;
@@ -2389,6 +2409,20 @@ public class FileBackend {
                             cache.put(parts[1], cached);
                             return cached;
                         }
+                    } else if (parts[0].equals("image/thumbhash")) {
+                        ThumbHash.Image image;
+                        try {
+                            image = ThumbHash.thumbHashToRGBA(data);
+                        } catch (final Exception e) {
+                            continue;
+                        }
+                        int[] pixels = new int[image.width * image.height];
+                        for (int i = 0; i < pixels.length; i++) {
+                            pixels[i] = Color.argb(image.rgba[(i*4)+3] & 0xff, image.rgba[i*4] & 0xff, image.rgba[(i*4)+1] & 0xff, image.rgba[(i*4)+2] & 0xff);
+                        }
+                        cached = new BitmapDrawable(Bitmap.createBitmap(pixels, image.width, image.height, Bitmap.Config.ARGB_8888));
+                        cache.put(parts[1], cached);
+                        return cached;
                     }
                 }
             }
@@ -2412,14 +2446,18 @@ public class FileBackend {
                         if (uri.getScheme().equals("data")) {
                             if (android.os.Build.VERSION.SDK_INT < 28) continue;
                             String[] parts = uri.getSchemeSpecificPart().split(",", 2);
-                            if (parts[0].equals("image/blurhash")) continue; // blurhash only for fallback
 
                             byte[] data;
                             if (Arrays.asList(parts[0].split(";")).contains("base64")) {
+                                String[] parts2 = parts[0].split(";", 2);
+                                parts[0] = parts2[0];
                                 data = Base64.decode(parts[1], 0);
                             } else {
                                 data = parts[1].getBytes("UTF-8");
                             }
+
+                            if (parts[0].equals("image/blurhash")) continue; // blurhash only for fallback
+                            if (parts[0].equals("image/thumbhash")) continue; // thumbhash only for fallback
 
                             ImageDecoder.Source source = ImageDecoder.createSource(ByteBuffer.wrap(data));
                             thumbnail = ImageDecoder.decodeDrawable(source, (decoder, info, src) -> {
@@ -2450,11 +2488,15 @@ public class FileBackend {
     }
 
     public Drawable getThumbnail(DownloadableFile file, Resources res, int size, boolean cacheOnly) throws IOException {
+        return getThumbnail(file, res, size, cacheOnly, file.getAbsolutePath());
+    }
+
+    public Drawable getThumbnail(DownloadableFile file, Resources res, int size, boolean cacheOnly, String cacheKey) throws IOException {
         final LruCache<String, Drawable> cache = mXmppConnectionService.getDrawableCache();
-        Drawable thumbnail = cache.get(file.getAbsolutePath());
-        if ((thumbnail == null) && (!cacheOnly)) {
+        Drawable thumbnail = cache.get(cacheKey);
+        if ((thumbnail == null) && (!cacheOnly) && file.exists()) {
             synchronized (THUMBNAIL_LOCK) {
-                thumbnail = cache.get(file.getAbsolutePath());
+                thumbnail = cache.get(cacheKey);
                 if (thumbnail != null) {
                     return thumbnail;
                 }
@@ -2469,7 +2511,7 @@ public class FileBackend {
                         throw new FileNotFoundException();
                     }
                 }
-                cache.put(file.getAbsolutePath(), thumbnail);
+                cache.put(cacheKey, thumbnail);
             }
         }
         return thumbnail;

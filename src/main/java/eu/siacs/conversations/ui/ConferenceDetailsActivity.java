@@ -294,17 +294,6 @@ public class ConferenceDetailsActivity extends XmppActivity implements OnConvers
         this.binding.mucEditSubject.addTextChangedListener(this);
         this.binding.mucEditSubject.addTextChangedListener(new StylingHelper.MessageEditorStyler(this.binding.mucEditSubject));
         this.binding.editTags.addTextChangedListener(this);
-        this.binding.autojoinCheckbox.setOnCheckedChangeListener((buttonView, isChecked) -> {
-            if (mConversation != null) {
-                final Bookmark bookmark = mConversation.getBookmark();
-                if (bookmark != null) {
-                    this.binding.autojoinCheckbox.setEnabled(!getBooleanPreference("autojoin", R.bool.autojoin));
-                    bookmark.setAutojoin(this.binding.autojoinCheckbox.isChecked());
-                    xmppConnectionService.pushBookmarks(mConversation.getAccount());
-                    updateView();
-                }
-            }
-        });
         this.mMediaAdapter = new MediaAdapter(this, R.dimen.media_size);
         this.mUserPreviewAdapter = new UserPreviewAdapter();
         this.binding.media.setAdapter(mMediaAdapter);
@@ -605,7 +594,6 @@ public class ConferenceDetailsActivity extends XmppActivity implements OnConvers
                     final boolean groupChat = mConversation != null && mConversation.isPrivateAndNonAnonymous();
                     this.binding.destroy.setText(groupChat ? R.string.destroy_room : R.string.destroy_channel);
                     this.binding.leaveMuc.setText(groupChat ? R.string.action_end_conversation_muc : R.string.action_end_conversation_channel);
-                    this.binding.autojoinCheckbox.setText(groupChat ? R.string.autojoin_group_chat : R.string.autojoin_channel);
                 }
                 this.mIndividualNotifications = xmppConnectionService.hasIndividualNotification(mConversation);
                 updateView();
@@ -697,13 +685,6 @@ public class ConferenceDetailsActivity extends XmppActivity implements OnConvers
                 this.binding.mucInfoMam.setText(R.string.server_info_available);
             } else {
                 this.binding.mucInfoMam.setText(R.string.server_info_unavailable);
-            }
-            if (bookmark != null) {
-                this.binding.autojoinCheckbox.setEnabled(!getBooleanPreference("autojoin", R.bool.autojoin));
-                this.binding.autojoinCheckbox.setVisibility(View.VISIBLE);
-                this.binding.autojoinCheckbox.setChecked(bookmark.autojoin());
-            } else {
-                this.binding.autojoinCheckbox.setVisibility(View.GONE);
             }
             if (self.getAffiliation().ranks(MucOptions.Affiliation.OWNER)) {
                 if (mAdvancedMode) {

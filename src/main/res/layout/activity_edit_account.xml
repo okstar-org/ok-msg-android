@@ -149,6 +149,91 @@
                                     android:inputType="textPassword"
                                     android:textColor="?attr/edit_text_color" />
                             </com.google.android.material.textfield.TextInputLayout>
+
+
+                            <RelativeLayout
+                                android:id="@+id/account_color_box"
+                                android:layout_width="wrap_content"
+                                android:layout_height="match_parent"
+                                android:layout_marginTop="12dp">
+
+                                <LinearLayout
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:layout_alignParentLeft="true"
+                                    android:layout_centerVertical="true"
+                                    android:layout_toLeftOf="@+id/account_color_thumbnail"
+                                    android:orientation="vertical">
+
+                                    <TextView
+                                        android:layout_width="wrap_content"
+                                        android:layout_height="wrap_content"
+                                        android:text="Account Color"
+                                        android:textAppearance="@style/TextAppearance.Conversations.Body1"/>
+                                    
+                                    <TextView
+                                        android:layout_width="wrap_content"
+                                        android:layout_height="wrap_content"
+                                        android:text="Used on conversation and contact lists, and notifications"
+                                        android:textAppearance="@style/TextAppearance.Conversations.Caption"/>
+                                </LinearLayout>
+
+                                <FrameLayout
+                                    android:id="@+id/account_color_thumbnail"
+                                    android:layout_width="48dp"
+                                    android:layout_height="48dp"
+                                    android:background="@drawable/thumbnail_border"
+                                    android:layout_alignParentRight="true"
+                                    android:layout_centerVertical="true">
+
+                                    <View
+                                        android:layout_margin="1dp"
+                                        android:id="@+id/colorPreview"
+                                        android:layout_width="fill_parent"
+                                        android:layout_height="fill_parent" />
+
+                                </FrameLayout>
+                            </RelativeLayout>
+                            <RelativeLayout
+                                android:id="@+id/quiet_hours_box"
+                                android:layout_width="wrap_content"
+                                android:layout_height="match_parent"
+                                android:layout_marginTop="12dp">
+
+                                <LinearLayout
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:layout_alignParentLeft="true"
+                                    android:layout_centerVertical="true"
+                                    android:layout_toLeftOf="@+id/action_edit_quiet_hours"
+                                    android:orientation="vertical">
+
+                                    <TextView
+                                        android:layout_width="wrap_content"
+                                        android:layout_height="wrap_content"
+                                        android:text="@string/title_pref_quiet_hours"
+                                        android:textAppearance="@style/TextAppearance.Conversations.Body1"/>
+
+                                    <TextView
+                                        android:layout_width="wrap_content"
+                                        android:layout_height="wrap_content"
+                                        android:text="@string/pref_quiet_hours_summary"
+                                        android:textAppearance="@style/TextAppearance.Conversations.Caption"/>
+                                </LinearLayout>
+
+                                <ImageView
+                                    android:id="@+id/action_edit_quiet_hours"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:layout_alignParentRight="true"
+                                    android:layout_centerVertical="true"
+                                    android:alpha="?attr/icon_alpha"
+                                    android:background="?attr/selectableItemBackgroundBorderless"
+                                    android:padding="@dimen/image_button_padding"
+                                    android:src="?attr/icon_edit_body"
+                                    android:visibility="visible"/>
+                            </RelativeLayout>
+
                         </LinearLayout>
 
                         <LinearLayout

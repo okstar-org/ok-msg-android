@@ -2,10 +2,15 @@
 <layout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto">
 
-    <RelativeLayout
+    <FrameLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:background="?selectableItemBackground"
+        android:background="?selectableItemBackground">
+
+    <RelativeLayout
+        android:id="@+id/inner"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
         android:padding="@dimen/list_padding">
 
         <com.makeramen.roundedimageview.RoundedImageView
@@ -75,4 +80,5 @@
                 android:visibility="gone" />
         </LinearLayout>
     </RelativeLayout>
+    </FrameLayout>
 </layout>

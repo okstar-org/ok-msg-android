@@ -329,6 +329,7 @@ public class ConversationsOverviewFragment extends XmppFragment {
         activity.getMenuInflater().inflate(R.menu.conversations, menu);
         final XmppActivity activity = XmppActivity.find(view);
         final Object tag = view.getTag();
+        if (menuInfo == null) return;
         int pos = ((AdapterContextMenuInfo) menuInfo).position;
         if (pos < 0) return;
         Conversation conversation = conversations.get(pos);

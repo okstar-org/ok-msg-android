@@ -145,6 +145,8 @@ public class ConnectionService extends android.telecom.ConnectionService {
         permissionManager.checkPermissions(permissions, new PermissionManager.PermissionRequestListener() {
             @Override
             public void onPermissionGranted() {
+                if (connection.getState() == Connection.STATE_DISCONNECTED) return;
+
                 connection.setSessionId(xmppConnectionService.getJingleConnectionManager().proposeJingleRtpSession(
                         account,
                         with,
@@ -186,6 +188,10 @@ public class ConnectionService extends android.telecom.ConnectionService {
         connection.setSessionId(sessionId);
         connection.setAddress(
                 Uri.fromParts("tel", with.getLocal(), null),
+                TelecomManager.PRESENTATION_ALLOWED
+        );
+        connection.setCallerDisplayName(
+                account.getRoster().getContact(with).getDisplayName(),
                 TelecomManager.PRESENTATION_ALLOWED
         );
         connection.setRinging();
@@ -238,6 +244,7 @@ public class ConnectionService extends android.telecom.ConnectionService {
 
         @Override
         public void onJingleRtpConnectionUpdate(final Account account, final Jid with, final String sessionId, final RtpEndUserState state) {
+            Log.d(".monoclesConnection", "onJingleRtpConnectionUpdate: " + with + " " + sessionId + " (== " + this.sessionId + " )? " + state);
             if (sessionId == null || !sessionId.equals(this.sessionId)) return;
             if (rtpConnection == null) {
                 this.with = with; // Store full JID of connection
@@ -354,7 +361,11 @@ public class ConnectionService extends android.telecom.ConnectionService {
         public void onReject() {
             findRtpConnection();
             if (rtpConnection != null && rtpConnection.get() != null) {
-                rtpConnection.get().rejectCall();
+                try {
+                    rtpConnection.get().rejectCall();
+                } catch (final IllegalStateException e) {
+                    Log.w(".monoclesConnection", e.toString());
+                }
             }
             close(new DisconnectCause(DisconnectCause.LOCAL));
         }

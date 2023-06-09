@@ -20,6 +20,7 @@ import java.util.Locale;
 
 import javax.net.ssl.SSLHandshakeException;
 
+import eu.siacs.conversations.utils.Consumer;
 import eu.siacs.conversations.Config;
 import eu.siacs.conversations.R;
 import eu.siacs.conversations.entities.DownloadableFile;
@@ -48,13 +49,14 @@ public class HttpDownloadConnection implements Transferable {
     private boolean acceptedAutomatically = false;
     private int mProgress = 0;
     private Call mostRecentCall;
-
+    final private Consumer<DownloadableFile> cb;
     private final SimpleDateFormat fileDateFormat = new SimpleDateFormat("yyyyMMdd_HHmmssSSS", Locale.US);
 
-    HttpDownloadConnection(Message message, HttpConnectionManager manager) {
+    HttpDownloadConnection(Message message, HttpConnectionManager manager, Consumer<DownloadableFile> cb) {
         this.message = message;
         this.mHttpConnectionManager = manager;
         this.mXmppConnectionService = manager.getXmppConnectionService();
+        this.cb = cb;
     }
 
     @Override
@@ -206,7 +208,7 @@ public class HttpDownloadConnection implements Transferable {
     }
 
     private void finish() {
-        boolean notify = acceptedAutomatically && !message.isRead();
+        boolean notify = acceptedAutomatically && !message.isRead() && cb == null;
         if (message.getEncryption() == Message.ENCRYPTION_PGP) {
             notify = message.getConversation().getAccount().getPgpDecryptionService().decrypt(message, notify);
         }
@@ -228,6 +230,7 @@ public class HttpDownloadConnection implements Transferable {
             message.setDeleted(true);
         }
         message.setTransferable(null);
+        if (cb != null) cb.accept(file);
         mXmppConnectionService.updateMessage(message);
         mHttpConnectionManager.finishConnection(this);
         final boolean notifyAfterScan = notify;
@@ -344,7 +347,11 @@ public class HttpDownloadConnection implements Transferable {
             } else {
                 changeStatus(STATUS_OFFER);
                 HttpDownloadConnection.this.acceptedAutomatically = false;
-                HttpDownloadConnection.this.mXmppConnectionService.getNotificationService().push(message);
+                if (cb == null) {
+                    HttpDownloadConnection.this.mXmppConnectionService.getNotificationService().push(message);
+                } else {
+                    cb.accept(null);
+                }
             }
         }
 

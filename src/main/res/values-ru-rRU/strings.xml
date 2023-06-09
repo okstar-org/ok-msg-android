@@ -10,7 +10,7 @@
     <string name="account_details">Детали учетной записи</string>
     <string name="account_image_description">Аватар</string>
     <string name="account_registrations_are_not_supported">Регистрация учетной записи не поддерживается</string>
-    <string name="account_settings_example_jabber_id">username@monocles.de</string>
+    <string name="account_settings_example_jabber_id">username@monocles.eu</string>
     <string name="account_settings_hostname">Имя хоста</string>
     <string name="account_settings_jabber_id">chat address</string>
     <string name="account_settings_port">Порт</string>
@@ -56,9 +56,9 @@
     <string name="action_delete_contact">Удалить из списка</string>
     <string name="action_end_conversation">Закончить эту беседу</string>
     <string name="action_end_conversation_channel">Покинуть канал</string>
-    <string name="action_end_conversation_muc">Покинуть групповой чат</string>
+    <string name="action_end_conversation_muc">Покинуть комнату</string>
     <string name="action_fix_to_location">Зафиксировать положение</string>
-    <string name="action_group_details">Детали группы</string>
+    <string name="action_group_details">Детали комнаты</string>
     <string name="action_open">Открыть</string>
     <string name="action_renew_certificate">Обновить сертификат</string>
     <string name="action_secure">Защищенная беседа</string>
@@ -72,8 +72,8 @@
     <string name="add">Добавить</string>
     <string name="add_anyway">Добавить в любом случае</string>
     <string name="add_back">Добавить в ответ</string>
-    <string name="add_contact">Добавить контакт</string>
-    <string name="add_contact_or_create_or_join_group_chat">Добавьте контакт, создайте групповой чат или присоединитесь к нему или откройте для себя каналы</string>
+    <string name="add_contact">Добавить контакт или комнату</string>
+    <string name="add_contact_or_create_or_join_group_chat">Добавьте контакт, создайте и войдите в комнату или откройте комнаты</string>
     <string name="add_phone_book_text">Хотите добавить %s в Вашу адресную книгу\?</string>
     <string name="add_to_contact_list">Добавить в контакты</string>
     <string name="add_to_favorites">Добавить в избранное</string>
@@ -109,7 +109,7 @@
     <string name="audios_usage">Использование памяти аудио-файлами</string>
     <string name="authenticate_with_certificate">Оставьте пустым для аутентификации с сертификатом</string>
     <string name="autojoin_channel">Автоматически присоединяться к каналу</string>
-    <string name="autojoin_group_chat">Автоматически присоединяться к групповым чатам</string>
+    <string name="autojoin_group_chat">Автоматически присоединяться к этой комнате</string>
     <string name="avatar_for_x">Аватар %s</string>
     <string name="avatar_has_been_published">Аватар был обновлен!</string>
     <string name="back">Назад</string>
@@ -117,8 +117,8 @@
     <string name="backup_started_message">Резервное копирование было запущено. Вы получите уведомление, как только оно будет завершено.</string>
     <string name="bad_key_for_encryption">Неправильный ключ для шифрования.</string>
     <string name="ban_from_channel">Заблокировать на канале</string>
-    <string name="ban_from_conference">Заблокирован групповым чатом</string>
-    <string name="ban_from_conference_message">Вы пытаетесь забанить %s навсегда в этом групповом чате</string>
+    <string name="ban_from_conference">Заблокировать для комнаты</string>
+    <string name="ban_from_conference_message">Вы пытаетесь навсегда запретить %s доступ в комнату</string>
     <string name="ban_from_public_conference_message">Вы пытаетесь забанить %s навсегда на этом публичном канале.</string>
     <string name="ban_now">Заблокировать сейчас</string>
     <string name="barcode_does_not_contain_fingerprints_for_this_conversation">QR код не содержит отпечатки для этого разговора.</string>
@@ -173,17 +173,17 @@
 \n<b>Предупреждение:</b> Это не затронет сообщения, которые сохранены на других устройствах или серверах.</string>
     <string name="clear_other_devices">Удалить другие устройства</string>
     <string name="clear_other_devices_desc">Вы уверены, что хотите очистить все остальные устройства из анонса ключей OMEMO\? При соединении устройств в следующий раз новые ключи анонсируются автоматически, но устройства могут не получить сообщения, посланные до этого.</string>
-    <string name="conference_banned">Вы заблокированы в этом групповом чате</string>
-    <string name="conference_creation_failed">Создание группы не удалось!</string>
-    <string name="conference_destroyed">Данная группа была закрыта</string>
-    <string name="conference_details">Детали группового чата</string>
-    <string name="conference_kicked">Вас отключили от этого группового чата</string>
-    <string name="conference_members_only">Этот групповой чат только для его членов</string>
-    <string name="conference_options">Настройки приватности группового чата</string>
-    <string name="conference_requires_password">Групповой чат требует пароль</string>
+    <string name="conference_banned">Вы заблокированы в этой комнате</string>
+    <string name="conference_creation_failed">Не удалось создать комнату!</string>
+    <string name="conference_destroyed">Эта комната была закрыта</string>
+    <string name="conference_details">Детали комнаты</string>
+    <string name="conference_kicked">Вас выгнали из этой комнаты</string>
+    <string name="conference_members_only">Этот комната только для ее членов</string>
+    <string name="conference_options">Настройки приватной комнаты</string>
+    <string name="conference_requires_password">Комната требует пароль</string>
     <string name="conference_resource_constraint">Ресурсное ограничение</string>
-    <string name="conference_shutdown">Этот групповой чат был закрыт</string>
-    <string name="conference_unknown_error">Вы больше не состоите в групповом чате</string>
+    <string name="conference_shutdown">Этот комната была закрыта</string>
+    <string name="conference_unknown_error">Вы больше не состоите в этой комнате</string>
     <string name="confirm">Подтвердить</string>
     <string name="connect">Подключиться</string>
     <string name="connected_accounts">%1$d из %2$d аккаунтов подключены</string>
@@ -220,7 +220,7 @@
     <string name="could_not_change_affiliation">Не удалось изменить принадлежность %s</string>
     <string name="could_not_change_password">Нельзя изменить пароль</string>
     <string name="could_not_correct_message">Не удалось исправить сообщение</string>
-    <string name="could_not_modify_conference_options">Невозможно изменить настройки группового чата</string>
+    <string name="could_not_modify_conference_options">Невозможно изменить настройки комнаты</string>
     <string name="could_not_switch_camera">Не удалось переключить камеру</string>
     <string name="could_not_verify_fingerprint">Невозможно проверить отпечаток</string>
     <string name="crash_report_message">Отправляя трассировку стека, Вы помогаете разработке monocles chat <b>Предупреждение:</b> Ваша учетная запись XMPP будет использована для отправки трассировки стека разработчику.</string>
@@ -228,13 +228,13 @@
     <string name="create">Создать</string>
     <string name="create_account">Создать новую учетную запись</string>
     <string name="create_dialog_channel_name">Название канала</string>
-    <string name="create_dialog_group_chat_name">Название группового чата</string>
+    <string name="create_dialog_group_chat_name">Название комнаты</string>
     <string name="create_issue">Сообщить об ошибке</string>
-    <string name="create_private_group_chat">Создание приватного группового чата</string>
+    <string name="create_private_group_chat">Создание приватной комнаты</string>
     <string name="create_public_channel">Создать публичный канал</string>
     <string name="create_shortcut">Создать ярлык</string>
     <string name="creating_channel">Создание публичного канала...</string>
-    <string name="creating_conference">Создание группового чата...</string>
+    <string name="creating_conference">Создание комнаты…</string>
     <string name="crop_image_menu_crop">Обрезать</string>
     <string name="crop_image_menu_flip">Отразить</string>
     <string name="crop_image_menu_flip_horizontally">Отразить по горизонтали</string>
@@ -275,10 +275,10 @@
     <string name="destroy_channel_dialog">Вы хотите удалить групповой чат %s\? Это действие нельзя отменить.</string>
     <string name="destroy_channel_failed">Канал не может быть закрыт</string>
     <string name="destroy_channel_succeed">Канал успешно закрыт</string>
-    <string name="destroy_room">Закрыть групповой чат</string>
-    <string name="destroy_room_dialog">Вы хотите удалить групповой чат %s\? Это действие нельзя отменить.</string>
-    <string name="destroy_room_failed">Групповой чат не может быть закрыт</string>
-    <string name="destroy_room_succeed">Групповой чат успешно закрыт</string>
+    <string name="destroy_room">Уничтожить комнату</string>
+    <string name="destroy_room_dialog">Вы хотите уничтожить комнату %s\? Это действие нельзя отменить.</string>
+    <string name="destroy_room_failed">Комната не может быть закрыта</string>
+    <string name="destroy_room_succeed">Комната успешно закрыта</string>
     <string name="device_does_not_support_battery_op">Ваше устройство не поддерживает исключение из списка оптимизации батареи</string>
     <string name="device_does_not_support_certificates">Ваше устройство не поддерживает выбор клиентских сертификатов!</string>
     <string name="device_does_not_support_data_saver">Ваше устройство не поддерживает отключение экономии трафика для monocles chat.</string>
@@ -386,7 +386,7 @@
     <string name="grant_admin_privileges">Предоставить права администратора</string>
     <string name="grant_membership">Предоставить права участника</string>
     <string name="grant_owner_privileges">Предоставить права владельца</string>
-    <string name="group_chat_avatar">Аватар группового чата</string>
+    <string name="group_chat_avatar">Аватар комнаты</string>
     <string name="group_chat_members">Участники</string>
     <string name="group_chat_name">Название</string>
     <string name="group_chat_will_make_your_jabber_id_public">Этот канал будет создан с помощью вашего публичного chat address</string>
@@ -396,7 +396,7 @@
     <string name="hide_offline">Скрыть \"не в сети\"</string>
     <string name="hide_warning">Скрыть предупреждение</string>
     <string name="highlight_in_muc">отметить пользователя</string>
-    <string name="host_does_not_support_group_chat_avatars">Хост не поддерживает аватары</string>
+    <string name="host_does_not_support_group_chat_avatars">Хост не поддерживает аватары комнаты</string>
     <string name="hostname_example">monocles.de</string>
     <string name="hostname_or_onion">Имя хоста или onion-адрес</string>
     <string name="huawei_protected_apps">Защищенные приложения</string>
@@ -433,7 +433,7 @@
     <string name="intro_desc_account2">Вы можете создать новый профиль на monocles chat, просто введя ник.</string>
     <string name="intro_desc_account3">У Вас есть возможность импортировать существующую учетную запись. Если есть файлы резервных копий, они будут показаны.</string>
     <string name="intro_desc_chat_details">Хотите открыть детали чате\? Просто нажмите на название чата в строке меню вверху.</string>
-    <string name="intro_desc_highlight_user">Если Вы хотите выделить пользователя в групповом чате, просто коснитесь его аватара в чате. Если пользователя нет в чате, откройте детали чата и найдите пользователя в списке участников. Долгое нажатие на аватар пользователя отобразит всплывающее меню, в котором Вы можете выделить пользователя.</string>
+    <string name="intro_desc_highlight_user">Если вы хотите выделить пользователя в комнате, просто коснитесь его аватара в чате. В качестве альтернативы, особенно если пользователя нет в чате, переключитесь на сведения о чате и найдите пользователя в списке участников. При длительном касании аватара пользователя появится всплывающее меню, в котором можно выделить пользователя.</string>
     <string name="intro_desc_main">Узнать больше…</string>
     <string name="intro_desc_open_chat">Теперь Вы можете начать общаться, обмениваться местоположением, файлами, видео, изображениями и отправлять голосовые сообщения.</string>
     <string name="intro_desc_open_chat_details">Вы открыли детали чата. Здесь Вы можете просмотреть подробную информацию о чате, изменить уведомления о новых сообщениях, добавить или удалить чат из списка контактов и многое другое.</string>
@@ -442,7 +442,7 @@
     <string name="intro_desc_privacy">monocles chat не будет ни продавать, ни анализировать Ваши данные, и Вы сами решаете, какие разрешения Вы предоставляете.</string>
     <string name="intro_desc_required_permissions">В конце вступления Вам будет предложено предоставить разрешение на доступ к хранилищу (обязательное), если Вы еще не предоставили его. Другие разрешения запрашиваются по мере необходимости и являются необязательными.</string>
     <string name="intro_desc_start_chatting">Если Вы предоставили разрешение на доступ к контактам, уже существующие контакты Jabber автоматически отобразятся в Вашей адресной книге. В противном случае просто добавьте chat address</string>
-    <string name="intro_desc_start_chatting2">Вы также можете добавлять, создавать или присоединяться к многопользовательским чатам (так называемым MUC). Они разделяются на приватные групповые чаты и публичные групповые чаты (так называемые каналы).</string>
+    <string name="intro_desc_start_chatting2">Вы также можете добавлять, создавать или присоединяться к многопользовательским чатам (так называемым MUC). Они разделяются на приватные комнаты и публичные комнаты (так называемые каналы).</string>
     <string name="intro_desc_start_chatting3">Поздравляем! А теперь идем и веселимся…</string>
     <string name="intro_desc_whats_xmpp">XMPP, также известный как jabber, является децентрализованной коммуникационной сетью и работает подобно электронной почте. Вам понадобится адрес под названием chat address, пароль и мессенджер. Подробнее об этом позже.</string>
     <string name="intro_highlight_user">Отметить пользователя</string>
@@ -469,12 +469,12 @@
     <string name="join">Присоединиться</string>
     <string name="join_public_channel">Присоединиться к публичному каналу</string>
     <string name="joined_an_existing_channel">Вы присоединились к существующему каналу</string>
-    <string name="joining_conference">Подключение к групповому чату…</string>
+    <string name="joining_conference">Подключение к комнате…</string>
     <string name="just_now">только что</string>
-    <string name="kick_from_conference">Исключить из группового чата</string>
-    <string name="kick_from_room">Исключить из группового чата</string>
+    <string name="kick_from_conference">Выгнать из комнаты</string>
+    <string name="kick_from_room">Выгнать из комнаты</string>
     <string name="kick_now">Исключить</string>
-    <string name="kicking_from_conference">Вы пытаетесь исключить %s из группового чата.</string>
+    <string name="kicking_from_conference">Вы пытаетесь выгнать %s из группового чата.</string>
     <string name="kicking_from_public_conference">Вы пытаетесь исключить %s из группового канала.</string>
     <string name="large">Большой</string>
     <string name="last_seen_day">1 день назад</string>
@@ -486,18 +486,22 @@
     <string name="last_seen_mins">%d мин. назад</string>
     <string name="last_seen_now">в сети</string>
     <string name="leave">Покинуть</string>
-    <string name="leave_conference_warning">Вы действительно хотите покинуть групповой чат\? Вы не будете получать уведомления о новых сообщениях до тех пор, пока не вступите в групповой чат снова.</string>
+    <string name="leave_conference_warning">Вы действительно хотите покинуть эту комнату\? Вы не будете получать уведомления о новых сообщениях до тех пор, пока не вступите в комнату снова.</string>
     <string name="link">Ссылка</string>
     <string name="load_more_messages">Загрузить больше сообщений</string>
     <string name="local_server">Локальный сервер</string>
     <string name="locating">Определение местоположения...</string>
     <string name="location">Местоположение</string>
     <string name="location_sharing_disabled">Возможность делиться местоположением отключена в настройках</string>
-    <string name="magic_create_text">You can use monocles chat with every modern XMPP account or get a affordable and secure monocles account, hosted on the monocles server station and powered with regenerative energies!
+    <string name="magic_create_text">Это включает в себя:
+\n● зашифрованное временное хранилище чата на два месяца
+\n● электронная почта со сквозным шифрованием объемом 1 ГБ
 \n
-\n This includes: ● two month encrypted temporary chat storage ● e-mail with 1 GB end-to-end encrypted storage
-\n
-\n optionally: ● 4 GB cloud storage (nextcloud) ● calendar and contact sync ● a secure conferencing tool ● and more on https://monocles.de/more/</string>
+\n необязательно:
+\n● 4 ГБ облачного хранилища (nextcloud)
+\n● синхронизация календаря и контактов
+\n● безопасный инструмент для проведения конференций
+\n● и многое другое на https://monocles.eu/more/</string>
     <string name="magic_create_text_fixed">Вас пригласили в %1$s. Имя пользователя уже выбрано для Вас. Мы поможем Вам создать учетную запись. Вы сможете общаться с пользователями других серверов, сообщив им свой полный XMPP-адрес.</string>
     <string name="magic_create_text_on_x">Вас пригласили в %1$s. Мы поможем Вам создать учетную запись. Выбрав %1$s в качестве сервера, Вы сможете общаться с пользователями других серверов, сообщив им свой полный XMPP-адрес.</string>
     <string name="make_call">Звонить</string>
@@ -544,7 +548,7 @@
     <string name="missing_public_keys">Потеряны анонсы публичного ключа</string>
     <string name="moderated">Сделать канал модерируемым</string>
     <string name="moderator">Модератор</string>
-    <string name="modified_conference_options">Настройки группового чата изменены!</string>
+    <string name="modified_conference_options">Настройки комнаты изменены!</string>
     <string name="monospace">моноширинный</string>
     <string name="more_participants">%d участников</string>
     <string name="move_data">Перенести данные</string>
@@ -576,7 +580,7 @@
     <string name="new_password">Новый пароль</string>
     <string name="next">Далее</string>
     <string name="nick_in_use">Псевдоним уже используется</string>
-    <string name="nickname">Наименование для этого группового чата</string>
+    <string name="nickname">Псевдоним для этой комнаты</string>
     <string name="no">Нет</string>
     <string name="no_accounts">(Нет активных аккаунтов)</string>
     <string name="no_active_accounts_support_this">Ни один активный аккаунт не поддерживает эту функцию</string>
@@ -590,9 +594,9 @@
     <string name="no_attachments">Вложения отсутствуют</string>
     <string name="no_backup_available">Нет доступных резервных копий</string>
     <string name="no_camera_permission">monocles chat требуется доступ к камере</string>
-    <string name="no_conference_server_found">Не найден групповой сервер</string>
+    <string name="no_conference_server_found">Сервер комнаты не найден</string>
     <string name="no_i2p_calls">Звонки через I2P недоступны</string>
-    <string name="no_keys_just_confirm">Вы уже доверяете этому контакту. Нажимая \"Готово\" вы только подтвердите, что %s состоит в групповом чате.</string>
+    <string name="no_keys_just_confirm">Вы уже доверяете этому контакту. Нажимая \"Готово\" вы только подтвердите, что %s состоит в этой комнате.</string>
     <string name="no_location_permission">monocles chat требуется доступ к службам определения местоположения</string>
     <string name="no_market_app_installed">Приложение market не установлено.</string>
     <string name="no_microphone_permission">monocles chat требуется доступ к микрофону</string>
@@ -606,8 +610,9 @@
     <string name="no_storage_permission">monocles chat требуется доступ к внешнему хранилищу</string>
     <string name="no_update_available">Нет доступных обновлений</string>
     <string name="no_users_hint_channel">В этом канале нет участников. Пригласите ваших контактов или используйте кнопку \"Поделиться\" для распространения этого XMPP-адреса.</string>
-    <string name="no_users_hint_group_chat">В этой группе нет участников.</string>
-    <string name="no_write_access_in_public_muc">Вы не состоите в этом групповом чате и не можете оставлять сообщения в данный момент. Пожалуйста, зайдите в детали группового чата нажатием <b>ОК</b> и отправьте приватное сообщение модератору, администратору или владельцу чата долгим нажатием на его имя в верхней части списка, чтобы получить возможность оставлять сообщения.</string>
+    <string name="no_users_hint_group_chat">В этой комнате нет участников.</string>
+    <string name="no_write_access_in_public_muc">В данный момент вы не участвуете в этой комнате и не имеете доступа для записи.
+\nПерейдите к сведениям о комнате, нажав <b>OK</b>, и отправьте личное сообщение модератору, администратору или владельцу, нажав и удерживая имя одного из участников в верхней/передней части списка, чтобы запросить доступ для записи.</string>
     <string name="no_xmpp_adddress_found">XMPP-адрес не найден</string>
     <string name="non_anonymous">Сделать chat address видимыми для всех</string>
     <string name="none">Нет</string>
@@ -717,7 +722,7 @@
     <string name="pref_alternative_voice_settings_summary">Если у вас возникли проблемы во время записи голоса, используйте эту настройку для изменения кодека.</string>
     <string name="pref_attachments">Вложения</string>
     <string name="pref_autojoin">Синхронизировать закладки</string>
-    <string name="pref_autojoin_summary">Присоединяться и покидать из групповые чаты в соответствии с флагом автоматического присоединения в закладках.</string>
+    <string name="pref_autojoin_summary">Присоединяться и покидать комнаты в соответствии с флагом автоматического присоединения в закладках.</string>
     <string name="pref_automatically_delete_attachments_description">Автоматически удалять с этого устройства сообщения старше заданного времени.</string>
     <string name="pref_automatically_delete_files">Автоматическое удаление вложений</string>
     <string name="pref_automatically_delete_messages">Автоматическое удаление сообщений</string>
@@ -753,8 +758,8 @@
     <string name="pref_enable_multi_accounts_title">Использовать несколько аккаунтов</string>
     <string name="pref_enable_otr">Включить OTR-шифрование (BETA)</string>
     <string name="pref_enable_otr_summary">Включите шифрование OTR для шифрования сообщений. OTR по-прежнему крайне нестабилен, используйте его, только если знаете, что делаете.</string>
-    <string name="pref_enable_persistent_rooms_summary">Сделайте групповые чаты и публичные каналы постоянными и не удаляйте их с сервера после того, как последний пользователь покинул чат.</string>
-    <string name="pref_enable_persistent_rooms_title">Постоянные групповые чаты</string>
+    <string name="pref_enable_persistent_rooms_summary">Сделайте комнаты и публичные каналы постоянными и не удаляйте их с сервера после того, как последний пользователь покинул чат.</string>
+    <string name="pref_enable_persistent_rooms_title">Постоянные комнаты</string>
     <string name="pref_enter_is_send">Ввод для отправки</string>
     <string name="pref_enter_is_send_summary">Использовать клавишу Enter для отправки сообщения. Вы всегда можете использовать Ctrl+Enter для отправки сообщения, даже если эта опция отключена.</string>
     <string name="pref_expert_options">Продвинутые настройки</string>
@@ -792,9 +797,9 @@
     <string name="pref_notifications_from_strangers">Уведомления от незнакомцев</string>
     <string name="pref_notifications_from_strangers_summary">Уведомлять о сообщениях от незнакомых контактов.</string>
     <string name="pref_omemo_setting">OMEMO шифрование</string>
-    <string name="pref_omemo_setting_summary_always">OMEMO всегда будет использоваться для личных бесед и приватных групповых чатов.</string>
+    <string name="pref_omemo_setting_summary_always">OMEMO всегда будет использоваться для одиночных и частных комнат.</string>
     <string name="pref_omemo_setting_summary_always_off">ОМЕМО никогда не будет использоваться.</string>
-    <string name="pref_omemo_setting_summary_default_off">OMEMO будет включен по умолчанию для новых разговоров.</string>
+    <string name="pref_omemo_setting_summary_default_off">OMEMO будет выключен по умолчанию для новых разговоров.</string>
     <string name="pref_omemo_setting_summary_default_on">OMEMO будет по умолчанию использоваться для новых бесед.</string>
     <string name="pref_pause_voice_on_move_from_ear">Автоматическая приостановка голосового сообщения</string>
     <string name="pref_pause_voice_on_move_from_ear_summary">Приостановить воспроизведение голосового сообщения, при удалении устройство от уха.</string>
@@ -810,7 +815,7 @@
     <string name="pref_quick_share_attachment_choice">Выбор вложений</string>
     <string name="pref_quiet_hours_summary">Уведомления будут приглушены во время тихих часов</string>
     <string name="pref_remove_all_individual_notifications_title">Удалить все отдельные уведомления</string>
-    <string name="pref_remove_all_individual_summary">Удалите все индивидуальные уведомления для ваших контактов и групп.</string>
+    <string name="pref_remove_all_individual_summary">Удалите все индивидуальные уведомления для ваших контактов и комнат.</string>
     <string name="pref_remove_trusted_certificates_summary">Удалить подтвержденные вручную сертификаты</string>
     <string name="pref_remove_trusted_certificates_title">Удалить сертификаты</string>
     <string name="pref_resend_delay_summary">Время задержки повторной отправки.</string>
@@ -828,7 +833,7 @@
     <string name="pref_show_date_in_quotes">Показать дату и время сообщений</string>
     <string name="pref_show_date_in_quotes_summary">Показывать дату и время ваших цитируемых сообщений.</string>
     <string name="pref_show_dynamic_tags">Показывать динамические теги</string>
-    <string name="pref_show_dynamic_tags_summary">Отображать теги под контактами</string>
+    <string name="pref_show_dynamic_tags_summary">Разрешить организацию с помощью тегов</string>
     <string name="pref_show_foreground_service">Использовать фоновую службу</string>
     <string name="pref_show_foreground_service_summary">Некоторые устройства Android закрывают приложения по прошествии некоторого времени, и вы теряете возможность получать новые сообщения. Если вы столкнулись с такой проблемой - попробуйте активировать фоновую службу. Имейте ввиду, что если эта опция включена - значок уведомления будет отображаться постоянно.</string>
     <string name="pref_show_intro">Показ ознакомительных экранов</string>
@@ -865,13 +870,13 @@
     <string name="pref_treat_vibrate_as_silent">Считать режим вибрации беззвучным режимом</string>
     <string name="pref_ui_options">Интерфейс</string>
     <string name="pref_up_push_account_summary">Учетная запись, через которую будут приниматься push-сообщения.</string>
-    <string name="pref_up_push_server_summary">Выбранный пользователем push-сервер для передачи push-сообщений через XMPP на ваше устройство.</string>
+    <string name="pref_up_push_server_summary">Выбранный пользователем push-сервер для передачи push-сообщений приложениям на вашем устройстве.</string>
     <string name="pref_use_auto_rotate">Поворот в полноэкранном режиме</string>
     <string name="pref_use_auto_rotate_summary">Поворачивать изображения и видео для подгонки к размеру экрана</string>
     <string name="pref_use_bundled_emoji">Использовать встроенные эмодзи</string>
     <string name="pref_use_bundled_emoji_summary">Использовать встроенный набор эмоджи вместо системного. Изменения вступят в силу после перезапуска приложения.</string>
     <string name="pref_use_colored_muc_names">Раскрасить ники</string>
-    <string name="pref_use_colored_muc_names_summary">Раскрасить ники в групповых чатах или каналах как фон аватара по умолчанию.</string>
+    <string name="pref_use_colored_muc_names_summary">Раскрасить ники в комнатах или каналах как фон аватара по умолчанию.</string>
     <string name="pref_use_colored_names_to_indicate_status">Расцветка имен показывает статус</string>
     <string name="pref_use_colored_names_to_indicate_status_summary">Раскрасить имена контактов для индикации статуса контакта</string>
     <string name="pref_use_i2p">Соединение через I2P</string>
@@ -919,7 +924,7 @@
     <string name="publish">Опубликовать</string>
     <string name="publishing">Публикация…</string>
     <string name="qr_code_scanner_needs_access_to_camera">Сканеру QR-кодов нужен доступ к камере</string>
-    <string name="quote">Цитировать</string>
+    <string name="quote">Ответить</string>
     <string name="readmore">Подробнее</string>
     <string name="receive_presence_updates">Принимать обновления присутствия</string>
     <string name="received_message_from_stranger">Принимать сообщения от незнакомых контактов</string>
@@ -938,7 +943,7 @@
     <string name="remote_server_not_found">Сервер не найден</string>
     <string name="remote_server_timeout">Таймаут удаленного сервера</string>
     <string name="remove_admin_privileges">Отозвать права администратора</string>
-    <string name="remove_all_individual_notifications_message">Вы действительно хотите удалить все индивидуальные уведомления, установленные для ваших контактов и групп\?</string>
+    <string name="remove_all_individual_notifications_message">Вы действительно хотите удалить все индивидуальные уведомления, установленные для ваших контактов и комнат\?</string>
     <string name="remove_bookmark_text">Вы действительно хотите удалить %s из закладок\? Беседа, связанная с этой закладкой, не будет удалена.</string>
     <string name="remove_contact_text">Вы хотите удалить%s из Вашего списка\? Беседа, связанная с этим контактом, не будет удалена.</string>
     <string name="remove_from_channel">Удалить из канала</string>
@@ -1166,7 +1171,7 @@
     <string name="use_individual_notifications">Используйте индивидуальные уведомления</string>
     <string name="use_own_provider">Использовать свой сервер</string>
     <string name="user">Пользователь</string>
-    <string name="user_has_left_conference">%1$s вышел из группы!</string>
+    <string name="user_has_left_conference">%1$s вышел из комнаты!</string>
     <string name="username">Имя пользователя</string>
     <string name="username_hint">Имя пользователя</string>
     <string name="using_account">используется аккаунт %s</string>
@@ -1307,13 +1312,13 @@
     <string name="no_manage_storage_permission">Начиная с Android 11 приложениям требуется специальное разрешение для доступа ко всем типам файлов во внешнем хранилище. Чат monocles попросит вас предоставить это разрешение для продолжения.</string>
     <string name="close_format_text">Вы действительно хотите закрыть панель инструментов форматирования текста\? Вы можете снова включить панель инструментов в настройках.</string>
     <string name="bold">смелый</string>
-    <string name="conference_technical_problems">Вы покинули этот групповой чат по техническим причинам</string>
+    <string name="conference_technical_problems">Вы покинули эту комнату по техническим причинам</string>
     <string name="account_status_incompatible_client">Несовместимый клиент</string>
     <string name="sending_x_file_x">Отправка %1$s (%2$s %)</string>
     <string name="pref_theme_White">Белый</string>
     <string name="rtp_state_content_add_video">Переключиться на видеовызов\?</string>
     <string name="rtp_state_content_add">Добавить дополнительные треки\?</string>
-    <string name="create_monocles_account">Получите монокль учетную запись!</string>
+    <string name="create_monocles_account">Получить аккаунт monocles</string>
     <string name="copy_file_to">Скопировать файл в %s</string>
     <string name="help_format_text">Вы можете использовать простые параметры стиля для форматирования текста. Ключи для определения начала и конца форматирования находятся точно в начале и конце слова или группы слов. Должен быть пробел перед начальным ключом и пробел после конечного ключа, иначе форматирование не будет распознано.
 \nВы можете использовать инструменты непосредственно во время письма, нажатие на инструмент вставит ключ в позицию курсора. Или вы можете отметить слово или группу слов и нажать кнопку форматирования.</string>
@@ -1326,7 +1331,7 @@
     <string name="x_has_written">%s написал:</string>
     <string name="vector_graphic">векторная графика</string>
     <string name="multimedia_file">мультимедийный файл</string>
-    <string name="title_undo_swipe_out_group_chat">Отменить удаление группового чата</string>
+    <string name="title_undo_swipe_out_group_chat">Отменить удаление комнаты</string>
     <string name="title_undo_swipe_out_channel">Отменить удаление канала</string>
     <string name="title_undo_swipe_out_conversation">Отменить удаление чата</string>
     <string name="audio_video_disabled_tor">Звонки отключены при использовании Tor</string>
@@ -1352,4 +1357,41 @@
     <string name="outgoing_call_timestamp">Исходящие звонки · %s</string>
     <string name="note_to_self">Примечание для себя</string>
     <string name="refresh_feature_discovery">Обнаружение функций</string>
+    <string name="i_am_snikket_user">Я использую Сниккет</string>
+    <string name="action_edit_contact">Изменить контакт</string>
+    <string name="only_this_thread">Показать только эту тему</string>
+    <string name="pref_dialler_integration_incoming">Используйте учетные записи телефонов для входящих вызовов</string>
+    <string name="pref_dialler_integration_incoming_summary">Входящие вызовы с телефонных номеров могут звонить с помощью системного номеронабирателя вместо настроек уведомлений этого приложения.</string>
+    <string name="thread_marker">Маркер нити</string>
+    <string name="thread_locked">Тема заблокирована</string>
+    <string name="tags">Теги</string>
+    <string name="save_as_sticker">Сохранить как стикер</string>
+    <string name="sticker_name">Название стикера</string>
+    <string name="action_execute">Идти</string>
+    <string name="block_avatar">Заблокировать аватар</string>
+    <string name="block_media">Блокировать медиа</string>
+    <string name="new_contact">Новый контакт</string>
+    <string name="add_to_home_screen">Добавить на домашний экран</string>
+    <string name="or_use_another">... или выберите другой ниже</string>
+    <string name="action_dialpad">Клавиатура для набора номера</string>
+    <string name="microphone_permission_for_call">Для завершения звонка требуется разрешение микрофона</string>
+    <string name="receiving_x_file">Получение %1$s (%2$d%% выполнено)</string>
+    <string name="call">Вызов</string>
+    <string name="join_room">Присоединиться к комнате</string>
+    <string name="custom_theme_options">Пользовательские параметры темы</string>
+    <string name="custom_theme_is_dark">Пользовательская тема темная\?</string>
+    <string name="custom_primary_color">Пользовательский основной цвет</string>
+    <string name="custom_primary_dark_color">Пользовательский основной темный цвет</string>
+    <string name="custom_accent_color">Пользовательский акцентный цвет</string>
+    <string name="change_stickers_location">Изменить расположение стикеров</string>
+    <string name="update_default_stickers">Обновить стикеры по умолчанию</string>
+    <string name="clear_blocked_media">Очистить заблокированный носитель</string>
+    <string name="monocles_account_introduction">Вы можете использовать монокль-чат с любой современной учетной записью XMPP или <b>получить доступный и безопасный монокль-аккаунт, работающий на регенеративной энергии!</b></string>
+    <string name="cleanup_conversations">Очистить разговоры</string>
+    <string name="save_as_contact_bookmark">Сохранить как контакт/закладку</string>
+    <string name="new_contact_or_group">Новый контакт или комната</string>
+    <string name="colors">Цвета</string>
+    <string name="choose_sticker_location">Выберите место для стикера</string>
+    <string name="you_may_sometimes_have_to">Иногда вам может потребоваться принудительно закрыть приложение, чтобы изменения вступили в силу.</string>
+    <string name="create_monocles_only_backup">Экспортировать дополнительные данные только для моноклей (тогда резервная копия не будет импортирована в другие приложения)\?</string>
 </resources>

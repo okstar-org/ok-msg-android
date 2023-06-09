@@ -140,7 +140,7 @@ public class MagicCreateActivity extends XmppActivity implements TextWatcher, Ad
                     domain = updateDomain();
                     jid = Jid.ofLocalAndDomainEscaped(username, domain);
                 }
-                if (!jid.getEscapedLocal().equals(jid.getLocal()) || (this.username == null && username.length() < 3)) {
+                if (!jid.getEscapedLocal().equals(jid.getLocal())) {
                     binding.username.setError(getString(R.string.invalid_username));
                     binding.username.requestFocus();
                 } else {

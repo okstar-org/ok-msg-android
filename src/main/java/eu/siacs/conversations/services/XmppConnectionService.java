@@ -1142,7 +1142,7 @@ public class XmppConnectionService extends Service {
             } else {
                 message = inReplyTo.reply();
             }
-            message.clearFallbacks();
+            message.clearFallbacks("urn:xmpp:reply:0");
             message.setBody(body);
             message.setEncryption(conversation.getNextEncryption());
         }
@@ -1539,7 +1539,10 @@ public class XmppConnectionService extends Service {
         this.databaseBackend = DatabaseBackend.getInstance(getApplicationContext());
         Log.d(Config.LOGTAG, "restoring accounts...");
         this.accounts = databaseBackend.getAccounts();
-
+        for (Account account : this.accounts) {
+            final int color = getPreferences().getInt("account_color:" + account.getUuid(), 0);
+            if (color != 0) account.setColor(color);
+        }
         final SharedPreferences.Editor editor = getPreferences().edit();
         if (this.accounts.size() == 0 && Arrays.asList("Sony", "Sony Ericsson").contains(Build.MANUFACTURER)) {
             editor.putBoolean(SettingsActivity.SHOW_FOREGROUND_SERVICE, true);
@@ -2308,17 +2311,36 @@ public class XmppConnectionService extends Service {
     }
 
     public void deleteBookmark(final Account account, final Bookmark bookmark) {
+        if (bookmark.getJid().toString().equals("support@conference.monocles.de")) {
+            getPreferences().edit().putBoolean("monocles_support_bookmark_deleted", true).apply();
+        }
+                        /*              //TODO: Add bridges as contacts
+        if (bookmark.getJid().toString().equals("whatsapp.monocles.eu")) {
+            getPreferences().edit().putBoolean("whatsapp_bridge_bookmark_deleted", true).apply();
+        }
+        if (bookmark.getJid().toString().equals("signal.monocles.eu")) {
+            getPreferences().edit().putBoolean("signal_bridge_bookmark_deleted", true).apply();
+        }
+        if (bookmark.getJid().toString().equals("telegram.monocles.eu")) {
+            getPreferences().edit().putBoolean("telegram_bridge_bookmark_deleted", true).apply();
+        }
+        if (bookmark.getJid().toString().equals("cheogram.com")) {
+            getPreferences().edit().putBoolean("sms_bridge_bookmark_deleted", true).apply();
+        }
+         */
+
         account.removeBookmark(bookmark);
         final XmppConnection connection = account.getXmppConnection();
         if (connection == null) return;
-        if (connection != null && connection.getFeatures().bookmarks2()) {
+
+        if (connection.getFeatures().bookmarks2()) {
             IqPacket request = mIqGenerator.deleteItem(Namespace.BOOKMARKS2, bookmark.getJid().asBareJid().toEscapedString());
             sendIqPacket(account, request, (a, response) -> {
                 if (response.getType() == IqPacket.TYPE.ERROR) {
                     Log.d(Config.LOGTAG, a.getJid().asBareJid() + ": unable to delete bookmark " + response.getErrorCondition());
                 }
             });
-        } else if (connection != null && connection.getFeatures().bookmarksConversion()) {
+        } else if (connection.getFeatures().bookmarksConversion()) {
             pushBookmarksPep(account);
         } else {
             pushBookmarksPrivateXml(account);
@@ -2957,6 +2979,12 @@ public class XmppConnectionService extends Service {
 
     public boolean updateAccount(final Account account) {
         if (databaseBackend.updateAccount(account)) {
+            Integer color = account.getColorToSave();
+            if (color == null) {
+                getPreferences().edit().remove("account_color:" + account.getUuid()).commit();
+            } else {
+                getPreferences().edit().putInt("account_color:" + account.getUuid(), color.intValue()).commit();
+            }
             account.setShowErrorNotification(true);
             this.statusListener.onStatusChanged(account);
             databaseBackend.updateAccount(account);
@@ -2992,6 +3020,7 @@ public class XmppConnectionService extends Service {
     }
 
     public void deleteAccount(final Account account) {
+        getPreferences().edit().remove("onboarding_continued").commit();
         final boolean connected = account.getStatus() == Account.State.ONLINE;
         synchronized (this.conversations) {
             if (connected) {
@@ -3842,6 +3871,7 @@ public class XmppConnectionService extends Service {
                                     invite(conversation, invite);
                                 }
                                 for (String resource : account.getSelfContact().getPresences().toResourceArray()) {
+                                    if (resource == null || "".equals(resource)) continue;
                                     Jid other = account.getJid().withResource(resource);
                                     Log.d(Config.LOGTAG, account.getJid().asBareJid() + ": sending direct invite to " + other);
                                     directInvite(conversation, other);
@@ -3878,6 +3908,13 @@ public class XmppConnectionService extends Service {
     }
 
     public void checkIfMuc(final Account account, final Jid jid, Consumer<Boolean> cb) {
+        if (jid.isDomainJid()) {
+            // Spec basically says MUC needs to have a node
+            // And also specifies that MUC and MUC service should have the same identity...
+            cb.accept(false);
+            return;
+        }
+
         IqPacket request = mIqGenerator.queryDiscoInfo(jid.asBareJid());
         sendIqPacket(account, request, (acct, reply) -> {
             ServiceDiscoveryResult result = new ServiceDiscoveryResult(reply);
@@ -5551,8 +5588,8 @@ public class XmppConnectionService extends Service {
     }
 
     public void fetchCaps(Account account, final Jid jid, final Presence presence, Runnable cb) {
-        final Pair<String, String> key = new Pair<>(presence.getHash(), presence.getVer());
-        final ServiceDiscoveryResult disco = getCachedServiceDiscoveryResult(key);
+        final Pair<String, String> key = presence == null ? null : new Pair<>(presence.getHash(), presence.getVer());
+        final ServiceDiscoveryResult disco = key == null ? null : getCachedServiceDiscoveryResult(key);
         if (disco != null) {
             presence.setServiceDiscoveryResult(disco);
             final Contact contact = account.getRoster().getContact(jid);
@@ -5567,19 +5604,19 @@ public class XmppConnectionService extends Service {
         } else {
             final IqPacket request = new IqPacket(IqPacket.TYPE.GET);
             request.setTo(jid);
-            final String node = presence.getNode();
-            final String ver = presence.getVer();
+            final String node = presence == null ? null : presence.getNode();
+            final String ver = presence == null ? null : presence.getVer();
             final Element query = request.query(Namespace.DISCO_INFO);
             if (node != null && ver != null) {
                 query.setAttribute("node", node + "#" + ver);
             }
-            Log.d(Config.LOGTAG, account.getJid().asBareJid() + ": making disco request for " + key.second + " to " + jid);
+            Log.d(Config.LOGTAG, account.getJid().asBareJid() + ": making disco request for " + (key == null ? "" : key.second) + " to " + jid);
             sendIqPacket(account, request, (a, response) -> {
                 if (response.getType() == IqPacket.TYPE.RESULT) {
                     final ServiceDiscoveryResult discoveryResult = new ServiceDiscoveryResult(response);
-                    if (presence.getVer() == null || presence.getVer().equals(discoveryResult.getVer())) {
+                    if (presence == null || presence.getVer() == null || presence.getVer().equals(discoveryResult.getVer())) {
                         databaseBackend.insertDiscoveryResult(discoveryResult);
-                        injectServiceDiscoveryResult(a.getRoster(), presence.getHash(), presence.getVer(), jid.getResource(), discoveryResult);
+                        injectServiceDiscoveryResult(a.getRoster(), presence == null ? null : presence.getHash(), presence == null ? null : presence.getVer(), jid.getResource(), discoveryResult);
                         if (discoveryResult.hasIdentity("gateway", "pstn")) {
                             final Contact contact = account.getRoster().getContact(jid);
                             contact.registerAsPhoneAccount(this);
@@ -5610,6 +5647,11 @@ public class XmppConnectionService extends Service {
             Presence onePresence = contact.getPresences().get(resource == null ? "" : resource);
             if (onePresence != null) {
                 onePresence.setServiceDiscoveryResult(disco);
+                serviceDiscoverySet = true;
+            } else if (resource == null && hash == null && ver == null) {
+                Presence p = new Presence(Presence.Status.OFFLINE, null, null, null, "");
+                p.setServiceDiscoveryResult(disco);
+                contact.updatePresence("", p);
                 serviceDiscoverySet = true;
             }
             if (hash != null && ver != null) {

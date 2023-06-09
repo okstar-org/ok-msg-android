@@ -16,8 +16,8 @@
     <string name="action_unblock_domain">Desbloquear dominio</string>
     <string name="title_activity_manage_accounts">Gestionar cuentas</string>
     <string name="title_activity_settings">Ajustes</string>
-    <string name="conference_details">Detalles del grupo de chat</string>
-    <string name="conference_technical_problems">Has dejado este grupo debido a razones técnicas</string>
+    <string name="conference_details">Detalles de la sala</string>
+    <string name="conference_technical_problems">Has dejado esta sala debido a razones técnicas</string>
     <string name="contact_details">Detalles del contacto</string>
     <string name="title_activity_sharewith">Compartir con conversación</string>
     <string name="title_activity_start_conversation">Iniciar conversación</string>
@@ -74,7 +74,7 @@
     <string name="touch_to_fix">Pulsa aquí para gestionar tus cuentas</string>
     <string name="attach_file">Adjuntar</string>
     <string name="not_in_roster">El contacto no está en tu lista. ¿Quieres añadirlo\?</string>
-    <string name="add_contact">Añadir contacto</string>
+    <string name="add_contact">Añadir contacto o sala</string>
     <string name="send_failed">Error al enviar</string>
     <string name="preparing_image">Preparando imagen para enviar</string>
     <string name="action_clear_history">Limpiar historial</string>
@@ -218,7 +218,7 @@
     <string name="done">Hecho</string>
     <string name="verify">Verificar</string>
     <string name="decrypt">Descifrar</string>
-    <string name="bookmarks">Chats multiusuarios</string>
+    <string name="bookmarks">Salas de chat</string>
     <string name="search">Buscar</string>
     <string name="enter_contact">Introducir contacto</string>
     <string name="delete_contact">Eliminar Contacto</string>
@@ -234,7 +234,7 @@
     <string name="save_as_bookmark">Guardar en marcadores</string>
     <string name="delete_bookmark">Eliminar marcador</string>
     <string name="topic">Tema</string>
-    <string name="joining_conference">Unirse al chat de grupo…</string>
+    <string name="joining_conference">Unirse a la sala…</string>
     <string name="leave">Salir</string>
     <string name="contact_added_you">El contacto te ha añadido a su lista de contactos</string>
     <string name="add_back">Añadir contacto</string>
@@ -257,7 +257,7 @@
     <string name="disable_notifications">Deshabilitar notificaciones</string>
     <string name="enable_notifications">Habilitar notificaciones</string>
     <string name="enable">Habilitar</string>
-    <string name="conference_requires_password">El chat de grupo requiere contraseña</string>
+    <string name="conference_requires_password">La sala requiere contraseña</string>
     <string name="enter_password">Introduce la contraseña</string>
     <string name="request_presence_updates">Por favor, solicita la suscripción de presencia a tu contacto primero.
 \n
@@ -290,12 +290,12 @@
     <string name="pref_use_colored_names_to_indicate_status_summary">Colorear el nombre del contacto para mostrar su estado en línea</string>
     <string name="pref_expert_options_other">Otros</string>
     <string name="pref_autojoin">Sincronizar con marcadores</string>
-    <string name="pref_autojoin_summary">Unirse y abandonar los grupos de chat de acuerdo con la configuración de unión automática en tus marcadores.</string>
+    <string name="pref_autojoin_summary">Unirse y abandonar las salas de acuerdo con la configuración de unión automática en tus marcadores.</string>
     <string name="toast_message_omemo_fingerprint">¡Huella digital OMEMO copiada al portapapeles!</string>
-    <string name="conference_banned">Tu entrada a este grupo ha sido prohibido</string>
-    <string name="conference_members_only">Este grupo es sólo para miembros</string>
-    <string name="conference_kicked">Te echaron de este grupo</string>
-    <string name="conference_shutdown">El grupo se cerró</string>
+    <string name="conference_banned">Tu entrada a esta sala ha sido prohibida</string>
+    <string name="conference_members_only">Esta sala es sólo para miembros</string>
+    <string name="conference_kicked">Te echaron de esta sala</string>
+    <string name="conference_shutdown">La sala se cerró</string>
     <string name="using_account">Usando cuenta %s</string>
     <string name="checking_x">Comprobando %s en servidor HTTP</string>
     <string name="not_connected_try_again">No estás conectado. Inténtalo más tarde</string>
@@ -346,8 +346,8 @@
     <string name="manually_verify">Verificar manualmente</string>
     <string name="pref_show_dynamic_tags">Mostrar etiquetas</string>
     <string name="pref_show_dynamic_tags_summary">Permitir organizar con etiquetas</string>
-    <string name="no_conference_server_found">Ningún servidor de chat de grupo encontrado</string>
-    <string name="conference_creation_failed">¡Creación de grupo fallado!</string>
+    <string name="no_conference_server_found">Ningún servidor de sala encontrado</string>
+    <string name="conference_creation_failed">¡La creación de sala ha fallado!</string>
     <string name="account_image_description">Imagen de perfil</string>
     <string name="copy_omemo_clipboard_description">Copiar huella digital OMEMO al portapapeles</string>
     <string name="regenerate_omemo_key">Regenerar clave OMEMO</string>
@@ -387,21 +387,21 @@
     <string name="remove_membership">Revocar privilegios de miembro</string>
     <string name="grant_admin_privileges">Conceder privilegios de administrador</string>
     <string name="remove_admin_privileges">Revocar privilegios de administrador</string>
-    <string name="kick_from_room">Expulsar del grupo de chat</string>
+    <string name="kick_from_room">Expulsar de la sala</string>
     <string name="could_not_change_affiliation">No se puede cambiar la afiliación de %s</string>
-    <string name="ban_from_conference">Desterrar del grupo</string>
-    <string name="kick_from_conference">Expulsar del grupo de chat</string>
+    <string name="ban_from_conference">Prohibir en la sala</string>
+    <string name="kick_from_conference">Expulsar de la sala</string>
     <string name="ban_from_public_conference_message">Estás intentando prohibir para siempre a %s entrar en un canal público.</string>
-    <string name="ban_from_conference_message">Estás intentando prohibir para siempre a %s entrar en un grupo de chat</string>
+    <string name="ban_from_conference_message">Estás intentando prohibir para siempre a %s entrar en una sala</string>
     <string name="kicking_from_public_conference">Estás intentando expulsar a %s de un canal público.</string>
-    <string name="kicking_from_conference">Estás intentado expulsar a %s de un grupo de chat.</string>
+    <string name="kicking_from_conference">Estás intentado expulsar a %s de una sala.</string>
     <string name="ban_now">Prohibir ahora</string>
     <string name="kick_now">Expulsar ahora</string>
     <string name="non_anonymous">Hacer identificación Jabber visible para cualquiera</string>
     <string name="moderated">Hacer canal moderado</string>
     <string name="you_are_not_participating">No estás participando</string>
-    <string name="modified_conference_options">¡Opciones de chat de grupo modificadas!</string>
-    <string name="could_not_modify_conference_options">Las opciones del grupo no se pudon cambiar</string>
+    <string name="modified_conference_options">¡Opciones de sala modificadas!</string>
+    <string name="could_not_modify_conference_options">Las opciones de la sala no se pudieron cambiar</string>
     <string name="never">Nunca</string>
     <string name="until_further_notice">Hasta nuevo aviso</string>
     <string name="pref_input_options">Entrada</string>
@@ -448,7 +448,7 @@
     <string name="search_bookmarks">Buscar grupos de chat</string>
     <string name="choose_quick_action">Elegir acción rápida</string>
     <string name="send_private_message">Enviar mensaje privado</string>
-    <string name="user_has_left_conference">¡%1$s ha dejado el grupo!</string>
+    <string name="user_has_left_conference">¡%1$s ha dejado la sala!</string>
     <string name="username">Usuario</string>
     <string name="username_hint">Usuario</string>
     <string name="invalid_username">Esto no es un usuario válido</string>
@@ -540,15 +540,14 @@
     <string name="this_field_is_required">Este campo es requerido</string>
     <string name="correct_message">Corregir mensaje</string>
     <string name="send_corrected_message">Enviar mensaje corregido</string>
-    <string name="no_keys_just_confirm">Ya confías en este contacto. Seleccionando \'hecho\', estás confirmando que %s es parte de este grupo.</string>
+    <string name="no_keys_just_confirm">Ya confías en este contacto. Seleccionando \'hecho\', estás confirmando que %s es parte de esta sala.</string>
     <string name="contacts_have_no_pgp_keys">monocles chat no ha podido cifrar tus mensajes porque tus contactos no están anunciando sus claves públicas.\n\n</string>
     <string name="this_account_is_disabled">Has deshabilitado esta cuenta</string>
     <string name="no_application_to_share_uri">No se ha encontrado ninguna aplicación para compartir la URI</string>
     <string name="share_uri_with">Compartir URI con…</string>
     <string name="mgmt_account_reconnect">Reconectar</string>
     <string name="welcome_text">... es una aplicación XMPP/Jabber gratuita y segura.</string>
-    <string name="magic_create_text">
-\n Esto incluye:
+    <string name="magic_create_text">Esto incluye:
 \n● dos meses de almacenamiento cifrado de chat
 \n● correo con 1 GB de almacenamiento cifrado extremo-a-extremo
 \n
@@ -556,7 +555,7 @@
 \n● 4 GB de almacenamiento en nube (nextcloud)
 \n● sincronización de calendario y contactos
 \n● una herramienta segura de conferencia
-\n● y más en <a href="https://monocles.eu/more/">https://monocles.eu/more/</a></string>
+\n y más en <a href="https://monocles.eu/more/">https://monocles.eu/more/</a></string>
     <string name="your_full_jid_will_be">Tu identificador Jabber será: %s</string>
     <string name="create_account">Crear cuenta</string>
     <string name="welcome_existing_account">Tengo una cuenta</string>
@@ -575,13 +574,13 @@
     <string name="share_location">Compartir ubicación</string>
     <string name="location_sharing_disabled">La ubicación compartida está deshabilitada en la configuración</string>
     <string name="locating">Localizando…</string>
-    <string name="action_end_conversation_muc">Salir del grupo</string>
-    <string name="leave_conference_warning">¿Realmente quieres dejar este grupo de chat\? Ya no se te notificaran los mensajes nuevos hasta que te vuelvas a unir al grupo.</string>
+    <string name="action_end_conversation_muc">Salir de la sala</string>
+    <string name="leave_conference_warning">¿Realmente quieres dejar esta sala\? Ya no se te notificaran los mensajes nuevos hasta que te vuelvas a unir a la sala.</string>
     <string name="show_password">Mostrar contraseña</string>
     <string name="registration_please_wait">El registro falló. Prueba de nuevo más tarde</string>
     <string name="registration_password_too_weak">Error en el registro: La contraseña es demasiado débil</string>
     <string name="choose_participants">Elige a los participantes</string>
-    <string name="creating_conference">Crear chat de grupo…</string>
+    <string name="creating_conference">Crear sala…</string>
     <string name="import_text">Si hay una copia de seguridad disponible, puedes importarla pulsando el botón de debajo.</string>
     <string name="import_database">Importar copia de seguridad</string>
     <string name="invite_again">Invitar de nuevo</string>
@@ -754,11 +753,11 @@
     <string name="pref_use_bundled_emoji_summary">Utilice la librería emoji integrada en lugar de utilizar la de su dispositivo. Los cambios estarán disponibles después de volver a abrir la aplicación.</string>
     <string name="invalid_muc_nick">Apodo inválido</string>
     <string name="title_activity_share_via_account">Compartir a través de cuenta</string>
-    <string name="destroy_room">Destruir grupo de chat</string>
-    <string name="conference_unknown_error">Ya no estás en este chat de grupo</string>
-    <string name="destroy_room_dialog">¿Quiere destruir el grupo de chat %s\? Esto eliminará el grupo permanentemente.</string>
-    <string name="destroy_room_succeed">Grupo de chat destruido</string>
-    <string name="destroy_room_failed">No se ha podido destruir el grupo de chat</string>
+    <string name="destroy_room">Destruir sala</string>
+    <string name="conference_unknown_error">Ya no estás en esta sala</string>
+    <string name="destroy_room_dialog">¿Quiere destruir la sala %s\? Esto la eliminará permanentemente.</string>
+    <string name="destroy_room_succeed">Sala destruida</string>
+    <string name="destroy_room_failed">No se ha podido destruir la sala</string>
     <string name="no_write_access_in_public_muc">De momento no estás participando en este grupo y no puedes escribir en él
 \nPor favor, ve a los detalles del grupo presionando <b>OK</b> y envía un mensaje privado a un moderador, administrador o propietario haciendo un clic largo en el nombre de los miembros en la parte superior de la lista para solicitar acceso de escritura en el grupo.</string>
     <string name="snooze">Dormitar</string>
@@ -1349,7 +1348,6 @@
     <string name="reply_to">Responder a</string>
     <string name="or_use_another">... o escoger otro a continación</string>
     <string name="monocles_account_introduction">¡Puedes usar monocles chat con cualquier cuenta de XMPP u <b>obtener una cuenta segura y asequible en monocles, alojada en el servidor de monocles alimentado con energía renovable!</b></string>
-    <string name="add_anway">Añadir cualquiera</string>
     <string name="refresh_feature_discovery">Refrescar Descubrimiento de características</string>
     <string name="microphone_permission_for_call">Se requiere permiso de micrófono para completar la llamada</string>
     <string name="i_am_snikket_user">Uso Snikket</string>
@@ -1367,4 +1365,18 @@
     <string name="block_media">Bloquear medio</string>
     <string name="new_contact">Nuevo contacto</string>
     <string name="add_to_home_screen">Añadir a la pantalla principal</string>
+    <string name="receiving_x_file">Recibiendo %1$s (%2$d%% completado)</string>
+    <string name="cleanup_conversations">Limpiar conversaciones</string>
+    <string name="save_as_contact_bookmark">Guardar como contacto / marcador</string>
+    <string name="call">Llamada</string>
+    <string name="new_contact_or_group">nuevo contacto o sala</string>
+    <string name="join_room">Unirse a la sala</string>
+    <string name="custom_theme_is_dark">¿Es oscuro el tema personalizado\?</string>
+    <string name="custom_accent_color">Color de acento personalizado</string>
+    <string name="update_default_stickers">Actualizar pegatinas por defecto</string>
+    <string name="clear_blocked_media">Limpiar medio bloqueado</string>
+    <string name="custom_theme_options">Opciones personalizada de tema</string>
+    <string name="custom_primary_color">Color primario personalizado</string>
+    <string name="custom_primary_dark_color">Color primario oscuro personalizado</string>
+    <string name="change_stickers_location">Cambiar ubicación de pegatinas</string>
 </resources>

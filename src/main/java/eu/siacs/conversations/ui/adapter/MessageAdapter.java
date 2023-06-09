@@ -36,6 +36,9 @@ import android.graphics.Rect;
 import android.graphics.Typeface;
 import android.graphics.drawable.Drawable;
 import android.net.Uri;
+import java.util.Map;
+import java.util.HashMap;
+
 import android.preference.PreferenceManager;
 import android.text.Editable;
 import android.text.Spannable;
@@ -51,6 +54,7 @@ import android.text.style.URLSpan;
 import android.util.Base64;
 import android.util.DisplayMetrics;
 import android.util.Log;
+import android.util.LruCache;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
@@ -89,6 +93,7 @@ import java.net.URISyntaxException;
 import java.security.NoSuchAlgorithmException;
 
 import de.monocles.chat.WebxdcUpdate;
+import de.monocles.chat.WebxdcPage;
 
 import eu.siacs.conversations.entities.Contact;
 import eu.siacs.conversations.entities.Message;
@@ -160,6 +165,7 @@ public class MessageAdapter extends ArrayAdapter<Message> {
     private boolean mShowLinksInside = false;
     private boolean mShowMapsInside = false;
     private final boolean mForceNames;
+    private final Map<String, WebxdcUpdate> lastWebxdcUpdate = new HashMap<>();
 
     public MessageAdapter(final XmppActivity activity, final List<Message> messages, final boolean forceNames) {
         super(activity, 0, messages);
@@ -797,6 +803,7 @@ public class MessageAdapter extends ArrayAdapter<Message> {
                 @Override
                 protected void dispatchUrlLongClick(TextView tv, ClickableSpan span) {
                     if (span instanceof URLSpan || mOnInlineImageLongClickedListener == null) {
+                        tv.dispatchTouchEvent(MotionEvent.obtain(0, 0, MotionEvent.ACTION_CANCEL, 0f, 0f, 0));
                         super.dispatchUrlLongClick(tv, span);
                         return;
                     }
@@ -826,6 +833,47 @@ public class MessageAdapter extends ArrayAdapter<Message> {
 
     private void displayDownloadableMessage(ViewHolder viewHolder, final Message message, String text, final boolean darkBackground, final int type) {
         displayTextMessage(viewHolder, message, darkBackground, type);
+        viewHolder.image.setVisibility(View.GONE);
+        List<Element> thumbs = message.getFileParams() != null ? message.getFileParams().getThumbnails() : null;
+        if (thumbs != null && !thumbs.isEmpty()) {
+            for (Element thumb : thumbs) {
+                Uri uri = Uri.parse(thumb.getAttribute("uri"));
+                if (uri.getScheme().equals("data")) {
+                    String[] parts = uri.getSchemeSpecificPart().split(",", 2);
+                    parts = parts[0].split(";");
+                    if (!parts[0].equals("image/blurhash") && !parts[0].equals("image/thumbhash") && !parts[0].equals("image/jpeg") && !parts[0].equals("image/png") && !parts[0].equals("image/webp") && !parts[0].equals("image/gif")) continue;
+                } else if (uri.getScheme().equals("cid")) {
+                    Cid cid = BobTransfer.cid(uri);
+                    if (cid == null) continue;
+                    DownloadableFile f = activity.xmppConnectionService.getFileForCid(cid);
+                    if (f == null || !f.canRead()) {
+                        if (!message.trusted() && !message.getConversation().canInferPresence()) continue;
+
+                        try {
+                            new BobTransfer(BobTransfer.uri(cid), message.getConversation().getAccount(), message.getCounterpart(), activity.xmppConnectionService).start();
+                        } catch (final NoSuchAlgorithmException | URISyntaxException e) { }
+                        continue;
+                    }
+                } else {
+                    continue;
+                }
+
+                int width = message.getFileParams().width;
+                if (width < 1 && thumb.getAttribute("width") != null) width = Integer.parseInt(thumb.getAttribute("width"));
+                if (width < 1) width = 1920;
+
+                int height = message.getFileParams().height;
+                if (height < 1 && thumb.getAttribute("height") != null) height = Integer.parseInt(thumb.getAttribute("height"));
+                if (height < 1) height = 1080;
+
+                viewHolder.image.setVisibility(View.VISIBLE);
+                imagePreviewLayout(width, height, viewHolder.image);
+                activity.loadBitmap(message, viewHolder.image);
+                viewHolder.image.setOnClickListener(v -> ConversationFragment.downloadFile(activity, message));
+
+                break;
+            }
+        }
         viewHolder.audioPlayer.setVisibility(View.GONE);
         showImages(false, viewHolder);
         viewHolder.richlinkview.setVisibility(View.GONE);
@@ -841,24 +889,53 @@ public class MessageAdapter extends ArrayAdapter<Message> {
 
 
     private void displayWebxdcMessage(ViewHolder viewHolder, final Message message, final boolean darkBackground, final int type) {
+        Cid webxdcCid = message.getFileParams().getCids().get(0);
+        WebxdcPage webxdc = new WebxdcPage(webxdcCid, message, activity.xmppConnectionService);
         displayTextMessage(viewHolder, message, darkBackground, type);
         viewHolder.image.setVisibility(View.GONE);
         viewHolder.audioPlayer.setVisibility(View.GONE);
         viewHolder.download_button.setVisibility(View.VISIBLE);
-        viewHolder.download_button.setText("Open ChatApp");
+        viewHolder.download_button.setText("Open " + webxdc.getName());
         viewHolder.download_button.setOnClickListener(v -> {
             Conversation conversation = (Conversation) message.getConversation();
             if (!conversation.switchToSession("webxdc\0" + message.getUuid())) {
-                conversation.startWebxdc(message.getFileParams().getCids().get(0), message, activity.xmppConnectionService);
+                conversation.startWebxdc(webxdc);
             }
         });
-        WebxdcUpdate lastUpdate = activity.xmppConnectionService.findLastWebxdcUpdate(message);
-        if (lastUpdate != null && (lastUpdate.getSummary() != null || lastUpdate.getDocument() != null)) {
-            viewHolder.messageBody.setVisibility(View.VISIBLE);
-            viewHolder.messageBody.setText(
-                    (lastUpdate.getDocument() == null ? "" : lastUpdate.getDocument() + "\n") +
-                            (lastUpdate.getSummary() == null ? "" : lastUpdate.getSummary())
-            );
+
+        final WebxdcUpdate lastUpdate;
+        synchronized(lastWebxdcUpdate) { lastUpdate = lastWebxdcUpdate.get(message.getUuid()); }
+        if (lastUpdate == null) {
+            new Thread(() -> {
+                final WebxdcUpdate update = activity.xmppConnectionService.findLastWebxdcUpdate(message);
+                if (update != null) {
+                    synchronized(lastWebxdcUpdate) { lastWebxdcUpdate.put(message.getUuid(), update); }
+                    activity.xmppConnectionService.updateConversationUi();
+                }
+            }).start();
+        } else {
+            if (lastUpdate != null && (lastUpdate.getSummary() != null || lastUpdate.getDocument() != null)) {
+                viewHolder.messageBody.setVisibility(View.VISIBLE);
+                viewHolder.messageBody.setText(
+                        (lastUpdate.getDocument() == null ? "" : lastUpdate.getDocument() + "\n") +
+                                (lastUpdate.getSummary() == null ? "" : lastUpdate.getSummary())
+                );
+            }
+        }
+
+        final LruCache<String, Drawable> cache = activity.xmppConnectionService.getDrawableCache();
+        final Drawable d = cache.get("webxdc:icon:" + webxdcCid);
+        if (d == null) {
+            new Thread(() -> {
+                Drawable icon = webxdc.getIcon();
+                if (icon != null) {
+                    cache.put("webxdc:icon:" + webxdcCid, icon);
+                    activity.xmppConnectionService.updateConversationUi();
+                }
+            }).start();
+        } else {
+            viewHolder.image.setVisibility(View.VISIBLE);
+            viewHolder.image.setImageDrawable(d);
         }
     }
 
@@ -1156,6 +1233,28 @@ public class MessageAdapter extends ArrayAdapter<Message> {
             activity.loadBitmap(message, viewHolder.image);
             viewHolder.image.setOnClickListener(v -> openDownloadable(message));
         }
+    }
+
+    private void imagePreviewLayout(int w, int h, ImageView image) {
+        final float target = activity.getResources().getDimension(R.dimen.image_preview_width);
+        final int scaledW;
+        final int scaledH;
+        if (Math.max(h, w) * metrics.density <= target) {
+            scaledW = (int) (w * metrics.density);
+            scaledH = (int) (h * metrics.density);
+        } else if (Math.max(h, w) <= target) {
+            scaledW = w;
+            scaledH = h;
+        } else if (w <= h) {
+            scaledW = (int) (w / ((double) h / target));
+            scaledH = (int) target;
+        } else {
+            scaledW = (int) target;
+            scaledH = (int) (h / ((double) w / target));
+        }
+        final LinearLayout.LayoutParams layoutParams = new LinearLayout.LayoutParams(scaledW, scaledH);
+        layoutParams.setMargins(0, (int) (metrics.density * 4), 0, (int) (metrics.density * 4));
+        image.setLayoutParams(layoutParams);
     }
 
     private void showImages(final boolean show, final ViewHolder viewHolder) {
@@ -1497,7 +1596,7 @@ public class MessageAdapter extends ArrayAdapter<Message> {
                 displayMediaPreviewMessage(viewHolder, message, darkBackground, type);
             } else if (message.getFileParams().runtime > 0 && (message.getFileParams().width == 0 && message.getFileParams().height == 0)) {
                 displayAudioMessage(viewHolder, message, darkBackground, type);
-            } else if ("application/xdc+zip".equals(message.getFileParams().getMediaType()) && message.getConversation() instanceof Conversation) {
+            } else if ("application/xdc+zip".equals(message.getFileParams().getMediaType()) && message.getConversation() instanceof Conversation && message.getThread() != null) {
                 displayWebxdcMessage(viewHolder, message, darkBackground, type);
             } else {
                 displayOpenableMessage(viewHolder, message, darkBackground, type);

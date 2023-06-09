@@ -10,6 +10,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import androidx.databinding.DataBindingUtil;
+import androidx.core.graphics.ColorUtils;
 
 import com.wefika.flowlayout.FlowLayout;
 
@@ -23,6 +24,7 @@ import eu.siacs.conversations.ui.XmppActivity;
 import eu.siacs.conversations.ui.util.AvatarWorkerTask;
 import eu.siacs.conversations.ui.util.StyledAttributes;
 import eu.siacs.conversations.utils.IrregularUnicodeDetector;
+import eu.siacs.conversations.utils.UIHelper;
 import eu.siacs.conversations.xmpp.Jid;
 
 public class ListItemAdapter extends ArrayAdapter<ListItem> {
@@ -62,14 +64,23 @@ public class ListItemAdapter extends ArrayAdapter<ListItem> {
         LayoutInflater inflater = activity.getLayoutInflater();
         ListItem item = getItem(position);
         ViewHolder viewHolder;
+        View innerView;
         if (view == null) {
             ContactBinding binding = DataBindingUtil.inflate(inflater, R.layout.contact, parent, false);
             viewHolder = ViewHolder.get(binding);
             view = binding.getRoot();
+            innerView = binding.inner;
         } else {
             viewHolder = (ViewHolder) view.getTag();
+            innerView = view;
         }
-        view.setBackground(StyledAttributes.getDrawable(view.getContext(), R.attr.list_item_background));
+
+        if (activity.xmppConnectionService != null && activity.xmppConnectionService.getAccounts().size() > 1) {
+            innerView.setBackgroundColor(item.getAccount().getColor(activity.isDarkTheme()));
+        }
+
+        view.setBackground(StyledAttributes.getDrawable(view.getContext(),R.attr.list_item_background));
+
         List<ListItem.Tag> tags = item.getTags(activity);
         if (tags.size() == 0 || !this.showDynamicTags) {
             viewHolder.tags.setVisibility(View.GONE);

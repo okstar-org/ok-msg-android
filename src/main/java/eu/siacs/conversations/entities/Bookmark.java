@@ -22,7 +22,7 @@ import eu.siacs.conversations.xmpp.Jid;
 
 public class Bookmark extends Element implements ListItem {
 
-    private Account account;
+    private final Account account;
     private WeakReference<Conversation> conversation;
     private Jid jid;
     protected Element extensions = new Element("extensions", Namespace.BOOKMARKS2);
@@ -107,7 +107,7 @@ public class Bookmark extends Element implements ListItem {
         final Element extensions = conference.findChild("extensions", Namespace.BOOKMARKS2);
         if (extensions != null) {
             for (final Element ext : extensions.getChildren()) {
-                if (ext.getName().equals("group") && ext.getNamespace().equals("jabber:iq:roster")) {
+                if (ext.getName().equals("room") && ext.getNamespace().equals("jabber:iq:roster")) {
                     bookmark.addGroup(ext.getContent());
                 }
             }
@@ -121,21 +121,21 @@ public class Bookmark extends Element implements ListItem {
     }
 
     public void addGroup(final String group) {
-        addChild("group", "jabber:iq:roster").setContent(group);
-        extensions.addChild("group", "jabber:iq:roster").setContent(group);
+        addChild("room", "jabber:iq:roster").setContent(group);
+        extensions.addChild("room", "jabber:iq:roster").setContent(group);
     }
 
     public void setGroups(List<String> groups) {
         final List<Element> children = new ArrayList<>(getChildren());
         for (final Element el : children) {
-            if (el.getName().equals("group")) {
+            if (el.getName().equals("room")) {
                 removeChild(el);
             }
         }
 
         final List<Element> extChildren = new ArrayList<>(extensions.getChildren());
         for (final Element el : extChildren) {
-            if (el.getName().equals("group")) {
+            if (el.getName().equals("room")) {
                 extensions.removeChild(el);
             }
         }
@@ -206,7 +206,7 @@ public class Bookmark extends Element implements ListItem {
         ArrayList<Tag> tags = new ArrayList<>();
 
         for (Element element : getChildren()) {
-            if (element.getName().equals("group") && element.getContent() != null) {
+            if (element.getName().equals("room") && element.getContent() != null) {
                 String group = element.getContent();
                 tags.add(new Tag(group, UIHelper.getColorForName(group, true), 0, account, true));
             }
@@ -218,7 +218,7 @@ public class Bookmark extends Element implements ListItem {
     @Override
     public List<Tag> getTags(Context context) {
         ArrayList<Tag> tags = new ArrayList<>();
-        tags.add(new Tag("group", UIHelper.getColorForName("Channel",true), 0, account, true));
+        tags.add(new Tag("room", UIHelper.getColorForName("Channel",true), 0, account, true));
         tags.addAll(getGroupTags());
         return tags;
     }

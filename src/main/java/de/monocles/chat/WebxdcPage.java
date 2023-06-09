@@ -5,8 +5,14 @@ package de.monocles.chat;
 
 import android.content.Context;
 import android.content.Intent;
+import android.graphics.drawable.BitmapDrawable;
+import android.graphics.drawable.Icon;
+import android.graphics.drawable.Drawable;
+import android.graphics.ImageDecoder;
+import android.graphics.Rect;
 import android.net.Uri;
 import android.os.Build;
+import android.util.DisplayMetrics;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Gravity;
@@ -23,7 +29,12 @@ import android.widget.TextView;
 
 import androidx.annotation.RequiresApi;
 import androidx.core.content.ContextCompat;
+import androidx.core.content.pm.ShortcutInfoCompat;
+import androidx.core.content.pm.ShortcutManagerCompat;
+import androidx.core.graphics.drawable.IconCompat;
 import androidx.databinding.DataBindingUtil;
+
+import com.google.common.io.ByteStreams;
 
 import io.ipfs.cid.Cid;
 
@@ -32,6 +43,7 @@ import java.io.ByteArrayInputStream;
 import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
+import java.nio.ByteBuffer;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.zip.ZipEntry;
@@ -48,7 +60,9 @@ import eu.siacs.conversations.R;
 import eu.siacs.conversations.databinding.WebxdcPageBinding;
 import eu.siacs.conversations.entities.Conversation;
 import eu.siacs.conversations.entities.Message;
+import eu.siacs.conversations.persistance.FileBackend;
 import eu.siacs.conversations.services.XmppConnectionService;
+import eu.siacs.conversations.ui.ConversationsActivity;
 import eu.siacs.conversations.utils.Consumer;
 import eu.siacs.conversations.utils.MimeUtils;
 import eu.siacs.conversations.utils.UIHelper;
@@ -70,7 +84,7 @@ public class WebxdcPage implements ConversationPage {
         File f = xmppConnectionService.getFileForCid(cid);
         try {
             if (f != null) zip = new ZipFile(xmppConnectionService.getFileForCid(cid));
-            final ZipEntry manifestEntry = zip.getEntry("manifest.toml");
+            final ZipEntry manifestEntry = zip == null ? null : zip.getEntry("manifest.toml");
             if (manifestEntry != null) {
                 manifest = Toml.parse(zip.getInputStream(manifestEntry));
             }
@@ -83,6 +97,33 @@ public class WebxdcPage implements ConversationPage {
         // (a random-id would also work, but would need maintenance and does not add benefits as we regard the file-part interceptRequest() only,
         // also a random-id is not that useful for debugging)
         baseUrl = "https://" + source.getUuid() + ".localhost";
+    }
+
+    public Drawable getIcon() {
+        if (android.os.Build.VERSION.SDK_INT < 28) return null;
+        ZipEntry entry = zip.getEntry("icon.webp");
+        if (entry == null) entry = zip.getEntry("icon.png");
+        if (entry == null) entry = zip.getEntry("icon.jpg");
+        if (entry == null) return null;
+
+        try {
+            DisplayMetrics metrics = xmppConnectionService.getResources().getDisplayMetrics();
+            ImageDecoder.Source source = ImageDecoder.createSource(ByteBuffer.wrap(ByteStreams.toByteArray(zip.getInputStream(entry))));
+            return ImageDecoder.decodeDrawable(source, (decoder, info, src) -> {
+                int w = info.getSize().getWidth();
+                int h = info.getSize().getHeight();
+                Rect r = FileBackend.rectForSize(w, h, (int)(metrics.density * 288));
+                decoder.setTargetSize(r.width(), r.height());
+            });
+        } catch (final IOException e) {
+            Log.w(Config.LOGTAG, "WebxdcPage.getIcon: " + e);
+            return null;
+        }
+    }
+
+    public String getName() {
+        String title = manifest == null ? null : manifest.getString("name");
+        return title == null ? "ChatApp" : title;
     }
 
     public String getTitle() {
@@ -233,7 +274,7 @@ public class WebxdcPage implements ConversationPage {
 
         binding.webview.loadUrl(baseUrl + "/index.html");
 
-        binding.actions.setAdapter(new ArrayAdapter<String>(context, R.layout.simple_list_item, new String[]{"Close"}) {
+        binding.actions.setAdapter(new ArrayAdapter<String>(context, R.layout.simple_list_item, new String[]{"Add to Home Screen", "Close"}) {
             @Override
             public View getView(int position, View convertView, ViewGroup parent) {
                 View v = super.getView(position, convertView, parent);
@@ -245,7 +286,27 @@ public class WebxdcPage implements ConversationPage {
             }
         });
         binding.actions.setOnItemClickListener((parent, v, pos, id) -> {
-            remover.accept(WebxdcPage.this);
+            if (pos == 0) {
+                Intent intent = new Intent(xmppConnectionService, ConversationsActivity.class);
+                intent.setAction(ConversationsActivity.ACTION_VIEW_CONVERSATION);
+                intent.putExtra(ConversationsActivity.EXTRA_CONVERSATION, ((Conversation) source.getConversation()).getUuid());
+                intent.putExtra(ConversationsActivity.EXTRA_POST_INIT_ACTION, "webxdc");
+                intent.putExtra(ConversationsActivity.EXTRA_DOWNLOAD_UUID, source.getUuid());
+                intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP|Intent.FLAG_ACTIVITY_SINGLE_TOP);
+
+                ShortcutInfoCompat.Builder builder = new ShortcutInfoCompat.Builder(xmppConnectionService, "webxdc:" + source.getUuid())
+                        .setShortLabel(getTitle())
+                        .setIntent(intent);
+                Drawable icon = getIcon();
+                if (icon != null && icon instanceof BitmapDrawable) {
+                    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+                        builder = builder.setIcon(IconCompat.createFromIcon(Icon.createWithBitmap(((BitmapDrawable) icon).getBitmap())));
+                    }
+                }
+                ShortcutManagerCompat.requestPinShortcut(xmppConnectionService, builder.build(), null);
+            } else {
+                remover.accept(WebxdcPage.this);
+            }
         });
 
         return getView();
@@ -281,7 +342,8 @@ public class WebxdcPage implements ConversationPage {
             if (conversation.getMode() == Conversation.MODE_MULTI) {
                 return conversation.getMucOptions().getActualNick();
             } else {
-                return conversation.getAccount().getDisplayName();
+                final String displayName = conversation.getAccount().getDisplayName();
+                return displayName == null || "".equals(displayName) ? conversation.getAccount().getUsername() : displayName;
             }
         }
 

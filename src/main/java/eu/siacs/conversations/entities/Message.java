@@ -69,6 +69,7 @@ import eu.siacs.conversations.utils.Emoticons;
 import eu.siacs.conversations.utils.GeoHelper;
 import eu.siacs.conversations.utils.MessageUtils;
 import eu.siacs.conversations.utils.MimeUtils;
+import eu.siacs.conversations.utils.StringUtils;
 import eu.siacs.conversations.utils.Patterns;
 import eu.siacs.conversations.utils.UIHelper;
 import eu.siacs.conversations.utils.XmppUri;
@@ -76,6 +77,7 @@ import eu.siacs.conversations.xml.Element;
 import eu.siacs.conversations.xml.Namespace;
 import eu.siacs.conversations.xml.Tag;
 import eu.siacs.conversations.xml.XmlReader;
+
 import eu.siacs.conversations.xmpp.Jid;
 import eu.siacs.conversations.xml.Namespace;
 import eu.siacs.conversations.ui.util.QuoteHelper;
@@ -367,7 +369,7 @@ public class Message extends AbstractEntity implements AvatarService.Avatarable 
         values.put(UUID, uuid);
         values.put("subject", subject);
         values.put("fileParams", fileParams == null ? null : fileParams.toString());
-        if (fileParams != null) {
+        if (fileParams != null && !fileParams.isEmpty()) {
             List<Element> sims = getSims();
             if (sims.isEmpty()) {
                 addPayload(fileParams.toSims());
@@ -435,7 +437,7 @@ public class Message extends AbstractEntity implements AvatarService.Avatarable 
         final Element fallback = new Element("fallback", "urn:xmpp:fallback:0").setAttribute("for", "urn:xmpp:reply:0");
         fallback.addChild("body", "urn:xmpp:fallback:0")
                 .setAttribute("start", "0")
-                .setAttribute("end", "" + m.body.length());
+                .setAttribute("end", "" + m.body.codePointCount(0, m.body.length()));
         m.addPayload(fallback);
         return m;
     }
@@ -489,10 +491,11 @@ public class Message extends AbstractEntity implements AvatarService.Avatarable 
         return null;
     }
 
-    public synchronized void clearFallbacks() {
-        this.payloads.removeAll(getFallbacks());
+    public synchronized void clearFallbacks(String... includeFor) {
+        this.payloads.removeAll(getFallbacks(includeFor));
     }
-    public List<Element> getFallbacks() {
+
+    public List<Element> getFallbacks(String... includeFor) {
         List<Element> fallbacks = new ArrayList<>();
 
         if (this.payloads == null) return fallbacks;
@@ -501,8 +504,11 @@ public class Message extends AbstractEntity implements AvatarService.Avatarable 
             if (el.getName().equals("fallback") && el.getNamespace().equals("urn:xmpp:fallback:0")) {
                 final String fallbackFor = el.getAttribute("for");
                 if (fallbackFor == null) continue;
-                if (fallbackFor.equals("http://jabber.org/protocol/address") || fallbackFor.equals(Namespace.OOB)) {
-                    fallbacks.add(el);
+                for (String includeOne : includeFor) {
+                    if (fallbackFor.equals(includeOne)) {
+                        fallbacks.add(el);
+                        break;
+                    }
                 }
             }
         }
@@ -575,7 +581,7 @@ public class Message extends AbstractEntity implements AvatarService.Avatarable 
     public String getBody() {
         StringBuilder body = new StringBuilder(this.body);
 
-        List<Element> fallbacks = getFallbacks();
+        List<Element> fallbacks = getFallbacks("http://jabber.org/protocol/address", Namespace.OOB);
         List<Pair<Integer, Integer>> spans = new ArrayList<>();
         for (Element fallback : fallbacks) {
             for (Element span : fallback.getChildren()) {
@@ -588,12 +594,14 @@ public class Message extends AbstractEntity implements AvatarService.Avatarable 
         spans.sort((x, y) -> y.first.compareTo(x.first));
         try {
             for (Pair<Integer, Integer> span : spans) {
-                body.delete(span.first, span.second);
+                body.delete(body.offsetByCodePoints(0, span.first.intValue()), body.offsetByCodePoints(0, span.second.intValue()));
             }
-        } catch (final StringIndexOutOfBoundsException e) { spans.clear(); }
+        } catch (final IndexOutOfBoundsException e) { spans.clear(); }
 
         if (spans.isEmpty() && getOob() != null) {
             return body.toString().replace(getOob().toString(), "");
+        } else if (spans.isEmpty() && isGeoUri()) {
+            return "";
         } else {
             return body.toString();
         }
@@ -1437,6 +1445,11 @@ public class Message extends AbstractEntity implements AvatarService.Avatarable 
                     break;
             }
         }
+
+        public boolean isEmpty() {
+            return StringUtils.nullOnEmpty(toString()) == null && StringUtils.nullOnEmpty(toSims().getContent()) == null;
+        }
+
         public long getSize() {
             return size == null ? 0 : size;
         }
@@ -1566,6 +1579,22 @@ public class Message extends AbstractEntity implements AvatarService.Avatarable 
             cids.sort((x, y) -> y.getType().compareTo(x.getType()));
 
             return cids;
+        }
+
+        public void addThumbnail(int width, int height, String mimeType, String uri) {
+            for (Element thumb : getThumbnails()) {
+                if (uri.equals(thumb.getAttribute("uri"))) return;
+            }
+
+            if (sims == null) toSims();
+            Element file = getFileElement();
+            file.addChild(
+                    new Element("thumbnail", "urn:xmpp:thumbs:1")
+                            .setAttribute("width", Integer.toString(width))
+                            .setAttribute("height", Integer.toString(height))
+                            .setAttribute("type", mimeType)
+                            .setAttribute("uri", uri)
+            );
         }
 
         public List<Element> getThumbnails() {

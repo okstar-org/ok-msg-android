@@ -138,7 +138,7 @@ public class SessionDescription {
             final String semantics = group.getSemantics();
             checkNoWhitespace(semantics, "group semantics value must not contain any whitespace");
             attributeMap.put(
-                    "group",
+                    "room",
                     group.getSemantics()
                             + " "
                             + Joiner.on(' ').join(group.getIdentificationTags()));

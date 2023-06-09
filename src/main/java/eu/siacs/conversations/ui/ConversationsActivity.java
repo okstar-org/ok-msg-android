@@ -62,6 +62,7 @@ import android.view.View;
 import android.widget.TextView;
 import android.widget.Toast;
 import androidx.core.content.ContextCompat;
+
 import de.monocles.chat.DownloadDefaultStickers;
 
 import net.java.otr4j.session.SessionStatus;
@@ -75,6 +76,8 @@ import androidx.appcompat.widget.Toolbar;
 import androidx.databinding.DataBindingUtil;
 
 import org.openintents.openpgp.util.OpenPgpApi;
+
+import io.michaelrocks.libphonenumber.android.NumberParseException;
 
 import java.io.File;
 import java.util.Arrays;
@@ -113,11 +116,14 @@ import eu.siacs.conversations.xml.Namespace;
 import eu.siacs.conversations.utils.SignupUtils;
 import eu.siacs.conversations.utils.UIHelper;
 import eu.siacs.conversations.utils.XmppUri;
+import eu.siacs.conversations.utils.PhoneNumberUtilWrapper;
 import eu.siacs.conversations.xmpp.Jid;
 import eu.siacs.conversations.xmpp.OnUpdateBlocklist;
 import eu.siacs.conversations.xmpp.chatstate.ChatState;
 import me.drakeet.support.toast.ToastCompat;
 import eu.siacs.conversations.utils.ThemeHelper;
+
+import com.google.common.collect.ImmutableList;
 
 
 public class ConversationsActivity extends XmppActivity implements OnConversationSelected, OnConversationArchived, OnConversationsListItemUpdated, OnConversationRead, XmppConnectionService.OnAccountUpdate, XmppConnectionService.OnConversationUpdate, XmppConnectionService.OnRosterUpdate, OnUpdateBlocklist, XmppConnectionService.OnShowErrorToast, XmppConnectionService.OnAffiliationChanged, XmppConnectionService.OnRoomDestroy {
@@ -383,7 +389,9 @@ public class ConversationsActivity extends XmppActivity implements OnConversatio
                 downloadStickers();
             }
         });
-        builder.setNegativeButton(R.string.no, (dialog, which) -> { });
+        builder.setNegativeButton(R.string.no, (dialog, which) -> {
+            showDialogsIfMainIsOverview();
+        });
         final AlertDialog dialog = builder.create();
         dialog.setCanceledOnTouchOutside(false);
         dialog.show();
@@ -397,7 +405,7 @@ public class ConversationsActivity extends XmppActivity implements OnConversatio
         }
         if (Build.VERSION.SDK_INT < 23) return false;
         if (Build.VERSION.SDK_INT >= 33) {
-            if (!getPackageManager().hasSystemFeature(PackageManager.FEATURE_TELECOM)) return false;
+            if (!getPackageManager().hasSystemFeature(PackageManager.FEATURE_TELECOM) && !getPackageManager().hasSystemFeature(PackageManager.FEATURE_CONNECTION_SERVICE)) return false;
         } else {
             if (!getPackageManager().hasSystemFeature(PackageManager.FEATURE_CONNECTION_SERVICE)) return false;
         }
@@ -431,7 +439,9 @@ public class ConversationsActivity extends XmppActivity implements OnConversatio
             }
             requestPermissions(permissions, REQUEST_MICROPHONE);
         });
-        builder.setNegativeButton(R.string.no, (dialog, which) -> { });
+        builder.setNegativeButton(R.string.no, (dialog, which) -> {
+            showDialogsIfMainIsOverview();
+        });
         final AlertDialog dialog = builder.create();
         dialog.setCanceledOnTouchOutside(false);
         dialog.show();
@@ -577,7 +587,11 @@ public class ConversationsActivity extends XmppActivity implements OnConversatio
                         downloadStickers();
                         break;
                 }
+            } else {
+                showDialogsIfMainIsOverview();
             }
+        } else {
+            showDialogsIfMainIsOverview();
         }
     }
 
@@ -794,7 +808,7 @@ public class ConversationsActivity extends XmppActivity implements OnConversatio
             final Conversation conversation = xmppConnectionService.findUniqueConversationByJid(xmppUri);
             if (conversation != null) {
                 if (xmppUri.isAction("command")) {
-                    startCommand(conversation.getAccount(), conversation.getJid(), xmppUri.getParameter("node"));
+                    startCommand(conversation.getAccount(), xmppUri.getJid(), xmppUri.getParameter("node"));
                 } else {
                     Bundle extras = new Bundle();
                     extras.putString(Intent.EXTRA_TEXT, xmppUri.getBody());
@@ -804,6 +818,36 @@ public class ConversationsActivity extends XmppActivity implements OnConversatio
                 return true;
             }
         }
+        return false;
+    }
+
+    public boolean onTelUriClicked(Uri uri, Account acct) {
+        final String tel;
+        try {
+            tel = PhoneNumberUtilWrapper.normalize(this, uri.getSchemeSpecificPart());
+        } catch (final IllegalArgumentException | NumberParseException | NullPointerException e) {
+            return false;
+        }
+
+        Set<String> gateways = new HashSet<>();
+        for (Account account : (acct == null ? xmppConnectionService.getAccounts() : List.of(acct))) {
+            for (Contact contact : account.getRoster().getContacts()) {
+                if (contact.getPresences().anyIdentity("gateway", "pstn") || contact.getPresences().anyIdentity("gateway", "sms")) {
+                    if (acct == null) acct = account;
+                    gateways.add(contact.getJid().asBareJid().toEscapedString());
+                }
+            }
+        }
+
+        for (String gateway : gateways) {
+            if (onXmppUriClicked(Uri.parse("xmpp:" + tel + "@" + gateway))) return true;
+        }
+
+        if (gateways.size() == 1 && acct != null) {
+            openConversation(xmppConnectionService.findOrCreateConversation(acct, Jid.ofLocalAndDomain(tel, gateways.iterator().next()), false, true), null);
+            return true;
+        }
+
         return false;
     }
 

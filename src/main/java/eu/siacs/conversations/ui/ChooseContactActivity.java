@@ -286,6 +286,12 @@ public class ChooseContactActivity extends AbstractSearchableListItemActivity im
                         getListItems().add(contact);
                     }
                 }
+
+                final Contact self = new Contact(account.getSelfContact());
+                self.setSystemName("Note to Self");
+                if (self.match(this, needle)) {
+                    getListItems().add(self);
+                }
             }
         }
         Collections.sort(getListItems());
@@ -325,14 +331,16 @@ public class ChooseContactActivity extends AbstractSearchableListItemActivity im
                 mActivatedAccounts,
                 getString(R.string.enter_contact),
                 getString(R.string.select),
+                null,
                 jid == null ? null : jid.asBareJid().toString(),
                 getIntent().getStringExtra(EXTRA_ACCOUNT),
                 true,
                 true,
+                false,
                 EnterJidDialog.SanityCheck.NO
         );
 
-        dialog.setOnEnterJidDialogPositiveListener((accountJid, contactJid) -> {
+        dialog.setOnEnterJidDialogPositiveListener((accountJid, contactJid, x, y) -> {
             final Intent request = getIntent();
             final Intent data = new Intent();
             data.putExtra("contact", contactJid.toString());

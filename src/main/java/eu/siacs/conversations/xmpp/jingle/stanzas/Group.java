@@ -12,11 +12,11 @@ import eu.siacs.conversations.xml.Element;
 public class Group extends Element {
 
     private Group() {
-        super("group", Namespace.JINGLE_APPS_GROUPING);
+        super("room", Namespace.JINGLE_APPS_GROUPING);
     }
 
     public Group(final String semantics, final Collection<String> identificationTags) {
-        super("group", Namespace.JINGLE_APPS_GROUPING);
+        super("room", Namespace.JINGLE_APPS_GROUPING);
         this.setAttribute("semantics", semantics);
         for (String tag : identificationTags) {
             this.addChild(new Element("content").setAttribute("name", tag));
@@ -54,7 +54,7 @@ public class Group extends Element {
     }
 
     public static Group upgrade(final Element element) {
-        Preconditions.checkArgument("group".equals(element.getName()));
+        Preconditions.checkArgument("room".equals(element.getName()));
         Preconditions.checkArgument(Namespace.JINGLE_APPS_GROUPING.equals(element.getNamespace()));
         final Group group = new Group();
         group.setAttributes(element.getAttributes());

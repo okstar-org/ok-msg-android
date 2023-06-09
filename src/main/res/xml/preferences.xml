@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android"
-    android:key="main_screen">
+    android:key="main_screen"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
     <!--UI-->
     <PreferenceScreen
         android:key="userinterface"
@@ -29,33 +30,36 @@
             android:title="@string/pref_theme_color_options" />
         <PreferenceScreen
             android:key="custom_theme"
-            android:title="Custom Theme Options">
+            android:title="@string/custom_theme_options">
             <Preference
                 android:key="pref_static_field_key"
                 android:selectable="false"
                 android:persistent="false"
-                android:summary="You may sometimes have to force quit the app to get changes applied."/>
+                android:summary="@string/you_may_sometimes_have_to"/>
 
             <PreferenceCategory
                 android:key="custom_theme_colors"
-                android:title="Colors">
+                android:title="@string/colors">
 
                 <CheckBoxPreference
                     android:defaultValue="false"
                     android:key="custom_theme_dark"
-                    android:title="Custom Theme is Dark?" />
+                    android:title="@string/custom_theme_is_dark" />
                 <com.rarepebble.colorpicker.ColorPreference
                     android:key="custom_theme_primary"
-                    android:title="Custom Primary Color"
-                    android:defaultValue="@color/perpy" />
+                    android:title="@string/custom_primary_color"
+                    android:defaultValue="@color/perpy"
+                    app:colorpicker_showAlpha="false" />
                 <com.rarepebble.colorpicker.ColorPreference
                     android:key="custom_theme_primary_dark"
-                    android:title="Custom Primary Dark Color"
-                    android:defaultValue="@color/black_perpy" />
+                    android:title="@string/custom_primary_dark_color"
+                    android:defaultValue="@color/black_perpy"
+                    app:colorpicker_showAlpha="false" />
                 <com.rarepebble.colorpicker.ColorPreference
                     android:key="custom_theme_accent"
-                    android:title="Custom Accent Color"
-                    android:defaultValue="@color/black_perpy" />
+                    android:title="@string/custom_accent_color"
+                    android:defaultValue="@color/black_perpy"
+                    app:colorpicker_showAlpha="false" />
             </PreferenceCategory>
 
             <intent
@@ -316,13 +320,13 @@
             android:summary="@string/pref_choose_camera_summary"
             android:title="@string/choose_camera_app" />
         <Preference
-            android:title="Change Stickers Location"
+            android:title="@string/change_stickers_location"
             android:key="sticker_directory" />
         <Preference
-            android:title="Update Default Stickers"
+            android:title="@string/update_default_stickers"
             android:key="download_default_stickers" />
         <Preference
-            android:title="Clear Blocked Media"
+            android:title="@string/clear_blocked_media"
             android:key="clear_blocked_media" />
     </PreferenceScreen>
     <!--status-->
@@ -564,11 +568,13 @@
                 android:key="show_dynamic_tags"
                 android:summary="@string/pref_show_dynamic_tags_summary"
                 android:title="@string/pref_show_dynamic_tags" />
+            <!-- TODO: add it later again?
             <CheckBoxPreference
                 android:defaultValue="@bool/show_date_in_quotes"
                 android:key="show_date_in_quotes"
                 android:summary="@string/pref_show_date_in_quotes_summary"
                 android:title="@string/pref_show_date_in_quotes" />
+                -->
             <CheckBoxPreference
                 android:defaultValue="@bool/use_bundled_emoji"
                 android:key="use_bundled_emoji"

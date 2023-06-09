@@ -2,6 +2,7 @@ package eu.siacs.conversations.parser;
 
 import android.util.Log;
 import android.util.Pair;
+import android.net.Uri;
 
 
 
@@ -46,6 +47,7 @@ import eu.siacs.conversations.entities.Contact;
 import eu.siacs.conversations.entities.Conversation;
 import eu.siacs.conversations.entities.Conversational;
 import eu.siacs.conversations.entities.Edit;
+import eu.siacs.conversations.entities.DownloadableFile;
 import eu.siacs.conversations.entities.Message;
 import eu.siacs.conversations.entities.MucOptions;
 import eu.siacs.conversations.entities.ReadByMarker;
@@ -565,7 +567,7 @@ public class MessageParser extends AbstractParser implements OnMessagePacketRece
 
         boolean isTypeGroupChat = packet.getType() == MessagePacket.TYPE_GROUPCHAT;
         if (query != null && !query.muc() && isTypeGroupChat) {
-            Log.e(Config.LOGTAG, account.getJid().asBareJid() + ": received groupchat (" + from + ") message on regular MAM request. skipping");
+            Log.e(Config.LOGTAG, account.getJid().asBareJid() + ": received room (" + from + ") message on regular MAM request. skipping");
             return;
         }
         boolean isProperlyAddressed = (to != null) && (!to.isBareJid() || account.countPresences() == 0);
@@ -859,10 +861,25 @@ public class MessageParser extends AbstractParser implements OnMessagePacketRece
 
                             replacedMessage.setUuid(UUID.randomUUID().toString());
                             replacedMessage.setBody(message.getBody());
+                            replacedMessage.setSubject(message.getSubject());
+                            replacedMessage.setThread(message.getThread());
                             replacedMessage.setRemoteMsgId(remoteMsgId);
                             if (replaceElement != null && !replaceElement.getName().equals("replace")) {
                                 mXmppConnectionService.getFileBackend().deleteFile(replacedMessage);
                                 mXmppConnectionService.evictPreview(message.getUuid());
+                                List<Element> thumbs = replacedMessage.getFileParams() != null ? replacedMessage.getFileParams().getThumbnails() : null;
+                                if (thumbs != null && !thumbs.isEmpty()) {
+                                    for (Element thumb : thumbs) {
+                                        Uri uri = Uri.parse(thumb.getAttribute("uri"));
+                                        if (uri.getScheme().equals("cid")) {
+                                            Cid cid = BobTransfer.cid(uri);
+                                            if (cid == null) continue;
+                                            DownloadableFile f = mXmppConnectionService.getFileForCid(cid);
+                                            mXmppConnectionService.evictPreview(f);
+                                            f.delete();
+                                        }
+                                    }
+                                }
                                 replacedMessage.clearPayloads();
                                 replacedMessage.setFileParams(null);
                                 replacedMessage.setDeleted(true);
