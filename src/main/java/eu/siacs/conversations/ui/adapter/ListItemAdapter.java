@@ -64,19 +64,16 @@ public class ListItemAdapter extends ArrayAdapter<ListItem> {
         LayoutInflater inflater = activity.getLayoutInflater();
         ListItem item = getItem(position);
         ViewHolder viewHolder;
-        View innerView;
         if (view == null) {
             ContactBinding binding = DataBindingUtil.inflate(inflater, R.layout.contact, parent, false);
             viewHolder = ViewHolder.get(binding);
             view = binding.getRoot();
-            innerView = binding.inner;
         } else {
             viewHolder = (ViewHolder) view.getTag();
-            innerView = view;
         }
 
         if (activity.xmppConnectionService != null && activity.xmppConnectionService.getAccounts().size() > 1) {
-            innerView.setBackgroundColor(item.getAccount().getColor(activity.isDarkTheme()));
+            viewHolder.inner.setBackgroundColor(item.getAccount().getColor(activity.isDarkTheme()));
         }
 
         view.setBackground(StyledAttributes.getDrawable(view.getContext(),R.attr.list_item_background));
@@ -156,6 +153,8 @@ public class ListItemAdapter extends ArrayAdapter<ListItem> {
         private ImageView avatar;
         private FlowLayout tags;
         private ImageView activeIndicator;
+        private View inner;
+
 
         private ViewHolder() {
         }
@@ -168,6 +167,7 @@ public class ListItemAdapter extends ArrayAdapter<ListItem> {
             viewHolder.avatar = binding.contactPhoto;
             viewHolder.tags = binding.tags;
             viewHolder.activeIndicator = binding.userActiveIndicator;
+            viewHolder.inner = binding.inner;
             binding.getRoot().setTag(viewHolder);
             return viewHolder;
         }
