@@ -1371,10 +1371,7 @@
     <string name="call">Llamada</string>
     <string name="new_contact_or_group">nuevo contacto o sala</string>
     <string name="join_room">Unirse a la sala</string>
-    <string name="custom_theme_is_dark">¿Es oscuro el tema personalizado\?</string>
-    <string name="custom_accent_color">Color de acento personalizado</string>
     <string name="update_default_stickers">Actualizar pegatinas por defecto</string>
-    <string name="clear_blocked_media">Limpiar medio bloqueado</string>
     <string name="custom_theme_options">Opciones personalizada de tema</string>
     <string name="custom_theme_is_dark">¿Es oscuro el tema personalizado?</string>
     <string name="custom_primary_color">Color primario personalizado</string>
