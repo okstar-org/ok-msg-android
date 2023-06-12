@@ -758,8 +758,8 @@
     <string name="destroy_room_dialog">¿Quiere destruir la sala %s\? Esto la eliminará permanentemente.</string>
     <string name="destroy_room_succeed">Sala destruida</string>
     <string name="destroy_room_failed">No se ha podido destruir la sala</string>
-    <string name="no_write_access_in_public_muc">De momento no estás participando en este grupo y no puedes escribir en él
-\nPor favor, ve a los detalles del grupo presionando <b>OK</b> y envía un mensaje privado a un moderador, administrador o propietario haciendo un clic largo en el nombre de los miembros en la parte superior de la lista para solicitar acceso de escritura en el grupo.</string>
+    <string name="no_write_access_in_public_muc">De momento no estás participando en esta sala y no puedes escribir en ella
+\nPor favor, ve a los detalles de la sala presionando <b>OK</b> y envía un mensaje privado a un moderador, administrador o propietario haciendo un clic largo en el nombre de los miembros en la parte superior de la lista para solicitar acceso de escritura en el grupo.</string>
     <string name="snooze">Dormitar</string>
     <string name="huawei_protected_apps">Aplicaciones protegidas</string>
     <string name="huawei_protected_apps_summary">Para recibir notificaciones incluso cuando la pantalla está apagada, necesitas añadir monocles chat a la lista de aplicaciones protegidas.</string>
@@ -791,7 +791,7 @@
     <string name="disable_now">Deshabilitar ahora</string>
     <string name="draft">Borrador:</string>
     <string name="pref_omemo_setting">Cifrado OMEMO</string>
-    <string name="pref_omemo_setting_summary_always">OMEMO se usará siempre en conversaciones de uno a uno y en grupos privados.</string>
+    <string name="pref_omemo_setting_summary_always">OMEMO se usará siempre en conversaciones de uno a uno y en salas privadas.</string>
     <string name="pref_omemo_setting_summary_default_on">OMEMO se usará por defecto en nuevas conversaciones.</string>
     <string name="pref_omemo_setting_summary_default_off">OMEMO tendrá que ser activado explícitamente en nuevas conversaciones.</string>
     <string name="pref_omemo_setting_summary_always_off">OMEMO no se usará nunca.</string>
@@ -826,18 +826,18 @@
     <string name="pref_start_search">Búsqueda directa</string>
     <string name="pref_start_search_summary">En la pantalla \'Comenzar conversación\', abrir el teclado y situar el cursor en el campo de búsqueda</string>
     <string name="paste_as_quote">Pegar como cita</string>
-    <string name="group_chat_avatar">Imagen de perfil del grupo</string>
-    <string name="host_does_not_support_group_chat_avatars">El servidor no soporta imágenes de perfil</string>
+    <string name="group_chat_avatar">Imagen de perfil de la sala</string>
+    <string name="host_does_not_support_group_chat_avatars">El servidor no soporta imágenes de perfil en salas</string>
     <string name="only_the_owner_can_change_group_chat_avatar">Solo el propietario puede cambiar la imagen de perfil</string>
     <string name="contact_name">Nombre de contacto</string>
-    <string name="nickname">Apodo para este grupo de conversación</string>
+    <string name="nickname">Apodo para esta sala</string>
     <string name="group_chat_name">Nombre</string>
     <string name="providing_a_name_is_optional">Proporcionar un nombre es opcional</string>
-    <string name="create_dialog_group_chat_name">Nombre de conversación en grupo</string>
+    <string name="create_dialog_group_chat_name">Nombre de la sala</string>
     <string name="everyone_has_read_up_to_this_point">Todos han leído hasta aquí</string>
     <string name="conference_resource_constraint">Recurso limitado</string>
     <string name="delete_message">Borrar mensaje</string>
-    <string name="conference_destroyed">Este grupo de chat ha sido destruido</string>
+    <string name="conference_destroyed">Esta sala ha sido destruido</string>
     <string name="no_application_found_to_view_contact">No se ha encontrado ninguna aplicación con la que ver este contacto</string>
     <string name="welcome_server_info">Recomendamos el uso de monocles chat como tu proveedor.</string>
     <string name="no_location_permission">monocles chat necesita acceso a los servicio de ubicación</string>
@@ -861,7 +861,7 @@
     <string name="video_compression_channel_name">Compresión de vídeo</string>
     <string name="backup_channel_name">Copia de seguridad&amp; Restauración</string>
     <string name="app_update_channel_name">Actualizar aplicación</string>
-    <string name="action_group_details">Detalles del grupo</string>
+    <string name="action_group_details">Detalles de la sala</string>
     <string name="view_media">Visualizar multimedia</string>
     <string name="media_browser">Navegador multimedia</string>
     <string name="account_status_stream_opening_error">Error en la apertura de la transmisión</string>
@@ -895,7 +895,7 @@
     <string name="enter_your_name">Escribe tu nombre</string>
     <string name="enter_your_name_instructions">Por favor, escribe tu alias que será visible para tus contactos.</string>
     <string name="no_name_set_instructions">Alias no configurado.</string>
-    <string name="autojoin_group_chat">Unirse automáticamente al grupo de chat</string>
+    <string name="autojoin_group_chat">Unirse automáticamente a la sala</string>
     <string name="pref_show_links_inside">Mostrar previsualizaciones de enlaces web en el chat</string>
     <string name="pref_show_links_inside_summary">Mostrar previsualizaciones de enlaces web directamente en la vista de chat, se establecerá una conexión al servidor especificado en el enlace.</string>
     <string name="pref_play_gif_inside">Reproducir archivos GIF en la conversación</string>
@@ -946,7 +946,7 @@
     <string name="joined_an_existing_channel">Te has unido a un canal existente</string>
     <string name="unable_to_set_channel_configuration">Imposible establecer configuración de canal</string>
     <string name="back">Atrás</string>
-    <string name="conference_options">Configuración para grupo de chat privado</string>
+    <string name="conference_options">Configuración para sala privada</string>
     <string name="channel_options">Configuración de canal público</string>
     <string name="allow_participants_to_edit_subject">Permitir a cualquiera editar el tema</string>
     <string name="allow_participants_to_invite_others">Permitir a cualquiera invitar a otros</string>
@@ -957,8 +957,8 @@
     <string name="anyone_can_invite_others">Cualquiera puede invitar a otros.</string>
     <string name="jabber_ids_are_visible_to_admins">Los identificadores Jabber son visibles para los administradores.</string>
     <string name="jabber_ids_are_visible_to_anyone">Los identificadores Jabber son visibles para cualquiera.</string>
-    <string name="no_users_hint_channel">Este canal público no tiene participantes. Invita a tus contactos o usa el botón compartir para distribuir su dirección XMPP.</string>
-    <string name="no_users_hint_group_chat">Este grupo de charla privado no tiene participantes.</string>
+    <string name="no_users_hint_channel">Esta canal público no tiene participantes. Invita a tus contactos o usa el botón compartir para distribuir su dirección XMPP.</string>
+    <string name="no_users_hint_group_chat">Esta sala no tiene participantes.</string>
     <string name="grant_owner_privileges">Conceder privilegios de propietario</string>
     <string name="remove_owner_privileges">Revocar privilegios de propietario</string>
     <string name="remove_from_channel">Eliminar del canal</string>
@@ -1037,7 +1037,7 @@
     <string name="intro_chat_details">Detalles del chat</string>
     <string name="intro_desc_chat_details">¿Quieres abrir los detalles del chat\? Pulsa el nombre del chat en la barra superior de menú.</string>
     <string name="intro_highlight_user">Resaltar usuario</string>
-    <string name="intro_desc_highlight_user">Si quieres remarcar a un usuario de un grupo solo tienes que tocar en la imagen del usuario en el grupo. Alternativamente, especialmente si el usuario no está conectado, se puede hacer desde los detalles del grupo buscando al usuario en la lista de participantes. Una pulsación larga sobre la imagen del usuario mostrará un menú desde el que se puede remarcar al mismo.</string>
+    <string name="intro_desc_highlight_user">Si quieres remarcar a un usuario de una sala solo tienes que tocar en la imagen del usuario en el grupo. Alternativamente, especialmente si el usuario no está conectado, se puede hacer desde los detalles del grupo buscando al usuario en la lista de participantes. Una pulsación larga sobre la imagen del usuario mostrará un menú desde el que se puede remarcar al mismo.</string>
     <string name="intro_desc_open_chat_details">Has abierto los detalles del chat. Aquí puedes ver los detalles del chat, cambiar el comportamiento del mensaje de notificación, añadir o eliminar el chat de tu lista de contactos y mucho más.</string>
     <string name="pref_show_intro_summary">Volver a mostrar las pantallas de introducción</string>
     <string name="pref_show_intro">Mostrar de nuevo la introducción</string>
@@ -1053,7 +1053,7 @@
 \nPara usar mensajes de voz se requiere tener acceso a tu micrófono.</string>
     <string name="intro_desc_account3">Tienes la opción de importar una cuenta existente.
 \nSi hay archivos de copia disponibles, serán mostrados.</string>
-    <string name="intro_desc_start_chatting2">También puede añadir, crear o unirte a chats multiusuario llamados rooms. Hay grupos de chat privados y grupos de chat públicos también llamados canales.</string>
+    <string name="intro_desc_start_chatting2">También puede añadir, crear o unirte a chats multiusuario llamadas salas. Hay salas privadas y salas públicas también llamados canales.</string>
     <string name="intro_desc_start_chatting3">¡Enhorabuena!
 \nVamos a divertirnos…</string>
     <string name="intro_privacy">Tu privacidad
@@ -1094,7 +1094,7 @@
     <string name="pref_use_unicolored_chatbg">Usar fondo sin color</string>
     <string name="pref_alternative_voice_settings_summary">Si tienes problemas durante la grabación de voz, usa esta configuración para cambiar el codec.</string>
     <string name="pref_alternative_voice_settings">Método alternativo de grabación de voz</string>
-    <string name="pref_use_colored_muc_names_summary">Colorear apodos en grupos o en canales como fondos de avatar predeterminados.</string>
+    <string name="pref_use_colored_muc_names_summary">Colorear apodos en salas o en canales como fondos de avatar predeterminados.</string>
     <string name="pref_use_colored_muc_names">Colorear apodos</string>
     <string name="show_videos_images_only">Solo imágenes o vídeos</string>
     <string name="show_avatar">Mostrar avatar</string>
@@ -1165,7 +1165,7 @@
     <string name="encrypted_with_omemo">Cifrado con OMEMO</string>
     <string name="encrypted_with_openpgp">Cifrado con OpenPGP</string>
     <string name="not_encrypted">No cifrado</string>
-    <string name="add_contact_or_create_or_join_group_chat">Añadir contacto, crear o unirse a un grupo, o descubrir canales</string>
+    <string name="add_contact_or_create_or_join_group_chat">Añadir contacto, crear o unirse a una sala, o descubrir canales</string>
     <plurals name="some_messages_could_not_be_delivered">
         <item quantity="one">No se ha podido entregar un mensaje</item>
         <item quantity="many">Algunos mensajes no pudieron ser entregados</item>
@@ -1254,11 +1254,11 @@
     <string name="save_x_file">Guardar %s</string>
     <string name="file_copied_to">Fichero copiado a %s</string>
     <string name="use_individual_notifications">Usar notificaciones individuales</string>
-    <string name="pref_remove_all_individual_summary">Borrar todas las notificaciones individuales para tus contactos y grupos.</string>
+    <string name="pref_remove_all_individual_summary">Borrar todas las notificaciones individuales para tus contactos y salas.</string>
     <string name="pref_remove_all_individual_notifications_title">Borrar todas las notificaciones individuales</string>
     <string name="remove_individual_notifications">Borrar notificaciones individuales</string>
     <string name="remove_individual_notifications_message">¿Realmente quieres borrar este conjunto de notificaciones individuales para %s\?</string>
-    <string name="remove_all_individual_notifications_message">¿Realmente quieres borrar todas las notificaciones individuales para tus contactos y grupos\?</string>
+    <string name="remove_all_individual_notifications_message">¿Realmente quieres borrar todas las notificaciones individuales para tus contactos y salas\?</string>
     <string name="exit">Salir</string>
     <string name="record_voice_mail">Graba mensaje de voz</string>
     <string name="backup_started_message">Ha comenzado la copia de seguridad. Se te notificará cuando haya terminado.</string>
@@ -1321,13 +1321,13 @@
     <string name="pref_choose_camera_summary">Elegir aplicación personalizada de cámara</string>
     <string name="vector_graphic">gráfico vectorial</string>
     <string name="multimedia_file">fichero multimedia</string>
-    <string name="title_undo_swipe_out_group_chat">Deshacer eliminación de grupo</string>
+    <string name="title_undo_swipe_out_group_chat">Deshacer eliminación de sala</string>
     <string name="title_undo_swipe_out_channel">Deshacer eliminación de canal</string>
     <string name="title_undo_swipe_out_conversation">Deshacer eliminación de chat</string>
     <string name="undo">Deshacer</string>
     <string name="audio_video_disabled_tor">Las llamadas están deshabilitadas cuando se usa Tor</string>
-    <string name="pref_enable_persistent_rooms_summary">Hacer los grupos y canales públicos persistentes y no eliminarlos del servidor después de que el último usuario lo abandone.</string>
-    <string name="pref_enable_persistent_rooms_title">Grupos persistentes</string>
+    <string name="pref_enable_persistent_rooms_summary">Hacer las salas y canales públicos persistentes y no eliminarlos del servidor después de que el último usuario lo abandone.</string>
+    <string name="pref_enable_persistent_rooms_title">Salas persistentes</string>
     <string name="switch_to_video">Cambiar a vídeo</string>
     <string name="reject_switch_to_video">Rechazar peticiones de cambio a vídeo</string>
     <string name="unified_push_distributor">Distribuidor UnifiedPush</string>
@@ -1376,7 +1376,15 @@
     <string name="update_default_stickers">Actualizar pegatinas por defecto</string>
     <string name="clear_blocked_media">Limpiar medio bloqueado</string>
     <string name="custom_theme_options">Opciones personalizada de tema</string>
+    <string name="custom_theme_is_dark">¿Es oscuro el tema personalizado?</string>
     <string name="custom_primary_color">Color primario personalizado</string>
     <string name="custom_primary_dark_color">Color primario oscuro personalizado</string>
+    <string name="custom_accent_color">Color personalizado acentuado</string>
     <string name="change_stickers_location">Cambiar ubicación de pegatinas</string>
+    <string name="choose_sticker_location">Elegir ubicación de pegatinas</string>
+    <string name="clear_blocked_media">Borrar medios bloqueados</string>
+    <string name="you_may_sometimes_have_to">Es posible que tengas que forzar el cierre de la aplicación para aplicar los cambios.</string>
+    <string name="colors">Colores</string>
+    <string name="create_monocles_only_backup">¿Exportar datos extra de monocles (no serán importados por otras aplicaciones)?</string>
+    <string name="please_be_patient">Tenga paciencia...</string>
 </resources>
