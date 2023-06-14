@@ -23,6 +23,7 @@ import java.util.Map;
 import java.util.Set;
 import java.util.UUID;
 
+import eu.siacs.conversations.xmpp.pep.Avatar;
 import io.ipfs.cid.Cid;
 
 import android.os.Build;
@@ -306,9 +307,34 @@ public class MessageParser extends AbstractParser implements OnMessagePacketRece
     }
 
     private void parseEvent(final Element event, final Jid from, final Account account) {
-        final Element items = event.findChild("items");
-        final String node = items == null ? null : items.getAttribute("node");
-        if (Namespace.NICK.equals(node)) {
+        Element items = event.findChild("items");
+        String node = items == null ? null : items.getAttribute("node");
+        if ("urn:xmpp:avatar:metadata".equals(node)) {
+            Avatar avatar = Avatar.parseMetadata(items);
+            if (avatar != null) {
+                avatar.owner = from.asBareJid();
+                if (mXmppConnectionService.getFileBackend().isAvatarCached(avatar)) {
+                    if (account.getJid().asBareJid().equals(from)) {
+                        if (account.setAvatar(avatar.getFilename())) {
+                            mXmppConnectionService.databaseBackend.updateAccount(account);
+                            mXmppConnectionService.notifyAccountAvatarHasChanged(account);
+                        }
+                        mXmppConnectionService.getAvatarService().clear(account);
+                        mXmppConnectionService.updateConversationUi();
+                        mXmppConnectionService.updateAccountUi();
+                    } else {
+                        final Contact contact = account.getRoster().getContact(from);
+                        contact.setAvatar(avatar);
+                        mXmppConnectionService.syncRoster(account);
+                        mXmppConnectionService.getAvatarService().clear(contact);
+                        mXmppConnectionService.updateConversationUi();
+                        mXmppConnectionService.updateRosterUi();
+                    }
+                } else if (mXmppConnectionService.isDataSaverDisabled()) {
+                    mXmppConnectionService.fetchAvatar(account, avatar);
+                }
+            }
+        } else if (Namespace.NICK.equals(node)) {
             final Element i = items.findChild("item");
             final String nick = i == null ? null : i.findChildContent("nick", Namespace.NICK);
             if (nick != null) {
@@ -318,7 +344,7 @@ public class MessageParser extends AbstractParser implements OnMessagePacketRece
             Element item = items.findChild("item");
             Set<Integer> deviceIds = mXmppConnectionService.getIqParser().deviceIds(item);
             Log.d(Config.LOGTAG, AxolotlService.getLogprefix(account) + "Received PEP device list " + deviceIds + " update from " + from + ", processing... ");
-            final AxolotlService axolotlService = account.getAxolotlService();
+            AxolotlService axolotlService = account.getAxolotlService();
             axolotlService.registerDevices(from, deviceIds);
         } else if (Namespace.BOOKMARKS.equals(node) && account.getJid().asBareJid().equals(from)) {
             if (account.getXmppConnection().getFeatures().bookmarksConversion()) {
