@@ -13,7 +13,7 @@ Folge uns auf <a rel="me" href="https://monocles.social/@monocles">monocles soci
 
 #### monocles chat nightly bzw. beta
 
-nightly oder beta Versionen kann man direkt hier von Codeberg unter [Releases](https://codeberg.org/Arne/monocles_chat/releases/latest) herunterladen.
+nightly oder beta Versionen kann man direkt hier von Codeberg unter [Releases](https://codeberg.org/Arne/monocles_chat/releases) herunterladen.
 
 #### Wie kann ich bei der Übersetzung helfen?
 Du kannst einen Merge Request erstellen in dem du Verbesserungen oder neue Sprachen hinzugefügt hast.
