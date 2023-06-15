@@ -9,8 +9,6 @@ monocles chat ist eine Kopie der Android Anwendung blabber.im und der offizielle
 Download ist hier möglich:
 <a href="https://f-droid.org/app/de.monocles.chat"><img src="https://f-droid.org/badge/get-it-on-de.png" alt="Jetzt bei F-Droid" height="100"></a>
 
-Alternativ kannst du den Messenger auch direkt hier von Codeberg unter [Releases](https://codeberg.org/Arne/monocles_chat/releases/latest) herunterladen.
-
 Folge uns auf <a rel="me" href="https://monocles.social/@monocles">monocles social</a> 
 
 #### monocles chat nightly bzw. beta
