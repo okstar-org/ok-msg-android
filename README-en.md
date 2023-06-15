@@ -37,7 +37,7 @@ monocles chat supports OTR encryption! Though it's not easy to use OTR does have
 
 ## Download
 monocles chat is available for install in the F-Droid
-Alternatively release and beta-release APKs are available via codeberg: [Releases](https://codeberg.org/Arne/monocles_chat/releases/latest) 
+Alternatively beta-release APKs are available via codeberg: [Releases](https://codeberg.org/Arne/monocles_chat/releases/latest) 
 
 #### monocles chat nightly and beta
 
