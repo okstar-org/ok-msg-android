@@ -32,7 +32,7 @@ public class GeoHelper {
     public static Pattern GEO_URI = Pattern.compile("geo:(-?\\d+(?:\\.\\d+)?),(-?\\d+(?:\\.\\d+)?)(?:,-?\\d+(?:\\.\\d+)?)?(?:;crs=[\\w-]+)?(?:;u=\\d+(?:\\.\\d+)?)?(?:;[\\w-]+=(?:[\\w-_.!~*'()]|%[\\da-f][\\da-f])+)*(\\?z=\\d+)?", Pattern.CASE_INSENSITIVE);
 
     public static String MapPreviewUri(Message message, Activity activity) {
-        Matcher matcher = GEO_URI.matcher(message.getBody());
+        Matcher matcher = GEO_URI.matcher(message.getQuoteableBody());
         if (!matcher.matches()) {
             return null;
         }

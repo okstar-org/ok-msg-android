@@ -105,7 +105,7 @@ public class Element implements Node {
     }
 
     public Element findChild(String name, String xmlns) {
-        for (Element child : this.children) {
+        for (Element child : getChildren()) {
             if (name.equals(child.getName()) && xmlns.equals(child.getAttribute("xmlns"))) {
                 return child;
             }
@@ -115,7 +115,7 @@ public class Element implements Node {
 
     public Element findChildEnsureSingle(String name, String xmlns) {
         final List<Element> results = new ArrayList<>();
-        for (Element child : this.children) {
+        for (Element child : getChildren()) {
             if (name.equals(child.getName()) && xmlns.equals(child.getAttribute("xmlns"))) {
                 results.add(child);
             }

@@ -863,7 +863,7 @@ public class EditAccountActivity extends OmemoActivity implements OnAccountUpdat
                 }
 
                 this.binding.accountColorBox.setVisibility(View.GONE);
-
+                this.binding.quietHoursBox.setVisibility(View.GONE);
             }
         }
         SharedPreferences preferences = getPreferences();
