@@ -1300,4 +1300,6 @@
     <string name="colors">Colors</string>
     <string name="create_monocles_only_backup">Export extra monocles-only data (backup will not import into other apps then)?</string>
     <string name="please_be_patient">Please be patient...</string>
+    <string name="confirm_delete_attachment_summary">Do you want to skip confirmation if you delete a local file from a chats?</string>
+    <string name="pref_confirm_delete_attachment">Confirm local file removal</string>
 </resources>

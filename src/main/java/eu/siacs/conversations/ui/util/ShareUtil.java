@@ -101,7 +101,7 @@ public class ShareUtil {
         final int resId;
         if (message.isGeoUri()) {
             resId = R.string.location;
-            url = message.getQuoteableBody();
+            url = message.getBody();
         } else if (message.hasFileOnRemoteHost()) {
             resId = R.string.file_url;
             url = message.getFileParams().url;
