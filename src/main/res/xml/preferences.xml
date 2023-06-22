@@ -293,6 +293,11 @@
             android:key="easy_downloader"
             android:summary="@string/pref_easy_downloader_summary"
             android:title="@string/pref_easy_downloader" />
+        <CheckBoxPreference
+            android:defaultValue="@bool/confirm_delete_attachment"
+            android:key="confirm_delete_attachment"
+            android:summary="@string/confirm_delete_attachment_summary"
+            android:title="@string/pref_confirm_delete_attachment" />
         <ListPreference
             android:defaultValue="@string/image_compression"
             android:entries="@array/image_compression_entries"
