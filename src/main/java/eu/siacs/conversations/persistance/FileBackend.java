@@ -1984,7 +1984,7 @@ public class FileBackend {
                 bitmap = withGifOverlay;
             }
         }
-        if (bitmap != null) {
+        if (key != null && bitmap != null) {
             cache.put(key, bitmap);
         }
         return bitmap;
