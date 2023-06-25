@@ -1779,7 +1779,7 @@ public class Conversation extends AbstractEntity implements Blockable, Comparabl
                     } else {
                         xmppConnectionService.sendIqPacket(getAccount(), packet, (a, iq) -> {
                             session.updateWithResponse(iq);
-                        });
+                        }, 120L);
                     }
                 }
             };
@@ -3356,7 +3356,7 @@ public class Conversation extends AbstractEntity implements Blockable, Comparabl
                 executing = true;
                 xmppConnectionService.sendIqPacket(getAccount(), packet, (a, iq) -> {
                     updateWithResponse(iq);
-                });
+                }, 120L);
 
                 loading();
                 return false;
