@@ -1479,7 +1479,7 @@ public class ConversationFragment extends XmppFragment
         if (message.isGeoUri()) {
             quoteGeoUri(message, user);
         }
-        if (message.getThread() == null) newThread();
+        if (message.getThread() == null && conversation.getMode() == Conversation.MODE_MULTI) newThread();
         setupReply(message);
     }
 
