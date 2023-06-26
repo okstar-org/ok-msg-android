@@ -561,7 +561,7 @@ public class Contact implements ListItem, Blockable {
     public void parseGroupsFromElement(Element item) {
         this.groups = new JSONArray();
         for (Element element : item.getChildren()) {
-            if (element.getName().equals("room") && element.getContent() != null) {
+            if (element.getName().equals("group") && element.getContent() != null) {
                 this.groups.put(element.getContent());
             }
         }
@@ -576,7 +576,7 @@ public class Contact implements ListItem, Blockable {
             item.setAttribute("name", getDisplayName());
         }
         for (String group : getGroups(false)) {
-            item.addChild("room").setContent(group);
+            item.addChild("group").setContent(group);
         }
         return item;
     }

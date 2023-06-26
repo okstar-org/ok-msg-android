@@ -74,7 +74,7 @@ public class RtpContentMap {
                     id, DescriptionTransport.of(sessionDescription, isInitiator, media));
         }
         final String groupAttribute =
-                Iterables.getFirst(sessionDescription.attributes.get("room"), null);
+                Iterables.getFirst(sessionDescription.attributes.get("group"), null);
         final Group group = groupAttribute == null ? null : Group.ofSdpString(groupAttribute);
         return new RtpContentMap(group, contentMapBuilder.build());
     }
