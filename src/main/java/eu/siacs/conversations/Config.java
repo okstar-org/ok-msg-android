@@ -144,7 +144,7 @@ public final class Config {
     public static final boolean AUTOMATICALLY_COMPLETE_SESSIONS = true;
     public static final boolean TWELVE_BYTE_IV = true;
 
-    public static final int MAX_DISPLAY_MESSAGE_CHARS = 40000;
+    public static final int MAX_DISPLAY_MESSAGE_CHARS = 10000;
     public static final int MAX_STORAGE_MESSAGE_CHARS = 2 * 1024 * 1024; //2MB
 
     public static final boolean ExportLogs = true; // automatically export logs
