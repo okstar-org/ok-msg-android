@@ -1017,7 +1017,10 @@ public class ConversationFragment extends XmppFragment
         } else if (isPrivateMessage()) {
             this.binding.textinput.setHint(R.string.send_unencrypted_message);
             this.binding.textInputHint.setVisibility(View.VISIBLE);
-            SpannableStringBuilder hint = new SpannableStringBuilder(getString(R.string.send_private_message_to, conversation.getNextCounterpart().getResource()));
+            final MucOptions.User user = conversation.getMucOptions().findUserByName(conversation.getNextCounterpart().getResource());
+            String nick = user == null ? null : user.getNick();
+            if (nick == null) nick = conversation.getNextCounterpart().getResource();
+            SpannableStringBuilder hint = new SpannableStringBuilder(getString(R.string.send_private_message_to, nick));
             hint.setSpan(new StyleSpan(Typeface.BOLD), 0, hint.length(), Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
             this.binding.textInputHint.setText(hint);
             binding.conversationViewPager.setCurrentItem(0);
@@ -4098,7 +4101,7 @@ public class ConversationFragment extends XmppFragment
         }
         List<String> completions = new ArrayList<>();
         for (MucOptions.User user : conversation.getMucOptions().getUsers()) {
-            String name = user.getName();
+            String name = user.getNick();
             if (name != null && name.startsWith(incomplete)) {
                 completions.add(name + (firstWord ? ": " : " "));
             }
@@ -4300,14 +4303,29 @@ public class ConversationFragment extends XmppFragment
                 Jid tcp = message.getTrueCounterpart();
                 Jid user = message.getCounterpart();
                 if (user != null && !user.isBareJid()) {
-                    final MucOptions mucOptions = ((Conversation) message.getConversation()).getMucOptions();
-                    if (mucOptions.participating() || ((Conversation) message.getConversation()).getNextCounterpart() != null) {
-                        if (!mucOptions.isUserInRoom(user) && mucOptions.findUserByRealJid(tcp == null ? null : tcp.asBareJid()) == null) {
-                            ToastCompat.makeText(getActivity(), activity.getString(R.string.user_has_left_conference, user.getResource()), ToastCompat.LENGTH_SHORT).show();
+                    final MucOptions mucOptions =
+                            ((Conversation) message.getConversation()).getMucOptions();
+                    if (mucOptions.participating()
+                            || ((Conversation) message.getConversation()).getNextCounterpart()
+                            != null) {
+                        MucOptions.User mucUser = mucOptions.findUserByFullJid(user);
+                        MucOptions.User tcpMucUser = mucOptions.findUserByRealJid(tcp == null ? null : tcp.asBareJid());
+                        if (mucUser == null && tcpMucUser == null) {
+                            Toast.makeText(
+                                            getActivity(),
+                                            activity.getString(
+                                                    R.string.user_has_left_conference,
+                                                    user.getResource()),
+                                            Toast.LENGTH_SHORT)
+                                    .show();
                         }
-                        highlightInConference(user.getResource());
+                        highlightInConference(mucUser == null ? (tcpMucUser == null ? user.getResource() : tcpMucUser.getNick()) : mucUser.getNick());
                     } else {
-                        ToastCompat.makeText(getActivity(), R.string.you_are_not_participating, ToastCompat.LENGTH_SHORT).show();
+                        Toast.makeText(
+                                        getActivity(),
+                                        R.string.you_are_not_participating,
+                                        Toast.LENGTH_SHORT)
+                                .show();
                     }
                 }
             }

@@ -52,7 +52,8 @@ public class MucOptions {
     public MucOptions(Conversation conversation) {
         this.account = conversation.getAccount();
         this.conversation = conversation;
-        this.self = new User(this, createJoinJid(getProposedNick()));
+        final String nick = getProposedNick(conversation.getAttribute("mucNick"));
+        this.self = new User(this, createJoinJid(nick), nick);
         this.self.affiliation = Affiliation.of(conversation.getAttribute("affiliation"));
         this.self.role = Role.of(conversation.getAttribute("role"));
     }
@@ -65,6 +66,7 @@ public class MucOptions {
         this.self = user;
         final boolean roleChanged = this.conversation.setAttribute("role", user.role.toString());
         final boolean affiliationChanged = this.conversation.setAttribute("affiliation", user.affiliation.toString());
+        this.conversation.setAttribute("mucNick", user.getNick());
         return roleChanged || affiliationChanged;
     }
 
@@ -289,6 +291,20 @@ public class MucOptions {
         return false;
     }
 
+    public User findUserByName(final String name) {
+        if (name == null) {
+            return null;
+        }
+        synchronized (users) {
+            for (User user : users) {
+                if (name.equals(user.getName())) {
+                    return user;
+                }
+            }
+        }
+        return null;
+    }
+
     public User findUserByFullJid(Jid jid) {
         if (jid == null) {
             return null;
@@ -320,7 +336,7 @@ public class MucOptions {
     public User findOrCreateUserByRealJid(Jid jid, Jid fullJid) {
         User user = findUserByRealJid(jid);
         if (user == null) {
-            user = new User(this, fullJid);
+            user = new User(this, fullJid, null);
             user.setRealJid(jid);
         }
         return user;
@@ -420,11 +436,17 @@ public class MucOptions {
     }
 
     public String getProposedNick() {
+        return getProposedNick(null);
+    }
+
+    public String getProposedNick(final String mucNick) {
         final Bookmark bookmark = this.conversation.getBookmark();
         final String bookmarkedNick = normalize(account.getJid(), bookmark == null ? null : bookmark.getNick());
         if (bookmarkedNick != null) {
             this.tookProposedNickFromBookmark = true;
             return bookmarkedNick;
+        } else if (mucNick != null) {
+            return mucNick;
         } else if (!conversation.getJid().isBareJid()) {
             return conversation.getJid().getResource();
         } else {
@@ -454,6 +476,14 @@ public class MucOptions {
     }
 
     public String getActualNick() {
+        if (this.self.getNick() != null) {
+            return this.self.getNick();
+        } else {
+            return this.getProposedNick();
+        }
+    }
+
+    public String getActualName() {
         if (this.self.getName() != null) {
             return this.self.getName();
         } else {
@@ -505,7 +535,7 @@ public class MucOptions {
     private List<User> getFallbackUsersFromCryptoTargets() {
         List<User> users = new ArrayList<>();
         for (Jid jid : conversation.getAcceptedCryptoTargets()) {
-            User user = new User(this, null);
+            User user = new User(this, null, null);
             user.setRealJid(jid);
             users.add(user);
         }
@@ -579,10 +609,18 @@ public class MucOptions {
     }
 
     public Jid createJoinJid(String nick) {
+        return createJoinJid(nick, true);
+    }
+
+    private Jid createJoinJid(String nick, boolean tryFix) {
         try {
             return conversation.getJid().withResource(nick);
         } catch (final IllegalArgumentException e) {
-            return null;
+            try {
+                return tryFix ? createJoinJid(gnu.inet.encoding.Punycode.encode(nick), false) : null;
+            } catch (final gnu.inet.encoding.PunycodeException e2) {
+                return null;
+            }
         }
     }
 
@@ -746,18 +784,24 @@ public class MucOptions {
         private Affiliation affiliation = Affiliation.NONE;
         private Jid realJid;
         private Jid fullJid;
+        private String nick;
         private long pgpKeyId = 0;
         private Avatar avatar;
         private final MucOptions options;
         private ChatState chatState = Config.DEFAULT_CHAT_STATE;
 
-        public User(MucOptions options, Jid fullJid) {
+        public User(MucOptions options, Jid fullJid, final String nick) {
             this.options = options;
             this.fullJid = fullJid;
+            this.nick = nick == null ? getName() : nick;
         }
 
         public String getName() {
             return fullJid == null ? null : fullJid.getResource();
+        }
+
+        public String getNick() {
+            return nick;
         }
 
         public Role getRole() {
@@ -868,7 +912,7 @@ public class MucOptions {
 
         @Override
         public String toString() {
-            return "[fulljid:" + fullJid + ",realjid:" + realJid + ",affiliation" + affiliation.toString() + "]";
+            return "[fulljid:" + fullJid + ",realjid:" + realJid + ",nick:" + nick + ",affiliation" + affiliation.toString() + "]";
         }
 
         public boolean realJidMatchesAccount() {
