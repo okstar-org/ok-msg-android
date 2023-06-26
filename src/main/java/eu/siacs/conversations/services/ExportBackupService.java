@@ -439,7 +439,7 @@ public class ExportBackupService extends Service {
                 final BackupFileHeader backupFileHeader = new BackupFileHeader(getString(R.string.app_name), account.getJid(), System.currentTimeMillis(), IV, salt);
                 final Progress progress = new Progress(mBuilder, max, count);
                 final String compatTag = StorageHelper.BackupCompatTypes.Compatible == compatType ? "compat" : "monocles";
-                final File file = new File(getBackupDirectory(null), account.getJid().asBareJid().toEscapedString() + "_" + compatTag + "_" + ((new SimpleDateFormat("yyyy-MM-dd_mm-HH-ss")).format(new Date())) + ".ceb");
+                final File file = new File(getBackupDirectory(null), account.getJid().asBareJid().toEscapedString() + "_" + compatTag + "_" + ((new SimpleDateFormat("yyyy-MM-dd_HH-mm-ss")).format(new Date())) + ".ceb");
                 files.add(file);
                 final File directory = file.getParentFile();
                 if (directory != null && directory.mkdirs()) {
