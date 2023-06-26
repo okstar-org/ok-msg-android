@@ -1298,8 +1298,11 @@
     <string name="choose_sticker_location">Choose sticker location</string>
     <string name="you_may_sometimes_have_to">You may sometimes have to force quit the app to get changes applied.</string>
     <string name="colors">Colors</string>
-    <string name="create_monocles_only_backup">Export extra monocles-only data (backup will not import into other apps then)?</string>
+    <string name="create_monocles_backup">This will create two backups. One is compatible to Monocles only, the second one is compatible with Conversations</string>#
+    <string name="backup_started">The backup has been started. You will be notified after the process has finished</string>
     <string name="please_be_patient">Please be patient...</string>
     <string name="confirm_delete_attachment_summary">Do you want to skip confirmation if you delete a local file from a chats?</string>
     <string name="pref_confirm_delete_attachment">Confirm local file removal</string>
+    <string name="pref_keep_num_backups">How many backups should be kept?. Defaults to 3</string>
+    <string name="pref_keep_num_backups_title">Number of backups to keep</string>
 </resources>

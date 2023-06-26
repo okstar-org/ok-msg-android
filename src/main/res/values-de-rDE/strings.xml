@@ -1341,4 +1341,8 @@
     <string name="no_i2p_calls">Anrufe können nicht über I2P gemacht werden</string>
     <string name="confirm_delete_attachment_summary">Soll das Löschen von lokalen Dateien in Chats immer bestätigt werden?</string>
     <string name="pref_confirm_delete_attachment">Löschen von lokalen Dateien in Chats</string>
+    <string name="create_monocles_backup">Zwei Sicherungsdateien werden angelegt. Sicherung #1 ist nur mit Monocles kompatibel, Sicherung #2 kann auch von Conversations o.ä benutzt werden.</string>
+    <string name="backup_started">Das Backup wurde gestartet. Du wirst informiert sobald der Prozess abgeschlossen ist.</string>
+    <string name="pref_keep_num_backups">Wie viele Backups sollen behalten werden. Standard ist 3</string>
+    <string name="pref_keep_num_backups_title">Anzahl zu speichernder Backups</string>
 </resources>

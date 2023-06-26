@@ -105,7 +105,7 @@
     <string name="default_push_server">up.conversations.im</string>
     <string name="default_push_account">none</string>
     <bool name="dialler_integration_incoming">true</bool>
-
+    <integer name="keep_num_backups">3</integer>
 
     <string-array name="domains">
         <item>conversations.im</item>
