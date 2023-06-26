@@ -259,7 +259,7 @@ android {
             if (baseAbiVersionCode != null) {
                 output.versionCodeOverride = (100 * project.android.defaultConfig.versionCode) + baseAbiVersionCode
             } else {
-                output.versionCodeOverride = (100 * project.android.defaultConfig.versionCode) + grgit.log(includes: ["HEAD"], excludes: [tags.last()]).size()
+ate                 output.versionCodeOverride = (100 * project.android.defaultConfig.versionCode) + grgit.log(includes: ["HEAD"], excludes: [tags.last()]).size()
             }
         }
 

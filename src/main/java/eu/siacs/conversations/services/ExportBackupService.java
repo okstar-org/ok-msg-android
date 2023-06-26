@@ -46,8 +46,11 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
+import java.util.Comparator;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.zip.GZIPOutputStream;
 
@@ -510,6 +513,72 @@ public class ExportBackupService extends Service {
             }
         }
         return success;
+    }
+
+    /**
+     * This function will look into the backup directory provided by getBackupDirectory() and
+     * loop all over the files to find the oldest ones.
+     * It will record each file older then x days and if there are more then x files found
+     * it will delete those files until x files left.
+     */
+    public void rotateBackups() {
+        final String szBackupDirectory = getBackupDirectory(null);
+
+        // first of all we skip any file which does not match the pattern "filename_yyyy-MM-dd_HH-mm-ss*"
+        // So we split the filename at the first index of _ (underscore)
+        // Then we extract the datetime the file was created based on the rest of the filename
+        // I have too little knowledge if I can trust the filesystem timestamp... that's why I do this shit.
+
+        // A list of prefixes that may or may not contain multiple date-parts
+        Map<String, List<String>> dictionary = new HashMap<String, List<String>>();
+
+        File backupDirectory = new File(szBackupDirectory);
+        for (File file: backupDirectory.listFiles()) {
+            String fileName = file.getName();
+            Integer i = fileName.indexOf('_'); // first Index of Underscore
+
+            // skip invalid underscore index
+            if(i <= 0)
+                continue;
+
+            // this should result in something like this: yyyy-MM-dd_HH-mm-ss from which we can parse a datetime
+            String datePart = fileName.substring(i, fileName.length() - 4);
+
+            // we need the filename prefix too
+            String namePart = fileName.substring(0, i);
+
+            if(!dictionary.containsKey(namePart)) {
+                List<String> dp = new ArrayList<>();
+                dp.add(datePart);
+                dictionary.put(namePart, dp);
+            } else {
+                List<String> dp = dictionary.get(namePart);
+                dp.add(datePart);
+                dictionary.put(namePart, dp); // Replace the original entry
+            }
+        }
+
+        // Now we can loop all over the keys in dictionary, count the values it refers to
+        // and decide if we need to delete the corresponding file
+        dictionary.forEach((k, v) -> {
+
+            // did you notice that we (below) skip all numbers less or equal 3?
+            // That's on purpose ;)
+
+            if(v.size() < 4) { // <- this is a user setting!
+                return; // continue in the old ages ;)
+            }
+
+            while(v.size() > 3) {
+                // now: until v.entries() sorted is greater then 3, remove the item
+                v.sort(Comparator.naturalOrder());
+
+                // TODO: build the filename and remove it. You have all you need
+
+                // but update the list too
+                v.remove(v.size()-1);
+            }
+        });
     }
 
     private void mediaScannerScanFile(final File file) {
