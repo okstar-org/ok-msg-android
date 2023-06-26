@@ -10,7 +10,14 @@ import androidx.annotation.Nullable;
 
 import java.io.File;
 
+import eu.siacs.conversations.services.ExportBackupService;
+
 public class StorageHelper {
+
+    public static enum BackupCompatTypes {
+        MonoclesOnly,
+        Compatible
+    }
 
     public static File getConversationsDirectory(final Context context, final String type) {
         if (type.equalsIgnoreCase("null")) {

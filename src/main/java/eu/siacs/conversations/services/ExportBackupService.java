@@ -68,6 +68,7 @@ import eu.siacs.conversations.persistance.DatabaseBackend;
 import eu.siacs.conversations.persistance.FileBackend;
 import eu.siacs.conversations.utils.BackupFileHeader;
 import eu.siacs.conversations.utils.Compatibility;
+import eu.siacs.conversations.utils.StorageHelper;
 import eu.siacs.conversations.utils.WakeLockHelper;
 import eu.siacs.conversations.xmpp.Jid;
 import static eu.siacs.conversations.utils.Compatibility.s;
@@ -265,8 +266,25 @@ public class ExportBackupService extends Service {
                 boolean success;
                 List<File> files;
                 try {
-                    files = export(intent.getBooleanExtra("monocles_db", true));
-                    success = files != null;
+                    files = export(StorageHelper.BackupCompatTypes.Compatible);
+                    if(files == null) {
+                        Log.d(Config.LOGTAG, "Failed to create a Conversations compatible backup. Giving up!");
+                        success = false;
+                    }
+                    else {
+                        List<File> f = export(StorageHelper.BackupCompatTypes.MonoclesOnly);
+                        if(f == null) {
+                            Log.d(Config.LOGTAG, "Failed to create a Monocles-Only compatible backup. Giving up!");
+                            success = false;
+                        } else {
+                            files.addAll(f);
+                            success = files != null;
+
+                            if(success) {
+                                Log.d(Config.LOGTAG, "Backup successfully created two backup versions");
+                            }
+                        }
+                    }
                 } catch (final Exception e) {
                     Log.d(Config.LOGTAG, "unable to create backup", e);
                     success = false;
@@ -393,7 +411,7 @@ public class ExportBackupService extends Service {
         }
     }
 
-    private List<File> export(boolean withmonoclesDb) throws Exception {
+    private List<File> export(StorageHelper.BackupCompatTypes compatType) throws Exception {
         wakeLock.acquire(15 * 60 * 1000L /*15 minutes*/);
         NotificationCompat.Builder mBuilder = new NotificationCompat.Builder(getBaseContext(), NotificationService.BACKUP_CHANNEL_ID);
         mBuilder.setContentTitle(getString(R.string.notification_create_backup_title))
@@ -420,7 +438,8 @@ public class ExportBackupService extends Service {
                 secureRandom.nextBytes(salt);
                 final BackupFileHeader backupFileHeader = new BackupFileHeader(getString(R.string.app_name), account.getJid(), System.currentTimeMillis(), IV, salt);
                 final Progress progress = new Progress(mBuilder, max, count);
-                final File file = new File(getBackupDirectory(null), account.getJid().asBareJid().toEscapedString() + "_" + ((new SimpleDateFormat("yyyy-MM-dd")).format(new Date())) + ".ceb");
+                final String compatTag = StorageHelper.BackupCompatTypes.Compatible == compatType ? "compat" : "monocles";
+                final File file = new File(getBackupDirectory(null), account.getJid().asBareJid().toEscapedString() + "_" + compatTag + "_" + ((new SimpleDateFormat("yyyy-MM-dd_mm-HH-ss")).format(new Date())) + ".ceb");
                 files.add(file);
                 final File directory = file.getParentFile();
                 if (directory != null && directory.mkdirs()) {
@@ -445,7 +464,7 @@ public class ExportBackupService extends Service {
                 accountExport(db, uuid, writer);
                 simpleExport(db, Conversation.TABLENAME, Conversation.ACCOUNT, uuid, writer);
                 messageExport(db, uuid, writer, progress);
-                if (withmonoclesDb) messageExportmonocles(db, uuid, writer, progress);
+                if (compatType == StorageHelper.BackupCompatTypes.MonoclesOnly) messageExportmonocles(db, uuid, writer, progress);
                 for (String table : Arrays.asList(SQLiteAxolotlStore.PREKEY_TABLENAME, SQLiteAxolotlStore.SIGNED_PREKEY_TABLENAME, SQLiteAxolotlStore.SESSION_TABLENAME, SQLiteAxolotlStore.IDENTITIES_TABLENAME)) {
                     simpleExport(db, table, SQLiteAxolotlStore.ACCOUNT, uuid, writer);
                 }
