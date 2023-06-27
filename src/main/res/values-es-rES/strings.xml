@@ -1384,4 +1384,6 @@
     <string name="colors">Colores</string>
     <string name="create_monocles_only_backup">¿Exportar datos extra de monocles (no serán importados por otras aplicaciones)?</string>
     <string name="please_be_patient">Tenga paciencia...</string>
+    <string name="confirm_delete_attachment_summary">¿Quiere omitir la confirmación de borrado de un fichero local desde los chats?</string>
+    <string name="pref_confirm_delete_attachment">Confirmación de borrado de fichero local</string>
 </resources>
