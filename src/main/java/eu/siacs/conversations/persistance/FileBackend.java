@@ -1106,46 +1106,31 @@ public class FileBackend {
         }
     }
 
-    public Bitmap getThumbnail(Message message, int size, boolean cacheOnly) throws IOException {
-        // The key for getting a cached thumbnail contains the UUID and the size
-        // since this method is used for thumbnails of (bigger) normal image messages and (smaller) image message references.
-        // If only the UUID were used, the first loaded thumbnail would be cached and the next loading
-        // would get that thumbnail which would have the size of the first cached thumbnail
-        // possibly leading to undesirable appearance of the displayed thumbnail.
-        final String key = message.getUuid() + size;
-        final String uuid = message.getUuid();
-        final LruCache<String, Bitmap> cache = mXmppConnectionService.getBitmapCache();
-        Bitmap thumbnail = cache.get(key);
-        if ((thumbnail == null) && (!cacheOnly)) {
-            synchronized (THUMBNAIL_LOCK) {
-                thumbnail = cache.get(key);
-                if (thumbnail != null) {
-                    return thumbnail;
-                }
-                DownloadableFile file = getFile(message);
-                final String mime = file.getMimeType();
-                if ("application/pdf".equals(mime)) {
-                    thumbnail = getPDFPreview(file, size);
-                } else if (mime.startsWith("video/")) {
-                    thumbnail = getVideoPreview(file, size);
-                } else if (mime.startsWith("image/")) {
-                    final Bitmap fullSize = getFullsizeImagePreview(file, size);
-                    if (fullSize == null) {
-                        throw new FileNotFoundException();
-                    }
-                    thumbnail = resize(fullSize, size);
-                    thumbnail = rotate(thumbnail, getRotation(file));
-                    if (mime.equals("image/gif")) {
-                        Bitmap withGifOverlay = thumbnail.copy(Bitmap.Config.ARGB_8888, true);
-                        drawOverlay(withGifOverlay, R.drawable.play_gif, 1.0f);
-                        thumbnail.recycle();
-                        thumbnail = withGifOverlay;
-                    }
-                }
-                cache.put(key, thumbnail);
-            }
+    public Bitmap getThumbnailBitmap(Message message, Resources res, int size) throws IOException {
+        final Drawable drawable = getThumbnail(message, res, size, false);
+        if (drawable == null) return null;
+        return drawDrawable(drawable);
+    }
+
+    public Bitmap getThumbnailBitmap(DownloadableFile file, Resources res, int size, String cacheKey) throws IOException {
+        final Drawable drawable = getThumbnail(file, res, size, false, cacheKey);
+        if (drawable == null) return null;
+        return drawDrawable(drawable);
+    }
+
+    protected Bitmap drawDrawable(Drawable drawable) {
+        Bitmap bitmap = null;
+
+        if (drawable instanceof BitmapDrawable) {
+            bitmap = ((BitmapDrawable) drawable).getBitmap();
+            if (bitmap != null) return bitmap;
         }
-        return thumbnail;
+
+        bitmap = Bitmap.createBitmap(drawable.getIntrinsicWidth(), drawable.getIntrinsicHeight(), Bitmap.Config.ARGB_8888);
+        Canvas canvas = new Canvas(bitmap);
+        drawable.setBounds(0, 0, canvas.getWidth(), canvas.getHeight());
+        drawable.draw(canvas);
+        return bitmap;
     }
 
     private Bitmap getPDFPreview(final File file, int size) {
@@ -2502,7 +2487,7 @@ public class FileBackend {
                 }
                 final String mime = file.getMimeType();
                 if ("application/pdf".equals(mime)) {
-                    thumbnail = new BitmapDrawable(res, getPdfDocumentPreview(file, size));
+                    thumbnail = new BitmapDrawable(res, getPDFPreview(file, size));
                 } else if (mime.startsWith("video/")) {
                     thumbnail = new BitmapDrawable(res, getVideoPreview(file, size));
                 } else {
