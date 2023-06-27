@@ -4,3 +4,5 @@
 * Umkehrung von "Raum" zu "Gruppe" im Roster
 * Behebt Absturz aufgrund von Bildern in einigen Chaträumen
 * Behebt das Senden des GPS-Standorts in Omemo-Nachrichten
+* Erlaube alle Zeichen in MUC Nicknamen
+* Nur in MUCs automatisch auf neuen Thread stellen

@@ -4,3 +4,5 @@
 * Revert "room" to "group" in roster
 * Fix crash because of images in some chat rooms
 * Fix send GPS location in omemo messages
+* Allow any characters in MUC nicknames
+* Only default to new thread when in MUC
