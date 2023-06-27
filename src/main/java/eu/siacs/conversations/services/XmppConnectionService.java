@@ -1492,6 +1492,7 @@ public class XmppConnectionService extends Service {
     @SuppressLint("TrulyRandom")
     @Override
     public void onCreate() {
+        org.jxmpp.stringprep.libidn.LibIdnXmppStringprep.setup();
         updateNotificationChannels();
         setTheme(ThemeHelper.find(this));
         ThemeHelper.applyCustomColors(this);
