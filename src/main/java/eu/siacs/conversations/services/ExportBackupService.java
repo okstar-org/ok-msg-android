@@ -515,13 +515,14 @@ public class ExportBackupService extends Service {
         return success;
     }
 
-    /**
+    /***
      * This function will look into the backup directory provided by getBackupDirectory() and
      * loop all over the files to find the oldest ones.
      * It will record each file older then x days and if there are more then x files found
      * it will delete those files until x files left.
+     * @param keepNumBackups The default number of backups to keep. There is a hard limit though, see getNumBackupsInBounds()
      */
-    public void rotateBackups() {
+    public void rotateBackups(int keepNumBackups) {
         final String szBackupDirectory = getBackupDirectory(null);
 
         // first of all we skip any file which does not match the pattern "filename_yyyy-MM-dd_HH-mm-ss*"
@@ -541,8 +542,9 @@ public class ExportBackupService extends Service {
             if(i <= 0)
                 continue;
 
-            // this should result in something like this: yyyy-MM-dd_HH-mm-ss from which we can parse a datetime
-            String datePart = fileName.substring(i, fileName.length() - 4);
+            // This should result in something like this: yyyy-MM-dd_HH-mm-ss from which we can parse a datetime
+            // Of course this depends in filenames ending in ".xxx"
+            String datePart = fileName.substring(i + 1, fileName.length() - 4);
 
             // we need the filename prefix too
             String namePart = fileName.substring(0, i);
@@ -558,27 +560,38 @@ public class ExportBackupService extends Service {
             }
         }
 
-        // Now we can loop all over the keys in dictionary, count the values it refers to
-        // and decide if we need to delete the corresponding file
+        final int knb = checkNumBackupsInBounds(keepNumBackups);
+
         dictionary.forEach((k, v) -> {
-
-            // did you notice that we (below) skip all numbers less or equal 3?
-            // That's on purpose ;)
-
-            if(v.size() < 4) { // <- this is a user setting!
-                return; // continue in the old ages ;)
-            }
-
-            while(v.size() > 3) {
-                // now: until v.entries() sorted is greater then 3, remove the item
-                v.sort(Comparator.naturalOrder());
-
-                // TODO: build the filename and remove it. You have all you need
-
-                // but update the list too
-                v.remove(v.size()-1);
-            }
+            v.sort(Comparator.naturalOrder());
+            List<String> removeList = v.subList(0, v.size() - knb);
+            removeList.forEach(item -> {
+                System.out.println("To delete: " +  k + " " + item);
+            });
         });
+    }
+
+    /***
+     * Validates the number of backups to keep within defined boundaries.
+     * @param param User provided parameter as Integer
+     * @return Returns the default if the param is out of bounds respecting upper or lower bounds, or param.
+     */
+    private int checkNumBackupsInBounds(int param) {
+        // TODO: Make this an expert setting but within reasonable boundaries.
+        // TODO: There should be hard coded boundaries and for now 3 and 10 it is!
+        final int minKeepNumBackups = 3;
+        final int maxKeepNumBackups = 10;
+
+        if(param > maxKeepNumBackups)
+            return maxKeepNumBackups;
+
+        if(param < minKeepNumBackups)
+            return minKeepNumBackups;
+
+        if(param <= 0)
+            return minKeepNumBackups;
+
+        return param;
     }
 
     private void mediaScannerScanFile(final File file) {
