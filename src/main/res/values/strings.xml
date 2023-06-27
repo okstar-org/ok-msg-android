@@ -1303,6 +1303,6 @@
     <string name="please_be_patient">Please be patient...</string>
     <string name="confirm_delete_attachment_summary">Do you want to skip confirmation if you delete a local file from a chats?</string>
     <string name="pref_confirm_delete_attachment">Confirm local file removal</string>
-    <string name="pref_keep_num_backups">How many backups should be kept?. Defaults to 3</string>
+    <string name="pref_keep_num_backups">How many backups should be kept? Defaults to 3</string>
     <string name="pref_keep_num_backups_title">Number of backups to keep</string>
 </resources>
