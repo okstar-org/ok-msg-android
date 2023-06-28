@@ -87,6 +87,18 @@
                                                 android:layout_height="wrap_content"
                                                 android:textAppearance="@style/TextAppearance.Conversations.Title" />
 
+                                            <Button
+                                                android:id="@+id/relatedMucs"
+                                                style="@style/Widget.Conversations.Button.Borderless"
+                                                android:layout_width="wrap_content"
+                                                android:layout_height="wrap_content"
+                                                android:layout_gravity="end"
+                                                android:minWidth="0dp"
+                                                android:layout_marginTop="32dp"
+                                                android:layout_marginRight="4dp"
+                                                android:text="Related Chats"
+                                                android:textColor="?attr/colorAccent" />
+
                                             <TextView
                                                 android:id="@+id/jid"
                                                 android:layout_width="wrap_content"

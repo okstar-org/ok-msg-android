@@ -6,6 +6,7 @@ import static eu.siacs.conversations.utils.StorageHelper.getGlobalDocumentsPath;
 import static eu.siacs.conversations.utils.StorageHelper.getGlobalPicturesPath;
 import static eu.siacs.conversations.utils.StorageHelper.getGlobalVideosPath;
 
+import android.content.res.AssetFileDescriptor;
 import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.content.ContentResolver;
@@ -1106,46 +1107,33 @@ public class FileBackend {
         }
     }
 
-    public Bitmap getThumbnail(Message message, int size, boolean cacheOnly) throws IOException {
-        // The key for getting a cached thumbnail contains the UUID and the size
-        // since this method is used for thumbnails of (bigger) normal image messages and (smaller) image message references.
-        // If only the UUID were used, the first loaded thumbnail would be cached and the next loading
-        // would get that thumbnail which would have the size of the first cached thumbnail
-        // possibly leading to undesirable appearance of the displayed thumbnail.
-        final String key = message.getUuid() + size;
-        final String uuid = message.getUuid();
-        final LruCache<String, Bitmap> cache = mXmppConnectionService.getBitmapCache();
-        Bitmap thumbnail = cache.get(key);
-        if ((thumbnail == null) && (!cacheOnly)) {
-            synchronized (THUMBNAIL_LOCK) {
-                thumbnail = cache.get(key);
-                if (thumbnail != null) {
-                    return thumbnail;
-                }
-                DownloadableFile file = getFile(message);
-                final String mime = file.getMimeType();
-                if ("application/pdf".equals(mime)) {
-                    thumbnail = getPDFPreview(file, size);
-                } else if (mime.startsWith("video/")) {
-                    thumbnail = getVideoPreview(file, size);
-                } else if (mime.startsWith("image/")) {
-                    final Bitmap fullSize = getFullsizeImagePreview(file, size);
-                    if (fullSize == null) {
-                        throw new FileNotFoundException();
-                    }
-                    thumbnail = resize(fullSize, size);
-                    thumbnail = rotate(thumbnail, getRotation(file));
-                    if (mime.equals("image/gif")) {
-                        Bitmap withGifOverlay = thumbnail.copy(Bitmap.Config.ARGB_8888, true);
-                        drawOverlay(withGifOverlay, R.drawable.play_gif, 1.0f);
-                        thumbnail.recycle();
-                        thumbnail = withGifOverlay;
-                    }
-                }
-                cache.put(key, thumbnail);
-            }
+    public Bitmap getThumbnailBitmap(Message message, Resources res, int size) throws IOException {
+        final Drawable drawable = getThumbnail(message, res, size, false);
+        if (drawable == null) return null;
+        return drawDrawable(drawable);
+    }
+
+    public Bitmap getThumbnailBitmap(DownloadableFile file, Resources res, int size, String cacheKey) throws IOException {
+        final Drawable drawable = getThumbnail(file, res, size, false, cacheKey);
+        if (drawable == null) return null;
+        return drawDrawable(drawable);
+    }
+
+    public static Bitmap drawDrawable(Drawable drawable) {
+        if (drawable == null) return null;
+
+        Bitmap bitmap = null;
+
+        if (drawable instanceof BitmapDrawable) {
+            bitmap = ((BitmapDrawable) drawable).getBitmap();
+            if (bitmap != null) return bitmap;
         }
-        return thumbnail;
+
+        bitmap = Bitmap.createBitmap(drawable.getIntrinsicWidth(), drawable.getIntrinsicHeight(), Bitmap.Config.ARGB_8888);
+        Canvas canvas = new Canvas(bitmap);
+        drawable.setBounds(0, 0, canvas.getWidth(), canvas.getHeight());
+        drawable.draw(canvas);
+        return bitmap;
     }
 
     private Bitmap getPDFPreview(final File file, int size) {
@@ -1381,17 +1369,58 @@ public class FileBackend {
     }
 
     private Avatar getUncompressedAvatar(Uri uri) {
-        Bitmap bitmap = null;
         try {
-            bitmap = BitmapFactory.decodeStream(mXmppConnectionService.getContentResolver().openInputStream(uri));
-            return getPepAvatar(bitmap, Bitmap.CompressFormat.PNG, 100);
+            if (android.os.Build.VERSION.SDK_INT >= 28) {
+                ImageDecoder.Source source = ImageDecoder.createSource(mXmppConnectionService.getContentResolver(), uri);
+                int[] size = new int[] { 0, 0 };
+                boolean[] animated = new boolean[] { false };
+                String[] mimeType = new String[] { null };
+                Drawable drawable = ImageDecoder.decodeDrawable(source, (decoder, info, src) -> {
+                    mimeType[0] = info.getMimeType();
+                    animated[0] = info.isAnimated();
+                    size[0] = info.getSize().getWidth();
+                    size[1] = info.getSize().getHeight();
+                });
+
+                if (animated[0]) {
+                    Avatar avatar = getPepAvatar(uri, size[0], size[1], mimeType[0]);
+                    if (avatar != null) return avatar;
+                }
+
+                return getPepAvatar(drawDrawable(drawable), Bitmap.CompressFormat.PNG, 100);
+            } else {
+                Bitmap bitmap =
+                        BitmapFactory.decodeStream(
+                                mXmppConnectionService.getContentResolver().openInputStream(uri));
+                return getPepAvatar(bitmap, Bitmap.CompressFormat.PNG, 100);
+            }
         } catch (Exception e) {
             return null;
-        } finally {
-            if (bitmap != null) {
-                bitmap.recycle();
-            }
         }
+    }
+
+    private Avatar getPepAvatar(Uri uri, int width, int height, final String mimeType) throws IOException, NoSuchAlgorithmException {
+        AssetFileDescriptor fd = mXmppConnectionService.getContentResolver().openAssetFileDescriptor(uri, "r");
+        if (fd.getLength() > Config.AVATAR_CHAR_LIMIT) return null; // Too big to use raw file
+
+        ByteArrayOutputStream mByteArrayOutputStream = new ByteArrayOutputStream();
+        Base64OutputStream mBase64OutputStream =
+                new Base64OutputStream(mByteArrayOutputStream, Base64.DEFAULT);
+        MessageDigest digest = MessageDigest.getInstance("SHA-1");
+        DigestOutputStream mDigestOutputStream =
+                new DigestOutputStream(mBase64OutputStream, digest);
+
+        ByteStreams.copy(fd.createInputStream(), mDigestOutputStream);
+        mDigestOutputStream.flush();
+        mDigestOutputStream.close();
+
+        final Avatar avatar = new Avatar();
+        avatar.sha1sum = CryptoHelper.bytesToHex(digest.digest());
+        avatar.image = new String(mByteArrayOutputStream.toByteArray());
+        avatar.type = mimeType;
+        avatar.width = width;
+        avatar.height = height;
+        return avatar;
     }
 
     private Avatar getPepAvatar(Bitmap bitmap, Bitmap.CompressFormat format, int quality) {
@@ -1577,6 +1606,30 @@ public class FileBackend {
 
     public Uri getAvatarUri(String avatar) {
         return Uri.fromFile(getAvatarFile(avatar));
+    }
+
+    public Drawable cropCenterSquareDrawable(Uri image, int size) {
+        if (android.os.Build.VERSION.SDK_INT >= 28) {
+            try {
+                ImageDecoder.Source source = ImageDecoder.createSource(mXmppConnectionService.getContentResolver(), image);
+                return ImageDecoder.decodeDrawable(source, (decoder, info, src) -> {
+                    int w = info.getSize().getWidth();
+                    int h = info.getSize().getHeight();
+                    Rect r = rectForSize(w, h, size);
+                    decoder.setTargetSize(r.width(), r.height());
+
+                    int newSize = Math.min(r.width(), r.height());
+                    int left = (r.width() - newSize) / 2;
+                    int top = (r.height() - newSize) / 2;
+                    decoder.setCrop(new Rect(left, top, left + newSize, top + newSize));
+                });
+            } catch (final IOException e) {
+                return null;
+            }
+        } else {
+            Bitmap bitmap = cropCenterSquare(image, size);
+            return bitmap == null ? null : new BitmapDrawable(bitmap);
+        }
     }
 
     public Bitmap cropCenterSquare(Uri image, int size) {
@@ -1979,11 +2032,12 @@ public class FileBackend {
 
     public Bitmap getPreviewForUri(Attachment attachment, int size, boolean cacheOnly) {
         final String key = "attachment_" + attachment.getUuid().toString() + "_" + size;
-        final LruCache<String, Bitmap> cache = mXmppConnectionService.getBitmapCache();
-        Bitmap bitmap = cache.get(key);
-        if (bitmap != null || cacheOnly) {
-            return bitmap;
+        final LruCache<String, Drawable> cache = mXmppConnectionService.getDrawableCache();
+        Drawable drawable = cache.get(key);
+        if (drawable != null || cacheOnly) {
+            return drawDrawable(drawable);
         }
+        Bitmap bitmap = null;
         DownloadableFile file = new DownloadableFile(attachment.getUri().getPath());
         if ("application/pdf".equals(attachment.getMime())) {
             bitmap = cropCenterSquare(getPDFPreview(file, size), size);
@@ -1999,8 +2053,8 @@ public class FileBackend {
                 bitmap = withGifOverlay;
             }
         }
-        if (bitmap != null) {
-            cache.put(key, bitmap);
+        if (key != null && bitmap != null) {
+            cache.put(key, new BitmapDrawable(bitmap));
         }
         return bitmap;
     }
@@ -2116,6 +2170,9 @@ public class FileBackend {
                 });
     }
 
+    public void drawOverlay(Drawable bm, int pencil_overlay, float factor, boolean corner) {
+    }
+
     private static class Dimensions {
         public final int width;
         public final int height;
@@ -2165,12 +2222,32 @@ public class FileBackend {
         }
     }
 
-    public Bitmap getAvatar(String avatar, int size) {
+    public Drawable getAvatar(String avatar, int size) {
         if (avatar == null) {
             return null;
         }
-        Bitmap bm = cropCenter(getAvatarUri(avatar), size, size);
-        return bm;
+
+        if (android.os.Build.VERSION.SDK_INT >= 28) {
+            try {
+                ImageDecoder.Source source = ImageDecoder.createSource(getAvatarFile(avatar));
+                return ImageDecoder.decodeDrawable(source, (decoder, info, src) -> {
+                    int w = info.getSize().getWidth();
+                    int h = info.getSize().getHeight();
+                    Rect r = rectForSize(w, h, size);
+                    decoder.setTargetSize(r.width(), r.height());
+
+                    int newSize = Math.min(r.width(), r.height());
+                    int left = (r.width() - newSize) / 2;
+                    int top = (r.height() - newSize) / 2;
+                    decoder.setCrop(new Rect(left, top, left + newSize, top + newSize));
+                });
+            } catch (final IOException e) {
+                return null;
+            }
+        } else {
+            Bitmap bm = cropCenter(getAvatarUri(avatar), size, size);
+            return bm == null ? null : new BitmapDrawable(bm);
+        }
     }
 
     public boolean isFileAvailable(Message message) {
@@ -2502,7 +2579,7 @@ public class FileBackend {
                 }
                 final String mime = file.getMimeType();
                 if ("application/pdf".equals(mime)) {
-                    thumbnail = new BitmapDrawable(res, getPdfDocumentPreview(file, size));
+                    thumbnail = new BitmapDrawable(res, getPDFPreview(file, size));
                 } else if (mime.startsWith("video/")) {
                     thumbnail = new BitmapDrawable(res, getVideoPreview(file, size));
                 } else {

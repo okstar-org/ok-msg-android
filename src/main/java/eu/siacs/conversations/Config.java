@@ -124,7 +124,7 @@ public final class Config {
 
     public static final int AVATAR_SIZE = 480;
     public static final Bitmap.CompressFormat AVATAR_FORMAT = Bitmap.CompressFormat.JPEG;
-    public static final int AVATAR_CHAR_LIMIT = 9400;
+    public static final int AVATAR_CHAR_LIMIT = 100000;
 
     public static final Bitmap.CompressFormat IMAGE_FORMAT = Bitmap.CompressFormat.JPEG;
     public static final int IMAGE_QUALITY = 65;
@@ -144,7 +144,7 @@ public final class Config {
     public static final boolean AUTOMATICALLY_COMPLETE_SESSIONS = true;
     public static final boolean TWELVE_BYTE_IV = true;
 
-    public static final int MAX_DISPLAY_MESSAGE_CHARS = 40000;
+    public static final int MAX_DISPLAY_MESSAGE_CHARS = 10000;
     public static final int MAX_STORAGE_MESSAGE_CHARS = 2 * 1024 * 1024; //2MB
 
     public static final boolean ExportLogs = true; // automatically export logs

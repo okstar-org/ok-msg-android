@@ -56,6 +56,7 @@ import androidx.viewpager.widget.ViewPager;
 import android.util.Pair;
 import android.util.DisplayMetrics;
 import com.caverock.androidsvg.SVG;
+import android.os.Build;
 
 import com.google.android.material.tabs.TabLayout;
 import com.google.android.material.textfield.TextInputLayout;
@@ -1779,7 +1780,7 @@ public class Conversation extends AbstractEntity implements Blockable, Comparabl
                     } else {
                         xmppConnectionService.sendIqPacket(getAccount(), packet, (a, iq) -> {
                             session.updateWithResponse(iq);
-                        });
+                        }, 120L);
                     }
                 }
             };
@@ -3304,7 +3305,7 @@ public class Conversation extends AbstractEntity implements Blockable, Comparabl
                 String status = command.getAttribute("status");
                 if (status == null || (!status.equals("executing") && !action.equals("prev"))) return true;
 
-                if (actionToWebview != null && !action.equals("cancel")) {
+                if (actionToWebview != null && !action.equals("cancel") && Build.VERSION.SDK_INT >= 23) {
                     if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
                         actionToWebview.postWebMessage(new WebMessage("xmpp_xep0050/" + action), Uri.parse("*"));
                     }
@@ -3356,7 +3357,7 @@ public class Conversation extends AbstractEntity implements Blockable, Comparabl
                 executing = true;
                 xmppConnectionService.sendIqPacket(getAccount(), packet, (a, iq) -> {
                     updateWithResponse(iq);
-                });
+                }, 120L);
 
                 loading();
                 return false;

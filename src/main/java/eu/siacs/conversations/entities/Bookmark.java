@@ -107,7 +107,7 @@ public class Bookmark extends Element implements ListItem {
         final Element extensions = conference.findChild("extensions", Namespace.BOOKMARKS2);
         if (extensions != null) {
             for (final Element ext : extensions.getChildren()) {
-                if (ext.getName().equals("room") && ext.getNamespace().equals("jabber:iq:roster")) {
+                if (ext.getName().equals("group") && ext.getNamespace().equals("jabber:iq:roster")) {
                     bookmark.addGroup(ext.getContent());
                 }
             }
@@ -121,21 +121,21 @@ public class Bookmark extends Element implements ListItem {
     }
 
     public void addGroup(final String group) {
-        addChild("room", "jabber:iq:roster").setContent(group);
-        extensions.addChild("room", "jabber:iq:roster").setContent(group);
+        addChild("group", "jabber:iq:roster").setContent(group);
+        extensions.addChild("group", "jabber:iq:roster").setContent(group);
     }
 
     public void setGroups(List<String> groups) {
         final List<Element> children = new ArrayList<>(getChildren());
         for (final Element el : children) {
-            if (el.getName().equals("room")) {
+            if (el.getName().equals("group")) {
                 removeChild(el);
             }
         }
 
         final List<Element> extChildren = new ArrayList<>(extensions.getChildren());
         for (final Element el : extChildren) {
-            if (el.getName().equals("room")) {
+            if (el.getName().equals("group")) {
                 extensions.removeChild(el);
             }
         }
@@ -198,15 +198,26 @@ public class Bookmark extends Element implements ListItem {
     }
 
     public Jid getFullJid() {
-        final String nick = getNick();
-        return jid == null || nick == null || nick.trim().isEmpty() ? jid : jid.withResource(nick);
+        return getFullJid(getNick(), true);
+    }
+
+    private Jid getFullJid(final String nick, boolean tryFix) {
+        try {
+            return jid == null || nick == null || nick.trim().isEmpty() ? jid : jid.withResource(nick);
+        } catch (final IllegalArgumentException e) {
+            try {
+                return tryFix ? getFullJid(gnu.inet.encoding.Punycode.encode(nick), false) : null;
+            } catch (final gnu.inet.encoding.PunycodeException | ArrayIndexOutOfBoundsException e2) {
+                return null;
+            }
+        }
     }
 
     public List<Tag> getGroupTags() {
         ArrayList<Tag> tags = new ArrayList<>();
 
         for (Element element : getChildren()) {
-            if (element.getName().equals("room") && element.getContent() != null) {
+            if (element.getName().equals("group") && element.getContent() != null) {
                 String group = element.getContent();
                 tags.add(new Tag(group, UIHelper.getColorForName(group, true), 0, account, true));
             }
@@ -218,7 +229,7 @@ public class Bookmark extends Element implements ListItem {
     @Override
     public List<Tag> getTags(Context context) {
         ArrayList<Tag> tags = new ArrayList<>();
-        tags.add(new Tag("room", UIHelper.getColorForName("Channel",true), 0, account, true));
+        tags.add(new Tag("group", UIHelper.getColorForName("Channel",true), 0, account, true));
         tags.addAll(getGroupTags());
         return tags;
     }

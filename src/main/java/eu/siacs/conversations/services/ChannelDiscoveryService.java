@@ -67,14 +67,17 @@ public class ChannelDiscoveryService {
         cache.invalidateAll();
     }
 
-    void discover(@NonNull final String query, Method method, OnChannelSearchResultsFound onChannelSearchResultsFound) {
-        final List<Room> result = cache.getIfPresent(key(method, query));
+    void discover(@NonNull final String query,
+                  Method method,
+                  Map<Jid, Account> mucServices,
+                  OnChannelSearchResultsFound onChannelSearchResultsFound) {
+        final List<Room> result = cache.getIfPresent(key(method, mucServices, query));
         if (result != null) {
             onChannelSearchResultsFound.onChannelSearchResultsFound(result);
             return;
         }
         if (method == Method.LOCAL_SERVER) {
-            discoverChannelsLocalServers(query, onChannelSearchResultsFound);
+            discoverChannelsLocalServers(query, mucServices, onChannelSearchResultsFound);
         } else {
             if (query.isEmpty()) {
                 discoverChannelsJabberNetwork(onChannelSearchResultsFound);
@@ -96,7 +99,7 @@ public class ChannelDiscoveryService {
                         logError(response);
                         return;
                     }
-                    cache.put(key(Method.JABBER_NETWORK, ""), body.items);
+                    cache.put(key(Method.JABBER_NETWORK, null, ""), body.items);
                     listener.onChannelSearchResultsFound(body.items);
                 }
 
@@ -124,7 +127,7 @@ public class ChannelDiscoveryService {
                     logError(response);
                     return;
                 }
-                cache.put(key(Method.JABBER_NETWORK, query), body.result.items);
+                cache.put(key(Method.JABBER_NETWORK, null, query), body.result.items);
                 listener.onChannelSearchResultsFound(body.result.items);
             }
 
@@ -136,18 +139,19 @@ public class ChannelDiscoveryService {
         });
     }
 
-    private void discoverChannelsLocalServers(final String query, final OnChannelSearchResultsFound listener) {
-        final Map<Jid, Account> localMucService = getLocalMucServices();
+    private void discoverChannelsLocalServers(
+            final String query, Map<Jid, Account> mucServices, final OnChannelSearchResultsFound listener) {
+        final Map<Jid, Account> localMucService = mucServices == null ? getLocalMucServices() : mucServices;
         Log.d(Config.LOGTAG, "checking with " + localMucService.size() + " muc services");
         if (localMucService.size() == 0) {
             listener.onChannelSearchResultsFound(Collections.emptyList());
             return;
         }
         if (!query.isEmpty()) {
-            final List<Room> cached = cache.getIfPresent(key(Method.LOCAL_SERVER, ""));
+            final List<Room> cached = cache.getIfPresent(key(Method.LOCAL_SERVER, mucServices, ""));
             if (cached != null) {
                 final List<Room> results = copyMatching(cached, query);
-                cache.put(key(Method.LOCAL_SERVER, query), results);
+                cache.put(key(Method.LOCAL_SERVER, mucServices, query), results);
                 listener.onChannelSearchResultsFound(results);
             }
         }
@@ -160,6 +164,7 @@ public class ChannelDiscoveryService {
                 if (itemsResponse.getType() == IqPacket.TYPE.RESULT) {
                     final List<Jid> items = IqParser.items(itemsResponse);
                     for (Jid item : items) {
+                        if (item.isDomainJid()) continue; // Only looking for MUCs for now, and by spec they have a localpart
                         IqPacket infoRequest = service.getIqGenerator().queryDiscoInfo(item);
                         queriesInFlight.incrementAndGet();
                         service.sendIqPacket(account, infoRequest, new OnIqPacketReceived() {
@@ -170,31 +175,30 @@ public class ChannelDiscoveryService {
                                     if (room != null) {
                                         rooms.add(room);
                                     }
-                                    if (queriesInFlight.decrementAndGet() <= 0) {
-                                        finishDiscoSearch(rooms, query, listener);
-                                    }
-                                } else {
-                                    queriesInFlight.decrementAndGet();
+                                }
+                                if (queriesInFlight.decrementAndGet() <= 0) {
+                                    finishDiscoSearch(rooms, query, mucServices, listener);
                                 }
                             }
-                        });
+                        }, 20L);
                     }
                 }
                 if (queriesInFlight.decrementAndGet() <= 0) {
-                    finishDiscoSearch(rooms, query, listener);
+                    finishDiscoSearch(rooms, query, mucServices, listener);
                 }
             });
         }
     }
 
-    private void finishDiscoSearch(List<Room> rooms, String query, OnChannelSearchResultsFound listener) {
+    private void finishDiscoSearch(
+            List<Room> rooms, String query, Map<Jid, Account> mucServices, OnChannelSearchResultsFound listener) {
         Collections.sort(rooms);
-        cache.put(key(Method.LOCAL_SERVER, ""), rooms);
+        cache.put(key(Method.LOCAL_SERVER, mucServices, ""), rooms);
         if (query.isEmpty()) {
             listener.onChannelSearchResultsFound(rooms);
         } else {
             List<Room> results = copyMatching(rooms, query);
-            cache.put(key(Method.LOCAL_SERVER, query), results);
+            cache.put(key(Method.LOCAL_SERVER, mucServices, query), results);
             listener.onChannelSearchResultsFound(rooms);
         }
     }
@@ -228,8 +232,9 @@ public class ChannelDiscoveryService {
         return localMucServices;
     }
 
-    private static String key(Method method, String query) {
-        return String.format("%s\00%s", method, query);
+    private static String key(Method method, Map<Jid, Account> mucServices, String query) {
+        final String servicesKey = mucServices == null ? "\00" : String.join("\00", mucServices.keySet());
+        return String.format("%s\00%s\00%s", method, servicesKey, query);
     }
 
     private static void logError(final Response response) {

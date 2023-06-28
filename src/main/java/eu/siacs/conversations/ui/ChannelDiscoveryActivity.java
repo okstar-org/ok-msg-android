@@ -9,6 +9,7 @@ import android.preference.PreferenceManager;
 import android.text.Html;
 import android.text.method.LinkMovementMethod;
 import android.util.Log;
+import java.util.HashMap;
 import android.view.KeyEvent;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -20,6 +21,8 @@ import android.widget.TextView;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.widget.Toolbar;
 import androidx.databinding.DataBindingUtil;
+
+import com.google.common.base.Strings;
 
 import java.util.Collections;
 import java.util.List;
@@ -33,6 +36,7 @@ import eu.siacs.conversations.entities.Bookmark;
 import eu.siacs.conversations.entities.Conversation;
 import eu.siacs.conversations.entities.Room;
 import eu.siacs.conversations.services.ChannelDiscoveryService;
+import eu.siacs.conversations.services.QuickConversationsService;
 import eu.siacs.conversations.ui.adapter.ChannelSearchResultAdapter;
 import eu.siacs.conversations.ui.util.PendingItem;
 import eu.siacs.conversations.ui.util.SoftKeyboardUtils;
@@ -54,7 +58,9 @@ public class ChannelDiscoveryActivity extends XmppActivity implements MenuItem.O
     private static String jabberNetwork = "JABBER_NETWORK";
     private static String localServer = "LOCAL_SERVER";
 
+    private String[] pendingServices = null;
     private ChannelDiscoveryService.Method method = ChannelDiscoveryService.Method.LOCAL_SERVER;
+    private static HashMap<Jid, Account> mucServices = null;
 
     private boolean optedIn = false;
 
@@ -65,6 +71,15 @@ public class ChannelDiscoveryActivity extends XmppActivity implements MenuItem.O
 
     @Override
     void onBackendConnected() {
+        if (pendingServices != null) {
+            mucServices = new HashMap<>();
+            for (int i = 0; i < pendingServices.length; i += 2) {
+                mucServices.put(Jid.of(pendingServices[i]), xmppConnectionService.findAccountByJid(Jid.of(pendingServices[i+1])));
+            }
+        }
+
+        this.method = getMethod(this);
+
         if (optedIn || method == ChannelDiscoveryService.Method.LOCAL_SERVER) {
             final String query;
             if (mMenuSearchView != null && mMenuSearchView.isActionViewExpanded()) {
@@ -73,7 +88,7 @@ public class ChannelDiscoveryActivity extends XmppActivity implements MenuItem.O
                 query = mInitialSearchValue.peek();
             }
             toggleLoadingScreen();
-            xmppConnectionService.discoverChannels(query, this.method, this);
+            xmppConnectionService.discoverChannels(query, this.method, this.mucServices, this);
         }
     }
 
@@ -91,9 +106,18 @@ public class ChannelDiscoveryActivity extends XmppActivity implements MenuItem.O
         if (search != null) {
             mInitialSearchValue.push(search);
         }
+
+        pendingServices = getIntent().getStringArrayExtra("services");
     }
 
     public static ChannelDiscoveryService.Method getMethod(final Context c) {
+        if (mucServices != null) return ChannelDiscoveryService.Method.LOCAL_SERVER;
+        if ( Strings.isNullOrEmpty(Config.CHANNEL_DISCOVERY)) {
+            return ChannelDiscoveryService.Method.LOCAL_SERVER;
+        }
+        if (QuickConversationsService.isQuicksy()) {
+            return ChannelDiscoveryService.Method.JABBER_NETWORK;
+        }
         final SharedPreferences p = PreferenceManager.getDefaultSharedPreferences(c);
         final String m = p.getString("channel_discovery_method", c.getString(R.string.default_channel_discovery));
         try {
@@ -140,7 +164,7 @@ public class ChannelDiscoveryActivity extends XmppActivity implements MenuItem.O
             mSearchEditText.append(initialSearchValue);
             mSearchEditText.requestFocus();
             if ((optedIn || method == ChannelDiscoveryService.Method.LOCAL_SERVER) && xmppConnectionService != null) {
-                xmppConnectionService.discoverChannels(initialSearchValue, this.method, this);
+                xmppConnectionService.discoverChannels(initialSearchValue, this.method, this.mucServices, this);
             }
         }
         mSearchEditText.setOnEditorActionListener(this);
@@ -173,7 +197,7 @@ public class ChannelDiscoveryActivity extends XmppActivity implements MenuItem.O
         mSearchEditText.setText("");
         toggleLoadingScreen();
         if (optedIn || method == ChannelDiscoveryService.Method.LOCAL_SERVER) {
-            xmppConnectionService.discoverChannels(null, this.method, this);
+            xmppConnectionService.discoverChannels(null, this.method, this.mucServices, this);
         }
         return true;
     }
@@ -201,7 +225,7 @@ public class ChannelDiscoveryActivity extends XmppActivity implements MenuItem.O
     public void onStart() {
         super.onStart();
         this.method = getMethod(this);
-        if (!optedIn && method == ChannelDiscoveryService.Method.JABBER_NETWORK) {
+        if (pendingServices == null && !optedIn && method == ChannelDiscoveryService.Method.JABBER_NETWORK) {
             final AlertDialog.Builder builder = new AlertDialog.Builder(this);
             builder.setTitle(R.string.channel_discovery_opt_in_title);
             builder.setMessage(Html.fromHtml(getString(R.string.channel_discover_opt_in_message)));
@@ -240,7 +264,7 @@ public class ChannelDiscoveryActivity extends XmppActivity implements MenuItem.O
         preferences.edit().putBoolean(CHANNEL_DISCOVERY_OPT_IN, true).apply();
         optedIn = true;
         toggleLoadingScreen();
-        xmppConnectionService.discoverChannels(null, this.method, this);
+        xmppConnectionService.discoverChannels(null, this.method, this.mucServices, this);
     }
 
     @Override
@@ -248,7 +272,7 @@ public class ChannelDiscoveryActivity extends XmppActivity implements MenuItem.O
         if (optedIn || method == ChannelDiscoveryService.Method.LOCAL_SERVER) {
             toggleLoadingScreen();
             SoftKeyboardUtils.hideSoftKeyboard(this);
-            xmppConnectionService.discoverChannels(v.getText().toString(), this.method, this);
+            xmppConnectionService.discoverChannels(v.getText().toString(), this.method, this.mucServices, this);
         }
         return true;
     }

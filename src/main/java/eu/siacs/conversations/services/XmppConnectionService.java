@@ -548,7 +548,6 @@ public class XmppConnectionService extends Service {
     private OpenPgpServiceConnection pgpServiceConnection;
     private PgpEngine mPgpEngine = null;
     private WakeLock wakeLock;
-    private LruCache<String, Bitmap> mBitmapCache;
     private final BroadcastReceiver mInternalEventReceiver = new InternalEventReceiver();
     private final BroadcastReceiver mInternalScreenEventReceiver = new InternalEventReceiver();
 
@@ -1117,8 +1116,8 @@ public class XmppConnectionService extends Service {
         mChannelDiscoveryService.initializeMuclumbusService();
     }
 
-    public void discoverChannels(String query, ChannelDiscoveryService.Method method, ChannelDiscoveryService.OnChannelSearchResultsFound onChannelSearchResultsFound) {
-        mChannelDiscoveryService.discover(Strings.nullToEmpty(query).trim(), method, onChannelSearchResultsFound);
+    public void discoverChannels(String query, ChannelDiscoveryService.Method method, Map<Jid, Account> mucServices, ChannelDiscoveryService.OnChannelSearchResultsFound onChannelSearchResultsFound) {
+        mChannelDiscoveryService.discover(Strings.nullToEmpty(query).trim(), method, mucServices, onChannelSearchResultsFound);
     }
 
     public boolean isDataSaverDisabled() {
@@ -1492,6 +1491,7 @@ public class XmppConnectionService extends Service {
     @SuppressLint("TrulyRandom")
     @Override
     public void onCreate() {
+        org.jxmpp.stringprep.libidn.LibIdnXmppStringprep.setup();
         updateNotificationChannels();
         setTheme(ThemeHelper.find(this));
         ThemeHelper.applyCustomColors(this);
@@ -1515,17 +1515,14 @@ public class XmppConnectionService extends Service {
         final int maxMemory = (int) (Runtime.getRuntime().maxMemory() / 1024);
         final int cacheSize = maxMemory / 10;
         ActivityManager manager = (ActivityManager) this.getSystemService(Context.ACTIVITY_SERVICE);
-        this.mBitmapCache = new LruCache<String, Bitmap>(cacheSize) {
-            @Override
-            protected int sizeOf(final String key, final Bitmap bitmap) {
-                return bitmap.getByteCount() / 1024;
-            }
-        };
         this.mDrawableCache = new LruCache<String, Drawable>(cacheSize) {
             @Override
             protected int sizeOf(final String key, final Drawable drawable) {
                 if (drawable instanceof BitmapDrawable) {
-                    return ((BitmapDrawable) drawable).getBitmap().getByteCount() / 1024;
+                    Bitmap bitmap =  ((BitmapDrawable) drawable).getBitmap();
+                    if (bitmap == null) return 1024;
+
+                    return bitmap.getByteCount() / 1024;
                 } else {
                     return drawable.getIntrinsicWidth() * drawable.getIntrinsicHeight() * 40 / 1024;
                 }
@@ -1679,7 +1676,7 @@ public class XmppConnectionService extends Service {
         super.onTrimMemory(level);
         if (level >= TRIM_MEMORY_COMPLETE) {
             Log.d(Config.LOGTAG, "clear cache due to low memory");
-            getBitmapCache().evictAll();
+            getDrawableCache().evictAll();
         }
     }
 
@@ -2444,7 +2441,7 @@ public class XmppConnectionService extends Service {
                         databaseBackend.readRoster(account.getRoster());
                         account.initAccountServices(XmppConnectionService.this); //roster needs to be loaded at this stage
                     }
-                    getBitmapCache().evictAll();
+                    getDrawableCache().evictAll();
                     loadPhoneContacts();
                     Log.d(Config.LOGTAG, "restoring messages...");
                     final long startMessageRestore = SystemClock.elapsedRealtime();
@@ -3444,7 +3441,7 @@ public class XmppConnectionService extends Service {
                     }
                     final Jid joinJid = mucOptions.getSelf().getFullJid();
                     Log.d(Config.LOGTAG, account.getJid().asBareJid().toString() + ": joining conversation " + joinJid.toString());
-                    PresencePacket packet = mPresenceGenerator.selfPresence(account, Presence.Status.ONLINE, mucOptions.nonanonymous() || onConferenceJoined != null);
+                    PresencePacket packet = mPresenceGenerator.selfPresence(account, Presence.Status.ONLINE, mucOptions.nonanonymous() || onConferenceJoined != null, mucOptions.getSelf().getNick());
                     packet.setTo(joinJid);
                     Element x = packet.addChild("x", "http://jabber.org/protocol/muc");
                     if (conversation.getMucOptions().getPassword() != null) {
@@ -3712,17 +3709,18 @@ public class XmppConnectionService extends Service {
             conversation.setContactJid(full);
             databaseBackend.updateConversation(conversation);
         }
+        final String nick = self.getNick();
         final Bookmark bookmark = conversation.getBookmark();
         final String bookmarkedNick = bookmark == null ? null : bookmark.getNick();
-        if (bookmark != null && (tookProposedNickFromBookmark || TextUtils.isEmpty(bookmarkedNick)) && !full.getResource().equals(bookmarkedNick)) {
+        if (bookmark != null && (tookProposedNickFromBookmark || TextUtils.isEmpty(bookmarkedNick)) && !nick.equals(bookmarkedNick)) {
             final Account account = conversation.getAccount();
             final String defaultNick = MucOptions.defaultNick(account);
-            if (TextUtils.isEmpty(bookmarkedNick) && full.getResource().equals(defaultNick)) {
+            if (TextUtils.isEmpty(bookmarkedNick) && nick.equals(defaultNick)) {
                 Log.d(Config.LOGTAG, account.getJid().asBareJid() + ": do not overwrite empty bookmark nick with default nick for " + conversation.getJid().asBareJid());
                 return;
             }
-            Log.d(Config.LOGTAG, account.getJid().asBareJid() + ": persist nick '" + full.getResource() + "' into bookmark for " + conversation.getJid().asBareJid());
-            bookmark.setNick(full.getResource());
+            Log.d(Config.LOGTAG, account.getJid().asBareJid() + ": persist nick '" + nick + "' into bookmark for " + conversation.getJid().asBareJid());
+            bookmark.setNick(nick);
             createBookmark(bookmark.getAccount(), bookmark);
         }
     }
@@ -3747,7 +3745,7 @@ public class XmppConnectionService extends Service {
                     callback.error(R.string.nick_in_use, conversation);
                 }
             });
-            final PresencePacket packet = mPresenceGenerator.selfPresence(account, Presence.Status.ONLINE, options.nonanonymous());
+            final PresencePacket packet = mPresenceGenerator.selfPresence(account, Presence.Status.ONLINE, options.nonanonymous(), nick);
             packet.setTo(joinJid);
             sendPresencePacket(account, packet);
         } else {
@@ -4663,7 +4661,7 @@ public class XmppConnectionService extends Service {
                 if (conversation.getAccount() == account && conversation.getMode() == Conversational.MODE_MULTI) {
                     final MucOptions mucOptions = conversation.getMucOptions();
                     if (mucOptions.online()) {
-                        PresencePacket packet = mPresenceGenerator.selfPresence(account, Presence.Status.ONLINE, mucOptions.nonanonymous());
+                        PresencePacket packet = mPresenceGenerator.selfPresence(account, Presence.Status.ONLINE, mucOptions.nonanonymous(), mucOptions.getSelf().getNick());
                         packet.setTo(mucOptions.getSelf().getFullJid());
                         connection.sendPresencePacket(packet);
                     }
@@ -5211,10 +5209,6 @@ public class XmppConnectionService extends Service {
         setMemorizingTrustManager(tm);
     }
 
-    public LruCache<String, Bitmap> getBitmapCache() {
-        return this.mBitmapCache;
-    }
-
     public void syncRosterToDisk(final Account account) {
         Runnable runnable = () -> databaseBackend.writeRoster(account.getRoster());
         mDatabaseWriterExecutor.execute(runnable);
@@ -5285,9 +5279,13 @@ public class XmppConnectionService extends Service {
     }
 
     public void sendIqPacket(final Account account, final IqPacket packet, final OnIqPacketReceived callback) {
+        sendIqPacket(account, packet, callback, null);
+    }
+
+    public void sendIqPacket(final Account account, final IqPacket packet, final OnIqPacketReceived callback, Long timeout) {
         final XmppConnection connection = account.getXmppConnection();
         if (connection != null) {
-            connection.sendIqPacket(packet, callback);
+            connection.sendIqPacket(packet, callback, timeout);
         } else if (callback != null) {
             callback.onIqPacketReceived(account, new IqPacket(IqPacket.TYPE.TIMEOUT));
         }
@@ -5715,7 +5713,8 @@ public class XmppConnectionService extends Service {
     public void saveConversationAsBookmark(Conversation conversation, String name) {
         final Account account = conversation.getAccount();
         final Bookmark bookmark = new Bookmark(account, conversation.getJid().asBareJid());
-        final String nick = conversation.getJid().getResource();
+        String nick = conversation.getMucOptions().getActualNick();
+        if (nick == null) nick = conversation.getJid().getResource();
         if (nick != null && !nick.isEmpty() && !nick.equals(MucOptions.defaultNick(account))) {
             bookmark.setNick(nick);
         }
@@ -5840,18 +5839,12 @@ public class XmppConnectionService extends Service {
     }
 
     public void evictPreview(File f) {
-        if (mBitmapCache.remove(f.getAbsolutePath()) != null) {
-            Log.d(Config.LOGTAG, "deleted cached preview");
-        }
         if (mDrawableCache.remove(f.getAbsolutePath()) != null) {
             Log.d(Config.LOGTAG, "deleted cached preview");
         }
     }
 
     public void evictPreview(String uuid) {
-        if (mBitmapCache.remove(uuid) != null) {
-            Log.d(Config.LOGTAG, "deleted cached preview");
-        }
         if (mDrawableCache.remove(uuid) != null) {
             Log.d(Config.LOGTAG, "deleted cached preview");
         }
