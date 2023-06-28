@@ -7,8 +7,10 @@ import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.Drawable;
 import android.os.AsyncTask;
 import android.widget.ImageView;
+import android.graphics.drawable.AnimatedImageDrawable;
 
 import androidx.annotation.DimenRes;
+import android.os.Build;
 
 import java.lang.ref.WeakReference;
 import java.util.concurrent.RejectedExecutionException;
@@ -19,7 +21,7 @@ import eu.siacs.conversations.entities.Account;
 import eu.siacs.conversations.services.AvatarService;
 import eu.siacs.conversations.ui.XmppActivity;
 
-public class AvatarWorkerTask extends AsyncTask<AvatarService.Avatarable, Void, Bitmap> {
+public class AvatarWorkerTask extends AsyncTask<AvatarService.Avatarable, Void, Drawable> {
     private final WeakReference<ImageView> imageViewReference;
     private AvatarService.Avatarable avatarable = null;
     private @DimenRes
@@ -32,7 +34,7 @@ public class AvatarWorkerTask extends AsyncTask<AvatarService.Avatarable, Void, 
     }
 
     @Override
-    protected Bitmap doInBackground(AvatarService.Avatarable... params) {
+    protected Drawable doInBackground(AvatarService.Avatarable... params) {
         this.avatarable = params[0];
         final XmppActivity activity = XmppActivity.find(imageViewReference);
         if (activity == null) {
@@ -42,12 +44,15 @@ public class AvatarWorkerTask extends AsyncTask<AvatarService.Avatarable, Void, 
     }
 
     @Override
-    protected void onPostExecute(Bitmap bitmap) {
+    protected void onPostExecute(Drawable bitmap) {
         if (bitmap != null && !isCancelled()) {
             final ImageView imageView = imageViewReference.get();
             if (imageView != null) {
-                imageView.setImageBitmap(bitmap);
+                imageView.setImageDrawable(bitmap);
                 imageView.setBackgroundColor(0x00000000);
+                if (Build.VERSION.SDK_INT >= 28 && bitmap instanceof AnimatedImageDrawable) {
+                    ((AnimatedImageDrawable) bitmap).start();
+                }
             }
         }
     }
@@ -95,15 +100,15 @@ public class AvatarWorkerTask extends AsyncTask<AvatarService.Avatarable, Void, 
             if (activity == null) {
                 return;
             }
-            final Bitmap bm = activity.avatarService().get(avatarable, (int) activity.getResources().getDimension(size), false);
+            final Drawable bm = activity.avatarService().get(avatarable, (int) activity.getResources().getDimension(size), true);
             setContentDescription(avatarable, imageView);
             if (bm != null && JidFromJabberNetwork == null) {
                 cancelPotentialWork(avatarable, imageView);
                 if (overlay) {
                     activity.xmppConnectionService.fileBackend.drawOverlay(bm, R.drawable.pencil_overlay, 0.35f, true);
-                    imageView.setImageBitmap(bm);
+                    imageView.setImageDrawable(bm);
                 } else {
-                    imageView.setImageBitmap(bm);
+                    imageView.setImageDrawable(bm);
                 }
                 imageView.setBackgroundColor(0x00000000);
             } else if (JidFromJabberNetwork != null) {
@@ -112,6 +117,9 @@ public class AvatarWorkerTask extends AsyncTask<AvatarService.Avatarable, Void, 
                 } catch (Exception e) {
                     e.printStackTrace();
                     loadAvatar(avatarable, imageView, size, overlay, null);
+                }
+                if (Build.VERSION.SDK_INT >= 28 && bm instanceof AnimatedImageDrawable) {
+                    ((AnimatedImageDrawable) bm).start();
                 }
             } else {
                 imageView.setBackgroundColor(avatarable.getAvatarBackgroundColor());

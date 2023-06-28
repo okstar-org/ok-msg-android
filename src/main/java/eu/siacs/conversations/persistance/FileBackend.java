@@ -1118,7 +1118,9 @@ public class FileBackend {
         return drawDrawable(drawable);
     }
 
-    protected Bitmap drawDrawable(Drawable drawable) {
+    public static Bitmap drawDrawable(Drawable drawable) {
+        if (drawable == null) return null;
+
         Bitmap bitmap = null;
 
         if (drawable instanceof BitmapDrawable) {
@@ -2101,6 +2103,9 @@ public class FileBackend {
                 });
     }
 
+    public void drawOverlay(Drawable bm, int pencil_overlay, float factor, boolean corner) {
+    }
+
     private static class Dimensions {
         public final int width;
         public final int height;
@@ -2150,12 +2155,12 @@ public class FileBackend {
         }
     }
 
-    public Bitmap getAvatar(String avatar, int size) {
+    public Drawable getAvatar(String avatar, int size) {
         if (avatar == null) {
             return null;
         }
         Bitmap bm = cropCenter(getAvatarUri(avatar), size, size);
-        return bm;
+        return new BitmapDrawable(bm);
     }
 
     public boolean isFileAvailable(Message message) {

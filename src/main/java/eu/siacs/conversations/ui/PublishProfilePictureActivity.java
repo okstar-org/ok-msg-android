@@ -14,6 +14,8 @@ import android.view.View.OnLongClickListener;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.graphics.drawable.BitmapDrawable;
+import android.graphics.drawable.Drawable;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.StringRes;
@@ -241,12 +243,12 @@ public class PublishProfilePictureActivity extends XmppActivity implements XmppC
 
     protected void loadImageIntoPreview(Uri uri) {
 
-        Bitmap bm = null;
+        Drawable bm = null;
         if (uri == null) {
             bm = avatarService().get(account, getPixel(Config.AVATAR_SIZE));
         } else {
             try {
-                bm = xmppConnectionService.getFileBackend().cropCenterSquare(uri, getPixel(Config.AVATAR_SIZE));
+                bm = new BitmapDrawable(xmppConnectionService.getFileBackend().cropCenterSquare(uri, (int) getResources().getDimension(R.dimen.publish_avatar_size)));
             } catch (Exception e) {
                 Log.d(Config.LOGTAG, "unable to load avatar into image view", e);
             }
@@ -258,7 +260,7 @@ public class PublishProfilePictureActivity extends XmppActivity implements XmppC
             this.hintOrWarning.setText(R.string.error_publish_avatar_converting);
             return;
         }
-        this.avatar.setImageBitmap(bm);
+        this.avatar.setImageDrawable(bm);
         if (support) {
             togglePublishButton(uri != null, R.string.publish);
             this.hintOrWarning.setVisibility(View.INVISIBLE);

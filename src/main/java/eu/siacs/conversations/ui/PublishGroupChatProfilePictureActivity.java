@@ -35,6 +35,8 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
+import android.graphics.drawable.BitmapDrawable;
+import android.graphics.drawable.Drawable;
 
 import androidx.annotation.StringRes;
 import androidx.appcompat.widget.Toolbar;
@@ -78,14 +80,14 @@ public class PublishGroupChatProfilePictureActivity extends XmppActivity impleme
 
     private void reloadAvatar() {
         final int size = getPixel(Config.AVATAR_SIZE);
-        Bitmap bitmap;
+        Drawable bitmap;
         if (uri == null) {
             bitmap = xmppConnectionService.getAvatarService().get(conversation, size);
         } else {
             Log.d(Config.LOGTAG, "loading " + uri.toString() + " into preview");
-            bitmap = xmppConnectionService.getFileBackend().cropCenterSquare(uri, size);
+            bitmap = new BitmapDrawable(xmppConnectionService.getFileBackend().cropCenterSquare(uri, size));
         }
-        this.binding.accountImage.setImageBitmap(bitmap);
+        this.binding.accountImage.setImageDrawable(bitmap);
         this.binding.publishButton.setEnabled(uri != null);
     }
 

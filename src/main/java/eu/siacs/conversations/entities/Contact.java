@@ -51,6 +51,7 @@ import eu.siacs.conversations.xml.Element;
 import eu.siacs.conversations.xmpp.Jid;
 import eu.siacs.conversations.xmpp.jingle.RtpCapability;
 import eu.siacs.conversations.xmpp.pep.Avatar;
+import eu.siacs.conversations.persistance.FileBackend;
 
 public class Contact implements ListItem, Blockable {
     public static final String TABLENAME = "contacts";
@@ -772,7 +773,7 @@ public class Contact implements ListItem, Blockable {
         ).setAddress(
                 Uri.fromParts("xmpp", account.getJid().asBareJid().toString(), null)
         ).setIcon(
-                Icon.createWithBitmap(ctx.getAvatarService().get(this, AvatarService.getSystemUiAvatarSize(ctx) / 2, false))
+                Icon.createWithBitmap(FileBackend.drawDrawable(ctx.getAvatarService().get(this, AvatarService.getSystemUiAvatarSize(ctx) / 2, false)))
         ).setHighlightColor(
                 0x7401CF
         ).setShortDescription(
