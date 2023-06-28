@@ -1627,7 +1627,8 @@ public class FileBackend {
                 return null;
             }
         } else {
-            return new BitmapDrawable(cropCenterSquare(image, size));
+            Bitmap bitmap = cropCenterSquare(image, size);
+            return bitmap == null ? null : new BitmapDrawable(bitmap);
         }
     }
 
@@ -2245,7 +2246,7 @@ public class FileBackend {
             }
         } else {
             Bitmap bm = cropCenter(getAvatarUri(avatar), size, size);
-            return new BitmapDrawable(bm);
+            return bm == null ? null : new BitmapDrawable(bm);
         }
     }
 
