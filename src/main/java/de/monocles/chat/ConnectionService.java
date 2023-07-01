@@ -40,6 +40,8 @@ import android.util.Log;
 import com.intentfilter.androidpermissions.PermissionManager;
 import com.intentfilter.androidpermissions.NotificationSettings;
 import com.intentfilter.androidpermissions.models.DeniedPermissions;
+
+import eu.siacs.conversations.persistance.FileBackend;
 import io.michaelrocks.libphonenumber.android.NumberParseException;
 
 import eu.siacs.conversations.R;
@@ -215,11 +217,11 @@ public class ConnectionService extends android.telecom.ConnectionService {
             this.account = account;
             this.with = with;
 
-            gatewayIcon = Icon.createWithBitmap(xmppConnectionService.getAvatarService().get(
+            gatewayIcon = Icon.createWithBitmap(FileBackend.drawDrawable(xmppConnectionService.getAvatarService().get(
                     account.getRoster().getContact(Jid.of(with.getDomain())),
                     AvatarService.getSystemUiAvatarSize(xmppConnectionService),
                     false
-            ));
+            )));
 
             if (postDialString != null) {
                 for (int i = postDialString.length() - 1; i >= 0; i--) {

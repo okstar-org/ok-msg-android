@@ -306,6 +306,11 @@ public class ConferenceDetailsActivity extends XmppActivity implements OnConvers
             intent.putExtra("uuid", mConversation.getUuid());
             startActivity(intent);
         });
+        this.binding.relatedMucs.setOnClickListener(v -> {
+            final Intent intent = new Intent(this, ChannelDiscoveryActivity.class);
+            intent.putExtra("services", new String[]{ mConversation.getJid().getDomain().toEscapedString(), mConversation.getAccount().getJid().toEscapedString() });
+            startActivity(intent);
+        });
         showIntro(this, true);
     }
 

@@ -775,8 +775,14 @@ public class MessageAdapter extends ArrayAdapter<Message> {
                 if (message.getConversation().getMode() == Conversation.MODE_MULTI && message.getStatus() == Message.STATUS_RECEIVED) {
                     if (message.getConversation() instanceof Conversation) {
                         final Conversation conversation = (Conversation) message.getConversation();
-                        final Pattern pattern = NotificationService.generateNickHighlightPattern(conversation.getMucOptions().getActualNick());
-                        final Matcher matcher = pattern.matcher(body);
+                        Pattern pattern = NotificationService.generateNickHighlightPattern(conversation.getMucOptions().getActualNick());
+                        Matcher matcher = pattern.matcher(body);
+                        while (matcher.find()) {
+                            body.setSpan(new StyleSpan(Typeface.BOLD), matcher.start(), matcher.end(), Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
+                        }
+
+                        pattern = NotificationService.generateNickHighlightPattern(conversation.getMucOptions().getActualName());
+                        matcher = pattern.matcher(body);
                         while (matcher.find()) {
                             body.setSpan(new StyleSpan(Typeface.BOLD), matcher.start(), matcher.end(), Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
                         }

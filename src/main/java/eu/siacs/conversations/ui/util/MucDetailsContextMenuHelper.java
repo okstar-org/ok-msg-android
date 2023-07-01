@@ -50,7 +50,7 @@ public final class MucDetailsContextMenuHelper {
             } else if (user.getRealJid() != null) {
                 name = user.getRealJid().asBareJid().toEscapedString();
             } else {
-                name = user.getName();
+                name = user.getNick();
             }
             menu.setHeaderTitle(name);
             MucDetailsContextMenuHelper.configureMucDetailsContextMenu(activity, menu, user.getConversation(), user);

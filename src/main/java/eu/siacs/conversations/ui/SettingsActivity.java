@@ -422,7 +422,7 @@ public class SettingsActivity extends XmppActivity implements OnSharedPreference
         final Preference prefereXmppAvatarPreference = mSettingsFragment.findPreference(PREFER_XMPP_AVATAR);
         if (prefereXmppAvatarPreference != null) {
             prefereXmppAvatarPreference.setOnPreferenceClickListener(preference -> {
-                new Thread(() -> xmppConnectionService.getBitmapCache().evictAll()).start();
+                new Thread(() -> xmppConnectionService.getDrawableCache().evictAll()).start();
                 return true;
             });
         }
@@ -577,8 +577,8 @@ public class SettingsActivity extends XmppActivity implements OnSharedPreference
                 return true;
             });
         }
-/*
-        final String theTheme = PreferenceManager.getDefaultSharedPreferences(this).getString(THEME, "");  // TODO: Handle SDK < 30
+/* TODO: Handle SDK < 30
+        final String theTheme = PreferenceManager.getDefaultSharedPreferences(this).getString(THEME, "");
         if (Build.VERSION.SDK_INT < 30 || !theTheme.equals("custom")) {
             final PreferenceCategory uiCategory = (PreferenceCategory) mSettingsFragment.findPreference("ui");
             final Preference customTheme = mSettingsFragment.findPreference("custom_theme");
