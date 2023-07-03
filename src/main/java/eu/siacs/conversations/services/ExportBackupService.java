@@ -310,7 +310,7 @@ public class ExportBackupService extends Service {
                 RUNNING.set(false);
                 if (success) {
                     notifySuccess(files, notify);
-                    FileBackend.deleteOldBackups(new File(getBackupDirectory(null)), this.mAccounts);
+                    //FileBackend.deleteOldBackups(new File(getBackupDirectory(null)), this.mAccounts);
                 } else {
                     notifyError();
                 }
@@ -542,13 +542,13 @@ public class ExportBackupService extends Service {
      * @param datePattern The pattern the file has to include
      * @return An empty list if the patterns did not match or the list of files which match the conditions
      */
-    public static List<File> enumSortFiles(String dirName, String fileNamePattern, String datePattern) {
+    public static List<File> enumSortFiles(String dirName, String fileNamePattern) {
         File dir = new File(dirName);
         File[] files = dir.listFiles(new FileFilter() {
             @Override
             public boolean accept(File f) {
                 String fileName = f.getName();
-                return f.isFile() && fileName.indexOf(datePattern) > 0 && fileName.indexOf(fileNamePattern) == 0;
+                return f.isFile() && fileName.indexOf(fileNamePattern) == 0;
             }
         });
 
@@ -574,21 +574,21 @@ public class ExportBackupService extends Service {
      * @param fileStartPattern The pattern the file has to start with - usualy JID_<compat|monocles> or settings
      */
     public void rotateBackups(Integer keepBackups, String fileStartPattern) {
-        Log.d(Config.LOGTAG, "Rotating backups...");
+        Log.d(Config.LOGTAG, "Rotating backups to keep " + keepBackups + ", starting with " + fileStartPattern);
 
         if(keepBackups == 0) {
             Log.d(Config.LOGTAG, "Skipping rotation as param keepBackups is 0");
             return;
         }
 
-        final String datePattern = "yyyy-MM-dd";
         final String backupDir = getBackupDirectory(null);
 
         try {
-            List<File> files = enumSortFiles(backupDir, fileStartPattern, datePattern);
+            List<File> files = enumSortFiles(backupDir, fileStartPattern);
+            Log.d(Config.LOGTAG, "Found " + files.size() + " files to rotate over...");
 
             if(files.size() <= keepBackups) {
-                Log.d(Config.LOGTAG, "Nothing to rotate for files starting like " + fileStartPattern);
+                Log.d(Config.LOGTAG, "Nothing to rotate for files starting like '" + fileStartPattern + "'");
                 return;
             };
 
