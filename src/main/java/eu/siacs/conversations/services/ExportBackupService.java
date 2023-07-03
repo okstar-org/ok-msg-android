@@ -431,7 +431,7 @@ public class ExportBackupService extends Service {
 
         // Needed to lookup up the number of files to keep during backup file rotation
         SharedPreferences pref = PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
-        final Integer keepNumBackups = Integer.parseInt(pref.getString("keep_num_backups", "3"));
+        final Integer keepNumBackups = Integer.parseInt(pref.getString("keep_num_backups", Config.KEEP_DEFAULT_MAX_BACKUPS));
 
         for (final Account account : this.mAccounts) {
             try {
@@ -511,7 +511,7 @@ public class ExportBackupService extends Service {
             success = true;
 
             if(success) {
-                final Integer keepNumBackups = Integer.parseInt(pref.getString("keep_num_backups", "3"));
+                final Integer keepNumBackups = Integer.parseInt(pref.getString("keep_num_backups", Config.KEEP_DEFAULT_MAX_BACKUPS));
                 rotateBackups(keepNumBackups,"settings");
             }
 
