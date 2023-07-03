@@ -33,6 +33,7 @@ import com.google.common.base.Strings;
 import java.io.BufferedWriter;
 import java.io.DataOutputStream;
 import java.io.File;
+import java.io.FileFilter;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.FileWriter;
@@ -474,7 +475,11 @@ public class ExportBackupService extends Service {
                 writer.flush();
                 writer.close();
                 mediaScannerScanFile(file);
+
                 Log.d(Config.LOGTAG, "written backup to " + file.getAbsoluteFile());
+
+                rotateBackups(account.getJid().asBareJid().toEscapedString() + "_" + compatTag);
+
             } catch (Exception e) {
                 Log.d(Config.LOGTAG, "backup for " + account.getJid() + " failed with " + e);
             }
@@ -512,86 +517,75 @@ public class ExportBackupService extends Service {
                 ex.printStackTrace();
             }
         }
+
+        if(success) {
+            rotateBackups("settings");
+        }
+
         return success;
     }
 
     /***
-     * This function will look into the backup directory provided by getBackupDirectory() and
-     * loop all over the files to find the oldest ones.
-     * It will record each file older then x days and if there are more then x files found
-     * it will delete those files until x files left.
-     * @param keepNumBackups The default number of backups to keep. There is a hard limit though, see getNumBackupsInBounds()
+     * This little helper will return an Arraylist of files in a given directory which
+     * start with a certain pattern and include a pattern of a certain type.
+     * The list returned will be sorted already
+     * @param dirName The directory to use
+     * @param fileNamePattern The pattern the file starts with
+     * @param datePattern The pattern the file has to include
+     * @return An empty list if the patterns did not match of the list of file which match the conditions
      */
-    public void rotateBackups(int keepNumBackups) {
-        final String szBackupDirectory = getBackupDirectory(null);
-
-        // first of all we skip any file which does not match the pattern "filename_yyyy-MM-dd_HH-mm-ss*"
-        // So we split the filename at the first index of _ (underscore)
-        // Then we extract the datetime the file was created based on the rest of the filename
-        // I have too little knowledge if I can trust the filesystem timestamp... that's why I do this shit.
-
-        // A list of prefixes that may or may not contain multiple date-parts
-        Map<String, List<String>> dictionary = new HashMap<String, List<String>>();
-
-        File backupDirectory = new File(szBackupDirectory);
-        for (File file: backupDirectory.listFiles()) {
-            String fileName = file.getName();
-            Integer i = fileName.indexOf('_'); // first Index of Underscore
-
-            // skip invalid underscore index
-            if(i <= 0)
-                continue;
-
-            // This should result in something like this: yyyy-MM-dd_HH-mm-ss from which we can parse a datetime
-            // Of course this depends in filenames ending in ".xxx"
-            String datePart = fileName.substring(i + 1, fileName.length() - 4);
-
-            // we need the filename prefix too
-            String namePart = fileName.substring(0, i);
-
-            if(!dictionary.containsKey(namePart)) {
-                List<String> dp = new ArrayList<>();
-                dp.add(datePart);
-                dictionary.put(namePart, dp);
-            } else {
-                List<String> dp = dictionary.get(namePart);
-                dp.add(datePart);
-                dictionary.put(namePart, dp); // Replace the original entry
+    public static List<File> enumSortFiles(String dirName, String fileNamePattern, String datePattern) {
+        File dir = new File(dirName);
+        File[] files = dir.listFiles(new FileFilter() {
+            @Override
+            public boolean accept(File f) {
+                String fileName = f.getName();
+                return f.isFile() && fileName.indexOf(datePattern) > 0 && fileName.indexOf(fileNamePattern) == 0;
             }
-        }
-
-        final int knb = checkNumBackupsInBounds(keepNumBackups);
-
-        dictionary.forEach((k, v) -> {
-            v.sort(Comparator.naturalOrder());
-            List<String> removeList = v.subList(0, v.size() - knb);
-            removeList.forEach(item -> {
-                System.out.println("To delete: " +  k + " " + item);
-            });
         });
+
+        // This will sort the array so that the oldest file is at index 0
+        // and the newest files is at index files.length-1
+        Arrays.sort(files, new Comparator<File>()
+        {
+            public int compare(File f1, File f2)
+            {
+                return Long.compare(f1.lastModified(), f2.lastModified());
+            }
+        });
+
+        return Arrays.asList(files);
     }
 
     /***
-     * Validates the number of backups to keep within defined boundaries.
-     * @param param User provided parameter as Integer
-     * @return Returns the default if the param is out of bounds respecting upper or lower bounds, or param.
+     * TODO: instead of java.io use java.nio which throws an exception if file.delete() failes
+     * This function will look into the backup directory provided by getBackupDirectory() and
+     * loop all over the files to find the oldest ones.
+     * It will record each file older then x days and if there are more then x files found
+     * it will delete those files until total-x files left.
+     * @param fileStartPattern The pattern the file has to start with - usualy JID_<compat|monocles> or settings
      */
-    private int checkNumBackupsInBounds(int param) {
-        // TODO: Make this an expert setting but within reasonable boundaries.
-        // TODO: There should be hard coded boundaries and for now 3 and 10 it is!
-        final int minKeepNumBackups = 3;
-        final int maxKeepNumBackups = 10;
+    public void rotateBackups(String fileStartPattern) {
+        // TODO: Make this an expert setting
+        final Integer keepNumBackups = 3;
+        final String datePattern = "yyyy-MM-dd";
+        final String backupDir = getBackupDirectory(null);
 
-        if(param > maxKeepNumBackups)
-            return maxKeepNumBackups;
-
-        if(param < minKeepNumBackups)
-            return minKeepNumBackups;
-
-        if(param <= 0)
-            return minKeepNumBackups;
-
-        return param;
+        try {
+            List<File> files = enumSortFiles(backupDir, fileStartPattern, datePattern);
+            if(files.size() <= keepNumBackups) return;
+            List<File> removeList = files.subList(0, files.size() - keepNumBackups);
+            removeList.forEach(item -> {
+                String fName = item.getName();
+                if(item.delete()) {
+                    Log.d(Config.LOGTAG, "OK. Old backup file " + fName + " deleted");
+                } else {
+                    Log.d(Config.LOGTAG, "Error: Old backup file " + fName + " not deleted");
+                }
+            });
+        } catch (SecurityException e) {
+            e.printStackTrace();
+        }
     }
 
     private void mediaScannerScanFile(final File file) {
