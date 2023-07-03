@@ -270,6 +270,7 @@ public class ExportBackupService extends Service {
                 boolean success;
                 List<File> files;
                 try {
+                    exportSettings();
                     files = export(StorageHelper.BackupCompatTypes.Compatible);
                     if(files == null) {
                         Log.d(Config.LOGTAG, "Failed to create a Conversations compatible backup. Giving up!");
@@ -427,7 +428,6 @@ public class ExportBackupService extends Service {
         final SecureRandom secureRandom = new SecureRandom();
         final List<File> files = new ArrayList<>();
         Log.d(Config.LOGTAG, "starting backup for " + max + " accounts");
-        Log.d(Config.LOGTAG, "backup settings " + exportSettings());
 
         // Needed to lookup up the number of files to keep during backup file rotation
         SharedPreferences pref = PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
