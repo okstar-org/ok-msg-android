@@ -428,6 +428,11 @@ public class ExportBackupService extends Service {
         final List<File> files = new ArrayList<>();
         Log.d(Config.LOGTAG, "starting backup for " + max + " accounts");
         Log.d(Config.LOGTAG, "backup settings " + exportSettings());
+
+        // Needed to lookup up the number of files to keep during backup file rotation
+        SharedPreferences pref = PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
+        final Integer keepNumBackups = Integer.parseInt(pref.getString("keep_num_backups", "3"));
+
         for (final Account account : this.mAccounts) {
             try {
                 final String password = account.getPassword();
@@ -443,7 +448,8 @@ public class ExportBackupService extends Service {
                 final BackupFileHeader backupFileHeader = new BackupFileHeader(getString(R.string.app_name), account.getJid(), System.currentTimeMillis(), IV, salt);
                 final Progress progress = new Progress(mBuilder, max, count);
                 final String compatTag = StorageHelper.BackupCompatTypes.Compatible == compatType ? "compat" : "monocles";
-                final File file = new File(getBackupDirectory(null), account.getJid().asBareJid().toEscapedString() + "_" + compatTag + "_" + ((new SimpleDateFormat("yyyy-MM-dd_HH-mm-ss")).format(new Date())) + ".ceb");
+                final String fileNameStart = account.getJid().asBareJid().toEscapedString() + "_" + compatTag;
+                final File file = new File(getBackupDirectory(null), fileNameStart + "_" + ((new SimpleDateFormat("yyyy-MM-dd_HH-mm-ss")).format(new Date())) + ".ceb");
                 files.add(file);
                 final File directory = file.getParentFile();
                 if (directory != null && directory.mkdirs()) {
@@ -478,7 +484,7 @@ public class ExportBackupService extends Service {
 
                 Log.d(Config.LOGTAG, "written backup to " + file.getAbsoluteFile());
 
-                rotateBackups(account.getJid().asBareJid().toEscapedString() + "_" + compatTag);
+                rotateBackups(keepNumBackups,fileNameStart);
 
             } catch (Exception e) {
                 Log.d(Config.LOGTAG, "backup for " + account.getJid() + " failed with " + e);
@@ -503,6 +509,12 @@ public class ExportBackupService extends Service {
             SharedPreferences pref = PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
             output.writeObject(pref.getAll());
             success = true;
+
+            if(success) {
+                final Integer keepNumBackups = Integer.parseInt(pref.getString("keep_num_backups", "3"));
+                rotateBackups(keepNumBackups,"settings");
+            }
+
         } catch (FileNotFoundException e) {
             e.printStackTrace();
         } catch (IOException e) {
@@ -518,10 +530,6 @@ public class ExportBackupService extends Service {
             }
         }
 
-        if(success) {
-            rotateBackups("settings");
-        }
-
         return success;
     }
 
@@ -532,7 +540,7 @@ public class ExportBackupService extends Service {
      * @param dirName The directory to use
      * @param fileNamePattern The pattern the file starts with
      * @param datePattern The pattern the file has to include
-     * @return An empty list if the patterns did not match of the list of file which match the conditions
+     * @return An empty list if the patterns did not match or the list of files which match the conditions
      */
     public static List<File> enumSortFiles(String dirName, String fileNamePattern, String datePattern) {
         File dir = new File(dirName);
@@ -565,16 +573,26 @@ public class ExportBackupService extends Service {
      * it will delete those files until total-x files left.
      * @param fileStartPattern The pattern the file has to start with - usualy JID_<compat|monocles> or settings
      */
-    public void rotateBackups(String fileStartPattern) {
-        // TODO: Make this an expert setting
-        final Integer keepNumBackups = 3;
+    public void rotateBackups(Integer keepBackups, String fileStartPattern) {
+        Log.d(Config.LOGTAG, "Rotating backups...");
+
+        if(keepBackups == 0) {
+            Log.d(Config.LOGTAG, "Skipping rotation as param keepBackups is 0");
+            return;
+        }
+
         final String datePattern = "yyyy-MM-dd";
         final String backupDir = getBackupDirectory(null);
 
         try {
             List<File> files = enumSortFiles(backupDir, fileStartPattern, datePattern);
-            if(files.size() <= keepNumBackups) return;
-            List<File> removeList = files.subList(0, files.size() - keepNumBackups);
+
+            if(files.size() <= keepBackups) {
+                Log.d(Config.LOGTAG, "Nothing to rotate for files starting like " + fileStartPattern);
+                return;
+            };
+
+            List<File> removeList = files.subList(0, files.size() - keepBackups);
             removeList.forEach(item -> {
                 String fName = item.getName();
                 if(item.delete()) {
