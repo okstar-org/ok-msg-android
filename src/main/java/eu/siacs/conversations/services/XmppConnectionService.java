@@ -16,6 +16,8 @@ import static eu.siacs.conversations.ui.SettingsActivity.USE_INNER_STORAGE;
 import static eu.siacs.conversations.utils.RichPreview.RICH_LINK_METADATA;
 import static eu.siacs.conversations.utils.Random.SECURE_RANDOM;
 import static eu.siacs.conversations.utils.StorageHelper.getAppMediaDirectory;
+
+import eu.siacs.conversations.persistance.UnifiedPushDatabase;
 import eu.siacs.conversations.xmpp.OnGatewayResult;
 import eu.siacs.conversations.utils.Consumer;
 
