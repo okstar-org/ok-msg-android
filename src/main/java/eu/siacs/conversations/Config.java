@@ -247,4 +247,8 @@ public final class Config {
     public static final int QUOTE_MAX_DEPTH = 7;
     // How deep nested quotes should be created on quoting a message.
     public static final int QUOTING_MAX_DEPTH = 2;
+
+    // How many backups should be kept during backup rotation
+    // We store this as String because the setting is stored as String
+    public static final String KEEP_DEFAULT_MAX_BACKUPS = "3";
 }

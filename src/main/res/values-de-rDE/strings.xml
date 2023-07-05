@@ -1340,5 +1340,8 @@
     <string name="pref_dialler_integration_incoming_summary">Eingehende Anrufe von Telefonnummern klingeln möglicherweise mit Ihrem Systemwählgerät anstatt mit den Benachrichtigungseinstellungen dieser App</string>
     <string name="no_i2p_calls">Anrufe können nicht über I2P gemacht werden</string>
     <string name="confirm_delete_attachment_summary">Soll das Löschen von lokalen Dateien in Chats immer bestätigt werden?</string>
-    <string name="pref_confirm_delete_attachment">Löschen von lokalen Dateien in Chats</string>
+    <string name="pref_confirm_delete_attachment">Bestätigung zum Löschen von lokalen Dateien in Chats</string>
+    <string name="backup_started">Das Backup wurde gestartet. Du wirst informiert sobald der Prozess abgeschlossen ist.</string>
+    <string name="pref_keep_num_backups">Wie viele Backups sollen behalten werden. Standard ist 3. 0 schaltet die Rotation ab. Maximum ist 9</string>
+    <string name="pref_keep_num_backups_title">Anzahl zu speichernder Backups</string>
 </resources>
