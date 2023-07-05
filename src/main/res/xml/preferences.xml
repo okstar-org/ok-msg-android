@@ -495,6 +495,13 @@
                 android:key="create_backup"
                 android:summary="@string/pref_create_backup_summary"
                 android:title="@string/pref_create_backup" />
+            <EditTextPreference
+                android:key="keep_num_backups"
+                android:summary="@string/pref_keep_num_backups"
+                android:title="@string/pref_keep_num_backups_title"
+                android:inputType="number"
+                android:maxLength="1"
+                android:defaultValue="@integer/keep_num_backups"/>
             <CheckBoxPreference
                 android:defaultValue="@bool/plain_text_logs"
                 android:key="export_plain_text_logs"
