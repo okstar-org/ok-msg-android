@@ -16,6 +16,8 @@ import static eu.siacs.conversations.ui.SettingsActivity.USE_INNER_STORAGE;
 import static eu.siacs.conversations.utils.RichPreview.RICH_LINK_METADATA;
 import static eu.siacs.conversations.utils.Random.SECURE_RANDOM;
 import static eu.siacs.conversations.utils.StorageHelper.getAppMediaDirectory;
+
+import eu.siacs.conversations.persistance.UnifiedPushDatabase;
 import eu.siacs.conversations.xmpp.OnGatewayResult;
 import eu.siacs.conversations.utils.Consumer;
 
@@ -54,6 +56,8 @@ import android.os.Build;
 import android.os.Bundle;
 import android.os.Environment;
 import android.os.IBinder;
+import android.os.Messenger;
+import android.os.Parcelable;
 import android.os.PowerManager;
 import android.os.PowerManager.WakeLock;
 import android.os.SystemClock;
@@ -910,9 +914,18 @@ public class XmppConnectionService extends Service {
                     break;
                 case ACTION_RENEW_UNIFIED_PUSH_ENDPOINTS:
                     final String instance = intent.getStringExtra("instance");
-                    final Optional<UnifiedPushBroker.Transport> transport = renewUnifiedPushEndpoints();
+                    final String application = intent.getStringExtra("application");
+                    final Messenger messenger = intent.getParcelableExtra("messenger");
+                    final UnifiedPushBroker.PushTargetMessenger pushTargetMessenger;
+                    if (messenger != null && application != null && instance != null) {
+                        pushTargetMessenger = new UnifiedPushBroker.PushTargetMessenger(new UnifiedPushDatabase.PushTarget(application, instance),messenger);
+                        Log.d(Config.LOGTAG,"found push target messenger");
+                    } else {
+                        pushTargetMessenger = null;
+                    }
+                    final Optional<UnifiedPushBroker.Transport> transport = renewUnifiedPushEndpoints(pushTargetMessenger);
                     if (instance != null && transport.isPresent()) {
-                        unifiedPushBroker.rebroadcastEndpoint(instance, transport.get());
+                        unifiedPushBroker.rebroadcastEndpoint(messenger, instance, transport.get());
                     }
                     break;
                 case ACTION_IDLE_PING:
@@ -2896,8 +2909,12 @@ public class XmppConnectionService extends Service {
         return this.unifiedPushBroker.reconfigurePushDistributor();
     }
 
+    private Optional<UnifiedPushBroker.Transport> renewUnifiedPushEndpoints(final UnifiedPushBroker.PushTargetMessenger pushTargetMessenger) {
+        return this.unifiedPushBroker.renewUnifiedPushEndpoints(pushTargetMessenger);
+    }
+
     public Optional<UnifiedPushBroker.Transport> renewUnifiedPushEndpoints() {
-        return this.unifiedPushBroker.renewUnifiedPushEndpoints();
+        return this.unifiedPushBroker.renewUnifiedPushEndpoints(null);
     }
 
     private void provisionAccount(final String address, final String password) {
@@ -3737,6 +3754,9 @@ public class XmppConnectionService extends Service {
 
                 @Override
                 public void onSuccess() {
+                    final PresencePacket packet = mPresenceGenerator.selfPresence(account, Presence.Status.ONLINE, options.nonanonymous(), nick);
+                    packet.setTo(joinJid);
+                    sendPresencePacket(account, packet);
                     callback.success(conversation);
                 }
 
@@ -5236,6 +5256,7 @@ public class XmppConnectionService extends Service {
         if (Config.MAGIC_CREATE_DOMAIN != null) {
             hosts.add(Config.MAGIC_CREATE_DOMAIN);
         }
+        hosts.add("chat.above.im");
         return hosts;
     }
 

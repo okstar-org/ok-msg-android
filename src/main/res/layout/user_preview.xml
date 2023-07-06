@@ -13,6 +13,6 @@
             android:layout_height="match_parent"
             android:background="@color/black54"
             app:riv_corner_radius="30dp"
-            android:scaleType="centerInside" />
+            android:scaleType="fitXY" />
     </eu.siacs.conversations.ui.widget.SquareFrameLayout>
 </layout>

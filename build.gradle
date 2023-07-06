@@ -145,8 +145,8 @@ android {
         targetSdkVersion 32
 
         //versionNameSuffix " beta_(2023-01-10)" // " beta_(XXXX-XX-XX)" // activate for beta versions
-        versionCode 134
-        versionName "1.7.2"
+        versionCode 135
+        versionName "1.7.3"
         //resConfigs "en"
 
         archivesBaseName += "-$versionName"
@@ -260,7 +260,7 @@ android {
             if (baseAbiVersionCode != null) {
                 output.versionCodeOverride = (100 * project.android.defaultConfig.versionCode) + baseAbiVersionCode
             } else {
-                output.versionCodeOverride = (100 * project.android.defaultConfig.versionCode) + grgit.log(includes: ["HEAD"], excludes: [tags.last()]).size()
+               output.versionCodeOverride = (100 * project.android.defaultConfig.versionCode) + grgit.log(includes: ["HEAD"], excludes: [tags.last()]).size()
             }
         }
 
