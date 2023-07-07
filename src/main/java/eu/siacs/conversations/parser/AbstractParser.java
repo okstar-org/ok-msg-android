@@ -5,6 +5,9 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Locale;
+import java.util.Set;
+import java.util.TreeSet;
+
 import java.util.Date;
 import eu.siacs.conversations.xml.Namespace;
 import eu.siacs.conversations.entities.Account;
@@ -130,10 +133,10 @@ public abstract class AbstractParser {
     }
 
     public static MucOptions.User parseItem(Conversation conference, Element item) {
-        return parseItem(conference,item,null,null);
+        return parseItem(conference,item,null,null,new Element("hats", "urn:xmpp:hats:0"));
     }
 
-    public static MucOptions.User parseItem(Conversation conference, Element item, Jid fullJid, final String nickname) {
+    public static MucOptions.User parseItem(Conversation conference, Element item, Jid fullJid, final String nickname, final Element hatsEl) {
         final String local = conference.getJid().getLocal();
         final String domain = conference.getJid().getDomain().toEscapedString();
         String affiliation = item.getAttribute("affiliation");
@@ -153,7 +156,13 @@ public abstract class AbstractParser {
                 nick = nickname;
             }
         } catch (final gnu.inet.encoding.PunycodeException | ArrayIndexOutOfBoundsException e) { }
-        MucOptions.User user = new MucOptions.User(conference.getMucOptions(), fullJid, nick);
+        Set<MucOptions.Hat> hats = new TreeSet<>();
+        for (Element hat : hatsEl.getChildren()) {
+            if ("hat".equals(hat.getName()) && ("urn:xmpp:hats:0".equals(hat.getNamespace()) || "xmpp:prosody.im/protocol/hats:1".equals(hat.getNamespace()))) {
+                hats.add(new MucOptions.Hat(hat));
+            }
+        }
+        MucOptions.User user = new MucOptions.User(conference.getMucOptions(), fullJid, nick, hats);
         if (InvalidJid.isValid(realJid)) {
             user.setRealJid(realJid);
         }
