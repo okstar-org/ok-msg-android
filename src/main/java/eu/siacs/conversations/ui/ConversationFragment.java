@@ -2342,7 +2342,7 @@ public class ConversationFragment extends XmppFragment
             ToastCompat.makeText(getActivity(), R.string.not_connected_try_again, ToastCompat.LENGTH_SHORT).show();
             return;
         }
-        if (message.getOob() != null && message.getOob().getScheme().equalsIgnoreCase("cid")) {
+        if (message.getOob() != null && "cid".equalsIgnoreCase(message.getOob().getScheme())) {
             try {
                 BobTransfer transfer = new BobTransfer.ForMessage(message, activity.xmppConnectionService);
                 message.setTransferable(transfer);
