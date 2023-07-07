@@ -2068,6 +2068,9 @@ public class Conversation extends AbstractEntity implements Blockable, Comparabl
                             if (mimeType.startsWith("image/") && "https".equals(uri.getScheme())) {
                                 final Drawable d = cache.get(uri.toString());
                                 if (d == null) {
+                                    synchronized (CommandSession.this) {
+                                        waitingForRefresh = true;
+                                    }
                                     int size = (int)(xmppConnectionService.getResources().getDisplayMetrics().density * 288);
                                     Message dummy = new Message(Conversation.this, uri.toString(), Message.ENCRYPTION_NONE);
                                     dummy.setFileParams(new Message.FileParams(uri.toString()));
@@ -2888,6 +2891,7 @@ public class Conversation extends AbstractEntity implements Blockable, Comparabl
             protected WebView actionToWebview = null;
             protected int fillableFieldCount = 0;
             protected IqPacket pendingResponsePacket = null;
+            protected boolean waitingForRefresh = false;
 
             CommandSession(String title, String node, XmppConnectionService xmppConnectionService) {
                 loading();
@@ -3364,7 +3368,9 @@ public class Conversation extends AbstractEntity implements Blockable, Comparabl
             }
 
             public void refresh() {
-                notifyDataSetChanged();
+                synchronized(this) {
+                    if (waitingForRefresh) notifyDataSetChanged();
+                }
             }
 
             protected void loading() {
