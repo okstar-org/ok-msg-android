@@ -420,8 +420,8 @@ public class FileBackend {
 
             for (Account account : mAccounts) {
                 String jid = account.getJid().asBareJid().toString();
-                String compat_file = jid + "_compat";
-                String monocl_file = jid + "_monocles";
+                String compat_file = jid + "_" + Config.CONVERSATIONS_COMPAT_TYPE;
+                String monocl_file = jid + "_" + Config.MONOCLES_COMPAT_TYPE;
                 rotateBackupFile(keepNumBackups, backupDir, compat_file);
                 rotateBackupFile(keepNumBackups, backupDir, monocl_file);
             }

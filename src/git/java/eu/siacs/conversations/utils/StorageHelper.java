@@ -14,11 +14,6 @@ import eu.siacs.conversations.services.ExportBackupService;
 
 public class StorageHelper {
 
-    public static enum BackupCompatTypes {
-        MonoclesOnly,
-        Compatible
-    }
-
     public static File getConversationsDirectory(final Context context, final String type) {
         if (type.equalsIgnoreCase("null")) {
             return new File(getStorage(context, STORAGE_INDEX.get(), APP_DIRECTORY, type));
