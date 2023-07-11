@@ -5,9 +5,12 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.ServiceConnection;
+import android.content.SharedPreferences;
+import android.content.res.Resources;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.IBinder;
+import android.preference.PreferenceManager;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
@@ -22,8 +25,14 @@ import androidx.databinding.DataBindingUtil;
 
 import com.google.android.material.snackbar.Snackbar;
 
+import java.io.FileInputStream;
 import java.io.IOException;
+import java.io.InputStream;
+import java.io.ObjectInputStream;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
+import java.util.Set;
 
 import eu.siacs.conversations.Config;
 import eu.siacs.conversations.R;
@@ -140,10 +149,83 @@ public class ImportBackupActivity extends XmppActivity implements ServiceConnect
         showEnterPasswordDialog(backupFile, false);
     }
 
+    /***
+     * Restore settings from a backup file
+     * @param uri
+     */
+    @SuppressWarnings (value="unchecked")
+    private void restoreSettingsFromFile(Uri uri) {
+        try {
+            SharedPreferences current_prefs = PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
+            SharedPreferences.Editor editor = current_prefs.edit();
+            InputStream inputStream = getContentResolver().openInputStream(uri);
+            ObjectInputStream ois = new ObjectInputStream(inputStream);
+            HashMap<String, ?> backup_prefs = (HashMap<String, ?>) ois.readObject();
+
+            for (Map.Entry<String, ?> entry : backup_prefs.entrySet()) {
+                String k = entry.getKey();
+                Object v = entry.getValue();
+
+                if(v instanceof Boolean) {
+                    editor.putBoolean(k, (Boolean) v);
+                } else if(v instanceof Float) {
+                    editor.putFloat(k, (Float) v);
+                } else if(v instanceof Integer) {
+                    editor.putInt(k, (Integer) v);
+                } else if(v instanceof Long) {
+                    editor.putLong(k, (Long) v);
+                } else if (v instanceof String) {
+                    editor.putString(k, v.toString());
+                } else {
+                    editor.putStringSet(k, (Set<String>)v);
+                }
+            }
+
+            editor.apply(); // this may fail...
+            ois.close();
+            inputStream.close();
+            showSnackbarAndFinishActivity(R.string.settings_restore_message_success, 2000);
+        } catch (IOException iox) {
+            Log.d(Config.LOGTAG, "Failed to open settings backup file: " + iox.getMessage());
+            showSnackbarAndFinishActivity(R.string.settings_restore_message_failure, 5000);
+        } catch(ClassNotFoundException cnfx) {
+            Log.d(Config.LOGTAG, "Failed to parse settings backup file: " + cnfx.getMessage());
+            showSnackbarAndFinishActivity(R.string.settings_restore_message_failure, 5000);
+        }
+    }
+
+    /***
+     * Show a Snackbar and finish the current activity (returning to the previous) after the given timeout
+     * @param resourceID
+     * @param timeoutMillis
+     */
+    private void showSnackbarAndFinishActivity(int resourceID, int timeoutMillis) {
+        Resources res = getResources();
+        Snackbar sb = Snackbar.make(binding.coordinator, String.format(res.getString(resourceID)), Snackbar.LENGTH_LONG);
+        sb.setDuration(timeoutMillis);
+        sb.addCallback(new Snackbar.Callback() {
+            public void onDismissed(Snackbar snackbar, int event) {
+                if (event == Snackbar.Callback.DISMISS_EVENT_TIMEOUT) {
+                    finish();
+                }
+            }
+        });
+        sb.show();
+    }
+
+    /***
+     * TODO: make this function distinguish between a .ceb file and a settings file
+     * @param uri
+     * @param finishOnCancel
+     */
     private void openBackupFileFromUri(final Uri uri, final boolean finishOnCancel) {
         try {
-            final ImportBackupService.BackupFile backupFile = ImportBackupService.BackupFile.read(this, uri);
-            showEnterPasswordDialog(backupFile, finishOnCancel);
+            if( uri.getPath().endsWith(".ceb") ) {
+                final ImportBackupService.BackupFile backupFile = ImportBackupService.BackupFile.read(this, uri);
+                showEnterPasswordDialog(backupFile, finishOnCancel);
+            } else {
+                restoreSettingsFromFile(uri);
+            }
         } catch (final IOException e) {
             Snackbar.make(binding.coordinator, R.string.not_a_backup_file, Snackbar.LENGTH_LONG).show();
         } catch (IllegalArgumentException e) {
