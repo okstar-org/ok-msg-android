@@ -1305,4 +1305,6 @@
     <string name="pref_keep_num_backups">How many backups should be kept? Defaults to 3. 0 disables it. Maximum is 9.</string>
     <string name="pref_keep_num_backups_title">Number of backups to keep</string>
     <string name="pref_broadcast_last_activity_summary">Allow contacts to see when you were last active in the app</string>
+    <string name="settings_restore_message_success">Settings successfully restored</string>
+    <string name="settings_restore_message_failure">Failed to restore settings: %s</string>
 </resources>

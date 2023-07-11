@@ -1344,4 +1344,6 @@
     <string name="backup_started">Das Backup wurde gestartet. Du wirst informiert sobald der Prozess abgeschlossen ist.</string>
     <string name="pref_keep_num_backups">Wie viele Backups sollen behalten werden. Standard ist 3. 0 schaltet die Rotation ab. Maximum ist 9</string>
     <string name="pref_keep_num_backups_title">Anzahl zu speichernder Backups</string>
+    <string name="settings_restore_message_success">Die Einstellungen wurden erfolgreich eingelesen</string>
+    <string name="settings_restore_message_failure">Die Einstellungen konnten nicht eingelesen werden: %s</string>
 </resources>
