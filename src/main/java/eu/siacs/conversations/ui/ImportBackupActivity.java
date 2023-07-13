@@ -184,13 +184,13 @@ public class ImportBackupActivity extends XmppActivity implements ServiceConnect
             editor.apply(); // this may fail...
             ois.close();
             inputStream.close();
-            showSnackbarAndFinishActivity(R.string.settings_restore_message_success, 2000);
+            showSnackbarAndFinishActivity(R.string.settings_restore_message_success, 2000, null);
         } catch (IOException iox) {
             Log.d(Config.LOGTAG, "Failed to open settings backup file: " + iox.getMessage());
-            showSnackbarAndFinishActivity(R.string.settings_restore_message_failure, 5000);
+            showSnackbarAndFinishActivity(R.string.settings_restore_message_failure, 5000, iox.getMessage());
         } catch(ClassNotFoundException cnfx) {
             Log.d(Config.LOGTAG, "Failed to parse settings backup file: " + cnfx.getMessage());
-            showSnackbarAndFinishActivity(R.string.settings_restore_message_failure, 5000);
+            showSnackbarAndFinishActivity(R.string.settings_restore_message_failure, 5000, cnfx.getMessage());
         }
     }
 
@@ -198,10 +198,18 @@ public class ImportBackupActivity extends XmppActivity implements ServiceConnect
      * Show a Snackbar and finish the current activity (returning to the previous) after the given timeout
      * @param resourceID
      * @param timeoutMillis
+     * @param msg Additional error message
      */
-    private void showSnackbarAndFinishActivity(int resourceID, int timeoutMillis) {
+    private void showSnackbarAndFinishActivity(int resourceID, int timeoutMillis, String msg) {
         Resources res = getResources();
-        Snackbar sb = Snackbar.make(binding.coordinator, String.format(res.getString(resourceID)), Snackbar.LENGTH_LONG);
+        Snackbar sb = null;
+
+        if(msg == null) {
+            sb = Snackbar.make(binding.coordinator, res.getString(resourceID), Snackbar.LENGTH_LONG);
+        } else {
+            sb = Snackbar.make(binding.coordinator, String.format(res.getString(resourceID), msg), Snackbar.LENGTH_LONG);
+        }
+
         sb.setDuration(timeoutMillis);
         sb.addCallback(new Snackbar.Callback() {
             public void onDismissed(Snackbar snackbar, int event) {
