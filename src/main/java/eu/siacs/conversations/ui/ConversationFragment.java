@@ -1237,7 +1237,7 @@ public class ConversationFragment extends XmppFragment
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setHasOptionsMenu(true);
-        activity.getOnBackPressedDispatcher().addCallback(backPressedLeaveSingleThread);
+        activity.getOnBackPressedDispatcher().addCallback(this, backPressedLeaveSingleThread);
     }
 
     @Override
@@ -1412,6 +1412,7 @@ public class ConversationFragment extends XmppFragment
         messageListAdapter.setOnContactPictureClicked(null);
         messageListAdapter.setOnContactPictureLongClicked(null);
         messageListAdapter.setOnInlineImageLongClicked(null);
+        binding.conversationViewPager.setAdapter(null);
         if (conversation != null) conversation.setupViewPager(null, null, false, null);
     }
 
