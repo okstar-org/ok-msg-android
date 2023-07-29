@@ -464,11 +464,12 @@ public class ExportBackupService extends Service {
                 accountExport(db, uuid, writer);
                 simpleExport(db, Conversation.TABLENAME, Conversation.ACCOUNT, uuid, writer);
 
+                // always backup in conversations format first
+                messageExport(db, uuid, writer, progress);
+
+                // then backup additional data, if requested by the user
                 if (compatType == Config.MONOCLES_COMPAT_TYPE)
                     messageExportmonocles(db, uuid, writer, progress);
-                else {
-                    messageExport(db, uuid, writer, progress);
-                }
 
                 for (String table : Arrays.asList(SQLiteAxolotlStore.PREKEY_TABLENAME, SQLiteAxolotlStore.SIGNED_PREKEY_TABLENAME, SQLiteAxolotlStore.SESSION_TABLENAME, SQLiteAxolotlStore.IDENTITIES_TABLENAME)) {
                     simpleExport(db, table, SQLiteAxolotlStore.ACCOUNT, uuid, writer);
