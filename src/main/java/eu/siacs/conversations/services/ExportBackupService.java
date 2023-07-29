@@ -267,20 +267,21 @@ public class ExportBackupService extends Service {
                 if (extras != null && extras.containsKey("NOTIFY_ON_BACKUP_COMPLETE")) {
                     notify = extras.getBoolean("NOTIFY_ON_BACKUP_COMPLETE");
                 }
-                boolean success;
+                boolean success = false;
                 List<File> files;
                 try {
                     exportSettings();
-                    files = export(StorageHelper.BackupCompatTypes.Compatible);
+
+                    files = export(Config.CONVERSATIONS_COMPAT_TYPE);
+
                     if(files == null) {
                         Log.d(Config.LOGTAG, "Failed to create a Conversations compatible backup. Giving up!");
-                        success = false;
                     }
                     else {
-                        List<File> f = export(StorageHelper.BackupCompatTypes.MonoclesOnly);
+                        List<File> f = export(Config.MONOCLES_COMPAT_TYPE);
+
                         if(f == null) {
                             Log.d(Config.LOGTAG, "Failed to create a Monocles-Only compatible backup. Giving up!");
-                            success = false;
                         } else {
                             files.addAll(f);
                             success = files != null;
@@ -292,7 +293,6 @@ public class ExportBackupService extends Service {
                     }
                 } catch (final Exception e) {
                     Log.d(Config.LOGTAG, "unable to create backup", e);
-                    success = false;
                     files = Collections.emptyList();
                 }
                 try {
@@ -311,7 +311,7 @@ public class ExportBackupService extends Service {
                 RUNNING.set(false);
                 if (success) {
                     notifySuccess(files, notify);
-                    //FileBackend.deleteOldBackups(new File(getBackupDirectory(null)), this.mAccounts);
+                    FileBackend.rotateBackupFiles(getBackupDirectory(null), this.mAccounts, getApplicationContext());
                 } else {
                     notifyError();
                 }
@@ -416,7 +416,7 @@ public class ExportBackupService extends Service {
         }
     }
 
-    private List<File> export(StorageHelper.BackupCompatTypes compatType) throws Exception {
+    private List<File> export(String compatType) throws Exception {
         wakeLock.acquire(15 * 60 * 1000L /*15 minutes*/);
         NotificationCompat.Builder mBuilder = new NotificationCompat.Builder(getBaseContext(), NotificationService.BACKUP_CHANNEL_ID);
         mBuilder.setContentTitle(getString(R.string.notification_create_backup_title))
@@ -447,8 +447,7 @@ public class ExportBackupService extends Service {
                 secureRandom.nextBytes(salt);
                 final BackupFileHeader backupFileHeader = new BackupFileHeader(getString(R.string.app_name), account.getJid(), System.currentTimeMillis(), IV, salt);
                 final Progress progress = new Progress(mBuilder, max, count);
-                final String compatTag = StorageHelper.BackupCompatTypes.Compatible == compatType ? "compat" : "monocles";
-                final String fileNameStart = account.getJid().asBareJid().toEscapedString() + "_" + compatTag;
+                final String fileNameStart = account.getJid().asBareJid().toEscapedString() + "_" + compatType;
                 final File file = new File(getBackupDirectory(null), fileNameStart + "_" + ((new SimpleDateFormat("yyyy-MM-dd_HH-mm-ss")).format(new Date())) + ".ceb");
                 files.add(file);
                 final File directory = file.getParentFile();
@@ -474,10 +473,14 @@ public class ExportBackupService extends Service {
                 accountExport(db, uuid, writer);
                 simpleExport(db, Conversation.TABLENAME, Conversation.ACCOUNT, uuid, writer);
                 messageExport(db, uuid, writer, progress);
-                if (compatType == StorageHelper.BackupCompatTypes.MonoclesOnly) messageExportmonocles(db, uuid, writer, progress);
+
+                if (compatType == Config.MONOCLES_COMPAT_TYPE)
+                    messageExportmonocles(db, uuid, writer, progress);
+
                 for (String table : Arrays.asList(SQLiteAxolotlStore.PREKEY_TABLENAME, SQLiteAxolotlStore.SIGNED_PREKEY_TABLENAME, SQLiteAxolotlStore.SESSION_TABLENAME, SQLiteAxolotlStore.IDENTITIES_TABLENAME)) {
                     simpleExport(db, table, SQLiteAxolotlStore.ACCOUNT, uuid, writer);
                 }
+
                 writer.flush();
                 writer.close();
                 mediaScannerScanFile(file);
@@ -539,7 +542,6 @@ public class ExportBackupService extends Service {
      * The list returned will be sorted already
      * @param dirName The directory to use
      * @param fileNamePattern The pattern the file starts with
-     * @param datePattern The pattern the file has to include
      * @return An empty list if the patterns did not match or the list of files which match the conditions
      */
     public static List<File> enumSortFiles(String dirName, String fileNamePattern) {
