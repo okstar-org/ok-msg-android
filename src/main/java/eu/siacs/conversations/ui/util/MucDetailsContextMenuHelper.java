@@ -247,7 +247,7 @@ public final class MucDetailsContextMenuHelper {
                         return true;
                     }
                 }
-                activity.privateMsgInMuc(conversation, user.getAvatarName());
+                activity.privateMsgInMuc(conversation, user.getNick());
                 return true;
             case R.id.invite:
                 if (user.getAffiliation().ranks(MucOptions.Affiliation.MEMBER)) {
