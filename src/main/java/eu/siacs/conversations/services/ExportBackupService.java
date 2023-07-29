@@ -267,34 +267,21 @@ public class ExportBackupService extends Service {
                 if (extras != null && extras.containsKey("NOTIFY_ON_BACKUP_COMPLETE")) {
                     notify = extras.getBoolean("NOTIFY_ON_BACKUP_COMPLETE");
                 }
-                boolean success;
-                List<File> files;
-                try {
-                    exportSettings();
-                    files = export(StorageHelper.BackupCompatTypes.Compatible);
-                    if(files == null) {
-                        Log.d(Config.LOGTAG, "Failed to create a Conversations compatible backup. Giving up!");
-                        success = false;
-                    }
-                    else {
-                        List<File> f = export(StorageHelper.BackupCompatTypes.MonoclesOnly);
-                        if(f == null) {
-                            Log.d(Config.LOGTAG, "Failed to create a Monocles-Only compatible backup. Giving up!");
-                            success = false;
-                        } else {
-                            files.addAll(f);
-                            success = files != null;
 
-                            if(success) {
-                                Log.d(Config.LOGTAG, "Backup successfully created two backup versions");
-                            }
-                        }
+                boolean success = false;
+                List<File> files = Collections.emptyList();
+                try {
+                    List<File> f1 = export(Config.CONVERSATIONS_COMPAT_TYPE);
+                    List<File> f2 = export(Config.MONOCLES_COMPAT_TYPE);
+                    success = f1.size() > 0 && f2.size() > 0 && exportSettings();
+                    if(success) {
+                        files.addAll(f1);
+                        files.addAll(f2);
                     }
                 } catch (final Exception e) {
                     Log.d(Config.LOGTAG, "unable to create backup", e);
-                    success = false;
-                    files = Collections.emptyList();
                 }
+
                 try {
                     if (ReadableLogsEnabled) {  // todo
                         List<Conversation> conversations = mDatabaseBackend.getConversations(Conversation.STATUS_AVAILABLE);
@@ -307,14 +294,17 @@ public class ExportBackupService extends Service {
                 } catch (Exception e) {
                     e.printStackTrace();
                 }
+
                 stopForeground(true);
                 RUNNING.set(false);
+
                 if (success) {
                     notifySuccess(files, notify);
-                    //FileBackend.deleteOldBackups(new File(getBackupDirectory(null)), this.mAccounts);
+                    FileBackend.rotateBackupFiles(getBackupDirectory(null), this.mAccounts, getApplicationContext());
                 } else {
                     notifyError();
                 }
+
                 WakeLockHelper.release(wakeLock);
                 stopSelf();
             }).start();
@@ -416,7 +406,7 @@ public class ExportBackupService extends Service {
         }
     }
 
-    private List<File> export(StorageHelper.BackupCompatTypes compatType) throws Exception {
+    private List<File> export(String compatType) throws Exception {
         wakeLock.acquire(15 * 60 * 1000L /*15 minutes*/);
         NotificationCompat.Builder mBuilder = new NotificationCompat.Builder(getBaseContext(), NotificationService.BACKUP_CHANNEL_ID);
         mBuilder.setContentTitle(getString(R.string.notification_create_backup_title))
@@ -447,10 +437,9 @@ public class ExportBackupService extends Service {
                 secureRandom.nextBytes(salt);
                 final BackupFileHeader backupFileHeader = new BackupFileHeader(getString(R.string.app_name), account.getJid(), System.currentTimeMillis(), IV, salt);
                 final Progress progress = new Progress(mBuilder, max, count);
-                final String compatTag = StorageHelper.BackupCompatTypes.Compatible == compatType ? "compat" : "monocles";
-                final String fileNameStart = account.getJid().asBareJid().toEscapedString() + "_" + compatTag;
+                final String fileNameStart = account.getJid().asBareJid().toEscapedString() + "_" + compatType;
                 final File file = new File(getBackupDirectory(null), fileNameStart + "_" + ((new SimpleDateFormat("yyyy-MM-dd_HH-mm-ss")).format(new Date())) + ".ceb");
-                files.add(file);
+
                 final File directory = file.getParentFile();
                 if (directory != null && directory.mkdirs()) {
                     Log.d(Config.LOGTAG, "created backup directory " + directory.getAbsolutePath());
@@ -471,20 +460,28 @@ public class ExportBackupService extends Service {
                 PrintWriter writer = new PrintWriter(gzipOutputStream);
                 SQLiteDatabase db = this.mDatabaseBackend.getReadableDatabase();
                 final String uuid = account.getUuid();
+
                 accountExport(db, uuid, writer);
                 simpleExport(db, Conversation.TABLENAME, Conversation.ACCOUNT, uuid, writer);
-                messageExport(db, uuid, writer, progress);
-                if (compatType == StorageHelper.BackupCompatTypes.MonoclesOnly) messageExportmonocles(db, uuid, writer, progress);
+
+                if (compatType == Config.MONOCLES_COMPAT_TYPE)
+                    messageExportmonocles(db, uuid, writer, progress);
+                else {
+                    messageExport(db, uuid, writer, progress);
+                }
+
                 for (String table : Arrays.asList(SQLiteAxolotlStore.PREKEY_TABLENAME, SQLiteAxolotlStore.SIGNED_PREKEY_TABLENAME, SQLiteAxolotlStore.SESSION_TABLENAME, SQLiteAxolotlStore.IDENTITIES_TABLENAME)) {
                     simpleExport(db, table, SQLiteAxolotlStore.ACCOUNT, uuid, writer);
                 }
+
                 writer.flush();
                 writer.close();
                 mediaScannerScanFile(file);
 
-                Log.d(Config.LOGTAG, "written backup to " + file.getAbsoluteFile());
+                // only add the current file to the list of written files if the files was actually written!
+                files.add(file);
 
-                rotateBackups(keepNumBackups,fileNameStart);
+                Log.d(Config.LOGTAG, "written backup to " + file.getAbsoluteFile());
 
             } catch (Exception e) {
                 Log.d(Config.LOGTAG, "backup for " + account.getJid() + " failed with " + e);
@@ -509,12 +506,6 @@ public class ExportBackupService extends Service {
             SharedPreferences pref = PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
             output.writeObject(pref.getAll());
             success = true;
-
-            if(success) {
-                final Integer keepNumBackups = Integer.parseInt(pref.getString("keep_num_backups", Config.KEEP_DEFAULT_MAX_BACKUPS));
-                rotateBackups(keepNumBackups,"settings");
-            }
-
         } catch (FileNotFoundException e) {
             e.printStackTrace();
         } catch (IOException e) {
@@ -531,79 +522,6 @@ public class ExportBackupService extends Service {
         }
 
         return success;
-    }
-
-    /***
-     * This little helper will return an Arraylist of files in a given directory which
-     * start with a certain pattern and include a pattern of a certain type.
-     * The list returned will be sorted already
-     * @param dirName The directory to use
-     * @param fileNamePattern The pattern the file starts with
-     * @param datePattern The pattern the file has to include
-     * @return An empty list if the patterns did not match or the list of files which match the conditions
-     */
-    public static List<File> enumSortFiles(String dirName, String fileNamePattern) {
-        File dir = new File(dirName);
-        File[] files = dir.listFiles(new FileFilter() {
-            @Override
-            public boolean accept(File f) {
-                String fileName = f.getName();
-                return f.isFile() && fileName.indexOf(fileNamePattern) == 0;
-            }
-        });
-
-        // This will sort the array so that the oldest file is at index 0
-        // and the newest files is at index files.length-1
-        Arrays.sort(files, new Comparator<File>()
-        {
-            public int compare(File f1, File f2)
-            {
-                return Long.compare(f1.lastModified(), f2.lastModified());
-            }
-        });
-
-        return Arrays.asList(files);
-    }
-
-    /***
-     * TODO: instead of java.io use java.nio which throws an exception if file.delete() failes
-     * This function will look into the backup directory provided by getBackupDirectory() and
-     * loop all over the files to find the oldest ones.
-     * It will record each file older then x days and if there are more then x files found
-     * it will delete those files until total-x files left.
-     * @param fileStartPattern The pattern the file has to start with - usualy JID_<compat|monocles> or settings
-     */
-    public void rotateBackups(Integer keepBackups, String fileStartPattern) {
-        Log.d(Config.LOGTAG, "Rotating backups to keep " + keepBackups + ", starting with " + fileStartPattern);
-
-        if(keepBackups == 0) {
-            Log.d(Config.LOGTAG, "Skipping rotation as param keepBackups is 0");
-            return;
-        }
-
-        final String backupDir = getBackupDirectory(null);
-
-        try {
-            List<File> files = enumSortFiles(backupDir, fileStartPattern);
-            Log.d(Config.LOGTAG, "Found " + files.size() + " files to rotate over...");
-
-            if(files.size() <= keepBackups) {
-                Log.d(Config.LOGTAG, "Nothing to rotate for files starting like '" + fileStartPattern + "'");
-                return;
-            };
-
-            List<File> removeList = files.subList(0, files.size() - keepBackups);
-            removeList.forEach(item -> {
-                String fName = item.getName();
-                if(item.delete()) {
-                    Log.d(Config.LOGTAG, "OK. Old backup file " + fName + " deleted");
-                } else {
-                    Log.d(Config.LOGTAG, "Error: Old backup file " + fName + " not deleted");
-                }
-            });
-        } catch (SecurityException e) {
-            e.printStackTrace();
-        }
     }
 
     private void mediaScannerScanFile(final File file) {

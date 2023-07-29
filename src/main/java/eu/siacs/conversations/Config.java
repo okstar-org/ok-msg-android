@@ -251,4 +251,8 @@ public final class Config {
     // How many backups should be kept during backup rotation
     // We store this as String because the setting is stored as String
     public static final String KEEP_DEFAULT_MAX_BACKUPS = "3";
+
+    public static final String CONVERSATIONS_COMPAT_TYPE = "compat";
+
+    public static final String MONOCLES_COMPAT_TYPE = "monocles";
 }

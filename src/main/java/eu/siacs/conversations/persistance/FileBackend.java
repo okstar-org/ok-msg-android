@@ -1,11 +1,13 @@
 package eu.siacs.conversations.persistance;
 
+import static eu.siacs.conversations.utils.StorageHelper.getBackupDirectory;
 import static eu.siacs.conversations.utils.StorageHelper.getConversationsDirectory;
 import static eu.siacs.conversations.utils.StorageHelper.getGlobalAudiosPath;
 import static eu.siacs.conversations.utils.StorageHelper.getGlobalDocumentsPath;
 import static eu.siacs.conversations.utils.StorageHelper.getGlobalPicturesPath;
 import static eu.siacs.conversations.utils.StorageHelper.getGlobalVideosPath;
 
+import android.content.SharedPreferences;
 import android.content.res.AssetFileDescriptor;
 import android.annotation.SuppressLint;
 import android.app.Activity;
@@ -68,6 +70,7 @@ import java.io.ByteArrayOutputStream;
 import java.io.Closeable;
 import java.io.File;
 import java.io.FileDescriptor;
+import java.io.FileFilter;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
@@ -320,75 +323,114 @@ public class FileBackend {
         }
     }
 
-    public static void deleteOldBackups(File dir, List<Account> mAccounts) {
+    /***
+     * This little helper will return an Arraylist of files in a given directory which
+     * start with a certain pattern and include a pattern of a certain type.
+     * The list returned will be sorted already
+     * @param dirName The directory to use
+     * @param fileNamePattern The pattern the file starts with
+     * @return An empty list if the patterns did not match or the list of files which match the conditions
+     */
+    private static List<File> enumSortFiles(String dirName, String fileNamePattern) {
+        File dir = new File(dirName);
+        File[] files = dir.listFiles(new FileFilter() {
+            @Override
+            public boolean accept(File f) {
+                String fileName = f.getName();
+                return f.isFile() && fileName.indexOf(fileNamePattern) == 0;
+            }
+        });
+
+        // This will sort the array so that the oldest file is at index 0
+        // and the newest files is at index files.length-1
+        Arrays.sort(files, new Comparator<File>()
+        {
+            public int compare(File f1, File f2)
+            {
+                return Long.compare(f1.lastModified(), f2.lastModified());
+            }
+        });
+
+        return Arrays.asList(files);
+    }
+
+    /***
+     * TODO: instead of java.io use java.nio which throws an exception if file.delete() failes
+     * This function will look into the backup directory provided by getBackupDirectory() and
+     * loop all over the files to find the oldest ones.
+     * It will record each file older then x days and if there are more then x files found
+     * it will delete those files until total-x files left.
+     * @param keepBackups Number of backups to keep
+     * @param backupDir Name of the backup directory
+     * @param fileStartPattern The pattern the file has to start with - usualy JID_<compat|monocles> or settings
+     */
+    private static void rotateBackupFile(Integer keepBackups, String backupDir, String fileStartPattern) {
+        Log.d(Config.LOGTAG, "Rotating backups to keep " + keepBackups + ", starting with " + fileStartPattern);
+
+        if(keepBackups == 0) {
+            Log.d(Config.LOGTAG, "Skipping rotation as param keepBackups is 0");
+            return;
+        }
+
         try {
-            long start = SystemClock.elapsedRealtime();
-            int num = 0;
-            if (dir == null) {
+            List<File> files = enumSortFiles(backupDir, fileStartPattern);
+            Log.d(Config.LOGTAG, "Found " + files.size() + " files to rotate over...");
+
+            if(files.size() <= keepBackups) {
+                Log.d(Config.LOGTAG, "Nothing to rotate for files starting like '" + fileStartPattern + "'");
                 return;
-            }
-            Stack<File> dirlist = new Stack<File>();
-            dirlist.clear();
-            dirlist.push(dir);
-            File dirCurrent = dirlist.pop();
-            File[] fileList = dirCurrent.listFiles();
-            while (!dirlist.isEmpty()) {
-                if (fileList != null) {
-                    for (File file : fileList) {
-                        if (file.isDirectory()) {
-                            dirlist.push(file);
-                        }
-                    }
+            };
+
+            List<File> removeList = files.subList(0, files.size() - keepBackups);
+            removeList.forEach(item -> {
+                String fName = item.getName();
+                if(item.delete()) {
+                    Log.d(Config.LOGTAG, "OK. Old backup file " + fName + " deleted");
+                } else {
+                    Log.d(Config.LOGTAG, "Error: Old backup file " + fName + " not deleted");
                 }
-            }
-            if (fileList != null) {
-                ArrayList<File> fileListByAccount = new ArrayList<File>();
-                ArrayList<File> simpleFileList = new ArrayList<File>(Arrays.asList(fileList));
-                for (Account account : mAccounts) {
-                    String jid = account.getJid().asBareJid().toString();
-                    for (int i = 0; i < simpleFileList.size(); i++) {
-                        File currentFile = simpleFileList.get(i);
-                        String fileName = currentFile.getName();
-                        if (fileName.startsWith(jid) && fileName.endsWith(".ceb")) {
-                            fileListByAccount.add(currentFile);
-                            simpleFileList.remove(currentFile);
-                            i--;
-                        }
-                    }
-                    if (fileListByAccount.size() > 2) {
-                        num += expireOldBackups(fileListByAccount);
-                    }
-                    fileListByAccount.clear();
-                }
-            } else {
-                return;
-            }
-            Log.d(Config.LOGTAG, "deleted " + num + " old backup files in " + (SystemClock.elapsedRealtime() - start) + "ms");
-        } catch (Exception e) {
+            });
+        } catch (SecurityException e) {
             e.printStackTrace();
+        } catch (Exception x) {
+            x.printStackTrace();
         }
     }
 
-    private static int expireOldBackups(ArrayList<File> fileListByAccount) {
-        int num = 0;
-        try {
-            Collections.sort(fileListByAccount, new Comparator<File>() {
-                @Override
-                public int compare(File f1, File f2) {
-                    return Long.compare(f2.lastModified(), f1.lastModified());
-                }
-            });
-            fileListByAccount.subList(0, 2).clear();
-            for (File currentFile : fileListByAccount) {
-                if (currentFile.delete()) {
-                    num++;
-                }
-            }
+    /***
+     * Public method to rotate backup files
+     * @param backupDir The name of the backup directory
+     * @param mAccounts The list of accounts
+     * @param context The application context to retrieve the settings
+     */
+    public static void rotateBackupFiles(String backupDir, List<Account> mAccounts, Context context) {
 
-        } catch (Exception e) {
+        if(backupDir == null)
+            return;
+
+        if(mAccounts == null)
+            return;
+
+        if(mAccounts.size() == 0)
+            return;
+
+        try {
+            SharedPreferences pref = PreferenceManager.getDefaultSharedPreferences(context);
+            final Integer keepNumBackups = Integer.parseInt(pref.getString("keep_num_backups", Config.KEEP_DEFAULT_MAX_BACKUPS));
+
+            for (Account account : mAccounts) {
+                String jid = account.getJid().asBareJid().toString();
+                String compat_file = jid + "_" + Config.CONVERSATIONS_COMPAT_TYPE;
+                String monocl_file = jid + "_" + Config.MONOCLES_COMPAT_TYPE;
+                rotateBackupFile(keepNumBackups, backupDir, compat_file);
+                rotateBackupFile(keepNumBackups, backupDir, monocl_file);
+            }
+            // finally rotate settings
+            rotateBackupFile(keepNumBackups, backupDir, "settings");
+        }
+        catch(Exception e) {
             e.printStackTrace();
         }
-        return num;
     }
 
     public void deleteFilesInDir(File dir) {
