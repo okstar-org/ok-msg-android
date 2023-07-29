@@ -589,7 +589,6 @@
 \n
 \nel usuario %s te ha invitado a monocles chat. Haz click en el siguiente enlace…</string>
     <string name="pref_broadcast_last_activity">Informar de tu última interacción</string>
-    <string name="pref_broadcast_last_activity_summary">Informa a todos sus contactos cuando uses monocles chat</string>
     <string name="request_permissions_message">monocles chat te pedirá que concedas algunos permisos. Es importante que permitas que todos estos permisos para usar todas las características de este mensajero. Si deniegas cualquiera de estos permisos, la aplicación se cerrará sola.</string>
     <string name="request_permissions_message_again">Has denegado uno o todos los permisos requeridos para monocles chat. ¿Deseas ir a la configuración para permitir estos permisos\? Si rechazas uno de estos permisos, la aplicación se cerrará.</string>
     <string name="unable_to_connect_to_keychain">No se ha podido conectar a OpenKeychain</string>
@@ -1382,8 +1381,12 @@
     <string name="clear_blocked_media">Borrar medios bloqueados</string>
     <string name="you_may_sometimes_have_to">Es posible que tengas que forzar el cierre de la aplicación para aplicar los cambios.</string>
     <string name="colors">Colores</string>
-    <string name="create_monocles_only_backup">¿Exportar datos extra de monocles (no serán importados por otras aplicaciones)?</string>
+    <string name="create_monocles_backup">Esto creará 2 backups. Uno compatible solo con Monocles, el otro es compatible con Conversations</string>#
+    <string name="backup_started">El backup ha comenzado. Serás notificado después de que haya terminado</string>
     <string name="please_be_patient">Tenga paciencia...</string>
     <string name="confirm_delete_attachment_summary">¿Quiere omitir la confirmación de borrado de un fichero local desde los chats?</string>
-    <string name="pref_confirm_delete_attachment">Confirmación de borrado de fichero local</string>
+    <string name="pref_confirm_delete_attachment">Mostrar diálogo de confirmación de borrado de fichero local</string>
+    <string name="pref_keep_num_backups">¿Cuántos backsups conservar? Por defecto 3. 0 deshabilita. Máximo 9.</string>
+    <string name="pref_keep_num_backups_title">Número de backups para conservar</string>
+    <string name="pref_broadcast_last_activity_summary">Permitir a tus contactos cuando fue tu última actividad con la aplicación</string>
 </resources>
