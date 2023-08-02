@@ -2,7 +2,8 @@
 // sub-projects/modules.
 buildscript {
     repositories {
-        google()
+//        google()
+        maven { url 'https://maven.aliyun.com/repository/google' }
         mavenCentral()
     }
     dependencies {
@@ -20,14 +21,16 @@ apply plugin: "com.diffplug.spotless"
 
 allprojects {
     repositories {
-        google()
+//        google()
+        maven { url 'https://maven.aliyun.com/repository/google' }
         mavenCentral()
         maven { url "https://jitpack.io" }
     }
 }
 
 repositories {
-    google()
+//    google()
+    maven { url 'https://maven.aliyun.com/repository/google' }
     mavenCentral()
     jcenter()
     maven { url "https://jitpack.io" }
@@ -151,17 +154,17 @@ android {
 
         archivesBaseName += "-$versionName"
         //archivesBaseName += "$versionNameSuffix"  // activate for beta versions
-        applicationId "de.monocles.chat"
+        applicationId "org.okstar.okmsg"
         multiDexEnabled true
         versionName grgit.describe(always: true)
-        buildConfigField("String", "LOGTAG", '"monocles chat"')
+        buildConfigField("String", "LOGTAG", '"OkMSG"')
         buildConfigField("String", "DOMAIN_LOCK", 'null')
-        buildConfigField("String", "MAGIC_CREATE_DOMAIN", '"monocles.eu"')
+        buildConfigField("String", "MAGIC_CREATE_DOMAIN", '"okstar.org"')
         buildConfigField("boolean", "SHOW_INTRO", 'true')
-        buildConfigField("String", "UPDATE_URL", '"https://monocles.eu/chat/update/"')
+        buildConfigField("String", "UPDATE_URL", '"https://okstar.org/okmsg/update/"')
         resValue "string", "applicationId", applicationId
-        resValue "string", "app_name", "monocles chat"
-        resValue "string", "short_app_name", "chat"
+        resValue "string", "app_name", "OkMSG"
+        resValue "string", "short_app_name", "OkMSG"
     }
     splits {
         abi {
@@ -191,7 +194,7 @@ android {
         playstore {
             dimension "distribution"
             versionNameSuffix "-playstore"
-            applicationId "de.monocles.chat"
+            applicationId "org.okstar.chat"
             buildConfigField("boolean", "SHOW_MIGRATION_INFO", 'false')
             resValue "string", "applicationId", applicationId
         }
@@ -260,7 +263,7 @@ android {
             if (baseAbiVersionCode != null) {
                 output.versionCodeOverride = (100 * project.android.defaultConfig.versionCode) + baseAbiVersionCode
             } else {
-               output.versionCodeOverride = (100 * project.android.defaultConfig.versionCode) + grgit.log(includes: ["HEAD"], excludes: [tags.last()]).size()
+//               output.versionCodeOverride = (100 * project.android.defaultConfig.versionCode) + grgit.log(includes: ["HEAD"], excludes: [tags.last()]).size()
             }
         }
 
