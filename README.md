@@ -125,8 +125,8 @@
 
 > 本软件已经申请软件著作权和商标。
 
-- ™️ 商标：**OkEDU** ® `<div><img src="./docs/assets/logo.png" width="140"/>``</div>`
-- 📄 软著: `<div><img src="./docs/assets/OkEDU-CN-Authorized.jpeg" width="140"/>``</div>`
+- ™️ 商标：**OkEDU** ® <div><img src="https://gitee.com/chuanshantech/ok-edu-classroom-desktop/raw/develop/docs/assets/logo.png" width="140"/></div>
+- 📄 软著: <div><img src="https://gitee.com/chuanshantech/ok-edu-classroom-desktop/raw/develop/docs/assets/OkEDU-CN-Authorized.jpeg" width="140"/></div>
 
 > 本项目采用双重授权，请按合规正确使用本项目！
 
