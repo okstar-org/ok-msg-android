@@ -115,11 +115,11 @@
 
 > 技术交流群，添加微信：**chuanshantech**（备注：OkEDU 姓名）
 
-![OkEDU公众号](./docs/assets/assistant-OkEDU.jpg "OkEDU")
+![OkEDU公众号](https://gitee.com/chuanshantech/ok-edu-classroom-desktop/raw/develop/docs/assets/assistant-OkEDU.jpg "OkEDU")
 
 > 微信公众号，关注账号：**OkEDU**
 
-![OkEDU公众号](./docs/assets/gzh-OkEDU.jpg "OkEDU")
+![OkEDU公众号](https://gitee.com/chuanshantech/ok-edu-classroom-desktop/raw/develop/docs/assets/gzh-OkEDU.jpg "OkEDU")
 
 # ©️ 版权信息
 
