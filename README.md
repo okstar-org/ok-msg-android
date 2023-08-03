@@ -65,7 +65,8 @@
 > 捐赠列表 https://kdocs.cn/l/cr7rVyXnbxuK
 
 <div>
-<img src="./docs/donate/wx.jpg" width="240"  alt=""/> <img src="./docs/donate/zfb.jpg" width="240"  alt=""/>
+<img src="https://gitee.com/chuanshantech/ok-edu-classroom-desktop/raw/develop/docs/donate/wx.jpg" width="240"  alt=""/> 
+<img src="https://gitee.com/chuanshantech/ok-edu-classroom-desktop/raw/develop/docs/donate/zfb.jpg" width="240"  alt=""/>
 </div>
 
 > 欢迎大家 Clone 本项目，捐赠收入将用于对贡献者的奖励。
