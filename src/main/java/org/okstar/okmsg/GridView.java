@@ -1,4 +1,4 @@
-package de.monocles.chat;
+package org.okstar.okmsg;
 
 import android.content.Context;
 import android.util.AttributeSet;

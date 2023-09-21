@@ -1,4 +1,4 @@
-package de.monocles.chat;
+package org.okstar.okmsg;
 
 import android.net.Uri;
 import android.util.Base64;
@@ -18,12 +18,10 @@ import io.ipfs.cid.Cid;
 import io.ipfs.multihash.Multihash;
 
 import eu.siacs.conversations.Config;
-import eu.siacs.conversations.R;
 import eu.siacs.conversations.entities.Account;
 import eu.siacs.conversations.entities.DownloadableFile;
 import eu.siacs.conversations.entities.Message;
 import eu.siacs.conversations.entities.Transferable;
-import eu.siacs.conversations.http.AesGcmURL;
 import eu.siacs.conversations.services.AbstractConnectionManager;
 import eu.siacs.conversations.services.XmppConnectionService;
 import eu.siacs.conversations.utils.CryptoHelper;

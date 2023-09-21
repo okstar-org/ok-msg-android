@@ -1,10 +1,6 @@
-package de.monocles.chat.ui;
+package org.okstar.okmsg.ui;
 
 import android.Manifest;
-import android.content.Intent;
-import android.net.Uri;
-import android.os.Environment;
-import android.provider.Settings;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;

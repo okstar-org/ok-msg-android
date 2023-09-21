@@ -4,7 +4,7 @@
     "type": "APK",
     "kind": "Directory"
   },
-  "applicationId": "de.monocles.chat",
+  "applicationId": "org.okstar.okmsg",
   "variantName": "gitRelease",
   "elements": [
     {

@@ -1,7 +1,7 @@
 // Based on GPLv3 code from deltachat-android
 // https://github.com/deltachat/deltachat-android/blob/master/src/org/thoughtcrime/securesms/WebViewActivity.java
 // https://github.com/deltachat/deltachat-android/blob/master/src/org/thoughtcrime/securesms/WebxdcActivity.java
-package de.monocles.chat;
+package org.okstar.okmsg;
 
 import android.content.Context;
 import android.content.Intent;
@@ -38,7 +38,6 @@ import com.google.common.io.ByteStreams;
 
 import io.ipfs.cid.Cid;
 
-import java.lang.ref.WeakReference;
 import java.io.ByteArrayInputStream;
 import java.io.File;
 import java.io.IOException;

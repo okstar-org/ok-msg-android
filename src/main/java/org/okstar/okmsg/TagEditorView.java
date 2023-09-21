@@ -1,4 +1,4 @@
-package de.monocles.chat;
+package org.okstar.okmsg;
 
 import android.app.Activity;
 import android.content.Context;

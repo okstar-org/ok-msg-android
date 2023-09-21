@@ -19,7 +19,7 @@ import androidx.databinding.DataBindingUtil;
 
 import com.google.common.base.Strings;
 
-import de.monocles.chat.DownloadDefaultStickers;
+import org.okstar.okmsg.DownloadDefaultStickers;
 
 import org.jetbrains.annotations.NotNull;
 

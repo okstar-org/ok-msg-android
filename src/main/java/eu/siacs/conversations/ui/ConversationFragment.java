@@ -72,7 +72,7 @@ import android.widget.ListView;
 import android.widget.TextView.OnEditorActionListener;
 import android.widget.Toast;
 import eu.siacs.conversations.utils.Emoticons;
-import de.monocles.chat.BobTransfer;
+import org.okstar.okmsg.BobTransfer;
 import java.net.URISyntaxException;
 import android.os.Environment;
 import android.os.storage.StorageManager;
@@ -95,12 +95,10 @@ import androidx.core.view.inputmethod.InputContentInfoCompat;
 import androidx.databinding.DataBindingUtil;
 import androidx.viewpager.widget.PagerAdapter;
 
-import android.text.SpannableStringBuilder;
-
 import com.google.common.base.Optional;
 
 import org.jetbrains.annotations.NotNull;
-import org.w3c.dom.Node;
+
 import java.io.File;
 
 import java.text.SimpleDateFormat;
@@ -120,7 +118,6 @@ import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.regex.Pattern;
 
 import eu.siacs.conversations.utils.TimeFrameUtils;
-import eu.siacs.conversations.xml.Element;
 import eu.siacs.conversations.xmpp.jingle.AbstractJingleConnection;
 import eu.siacs.conversations.xmpp.jingle.JingleConnectionManager;
 import eu.siacs.conversations.xmpp.jingle.Media;
@@ -158,7 +155,6 @@ import eu.siacs.conversations.ui.util.CallManager;
 import eu.siacs.conversations.ui.util.ConversationMenuConfigurator;
 import eu.siacs.conversations.ui.util.DateSeparator;
 import eu.siacs.conversations.ui.util.EditMessageActionModeCallback;
-import eu.siacs.conversations.ui.util.KeyboardUtils;
 import eu.siacs.conversations.ui.util.ListViewUtils;
 import eu.siacs.conversations.ui.util.MucDetailsContextMenuHelper;
 import eu.siacs.conversations.ui.util.PendingItem;
@@ -177,10 +173,8 @@ import eu.siacs.conversations.utils.Compatibility;
 import eu.siacs.conversations.utils.GeoHelper;
 import eu.siacs.conversations.utils.MenuDoubleTabUtil;
 import eu.siacs.conversations.utils.MessageUtils;
-import eu.siacs.conversations.utils.MimeUtils;
 import eu.siacs.conversations.xml.Namespace;
 import eu.siacs.conversations.utils.NickValidityChecker;
-import eu.siacs.conversations.utils.Patterns;
 import eu.siacs.conversations.utils.QuickLoader;
 import eu.siacs.conversations.utils.StylingHelper;
 import eu.siacs.conversations.utils.UIHelper;

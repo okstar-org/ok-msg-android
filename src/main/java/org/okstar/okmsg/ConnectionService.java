@@ -1,4 +1,4 @@
-package de.monocles.chat;
+package org.okstar.okmsg;
 
 import java.lang.ref.WeakReference;
 import java.util.Collections;
@@ -15,7 +15,6 @@ import android.telecom.CallAudioState;
 import android.telecom.Connection;
 import android.telecom.ConnectionRequest;
 import android.telecom.DisconnectCause;
-import android.telecom.PhoneAccount;
 import android.telecom.PhoneAccountHandle;
 import android.telecom.StatusHints;
 import android.telecom.TelecomManager;
@@ -24,17 +23,15 @@ import android.telephony.PhoneNumberUtils;
 import android.Manifest;
 
 import androidx.annotation.RequiresApi;
-import androidx.core.content.ContextCompat;
+
 import android.content.ComponentName;
 import android.content.Context;
 import android.content.Intent;
-import android.content.pm.PackageManager;
 import android.content.ServiceConnection;
 import android.graphics.drawable.Icon;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.IBinder;
-import android.os.Parcel;
 import android.util.Log;
 
 import com.intentfilter.androidpermissions.PermissionManager;

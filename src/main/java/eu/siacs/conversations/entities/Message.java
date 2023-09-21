@@ -1,6 +1,5 @@
 package eu.siacs.conversations.entities;
 
-import android.annotation.SuppressLint;
 import android.content.ContentValues;
 import android.database.Cursor;
 import android.graphics.Color;
@@ -15,14 +14,9 @@ import android.util.Log;
 import android.util.Base64;
 import android.util.Pair;
 import android.view.View;
-import eu.siacs.conversations.utils.Compatibility;
-import android.graphics.drawable.Drawable;
-import android.text.Html;
-import android.util.Pair;
-import android.view.View;
 
-import de.monocles.chat.BobTransfer;
-import de.monocles.chat.GetThumbnailForCid;
+import org.okstar.okmsg.BobTransfer;
+import org.okstar.okmsg.GetThumbnailForCid;
 
 import java.io.IOException;
 import java.util.stream.Collectors;
@@ -35,20 +29,15 @@ import com.google.common.base.Strings;
 import com.google.common.collect.ImmutableSet;
 import com.google.common.io.ByteSource;
 import com.google.common.primitives.Longs;
-import de.monocles.chat.BobTransfer;
-import de.monocles.chat.GetThumbnailForCid;
 
 import java.net.URI;
 import java.net.URISyntaxException;
 import java.time.Duration;
 import java.util.HashSet;
-import java.net.URI;
-import java.net.URISyntaxException;
 import java.security.NoSuchAlgorithmException;
 
 import org.json.JSONException;
 
-import java.io.IOException;
 import java.lang.ref.WeakReference;
 import java.util.ArrayList;
 import java.util.Iterator;
@@ -73,14 +62,9 @@ import eu.siacs.conversations.utils.StringUtils;
 import eu.siacs.conversations.utils.Patterns;
 import eu.siacs.conversations.utils.UIHelper;
 import eu.siacs.conversations.utils.XmppUri;
-import eu.siacs.conversations.xml.Element;
 import eu.siacs.conversations.xml.Namespace;
-import eu.siacs.conversations.xml.Tag;
-import eu.siacs.conversations.xml.XmlReader;
 
 import eu.siacs.conversations.xmpp.Jid;
-import eu.siacs.conversations.xml.Namespace;
-import eu.siacs.conversations.ui.util.QuoteHelper;
 import io.ipfs.cid.Cid;
 
 public class Message extends AbstractEntity implements AvatarService.Avatarable {

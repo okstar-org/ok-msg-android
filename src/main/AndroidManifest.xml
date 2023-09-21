@@ -122,9 +122,9 @@
         tools:replace="android:label, android:allowBackup"
         tools:targetApi="r">
 
-        <service android:name="de.monocles.chat.DownloadDefaultStickers" />
+        <service android:name="org.okstar.okmsg.DownloadDefaultStickers" />
 
-        <service android:name="de.monocles.chat.ConnectionService"
+        <service android:name="org.okstar.okmsg.ConnectionService"
             android:label="@string/app_name"
             android:permission="android.permission.BIND_TELECOM_CONNECTION_SERVICE"
             android:exported="true">
@@ -184,7 +184,7 @@
         <receiver android:name=".services.AlarmReceiver" />
 
         <activity
-            android:name="de.monocles.chat.ui.StartUI"
+            android:name="org.okstar.okmsg.ui.StartUI"
             android:configChanges="orientation|screenSize"
             android:label="@string/short_app_name"
             android:launchMode="singleTask"

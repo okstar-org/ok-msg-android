@@ -15,7 +15,7 @@ import android.util.Log;
 
 import com.google.common.base.Stopwatch;
 
-import de.monocles.chat.WebxdcUpdate;
+import org.okstar.okmsg.WebxdcUpdate;
 
 import org.json.JSONException;
 import org.json.JSONObject;
