@@ -717,11 +717,11 @@ public class ConversationsActivity extends XmppActivity implements OnConversatio
         } else {
             menuEditProfiles.setTitle(R.string.action_accounts);
         }
-        if (xmppConnectionServiceBound && xmppConnectionService.getAccounts().size() > 0) {
-            inviteUser.setVisible(true);
-        } else {
-            inviteUser.setVisible(false);
-        }
+//        if (xmppConnectionServiceBound && xmppConnectionService.getAccounts().size() > 0) {
+//            inviteUser.setVisible(true);
+//        } else {
+//            inviteUser.setVisible(false);
+//        }
         return super.onCreateOptionsMenu(menu);
     }
 

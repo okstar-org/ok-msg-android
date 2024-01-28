@@ -58,8 +58,8 @@
                         android:paddingRight="20dp"
                         android:layout_marginTop="8dp"
                         android:text="@string/welcome_text"
-                        android:textAppearance="@style/TextAppearance.Conversations.Body1" />
-
+                        android:textAppearance="@style/TextAppearance.Conversations.Body1"
+                        android:visibility="gone" />
                     <TextView
                         android:id="@+id/import_text"
                         android:layout_width="wrap_content"
@@ -95,6 +95,7 @@
                             android:layout_height="wrap_content"
                             android:text="@string/import_database"
                             android:textColor="@color/accent_monocles"
+                            android:visibility="gone"
                             android:layout_margin="10dp"/>
 
                         <View
@@ -119,7 +120,8 @@
                             android:layout_height="wrap_content"
                             android:text="@string/i_am_snikket_user"
                             android:textColor="@color/accent_monocles"
-                            android:layout_margin="10dp"/>
+                            android:layout_margin="10dp"
+                            android:visibility="gone"/>
                         <!--           android:drawableLeft="@drawable/snikket"  TODO: Add icons -->
 
                     </LinearLayout>

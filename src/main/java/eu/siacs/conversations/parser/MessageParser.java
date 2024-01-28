@@ -481,6 +481,7 @@ public class MessageParser extends AbstractParser implements OnMessagePacketRece
         if (handleErrorMessage(account, original)) {
             return;
         }
+        Log.i(Config.LOGTAG,"onMessagePacketReceived:"+ original.toString());
         final MessagePacket packet;
         Long timestamp = null;
         final boolean isForwarded;

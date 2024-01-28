@@ -37,14 +37,17 @@ import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 import android.view.LayoutInflater;
+
 import androidx.recyclerview.widget.RecyclerView;
 import androidx.recyclerview.widget.LinearLayoutManager;
+
 import java.util.Arrays;
 import java.util.Comparator;
 import java.util.HashSet;
 import java.util.Locale;
 import java.util.Map;
 import java.util.stream.Collectors;
+
 import eu.siacs.conversations.utils.UIHelper;
 
 import androidx.annotation.MenuRes;
@@ -60,7 +63,9 @@ import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
 import androidx.viewpager.widget.PagerAdapter;
 import androidx.viewpager.widget.ViewPager;
+
 import android.text.method.LinkMovementMethod;
+
 import androidx.annotation.StringRes;
 import androidx.appcompat.widget.PopupMenu;
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
@@ -377,11 +382,13 @@ public class StartConversationActivity extends XmppActivity implements XmppConne
         final Menu menu = popupMenu.getMenu();
         for (int i = 0; i < menu.size(); i++) {
             final MenuItem menuItem = menu.getItem(i);
-            final SpeedDialActionItem actionItem = new SpeedDialActionItem.Builder(menuItem.getItemId(), menuItem.getIcon())
-                    .setLabel(menuItem.getTitle() != null ? menuItem.getTitle().toString() : null)
-                    .setFabImageTintColor(ContextCompat.getColor(this, R.color.white))
-                    .create();
-            speedDialView.addActionItem(actionItem);
+            if (menuItem.getItemId() != R.id.create_public_channel) {
+                final SpeedDialActionItem actionItem = new SpeedDialActionItem.Builder(menuItem.getItemId(), menuItem.getIcon())
+                        .setLabel(menuItem.getTitle() != null ? menuItem.getTitle().toString() : null)
+                        .setFabImageTintColor(ContextCompat.getColor(this, R.color.white))
+                        .create();
+                speedDialView.addActionItem(actionItem);
+            }
         }
     }
 
@@ -619,7 +626,8 @@ public class StartConversationActivity extends XmppActivity implements XmppConne
 
                     try {
                         dialog.dismiss();
-                    } catch (final IllegalStateException e) { }
+                    } catch (final IllegalStateException e) {
+                    }
                 });
             });
 
@@ -735,8 +743,8 @@ public class StartConversationActivity extends XmppActivity implements XmppConne
         } else {
             menuActionAccounts.setTitle(R.string.action_accounts);
         }
-        MenuItem qrCodeScanMenuItem = menu.findItem(R.id.action_scan_qr_code);
-        qrCodeScanMenuItem.setVisible(isCameraFeatureAvailable());
+//        MenuItem qrCodeScanMenuItem = menu.findItem(R.id.action_scan_qr_code);
+//        qrCodeScanMenuItem.setVisible(isCameraFeatureAvailable());
         menuHideOffline.setVisible(true);
         menuHideOffline.setChecked(this.mHideOfflineContacts);
         mMenuSearchView = menu.findItem(R.id.action_search);
@@ -858,7 +866,7 @@ public class StartConversationActivity extends XmppActivity implements XmppConne
             if (checkSelfPermission(Manifest.permission.READ_CONTACTS) != PackageManager.PERMISSION_GRANTED) {
                 if (mRequestedContactsPermission.compareAndSet(false, true)) {
 
-                         if (QuickConversationsService.isQuicksy() || shouldShowRequestPermissionRationale(Manifest.permission.READ_CONTACTS)) {
+                    if (QuickConversationsService.isQuicksy() || shouldShowRequestPermissionRationale(Manifest.permission.READ_CONTACTS)) {
                         final AlertDialog.Builder builder = new AlertDialog.Builder(this);
                         final AtomicBoolean requestPermission = new AtomicBoolean(false);
                         builder.setTitle(R.string.sync_with_contacts);
@@ -880,24 +888,24 @@ public class StartConversationActivity extends XmppActivity implements XmppConne
 
                             }
                         });
-                             SharedPreferences pref = this.getSharedPreferences("PACKAGE.NAME",MODE_PRIVATE);
-                             Boolean firstTime = pref.getBoolean("firstTime",true);
-                             if(firstTime){
-                        builder.setCancelable(QuickConversationsService.isQuicksy());
-                        final AlertDialog dialog = builder.create();
-                        dialog.setCanceledOnTouchOutside(QuickConversationsService.isQuicksy());
-                        dialog.setOnShowListener(dialogInterface -> {
-                            final TextView tv = dialog.findViewById(android.R.id.message);
-                            if (tv != null) {
-                                tv.setMovementMethod(LinkMovementMethod.getInstance());
-                            }
-                        });
-                        dialog.show();
-                                 pref.edit().putBoolean("firstTime",false).apply();
-                             }
+                        SharedPreferences pref = this.getSharedPreferences("PACKAGE.NAME", MODE_PRIVATE);
+                        Boolean firstTime = pref.getBoolean("firstTime", true);
+                        if (firstTime) {
+                            builder.setCancelable(QuickConversationsService.isQuicksy());
+                            final AlertDialog dialog = builder.create();
+                            dialog.setCanceledOnTouchOutside(QuickConversationsService.isQuicksy());
+                            dialog.setOnShowListener(dialogInterface -> {
+                                final TextView tv = dialog.findViewById(android.R.id.message);
+                                if (tv != null) {
+                                    tv.setMovementMethod(LinkMovementMethod.getInstance());
+                                }
+                            });
+                            dialog.show();
+                            pref.edit().putBoolean("firstTime", false).apply();
+                        }
                     } else {
-                              requestPermissions(new String[]{Manifest.permission.READ_CONTACTS}, REQUEST_SYNC_CONTACTS);
-                            }
+                        requestPermissions(new String[]{Manifest.permission.READ_CONTACTS}, REQUEST_SYNC_CONTACTS);
+                    }
 
                 }
             }
@@ -1174,7 +1182,7 @@ public class StartConversationActivity extends XmppActivity implements XmppConne
             }
         }
 
-        Comparator<Map.Entry<ListItem.Tag,Integer>> sortTagsBy = Map.Entry.comparingByValue(Comparator.reverseOrder());
+        Comparator<Map.Entry<ListItem.Tag, Integer>> sortTagsBy = Map.Entry.comparingByValue(Comparator.reverseOrder());
         sortTagsBy = sortTagsBy.thenComparing(entry -> entry.getKey().getName());
 
         mTagsAdapter.setTags(
@@ -1380,6 +1388,7 @@ public class StartConversationActivity extends XmppActivity implements XmppConne
     public void onConversationUpdate() {
         refreshUi();
     }
+
     @Override
     public void onRefresh() {
         Log.d(Config.LOGTAG, "user requested to refresh");
@@ -1655,10 +1664,10 @@ public class StartConversationActivity extends XmppActivity implements XmppConne
                     String needle = mSearchEditText.getText().toString();
                     String tag = tv.getText().toString();
                     String[] parts = needle.split("[,\\s]+");
-                    if(needle.isEmpty()) {
+                    if (needle.isEmpty()) {
                         needle = tag;
-                    } else if (tag.toLowerCase(Locale.US).contains(parts[parts.length-1])) {
-                        needle = needle.replace(parts[parts.length-1], tag);
+                    } else if (tag.toLowerCase(Locale.US).contains(parts[parts.length - 1])) {
+                        needle = needle.replace(parts[parts.length - 1], tag);
                     } else {
                         needle += ", " + tag;
                     }
@@ -1699,7 +1708,8 @@ public class StartConversationActivity extends XmppActivity implements XmppConne
             this.tags = tags.stream().filter(
                     tag -> !tag.equals(channelTag) && !parts.contains(tag.getName().toLowerCase(Locale.US))
             ).collect(Collectors.toList());
-            if (!parts.contains("channel") && tags.contains(channelTag)) this.tags.add(0, channelTag);
+            if (!parts.contains("channel") && tags.contains(channelTag))
+                this.tags.add(0, channelTag);
             notifyDataSetChanged();
         }
     }

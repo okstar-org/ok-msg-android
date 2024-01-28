@@ -164,9 +164,8 @@
     <string name="mgmt_account_are_you_sure">Are you sure?</string>
     <string name="mgmt_account_delete_confirm_message">If you delete your account, your entire local conversation history will be lost.\n\nIf you delete your account from server, your entire account will be deleted from server too, you will not be able to login anymore until you register a new account.</string>
     <string name="attach_record_voice">Record voice</string>
-    <string name="account_settings_jabber_id">chat address</string>
-    <string name="account_settings_example_jabber_id">username@monocles.eu</string>
-    <string name="password">Password</string>
+    <string name="account_settings_jabber_id">Account</string>
+    <string name="account_settings_example_jabber_id">Email or phone number</string>
     <string name="invalid_jid">This is not a valid chat address</string>
     <string name="error_out_of_memory">Out of memory. Image is too large</string>
     <string name="add_phone_book_text">Do you want to add %s to your address book?</string>
@@ -428,6 +427,12 @@
     <string name="username">Username</string>
     <string name="username_hint">Username</string>
     <string name="invalid_username">This is not a valid username</string>
+    <string name="email">E-Mail</string>
+    <string name="email_hint">Input your email account</string>
+    <string name="password">Password</string>
+    <string name="password_hint">Password</string>
+    <string name="confirm_password">Confirm Password</string>
+    <string name="confirm_password_hint">Please confirm your password again</string>
     <string name="download_failed_server_not_found">Download failed: Server not found</string>
     <string name="download_failed_file_not_found">Download failed: File not found</string>
     <string name="download_failed_could_not_connect">Download failed: Could not connect to host</string>

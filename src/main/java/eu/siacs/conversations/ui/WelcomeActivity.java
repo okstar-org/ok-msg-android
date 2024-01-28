@@ -127,10 +127,10 @@ public class WelcomeActivity extends XmppActivity implements XmppConnectionServi
         }
         IntroHelper.showIntro(this, false);
         UpdateHelper.showPopup(this);
-        if (hasStoragePermission(REQUEST_IMPORT_BACKUP)) {
-            binding.importDatabase.setVisibility(View.VISIBLE);
-            binding.importText.setVisibility(View.VISIBLE);
-        }
+//        if (hasStoragePermission(REQUEST_IMPORT_BACKUP)) {
+//            binding.importDatabase.setVisibility(View.VISIBLE);
+//            binding.importText.setVisibility(View.VISIBLE);
+//        }
         binding.importDatabase.setOnClickListener(v -> startActivity(new Intent(this, ImportBackupActivity.class)));
         binding.createAccount.setOnClickListener(v -> {
             final Intent intent = new Intent(WelcomeActivity.this, MagicCreateActivity.class);
@@ -193,9 +193,9 @@ public class WelcomeActivity extends XmppActivity implements XmppConnectionServi
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
-        getMenuInflater().inflate(R.menu.welcome_menu, menu);
-        final MenuItem scan = menu.findItem(R.id.action_scan_qr_code);
-        scan.setVisible(Compatibility.hasFeatureCamera(this));
+//        getMenuInflater().inflate(R.menu.welcome_menu, menu);
+//        final MenuItem scan = menu.findItem(R.id.action_scan_qr_code);
+//        scan.setVisible(Compatibility.hasFeatureCamera(this));
         return super.onCreateOptionsMenu(menu);
     }
 

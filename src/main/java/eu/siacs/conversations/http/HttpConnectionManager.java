@@ -4,10 +4,18 @@ import android.os.Build;
 import android.util.Log;
 
 import org.apache.http.conn.ssl.StrictHostnameVerifier;
+
 import static eu.siacs.conversations.utils.Random.SECURE_RANDOM;
+
+import com.google.common.base.Charsets;
+import com.google.common.io.ByteStreams;
+import com.google.common.io.CharStreams;
+import com.google.gson.Gson;
 
 import java.io.IOException;
 import java.io.InputStream;
+import java.io.InputStreamReader;
+import java.lang.reflect.Type;
 import java.net.InetAddress;
 import java.net.InetSocketAddress;
 import java.net.Proxy;
@@ -27,15 +35,16 @@ import eu.siacs.conversations.entities.DownloadableFile;
 import eu.siacs.conversations.utils.Consumer;
 import eu.siacs.conversations.BuildConfig;
 import eu.siacs.conversations.Config;
-import eu.siacs.conversations.R;
 import eu.siacs.conversations.entities.Account;
 import eu.siacs.conversations.entities.Message;
 import eu.siacs.conversations.services.AbstractConnectionManager;
 import eu.siacs.conversations.services.XmppConnectionService;
 import eu.siacs.conversations.utils.TLSSocketFactory;
 import okhttp3.HttpUrl;
+import okhttp3.MediaType;
 import okhttp3.OkHttpClient;
 import okhttp3.Request;
+import okhttp3.RequestBody;
 import okhttp3.ResponseBody;
 
 public class HttpConnectionManager extends AbstractConnectionManager {
@@ -137,7 +146,7 @@ public class HttpConnectionManager extends AbstractConnectionManager {
         final String slotHostname = url.host();
         final boolean onionSlot = slotHostname.endsWith(".onion");
         final boolean I2PSlot = slotHostname.endsWith(".i2p");
-        final OkHttpClient.Builder builder = newBuilder(mXmppConnectionService.useTorToConnect() || account.isOnion() || onionSlot , mXmppConnectionService.useI2PToConnect() || account.isI2P() || I2PSlot);
+        final OkHttpClient.Builder builder = newBuilder(mXmppConnectionService.useTorToConnect() || account.isOnion() || onionSlot, mXmppConnectionService.useI2PToConnect() || account.isI2P() || I2PSlot);
         builder.readTimeout(readTimeout, TimeUnit.SECONDS);
         setupTrustManager(builder, interactive);
         return builder.build();
@@ -181,5 +190,28 @@ public class HttpConnectionManager extends AbstractConnectionManager {
             throw new IOException("No response body found");
         }
         return body.byteStream();
+    }
+
+    public static InputStream post(final HttpUrl httpUrl, RequestBody body,
+                                   final boolean tor, final boolean i2p) throws IOException {
+        final OkHttpClient client = newBuilder(tor, i2p).build();
+        final Request request = new Request.Builder().post(body).url(httpUrl).build();
+        final ResponseBody responseBody = client.newCall(request).execute().body();
+        if (responseBody == null) {
+            return null;
+        }
+        return responseBody.byteStream();
+    }
+
+    public static String getJSON(final HttpUrl httpUrl) throws IOException {
+        InputStream is = HttpConnectionManager.open(httpUrl, false, false);
+        return CharStreams.toString(new InputStreamReader(ByteStreams.limit(is, 10_000), Charsets.UTF_8));
+    }
+
+    public static String postJSON(final HttpUrl httpUrl, Object json) throws IOException {
+        String requestBody = new Gson().toJson(json);
+        RequestBody body = RequestBody.create(requestBody, MediaType.parse("application/json"));
+        InputStream is = HttpConnectionManager.post(httpUrl, body, false, false);
+        return CharStreams.toString(new InputStreamReader(ByteStreams.limit(is, 10_000), Charsets.UTF_8));
     }
 }

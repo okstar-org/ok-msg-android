@@ -6,16 +6,18 @@
         android:id="@+id/action_add_account"
         android:icon="?attr/icon_add_person"
         android:title="@string/action_add_new_account"
-        app:showAsAction="always" />
+        app:showAsAction="always"
+        android:visible="false"/>
     <item
         android:id="@+id/action_import_backup"
         android:title="@string/restore_backup"
-        app:showAsAction="never" />
+        app:showAsAction="never"
+        android:visible="false"/>
     <item
         android:id="@+id/action_add_account_with_cert"
         android:icon="?attr/icon_add_person"
         android:title="@string/action_add_account_with_certificate"
-        android:visible="true"
+        android:visible="false"
         app:showAsAction="never" />
     <item
         android:id="@+id/action_settings"

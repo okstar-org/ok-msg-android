@@ -1,8 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string name="pref_about_message" translatable="false"><b>monocles chat</b>
-			\n\nCopyright © 2018-%s Arne-Brün Vogelsang
-			\n\nhttps://monocles.eu/more/
+    <string name="pref_about_message" translatable="false">
+		<b>OkMSG</b>
+			\n\nCopyright © 2020-%s OkStar 社区
+			\n\nhttps://okstar.org
 			\n\nThis program is free software: you can redistribute it and/or modify
 			it under the terms of the GNU General Public License as published by
 			the Free Software Foundation, either version 3 of the License, or
@@ -14,7 +15,7 @@
 			\n\nYou should have received a copy of the GNU General Public License
 			along with this program. If not, see https://www.gnu.org/licenses
 			\n\nDownload the full original source code at https://github.com/siacs/Conversations (Copyright © Daniel Gultsch)
-			\n\nDownload the modified source code at https://codeberg.org/Arne/monocles_chat
+		    \n\nDownload the modified source code at https://gitee.com/okstar-org/ok-msg-android
 			\n\nOr at https://codeberg.org/Arne/monocles_chat
             \n\nYou can buy me a coffee by making a donation in form of a gift in sense of § 516 ff BGB i.e. a gratuitous donation via PayPal for arne-bruen@monocles.de
 	</string>

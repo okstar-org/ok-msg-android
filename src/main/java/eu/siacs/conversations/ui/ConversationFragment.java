@@ -1274,8 +1274,8 @@ public class ConversationFragment extends XmppFragment
                 } else {
                     menuOngoingCall.setVisible(false);
                     final RtpCapability.Capability rtpCapability = RtpCapability.check(conversation.getContact());
-                    final boolean cameraAvailable = activity != null && activity.isCameraFeatureAvailable();
                     menuCall.setVisible(rtpCapability != RtpCapability.Capability.NONE);
+                    final boolean cameraAvailable = activity != null && activity.isCameraFeatureAvailable();
                     menuVideoCall.setVisible(rtpCapability == RtpCapability.Capability.VIDEO && cameraAvailable);
                 }
                 menuParticipants.setVisible(false);

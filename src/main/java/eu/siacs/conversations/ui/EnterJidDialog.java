@@ -17,6 +17,7 @@ import android.widget.AdapterView;
 import android.widget.TextView;
 import android.widget.ToggleButton;
 
+import androidx.annotation.Nullable;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import java.util.Map;
@@ -330,6 +331,11 @@ public class EnterJidDialog extends DialogFragment implements OnBackendConnected
     @Override
     public void onBackendConnected() {
         refreshKnownHosts();
+    }
+
+    @Override
+    public void onCreate(@Nullable Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
     }
 
     private void refreshKnownHosts() {

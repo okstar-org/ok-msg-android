@@ -158,12 +158,13 @@ public class ManageAccountActivity extends XmppActivity implements OnAccountUpda
     @Override
     public void onCreateContextMenu(ContextMenu menu, View v, ContextMenuInfo menuInfo) {
         super.onCreateContextMenu(menu, v, menuInfo);
-        ManageAccountActivity.this.getMenuInflater().inflate(
-                R.menu.manageaccounts_context, menu);
+
+        getMenuInflater().inflate(R.menu.manageaccounts_context, menu);
+
         AdapterContextMenuInfo acmi = (AdapterContextMenuInfo) menuInfo;
         this.selectedAccount = accountList.get(acmi.position);
         if (this.selectedAccount.isEnabled()) {
-            menu.findItem(R.id.mgmt_account_announce_pgp).setVisible(Config.supportOpenPgp());
+//            menu.findItem(R.id.mgmt_account_announce_pgp).setVisible(Config.supportOpenPgp());
         } else {
             menu.findItem(R.id.mgmt_account_reconnect).setVisible(false);
             menu.findItem(R.id.mgmt_account_announce_pgp).setVisible(false);
@@ -432,7 +433,7 @@ public class ManageAccountActivity extends XmppActivity implements OnAccountUpda
         final AlertDialog.Builder builder = new AlertDialog.Builder(this);
         builder.setTitle(getString(R.string.mgmt_account_are_you_sure));
         builder.setIconAttribute(android.R.attr.alertDialogIcon);
-        builder.setMessage(getString(R.string.mgmt_account_delete_confirm_message));
+//        builder.setMessage(getString(R.string.mgmt_account_delete_confirm_message));
         builder.setPositiveButton(getString(R.string.delete),
                 (dialog, which) -> {
                     xmppConnectionService.deleteAccount(account);
@@ -442,18 +443,18 @@ public class ManageAccountActivity extends XmppActivity implements OnAccountUpda
                     }
                 });
 
-        builder.setNegativeButton(getString(R.string.delete_from_server),
-                (dialog, which) -> {
-                    if (account.isOnlineAndConnected()) {
-                        xmppConnectionService.deleteAccountFromServer(account);
-                        selectedAccount = null;
-                        if (xmppConnectionService.getAccounts().size() == 0 && Config.MAGIC_CREATE_DOMAIN != null) {
-                            WelcomeActivity.launch(this);
-                        }
-                    } else {
-                        informUser(R.string.go_online_to_delete);
-                    }
-                });
+//        builder.setNegativeButton(getString(R.string.delete_from_server),
+//                (dialog, which) -> {
+//                    if (account.isOnlineAndConnected()) {
+//                        xmppConnectionService.deleteAccountFromServer(account);
+//                        selectedAccount = null;
+//                        if (xmppConnectionService.getAccounts().size() == 0 && Config.MAGIC_CREATE_DOMAIN != null) {
+//                            WelcomeActivity.launch(this);
+//                        }
+//                    } else {
+//                        informUser(R.string.go_online_to_delete);
+//                    }
+//                });
 
         builder.setNeutralButton(getString(R.string.cancel), null);
         builder.create().show();

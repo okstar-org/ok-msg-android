@@ -44,7 +44,12 @@ public class StringUtils {
     }
 
     public static String nullOnEmpty(String input) {
-        return input == null || input.trim().isEmpty() ? null : input;
+        return isEmpty(input) ? null : input;
+    }
+
+    public
+    static boolean isEmpty(String input){
+        return input == null || input.trim().isEmpty();
     }
 
 }

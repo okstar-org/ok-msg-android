@@ -148,7 +148,7 @@
     <string name="openpgp_has_been_published">OpenPGP gako publikoa argitaratu da.</string>
     <string name="mgmt_account_are_you_sure">Ziur al zaude\?</string>
     <string name="attach_record_voice">Ahotsa grabatu</string>
-    <string name="account_settings_jabber_id">chat addressa</string>
+    <string name="account_settings_jabber_id">Account</string>
     <string name="password">Pasahitza</string>
     <string name="invalid_jid">Hau ez da chat address baliodun bat</string>
     <string name="error_out_of_memory">Memoriarik gabe. Irudia handiegia da</string>

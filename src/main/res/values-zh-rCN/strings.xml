@@ -163,7 +163,8 @@
 \n
 \n如果您从服务器删除帐户，则您的帐户也将从服务器中删除，在注册新帐户之前，您将无法登录。</string>
     <string name="attach_record_voice">语音录制</string>
-    <string name="account_settings_jabber_id">Jabber用户名</string>
+    <string name="account_settings_jabber_id">账号</string>
+    <string name="account_settings_example_jabber_id">邮箱或者手机号</string>
     <string name="password">密码</string>
     <string name="invalid_jid">Jabber用户名无效</string>
     <string name="error_out_of_memory">内存不足。图像太大了</string>
