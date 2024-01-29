@@ -7,6 +7,8 @@ import org.apache.http.conn.ssl.StrictHostnameVerifier;
 
 import static eu.siacs.conversations.utils.Random.SECURE_RANDOM;
 
+import androidx.annotation.NonNull;
+
 import com.google.common.base.Charsets;
 import com.google.common.io.ByteStreams;
 import com.google.common.io.CharStreams;
@@ -183,6 +185,7 @@ public class HttpConnectionManager extends AbstractConnectionManager {
     }
 
     public static InputStream open(final HttpUrl httpUrl, final boolean tor, final boolean i2p) throws IOException {
+        Log.i(Config.LOGTAG, "get=>"+httpUrl);
         final OkHttpClient client = newBuilder(tor, i2p).build();
         final Request request = new Request.Builder().get().url(httpUrl).build();
         final ResponseBody body = client.newCall(request).execute().body();
@@ -194,6 +197,7 @@ public class HttpConnectionManager extends AbstractConnectionManager {
 
     public static InputStream post(final HttpUrl httpUrl, RequestBody body,
                                    final boolean tor, final boolean i2p) throws IOException {
+        Log.i(Config.LOGTAG, "post=>"+httpUrl);
         final OkHttpClient client = newBuilder(tor, i2p).build();
         final Request request = new Request.Builder().post(body).url(httpUrl).build();
         final ResponseBody responseBody = client.newCall(request).execute().body();
@@ -204,14 +208,22 @@ public class HttpConnectionManager extends AbstractConnectionManager {
     }
 
     public static String getJSON(final HttpUrl httpUrl) throws IOException {
-        InputStream is = HttpConnectionManager.open(httpUrl, false, false);
-        return CharStreams.toString(new InputStreamReader(ByteStreams.limit(is, 10_000), Charsets.UTF_8));
+        InputStream is =  open(httpUrl, false, false);
+        String res = readString(is);
+        Log.i(Config.LOGTAG, "response:"+res);
+        return res;
     }
 
     public static String postJSON(final HttpUrl httpUrl, Object json) throws IOException {
-        String requestBody = new Gson().toJson(json);
-        RequestBody body = RequestBody.create(requestBody, MediaType.parse("application/json"));
-        InputStream is = HttpConnectionManager.post(httpUrl, body, false, false);
+        RequestBody body = RequestBody.create(new Gson().toJson(json), MediaType.parse("application/json"));
+        InputStream is =  post(httpUrl, body, false, false);
+        String res = readString(is);
+        Log.i(Config.LOGTAG, "response:"+res);
+        return res;
+    }
+
+    @NonNull
+    private static String readString(InputStream is) throws IOException {
         return CharStreams.toString(new InputStreamReader(ByteStreams.limit(is, 10_000), Charsets.UTF_8));
     }
 }

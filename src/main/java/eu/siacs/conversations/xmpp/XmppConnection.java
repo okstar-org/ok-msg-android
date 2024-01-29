@@ -419,9 +419,7 @@ public class XmppConnection implements Runnable {
                     return;
                 }
                 if (results == null) {
-                    Log.e(
-                            Config.LOGTAG,
-                            account.getJid().asBareJid() + ": Resolver results were empty");
+                    Log.e(Config.LOGTAG, account.getJid().asBareJid() + ": Resolver results were empty");
                     return;
                 }
                 final Resolver.Result storedBackupResult;

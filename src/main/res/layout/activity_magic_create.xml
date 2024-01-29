@@ -35,18 +35,13 @@
                     android:paddingRight="16dp"
                     android:paddingBottom="8dp">
 
-                    <RelativeLayout
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content">
-
-                        <ImageView
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_centerHorizontal="true"
-                            android:layout_centerVertical="true"
-                            android:padding="8dp"
-                            android:src="@drawable/logo_actionbar" />
-                    </RelativeLayout>
+                    <ProgressBar
+                        android:id="@+id/progressBar"
+                        style="?android:attr/progressBarStyle"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center_horizontal"
+                        android:visibility="invisible" />
 
                     <TextView
                         android:id="@+id/monocles_account_introduction"
@@ -202,8 +197,15 @@
                         android:text="@string/next"
                         android:textColor="?attr/colorAccent" />
 
+
+
                 </LinearLayout>
+
+
             </RelativeLayout>
+
+
         </ScrollView>
     </LinearLayout>
+
 </layout>

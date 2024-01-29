@@ -71,6 +71,7 @@ import java.util.concurrent.Executors;
 import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.concurrent.atomic.AtomicInteger;
 
+import eu.siacs.conversations.BuildConfig;
 import eu.siacs.conversations.Config;
 import eu.siacs.conversations.R;
 import eu.siacs.conversations.crypto.axolotl.AxolotlService;
@@ -127,7 +128,7 @@ public class EditAccountActivity extends OmemoActivity implements OnAccountUpdat
     private AlertDialog mCaptchaDialog = null;
     private final AtomicBoolean mPendingReconnect = new AtomicBoolean(false);
     private final AtomicBoolean redirectInProgress = new AtomicBoolean(false);
-    private Jid jidToEdit;
+    private Jid jidToEdit = null;
     private boolean mInitMode = false;
     private boolean mExisting = false;
     private Boolean mForceRegister = null;
@@ -192,7 +193,7 @@ public class EditAccountActivity extends OmemoActivity implements OnAccountUpdat
 //                    final boolean useTor = preferences.getBoolean("use_tor", master.getResources().getBoolean(R.bool.use_tor));
 //                    final boolean useI2P = preferences.getBoolean("use_i2p", master.getResources().getBoolean(R.bool.use_i2p));
 
-                    String url = "https://stack.okstar.org.cn/api/open/passport/account/" + accountJidText;
+                    String url = BuildConfig.OK_STACK_API_URL + "/open/passport/account/" + accountJidText;
                     String body = HttpConnectionManager.getJSON(HttpUrl.get(url));
                     data.putSerializable("json", body);
                     message.setData(data);
@@ -248,9 +249,9 @@ public class EditAccountActivity extends OmemoActivity implements OnAccountUpdat
         } else if (mInitMode && mAccount != null && mAccount.getStatus() == Account.State.ONLINE) {
             runOnUiThread(this::next);
         }
-        if (mAccount != null) {
-            updateAccountInformation(false);
-        }
+//        if (mAccount != null) {
+//            updateAccountInformation(false);
+//        }
         updateSaveButton();
     }
 
@@ -279,7 +280,7 @@ public class EditAccountActivity extends OmemoActivity implements OnAccountUpdat
 
     private void doLogin(String username, String password) {
 
-        String domain = "meet.chuanshaninfo.com";
+        String domain = BuildConfig.MAGIC_CREATE_DOMAIN;
         Jid jid = Jid.of(username, domain, null);
 
         final boolean wasDisabled = mAccount != null && mAccount.getStatus() == Account.State.DISABLED;
@@ -465,7 +466,7 @@ public class EditAccountActivity extends OmemoActivity implements OnAccountUpdat
             finish();
         } else {
             updateSaveButton();
-            updateAccountInformation(true);
+//            updateAccountInformation(true);
         }
 
 
@@ -609,7 +610,7 @@ public class EditAccountActivity extends OmemoActivity implements OnAccountUpdat
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
         if (requestCode == REQUEST_BATTERY_OP || requestCode == REQUEST_DATA_SAVER) {
-            updateAccountInformation(mAccount == null);
+//            updateAccountInformation(mAccount == null);
         }
         if (requestCode == REQUEST_CHANGE_STATUS) {
             PresenceTemplate template = mPendingPresenceTemplate.pop();
@@ -638,7 +639,7 @@ public class EditAccountActivity extends OmemoActivity implements OnAccountUpdat
         if (mAccount != null && mAccount.getJid().asBareJid().equals(uri.getJid()) && uri.hasFingerprints()) {
             if (xmppConnectionService.verifyFingerprints(mAccount, uri.getFingerprints())) {
                 ToastCompat.makeText(this, R.string.verified_fingerprints, ToastCompat.LENGTH_SHORT).show();
-                updateAccountInformation(false);
+//                updateAccountInformation(false);
             }
         } else if (showWarningToast) {
             ToastCompat.makeText(this, R.string.invalid_barcode, ToastCompat.LENGTH_SHORT).show();
@@ -910,17 +911,23 @@ public class EditAccountActivity extends OmemoActivity implements OnAccountUpdat
         if (this.mTheme != theme) {
             recreate();
         } else if (intent != null) {
-            try {
-                this.jidToEdit = Jid.ofEscaped(intent.getStringExtra("jid"));
-            } catch (final IllegalArgumentException ignored) {
-                this.jidToEdit = null;
-            } catch (final NullPointerException ignored) {
-                this.jidToEdit = null;
+            Log.d(Config.LOGTAG, "extras " + intent.getExtras());
+
+            final String username = intent.getStringExtra("username");
+            final String password = intent.getStringExtra("password");
+            final String email = intent.getStringExtra("email");
+            Log.i(Config.LOGTAG, "username:"+username+" email:"+email);
+
+            if (username != null) {
+                jidToEdit = Jid.ofEscaped(username, BuildConfig.MAGIC_CREATE_DOMAIN,null);
+                binding.accountJid.setText(email);
+                binding.accountPassword.setText(password);
             }
+
             final Uri data = intent.getData();
             final XmppUri xmppUri = data == null ? null : new XmppUri(data);
             final boolean scanned = intent.getBooleanExtra("scanned", false);
-            if (jidToEdit != null && xmppUri != null && xmppUri.hasFingerprints()) {
+            if (username != null && xmppUri != null && xmppUri.hasFingerprints()) {
                 if (scanned) {
                     if (xmppConnectionServiceBound) {
                         processFingerprintVerification(xmppUri, false);
@@ -935,11 +942,15 @@ public class EditAccountActivity extends OmemoActivity implements OnAccountUpdat
             boolean existing = intent.getBooleanExtra("existing", false);
             useOwnProvider = intent.getBooleanExtra("useownprovider", false);
             register = intent.getBooleanExtra("register", false);
-            boolean openedFromNotification = intent.getBooleanExtra(EXTRA_OPENED_FROM_NOTIFICATION, false);
-            Log.d(Config.LOGTAG, "extras " + intent.getExtras());
-            this.mForceRegister = intent.hasExtra(EXTRA_FORCE_REGISTER) ? intent.getBooleanExtra(EXTRA_FORCE_REGISTER, false) : null;
+
+
+
+            this.mForceRegister = intent.hasExtra(EXTRA_FORCE_REGISTER) ? //
+                    intent.getBooleanExtra(EXTRA_FORCE_REGISTER, false) //
+                    : null;
             Log.d(Config.LOGTAG, "force register=" + mForceRegister);
-            this.mInitMode = init || this.jidToEdit == null;
+
+            this.mInitMode = init || username == null;
             this.mExisting = existing;
             this.messageFingerprint = intent.getStringExtra("fingerprint");
             if (mExisting) {
@@ -948,6 +959,8 @@ public class EditAccountActivity extends OmemoActivity implements OnAccountUpdat
             if (!mInitMode) {
                 this.binding.accountRegisterNew.setVisibility(View.GONE);
                 setTitle(getString(R.string.account_details));
+
+                boolean openedFromNotification = intent.getBooleanExtra(EXTRA_OPENED_FROM_NOTIFICATION, false);
                 configureActionBar(getSupportActionBar(), !openedFromNotification);
             } else {
                 this.binding.yourNameBox.setVisibility(View.GONE);
@@ -1047,7 +1060,7 @@ public class EditAccountActivity extends OmemoActivity implements OnAccountUpdat
                 processFingerprintVerification(mPendingFingerprintVerificationUri, false);
                 mPendingFingerprintVerificationUri = null;
             }
-            updateAccountInformation(init);
+//            updateAccountInformation(init);
         }
 
 
@@ -1571,7 +1584,8 @@ public class EditAccountActivity extends OmemoActivity implements OnAccountUpdat
         } else {
             final TextInputLayout errorLayout;
             if (this.mAccount.errorStatus()) {
-                if (this.mAccount.getStatus() == Account.State.UNAUTHORIZED || this.mAccount.getStatus() == Account.State.DOWNGRADE_ATTACK) {
+                if (this.mAccount.getStatus() == Account.State.UNAUTHORIZED
+                        || this.mAccount.getStatus() == Account.State.DOWNGRADE_ATTACK) {
                     errorLayout = this.binding.accountPasswordLayout;
                 } else if (mShowOptions
                         && this.mAccount.getStatus() == Account.State.SERVER_NOT_FOUND

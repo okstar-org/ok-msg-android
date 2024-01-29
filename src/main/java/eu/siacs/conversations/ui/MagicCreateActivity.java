@@ -3,6 +3,9 @@ package eu.siacs.conversations.ui;
 import android.content.Intent;
 import android.content.pm.ActivityInfo;
 import android.os.Bundle;
+import android.os.Handler;
+import android.os.Looper;
+import android.os.Message;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.text.method.LinkMovementMethod;
@@ -13,7 +16,7 @@ import android.widget.ArrayAdapter;
 import android.widget.CompoundButton;
 import android.widget.TextView;
 
-import androidx.appcompat.app.AlertDialog;
+import androidx.annotation.NonNull;
 import androidx.appcompat.widget.Toolbar;
 import androidx.databinding.DataBindingUtil;
 
@@ -21,29 +24,26 @@ import com.google.common.reflect.TypeToken;
 import com.google.gson.Gson;
 
 import java.io.IOException;
-import java.io.InputStream;
-import java.security.SecureRandom;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 import java.util.Objects;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
 
+import eu.siacs.conversations.BuildConfig;
 import eu.siacs.conversations.Config;
 import eu.siacs.conversations.R;
 import eu.siacs.conversations.databinding.ActivityMagicCreateBinding;
-import eu.siacs.conversations.entities.Account;
-import eu.siacs.conversations.entities.AccountInfo;
 import eu.siacs.conversations.entities.SignUpForm;
 import eu.siacs.conversations.entities.SignUpResult;
 import eu.siacs.conversations.http.HttpConnectionManager;
 import eu.siacs.conversations.http.Res;
-import eu.siacs.conversations.utils.CryptoHelper;
 import eu.siacs.conversations.utils.InstallReferrerUtils;
 import eu.siacs.conversations.utils.StringUtils;
 import eu.siacs.conversations.xmpp.Jid;
+import me.drakeet.support.toast.ToastCompat;
 import okhttp3.HttpUrl;
-import okhttp3.MediaType;
-import okhttp3.RequestBody;
 
 public class MagicCreateActivity extends XmppActivity implements TextWatcher, AdapterView.OnItemSelectedListener, CompoundButton.OnCheckedChangeListener {
 
@@ -59,6 +59,8 @@ public class MagicCreateActivity extends XmppActivity implements TextWatcher, Ad
     private String domain;
     private String username;
     private String preAuth;
+
+    final ExecutorService executorService = Executors.newFixedThreadPool(1);
 
 
     private void setupHyperlink() {
@@ -161,16 +163,67 @@ public class MagicCreateActivity extends XmppActivity implements TextWatcher, Ad
 
                 Log.i(Config.LOGTAG, "email:" + email);
 
-                new Thread(new Runnable() {
+                //设置进度显示
+                binding.progressBar.setVisibility(View.VISIBLE);
+
+                Handler handler = new Handler(Objects.requireNonNull(Looper.myLooper())) {
                     @Override
-                    public void run() {
-                        try {
-                            doSignUp(email, password);
-                        } catch (IOException e) {
-                            throw new RuntimeException(e);
+                    public void handleMessage(@NonNull Message msg) {
+                        Bundle bundle = msg.getData();
+                        String error = bundle.getString("error");
+                        if (error != null) {
+                            ToastCompat.makeText(MagicCreateActivity.this, error, ToastCompat.LENGTH_SHORT).show();
+                            return;
                         }
+
+                        if (bundle.getInt("code") != 0) {
+//                            ToastCompat.makeText(MagicCreateActivity.this, bundle.getString("msg"), ToastCompat.LENGTH_SHORT).show();
+                            binding.email.setError(bundle.getString("msg"));
+                            return;
+                        }
+
+                        ToastCompat.makeText(MagicCreateActivity.this, "注册成功，正在进入登录界面", ToastCompat.LENGTH_SHORT).show();
+
+                        SignUpResult result = new Gson().fromJson(bundle.getString("json"), SignUpResult.class);
+                        Intent intent = new Intent(MagicCreateActivity.this, EditAccountActivity.class);
+                        intent.putExtra("username", result.getUsername());
+                        intent.putExtra("password", password);
+                        intent.putExtra("email", email);
+                        intent.putExtra("init", true);
+                        intent.putExtra("existing", false);
+                        intent.putExtra("useownprovider", true);
+                        intent.putExtra("register", registerFromUri);
+                        intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+
+                        StartConversationActivity.addInviteUri(intent, getIntent());
+                        startActivity(intent);
+                        overridePendingTransition(R.animator.fade_in, R.animator.fade_out);
+                        finish();
+                        overridePendingTransition(R.animator.fade_in, R.animator.fade_out);
                     }
-                }).start();
+                };
+
+
+                Runnable r = () -> {
+                    Message msg = new Message();
+                    Bundle bundle = new Bundle();
+                    try {
+                        Res<SignUpResult> res = doSignUp(email, password);
+                        bundle.putInt("code", res.getCode());
+                        if (res.success()) {
+                            bundle.putSerializable("json", new Gson().toJson(res.getData()));
+                        } else {
+                            bundle.putString("msg", res.getMsg());
+                        }
+                        binding.progressBar.setVisibility(View.INVISIBLE);
+                        msg.setData(bundle);
+                    } catch (Exception e) {
+                        bundle.putString("error", e.getMessage());
+                    }
+                    handler.sendMessage(msg);
+                };
+
+                executorService.execute(r);
 
 //                final boolean fixedUsername;
 //                final Jid jid;
@@ -243,8 +296,8 @@ public class MagicCreateActivity extends XmppActivity implements TextWatcher, Ad
 //        setupHyperlink();
     }
 
-    private static void doSignUp(String email, String password) throws IOException {
-        HttpUrl url = HttpUrl.get("https://stack.okstar.org.cn/api/auth/passport/signUp");
+    private static Res<SignUpResult> doSignUp(String email, String password) {
+        HttpUrl url = HttpUrl.get(BuildConfig.OK_STACK_API_URL+"/auth/passport/signUp");
 
         SignUpForm signUp = new SignUpForm();
         signUp.setLanguage("zh-CN");
@@ -253,12 +306,14 @@ public class MagicCreateActivity extends XmppActivity implements TextWatcher, Ad
         signUp.setAccount(email);
         signUp.setPassword(password);
 
-
-        String post = HttpConnectionManager.postJSON(url, signUp);
-        Res<SignUpResult> result = new Gson().fromJson(post, new TypeToken<Res<SignUpResult>>() {
-        }.getType());
-
-        Log.i(Config.LOGTAG, "result:"+result.toString());
+        try {
+            String post = HttpConnectionManager.postJSON(url, signUp);
+            Res<SignUpResult> result = new Gson().fromJson(post, new TypeToken<Res<SignUpResult>>() {
+            }.getType());
+            return result;
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
     }
 
     private String updateDomain() {

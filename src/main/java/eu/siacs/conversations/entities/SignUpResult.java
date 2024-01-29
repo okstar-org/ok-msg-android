@@ -2,7 +2,9 @@ package eu.siacs.conversations.entities;
 
 import androidx.annotation.NonNull;
 
-public class SignUpResult  {
+import java.io.Serializable;
+
+public class SignUpResult  implements Serializable {
     private Long userId;
     private String username;
 

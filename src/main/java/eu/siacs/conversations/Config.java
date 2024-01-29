@@ -82,7 +82,7 @@ public final class Config {
     public static final String XMPP_IP = null; //BuildConfig.XMPP_IP; // set to null means disable
     public static final Integer[] XMPP_Ports = null; //BuildConfig.XMPP_Ports; // set to null means disable
     public static final String DOMAIN_LOCK = BuildConfig.DOMAIN_LOCK; //only allow account creation for this domain
-    public static final String MAGIC_CREATE_DOMAIN = BuildConfig.MAGIC_CREATE_DOMAIN; //"monocles.eu";
+    public static final String MAGIC_CREATE_DOMAIN = BuildConfig.MAGIC_CREATE_DOMAIN;
 
     public static final Jid QUICKSY_DOMAIN = Jid.of("cheogram.com");
     public static final String CHANNEL_DISCOVERY = "https://search.jabber.network";

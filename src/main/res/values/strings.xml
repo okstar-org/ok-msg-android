@@ -772,7 +772,7 @@
     <string name="copy_jabber_id">Copy JID</string>
     <string name="copy_link">Copy web address</string>
     <string name="server_hint">Choose provider</string>
-    <string name="choose_your_server">Choose your jabber provider</string>
+    <string name="choose_your_server">Choose your server provider</string>
     <string name="show_privacy">Privacy Policy</string>
     <string name="show_termsofuse">Terms of Use</string>
     <string name="p1_s3_filetransfer">HTTP File Sharing for S3</string>

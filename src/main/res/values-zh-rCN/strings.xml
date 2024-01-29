@@ -561,6 +561,10 @@
 \n
 \n用户 %s 邀请你到OkMSG。只需点击以下链接...</string>
     <string name="pref_broadcast_last_activity">广播最后一次使用聊天的时间</string>
+    <string name="close">关闭</string>
+    <string name="cleanup_conversations">清除会话</string>
+    <string name="call">呼叫</string>
+    <string name="clear_blocked_media">清除阻塞的媒体</string>
     <string name="pref_broadcast_last_activity_summary">让您的所有联系人知道OkMSG</string>
     <string name="request_permissions_message">OkMSG会请求一些权限。只有获取了这些权限后，应用才能正常运行。如果您拒绝了这些权限，应用将会自动关闭</string>
     <string name="request_permissions_message_again">OkMSG的权限已被拒绝。是否跳转到设置以允许这些权限？如果拒绝，应用将自动关闭。</string>
@@ -766,7 +770,7 @@
     <string name="copy_jabber_id">复制Jabber用户名</string>
     <string name="copy_link">复制网页地址</string>
     <string name="server_hint">选择提供商</string>
-    <string name="choose_your_server">选择您的jabber提供商</string>
+    <string name="choose_your_server">选择您的服务提供商</string>
     <string name="show_privacy">隐私政策</string>
     <string name="show_termsofuse">使用条款</string>
     <string name="p1_s3_filetransfer">S3的HTTP文件共享</string>

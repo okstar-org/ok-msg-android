@@ -155,7 +155,8 @@
                                 android:id="@+id/account_color_box"
                                 android:layout_width="wrap_content"
                                 android:layout_height="match_parent"
-                                android:layout_marginTop="12dp">
+                                android:layout_marginTop="12dp"
+                                android:visibility="gone">
 
                                 <LinearLayout
                                     android:layout_width="wrap_content"
@@ -163,42 +164,45 @@
                                     android:layout_alignParentLeft="true"
                                     android:layout_centerVertical="true"
                                     android:layout_toLeftOf="@+id/account_color_thumbnail"
-                                    android:orientation="vertical">
+                                    android:orientation="vertical"
+                                    android:visibility="gone">
 
                                     <TextView
                                         android:layout_width="wrap_content"
                                         android:layout_height="wrap_content"
                                         android:text="Account Color"
-                                        android:textAppearance="@style/TextAppearance.Conversations.Body1"/>
-                                    
+                                        android:textAppearance="@style/TextAppearance.Conversations.Body1" />
+
                                     <TextView
                                         android:layout_width="wrap_content"
                                         android:layout_height="wrap_content"
                                         android:text="Used on conversation and contact lists, and notifications"
-                                        android:textAppearance="@style/TextAppearance.Conversations.Caption"/>
+                                        android:textAppearance="@style/TextAppearance.Conversations.Caption" />
                                 </LinearLayout>
 
                                 <FrameLayout
                                     android:id="@+id/account_color_thumbnail"
                                     android:layout_width="48dp"
                                     android:layout_height="48dp"
-                                    android:background="@drawable/thumbnail_border"
                                     android:layout_alignParentRight="true"
-                                    android:layout_centerVertical="true">
+                                    android:layout_centerVertical="true"
+                                    android:background="@drawable/thumbnail_border">
 
                                     <View
-                                        android:layout_margin="1dp"
                                         android:id="@+id/colorPreview"
                                         android:layout_width="fill_parent"
-                                        android:layout_height="fill_parent" />
+                                        android:layout_height="fill_parent"
+                                        android:layout_margin="1dp" />
 
                                 </FrameLayout>
                             </RelativeLayout>
+
                             <RelativeLayout
                                 android:id="@+id/quiet_hours_box"
                                 android:layout_width="wrap_content"
                                 android:layout_height="match_parent"
-                                android:layout_marginTop="12dp">
+                                android:layout_marginTop="12dp"
+                                android:visibility="gone">
 
                                 <LinearLayout
                                     android:layout_width="wrap_content"
@@ -206,19 +210,20 @@
                                     android:layout_alignParentLeft="true"
                                     android:layout_centerVertical="true"
                                     android:layout_toLeftOf="@+id/action_edit_quiet_hours"
-                                    android:orientation="vertical">
+                                    android:orientation="vertical"
+                                    android:visibility="gone">
 
                                     <TextView
                                         android:layout_width="wrap_content"
                                         android:layout_height="wrap_content"
                                         android:text="@string/title_pref_quiet_hours"
-                                        android:textAppearance="@style/TextAppearance.Conversations.Body1"/>
+                                        android:textAppearance="@style/TextAppearance.Conversations.Body1" />
 
                                     <TextView
                                         android:layout_width="wrap_content"
                                         android:layout_height="wrap_content"
                                         android:text="@string/pref_quiet_hours_summary"
-                                        android:textAppearance="@style/TextAppearance.Conversations.Caption"/>
+                                        android:textAppearance="@style/TextAppearance.Conversations.Caption" />
                                 </LinearLayout>
 
                                 <ImageView
@@ -231,7 +236,7 @@
                                     android:background="?attr/selectableItemBackgroundBorderless"
                                     android:padding="@dimen/image_button_padding"
                                     android:src="?attr/icon_edit_body"
-                                    android:visibility="visible"/>
+                                    android:visibility="visible" />
                             </RelativeLayout>
 
                         </LinearLayout>
@@ -398,7 +403,8 @@
                             android:layout_height="wrap_content"
                             android:layout_below="@id/jid_password_box"
                             android:layout_marginTop="8dp"
-                            android:text="@string/register_account" />
+                            android:text="@string/register_account"
+                            android:visibility="gone" />
                     </RelativeLayout>
                 </androidx.cardview.widget.CardView>
 
