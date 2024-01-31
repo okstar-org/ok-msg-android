@@ -255,4 +255,6 @@ public final class Config {
     public static final String CONVERSATIONS_COMPAT_TYPE = "compat";
 
     public static final String MONOCLES_COMPAT_TYPE = "monocles";
+    public static final String SUPPORT_BOOKMARK_DELETED = "support_bookmark_deleted";
+    public static final String SUPPORT_CONFERENCE_JID = "support@conference."+ BuildConfig.OK_XMPP_DOMAIN;
 }

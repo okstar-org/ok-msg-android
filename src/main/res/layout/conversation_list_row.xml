@@ -221,7 +221,7 @@
                         android:layout_alignParentBottom="true"
                         android:paddingTop="4dp"
                         android:textAppearance="@style/TextAppearance.Conversations.Status"
-                        android:visibility="gone" />
+                        android:visibility="gone"/>
                 </RelativeLayout>
 
             </RelativeLayout>

@@ -41,8 +41,6 @@ public class IntroHelper {
                 String activityname = activity.getClass().getSimpleName();
                 String INTRO = "intro_shown_on_activity_" + activityname + "_MultiMode_" + mode_multi;
                 boolean SHOW_INTRO = getPrefs.getBoolean(INTRO, true);
-
-
                 if (SHOW_INTRO && Config.SHOW_INTRO) {
                   final Intent i = new Intent(activity, IntroActivity.class);
                   i.putExtra(ACTIVITY, activityname);

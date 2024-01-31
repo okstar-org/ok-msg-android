@@ -2321,8 +2321,8 @@ public class XmppConnectionService extends Service {
     }
 
     public void deleteBookmark(final Account account, final Bookmark bookmark) {
-        if (bookmark.getJid().toString().equals("support@conference.monocles.de")) {
-            getPreferences().edit().putBoolean("monocles_support_bookmark_deleted", true).apply();
+        if (bookmark.getJid().toString().equals(Config.SUPPORT_CONFERENCE_JID)) {
+            getPreferences().edit().putBoolean(Config.SUPPORT_BOOKMARK_DELETED, true).apply();
         }
                         /*              //TODO: Add bridges as contacts
         if (bookmark.getJid().toString().equals("whatsapp.monocles.eu")) {

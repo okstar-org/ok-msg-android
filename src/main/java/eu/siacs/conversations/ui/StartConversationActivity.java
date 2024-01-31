@@ -48,6 +48,7 @@ import java.util.Locale;
 import java.util.Map;
 import java.util.stream.Collectors;
 
+import eu.siacs.conversations.BuildConfig;
 import eu.siacs.conversations.utils.UIHelper;
 
 import androidx.annotation.MenuRes;
@@ -1195,18 +1196,21 @@ public class StartConversationActivity extends XmppActivity implements XmppConne
         Collections.sort(this.contacts);
 
         //MONOCLES SUPPORT ROOM
-        final boolean supportDeleted = getPreferences().getBoolean("monocles_support_bookmark_deleted", false);
+        final boolean supportDeleted = getPreferences().getBoolean(Config.SUPPORT_BOOKMARK_DELETED, false);
+        if (!supportDeleted
+                && !foundSupport
+                && (needle == null || needle.equals(""))
+                && xmppConnectionService.getAccounts().size() > 0) {
 
-        if (!supportDeleted && !foundSupport && (needle == null || needle.equals("")) && xmppConnectionService.getAccounts().size() > 0) {
             Bookmark bookmark = new Bookmark(
                     xmppConnectionService.getAccounts().get(0),
-                    Jid.of("support@conference.monocles.de")
+                    Jid.of(Config.SUPPORT_CONFERENCE_JID)
             );
-            bookmark.setBookmarkName("monocles support room");
+            bookmark.setBookmarkName("OkStar support room");
             bookmark.addChild("group").setContent("support");
             this.contacts.add(0, bookmark);
         }
-/*                              //TODO: Make bridges deletable
+/*      //TODO: Make bridges deletable
         //Whatsapp bridge
         final boolean whatsappDeleted = getPreferences().getBoolean("whatsapp_bridge_bookmark_deleted", false);
 

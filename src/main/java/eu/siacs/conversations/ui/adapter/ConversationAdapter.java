@@ -86,12 +86,12 @@ public class ConversationAdapter
             viewHolder.binding.conversationName.setText(name);
         }
 
-        if (activity.xmppConnectionService.multipleAccounts() && activity.xmppConnectionService.showOwnAccounts()) {
-            viewHolder.binding.account.setVisibility(View.VISIBLE);
-            viewHolder.binding.account.setText(conversation.getAccount().getJid().asBareJid());
-        } else {
-            viewHolder.binding.account.setVisibility(View.GONE);
-        }
+//        if (activity.xmppConnectionService.multipleAccounts() && activity.xmppConnectionService.showOwnAccounts()) {
+//            viewHolder.binding.account.setVisibility(View.VISIBLE);
+//            viewHolder.binding.account.setText(conversation.getAccount().getJid().asBareJid());
+//        } else {
+//            viewHolder.binding.account.setVisibility(View.GONE);
+//        }
 
         if (activity.xmppConnectionService != null && activity.xmppConnectionService.getAccounts().size() > 1) {
             viewHolder.binding.frame.setBackgroundColor(conversation.getAccount().getColor(activity.isDarkTheme()));
