@@ -63,7 +63,6 @@ public final class Config {
 
     public static final String LOGTAG = BuildConfig.LOGTAG;
 
-    public static final Jid BUG_REPORTS = Jid.of("support@monocles.de");
     public static final Uri HELP = Uri.parse("https://monocles.wiki");
 
     public static final String inviteUserURL = monocles() + "/?chat/";
@@ -183,7 +182,7 @@ public final class Config {
     public static final String UPDATE_URL = BuildConfig.UPDATE_URL;
     public static final long UPDATE_CHECK_TIMER = 24 * 60 * 60; // 24 h in seconds
 
-    public static final String ISSUE_URL = "xmpp:support@conference.monocles.de?join";
+    public static final String ISSUE_URL = "xmpp:support@conference.okstar.org.cn?join";
 
     //only allow secure tls chipers now
     public static final String[] ENABLED_CIPHERS = {
@@ -257,4 +256,5 @@ public final class Config {
     public static final String MONOCLES_COMPAT_TYPE = "monocles";
     public static final String SUPPORT_BOOKMARK_DELETED = "support_bookmark_deleted";
     public static final String SUPPORT_CONFERENCE_JID = "support@conference."+ BuildConfig.OK_XMPP_DOMAIN;
+    public static final Jid BUG_REPORTS = Jid.of(SUPPORT_CONFERENCE_JID);
 }

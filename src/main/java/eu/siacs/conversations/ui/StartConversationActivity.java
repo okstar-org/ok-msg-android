@@ -1146,7 +1146,7 @@ public class StartConversationActivity extends XmppActivity implements XmppConne
 
                 for (Bookmark bookmark : account.getBookmarks()) {
                     if (bookmark.match(this, needle)) {
-                        if (bookmark.getJid().toString().equals("support@conference.monocles.de")) {
+                        if (bookmark.getJid().toString().equals(Config.SUPPORT_CONFERENCE_JID)) {
                             foundSupport = true;
                         }
                         this.contacts.add(bookmark);

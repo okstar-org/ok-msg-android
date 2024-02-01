@@ -46,13 +46,13 @@
             </group>
         </menu>
     </item>
-    <item
-        android:id="@+id/action_mediabrowser"
-        android:icon="@drawable/ic_image_white_24dp"
-        android:orderInCategory="25"
-        android:title="@string/media_browser"
-        android:visible="false"
-        app:showAsAction="ifRoom" />
+<!--    <item-->
+<!--        android:id="@+id/action_mediabrowser"-->
+<!--        android:icon="@drawable/ic_image_white_24dp"-->
+<!--        android:orderInCategory="25"-->
+<!--        android:title="@string/media_browser"-->
+<!--        android:visible="false"-->
+<!--        app:showAsAction="ifRoom" />-->
     <item
         android:id="@+id/action_attach_file"
         android:icon="?attr/icon_new_attachment"

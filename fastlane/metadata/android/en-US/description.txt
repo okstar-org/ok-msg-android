@@ -23,4 +23,4 @@ Features:
 * Status messages
 * Daily backup of database to local storage
 
-You need help? Please join our support group chat <a href="https://interact.monocles.de/">support@conference.monocles.de</a>.
+You need help? Please join our support group chat <a href="https://interact.monocles.de/">support@conference.okstar.org.cn</a>.

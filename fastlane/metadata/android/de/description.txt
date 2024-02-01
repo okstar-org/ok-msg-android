@@ -26,4 +26,4 @@ Features:
 * Status Nachrichten
 * tägliches Backup der Datenbank auf den lokalen Speicher
 
-Benötigst du Hilfe? Bitte tritt doch einfach dem Support Gruppenchat <a href="https://interact.monocles.de">support@conference.monocles.de</a> bei.
+Benötigst du Hilfe? Bitte tritt doch einfach dem Support Gruppenchat <a href="https://interact.okstar.org.cn">support@okstar.org.cn</a> bei.

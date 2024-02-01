@@ -1255,7 +1255,7 @@ public class ConversationFragment extends XmppFragment
         final MenuItem menuCall = menu.findItem(R.id.action_call);
         final MenuItem menuOngoingCall = menu.findItem(R.id.action_ongoing_call);
         final MenuItem menuVideoCall = menu.findItem(R.id.action_video_call);
-        final MenuItem menuMediaBrowser = menu.findItem(R.id.action_mediabrowser);
+//        final MenuItem menuMediaBrowser = menu.findItem(R.id.action_mediabrowser);
         final MenuItem menuTogglePinned = menu.findItem(R.id.action_toggle_pinned);
 
         if (conversation != null) {
@@ -1305,7 +1305,6 @@ public class ConversationFragment extends XmppFragment
                 menuContactDetails.setVisible(false);
                 menuSearchUpdates.setVisible(false);
             }
-            menuMediaBrowser.setVisible(true);
             menuNeedHelp.setVisible(false);
             ConversationMenuConfigurator.configureAttachmentMenu(conversation, menu, activity.getAttachmentChoicePreference(), hasAttachments);
             ConversationMenuConfigurator.configureEncryptionMenu(conversation, menu, activity);
@@ -1320,7 +1319,6 @@ public class ConversationFragment extends XmppFragment
             menuInviteContact.setVisible(false);
             menuGroupDetails.setVisible(false);
             menuContactDetails.setVisible(false);
-            menuMediaBrowser.setVisible(false);
         }
         super.onCreateOptionsMenu(menu, menuInflater);
     }
@@ -1898,9 +1896,9 @@ public class ConversationFragment extends XmppFragment
             case R.id.action_contact_details:
                 activity.switchToContactDetails(conversation.getContact());
                 break;
-            case R.id.action_mediabrowser:
-                MediaBrowserActivity.launch(activity, conversation);
-                break;
+//            case R.id.action_mediabrowser:
+//                MediaBrowserActivity.launch(activity, conversation);
+//                break;
             case R.id.action_block:
             case R.id.action_unblock:
                 if (mXmppActivity instanceof XmppActivity) {

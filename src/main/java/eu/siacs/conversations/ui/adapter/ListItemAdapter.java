@@ -92,19 +92,19 @@ public class ListItemAdapter extends ArrayAdapter<ListItem> {
                 viewHolder.tags.addView(tv);
             }
         }
-        final Jid jid = item.getJid();
-        if (jid != null) {
-            viewHolder.jid.setVisibility(View.VISIBLE);
-            viewHolder.jid.setText(IrregularUnicodeDetector.style(activity, jid));
-        } else {
-            viewHolder.jid.setVisibility(View.GONE);
-        }
-        if (activity.xmppConnectionService.multipleAccounts() && activity.xmppConnectionService.showOwnAccounts()) {
-            viewHolder.account.setVisibility(View.VISIBLE);
-            viewHolder.account.setText(item.getAccount().getJid().asBareJid());
-        } else {
-            viewHolder.account.setVisibility(View.GONE);
-        }
+//        final Jid jid = item.getJid();
+//        if (jid != null) {
+//            viewHolder.jid.setVisibility(View.VISIBLE);
+//            viewHolder.jid.setText(IrregularUnicodeDetector.style(activity, jid));
+//        } else {
+//            viewHolder.jid.setVisibility(View.GONE);
+//        }
+//        if (activity.xmppConnectionService.multipleAccounts() && activity.xmppConnectionService.showOwnAccounts()) {
+//            viewHolder.account.setVisibility(View.VISIBLE);
+//            viewHolder.account.setText(item.getAccount().getJid().asBareJid());
+//        } else {
+//            viewHolder.account.setVisibility(View.GONE);
+//        }
         viewHolder.name.setText(item.getDisplayName());
         if (tags.size() != 0) {
             for (ListItem.Tag tag : tags) {
