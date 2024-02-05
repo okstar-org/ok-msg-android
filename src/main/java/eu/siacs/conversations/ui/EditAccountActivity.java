@@ -307,12 +307,13 @@ public class EditAccountActivity extends OmemoActivity implements OnAccountUpdat
         } else {
             registerNewAccount = binding.accountRegisterNew.isChecked() && !Config.DISALLOW_REGISTRATION_IN_UI;
         }
-        if (mUsernameMode && binding.accountJid.getText().toString().contains("@")) {
-            binding.accountJidLayout.setError(getString(R.string.invalid_username));
-            removeErrorsOnAllBut(binding.accountJidLayout);
-            binding.accountJid.requestFocus();
-            return;
-        }
+
+//        if (mUsernameMode && binding.accountJid.getText().toString().contains("@")) {
+//            binding.accountJidLayout.setError(getString(R.string.invalid_username));
+//            removeErrorsOnAllBut(binding.accountJidLayout);
+//            binding.accountJid.requestFocus();
+//            return;
+//        }
 
         XmppConnection connection = mAccount == null ? null : mAccount.getXmppConnection();
         final boolean startOrbot = mAccount != null && mAccount.getStatus() == Account.State.TOR_NOT_AVAILABLE;

@@ -426,7 +426,12 @@
     <string name="user_has_left_conference">%1$s离开了群聊！</string>
     <string name="username">用户名</string>
     <string name="username_hint">用户名</string>
+    <string name="email">邮箱号</string>
+    <string name="email_hint">请输入邮箱号</string>
     <string name="invalid_username">这不是有效的用户名</string>
+    <string name="password_hint">请输入密码</string>
+    <string name="confirm_password">确认密码</string>
+    <string name="confirm_password_hint">请再次输入密码</string>
     <string name="download_failed_server_not_found">下载失败：找不到服务器</string>
     <string name="download_failed_file_not_found">下载失败：找不到文件</string>
     <string name="download_failed_could_not_connect">下载失败：无法连接到主机</string>
