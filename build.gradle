@@ -161,7 +161,6 @@ android {
         buildConfigField("boolean", "SHOW_INTRO", 'true')
         buildConfigField("String", "DOMAIN_LOCK", '"meet.chuanshaninfo.com"')
         buildConfigField("String", "MAGIC_CREATE_DOMAIN", '"meet.chuanshaninfo.com"')
-        buildConfigField("String", "OK_XMPP_DOMAIN", '"okstar.org.cn"')
         buildConfigField("String", "UPDATE_URL", '"https://okstar.org.cn/okmsg/update/"')
         buildConfigField("String", "OK_STACK_API_URL", '"https://stack.okstar.org.cn/api"')
         resValue "string", "applicationId", applicationId
