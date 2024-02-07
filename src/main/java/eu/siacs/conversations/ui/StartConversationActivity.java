@@ -398,6 +398,7 @@ public class StartConversationActivity extends XmppActivity implements XmppConne
             Jid jid = Jid.ofEscaped(input);
             return !jid.isDomainJid();
         } catch (IllegalArgumentException e) {
+            Log.i(Config.LOGTAG, "Is invalid Jid:"+input);
             return false;
         }
     }

@@ -569,6 +569,7 @@
     <string name="close">关闭</string>
     <string name="cleanup_conversations">清除会话</string>
     <string name="call">呼叫</string>
+    <string name="join_room">加入群聊</string>
     <string name="clear_blocked_media">清除阻塞的媒体</string>
     <string name="pref_broadcast_last_activity_summary">让您的所有联系人知道OkMSG</string>
     <string name="request_permissions_message">OkMSG会请求一些权限。只有获取了这些权限后，应用才能正常运行。如果您拒绝了这些权限，应用将会自动关闭</string>

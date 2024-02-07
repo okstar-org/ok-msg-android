@@ -48,7 +48,6 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:imeOptions="actionDone|flagNoExtractUi"
-                android:inputType="textEmailAddress"
                 android:padding="16dp"
                 android:textColor="?attr/text_Color_Main" />
         </com.google.android.material.textfield.TextInputLayout>

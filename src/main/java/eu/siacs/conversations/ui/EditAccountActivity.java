@@ -4,12 +4,14 @@ import static eu.siacs.conversations.utils.PermissionUtils.allGranted;
 import static eu.siacs.conversations.utils.PermissionUtils.readGranted;
 
 import android.app.KeyguardManager;
+import android.content.ComponentName;
 import android.content.Context;
 import android.app.Activity;
 import android.app.PendingIntent;
 import android.content.ActivityNotFoundException;
 import android.content.Intent;
 import android.content.IntentSender;
+import android.content.ServiceConnection;
 import android.content.SharedPreferences;
 import android.graphics.Bitmap;
 import android.graphics.drawable.ColorDrawable;
@@ -17,6 +19,7 @@ import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
+import android.os.IBinder;
 import android.os.Looper;
 import android.os.Message;
 import android.preference.PreferenceManager;
@@ -42,6 +45,7 @@ import androidx.annotation.NonNull;
 import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.widget.Toolbar;
+import androidx.core.app.TaskStackBuilder;
 import androidx.databinding.DataBindingUtil;
 
 import com.google.android.material.textfield.TextInputLayout;
@@ -74,6 +78,7 @@ import java.util.concurrent.atomic.AtomicInteger;
 import eu.siacs.conversations.BuildConfig;
 import eu.siacs.conversations.Config;
 import eu.siacs.conversations.R;
+import eu.siacs.conversations.StackConfig;
 import eu.siacs.conversations.crypto.axolotl.AxolotlService;
 import eu.siacs.conversations.crypto.axolotl.XmppAxolotlSession;
 import eu.siacs.conversations.databinding.ActivityEditAccountBinding;
@@ -86,6 +91,7 @@ import eu.siacs.conversations.http.HttpConnectionManager;
 import eu.siacs.conversations.http.Res;
 import eu.siacs.conversations.services.BarcodeProvider;
 import eu.siacs.conversations.services.QuickConversationsService;
+import eu.siacs.conversations.services.StackBackend;
 import eu.siacs.conversations.services.XmppConnectionService;
 import eu.siacs.conversations.services.XmppConnectionService.OnAccountUpdate;
 import eu.siacs.conversations.services.XmppConnectionService.OnCaptchaRequested;
@@ -143,6 +149,10 @@ public class EditAccountActivity extends OmemoActivity implements OnAccountUpdat
 
     private boolean mFetchingAvatar = false;
 
+    @Override
+    public void onCreateSupportNavigateUpTaskStack(@NonNull TaskStackBuilder builder) {
+        super.onCreateSupportNavigateUpTaskStack(builder);
+    }
 
     private final OnClickListener mSaveButtonClickListener = new OnClickListener() {
 
@@ -152,77 +162,36 @@ public class EditAccountActivity extends OmemoActivity implements OnAccountUpdat
             final String accountJidText = binding.accountJid.getText().toString();
             final String password = binding.accountPassword.getText().toString();
 
-            Handler handler = new Handler() {
+            Handler handler = new Handler(Looper.getMainLooper()) {
                 @Override
                 public void handleMessage(@NonNull Message msg) {
                     super.handleMessage(msg);
-                    Bundle bundle = msg.getData();
-                    try {
-                        String json = bundle.getString("json");
-                        if (json == null) {
-                            ToastCompat.makeText(EditAccountActivity.this, "服务器繁忙或者网络未连接！", ToastCompat.LENGTH_SHORT).show();
-                            return;
-                        }
 
-                        Res<AccountInfo> res = new Gson().fromJson(json, new TypeToken<Res<AccountInfo>>() {
-                        }.getType());
-
-                        AccountInfo info = res.getData();
-                        if (info == null) {
-                            binding.accountJidLayout.setError(res.getMsg());
-                            return;
-                        }
-
-                        doLogin(info.getUsername(), password);
-
-                    } catch (Exception e) {
-                        ToastCompat.makeText(EditAccountActivity.this, "服务器繁忙或者网络未连接！",
-                                ToastCompat.LENGTH_SHORT).show();
-
+                    Res<AccountInfo> res = (Res<AccountInfo>) msg.obj;
+                    if (res == null) {
+                        ToastCompat.makeText(EditAccountActivity.this, "服务器繁忙或者网络未连接！", ToastCompat.LENGTH_SHORT).show();
+                        return;
                     }
+                    if (res.getCode() != 0) {
+                        binding.accountJidLayout.setError(res.getMsg());
+                        return;
+                    }
+
+                    AccountInfo info = res.getData();
+                    doLogin(info.getUsername(), password);
                 }
             };
 
 
             Runnable runnable = () -> {
                 Message message = new Message();
-                Bundle data = new Bundle();
-                try {
-
-//                    final SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(master);
-//                    final boolean useTor = preferences.getBoolean("use_tor", master.getResources().getBoolean(R.bool.use_tor));
-//                    final boolean useI2P = preferences.getBoolean("use_i2p", master.getResources().getBoolean(R.bool.use_i2p));
-
-                    String url = BuildConfig.OK_STACK_API_URL + "/open/passport/account/" + accountJidText;
-                    String body = HttpConnectionManager.getJSON(HttpUrl.get(url));
-                    data.putSerializable("json", body);
-                    message.setData(data);
-                } catch (IOException e) {
-                    throw new RuntimeException(e);
-                }
-
+                message.obj = StackBackend.GetJid(accountJidText);
                 handler.sendMessage(message);
-
-
             };
-            new Thread(runnable).start();
-
-
-//            ExecutorService executorService = Executors.newCachedThreadPool();
-//            try {
-//                Res<AccountInfo> res = executorService.submit(runnable).get();
-//                Log.i(Config.LOGTAG, "res:" + res.toString());
-//            } catch (ExecutionException e) {
-//                throw new RuntimeException(e);
-//            } catch (InterruptedException e) {
-//                throw new RuntimeException(e);
-//            }
-
-
+            StackConfig.executorService.execute(runnable);
         }
-
-
     };
+
     private final OnClickListener mCancelButtonClickListener = v -> {
         deleteAccountAndReturnIfNecessary();
         finish();
@@ -773,6 +742,8 @@ public class EditAccountActivity extends OmemoActivity implements OnAccountUpdat
     @Override
     protected void onCreate(final Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
+
         if (savedInstanceState != null) {
             this.mSavedInstanceAccount = savedInstanceState.getString("account");
             this.mSavedInstanceInit = savedInstanceState.getBoolean("initMode", false);
@@ -917,10 +888,10 @@ public class EditAccountActivity extends OmemoActivity implements OnAccountUpdat
             final String username = intent.getStringExtra("username");
             final String password = intent.getStringExtra("password");
             final String email = intent.getStringExtra("email");
-            Log.i(Config.LOGTAG, "username:"+username+" email:"+email);
+            Log.i(Config.LOGTAG, "username:" + username + " email:" + email);
 
             if (username != null) {
-                jidToEdit = Jid.ofEscaped(username, BuildConfig.MAGIC_CREATE_DOMAIN,null);
+                jidToEdit = Jid.ofEscaped(username, BuildConfig.MAGIC_CREATE_DOMAIN, null);
                 binding.accountJid.setText(email);
                 binding.accountPassword.setText(password);
             }
@@ -943,7 +914,6 @@ public class EditAccountActivity extends OmemoActivity implements OnAccountUpdat
             boolean existing = intent.getBooleanExtra("existing", false);
             useOwnProvider = intent.getBooleanExtra("useownprovider", false);
             register = intent.getBooleanExtra("register", false);
-
 
 
             this.mForceRegister = intent.hasExtra(EXTRA_FORCE_REGISTER) ? //

@@ -5,6 +5,7 @@ import android.app.Dialog;
 import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextWatcher;
+import android.util.Log;
 import android.view.View;
 import android.widget.ArrayAdapter;
 import android.content.DialogInterface.OnClickListener;
@@ -21,10 +22,15 @@ import androidx.annotation.Nullable;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import java.util.Map;
+
+import eu.siacs.conversations.StackConfig;
 import eu.siacs.conversations.entities.Account;
+import eu.siacs.conversations.entities.AccountInfo;
 import eu.siacs.conversations.entities.Contact;
 import eu.siacs.conversations.entities.Presence;
 import eu.siacs.conversations.entities.ServiceDiscoveryResult;
+import eu.siacs.conversations.http.Res;
+import eu.siacs.conversations.services.StackBackend;
 import eu.siacs.conversations.xmpp.OnGatewayResult;
 
 
@@ -50,6 +56,7 @@ import eu.siacs.conversations.ui.interfaces.OnBackendConnected;
 import eu.siacs.conversations.ui.util.DelayedHintHelper;
 import eu.siacs.conversations.xmpp.Jid;
 import eu.siacs.conversations.utils.PhoneNumberUtilWrapper;
+import me.drakeet.support.toast.ToastCompat;
 
 public class EnterJidDialog extends DialogFragment implements OnBackendConnected, TextWatcher {
 
@@ -71,7 +78,7 @@ public class EnterJidDialog extends DialogFragment implements OnBackendConnected
     private static final String SHOW_BOOKMARK_CHECKBOX = "show_bookmark_checkbox";
 
 
-    private KnownHostsAdapter knownHostsAdapter;
+//    private KnownHostsAdapter knownHostsAdapter;
     private Collection<String> whitelistedDomains = Collections.emptyList();
 
     private EnterJidDialogBinding binding;
@@ -135,8 +142,8 @@ public class EnterJidDialog extends DialogFragment implements OnBackendConnected
         final AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
         builder.setTitle(getArguments().getString(TITLE_KEY));
         binding = DataBindingUtil.inflate(getActivity().getLayoutInflater(), R.layout.enter_jid_dialog, null, false);
-        this.knownHostsAdapter = new KnownHostsAdapter(getActivity(), R.layout.simple_list_item);
-        binding.jid.setAdapter(this.knownHostsAdapter);
+//        this.knownHostsAdapter = new KnownHostsAdapter(getActivity(), R.layout.simple_list_item);
+//        binding.jid.setAdapter(this.knownHostsAdapter);
         binding.jid.addTextChangedListener(this);
         String prefilledJid = getArguments().getString(PREFILLED_JID_KEY);
         if (prefilledJid != null) {
@@ -249,55 +256,64 @@ public class EnterJidDialog extends DialogFragment implements OnBackendConnected
             return;
         }
         final Jid accountJid = accountJid();
+
         final OnGatewayResult finish = (final String jidString, final String errorMessage) -> {
             Activity context = getActivity();
             if (context == null) return; // Race condition, we got the reply after the UI was closed
 
-            context.runOnUiThread(() -> {
-                if (errorMessage != null) {
-                    binding.jidLayout.setError(errorMessage);
-                    return;
-                }
-                if (jidString == null) {
-                    binding.jidLayout.setError(getActivity().getString(R.string.invalid_jid));
-                    return;
-                }
-
-                Jid contactJid = null;
-                try {
-                    contactJid = Jid.ofEscaped(jidString);
-                } catch (final IllegalArgumentException e) {
-                    binding.jidLayout.setError(getActivity().getString(R.string.invalid_jid));
-                    return;
-                }
-
-                if (!issuedWarning && sanityCheckJid != SanityCheck.NO) {
-                    if (contactJid.isDomainJid()) {
-                        binding.jidLayout.setError(getActivity().getString(R.string.this_looks_like_a_domain));
-                        dialog.getButton(AlertDialog.BUTTON_POSITIVE).setText(R.string.add_anyway);
-                        issuedWarning = true;
+            StackConfig.executorService.execute(()->{
+                Res<AccountInfo> res = StackBackend.GetJid(jidString);
+                context.runOnUiThread(() -> {
+                    if (errorMessage != null) {
+                        binding.jidLayout.setError(errorMessage);
                         return;
                     }
-                    if (sanityCheckJid != SanityCheck.ALLOW_MUC && suspiciousSubDomain(contactJid.getDomain().toEscapedString())) {
-                        binding.jidLayout.setError(getActivity().getString(R.string.this_looks_like_channel));
-                        dialog.getButton(AlertDialog.BUTTON_POSITIVE).setText(R.string.add_anyway);
-                        issuedWarning = true;
+                    if (jidString == null) {
+                        binding.jidLayout.setError(getActivity().getString(R.string.invalid_jid));
                         return;
                     }
-                }
 
-                if (mListener != null) {
-                    try {
-                        if (mListener.onEnterJidDialogPositive(accountJid, contactJid, secondary, binding.bookmark.isChecked())) {
-                            dialog.dismiss();
+                    if (res == null) {
+                        binding.jidLayout.setError("服务器繁忙或者网络未连接!");
+                        return;
+                    }
+                    if (res.getCode() != 0) {
+                        binding.jidLayout.setError(res.getMsg());
+                        return;
+                    }
+
+                    Jid contactJid = res.getData().getJid();
+                    Log.i(Config.LOGTAG, "contactJid:"+contactJid);
+                    if (!issuedWarning && sanityCheckJid != SanityCheck.NO) {
+                        if (contactJid.isDomainJid()) {
+                            binding.jidLayout.setError(getActivity().getString(R.string.this_looks_like_a_domain));
+                            dialog.getButton(AlertDialog.BUTTON_POSITIVE).setText(R.string.add_anyway);
+                            issuedWarning = true;
+                            return;
                         }
-                    } catch (JidError error) {
-                        binding.jidLayout.setError(error.toString());
-                        dialog.getButton(AlertDialog.BUTTON_POSITIVE).setText(R.string.add);
-                        issuedWarning = false;
+                        if (sanityCheckJid != SanityCheck.ALLOW_MUC && suspiciousSubDomain(contactJid.getDomain().toEscapedString())) {
+                            binding.jidLayout.setError(getActivity().getString(R.string.this_looks_like_channel));
+                            dialog.getButton(AlertDialog.BUTTON_POSITIVE).setText(R.string.add_anyway);
+                            issuedWarning = true;
+                            return;
+                        }
                     }
-                }
+
+                    if (mListener != null) {
+                        try {
+                            if (mListener.onEnterJidDialogPositive(accountJid, contactJid, secondary, binding.bookmark.isChecked())) {
+                                dialog.dismiss();
+                            }
+                        } catch (JidError error) {
+                            binding.jidLayout.setError(error.toString());
+                            dialog.getButton(AlertDialog.BUTTON_POSITIVE).setText(R.string.add);
+                            issuedWarning = false;
+                        }
+                    }
+                });
             });
+
+
         };
 
         Pair<String,Pair<Jid,Presence>> p = gatewayListAdapter.getSelected();
@@ -346,7 +362,7 @@ public class EnterJidDialog extends DialogFragment implements OnBackendConnected
                 return;
             }
             final Collection<String> hosts = service.getKnownHosts();
-            this.knownHostsAdapter.refresh(hosts);
+//            this.knownHostsAdapter.refresh(hosts);
             this.whitelistedDomains = hosts;
         }
     }

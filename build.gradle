@@ -158,8 +158,8 @@ android {
         multiDexEnabled true
         versionName grgit.describe(always: true)
         buildConfigField("String", "LOGTAG", '"OkMSG"')
-        buildConfigField("String", "DOMAIN_LOCK", '"true"')
         buildConfigField("boolean", "SHOW_INTRO", 'true')
+        buildConfigField("String", "DOMAIN_LOCK", '"meet.chuanshaninfo.com"')
         buildConfigField("String", "MAGIC_CREATE_DOMAIN", '"meet.chuanshaninfo.com"')
         buildConfigField("String", "OK_XMPP_DOMAIN", '"okstar.org.cn"')
         buildConfigField("String", "UPDATE_URL", '"https://okstar.org.cn/okmsg/update/"')

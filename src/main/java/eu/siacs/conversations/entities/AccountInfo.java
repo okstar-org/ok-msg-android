@@ -2,6 +2,9 @@ package eu.siacs.conversations.entities;
 
 import androidx.annotation.NonNull;
 
+import eu.siacs.conversations.Config;
+import eu.siacs.conversations.xmpp.Jid;
+
 public class AccountInfo {
     /**
      * {"id":5001,"iso":"CN",
@@ -18,6 +21,10 @@ public class AccountInfo {
     String nickname;
     String name;
     String avatar;
+
+    public Jid getJid(){
+        return Jid.ofEscaped(username, Config.DOMAIN_LOCK, null);
+    }
 
     public Long getId() {
         return id;
