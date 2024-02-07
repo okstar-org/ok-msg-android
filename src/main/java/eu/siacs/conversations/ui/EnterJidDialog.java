@@ -8,14 +8,11 @@ import android.text.TextWatcher;
 import android.util.Log;
 import android.view.View;
 import android.widget.ArrayAdapter;
-import android.content.DialogInterface.OnClickListener;
-import android.content.DialogInterface;
 import android.text.InputType;
 import android.util.Pair;
 import android.view.LayoutInflater;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
-import android.widget.TextView;
 import android.widget.ToggleButton;
 
 import androidx.annotation.Nullable;
@@ -25,11 +22,11 @@ import java.util.Map;
 
 import eu.siacs.conversations.StackConfig;
 import eu.siacs.conversations.entities.Account;
-import eu.siacs.conversations.entities.AccountInfo;
 import eu.siacs.conversations.entities.Contact;
 import eu.siacs.conversations.entities.Presence;
 import eu.siacs.conversations.entities.ServiceDiscoveryResult;
-import eu.siacs.conversations.http.Res;
+import eu.siacs.conversations.stack.AccountInfo;
+import eu.siacs.conversations.stack.Res;
 import eu.siacs.conversations.services.StackBackend;
 import eu.siacs.conversations.xmpp.OnGatewayResult;
 
@@ -51,12 +48,10 @@ import eu.siacs.conversations.Config;
 import eu.siacs.conversations.R;
 import eu.siacs.conversations.databinding.EnterJidDialogBinding;
 import eu.siacs.conversations.services.XmppConnectionService;
-import eu.siacs.conversations.ui.adapter.KnownHostsAdapter;
 import eu.siacs.conversations.ui.interfaces.OnBackendConnected;
 import eu.siacs.conversations.ui.util.DelayedHintHelper;
 import eu.siacs.conversations.xmpp.Jid;
 import eu.siacs.conversations.utils.PhoneNumberUtilWrapper;
-import me.drakeet.support.toast.ToastCompat;
 
 public class EnterJidDialog extends DialogFragment implements OnBackendConnected, TextWatcher {
 

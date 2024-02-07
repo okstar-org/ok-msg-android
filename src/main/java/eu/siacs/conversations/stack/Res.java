@@ -1,4 +1,4 @@
-package eu.siacs.conversations.http;
+package eu.siacs.conversations.stack;
 
 import java.io.Serializable;
 

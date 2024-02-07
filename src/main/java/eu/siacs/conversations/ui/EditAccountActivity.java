@@ -4,14 +4,12 @@ import static eu.siacs.conversations.utils.PermissionUtils.allGranted;
 import static eu.siacs.conversations.utils.PermissionUtils.readGranted;
 
 import android.app.KeyguardManager;
-import android.content.ComponentName;
 import android.content.Context;
 import android.app.Activity;
 import android.app.PendingIntent;
 import android.content.ActivityNotFoundException;
 import android.content.Intent;
 import android.content.IntentSender;
-import android.content.ServiceConnection;
 import android.content.SharedPreferences;
 import android.graphics.Bitmap;
 import android.graphics.drawable.ColorDrawable;
@@ -19,7 +17,6 @@ import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
-import android.os.IBinder;
 import android.os.Looper;
 import android.os.Message;
 import android.preference.PreferenceManager;
@@ -42,6 +39,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.widget.Toolbar;
@@ -51,27 +49,13 @@ import androidx.databinding.DataBindingUtil;
 import com.google.android.material.textfield.TextInputLayout;
 import com.google.common.base.CharMatcher;
 
-import com.google.common.base.Charsets;
-import com.google.common.io.ByteStreams;
-import com.google.common.io.CharStreams;
-import com.google.common.reflect.TypeToken;
-import com.google.gson.Gson;
-import com.google.gson.stream.JsonReader;
 import com.rarepebble.colorpicker.ColorPickerView;
 
 import org.openintents.openpgp.util.OpenPgpUtils;
 
-import java.io.IOException;
-import java.io.InputStream;
-import java.io.InputStreamReader;
-import java.lang.reflect.Type;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Set;
-import java.util.concurrent.Callable;
-import java.util.concurrent.ExecutionException;
-import java.util.concurrent.ExecutorService;
-import java.util.concurrent.Executors;
 import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.concurrent.atomic.AtomicInteger;
 
@@ -84,18 +68,16 @@ import eu.siacs.conversations.crypto.axolotl.XmppAxolotlSession;
 import eu.siacs.conversations.databinding.ActivityEditAccountBinding;
 import eu.siacs.conversations.databinding.DialogPresenceBinding;
 import eu.siacs.conversations.entities.Account;
-import eu.siacs.conversations.entities.AccountInfo;
 import eu.siacs.conversations.entities.Presence;
 import eu.siacs.conversations.entities.PresenceTemplate;
-import eu.siacs.conversations.http.HttpConnectionManager;
-import eu.siacs.conversations.http.Res;
+import eu.siacs.conversations.stack.AccountInfo;
+import eu.siacs.conversations.stack.Res;
 import eu.siacs.conversations.services.BarcodeProvider;
 import eu.siacs.conversations.services.QuickConversationsService;
 import eu.siacs.conversations.services.StackBackend;
 import eu.siacs.conversations.services.XmppConnectionService;
 import eu.siacs.conversations.services.XmppConnectionService.OnAccountUpdate;
 import eu.siacs.conversations.services.XmppConnectionService.OnCaptchaRequested;
-import eu.siacs.conversations.ui.adapter.KnownHostsAdapter;
 import eu.siacs.conversations.ui.adapter.PresenceTemplateAdapter;
 import eu.siacs.conversations.ui.util.AvatarWorkerTask;
 import eu.siacs.conversations.ui.util.CustomTab;
@@ -202,6 +184,13 @@ public class EditAccountActivity extends OmemoActivity implements OnAccountUpdat
     private XmppUri pendingUri = null;
     private boolean mUseTor;
     private boolean mUseI2P;
+
+    @Nullable
+    @Override
+    public View onCreatePanelView(int featureId) {
+        return super.onCreatePanelView(featureId);
+    }
+
     private ActivityEditAccountBinding binding;
     private String newPassword = null;
 
@@ -883,17 +872,30 @@ public class EditAccountActivity extends OmemoActivity implements OnAccountUpdat
         if (this.mTheme != theme) {
             recreate();
         } else if (intent != null) {
-            Log.d(Config.LOGTAG, "extras " + intent.getExtras());
+            Bundle extras = intent.getExtras();
+            if (extras != null) {
+                extras.keySet().forEach((k) -> {
+                    Log.d(Config.LOGTAG, String.format("extra %s=%s", k, extras.get(k)));
+                });
+            }
 
+            final String jid = intent.getStringExtra("jid");
             final String username = intent.getStringExtra("username");
             final String password = intent.getStringExtra("password");
             final String email = intent.getStringExtra("email");
-            Log.i(Config.LOGTAG, "username:" + username + " email:" + email);
-
             if (username != null) {
                 jidToEdit = Jid.ofEscaped(username, BuildConfig.MAGIC_CREATE_DOMAIN, null);
-                binding.accountJid.setText(email);
+            } else if (jid != null) {
+                jidToEdit = Jid.ofEscaped(jid);
+                binding.accountJid.setText(jid);
+            }
+
+            if (password != null) {
                 binding.accountPassword.setText(password);
+            }
+
+            if (email != null) {
+                binding.accountJid.setText(email);
             }
 
             final Uri data = intent.getData();
@@ -921,7 +923,7 @@ public class EditAccountActivity extends OmemoActivity implements OnAccountUpdat
                     : null;
             Log.d(Config.LOGTAG, "force register=" + mForceRegister);
 
-            this.mInitMode = init || username == null;
+            this.mInitMode = init;
             this.mExisting = existing;
             this.messageFingerprint = intent.getStringExtra("fingerprint");
             if (mExisting) {
@@ -933,10 +935,18 @@ public class EditAccountActivity extends OmemoActivity implements OnAccountUpdat
 
                 boolean openedFromNotification = intent.getBooleanExtra(EXTRA_OPENED_FROM_NOTIFICATION, false);
                 configureActionBar(getSupportActionBar(), !openedFromNotification);
+
+                this.binding.yourNameBox.setVisibility(View.VISIBLE);
+                this.binding.yourStatusBox.setVisibility(View.VISIBLE);
+                this.binding.avater.setVisibility(View.VISIBLE);
+
             } else {
                 this.binding.yourNameBox.setVisibility(View.GONE);
                 this.binding.yourStatusBox.setVisibility(View.GONE);
                 this.binding.avater.setVisibility(View.GONE);
+                this.binding.accountColorBox.setVisibility(View.GONE);
+                this.binding.quietHoursBox.setVisibility(View.GONE);
+
                 configureActionBar(getSupportActionBar(), !(init && Config.MAGIC_CREATE_DOMAIN == null));
                 if (mForceRegister != null) {
                     if (mForceRegister) {
@@ -946,8 +956,7 @@ public class EditAccountActivity extends OmemoActivity implements OnAccountUpdat
                     }
                 }
 
-                this.binding.accountColorBox.setVisibility(View.GONE);
-                this.binding.quietHoursBox.setVisibility(View.GONE);
+
             }
         }
         SharedPreferences preferences = getPreferences();
@@ -1031,7 +1040,7 @@ public class EditAccountActivity extends OmemoActivity implements OnAccountUpdat
                 processFingerprintVerification(mPendingFingerprintVerificationUri, false);
                 mPendingFingerprintVerificationUri = null;
             }
-//            updateAccountInformation(init);
+            updateAccountInformation(init);
         }
 
 

@@ -1,4 +1,4 @@
-package eu.siacs.conversations.entities;
+package eu.siacs.conversations.stack;
 
 import androidx.annotation.NonNull;
 

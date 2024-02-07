@@ -38,7 +38,7 @@ import eu.siacs.conversations.databinding.ActivityMagicCreateBinding;
 import eu.siacs.conversations.entities.SignUpForm;
 import eu.siacs.conversations.entities.SignUpResult;
 import eu.siacs.conversations.http.HttpConnectionManager;
-import eu.siacs.conversations.http.Res;
+import eu.siacs.conversations.stack.Res;
 import eu.siacs.conversations.utils.InstallReferrerUtils;
 import eu.siacs.conversations.utils.StringUtils;
 import eu.siacs.conversations.xmpp.Jid;
