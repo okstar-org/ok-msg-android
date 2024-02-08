@@ -516,19 +516,19 @@ public class EditAccountActivity extends OmemoActivity implements OnAccountUpdat
         @Override
         public void onFocusChange(View view, boolean b) {
             EditText et = (EditText) view;
-            if (b) {
-                int resId = mUsernameMode ? R.string.username : R.string.account_settings_example_jabber_id;
-                if (view.getId() == R.id.hostname) {
-                    resId = mUseTor ? R.string.hostname_or_onion : R.string.hostname_example;
-                }
-                if (view.getId() == R.id.port) {
-                    resId = R.string.port_example;
-                }
-                final int res = resId;
-                new Handler().postDelayed(() -> et.setHint(res), 500);
-            } else {
+//            if (b) {
+//                int resId = mUsernameMode ? R.string.username : R.string.account_settings_example_jabber_id;
+//                if (view.getId() == R.id.hostname) {
+//                    resId = mUseTor ? R.string.hostname_or_onion : R.string.hostname_example;
+//                }
+//                if (view.getId() == R.id.port) {
+//                    resId = R.string.port_example;
+//                }
+//                final int res = resId;
+//                new Handler().postDelayed(() -> et.setHint(res), 500);
+//            } else {
                 et.setHint(null);
-            }
+//            }
         }
     };
 
@@ -747,6 +747,8 @@ public class EditAccountActivity extends OmemoActivity implements OnAccountUpdat
         configureActionBar(getSupportActionBar());
         this.binding.accountJid.addTextChangedListener(this.mTextWatcher);
         this.binding.accountJid.setOnFocusChangeListener(this.mEditTextFocusListener);
+//        this.binding.accountJid.setHint(getString(R.string.account_settings_example_jabber_id));
+//        this.binding.accountJidLayout.setHint(getString(R.string.account_settings_example_jabber_id));
         this.binding.accountPassword.addTextChangedListener(this.mTextWatcher);
         this.binding.avater.setOnClickListener(this.mAvatarClickListener);
         this.binding.hostname.addTextChangedListener(mTextWatcher);
@@ -1057,8 +1059,9 @@ public class EditAccountActivity extends OmemoActivity implements OnAccountUpdat
             this.binding.cancelButton.setEnabled(false);
         }
 //        if (mUsernameMode) {
-        this.binding.accountJidLayout.setHint(getString(R.string.account_settings_example_jabber_id));
+//        this.binding.accountJidLayout.setHint(getString(R.string.account_settings_example_jabber_id));
 //        }
+
 //        else {
 //            final KnownHostsAdapter mKnownHostsAdapter = new KnownHostsAdapter(this,
 //                    R.layout.simple_list_item,

@@ -114,7 +114,6 @@
                                 style="@style/Widget.Conversations.TextInputLayout.OutlinedBox"
                                 android:layout_width="match_parent"
                                 android:layout_height="wrap_content"
-                                android:hint="@string/account_settings_jabber_id"
                                 app:errorTextAppearance="@style/TextAppearance.Conversations.Design.Error"
                                 app:hintTextAppearance="@style/TextAppearance.Conversations.Design.Hint">
 
@@ -123,6 +122,7 @@
                                     style="@style/Widget.Conversations.EditText"
                                     android:layout_width="match_parent"
                                     android:layout_height="wrap_content"
+                                    android:hint="@string/account_settings_example_jabber_id"
                                     android:imeOptions="actionNext"
                                     android:inputType="textEmailAddress"
                                     android:padding="16dp"
