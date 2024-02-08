@@ -13,6 +13,7 @@ import eu.siacs.conversations.Config;
 import eu.siacs.conversations.R;
 import eu.siacs.conversations.ui.ConversationsActivity;
 import eu.siacs.conversations.ui.util.IntroHelper;
+
 public class StartUI extends AppCompatActivity {
 
     @Override
@@ -28,13 +29,15 @@ public class StartUI extends AppCompatActivity {
         intent.putExtra(PREF_FIRST_START, FirstStartTime);
         startActivity(intent);
         overridePendingTransition(R.animator.fade_in, R.animator.fade_out);
-        finish();    }
+        finish();
+    }
 
 
     @Override
     public void onConfigurationChanged(Configuration newConfig) {
         super.onConfigurationChanged(newConfig);
     }
+
     @Override
     protected void onDestroy() {
         super.onDestroy();

@@ -1,4 +1,4 @@
-package eu.siacs.conversations.services;
+package eu.siacs.conversations.stack;
 
 import android.util.Log;
 
@@ -10,12 +10,9 @@ import java.io.IOException;
 import eu.siacs.conversations.BuildConfig;
 import eu.siacs.conversations.Config;
 import eu.siacs.conversations.http.HttpConnectionManager;
-import eu.siacs.conversations.stack.MeetInfo;
-import eu.siacs.conversations.stack.Res;
-import eu.siacs.conversations.stack.AccountInfo;
 import okhttp3.HttpUrl;
 
-public class StackBackend {
+public class OkStackBackend {
 
 
     public static Res<AccountInfo> GetJid(String account) {

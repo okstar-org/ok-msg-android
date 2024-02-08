@@ -163,6 +163,7 @@ android {
         buildConfigField("String", "MAGIC_CREATE_DOMAIN", '"meet.chuanshaninfo.com"')
         buildConfigField("String", "UPDATE_URL", '"https://okstar.org.cn/okmsg/update/"')
         buildConfigField("String", "OK_STACK_API_URL", '"https://stack.okstar.org.cn/api"')
+        buildConfigField("String", "OK_CLOUD_API_URL", '"https://cloud.okstar.org.cn/api"')
         resValue "string", "applicationId", applicationId
         resValue "string", "app_name", "OkMSG"
         resValue "string", "short_app_name", "OkMSG"

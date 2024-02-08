@@ -43,6 +43,7 @@ import android.os.PowerManager;
 import android.os.SystemClock;
 import android.preference.PreferenceManager;
 import android.provider.Settings;
+import android.text.Editable;
 import android.text.Html;
 import android.text.InputType;
 import android.util.DisplayMetrics;
@@ -707,6 +708,7 @@ public abstract class XmppActivity extends ActionBarActivity {
         Intent intent = new Intent(this, EditAccountActivity.class);
         intent.putExtra("jid", account.getJid().asBareJid().toEscapedString());
         intent.putExtra("init", init);
+        intent.putExtra("from", EditAccountActivity.From.Profile);
         if (init) {
             intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_NO_ANIMATION);
         }

@@ -30,10 +30,13 @@ import java.util.List;
 import java.util.Objects;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
+import java.util.stream.Collectors;
 
 import eu.siacs.conversations.BuildConfig;
 import eu.siacs.conversations.Config;
 import eu.siacs.conversations.R;
+import eu.siacs.conversations.cloud.FederalInfo;
+import eu.siacs.conversations.cloud.OkCloudBackend;
 import eu.siacs.conversations.databinding.ActivityMagicCreateBinding;
 import eu.siacs.conversations.entities.SignUpForm;
 import eu.siacs.conversations.entities.SignUpResult;
@@ -60,7 +63,7 @@ public class MagicCreateActivity extends XmppActivity implements TextWatcher, Ad
     private String username;
     private String preAuth;
 
-    final ExecutorService executorService = Executors.newFixedThreadPool(1);
+    final ExecutorService executorService = Executors.newCachedThreadPool();
 
 
     private void setupHyperlink() {
@@ -110,27 +113,54 @@ public class MagicCreateActivity extends XmppActivity implements TextWatcher, Ad
         }
         super.onCreate(savedInstanceState);
         this.binding = DataBindingUtil.setContentView(this, R.layout.activity_magic_create);
-        final List<String> domains = Arrays.asList(getResources().getStringArray(R.array.domains));
-        Collections.sort(domains, String::compareToIgnoreCase);
-        final ArrayAdapter<String> adapter = new ArrayAdapter<>(this, android.R.layout.simple_selectable_list_item, domains);
-        int defaultServer = adapter.getPosition("okstar.org.cn");
-        if (registerFromUri && !useOwnProvider && (this.preAuth != null || domain != null)) {
-            binding.server.setEnabled(false);
-            binding.server.setVisibility(View.GONE);
-            binding.useOwn.setEnabled(false);
-            binding.useOwn.setChecked(true);
-            binding.useOwn.setVisibility(View.GONE);
-            binding.servertitle.setText(R.string.your_server);
-            binding.yourserver.setVisibility(View.VISIBLE);
-            binding.yourserver.setText(domain);
-        } else {
-            binding.yourserver.setVisibility(View.GONE);
-        }
-        binding.useOwn.setOnCheckedChangeListener(this);
-        binding.server.setAdapter(adapter);
-        binding.server.setSelection(defaultServer);
-        binding.server.setOnItemSelectedListener(this);
-        adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+
+        Handler handler1 = new Handler(Looper.getMainLooper()) {
+            @Override
+            public void handleMessage(@NonNull Message msg) {
+                super.handleMessage(msg);
+                FederalInfo federalInfo = (FederalInfo) msg.obj;
+                if (federalInfo != null) {
+
+                    final List<String> domains = federalInfo.getStates().stream().map(a -> a.getXmppHost()).collect(Collectors.toList());
+                    // Arrays.asList(getResources().getStringArray(R.array.domains));
+                    Log.i(Config.LOGTAG, "xmpp domains:"+ domains);
+
+                    Collections.sort(domains, String::compareToIgnoreCase);
+                    final ArrayAdapter<String> adapter = new ArrayAdapter<>(MagicCreateActivity.this, android.R.layout.simple_selectable_list_item, domains);
+                    int defaultServer = adapter.getPosition(Config.MAGIC_CREATE_DOMAIN);
+                    if (registerFromUri && !useOwnProvider && (MagicCreateActivity.this.preAuth != null || domain != null)) {
+                        binding.server.setEnabled(false);
+                        binding.server.setVisibility(View.GONE);
+                        binding.useOwn.setEnabled(false);
+                        binding.useOwn.setChecked(true);
+                        binding.useOwn.setVisibility(View.GONE);
+                        binding.servertitle.setText(R.string.your_server);
+                        binding.yourserver.setVisibility(View.VISIBLE);
+                        binding.yourserver.setText(domain);
+                    } else {
+                        binding.yourserver.setVisibility(View.GONE);
+                    }
+                    binding.useOwn.setOnCheckedChangeListener(MagicCreateActivity.this);
+                    binding.server.setAdapter(adapter);
+                    binding.server.setSelection(defaultServer);
+                    binding.server.setOnItemSelectedListener(MagicCreateActivity.this);
+                    adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+                }
+            }
+        };
+
+        Runnable r1 = () -> {
+            FederalInfo obj = OkCloudBackend.GetFederalInfo();
+            if (obj == null) {
+                return;
+            }
+
+            Message message = new Message();
+            message.obj = obj;
+            handler1.sendMessage(message);
+        };
+        executorService.execute(r1);
+
         setSupportActionBar((Toolbar) this.binding.toolbar);
         configureActionBar(getSupportActionBar(), this.domain == null);
 //        if (username != null && domain != null) {
@@ -297,7 +327,7 @@ public class MagicCreateActivity extends XmppActivity implements TextWatcher, Ad
     }
 
     private static Res<SignUpResult> doSignUp(String email, String password) {
-        HttpUrl url = HttpUrl.get(BuildConfig.OK_STACK_API_URL+"/auth/passport/signUp");
+        HttpUrl url = HttpUrl.get(BuildConfig.OK_STACK_API_URL + "/auth/passport/signUp");
 
         SignUpForm signUp = new SignUpForm();
         signUp.setLanguage("zh-CN");

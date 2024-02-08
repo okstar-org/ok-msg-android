@@ -1123,4 +1123,6 @@
     <string name="remove_all_individual_notifications_message">您真的想移除所有为联系人和组设置的单独通知？</string>
     <string name="exit">退出</string>
     <string name="record_voice_mail">录制语音消息</string>
+    <string name="download_stickers">下载表情库吗？</string>
+    <string name="would_you_download_stickers">您想下载一些默认的表情库吗？</string>
 </resources>

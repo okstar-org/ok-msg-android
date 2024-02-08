@@ -113,7 +113,7 @@
 
 
     <string-array name="support_domains">
-        <item>okstar.org.cn</item>
+<!--        <item>okstar.org.cn</item>-->
     </string-array>
 
     <string-array name="support_site">

@@ -379,11 +379,10 @@ public class ConversationsActivity extends XmppActivity implements OnConversatio
     private boolean offerToDownloadStickers() {
         int offered = getPreferences().getInt("default_stickers_offered", 0);
         if (offered > 0) return false;
-        getPreferences().edit().putInt("default_stickers_offered", 1).apply();
 
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
-        builder.setTitle("Download Stickers?");
-        builder.setMessage("Would you like to download some default sticker packs?");
+        builder.setTitle(R.string.download_stickers);
+        builder.setMessage(R.string.would_you_download_stickers);
         builder.setPositiveButton(R.string.yes, (dialog, which) -> {
             if (hasStoragePermission(REQUEST_DOWNLOAD_STICKERS)) {
                 downloadStickers();
@@ -395,6 +394,9 @@ public class ConversationsActivity extends XmppActivity implements OnConversatio
         final AlertDialog dialog = builder.create();
         dialog.setCanceledOnTouchOutside(false);
         dialog.show();
+
+        getPreferences().edit().putInt("default_stickers_offered", 1).apply();
+
         return true;
     }
 

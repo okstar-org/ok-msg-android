@@ -74,7 +74,7 @@ import eu.siacs.conversations.stack.AccountInfo;
 import eu.siacs.conversations.stack.Res;
 import eu.siacs.conversations.services.BarcodeProvider;
 import eu.siacs.conversations.services.QuickConversationsService;
-import eu.siacs.conversations.services.StackBackend;
+import eu.siacs.conversations.stack.OkStackBackend;
 import eu.siacs.conversations.services.XmppConnectionService;
 import eu.siacs.conversations.services.XmppConnectionService.OnAccountUpdate;
 import eu.siacs.conversations.services.XmppConnectionService.OnCaptchaRequested;
@@ -131,6 +131,11 @@ public class EditAccountActivity extends OmemoActivity implements OnAccountUpdat
 
     private boolean mFetchingAvatar = false;
 
+    public enum From {
+        Login,//登录
+        Profile//个人
+    }
+
     @Override
     public void onCreateSupportNavigateUpTaskStack(@NonNull TaskStackBuilder builder) {
         super.onCreateSupportNavigateUpTaskStack(builder);
@@ -167,7 +172,7 @@ public class EditAccountActivity extends OmemoActivity implements OnAccountUpdat
 
             Runnable runnable = () -> {
                 Message message = new Message();
-                message.obj = StackBackend.GetJid(accountJidText);
+                message.obj = OkStackBackend.GetJid(accountJidText);
                 handler.sendMessage(message);
             };
             StackConfig.executorService.execute(runnable);
@@ -879,10 +884,12 @@ public class EditAccountActivity extends OmemoActivity implements OnAccountUpdat
                 });
             }
 
+            int from = intent.getIntExtra("from", -1);
             final String jid = intent.getStringExtra("jid");
             final String username = intent.getStringExtra("username");
             final String password = intent.getStringExtra("password");
             final String email = intent.getStringExtra("email");
+
             if (username != null) {
                 jidToEdit = Jid.ofEscaped(username, BuildConfig.MAGIC_CREATE_DOMAIN, null);
             } else if (jid != null) {
@@ -936,9 +943,11 @@ public class EditAccountActivity extends OmemoActivity implements OnAccountUpdat
                 boolean openedFromNotification = intent.getBooleanExtra(EXTRA_OPENED_FROM_NOTIFICATION, false);
                 configureActionBar(getSupportActionBar(), !openedFromNotification);
 
-                this.binding.yourNameBox.setVisibility(View.VISIBLE);
-                this.binding.yourStatusBox.setVisibility(View.VISIBLE);
-                this.binding.avater.setVisibility(View.VISIBLE);
+                if (from == From.Profile.ordinal()) {
+                    this.binding.yourNameBox.setVisibility(View.VISIBLE);
+                    this.binding.yourStatusBox.setVisibility(View.VISIBLE);
+                    this.binding.avater.setVisibility(View.VISIBLE);
+                }
 
             } else {
                 this.binding.yourNameBox.setVisibility(View.GONE);
@@ -1047,9 +1056,9 @@ public class EditAccountActivity extends OmemoActivity implements OnAccountUpdat
         if (Config.MAGIC_CREATE_DOMAIN == null && this.xmppConnectionService.getAccounts().size() == 0) {
             this.binding.cancelButton.setEnabled(false);
         }
-        if (mUsernameMode) {
-            this.binding.accountJidLayout.setHint(getString(R.string.username_hint));
-        }
+//        if (mUsernameMode) {
+        this.binding.accountJidLayout.setHint(getString(R.string.account_settings_example_jabber_id));
+//        }
 //        else {
 //            final KnownHostsAdapter mKnownHostsAdapter = new KnownHostsAdapter(this,
 //                    R.layout.simple_list_item,

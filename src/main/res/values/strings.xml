@@ -1312,4 +1312,6 @@
     <string name="pref_broadcast_last_activity_summary">Allow contacts to see when you were last active in the app</string>
     <string name="settings_restore_message_success">Settings successfully restored</string>
     <string name="settings_restore_message_failure">Failed to restore settings: %s</string>
+    <string name="download_stickers">Download Stickers?</string>
+    <string name="would_you_download_stickers">Would you like to download some default sticker packs?</string>
 </resources>

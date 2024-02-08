@@ -27,7 +27,7 @@ import eu.siacs.conversations.entities.Presence;
 import eu.siacs.conversations.entities.ServiceDiscoveryResult;
 import eu.siacs.conversations.stack.AccountInfo;
 import eu.siacs.conversations.stack.Res;
-import eu.siacs.conversations.services.StackBackend;
+import eu.siacs.conversations.stack.OkStackBackend;
 import eu.siacs.conversations.xmpp.OnGatewayResult;
 
 
@@ -257,7 +257,7 @@ public class EnterJidDialog extends DialogFragment implements OnBackendConnected
             if (context == null) return; // Race condition, we got the reply after the UI was closed
 
             StackConfig.executorService.execute(()->{
-                Res<AccountInfo> res = StackBackend.GetJid(jidString);
+                Res<AccountInfo> res = OkStackBackend.GetJid(jidString);
                 context.runOnUiThread(() -> {
                     if (errorMessage != null) {
                         binding.jidLayout.setError(errorMessage);

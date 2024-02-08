@@ -8,6 +8,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.preference.PreferenceManager;
+import android.util.Log;
 
 import java.lang.ref.WeakReference;
 
@@ -16,7 +17,8 @@ import eu.siacs.conversations.ui.IntroActivity;
 
 public class IntroHelper {
   public static void showIntro(Activity activity, boolean mode_multi) {
-    new Thread(new showIntoFinisher(activity, mode_multi)).start();
+    Log.i(Config.LOGTAG, "Ignore introduction!");
+    //    new Thread(new showIntoFinisher(activity, mode_multi)).start();
   }
 
   private static class showIntoFinisher implements Runnable {
