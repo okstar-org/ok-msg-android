@@ -262,7 +262,7 @@ public class MessageAdapter extends ArrayAdapter<Message> {
     }
 
     private void displayStatus(ViewHolder viewHolder, final Message message, int type, boolean darkBackground) {
-        String filesize = null;
+        long filesize = 0;
         String info = null;
         boolean error = false;
         viewHolder.user.setText(UIHelper.getDisplayedMucCounterpart(message.getCounterpart()));
@@ -294,7 +294,7 @@ public class MessageAdapter extends ArrayAdapter<Message> {
                 && message.getMergedStatus() <= Message.STATUS_RECEIVED;
         if (message.isFileOrImage() || transferable != null || MessageUtils.unInitiatedButKnownSize(message)) {
             FileParams params = message.getFileParams();
-            filesize = params.size != null ? UIHelper.filesizeToString(params.size) : null;
+            filesize = params.size;
             if (transferable != null && (transferable.getStatus() == Transferable.STATUS_FAILED || transferable.getStatus() == Transferable.STATUS_CANCELLED)) {
                 error = true;
             }
@@ -382,8 +382,10 @@ public class MessageAdapter extends ArrayAdapter<Message> {
                 viewHolder.time.setTextAppearance(getContext(), R.style.TextAppearance_Conversations_Caption_Warning);
             }
             DownloadableFile file = activity.xmppConnectionService.getFileBackend().getFile(message);
-            if (file.exists()) {
-                if (activity.xmppConnectionService.mHttpConnectionManager.getAutoAcceptFileSize() >= message.getFileParams().size && (transferable != null && transferable.getStatus() == Transferable.STATUS_FAILED)) {
+            if (file.exists() && message.getFileParams() != null) {
+                if (activity.xmppConnectionService.mHttpConnectionManager.getAutoAcceptFileSize() >= message.getFileParams().size
+                        && transferable != null
+                        && transferable.getStatus() == Transferable.STATUS_FAILED) {
                     isResendable = true;
                     viewHolder.resend_button.setVisibility(View.GONE);
                 } else {
@@ -438,25 +440,25 @@ public class MessageAdapter extends ArrayAdapter<Message> {
         final String bodyLanguage = message.getBodyLanguage();
         final String bodyLanguageInfo = bodyLanguage == null ? "" : String.format(" \u00B7 %s", bodyLanguage.toUpperCase(Locale.US));
         if (message.getStatus() <= Message.STATUS_RECEIVED) {
-            if ((filesize != null) && (info != null)) {
+            if ((filesize > 0) && (info != null)) {
                 viewHolder.time.setText(formattedTime + " \u00B7 " + filesize + " \u00B7 " + info + bodyLanguageInfo);
-            } else if ((filesize == null) && (info != null)) {
+            } else if ((filesize == 0) && (info != null)) {
                 viewHolder.time.setText(formattedTime + " \u00B7 " + info + bodyLanguageInfo);
-            } else if ((filesize != null) && (info == null)) {
+            } else if ((filesize > 0 ) && (info == null)) {
                 viewHolder.time.setText(formattedTime + " \u00B7 " + filesize + bodyLanguageInfo);
             } else {
                 viewHolder.time.setText(formattedTime + bodyLanguageInfo);
             }
         } else {
-            if ((filesize != null) && (info != null)) {
+            if ((filesize > 0) && (info != null)) {
                 viewHolder.time.setText(filesize + " \u00B7 " + info + bodyLanguageInfo);
-            } else if ((filesize == null) && (info != null)) {
+            } else if ((filesize == 0) && (info != null)) {
                 if (error) {
                     viewHolder.time.setText(info + " \u00B7 " + formattedTime + bodyLanguageInfo);
                 } else {
                     viewHolder.time.setText(info);
                 }
-            } else if ((filesize != null) && (info == null)) {
+            } else if ((filesize > 0 ) && (info == null)) {
                 viewHolder.time.setText(filesize + " \u00B7 " + formattedTime + bodyLanguageInfo);
             } else {
                 viewHolder.time.setText(formattedTime + bodyLanguageInfo);

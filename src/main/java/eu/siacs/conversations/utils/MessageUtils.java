@@ -113,10 +113,13 @@ public class MessageUtils {
 
     public static boolean unInitiatedButKnownSize(Message message) {
         return message.getType() == Message.TYPE_TEXT && message.getTransferable() == null && message.isOOb() && message.getFileParams().url != null &&
-                (message.getFileParams().size != null || (message.getOob() != null && message.getOob().getScheme() != null && message.getOob().getScheme().equalsIgnoreCase("cid")));
+                (message.getFileParams().size > 0 || (message.getOob() != null && message.getOob().getScheme() != null && message.getOob().getScheme().equalsIgnoreCase("cid")));
     }
 
     public static boolean fileWithKnownSize(Message message) {
-        return message.getType() == Message.TYPE_TEXT && message.isOOb() && message.getFileParams().size != null && message.getFileParams().size > 0 && message.getFileParams().url != null;
+        return message.getType() == Message.TYPE_TEXT
+                && message.isOOb()
+                && message.getFileParams().size > 0
+                && message.getFileParams().url != null;
     }
 }

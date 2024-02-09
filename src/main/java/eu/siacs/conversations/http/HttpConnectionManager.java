@@ -185,19 +185,20 @@ public class HttpConnectionManager extends AbstractConnectionManager {
     }
 
     public static InputStream open(final HttpUrl httpUrl, final boolean tor, final boolean i2p) throws IOException {
-        Log.i(Config.LOGTAG, "get=>"+httpUrl);
+        Log.i(Config.LOGTAG, "get=>" + httpUrl);
         final OkHttpClient client = newBuilder(tor, i2p).build();
         final Request request = new Request.Builder().get().url(httpUrl).build();
         final ResponseBody body = client.newCall(request).execute().body();
         if (body == null) {
             throw new IOException("No response body found");
         }
+        Log.i(Config.LOGTAG, "reading:" + body);
         return body.byteStream();
     }
 
     public static InputStream post(final HttpUrl httpUrl, RequestBody body,
                                    final boolean tor, final boolean i2p) throws IOException {
-        Log.i(Config.LOGTAG, "post=>"+httpUrl);
+        Log.i(Config.LOGTAG, "post=>" + httpUrl);
         final OkHttpClient client = newBuilder(tor, i2p).build();
         final Request request = new Request.Builder().post(body).url(httpUrl).build();
         final ResponseBody responseBody = client.newCall(request).execute().body();
@@ -208,22 +209,22 @@ public class HttpConnectionManager extends AbstractConnectionManager {
     }
 
     public static String getJSON(final HttpUrl httpUrl) throws IOException {
-        InputStream is =  open(httpUrl, false, false);
+        InputStream is = open(httpUrl, false, false);
         String res = readString(is);
-        Log.i(Config.LOGTAG, "response:"+res);
+        Log.i(Config.LOGTAG, "response:" + res);
         return res;
     }
 
     public static String postJSON(final HttpUrl httpUrl, Object json) throws IOException {
         RequestBody body = RequestBody.create(new Gson().toJson(json), MediaType.parse("application/json"));
-        InputStream is =  post(httpUrl, body, false, false);
+        InputStream is = post(httpUrl, body, false, false);
         String res = readString(is);
-        Log.i(Config.LOGTAG, "response:"+res);
+        Log.i(Config.LOGTAG, "response:" + res);
         return res;
     }
 
     @NonNull
     private static String readString(InputStream is) throws IOException {
-        return CharStreams.toString(new InputStreamReader(ByteStreams.limit(is, 10_000), Charsets.UTF_8));
+        return CharStreams.toString(new InputStreamReader(is, Charsets.UTF_8));
     }
 }

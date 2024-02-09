@@ -1374,7 +1374,7 @@ public class Message extends AbstractEntity implements AvatarService.Avatarable 
 
     public static class FileParams {
         public String url;
-        public Long size = null;
+        public long size = 0;
         public int width = 0;
         public int height = 0;
         public int runtime = 0;
@@ -1399,7 +1399,7 @@ public class Message extends AbstractEntity implements AvatarService.Avatarable 
                     if (file != null) {
                         try {
                             String sizeS = file.findChildContent("size", file.getNamespace());
-                            if (sizeS != null) size = new Long(sizeS);
+                            if (sizeS != null) size = Long.parseLong((sizeS));
                             String widthS = file.findChildContent("width", "https://schema.org/");
                             if (widthS != null) width = parseInt(widthS);
                             String heightS = file.findChildContent("height", "https://schema.org/");
@@ -1453,7 +1453,7 @@ public class Message extends AbstractEntity implements AvatarService.Avatarable 
         }
 
         public long getSize() {
-            return size == null ? 0 : size;
+            return size;
         }
 
         public String getName() {
@@ -1512,7 +1512,7 @@ public class Message extends AbstractEntity implements AvatarService.Avatarable 
             if (file == null) file = mediaSharing.addChild("file", "urn:xmpp:jingle:apps:file-transfer:5");
 
             file.removeChild(file.findChild("size", file.getNamespace()));
-            if (size != null) file.addChild("size", file.getNamespace()).setContent(size.toString());
+            if (size > 0) file.addChild("size", file.getNamespace()).setContent(String.valueOf(size));
 
             file.removeChild(file.findChild("width", "https://schema.org/"));
             if (width > 0) file.addChild("width", "https://schema.org/").setContent(String.valueOf(width));
@@ -1616,7 +1616,7 @@ public class Message extends AbstractEntity implements AvatarService.Avatarable 
         public String toString() {
             final StringBuilder builder = new StringBuilder();
             if (url != null) builder.append(url);
-            if (size != null) builder.append('|').append(size.toString());
+            if (size > 0) builder.append('|').append(size);
             if (width > 0 || height > 0 || runtime > 0) builder.append('|').append(width);
             if (height > 0 || runtime > 0) builder.append('|').append(height);
             if (runtime > 0) builder.append('|').append(runtime);

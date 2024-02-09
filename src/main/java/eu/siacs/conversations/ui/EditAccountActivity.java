@@ -166,6 +166,7 @@ public class EditAccountActivity extends OmemoActivity implements OnAccountUpdat
 
                     AccountInfo info = res.getData();
                     doLogin(info.getUsername(), password);
+                    refreshUiReal();
                 }
             };
 
@@ -203,7 +204,8 @@ public class EditAccountActivity extends OmemoActivity implements OnAccountUpdat
         invalidateOptionsMenu();
         if (mAccount != null
                 && mAccount.getStatus() != Account.State.ONLINE
-                && mFetchingAvatar) {
+//                && mFetchingAvatar
+        ) {
             Intent intent = new Intent(this, StartConversationActivity.class);
             StartConversationActivity.addInviteUri(intent, getIntent());
             startActivity(intent);
@@ -430,7 +432,7 @@ public class EditAccountActivity extends OmemoActivity implements OnAccountUpdat
             finish();
         } else {
             updateSaveButton();
-//            updateAccountInformation(true);
+            updateAccountInformation(true);
         }
 
 
