@@ -550,7 +550,7 @@ public class JingleRtpConnection extends AbstractJingleConnection
         if (ourSummary.equals(ContentAddition.summary(receivedContentReject))) {
             this.outgoingContentAdd = null;
             respondOk(jinglePacket);
-            Log.d(Config.LOGTAG,jinglePacket.toString());
+            Log.d(Config.LOGTAG, jinglePacket.toString());
             receiveContentReject(ourSummary);
         } else {
             Log.d(Config.LOGTAG, "received content-reject did not match our outgoing content-add");
@@ -1050,14 +1050,14 @@ public class JingleRtpConnection extends AbstractJingleConnection
             Preconditions.checkState(
                     proposedMedia != null && proposedMedia.size() > 0,
                     "proposed media must be set when processing pre-approved session-initiate");
-            if (!this.proposedMedia.equals(contentMap.getMedia())) {
-                sendSessionTerminate(
-                        Reason.SECURITY_ERROR,
-                        String.format(
-                                "Your session proposal (Jingle Message Initiation) included media %s but your session-initiate was %s",
-                                this.proposedMedia, contentMap.getMedia()));
-                return;
-            }
+//            if (!this.proposedMedia.equals(contentMap.getMedia())) {
+//                sendSessionTerminate(
+//                        Reason.SECURITY_ERROR,
+//                        String.format(
+//                                "Your session proposal (Jingle Message Initiation) included media %s but your session-initiate was %s",
+//                                this.proposedMedia, contentMap.getMedia()));
+//                return;
+//            }
             target = State.SESSION_INITIALIZED_PRE_APPROVED;
         } else {
             target = State.SESSION_INITIALIZED;
@@ -1883,10 +1883,10 @@ public class JingleRtpConnection extends AbstractJingleConnection
         this.webRTCWrapper.close();
         final State target;
         if (Arrays.asList(
-                "service-unavailable",
-                "recipient-unavailable",
-                "remote-server-not-found",
-                "remote-server-timeout")
+                        "service-unavailable",
+                        "recipient-unavailable",
+                        "remote-server-not-found",
+                        "remote-server-timeout")
                 .contains(errorCondition)) {
             target = State.TERMINATED_CONNECTIVITY_ERROR;
         } else {
@@ -2087,10 +2087,9 @@ public class JingleRtpConnection extends AbstractJingleConnection
             throw new IllegalStateException(String.format("%s has already been proposed", media));
         }
         // TODO add state protection - can only add while ACCEPTED or so
-        Log.d(Config.LOGTAG,"adding media: "+media);
+        Log.d(Config.LOGTAG, "adding media: " + media);
         return webRTCWrapper.addTrack(media);
     }
-
 
 
     public synchronized void acceptCall() {
@@ -2370,6 +2369,7 @@ public class JingleRtpConnection extends AbstractJingleConnection
         }
         updateEndUserState();
     }
+
     private void restartIce() {
         this.stateHistory.clear();
         this.webRTCWrapper.restartIce();
@@ -2387,7 +2387,7 @@ public class JingleRtpConnection extends AbstractJingleConnection
     }
 
     private void renegotiate() {
-        Log.d(Config.LOGTAG,"method JingleRtpConnection.renegotiate()");
+        Log.d(Config.LOGTAG, "method JingleRtpConnection.renegotiate()");
         final SessionDescription sessionDescription;
         try {
             sessionDescription = setLocalSessionDescription();
@@ -2467,6 +2467,7 @@ public class JingleRtpConnection extends AbstractJingleConnection
         final Element error = response.findChild("error");
         return error != null && error.hasChild("tie-break", Namespace.JINGLE_ERRORS);
     }
+
     private void sendContentAdd(final RtpContentMap rtpContentMap, final Collection<String> added) {
         final RtpContentMap contentAdd = rtpContentMap.toContentModification(added);
         this.outgoingContentAdd = contentAdd;
@@ -2514,6 +2515,7 @@ public class JingleRtpConnection extends AbstractJingleConnection
             this.initiatorRtpContentMap = rtpContentMap;
         }
     }
+
     // this method is to be used for content map modifications that modify media
     private void modifyLocalContentMap(final RtpContentMap rtpContentMap) {
         final RtpContentMap activeContents = rtpContentMap.activeContents();
@@ -2623,114 +2625,106 @@ public class JingleRtpConnection extends AbstractJingleConnection
     }
 
     private void discoverIceServers(final OnIceServersDiscovered onIceServersDiscovered) {
-        if (id.account.getXmppConnection().getFeatures().externalServiceDiscovery()) {
-            final IqPacket request = new IqPacket(IqPacket.TYPE.GET);
-            request.setTo(id.account.getDomain());
-            request.addChild("services", Namespace.EXTERNAL_SERVICE_DISCOVERY);
-            xmppConnectionService.sendIqPacket(
-                    id.account,
-                    request,
-                    (account, response) -> {
-                        ImmutableList.Builder<PeerConnection.IceServer> listBuilder =
-                                new ImmutableList.Builder<>();
-                        if (response.getType() == IqPacket.TYPE.RESULT) {
-                            final Element services =
-                                    response.findChild(
-                                            "services", Namespace.EXTERNAL_SERVICE_DISCOVERY);
-                            final List<Element> children =
-                                    services == null
-                                            ? Collections.emptyList()
-                                            : services.getChildren();
-                            for (final Element child : children) {
-                                if ("service".equals(child.getName())) {
-                                    final String type = child.getAttribute("type");
-                                    final String host = child.getAttribute("host");
-                                    final String sport = child.getAttribute("port");
-                                    final Integer port =
-                                            sport == null ? null : Ints.tryParse(sport);
-                                    final String transport = child.getAttribute("transport");
-                                    final String username = child.getAttribute("username");
-                                    final String password = child.getAttribute("password");
-                                    if (Strings.isNullOrEmpty(host) || port == null) {
-                                        continue;
-                                    }
-                                    if (port < 0 || port > 65535) {
-                                        continue;
-                                    }
-                                    if (Arrays.asList("stun", "stuns", "turn", "turns")
-                                            .contains(type)
-                                            && Arrays.asList("udp", "tcp").contains(transport)) {
-                                        if (Arrays.asList("stuns", "turns").contains(type)
-                                                && "udp".equals(transport)) {
-                                            Log.d(
-                                                    Config.LOGTAG,
-                                                    id.account.getJid().asBareJid()
-                                                            + ": skipping invalid combination of udp/tls in external services");
-                                            continue;
-                                        }
-                                        // TODO Starting on milestone 110, Chromium will perform
-                                        // stricter validation of TURN and STUN URLs passed to the
-                                        // constructor of an RTCPeerConnection. More specifically,
-                                        // STUN URLs will not support a query section, and TURN URLs
-                                        // will support only a transport parameter in their query
-                                        // section.
-                                        final PeerConnection.IceServer.Builder iceServerBuilder =
-                                                PeerConnection.IceServer.builder(
-                                                        String.format(
-                                                                "%s:%s:%s?transport=%s",
-                                                                type,
-                                                                IP.wrapIPv6(host),
-                                                                port,
-                                                                transport));
-                                        iceServerBuilder.setTlsCertPolicy(
-                                                PeerConnection.TlsCertPolicy
-                                                        .TLS_CERT_POLICY_INSECURE_NO_CHECK);
-                                        if (username != null && password != null) {
-                                            iceServerBuilder.setUsername(username);
-                                            iceServerBuilder.setPassword(password);
-                                        } else if (Arrays.asList("turn", "turns").contains(type)) {
-                                            // The WebRTC spec requires throwing an
-                                            // InvalidAccessError when username (from libwebrtc
-                                            // source coder)
-                                            // https://chromium.googlesource.com/external/webrtc/+/master/pc/ice_server_parsing.cc
-                                            Log.d(
-                                                    Config.LOGTAG,
-                                                    id.account.getJid().asBareJid()
-                                                            + ": skipping "
-                                                            + type
-                                                            + "/"
-                                                            + transport
-                                                            + " without username and password");
-                                            continue;
-                                        }
-                                        final PeerConnection.IceServer iceServer =
-                                                iceServerBuilder.createIceServer();
+        if (!id.account.getXmppConnection().getFeatures().externalServiceDiscovery()) {
+            Log.w(Config.LOGTAG,
+                    id.account.getJid().asBareJid() + ": has no external service discovery");
+            onIceServersDiscovered.onIceServersDiscovered(Collections.emptyList());
+            return;
+        }
+
+        final IqPacket request = new IqPacket(IqPacket.TYPE.GET);
+        request.setTo(id.account.getDomain());
+        request.addChild("services", Namespace.EXTERNAL_SERVICE_DISCOVERY);
+        xmppConnectionService.sendIqPacket(id.account, request,
+                (account, response) -> {
+                    ImmutableList.Builder<PeerConnection.IceServer> listBuilder = new ImmutableList.Builder<>();
+                    if (response.getType() == IqPacket.TYPE.RESULT) {
+                        final Element services = response.findChild("services", Namespace.EXTERNAL_SERVICE_DISCOVERY);
+                        final List<Element> children = services == null
+                                ? Collections.emptyList()
+                                : services.getChildren();
+                        for (final Element child : children) {
+                            if ("service".equals(child.getName())) {
+                                final String type = child.getAttribute("type");
+                                final String host = child.getAttribute("host");
+                                final String sport = child.getAttribute("port");
+                                final Integer port = sport == null ? null : Ints.tryParse(sport);
+                                final String transport = child.getAttribute("transport");
+                                final String username = child.getAttribute("username");
+                                final String password = child.getAttribute("password");
+                                if (Strings.isNullOrEmpty(host) || port == null) {
+                                    continue;
+                                }
+                                if (port < 0 || port > 65535) {
+                                    continue;
+                                }
+                                if (Arrays.asList("stun", "stuns", "turn", "turns").contains(type)
+                                        && Arrays.asList("udp", "tcp").contains(transport)) {
+                                    if (Arrays.asList("stuns", "turns").contains(type)
+                                            && "udp".equals(transport)) {
                                         Log.d(
                                                 Config.LOGTAG,
                                                 id.account.getJid().asBareJid()
-                                                        + ": discovered ICE Server: "
-                                                        + iceServer);
-                                        listBuilder.add(iceServer);
+                                                        + ": skipping invalid combination of udp/tls in external services");
+                                        continue;
                                     }
+                                    // TODO Starting on milestone 110, Chromium will perform
+                                    // stricter validation of TURN and STUN URLs passed to the
+                                    // constructor of an RTCPeerConnection. More specifically,
+                                    // STUN URLs will not support a query section, and TURN URLs
+                                    // will support only a transport parameter in their query
+                                    // section.
+                                    final PeerConnection.IceServer.Builder iceServerBuilder =
+                                            PeerConnection.IceServer.builder(
+                                                    String.format(
+                                                            "%s:%s:%s?transport=%s",
+                                                            type,
+                                                            IP.wrapIPv6(host),
+                                                            port,
+                                                            transport));
+                                    iceServerBuilder.setTlsCertPolicy(
+                                            PeerConnection.TlsCertPolicy
+                                                    .TLS_CERT_POLICY_INSECURE_NO_CHECK);
+                                    if (username != null && password != null) {
+                                        iceServerBuilder.setUsername(username);
+                                        iceServerBuilder.setPassword(password);
+                                    } else if (Arrays.asList("turn", "turns").contains(type)) {
+                                        // The WebRTC spec requires throwing an
+                                        // InvalidAccessError when username (from libwebrtc
+                                        // source coder)
+                                        // https://chromium.googlesource.com/external/webrtc/+/master/pc/ice_server_parsing.cc
+                                        Log.d(
+                                                Config.LOGTAG,
+                                                id.account.getJid().asBareJid()
+                                                        + ": skipping "
+                                                        + type
+                                                        + "/"
+                                                        + transport
+                                                        + " without username and password");
+                                        continue;
+                                    }
+                                    final PeerConnection.IceServer iceServer =
+                                            iceServerBuilder.createIceServer();
+                                    Log.d(
+                                            Config.LOGTAG,
+                                            id.account.getJid().asBareJid()
+                                                    + ": discovered ICE Server: "
+                                                    + iceServer);
+                                    listBuilder.add(iceServer);
                                 }
                             }
                         }
-                        final List<PeerConnection.IceServer> iceServers = listBuilder.build();
-                        if (iceServers.size() == 0) {
-                            Log.w(
-                                    Config.LOGTAG,
-                                    id.account.getJid().asBareJid()
-                                            + ": no ICE server found "
-                                            + response);
-                        }
-                        onIceServersDiscovered.onIceServersDiscovered(iceServers);
-                    });
-        } else {
-            Log.w(
-                    Config.LOGTAG,
-                    id.account.getJid().asBareJid() + ": has no external service discovery");
-            onIceServersDiscovered.onIceServersDiscovered(Collections.emptyList());
-        }
+                    }
+                    final List<PeerConnection.IceServer> iceServers = listBuilder.build();
+                    if (iceServers.size() == 0) {
+                        Log.w(
+                                Config.LOGTAG,
+                                id.account.getJid().asBareJid()
+                                        + ": no ICE server found "
+                                        + response);
+                    }
+                    onIceServersDiscovered.onIceServersDiscovered(iceServers);
+                });
     }
 
     private void finish() {
@@ -2811,7 +2805,7 @@ public class JingleRtpConnection extends AbstractJingleConnection
         final boolean prerequisite =
                 Media.audioOnly(getMedia())
                         && Arrays.asList(RtpEndUserState.CONNECTED, RtpEndUserState.RECONNECTING)
-                                .contains(getEndUserState());
+                        .contains(getEndUserState());
         return prerequisite && remoteHasVideoFeature();
     }
 

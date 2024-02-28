@@ -265,10 +265,10 @@ public class IceUdpTransportInfo extends GenericTransportInfo {
             final String protocol = this.getAttribute("protocol");
             checkNotNullNoWhitespace(protocol, "protocol");
             final String transport = protocol.toLowerCase(Locale.ROOT);
-            if (!"udp".equals(transport)) {
-                throw new IllegalArgumentException(
-                        String.format("'%s' is not a supported protocol", transport));
-            }
+//            if (!"udp".equals(transport)) {
+//                throw new IllegalArgumentException(
+//                        String.format("'%s' is not a supported protocol", transport));
+//            }
             final String priority = this.getAttribute("priority");
             checkNotNullNoWhitespace(priority, "priority");
             final String connectionAddress = this.getAttribute("ip");

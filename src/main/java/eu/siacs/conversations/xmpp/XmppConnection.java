@@ -2449,6 +2449,7 @@ public class XmppConnection implements Runnable {
     }
 
     private synchronized void sendPacket(final AbstractStanza packet, final boolean force) {
+        Log.i(Config.LOGTAG, "sendPacket:"+packet);
         if (stanzasSent == Integer.MAX_VALUE) {
             resetStreamId();
             disconnect(true);

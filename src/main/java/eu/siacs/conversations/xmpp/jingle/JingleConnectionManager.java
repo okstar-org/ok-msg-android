@@ -808,7 +808,7 @@ public class JingleConnectionManager extends AbstractConnectionManager {
                 }
             }
         }
-        Log.d(Config.LOGTAG, "unable to deliver ibb packet: " + packet.toString());
+        Log.d(Config.LOGTAG, "unable to deliver ibb packet: " + packet);
         account.getXmppConnection()
                 .sendIqPacket(packet.generateResponse(IqPacket.TYPE.ERROR), null);
     }

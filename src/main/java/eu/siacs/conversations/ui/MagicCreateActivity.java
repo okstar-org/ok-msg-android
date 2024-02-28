@@ -121,7 +121,9 @@ public class MagicCreateActivity extends XmppActivity implements TextWatcher, Ad
                 FederalInfo federalInfo = (FederalInfo) msg.obj;
                 if (federalInfo != null) {
 
-                    final List<String> domains = federalInfo.getStates().stream().map(a -> a.getXmppHost()).collect(Collectors.toList());
+                    final List<String> domains = federalInfo.getStates().stream().map(FederalInfo.State::getXmppHost)
+                            .filter(e->!StringUtils.isEmpty(e))
+                            .collect(Collectors.toList());
                     // Arrays.asList(getResources().getStringArray(R.array.domains));
                     Log.i(Config.LOGTAG, "xmpp domains:"+ domains);
 
