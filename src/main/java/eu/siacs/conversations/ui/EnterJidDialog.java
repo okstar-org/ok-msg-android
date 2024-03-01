@@ -221,10 +221,10 @@ public class EnterJidDialog extends DialogFragment implements OnBackendConnected
         }
         this.dialog = builder.create();
 
-        binding.jid.setOnEditorActionListener((v, actionId, event) -> {
-            handleEnter(binding, account, false);
-            return true;
-        });
+//        binding.jid.setOnEditorActionListener((v, actionId, event) -> {
+//            handleEnter(binding, account, false);
+//            return true;
+//        });
 
         dialog.show();
         dialog.getButton(AlertDialog.BUTTON_POSITIVE).setOnClickListener((v) -> handleEnter(binding, account, false));
@@ -247,92 +247,95 @@ public class EnterJidDialog extends DialogFragment implements OnBackendConnected
     }
 
     private void handleEnter(EnterJidDialogBinding binding, String account, boolean secondary) {
-        if (!binding.account.isEnabled() && account == null) {
-            return;
-        }
-        final Jid accountJid = accountJid();
-
-        final OnGatewayResult finish = (final String jidString, final String errorMessage) -> {
-            Activity context = getActivity();
-            if (context == null) return; // Race condition, we got the reply after the UI was closed
-
-            StackConfig.executorService.execute(()->{
-                Res<AccountInfo> res = OkStackBackend.GetJid(jidString);
-                context.runOnUiThread(() -> {
-                    if (errorMessage != null) {
-                        binding.jidLayout.setError(errorMessage);
-                        return;
-                    }
-                    if (jidString == null) {
-                        binding.jidLayout.setError(getActivity().getString(R.string.invalid_jid));
-                        return;
-                    }
-
-                    if (res == null) {
-                        binding.jidLayout.setError("服务器繁忙或者网络未连接!");
-                        return;
-                    }
-                    if (res.getCode() != 0) {
-                        binding.jidLayout.setError(res.getMsg());
-                        return;
-                    }
-
-                    Jid contactJid = res.getData().getJid();
-                    Log.i(Config.LOGTAG, "contactJid:"+contactJid);
-                    if (!issuedWarning && sanityCheckJid != SanityCheck.NO) {
-                        if (contactJid.isDomainJid()) {
-                            binding.jidLayout.setError(getActivity().getString(R.string.this_looks_like_a_domain));
-                            dialog.getButton(AlertDialog.BUTTON_POSITIVE).setText(R.string.add_anyway);
-                            issuedWarning = true;
-                            return;
-                        }
-                        if (sanityCheckJid != SanityCheck.ALLOW_MUC && suspiciousSubDomain(contactJid.getDomain().toEscapedString())) {
-                            binding.jidLayout.setError(getActivity().getString(R.string.this_looks_like_channel));
-                            dialog.getButton(AlertDialog.BUTTON_POSITIVE).setText(R.string.add_anyway);
-                            issuedWarning = true;
-                            return;
-                        }
-                    }
-
-                    if (mListener != null) {
-                        try {
-                            if (mListener.onEnterJidDialogPositive(accountJid, contactJid, secondary, binding.bookmark.isChecked())) {
-                                dialog.dismiss();
-                            }
-                        } catch (JidError error) {
-                            binding.jidLayout.setError(error.toString());
-                            dialog.getButton(AlertDialog.BUTTON_POSITIVE).setText(R.string.add);
-                            issuedWarning = false;
-                        }
-                    }
-                });
-            });
-
-
-        };
-
-        Pair<String,Pair<Jid,Presence>> p = gatewayListAdapter.getSelected();
-        final String type = gatewayListAdapter.getSelectedType();
-
-        // Resolve based on local settings before submission
-        if (type != null && (type.equals("pstn") || type.equals("sms"))) {
-            try {
-                binding.jid.setText(PhoneNumberUtilWrapper.normalize(getActivity(), binding.jid.getText().toString(), true));
-            } catch (NumberParseException | IllegalArgumentException | NullPointerException e) { }
-        }
-
-        if (p == null) {
-            finish.onGatewayResult(binding.jid.getText().toString(), null);
-        } else if (p.first != null) { // Gateway already responsed to jabber:iq:gateway once
-            final Account acct = ((XmppActivity) getActivity()).xmppConnectionService.findAccountByJid(accountJid);
-            ((XmppActivity) getActivity()).xmppConnectionService.fetchFromGateway(acct, p.second.first, binding.jid.getText().toString(), finish);
-        } else if (p.second.first.isDomainJid() && p.second.second.getServiceDiscoveryResult().getFeatures().contains("jid\\20escaping")) {
-            finish.onGatewayResult(Jid.ofLocalAndDomain(binding.jid.getText().toString(), p.second.first.getDomain().toString()).toString(), null);
-        } else if (p.second.first.isDomainJid()) {
-            finish.onGatewayResult(Jid.ofLocalAndDomain(binding.jid.getText().toString().replace("@", "%"), p.second.first.getDomain().toString()).toString(), null);
-        } else {
-            finish.onGatewayResult(null, null);
-        }
+//
+//        if (!binding.account.isEnabled() && account == null) {
+//            return;
+//        }
+//
+//
+//        final Jid accountJid = accountJid();
+//
+//        final OnGatewayResult finish = (final String jidString, final String errorMessage) -> {
+//            Activity context = getActivity();
+//            if (context == null) return; // Race condition, we got the reply after the UI was closed
+//
+//            StackConfig.executorService.execute(()->{
+//                Res<AccountInfo> res = OkStackBackend.GetJid(jidString);
+//                context.runOnUiThread(() -> {
+//                    if (errorMessage != null) {
+//                        binding.jidLayout.setError(errorMessage);
+//                        return;
+//                    }
+//                    if (jidString == null) {
+//                        binding.jidLayout.setError(getActivity().getString(R.string.invalid_jid));
+//                        return;
+//                    }
+//
+//                    if (res == null) {
+//                        binding.jidLayout.setError("服务器繁忙或者网络未连接!");
+//                        return;
+//                    }
+//                    if (res.getCode() != 0) {
+//                        binding.jidLayout.setError(res.getMsg());
+//                        return;
+//                    }
+//
+//                    Jid contactJid = res.getData().getJid();
+//                    Log.i(Config.LOGTAG, "contactJid:"+contactJid);
+//                    if (!issuedWarning && sanityCheckJid != SanityCheck.NO) {
+//                        if (contactJid.isDomainJid()) {
+//                            binding.jidLayout.setError(getActivity().getString(R.string.this_looks_like_a_domain));
+//                            dialog.getButton(AlertDialog.BUTTON_POSITIVE).setText(R.string.add_anyway);
+//                            issuedWarning = true;
+//                            return;
+//                        }
+//                        if (sanityCheckJid != SanityCheck.ALLOW_MUC && suspiciousSubDomain(contactJid.getDomain().toEscapedString())) {
+//                            binding.jidLayout.setError(getActivity().getString(R.string.this_looks_like_channel));
+//                            dialog.getButton(AlertDialog.BUTTON_POSITIVE).setText(R.string.add_anyway);
+//                            issuedWarning = true;
+//                            return;
+//                        }
+//                    }
+//
+//                    if (mListener != null) {
+//                        try {
+//                            if (mListener.onEnterJidDialogPositive(accountJid, contactJid, secondary, binding.bookmark.isChecked())) {
+//                                dialog.dismiss();
+//                            }
+//                        } catch (JidError error) {
+//                            binding.jidLayout.setError(error.toString());
+//                            dialog.getButton(AlertDialog.BUTTON_POSITIVE).setText(R.string.add);
+//                            issuedWarning = false;
+//                        }
+//                    }
+//                });
+//            });
+//
+//
+//        };
+//
+//        Pair<String,Pair<Jid,Presence>> p = gatewayListAdapter.getSelected();
+//        final String type = gatewayListAdapter.getSelectedType();
+//
+//        // Resolve based on local settings before submission
+//        if (type != null && (type.equals("pstn") || type.equals("sms"))) {
+//            try {
+//                binding.jid.setText(PhoneNumberUtilWrapper.normalize(getActivity(), binding.jid.getText().toString(), true));
+//            } catch (NumberParseException | IllegalArgumentException | NullPointerException e) { }
+//        }
+//
+//        if (p == null) {
+//            finish.onGatewayResult(binding.jid.getText().toString(), null);
+//        } else if (p.first != null) { // Gateway already responsed to jabber:iq:gateway once
+//            final Account acct = ((XmppActivity) getActivity()).xmppConnectionService.findAccountByJid(accountJid);
+//            ((XmppActivity) getActivity()).xmppConnectionService.fetchFromGateway(acct, p.second.first, binding.jid.getText().toString(), finish);
+//        } else if (p.second.first.isDomainJid() && p.second.second.getServiceDiscoveryResult().getFeatures().contains("jid\\20escaping")) {
+//            finish.onGatewayResult(Jid.ofLocalAndDomain(binding.jid.getText().toString(), p.second.first.getDomain().toString()).toString(), null);
+//        } else if (p.second.first.isDomainJid()) {
+//            finish.onGatewayResult(Jid.ofLocalAndDomain(binding.jid.getText().toString().replace("@", "%"), p.second.first.getDomain().toString()).toString(), null);
+//        } else {
+//            finish.onGatewayResult(null, null);
+//        }
     }
 
     public void setOnEnterJidDialogPositiveListener(OnEnterJidDialogPositiveListener listener) {

@@ -41,6 +41,7 @@ import eu.siacs.conversations.databinding.ActivityMagicCreateBinding;
 import eu.siacs.conversations.entities.SignUpForm;
 import eu.siacs.conversations.entities.SignUpResult;
 import eu.siacs.conversations.http.HttpConnectionManager;
+import eu.siacs.conversations.stack.OkStackBackend;
 import eu.siacs.conversations.stack.Res;
 import eu.siacs.conversations.utils.InstallReferrerUtils;
 import eu.siacs.conversations.utils.StringUtils;
@@ -48,7 +49,8 @@ import eu.siacs.conversations.xmpp.Jid;
 import me.drakeet.support.toast.ToastCompat;
 import okhttp3.HttpUrl;
 
-public class MagicCreateActivity extends XmppActivity implements TextWatcher, AdapterView.OnItemSelectedListener, CompoundButton.OnCheckedChangeListener {
+public class MagicCreateActivity extends XmppActivity
+        implements TextWatcher, AdapterView.OnItemSelectedListener, CompoundButton.OnCheckedChangeListener {
 
 
     private boolean useOwnProvider = false;
@@ -64,7 +66,11 @@ public class MagicCreateActivity extends XmppActivity implements TextWatcher, Ad
     private String preAuth;
 
     final ExecutorService executorService = Executors.newCachedThreadPool();
-
+    /**
+     * 服务提供商
+     */
+    private List<FederalInfo.State> states;
+    private FederalInfo.State selectedState;
 
     private void setupHyperlink() {
         TextView linkTextView = findViewById(R.id.activity_main_link);
@@ -114,6 +120,9 @@ public class MagicCreateActivity extends XmppActivity implements TextWatcher, Ad
         super.onCreate(savedInstanceState);
         this.binding = DataBindingUtil.setContentView(this, R.layout.activity_magic_create);
 
+        /**
+         * 获取服务提供商
+         */
         Handler handler1 = new Handler(Looper.getMainLooper()) {
             @Override
             public void handleMessage(@NonNull Message msg) {
@@ -121,14 +130,13 @@ public class MagicCreateActivity extends XmppActivity implements TextWatcher, Ad
                 FederalInfo federalInfo = (FederalInfo) msg.obj;
                 if (federalInfo != null) {
 
-                    final List<String> domains = federalInfo.getStates().stream().map(FederalInfo.State::getXmppHost)
-                            .filter(e->!StringUtils.isEmpty(e))
+                    states = federalInfo.getStates().stream()
+                            .filter(e -> !StringUtils.isEmpty(e.getXmppHost()))
                             .collect(Collectors.toList());
-                    // Arrays.asList(getResources().getStringArray(R.array.domains));
-                    Log.i(Config.LOGTAG, "xmpp domains:"+ domains);
+                    Log.i(Config.LOGTAG, "states:"+ states);
 
-                    Collections.sort(domains, String::compareToIgnoreCase);
-                    final ArrayAdapter<String> adapter = new ArrayAdapter<>(MagicCreateActivity.this, android.R.layout.simple_selectable_list_item, domains);
+                    final ArrayAdapter<String> adapter = new ArrayAdapter<>(MagicCreateActivity.this,
+                            android.R.layout.simple_selectable_list_item,  states.stream().map(e -> e.getName()).collect(Collectors.toList()));
                     int defaultServer = adapter.getPosition(Config.MAGIC_CREATE_DOMAIN);
                     if (registerFromUri && !useOwnProvider && (MagicCreateActivity.this.preAuth != null || domain != null)) {
                         binding.server.setEnabled(false);
@@ -201,22 +209,20 @@ public class MagicCreateActivity extends XmppActivity implements TextWatcher, Ad
                 Handler handler = new Handler(Objects.requireNonNull(Looper.myLooper())) {
                     @Override
                     public void handleMessage(@NonNull Message msg) {
-                        Bundle bundle = msg.getData();
-                        String error = bundle.getString("error");
-                        if (error != null) {
-                            ToastCompat.makeText(MagicCreateActivity.this, error, ToastCompat.LENGTH_SHORT).show();
+                        Res<SignUpResult> res = (Res<SignUpResult>) msg.obj;
+                        if (res == null) {
+                            ToastCompat.makeText(MagicCreateActivity.this, "服务器连接错误，请稍后再试...", ToastCompat.LENGTH_SHORT).show();
                             return;
                         }
 
-                        if (bundle.getInt("code") != 0) {
-//                            ToastCompat.makeText(MagicCreateActivity.this, bundle.getString("msg"), ToastCompat.LENGTH_SHORT).show();
-                            binding.email.setError(bundle.getString("msg"));
+                        if (!res.success()) {
+                            ToastCompat.makeText(MagicCreateActivity.this, res.getMsg(), ToastCompat.LENGTH_SHORT).show();
                             return;
                         }
 
                         ToastCompat.makeText(MagicCreateActivity.this, "注册成功，正在进入登录界面", ToastCompat.LENGTH_SHORT).show();
 
-                        SignUpResult result = new Gson().fromJson(bundle.getString("json"), SignUpResult.class);
+                        SignUpResult result = res.getData();
                         Intent intent = new Intent(MagicCreateActivity.this, EditAccountActivity.class);
                         intent.putExtra("username", result.getUsername());
                         intent.putExtra("password", password);
@@ -237,22 +243,11 @@ public class MagicCreateActivity extends XmppActivity implements TextWatcher, Ad
 
 
                 Runnable r = () -> {
-                    Message msg = new Message();
-                    Bundle bundle = new Bundle();
-                    try {
-                        Res<SignUpResult> res = doSignUp(email, password);
-                        bundle.putInt("code", res.getCode());
-                        if (res.success()) {
-                            bundle.putSerializable("json", new Gson().toJson(res.getData()));
-                        } else {
-                            bundle.putString("msg", res.getMsg());
-                        }
-                        binding.progressBar.setVisibility(View.INVISIBLE);
-                        msg.setData(bundle);
-                    } catch (Exception e) {
-                        bundle.putString("error", e.getMessage());
-                    }
+                    Message msg = Message.obtain();
+                    msg.obj = doSignUp(email, password);
                     handler.sendMessage(msg);
+
+                    binding.progressBar.setVisibility(View.INVISIBLE);
                 };
 
                 executorService.execute(r);
@@ -328,24 +323,13 @@ public class MagicCreateActivity extends XmppActivity implements TextWatcher, Ad
 //        setupHyperlink();
     }
 
-    private static Res<SignUpResult> doSignUp(String email, String password) {
-        HttpUrl url = HttpUrl.get(BuildConfig.OK_STACK_API_URL + "/auth/passport/signUp");
-
-        SignUpForm signUp = new SignUpForm();
-        signUp.setLanguage("zh-CN");
-        signUp.setIso("CN");
-        signUp.setAccountType("email");
-        signUp.setAccount(email);
-        signUp.setPassword(password);
-
-        try {
-            String post = HttpConnectionManager.postJSON(url, signUp);
-            Res<SignUpResult> result = new Gson().fromJson(post, new TypeToken<Res<SignUpResult>>() {
-            }.getType());
-            return result;
-        } catch (IOException e) {
-            throw new RuntimeException(e);
+    private Res<SignUpResult> doSignUp(String email, String password) {
+        if (this.selectedState == null) {
+            Log.w(Config.LOGTAG, "Not select state.");
+            return null;
         }
+
+       return OkStackBackend.Get(selectedState).signUp(email, password);
     }
 
     private String updateDomain() {
@@ -375,8 +359,16 @@ public class MagicCreateActivity extends XmppActivity implements TextWatcher, Ad
     }
 
     @Override
-    public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
+    public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
 //        updateFullJidInformation(binding.username.getText().toString());
+        if(parent.getId() == R.id.server){
+            //选择的服务商
+            Object item = parent.getItemAtPosition(position);
+            Log.i(Config.LOGTAG, "provider: " + position + "=>" + item);
+
+            this.selectedState = states.get(position);
+            Log.i(Config.LOGTAG, "Select state: "+this.selectedState);
+        }
     }
 
     @Override

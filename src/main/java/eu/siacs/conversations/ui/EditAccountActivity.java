@@ -31,7 +31,10 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.View.OnClickListener;
+import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
 import android.widget.CheckBox;
+import android.widget.CompoundButton;
 import android.widget.CompoundButton.OnCheckedChangeListener;
 import android.widget.EditText;
 import android.widget.ImageView;
@@ -46,6 +49,7 @@ import androidx.appcompat.widget.Toolbar;
 import androidx.core.app.TaskStackBuilder;
 import androidx.databinding.DataBindingUtil;
 
+import com.google.android.exoplayer2.C;
 import com.google.android.material.textfield.TextInputLayout;
 import com.google.common.base.CharMatcher;
 
@@ -54,15 +58,21 @@ import com.rarepebble.colorpicker.ColorPickerView;
 import org.openintents.openpgp.util.OpenPgpUtils;
 
 import java.util.Arrays;
+import java.util.Collections;
 import java.util.List;
 import java.util.Set;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
 import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.concurrent.atomic.AtomicInteger;
+import java.util.stream.Collectors;
 
 import eu.siacs.conversations.BuildConfig;
 import eu.siacs.conversations.Config;
 import eu.siacs.conversations.R;
 import eu.siacs.conversations.StackConfig;
+import eu.siacs.conversations.cloud.FederalInfo;
+import eu.siacs.conversations.cloud.OkCloudBackend;
 import eu.siacs.conversations.crypto.axolotl.AxolotlService;
 import eu.siacs.conversations.crypto.axolotl.XmppAxolotlSession;
 import eu.siacs.conversations.databinding.ActivityEditAccountBinding;
@@ -88,6 +98,7 @@ import eu.siacs.conversations.utils.EasyOnboardingInvite;
 import eu.siacs.conversations.utils.MenuDoubleTabUtil;
 import eu.siacs.conversations.utils.Resolver;
 import eu.siacs.conversations.utils.SignupUtils;
+import eu.siacs.conversations.utils.StringUtils;
 import eu.siacs.conversations.utils.TorServiceUtils;
 import eu.siacs.conversations.utils.UIHelper;
 import eu.siacs.conversations.utils.XmppUri;
@@ -100,10 +111,12 @@ import eu.siacs.conversations.xmpp.XmppConnection.Features;
 import eu.siacs.conversations.xmpp.forms.Data;
 import eu.siacs.conversations.xmpp.pep.Avatar;
 import me.drakeet.support.toast.ToastCompat;
+import okhttp3.Connection;
 import okhttp3.HttpUrl;
 
 public class EditAccountActivity extends OmemoActivity implements OnAccountUpdate, OnUpdateBlocklist,
-        OnKeyStatusUpdated, OnCaptchaRequested, KeyChainAliasCallback, XmppConnectionService.OnShowErrorToast, XmppConnectionService.OnMamPreferencesFetched {
+        OnKeyStatusUpdated, OnCaptchaRequested, KeyChainAliasCallback, XmppConnectionService.OnShowErrorToast,
+        XmppConnectionService.OnMamPreferencesFetched, AdapterView.OnItemSelectedListener, CompoundButton.OnCheckedChangeListener {
 
     public static final String EXTRA_OPENED_FROM_NOTIFICATION = "opened_from_notification";
     public static final String EXTRA_FORCE_REGISTER = "force_register";
@@ -129,7 +142,37 @@ public class EditAccountActivity extends OmemoActivity implements OnAccountUpdat
 
     private final PendingItem<PresenceTemplate> mPendingPresenceTemplate = new PendingItem<>();
 
+    final ExecutorService executorService = Executors.newCachedThreadPool();
+
     private boolean mFetchingAvatar = false;
+
+    /**
+     * 服务提供商
+     */
+    private List<FederalInfo.State> states;
+    private FederalInfo.State selectedState;
+
+    @Override
+    public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+        if(parent.getId() == R.id.server){
+            //选择的服务商
+            Object item = parent.getItemAtPosition(position);
+            Log.i(Config.LOGTAG, "provider: " + position + "=>" + item);
+
+            this.selectedState = states.get(position);
+            Log.i(Config.LOGTAG, "Select state: "+this.selectedState);
+        }
+    }
+
+    @Override
+    public void onNothingSelected(AdapterView<?> parent) {
+
+    }
+
+    @Override
+    public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+
+    }
 
     public enum From {
         Login,//登录
@@ -145,6 +188,10 @@ public class EditAccountActivity extends OmemoActivity implements OnAccountUpdat
 
         @Override
         public void onClick(final View v) {
+            if(selectedState==null){
+                Log.w(Config.LOGTAG, "Not select provider");
+                return;
+            }
 
             final String accountJidText = binding.accountJid.getText().toString();
             final String password = binding.accountPassword.getText().toString();
@@ -170,10 +217,9 @@ public class EditAccountActivity extends OmemoActivity implements OnAccountUpdat
                 }
             };
 
-
             Runnable runnable = () -> {
                 Message message = new Message();
-                message.obj = OkStackBackend.GetJid(accountJidText);
+                message.obj = OkStackBackend.Get(selectedState).getJid(accountJidText);
                 handler.sendMessage(message);
             };
             StackConfig.executorService.execute(runnable);
@@ -245,8 +291,18 @@ public class EditAccountActivity extends OmemoActivity implements OnAccountUpdat
 
     private void doLogin(String username, String password) {
 
-        String domain = BuildConfig.MAGIC_CREATE_DOMAIN;
+        //获取选择的服务
+        if (selectedState == null) {
+            Log.w(Config.LOGTAG, "Not select provider");
+            return;
+        }
+
+
+        String domain = selectedState.getXmppHost();
+        Log.i(Config.LOGTAG, "Select domain: "+domain);
+
         Jid jid = Jid.of(username, domain, null);
+        Log.i(Config.LOGTAG, "Login jid: "+jid);
 
         final boolean wasDisabled = mAccount != null && mAccount.getStatus() == Account.State.DISABLED;
         final boolean accountInfoEdited = accountInfoEdited();
@@ -529,7 +585,7 @@ public class EditAccountActivity extends OmemoActivity implements OnAccountUpdat
 //                final int res = resId;
 //                new Handler().postDelayed(() -> et.setHint(res), 500);
 //            } else {
-                et.setHint(null);
+            et.setHint(null);
 //            }
         }
     };
@@ -875,7 +931,9 @@ public class EditAccountActivity extends OmemoActivity implements OnAccountUpdat
 
     @Override
     protected void onStart() {
+        Log.i(Config.LOGTAG, "onStart");
         super.onStart();
+
         final Intent intent = getIntent();
         final int theme = findTheme();
         if (this.mTheme != theme) {
@@ -983,6 +1041,48 @@ public class EditAccountActivity extends OmemoActivity implements OnAccountUpdat
         if (intent.getBooleanExtra("snikket", false)) {
             this.binding.accountJidLayout.setHint("Snikket Address");
         }
+
+        /**
+         * 获取服务提供商
+         */
+        Handler handler1 = new Handler(Looper.getMainLooper()) {
+            @Override
+            public void handleMessage(@NonNull Message msg) {
+                super.handleMessage(msg);
+                FederalInfo federalInfo = (FederalInfo) msg.obj;
+                if (federalInfo != null) {
+
+                    states = federalInfo.getStates().stream()
+                            .filter(e -> !StringUtils.isEmpty(e.getXmppHost()))
+                            .collect(Collectors.toList());
+
+                    Log.i(Config.LOGTAG, "states:" + states);
+
+                    final ArrayAdapter<String> adapter = new ArrayAdapter<>(EditAccountActivity.this,
+                            android.R.layout.simple_selectable_list_item, states.stream().map(e -> e.getName())
+                            .collect(Collectors.toList()));
+
+                    binding.useOwn.setOnCheckedChangeListener(EditAccountActivity.this);
+                    binding.server.setAdapter(adapter);
+                    binding.server.setOnItemSelectedListener(EditAccountActivity.this);
+//                    int defaultServer = adapter.getPosition(Config.MAGIC_CREATE_DOMAIN);
+//                    binding.server.setSelection(defaultServer);
+                    adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+                }
+            }
+        };
+
+        Runnable r1 = () -> {
+            FederalInfo obj = OkCloudBackend.GetFederalInfo();
+            if (obj == null) {
+                return;
+            }
+
+            Message message = new Message();
+            message.obj = obj;
+            handler1.sendMessage(message);
+        };
+        executorService.execute(r1);
     }
 
     private void displayVerificationWarningDialog(final XmppUri xmppUri) {

@@ -150,6 +150,41 @@
                                     android:textColor="?attr/edit_text_color" />
                             </com.google.android.material.textfield.TextInputLayout>
 
+                            <TextView
+                                android:id="@+id/servertitle"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_marginTop="8dp"
+                                android:text="@string/choose_your_server"
+                                android:textAppearance="@style/TextAppearance.Conversations.Body1"
+                                android:visibility="visible" />
+
+                            <Spinner
+                                android:id="@+id/server"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:layout_gravity="center_horizontal"
+                                android:hint="@string/server_hint"
+                                android:minHeight="30dp"
+                                android:prompt="@string/server_hint"
+                                android:spinnerMode="dialog"
+                                />
+
+                            <CheckBox
+                                android:id="@+id/use_own"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:text="@string/use_own_provider"
+                                android:visibility="gone" />
+
+                            <TextView
+                                android:id="@+id/full_jid"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_marginTop="8dp"
+                                android:text="@string/your_full_jid_will_be"
+                                android:textAppearance="@style/TextAppearance.Conversations.Caption"
+                                android:visibility="invisible" />
 
                             <RelativeLayout
                                 android:id="@+id/account_color_box"
@@ -405,7 +440,10 @@
                             android:layout_marginTop="8dp"
                             android:text="@string/register_account"
                             android:visibility="gone" />
+
+
                     </RelativeLayout>
+
                 </androidx.cardview.widget.CardView>
 
                 <androidx.cardview.widget.CardView

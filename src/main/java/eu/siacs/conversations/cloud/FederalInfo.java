@@ -8,6 +8,7 @@ public class FederalInfo {
         private String no;
         private String name;
         private String xmppHost;
+        private String stackUrl;
 
         public String getNo() {
             return no;
@@ -32,7 +33,15 @@ public class FederalInfo {
         public void setXmppHost(String xmppHost) {
             this.xmppHost = xmppHost;
         }
-    }
+
+       public String getStackUrl() {
+           return stackUrl;
+       }
+
+       public void setStackUrl(String stackUrl) {
+           this.stackUrl = stackUrl;
+       }
+   }
 
     List<State> states;
 
