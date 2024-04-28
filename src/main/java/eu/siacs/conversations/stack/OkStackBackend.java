@@ -25,6 +25,10 @@ public class OkStackBackend {
         return new OkStackBackend(state.getStackUrl());
     }
 
+    public static OkStackBackend Get(String stackUrl) {
+        return new OkStackBackend(stackUrl);
+    }
+
     /**
      * 注册
      *

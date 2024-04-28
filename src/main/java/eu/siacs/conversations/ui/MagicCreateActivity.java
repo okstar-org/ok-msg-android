@@ -1,11 +1,13 @@
 package eu.siacs.conversations.ui;
 
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.content.pm.ActivityInfo;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Looper;
 import android.os.Message;
+import android.preference.PreferenceManager;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.text.method.LinkMovementMethod;
@@ -328,7 +330,6 @@ public class MagicCreateActivity extends XmppActivity
             Log.w(Config.LOGTAG, "Not select state.");
             return null;
         }
-
        return OkStackBackend.Get(selectedState).signUp(email, password);
     }
 
@@ -368,6 +369,11 @@ public class MagicCreateActivity extends XmppActivity
 
             this.selectedState = states.get(position);
             Log.i(Config.LOGTAG, "Select state: "+this.selectedState);
+
+            SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(this);
+            SharedPreferences.Editor editor = sharedPreferences.edit();
+            editor.putString(SettingsActivity.SELECTED_FEDERAL_STATE_STACK_URL, this.selectedState.getStackUrl());
+            editor.apply();
         }
     }
 

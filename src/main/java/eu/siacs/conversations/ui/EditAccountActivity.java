@@ -154,13 +154,13 @@ public class EditAccountActivity extends OmemoActivity implements OnAccountUpdat
 
     @Override
     public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-        if(parent.getId() == R.id.server){
+        if (parent.getId() == R.id.server) {
             //选择的服务商
             Object item = parent.getItemAtPosition(position);
             Log.i(Config.LOGTAG, "provider: " + position + "=>" + item);
 
             this.selectedState = states.get(position);
-            Log.i(Config.LOGTAG, "Select state: "+this.selectedState);
+            Log.i(Config.LOGTAG, "Select state: " + this.selectedState);
         }
     }
 
@@ -188,7 +188,7 @@ public class EditAccountActivity extends OmemoActivity implements OnAccountUpdat
 
         @Override
         public void onClick(final View v) {
-            if(selectedState==null){
+            if (selectedState == null) {
                 Log.w(Config.LOGTAG, "Not select provider");
                 return;
             }
@@ -290,6 +290,7 @@ public class EditAccountActivity extends OmemoActivity implements OnAccountUpdat
     }
 
     private void doLogin(String username, String password) {
+        Log.i(Config.LOGTAG, "login: " + username);
 
         //获取选择的服务
         if (selectedState == null) {
@@ -299,10 +300,12 @@ public class EditAccountActivity extends OmemoActivity implements OnAccountUpdat
 
 
         String domain = selectedState.getXmppHost();
-        Log.i(Config.LOGTAG, "Select domain: "+domain);
+        Log.i(Config.LOGTAG, "Select domain: " + domain);
 
         Jid jid = Jid.of(username, domain, null);
-        Log.i(Config.LOGTAG, "Login jid: "+jid);
+        Log.i(Config.LOGTAG, "Login jid: " + jid);
+
+        mAccount = xmppConnectionService.findAccountByJid(jid);
 
         final boolean wasDisabled = mAccount != null && mAccount.getStatus() == Account.State.DISABLED;
         final boolean accountInfoEdited = accountInfoEdited();
@@ -322,12 +325,12 @@ public class EditAccountActivity extends OmemoActivity implements OnAccountUpdat
             }
             return;
         }
-        final boolean registerNewAccount;
-        if (mForceRegister != null) {
-            registerNewAccount = mForceRegister;
-        } else {
-            registerNewAccount = binding.accountRegisterNew.isChecked() && !Config.DISALLOW_REGISTRATION_IN_UI;
-        }
+        final boolean registerNewAccount = false;
+//        if (mForceRegister != null) {
+//            registerNewAccount = mForceRegister;
+//        } else {
+//            registerNewAccount = binding.accountRegisterNew.isChecked() && !Config.DISALLOW_REGISTRATION_IN_UI;
+//        }
 
 //        if (mUsernameMode && binding.accountJid.getText().toString().contains("@")) {
 //            binding.accountJidLayout.setError(getString(R.string.invalid_username));
@@ -474,6 +477,7 @@ public class EditAccountActivity extends OmemoActivity implements OnAccountUpdat
             mAccount = new Account(jid.asBareJid(), password);
             mAccount.setPort(numericPort);
             mAccount.setHostname(hostname);
+            mAccount.setPassword(password);
             mAccount.setOption(Account.OPTION_REGISTER, registerNewAccount);
             xmppConnectionService.createAccount(mAccount);
         }
@@ -488,7 +492,7 @@ public class EditAccountActivity extends OmemoActivity implements OnAccountUpdat
             finish();
         } else {
             updateSaveButton();
-            updateAccountInformation(true);
+//            updateAccountInformation(true);
         }
 
 
@@ -794,7 +798,6 @@ public class EditAccountActivity extends OmemoActivity implements OnAccountUpdat
     @Override
     protected void onCreate(final Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
 
         if (savedInstanceState != null) {
             this.mSavedInstanceAccount = savedInstanceState.getString("account");

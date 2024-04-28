@@ -115,6 +115,9 @@ public class SettingsActivity extends XmppActivity implements OnSharedPreference
     public static final String MAX_RESEND_TIME = "max_resend_time";
     public static final String RESEND_DELAY = "resend_delay";
 
+    public static final String SELECTED_FEDERAL_STATE_STACK_URL = "SELECTED_FEDERAL_STATE";
+    public static final String DEFAULT_FEDERAL_STATE_STACK_URL = "https://stack.okstar.org.cn";
+
     public static final int REQUEST_CREATE_BACKUP = 0xbf8701;
     public static final int REQUEST_DOWNLOAD_STICKERS = 0xbf8702;
 
