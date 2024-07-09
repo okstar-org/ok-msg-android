@@ -94,7 +94,7 @@
                                         android:layout_marginBottom="4dp"
                                         android:orientation="horizontal" />
 
-                                    <de.monocles.chat.TagEditorView
+                                    <org.okstar.okmsg.TagEditorView
                                         android:id="@+id/edit_tags"
                                         android:visibility="gone"
                                         android:hint="@string/tags"

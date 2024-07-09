@@ -1,4 +1,4 @@
-package de.monocles.chat;
+package org.okstar.okmsg;
 
 import android.view.View;
 import android.view.ViewGroup;

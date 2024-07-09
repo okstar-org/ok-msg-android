@@ -1,6 +1,5 @@
 package eu.siacs.conversations.ui;
 
-import static eu.siacs.conversations.persistance.FileBackend.APP_DIRECTORY;
 import static eu.siacs.conversations.utils.StorageHelper.getBackupDirectory;
 
 import com.google.common.base.Strings;
@@ -17,7 +16,6 @@ import android.content.pm.PackageManager;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
-import android.os.Environment;
 import android.os.storage.StorageManager;
 import android.preference.CheckBoxPreference;
 import android.preference.ListPreference;
@@ -27,15 +25,12 @@ import android.preference.PreferenceManager;
 import android.preference.PreferenceScreen;
 import android.util.Log;
 import static eu.siacs.conversations.utils.CameraUtils.showCameraChooser;
-import de.monocles.chat.DownloadDefaultStickers;
+import org.okstar.okmsg.DownloadDefaultStickers;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AlertDialog;
 import androidx.core.content.ContextCompat;
 import eu.siacs.conversations.utils.CameraUtils;
 import java.io.File;
-import java.io.FileInputStream;
-import java.io.IOException;
-import java.io.ObjectInputStream;
 import java.net.URI;
 import java.net.URISyntaxException;
 import java.security.KeyStoreException;
@@ -62,8 +57,6 @@ import eu.siacs.conversations.utils.TimeFrameUtils;
 import eu.siacs.conversations.xmpp.Jid;
 import me.drakeet.support.toast.ToastCompat;
 import eu.siacs.conversations.services.UnifiedPushDistributor;
-import eu.siacs.conversations.utils.ThemeHelper;
-import eu.siacs.conversations.xmpp.InvalidJid;
 
 
 public class SettingsActivity extends XmppActivity implements OnSharedPreferenceChangeListener {

@@ -14,18 +14,17 @@
  * limitations under the License.
  */
 
-package de.monocles.chat;
+package org.okstar.okmsg;
 
 import android.content.Context;
 import android.content.res.loader.ResourcesLoader;
 import android.content.res.loader.ResourcesProvider;
-import android.os.Build.VERSION_CODES;
 import android.os.ParcelFileDescriptor;
 import android.system.Os;
 import android.util.Log;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
-import androidx.annotation.RequiresApi;
+
 import java.io.FileDescriptor;
 import java.io.FileOutputStream;
 import java.io.OutputStream;

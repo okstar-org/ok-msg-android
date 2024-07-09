@@ -1,6 +1,5 @@
-package de.monocles.chat;
+package org.okstar.okmsg;
 
-import android.util.Log;
 import android.view.MotionEvent;
 import android.view.View;
 

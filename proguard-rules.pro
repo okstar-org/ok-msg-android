@@ -1,6 +1,6 @@
 -dontobfuscate
 
--keep class de.monocles.chat.**
+-keep class org.okstar.okmsg.**
 -keep class de.pixart.messenger.**
 -keep class eu.siacs.conversations.**
 -keep class org.whispersystems.**

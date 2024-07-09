@@ -1,6 +1,5 @@
 package eu.siacs.conversations.persistance;
 
-import static eu.siacs.conversations.utils.StorageHelper.getBackupDirectory;
 import static eu.siacs.conversations.utils.StorageHelper.getConversationsDirectory;
 import static eu.siacs.conversations.utils.StorageHelper.getGlobalAudiosPath;
 import static eu.siacs.conversations.utils.StorageHelper.getGlobalDocumentsPath;
@@ -62,10 +61,9 @@ import com.google.common.io.ByteStreams;
 
 import com.wolt.blurhashkt.BlurHashDecoder;
 
-import de.monocles.chat.BobTransfer;
-import de.monocles.chat.ThumbHash;
+import org.okstar.okmsg.BobTransfer;
+import org.okstar.okmsg.ThumbHash;
 
-import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.Closeable;
 import java.io.File;
@@ -81,7 +79,6 @@ import java.lang.ref.WeakReference;
 import java.net.ServerSocket;
 import java.net.Socket;
 import java.nio.ByteBuffer;
-import java.net.URL;
 import java.nio.channels.FileChannel;
 import java.nio.charset.StandardCharsets;
 import java.security.DigestOutputStream;
@@ -90,7 +87,6 @@ import java.security.NoSuchAlgorithmException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.Collections;
 import java.util.Comparator;
 import java.util.Date;
 import java.util.LinkedList;

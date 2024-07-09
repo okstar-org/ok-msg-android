@@ -747,8 +747,8 @@ public class Contact implements ListItem, Blockable {
 
     public PhoneAccountHandle phoneAccountHandle() {
         ComponentName componentName = new ComponentName(
-                "de.monocles.chat",
-                "de.monocles.chat.ConnectionService"
+                "org.okstar.okmsg",
+                "org.okstar.okmsg.ConnectionService"
         );
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
             return new PhoneAccountHandle(componentName, phoneAccountLabel());

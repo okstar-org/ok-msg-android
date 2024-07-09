@@ -57,7 +57,6 @@ import android.os.Bundle;
 import android.os.Environment;
 import android.os.IBinder;
 import android.os.Messenger;
-import android.os.Parcelable;
 import android.os.PowerManager;
 import android.os.PowerManager.WakeLock;
 import android.os.SystemClock;
@@ -92,7 +91,7 @@ import com.google.common.base.Objects;
 import com.google.common.base.Strings;
 import com.otaliastudios.transcoder.strategy.DefaultAudioStrategy;
 
-import de.monocles.chat.WebxdcUpdate;
+import org.okstar.okmsg.WebxdcUpdate;
 
 import org.conscrypt.Conscrypt;
 import org.openintents.openpgp.IOpenPgpService2;

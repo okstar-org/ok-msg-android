@@ -91,7 +91,7 @@ import eu.siacs.conversations.xmpp.XmppConnection;
 import eu.siacs.conversations.xml.Element;
 import eu.siacs.conversations.ui.util.ShareUtil;
 import eu.siacs.conversations.databinding.CommandRowBinding;
-import de.monocles.chat.Util;
+import org.okstar.okmsg.Util;
 import android.view.ViewGroup;
 import android.util.TypedValue;
 import android.graphics.drawable.Drawable;
