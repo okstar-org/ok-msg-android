@@ -152,6 +152,8 @@ public class EditAccountActivity extends OmemoActivity implements OnAccountUpdat
     private List<FederalInfo.State> states;
     private FederalInfo.State selectedState;
 
+    private static final String SP_NAME = "Account_name";
+
     @Override
     public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
         if (parent.getId() == R.id.server) {
@@ -210,6 +212,14 @@ public class EditAccountActivity extends OmemoActivity implements OnAccountUpdat
                         binding.accountJidLayout.setError(res.getMsg());
                         return;
                     }
+
+                    SharedPreferences sharedPreferences = getSharedPreferences(SP_NAME,MODE_PRIVATE);
+                    SharedPreferences.Editor editor = sharedPreferences.edit();
+                    editor.putString("account_info",accountJidText);
+                    editor.apply();
+
+                    String userInfo = sharedPreferences.getString("account_info", "");
+                    Config.USER_EMAIL_PHONE_INFO = userInfo;
 
                     AccountInfo info = res.getData();
                     doLogin(info.getUsername(), password);
@@ -949,26 +959,28 @@ public class EditAccountActivity extends OmemoActivity implements OnAccountUpdat
                 });
             }
 
-            int from = intent.getIntExtra("from", -1);
+            String from = intent.getStringExtra("from");
             final String jid = intent.getStringExtra("jid");
             final String username = intent.getStringExtra("username");
             final String password = intent.getStringExtra("password");
             final String email = intent.getStringExtra("email");
 
+//            Log.d(Config.LOGTAG,"用户信息 :"+Config.USER_EMAIL_PHONE_INFO);
+
             if (username != null) {
                 jidToEdit = Jid.ofEscaped(username, BuildConfig.MAGIC_CREATE_DOMAIN, null);
             } else if (jid != null) {
                 jidToEdit = Jid.ofEscaped(jid);
-                binding.accountJid.setText(jid);
+                binding.accountJid.setText(Config.USER_EMAIL_PHONE_INFO);
             }
 
             if (password != null) {
                 binding.accountPassword.setText(password);
             }
 
-            if (email != null) {
-                binding.accountJid.setText(email);
-            }
+//            if (email != null) {
+//                binding.accountJid.setText(email);
+//            }
 
             final Uri data = intent.getData();
             final XmppUri xmppUri = data == null ? null : new XmppUri(data);
@@ -1008,7 +1020,7 @@ public class EditAccountActivity extends OmemoActivity implements OnAccountUpdat
                 boolean openedFromNotification = intent.getBooleanExtra(EXTRA_OPENED_FROM_NOTIFICATION, false);
                 configureActionBar(getSupportActionBar(), !openedFromNotification);
 
-                if (from == From.Profile.ordinal()) {
+                if (!TextUtils.isEmpty(from) && from.equals(From.Profile.name())) {
                     this.binding.yourNameBox.setVisibility(View.VISIBLE);
                     this.binding.yourStatusBox.setVisibility(View.VISIBLE);
                     this.binding.avater.setVisibility(View.VISIBLE);

@@ -12,6 +12,7 @@ import android.os.Build;
 import android.os.Bundle;
 import android.security.KeyChain;
 import android.security.KeyChainAliasCallback;
+import android.util.Log;
 import android.util.Pair;
 import android.view.ContextMenu;
 import android.view.ContextMenu.ContextMenuInfo;
@@ -171,6 +172,7 @@ public class ManageAccountActivity extends XmppActivity implements OnAccountUpda
             menu.findItem(R.id.mgmt_account_publish_avatar).setVisible(false);
         }
         menu.setHeaderTitle(this.selectedAccount.getJid().asBareJid().toEscapedString());
+
     }
 
     @Override
