@@ -708,7 +708,7 @@ public abstract class XmppActivity extends ActionBarActivity {
         Intent intent = new Intent(this, EditAccountActivity.class);
         intent.putExtra("jid", account.getJid().asBareJid().toEscapedString());
         intent.putExtra("init", init);
-        intent.putExtra("from", EditAccountActivity.From.Profile);
+        intent.putExtra("from", EditAccountActivity.From.Profile.toString());
         if (init) {
             intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_NO_ANIMATION);
         }

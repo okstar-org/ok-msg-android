@@ -136,7 +136,9 @@ public class ConversationMenuConfigurator {
         if (conversation.getMode() == Conversation.MODE_MULTI) {
             otr.setVisible(false);
         }
-        pgp.setVisible(Config.supportOpenPgp());
+        //隐藏pgp功能
+        pgp.setVisible(false);
+//        pgp.setVisible(Config.supportOpenPgp());
         none.setVisible(Config.supportUnencrypted() || conversation.getMode() == Conversation.MODE_MULTI);
         axolotl.setVisible(Config.supportOmemo());
         switch (conversation.getNextEncryption()) {

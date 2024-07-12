@@ -184,6 +184,8 @@ public final class Config {
 
     public static final String ISSUE_URL = "xmpp:support@conference.okstar.org.cn?join";
 
+    public static String USER_EMAIL_PHONE_INFO = "";
+
     //only allow secure tls chipers now
     public static final String[] ENABLED_CIPHERS = {
             "TLS_CHACHA20_POLY1305_SHA256",
