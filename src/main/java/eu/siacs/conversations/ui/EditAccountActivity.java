@@ -965,7 +965,9 @@ public class EditAccountActivity extends OmemoActivity implements OnAccountUpdat
             final String password = intent.getStringExtra("password");
             final String email = intent.getStringExtra("email");
 
-//            Log.d(Config.LOGTAG,"用户信息 :"+Config.USER_EMAIL_PHONE_INFO);
+            SharedPreferences sharedPreferences = getSharedPreferences(SP_NAME,MODE_PRIVATE);
+            Config.USER_EMAIL_PHONE_INFO = sharedPreferences.getString("account_info", "");
+            //Log.d(Config.LOGTAG,"用户信息 :"+Config.USER_EMAIL_PHONE_INFO);
 
             if (username != null) {
                 jidToEdit = Jid.ofEscaped(username, BuildConfig.MAGIC_CREATE_DOMAIN, null);
