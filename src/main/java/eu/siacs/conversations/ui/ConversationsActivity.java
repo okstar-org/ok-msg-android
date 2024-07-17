@@ -310,7 +310,7 @@ public class ConversationsActivity extends XmppActivity implements OnConversatio
             if (ExceptionHelper.checkForCrash(this)) return;
             if (offerToSetupDiallerIntegration()) return;
             if (offerToDownloadStickers()) return;
-            openBatteryOptimizationDialogIfNeeded();
+            //openBatteryOptimizationDialogIfNeeded();
 
             new showMemoryWarning(this).execute();
             showOutdatedVersionWarning();
