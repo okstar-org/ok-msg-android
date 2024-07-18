@@ -4,6 +4,8 @@ import static eu.siacs.conversations.ui.SettingsActivity.USE_INTERNAL_UPDATER;
 
 import android.graphics.drawable.AnimatedImageDrawable;
 import android.telephony.TelephonyManager;
+
+import eu.siacs.conversations.ui.settings.NewSettingsActivity;
 import eu.siacs.conversations.utils.Compatibility;
 import androidx.annotation.RequiresApi;
 import android.Manifest;
@@ -413,7 +415,7 @@ public abstract class XmppActivity extends ActionBarActivity {
                 createIssue();
                 break;
             case R.id.action_settings:
-                startActivity(new Intent(this, SettingsActivity.class));
+                startActivity(new Intent(this, NewSettingsActivity.class));
                 overridePendingTransition(R.animator.fade_in, R.animator.fade_out);
                 break;
             case R.id.action_accounts:
