@@ -415,7 +415,7 @@ public abstract class XmppActivity extends ActionBarActivity {
                 createIssue();
                 break;
             case R.id.action_settings:
-                startActivity(new Intent(this, NewSettingsActivity.class));
+                startActivity(new Intent(this, SettingsActivity.class));
                 overridePendingTransition(R.animator.fade_in, R.animator.fade_out);
                 break;
             case R.id.action_accounts:
