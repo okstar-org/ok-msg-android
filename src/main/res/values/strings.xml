@@ -1315,4 +1315,5 @@
     <string name="settings_restore_message_failure">Failed to restore settings: %s</string>
     <string name="download_stickers">Download Stickers?</string>
     <string name="would_you_download_stickers">Would you like to download some default sticker packs?</string>
+    <string name="user_ui_switch_night_mode">dark mode</string>
 </resources>
