@@ -561,7 +561,7 @@ public class MediaViewerActivity extends XmppActivity implements AudioManager.On
     }
 
     @Override
-    void onBackendConnected() {
+    protected void onBackendConnected() {
 
     }
 

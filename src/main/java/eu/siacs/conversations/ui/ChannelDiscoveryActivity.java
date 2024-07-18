@@ -70,7 +70,7 @@ public class ChannelDiscoveryActivity extends XmppActivity implements MenuItem.O
     }
 
     @Override
-    void onBackendConnected() {
+    protected void onBackendConnected() {
         if (pendingServices != null) {
             mucServices = new HashMap<>();
             for (int i = 0; i < pendingServices.length; i += 2) {

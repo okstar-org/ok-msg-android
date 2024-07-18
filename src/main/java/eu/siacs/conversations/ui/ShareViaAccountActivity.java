@@ -63,7 +63,7 @@ public class ShareViaAccountActivity extends XmppActivity {
     }
 
     @Override
-    void onBackendConnected() {
+    protected void onBackendConnected() {
         final int numAccounts = xmppConnectionService.getAccounts().size();
 
         if (numAccounts == 1) {

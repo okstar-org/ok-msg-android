@@ -126,7 +126,7 @@ public class MediaBrowserActivity extends XmppActivity implements OnMediaLoaded 
     }
 
     @Override
-    void onBackendConnected() {
+    protected void onBackendConnected() {
         final Intent intent = getIntent();
         if (mSavedInstanceAccount != null) {
             try {
