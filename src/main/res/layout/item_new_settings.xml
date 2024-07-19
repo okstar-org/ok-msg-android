@@ -1,0 +1,56 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="60dp"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:background="@color/primary_White">
+
+    <androidx.appcompat.widget.AppCompatTextView
+        android:id="@+id/tv_settings_content_first"
+        android:layout_width="match_parent"
+        android:layout_height="59dp"
+        android:gravity="center_vertical"
+        android:paddingStart="20dp"
+        android:textSize="16sp"
+        tools:text="TextView"
+        android:visibility="gone"
+        android:textColor="@color/primary_black"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        />
+
+    <androidx.appcompat.widget.AppCompatTextView
+          android:id="@+id/tv_settings_content_parent"
+          android:layout_width="wrap_content"
+          android:layout_height="wrap_content"
+          app:layout_constraintTop_toTopOf="parent"
+          app:layout_constraintStart_toStartOf="parent"
+          android:textSize="16sp"
+          android:textColor="@color/primary_black"
+          tools:text="TextView"
+          android:layout_marginStart="20dp"
+          android:layout_marginTop="8dp"
+          android:visibility="gone"/>
+
+    <androidx.appcompat.widget.AppCompatTextView
+        android:id="@+id/tv_settings_content_child"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:layout_constraintTop_toBottomOf="@id/tv_settings_content_parent"
+        app:layout_constraintStart_toStartOf="parent"
+        android:textSize="12sp"
+        android:textColor="@color/middlegrey"
+        tools:text="TextView"
+        android:layout_marginStart="20dp"
+        android:layout_marginTop="4dp"
+        android:visibility="gone"/>
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:background="@color/accent_light_grey"
+        app:layout_constraintBottom_toBottomOf="parent"
+        />
+
+</androidx.constraintlayout.widget.ConstraintLayout>

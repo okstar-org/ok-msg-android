@@ -66,7 +66,7 @@ public class ShareLocationActivity extends LocationActivity implements LocationL
     }
 
     @Override
-    void onBackendConnected() {
+    protected void onBackendConnected() {
 
     }
 

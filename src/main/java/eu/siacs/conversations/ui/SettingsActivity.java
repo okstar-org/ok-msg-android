@@ -154,7 +154,7 @@ public class SettingsActivity extends XmppActivity implements OnSharedPreference
     }
 
     @Override
-    void onBackendConnected() {
+    protected void onBackendConnected() {
         boolean diallerIntegrationPossible = false;
 
         if (Build.VERSION.SDK_INT >= 23) {

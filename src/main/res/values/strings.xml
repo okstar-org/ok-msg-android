@@ -28,7 +28,7 @@
     <string name="minute_ago">1 min ago</string>
     <string name="minutes_ago">%d mins ago</string>
     <plurals name="x_unread_conversations">
-      <item quantity="one">%d unread conversation</item>
+        <item quantity="one">%d unread conversation</item>
         <item quantity="other">%d unread conversations</item>
 
     </plurals>
@@ -965,7 +965,7 @@
     <string name="please_enter_password">Please enter the password for this account</string>
     <string name="unable_to_perform_this_action">Unable to perform this action</string>
     <string name="waiting_for_transfer">Waiting for transfer</string>
-    <string translatable="false" name="x_user_quote">%s:</string>
+    <string name="x_user_quote" translatable="false">%s:</string>
     <string name="me_quote">Me:</string>
     <string name="your_status">Your status</string>
     <string name="pref_use_invidious">Replace YouTube links with Invidious</string>
@@ -1302,7 +1302,8 @@
     <string name="choose_sticker_location">Choose sticker location</string>
     <string name="you_may_sometimes_have_to">You may sometimes have to force quit the app to get changes applied.</string>
     <string name="colors">Colors</string>
-    <string name="create_monocles_backup">This will create two backups. One is compatible to Monocles only, the second one is compatible with Conversations</string>#
+    <string name="create_monocles_backup">This will create two backups. One is compatible to Monocles only, the second one is compatible with Conversations</string>
+    #
     <string name="backup_started">The backup has been started. You will be notified after the process has finished</string>
     <string name="please_be_patient">Please be patient...</string>
     <string name="confirm_delete_attachment_summary">Do you want to skip confirmation if you delete a local file from a chats?</string>
@@ -1314,4 +1315,5 @@
     <string name="settings_restore_message_failure">Failed to restore settings: %s</string>
     <string name="download_stickers">Download Stickers?</string>
     <string name="would_you_download_stickers">Would you like to download some default sticker packs?</string>
+    <string name="user_ui_switch_night_mode">dark mode</string>
 </resources>

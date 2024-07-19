@@ -107,7 +107,7 @@ public class EnterNameActivity extends XmppActivity implements XmppConnectionSer
     }
 
     @Override
-    void onBackendConnected() {
+    protected void onBackendConnected() {
         this.account = extractAccount(getIntent());
         if (this.account != null) {
             checkSuggestPreviousNick();

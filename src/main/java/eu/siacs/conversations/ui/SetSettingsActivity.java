@@ -50,7 +50,7 @@ public class SetSettingsActivity extends XmppActivity implements XmppConnectionS
     }
 
     @Override
-    void onBackendConnected() {
+    protected void onBackendConnected() {
         this.account = AccountUtils.getFirst(xmppConnectionService);
         refreshUi();
     }

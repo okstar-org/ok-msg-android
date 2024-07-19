@@ -26,7 +26,7 @@ public class AboutActivity extends XmppActivity {
     }
 
     @Override
-    void onBackendConnected() {
+    protected void onBackendConnected() {
         showText();
     }
 

@@ -4,6 +4,8 @@ import static eu.siacs.conversations.ui.SettingsActivity.USE_INTERNAL_UPDATER;
 
 import android.graphics.drawable.AnimatedImageDrawable;
 import android.telephony.TelephonyManager;
+
+import eu.siacs.conversations.ui.settings.NewSettingsActivity;
 import eu.siacs.conversations.utils.Compatibility;
 import androidx.annotation.RequiresApi;
 import android.Manifest;
@@ -344,7 +346,7 @@ public abstract class XmppActivity extends ActionBarActivity {
         builder.create().show();
     }
 
-    abstract void onBackendConnected();
+    protected abstract void onBackendConnected();
 
     protected void registerListeners() {
         if (this instanceof XmppConnectionService.OnConversationUpdate) {

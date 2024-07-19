@@ -194,7 +194,7 @@ public class ConversationsActivity extends XmppActivity implements OnConversatio
     }
 
     @Override
-    void onBackendConnected() {
+    protected void onBackendConnected() {
         if (performRedirectIfNecessary(true)) {
             return;
         }
@@ -308,7 +308,7 @@ public class ConversationsActivity extends XmppActivity implements OnConversatio
             if (ExceptionHelper.checkForCrash(this)) return;
             if (offerToSetupDiallerIntegration()) return;
             if (offerToDownloadStickers()) return;
-            openBatteryOptimizationDialogIfNeeded();
+            //openBatteryOptimizationDialogIfNeeded();
 
             new showMemoryWarning(this).execute();
             showOutdatedVersionWarning();

@@ -89,7 +89,7 @@ public class MagicCreateActivity extends XmppActivity
     }
 
     @Override
-    void onBackendConnected() {
+    protected void onBackendConnected() {
 
     }
 

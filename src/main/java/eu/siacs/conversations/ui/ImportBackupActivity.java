@@ -108,7 +108,7 @@ public class ImportBackupActivity extends XmppActivity implements ServiceConnect
     }
 
     @Override
-    void onBackendConnected() {
+    protected void onBackendConnected() {
     }
 
     @Override

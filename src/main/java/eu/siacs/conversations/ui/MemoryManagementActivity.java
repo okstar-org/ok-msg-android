@@ -51,7 +51,7 @@ public class MemoryManagementActivity extends XmppActivity {
     }
 
     @Override
-    void onBackendConnected() {
+    protected void onBackendConnected() {
     }
 
     @Override

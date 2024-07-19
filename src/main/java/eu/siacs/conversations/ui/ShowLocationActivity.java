@@ -139,7 +139,7 @@ public class ShowLocationActivity extends LocationActivity implements LocationLi
     }
 
     @Override
-    void onBackendConnected() {
+    protected void onBackendConnected() {
 
     }
 

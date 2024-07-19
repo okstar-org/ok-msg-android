@@ -50,7 +50,7 @@ public class ChangePasswordActivity extends XmppActivity implements XmppConnecti
 
 
     @Override
-    void onBackendConnected() {
+    protected void onBackendConnected() {
         this.mAccount = extractAccount(getIntent());
         if (this.mAccount != null && (this.mAccount.isOptionSet(Account.OPTION_MAGIC_CREATE) || didUnlock)) {
             this.mCurrentPasswordLayout.setVisibility(View.GONE);
