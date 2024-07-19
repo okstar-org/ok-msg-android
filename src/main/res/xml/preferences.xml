@@ -9,7 +9,7 @@
 <!--        <intent-->
 <!--            android:action="android.intent.action.VIEW"-->
 <!--            android:targetClass="eu.siacs.conversations.ui.SettingsActivity"-->
-<!--            android:targetPackage="de.monocles.chat">-->
+<!--            android:targetPackage="org.okstar.okmsg">-->
 <!--            <extra-->
 <!--                android:name="page"-->
 <!--                android:value="userinterface" />-->
@@ -65,7 +65,7 @@
 <!--            <intent-->
 <!--                android:action="android.intent.action.VIEW"-->
 <!--                android:targetClass="eu.siacs.conversations.ui.SettingsActivity"-->
-<!--                android:targetPackage="de.monocles.chat">-->
+<!--                android:targetPackage="org.okstar.okmsg">-->
 <!--                <extra-->
 <!--                    android:name="page"-->
 <!--                    android:value="custom_theme" />-->
@@ -168,7 +168,7 @@
 <!--&lt;!&ndash;        <intent&ndash;&gt;-->
 <!--&lt;!&ndash;            android:action="android.intent.action.VIEW"&ndash;&gt;-->
 <!--&lt;!&ndash;            android:targetClass="eu.siacs.conversations.ui.SettingsActivity"&ndash;&gt;-->
-<!--&lt;!&ndash;            android:targetPackage="de.monocles.chat">&ndash;&gt;-->
+<!--&lt;!&ndash;            android:targetPackage="org.okstar.okmsg">&ndash;&gt;-->
 <!--&lt;!&ndash;            <extra&ndash;&gt;-->
 <!--&lt;!&ndash;                android:name="page"&ndash;&gt;-->
 <!--&lt;!&ndash;                android:value="notifications" />&ndash;&gt;-->
@@ -185,7 +185,7 @@
 <!--&lt;!&ndash;            <intent&ndash;&gt;-->
 <!--&lt;!&ndash;                android:action="android.intent.action.VIEW"&ndash;&gt;-->
 <!--&lt;!&ndash;                android:targetClass="eu.siacs.conversations.ui.SettingsActivity"&ndash;&gt;-->
-<!--&lt;!&ndash;                android:targetPackage="de.monocles.chat">&ndash;&gt;-->
+<!--&lt;!&ndash;                android:targetPackage="org.okstar.okmsg">&ndash;&gt;-->
 <!--&lt;!&ndash;                <extra&ndash;&gt;-->
 <!--&lt;!&ndash;                    android:name="page"&ndash;&gt;-->
 <!--&lt;!&ndash;                    android:value="quiet_hours" />&ndash;&gt;-->
@@ -262,7 +262,7 @@
 <!--&lt;!&ndash;        <intent&ndash;&gt;-->
 <!--&lt;!&ndash;            android:action="android.intent.action.VIEW"&ndash;&gt;-->
 <!--&lt;!&ndash;            android:targetClass="eu.siacs.conversations.ui.SettingsActivity"&ndash;&gt;-->
-<!--&lt;!&ndash;            android:targetPackage="de.monocles.chat">&ndash;&gt;-->
+<!--&lt;!&ndash;            android:targetPackage="org.okstar.okmsg">&ndash;&gt;-->
 <!--&lt;!&ndash;            <extra&ndash;&gt;-->
 <!--&lt;!&ndash;                android:name="page"&ndash;&gt;-->
 <!--&lt;!&ndash;                android:value="attachments" />&ndash;&gt;-->
@@ -341,7 +341,7 @@
 <!--&lt;!&ndash;        <intent&ndash;&gt;-->
 <!--&lt;!&ndash;            android:action="android.intent.action.VIEW"&ndash;&gt;-->
 <!--&lt;!&ndash;            android:targetClass="eu.siacs.conversations.ui.SettingsActivity"&ndash;&gt;-->
-<!--&lt;!&ndash;            android:targetPackage="de.monocles.chat">&ndash;&gt;-->
+<!--&lt;!&ndash;            android:targetPackage="org.okstar.okmsg">&ndash;&gt;-->
 <!--&lt;!&ndash;            <extra&ndash;&gt;-->
 <!--&lt;!&ndash;                android:name="page"&ndash;&gt;-->
 <!--&lt;!&ndash;                android:value="presence" />&ndash;&gt;-->
@@ -378,7 +378,7 @@
 <!--&lt;!&ndash;        <intent&ndash;&gt;-->
 <!--&lt;!&ndash;            android:action="android.intent.action.VIEW"&ndash;&gt;-->
 <!--&lt;!&ndash;            android:targetClass="eu.siacs.conversations.ui.SettingsActivity"&ndash;&gt;-->
-<!--&lt;!&ndash;            android:targetPackage="de.monocles.chat">&ndash;&gt;-->
+<!--&lt;!&ndash;            android:targetPackage="org.okstar.okmsg">&ndash;&gt;-->
 <!--&lt;!&ndash;            <extra&ndash;&gt;-->
 <!--&lt;!&ndash;                android:name="page"&ndash;&gt;-->
 <!--&lt;!&ndash;                android:value="security" />&ndash;&gt;-->
@@ -516,7 +516,7 @@
 <!--&lt;!&ndash;        <intent&ndash;&gt;-->
 <!--&lt;!&ndash;            android:action="android.intent.action.VIEW"&ndash;&gt;-->
 <!--&lt;!&ndash;            android:targetClass="eu.siacs.conversations.ui.SettingsActivity"&ndash;&gt;-->
-<!--&lt;!&ndash;            android:targetPackage="de.monocles.chat">&ndash;&gt;-->
+<!--&lt;!&ndash;            android:targetPackage="org.okstar.okmsg">&ndash;&gt;-->
 <!--&lt;!&ndash;            <extra&ndash;&gt;-->
 <!--&lt;!&ndash;                android:name="page"&ndash;&gt;-->
 <!--&lt;!&ndash;                android:value="expert" />&ndash;&gt;-->
