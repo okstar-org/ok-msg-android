@@ -3,9 +3,8 @@
 
     <item android:drawable="@color/accent_light_monocles" />
 
-    <item>
-        <bitmap
-            android:gravity="center"
-            android:src="@drawable/logo_800" />
+    <item android:top="200dp" android:bottom="200dp"
+         android:left="60dp" android:right="60dp" android:drawable="@drawable/ic_logo_launcher">
+
     </item>
 </layer-list>
