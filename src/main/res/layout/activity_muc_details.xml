@@ -68,8 +68,8 @@
 
                                         <com.makeramen.roundedimageview.RoundedImageView
                                             android:id="@+id/details_muc_avatar"
-                                            android:layout_width="@dimen/avatar_on_details_screen_size"
-                                            android:layout_height="@dimen/avatar_on_details_screen_size"
+                                            android:layout_width="60dp"
+                                            android:layout_height="60dp"
                                             android:layout_marginEnd="@dimen/avatar_item_distance"
                                             android:layout_marginRight="@dimen/avatar_item_distance"
                                             android:padding="1dp"
@@ -83,7 +83,7 @@
 
                                             <TextView
                                                 android:id="@+id/muc_title"
-                                                android:layout_width="wrap_content"
+                                                android:layout_width="match_parent"
                                                 android:layout_height="wrap_content"
                                                 android:textAppearance="@style/TextAppearance.Conversations.Title" />
 
@@ -106,13 +106,15 @@
                                                 android:text="@string/account_settings_example_jabber_id"
                                                 android:textAppearance="@style/TextAppearance.Conversations.Body1"
                                                 android:textIsSelectable="true"
-                                                android:visibility="gone" />
+                                                android:visibility="gone"
+                                                tools:visibility="visible"
+                                                tools:text="hhhahah"/>
                                         </LinearLayout>
                                     </LinearLayout>
 
                                     <TextView
                                         android:id="@+id/muc_subject"
-                                        android:layout_width="wrap_content"
+                                        android:layout_width="match_parent"
                                         android:layout_height="wrap_content"
                                         android:layout_marginTop="@dimen/list_padding"
                                         android:autoLink="web"
@@ -125,7 +127,7 @@
                                         android:layout_marginBottom="4dp"
                                         android:layout_marginLeft="-2dp"
                                         android:layout_marginTop="4dp"
-                                        android:orientation="horizontal"></com.wefika.flowlayout.FlowLayout>
+                                        android:orientation="horizontal"/>
 
 
                                 </LinearLayout>
@@ -381,14 +383,14 @@
                                     android:layout_height="wrap_content"
                                     android:layout_centerVertical="true"
                                     android:layout_toEndOf="@+id/your_photo"
-                                    android:layout_toRightOf="@+id/your_photo"
+                                    android:layout_toStartOf="@id/edit_nick_button"
                                     android:orientation="vertical"
                                     android:paddingStart="@dimen/avatar_item_distance"
                                     android:paddingLeft="@dimen/avatar_item_distance">
 
                                     <TextView
                                         android:id="@+id/muc_your_nick"
-                                        android:layout_width="wrap_content"
+                                        android:layout_width="match_parent"
                                         android:layout_height="wrap_content"
                                         android:singleLine="true"
                                         android:textAppearance="@style/TextAppearance.Conversations.Subhead" />
@@ -406,7 +408,6 @@
                                     android:layout_width="wrap_content"
                                     android:layout_height="wrap_content"
                                     android:layout_alignParentEnd="true"
-                                    android:layout_alignParentRight="true"
                                     android:layout_centerVertical="true"
                                     android:alpha="?attr/icon_alpha"
                                     android:background="?attr/selectableItemBackgroundBorderless"
