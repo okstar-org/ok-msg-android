@@ -1,5 +1,7 @@
 package eu.siacs.conversations.ui.adapter;
 
+import android.text.TextUtils;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -49,11 +51,15 @@ public class AccountAdapter extends ArrayAdapter<Account> {
         } else {
             viewHolder = (ViewHolder) view.getTag();
         }
-        if (Config.DOMAIN_LOCK != null) {
-            viewHolder.binding.accountJid.setText(account.getJid().getLocal());
-        } else {
+
+        if(account.getDisplayName()!=null && !TextUtils.isEmpty(account.getDisplayName().trim())) {
+            viewHolder.binding.accountJid.setText(account.getDisplayName());
+        }else if(account.getUsername() !=null && !TextUtils.isEmpty(account.getUsername().trim())){
+            viewHolder.binding.accountJid.setText(account.getUsername());
+        }else {
             viewHolder.binding.accountJid.setText(account.getJid().asBareJid().toEscapedString());
         }
+
         AvatarWorkerTask.loadAvatar(account, viewHolder.binding.accountImage, R.dimen.avatar);
         viewHolder.binding.accountStatus.setText(getContext().getString(account.getStatus().getReadableId()));
         switch (account.getStatus()) {
