@@ -271,7 +271,7 @@ public class WebxdcPage implements ConversationPage {
         binding.webview.setNetworkAvailable(false); // this does not block network but sets `window.navigator.isOnline` in js land
         binding.webview.addJavascriptInterface(new InternalJSApi(), "InternalJSApi");
 
-        binding.webview.loadUrl(baseUrl + "/index.html");
+        binding.webview.loadUrl(baseUrl + "/html/index.html");
 
         binding.actions.setAdapter(new ArrayAdapter<String>(context, R.layout.simple_list_item, new String[]{"Add to Home Screen", "Close"}) {
             @Override

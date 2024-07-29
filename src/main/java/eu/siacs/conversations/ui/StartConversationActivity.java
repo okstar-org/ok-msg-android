@@ -355,9 +355,9 @@ public class StartConversationActivity extends XmppActivity implements XmppConne
                 prefilled = null;
             }
             switch (actionItem.getId()) {
-                case R.id.discover_public_channels:
-                    startActivity(new Intent(this, ChannelDiscoveryActivity.class));
-                    break;
+//                case R.id.discover_public_channels:
+//                    startActivity(new Intent(this, ChannelDiscoveryActivity.class));
+//                    break;
                 case R.id.create_private_group_chat:
                     showCreatePrivateGroupChatDialog();
                     break;

@@ -600,6 +600,14 @@
             android:autoRemoveFromRecents="true"
             android:launchMode="singleInstance"
             android:supportsPictureInPicture="true" />
+
+        <activity android:name=".ui.WebActivity"
+            android:exported="true"
+            android:launchMode="singleTask"/>
+
+        <activity android:name=".ui.WebViewActivity"
+            android:exported="true"
+            android:launchMode="singleTask"/>
     </application>
 
 </manifest>
