@@ -23,20 +23,15 @@ import android.preference.Preference;
 import android.preference.PreferenceCategory;
 import android.preference.PreferenceManager;
 import android.preference.PreferenceScreen;
-import android.text.TextUtils;
 import android.util.Log;
 import static eu.siacs.conversations.utils.CameraUtils.showCameraChooser;
 
-import org.bouncycastle.util.Store;
 import org.okstar.okmsg.DownloadDefaultStickers;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AlertDialog;
 import androidx.core.content.ContextCompat;
 
 
-import eu.siacs.conversations.store.StoreDataInfo;
-import eu.siacs.conversations.store.StoreDataKey;
-import eu.siacs.conversations.store.StoreManager;
 import eu.siacs.conversations.utils.CameraUtils;
 import java.io.File;
 import java.net.URI;
@@ -150,13 +145,6 @@ public class SettingsActivity extends XmppActivity implements OnSharedPreference
         getWindow().getDecorView().setBackgroundColor(StyledAttributes.getColor(this, R.attr.color_background_secondary));
         setSupportActionBar(findViewById(R.id.toolbar));
         configureActionBar(getSupportActionBar());
-
-        //todo 测试用,记得删除
-        String data = StoreDataInfo.getData();
-        if(TextUtils.isEmpty(data)) {
-            StoreDataInfo.putData("hello");
-        }
-        Log.d(Config.LOGTAG,"data :"+data );
 
     }
 

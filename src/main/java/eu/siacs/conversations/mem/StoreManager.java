@@ -1,10 +1,8 @@
-package eu.siacs.conversations.store;
+package eu.siacs.conversations.mem;
 
 import android.os.Parcelable;
 import android.util.Log;
-
 import com.tencent.mmkv.MMKV;
-
 import eu.siacs.conversations.Config;
 
 public class StoreManager {
