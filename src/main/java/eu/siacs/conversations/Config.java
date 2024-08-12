@@ -4,6 +4,8 @@ import android.graphics.Bitmap;
 import android.net.Uri;
 import android.util.Log;
 
+import org.okstar.okmsg.OkMsgApplication;
+
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
@@ -259,4 +261,7 @@ public final class Config {
     public static final String SUPPORT_BOOKMARK_DELETED = "true";
     public static final String SUPPORT_CONFERENCE_JID = "support@conference."+ BuildConfig.DOMAIN_LOCK;
     public static final Jid BUG_REPORTS = Jid.of(SUPPORT_CONFERENCE_JID);
+
+    public static final OkMsgApplication application = OkMsgApplication.okMsgApplication;
+
 }

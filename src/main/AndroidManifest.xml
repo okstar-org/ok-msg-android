@@ -111,7 +111,7 @@
     </queries>
 
     <application
-        android:name="androidx.multidex.MultiDexApplication"
+        android:name="org.okstar.okmsg.OkMsgApplication"
         android:allowBackup="true"
         android:appCategory="social"
         android:fullBackupContent="@xml/backup_content"

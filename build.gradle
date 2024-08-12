@@ -128,6 +128,7 @@ dependencies {
     implementation 'com.caverock:androidsvg-aar:1.4'
     implementation 'org.tomlj:tomlj:1.1.0'
     implementation 'org.jxmpp:jxmpp-stringprep-libidn:1.0.3'
+    implementation 'com.tencent:mmkv:1.2.16'
 }
 
 ext {
