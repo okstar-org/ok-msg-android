@@ -1,0 +1,43 @@
+package org.okstar.okmsg.store.disk.files;
+
+import android.util.Log;
+
+import org.okstar.okmsg.store.disk.cache.CacheManager;
+
+import java.io.File;
+
+import eu.siacs.conversations.Config;
+
+public class ImageFileManager extends FileManager{
+
+    // 直接初始化一个实例对象
+    private static final ImageFileManager instance = new ImageFileManager();
+
+    // 公共访问方法
+    public static ImageFileManager getInstance() {
+        return instance;
+    }
+
+    // 私有构造函数，防止外部实例化
+    private ImageFileManager() {
+       super();
+        Log.d(Config.LOGTAG,"imagesFile :"+childFile.getAbsolutePath());
+    }
+
+    @Override
+    protected String createFile() {
+        return "/images";
+    }
+
+    @Override
+    public void saveFile(File file) {
+
+    }
+
+    @Override
+    public void deleteFile(File file) {
+
+    }
+
+
+}

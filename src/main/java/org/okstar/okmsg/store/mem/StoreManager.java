@@ -1,4 +1,4 @@
-package eu.siacs.conversations.mem;
+package org.okstar.okmsg.store.mem;
 
 import android.os.Parcelable;
 import android.util.Log;

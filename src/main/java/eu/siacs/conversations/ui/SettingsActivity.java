@@ -146,6 +146,7 @@ public class SettingsActivity extends XmppActivity implements OnSharedPreference
         setSupportActionBar(findViewById(R.id.toolbar));
         configureActionBar(getSupportActionBar());
 
+
     }
 
     @Override
