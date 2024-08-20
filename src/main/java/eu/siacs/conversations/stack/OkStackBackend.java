@@ -58,11 +58,15 @@ public class OkStackBackend {
 
     public Res<AccountInfo> getJid(String account) {
         try {
+            // Expected URL scheme 'http' or 'https'
+            if (!baseUrl.startsWith("http://") && !baseUrl.startsWith("https://")){
+                baseUrl = "http://" + baseUrl;
+            }
             String url = baseUrl + "/api/open/passport/account/" + account;
             String json = HttpConnectionManager.getJSON(HttpUrl.get(url));
             return new Gson().fromJson(json, new TypeToken<Res<AccountInfo>>() {
             }.getType());
-        } catch (IOException e) {
+        } catch (Exception e) {
             Log.e(Config.LOGTAG, e.getMessage(), e);
             return null;
         }
