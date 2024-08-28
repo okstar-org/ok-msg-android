@@ -96,68 +96,74 @@ public class ConversationMenuConfigurator {
         menu.findItem(R.id.attach_location).setVisible(locationAvailable);
     }
 
+    /**
+     * 加密消息  暂时关闭
+     * @param conversation
+     * @param menu
+     * @param activity
+     */
     public static void configureEncryptionMenu(@NonNull Conversation conversation, Menu menu, final XmppActivity activity) {
-        final MenuItem menuSecure = menu.findItem(R.id.action_security);
-        final boolean participating = conversation.getMode() == Conversational.MODE_SINGLE || conversation.getMucOptions().participating();
-        if (!participating) {
-            menuSecure.setVisible(false);
-            return;
-        }
-        final MenuItem none = menu.findItem(R.id.encryption_choice_none);
-        final MenuItem otr = menu.findItem(R.id.encryption_choice_otr);
-        final MenuItem pgp = menu.findItem(R.id.encryption_choice_pgp);
-        final MenuItem axolotl = menu.findItem(R.id.encryption_choice_axolotl);
-
-        final int next = conversation.getNextEncryption();
-
-        boolean visible;
-        if (OmemoSetting.isAlways() || OmemoSetting.isNever()) {
-            visible = false;
-        } else if (conversation.getMode() == Conversation.MODE_MULTI) {
-            if (next == Message.ENCRYPTION_NONE && !conversation.isPrivateAndNonAnonymous() && !conversation.getBooleanAttribute(Conversation.ATTRIBUTE_FORMERLY_PRIVATE_NON_ANONYMOUS, false)) {
-                visible = false;
-            } else {
-                visible = (Config.supportOpenPgp() || Config.supportOmemo()) && Config.multipleEncryptionChoices();
-            }
-        } else {
-            visible = Config.multipleEncryptionChoices();
-        }
-
-        menuSecure.setVisible(visible);
-
-        if (!visible) {
-            return;
-        }
-
-        if (conversation.getNextEncryption() != Message.ENCRYPTION_NONE) {
-            menuSecure.setIcon(R.drawable.ic_lock_white_24dp);
-        }
-        otr.setVisible(Config.supportOtr() && activity.enableOTR());
-        if (conversation.getMode() == Conversation.MODE_MULTI) {
-            otr.setVisible(false);
-        }
-        //隐藏pgp功能
-        pgp.setVisible(false);
-//        pgp.setVisible(Config.supportOpenPgp());
-        none.setVisible(Config.supportUnencrypted() || conversation.getMode() == Conversation.MODE_MULTI);
-        axolotl.setVisible(Config.supportOmemo());
-        switch (conversation.getNextEncryption()) {
-            case Message.ENCRYPTION_OTR:
-                menuSecure.setTitle(R.string.encryption_choice_otr);
-                otr.setChecked(true);
-                break;
-            case Message.ENCRYPTION_PGP:
-                menuSecure.setTitle(R.string.encrypted_with_openpgp);
-                pgp.setChecked(true);
-                break;
-            case Message.ENCRYPTION_AXOLOTL:
-                menuSecure.setTitle(R.string.encrypted_with_omemo);
-                axolotl.setChecked(true);
-                break;
-            default:
-                menuSecure.setTitle(R.string.not_encrypted);
-                none.setChecked(true);
-                break;
-        }
+        //final MenuItem menuSecure = menu.findItem(R.id.action_security);
+//        final boolean participating = conversation.getMode() == Conversational.MODE_SINGLE || conversation.getMucOptions().participating();
+//        if (!participating) {
+//            menuSecure.setVisible(false);
+//            return;
+//        }
+//        final MenuItem none = menu.findItem(R.id.encryption_choice_none);
+//        final MenuItem otr = menu.findItem(R.id.encryption_choice_otr);
+//        final MenuItem pgp = menu.findItem(R.id.encryption_choice_pgp);
+//        final MenuItem axolotl = menu.findItem(R.id.encryption_choice_axolotl);
+//
+//        final int next = conversation.getNextEncryption();
+//
+//        boolean visible;
+//        if (OmemoSetting.isAlways() || OmemoSetting.isNever()) {
+//            visible = false;
+//        } else if (conversation.getMode() == Conversation.MODE_MULTI) {
+//            if (next == Message.ENCRYPTION_NONE && !conversation.isPrivateAndNonAnonymous() && !conversation.getBooleanAttribute(Conversation.ATTRIBUTE_FORMERLY_PRIVATE_NON_ANONYMOUS, false)) {
+//                visible = false;
+//            } else {
+//                visible = (Config.supportOpenPgp() || Config.supportOmemo()) && Config.multipleEncryptionChoices();
+//            }
+//        } else {
+//            visible = Config.multipleEncryptionChoices();
+//        }
+//
+//        menuSecure.setVisible(visible);
+//
+//        if (!visible) {
+//            return;
+//        }
+//
+//        if (conversation.getNextEncryption() != Message.ENCRYPTION_NONE) {
+//            menuSecure.setIcon(R.drawable.ic_lock_white_24dp);
+//        }
+//        otr.setVisible(Config.supportOtr() && activity.enableOTR());
+//        if (conversation.getMode() == Conversation.MODE_MULTI) {
+//            otr.setVisible(false);
+//        }
+//        //隐藏pgp功能
+//        pgp.setVisible(false);
+////        pgp.setVisible(Config.supportOpenPgp());
+//        none.setVisible(Config.supportUnencrypted() || conversation.getMode() == Conversation.MODE_MULTI);
+//        axolotl.setVisible(Config.supportOmemo());
+//        switch (conversation.getNextEncryption()) {
+//            case Message.ENCRYPTION_OTR:
+//                menuSecure.setTitle(R.string.encryption_choice_otr);
+//                otr.setChecked(true);
+//                break;
+//            case Message.ENCRYPTION_PGP:
+//                menuSecure.setTitle(R.string.encrypted_with_openpgp);
+//                pgp.setChecked(true);
+//                break;
+//            case Message.ENCRYPTION_AXOLOTL:
+//                menuSecure.setTitle(R.string.encrypted_with_omemo);
+//                axolotl.setChecked(true);
+//                break;
+//            default:
+//                menuSecure.setTitle(R.string.not_encrypted);
+//                none.setChecked(true);
+//                break;
+//        }
     }
 }

@@ -777,7 +777,7 @@ public class ConversationsActivity extends XmppActivity implements OnConversatio
                 try {
                     fragmentTransaction.commit();
                 } catch (IllegalStateException e) {
-                    Log.w(Config.LOGTAG, "sate loss while opening conversation", e);
+                    Log.e(Config.LOGTAG, "sate loss while opening conversation", e);
                     //allowing state loss is probably fine since view intents et all are already stored and a click can probably be 'ignored'
                     return;
                 }

@@ -766,7 +766,8 @@ public abstract class XmppActivity extends ActionBarActivity {
                     xmppConnectionService.databaseBackend.updateAccount(account);
                     xmppConnectionService.sendPresence(account);
                     if (conversation != null) {
-                        conversation.setNextEncryption(Message.ENCRYPTION_PGP);
+                        //conversation.setNextEncryption(Message.ENCRYPTION_PGP);
+                        conversation.setNextEncryption(Message.ENCRYPTION_NONE);
                         xmppConnectionService.updateConversation(conversation);
                         refreshUi();
                     }
