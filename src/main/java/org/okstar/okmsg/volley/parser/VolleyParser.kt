@@ -1,4 +1,4 @@
-package eu.siacs.conversations.volley.parser
+package org.okstar.okmsg.volley.parser
 
 import kotlinx.serialization.DeserializationStrategy
 import kotlinx.serialization.json.Json

@@ -1,4 +1,4 @@
-package eu.siacs.conversations.volley.bean
+package org.okstar.okmsg.volley.bean
 
 import kotlinx.serialization.Serializable
 
@@ -25,25 +25,25 @@ import kotlinx.serialization.Serializable
  */
 @Serializable
 data class LoginInfo(
-    val username:String = "",
-    val tokenType:String = "",
-    val accessToken:String = "",
-    val expiresIn:Int = 0,
-    val refreshToken:String = "",
-    val refreshExpiresIn:Int = 0,
-    val session_state: String = ""
+    val username:String? = "",
+    val tokenType:String? = "",
+    val accessToken:String? = "",
+    val expiresIn:Int? = 0,
+    val refreshToken:String? = "",
+    val refreshExpiresIn:Int? = 0,
+    val session_state: String? = ""
 )
 @Serializable
 data class LoginInfoExtra(
-    val additionalProp1:String = "",
-    val additionalProp2:String = "",
-    val additionalProp3:String = ""
+    val additionalProp1:String? = "",
+    val additionalProp2:String? = "",
+    val additionalProp3:String? = ""
 )
 @Serializable
 data class LoginResponse(
-    val takes:Int = 0,
-    val code: Int = 0,
-    val msg: String = "",
+    val takes:Int? = 0,
+    val code: Int? = 0,
+    val msg: String? = "",
     val data: LoginInfo? = null,
     val extra: LoginInfoExtra? = null
 )

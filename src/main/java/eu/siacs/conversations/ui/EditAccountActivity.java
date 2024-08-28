@@ -102,9 +102,9 @@ import eu.siacs.conversations.utils.StringUtils;
 import eu.siacs.conversations.utils.TorServiceUtils;
 import eu.siacs.conversations.utils.UIHelper;
 import eu.siacs.conversations.utils.XmppUri;
-import eu.siacs.conversations.volley.bean.LoginInfo;
-import eu.siacs.conversations.volley.bean.LoginInfoExtra;
-import eu.siacs.conversations.volley.request.VolleyUtil;
+import org.okstar.okmsg.volley.bean.LoginInfo;
+import org.okstar.okmsg.volley.bean.LoginInfoExtra;
+import org.okstar.okmsg.volley.request.VolleyUtil;
 import eu.siacs.conversations.xml.Element;
 import eu.siacs.conversations.xmpp.Jid;
 import eu.siacs.conversations.xmpp.OnKeyStatusUpdated;
@@ -322,13 +322,23 @@ public class EditAccountActivity extends OmemoActivity implements OnAccountUpdat
             return;
         }
 
+        binding.loadingProgressbar.setVisibility(View.VISIBLE);
 
         String hostName = selectedState.getStackUrl();
 
         VolleyUtil.INSTANCE.doLogin(hostName, username, password, new Function4<LoginInfo, LoginInfoExtra, Integer, String, Unit>() {
             @Override
             public Unit invoke(LoginInfo loginInfo, LoginInfoExtra loginInfoExtra, Integer integer, String s) {
-                Toast.makeText(EditAccountActivity.this,"登录成功",Toast.LENGTH_SHORT).show();
+                if(integer != 0){
+                    Log.w(Config.LOGTAG, "用户平台登录失败，错误信息：" + s);
+
+                    binding.loadingProgressbar.setVisibility(View.GONE);
+                    return null;
+                }
+                Log.w(Config.LOGTAG, "用户平台登录成功...");
+                String imUserName = loginInfo.getUsername();
+                loginInfo.getAccessToken();
+                doLogin(imUserName,password);
                 return null;
             }
         });
@@ -340,6 +350,7 @@ public class EditAccountActivity extends OmemoActivity implements OnAccountUpdat
         //获取选择的服务
         if (selectedState == null) {
             Log.w(Config.LOGTAG, "Not select provider");
+            binding.loadingProgressbar.setVisibility(View.GONE);
             return;
         }
 
@@ -368,6 +379,8 @@ public class EditAccountActivity extends OmemoActivity implements OnAccountUpdat
             if (!xmppConnectionService.updateAccount(mAccount)) {
                 ToastCompat.makeText(EditAccountActivity.this, R.string.unable_to_update_account, ToastCompat.LENGTH_SHORT).show();
             }
+
+            binding.loadingProgressbar.setVisibility(View.GONE);
             return;
         }
         final boolean registerNewAccount = false;
@@ -393,10 +406,13 @@ public class EditAccountActivity extends OmemoActivity implements OnAccountUpdat
             } else {
                 TorServiceUtils.downloadOrbot(EditAccountActivity.this, REQUEST_ORBOT);
             }
+
+            binding.loadingProgressbar.setVisibility(View.GONE);
             return;
         }
 
         if (startI2P) {
+            binding.loadingProgressbar.setVisibility(View.GONE);
             return; // just exit
         }
 
@@ -405,6 +421,7 @@ public class EditAccountActivity extends OmemoActivity implements OnAccountUpdat
             if (!xmppConnectionService.updateAccount(mAccount)) {
                 ToastCompat.makeText(EditAccountActivity.this, R.string.unable_to_update_account, ToastCompat.LENGTH_SHORT).show();
             }
+            binding.loadingProgressbar.setVisibility(View.GONE);
             return;
         }
         final boolean openRegistrationUrl = registerNewAccount && !accountInfoEdited && mAccount != null && mAccount.getStatus() == Account.State.REGISTRATION_WEB;
@@ -412,6 +429,7 @@ public class EditAccountActivity extends OmemoActivity implements OnAccountUpdat
         final boolean redirectionWorthyStatus = openPaymentUrl || openRegistrationUrl;
         final HttpUrl url = connection != null && redirectionWorthyStatus ? connection.getRedirectionUrl() : null;
         if (url != null && !wasDisabled) {
+            binding.loadingProgressbar.setVisibility(View.GONE);
             try {
                 CustomTab.openTab(EditAccountActivity.this, Uri.parse(url.toString()), isDarkTheme());
                 return;
@@ -510,6 +528,8 @@ public class EditAccountActivity extends OmemoActivity implements OnAccountUpdat
             mAccount.setOption(Account.OPTION_REGISTER, registerNewAccount);
             if (!xmppConnectionService.updateAccount(mAccount)) {
                 ToastCompat.makeText(EditAccountActivity.this, R.string.unable_to_update_account, ToastCompat.LENGTH_SHORT).show();
+
+                binding.loadingProgressbar.setVisibility(View.GONE);
                 return;
             }
         } else {
@@ -517,6 +537,8 @@ public class EditAccountActivity extends OmemoActivity implements OnAccountUpdat
                 binding.accountJidLayout.setError(getString(R.string.account_already_exists));
                 removeErrorsOnAllBut(binding.accountJidLayout);
                 binding.accountJid.requestFocus();
+
+                binding.loadingProgressbar.setVisibility(View.GONE);
                 return;
             }
             mAccount = new Account(jid.asBareJid(), password);
@@ -540,7 +562,7 @@ public class EditAccountActivity extends OmemoActivity implements OnAccountUpdat
 //            updateAccountInformation(true);
         }
 
-
+        binding.loadingProgressbar.setVisibility(View.GONE);
     }
 
     private void deleteAccountAndReturnIfNecessary() {
