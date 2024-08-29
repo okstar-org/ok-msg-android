@@ -47,6 +47,8 @@ import android.app.AlertDialog;
 import android.graphics.Canvas;
 import android.graphics.Paint;
 import android.widget.Toast;
+
+import androidx.core.content.ContextCompat;
 import androidx.recyclerview.widget.ItemTouchHelper;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -299,6 +301,7 @@ public class ConversationsOverviewFragment extends XmppFragment {
         this.mSwipeEscapeVelocity = getResources().getDimension(R.dimen.swipe_escape_velocity);
         this.binding = DataBindingUtil.inflate(inflater, R.layout.fragment_conversations_overview, container, false);
         this.binding.fab.setOnClickListener((view) -> StartConversationActivity.launch(getActivity()));
+        this.binding.web.setOnClickListener((view) -> WebViewActivity.launch(getActivity()));
 
         this.conversationsAdapter = new ConversationAdapter(this.activity, this.conversations);
         if (this.conversations.size() > 0) {

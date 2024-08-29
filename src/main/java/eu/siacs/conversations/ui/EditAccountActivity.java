@@ -102,6 +102,9 @@ import eu.siacs.conversations.utils.StringUtils;
 import eu.siacs.conversations.utils.TorServiceUtils;
 import eu.siacs.conversations.utils.UIHelper;
 import eu.siacs.conversations.utils.XmppUri;
+import org.okstar.okmsg.volley.bean.LoginInfo;
+import org.okstar.okmsg.volley.bean.LoginInfoExtra;
+import org.okstar.okmsg.volley.request.VolleyUtil;
 import eu.siacs.conversations.xml.Element;
 import eu.siacs.conversations.xmpp.Jid;
 import eu.siacs.conversations.xmpp.OnKeyStatusUpdated;
@@ -110,8 +113,9 @@ import eu.siacs.conversations.xmpp.XmppConnection;
 import eu.siacs.conversations.xmpp.XmppConnection.Features;
 import eu.siacs.conversations.xmpp.forms.Data;
 import eu.siacs.conversations.xmpp.pep.Avatar;
+import kotlin.Unit;
+import kotlin.jvm.functions.Function4;
 import me.drakeet.support.toast.ToastCompat;
-import okhttp3.Connection;
 import okhttp3.HttpUrl;
 
 public class EditAccountActivity extends OmemoActivity implements OnAccountUpdate, OnUpdateBlocklist,
@@ -198,41 +202,53 @@ public class EditAccountActivity extends OmemoActivity implements OnAccountUpdat
             final String accountJidText = binding.accountJid.getText().toString();
             final String password = binding.accountPassword.getText().toString();
 
-            Handler handler = new Handler(Looper.getMainLooper()) {
-                @Override
-                public void handleMessage(@NonNull Message msg) {
-                    super.handleMessage(msg);
+//            Handler handler = new Handler(Looper.getMainLooper()) {
+//                @Override
+//                public void handleMessage(@NonNull Message msg) {
+//                    super.handleMessage(msg);
+//
+//                    Res<AccountInfo> res = (Res<AccountInfo>) msg.obj;
+//                    if (res == null) {
+//                        ToastCompat.makeText(EditAccountActivity.this, "服务器繁忙或者网络未连接！", ToastCompat.LENGTH_SHORT).show();
+//                        return;
+//                    }
+//                    if (res.getCode() != 0) {
+//                        binding.accountJidLayout.setError(res.getMsg());
+//                        return;
+//                    }
+//
+//                    SharedPreferences sharedPreferences = getSharedPreferences(SP_NAME,MODE_PRIVATE);
+//                    SharedPreferences.Editor editor = sharedPreferences.edit();
+//                    editor.putString("account_info",accountJidText);
+//                    editor.apply();
+//
+//                    String userInfo = sharedPreferences.getString("account_info", "");
+//                    Config.USER_EMAIL_PHONE_INFO = userInfo;
+//
+//                    AccountInfo info = res.getData();
+//                    doLogin(info.getUsername(), password);
+//                    refreshUiReal();
+//                }
+//            };
 
-                    Res<AccountInfo> res = (Res<AccountInfo>) msg.obj;
-                    if (res == null) {
-                        ToastCompat.makeText(EditAccountActivity.this, "服务器繁忙或者网络未连接！", ToastCompat.LENGTH_SHORT).show();
-                        return;
-                    }
-                    if (res.getCode() != 0) {
-                        binding.accountJidLayout.setError(res.getMsg());
-                        return;
-                    }
+            SharedPreferences sharedPreferences = getSharedPreferences(SP_NAME,MODE_PRIVATE);
+            SharedPreferences.Editor editor = sharedPreferences.edit();
+            editor.putString("account_info",accountJidText);
+            editor.apply();
 
-                    SharedPreferences sharedPreferences = getSharedPreferences(SP_NAME,MODE_PRIVATE);
-                    SharedPreferences.Editor editor = sharedPreferences.edit();
-                    editor.putString("account_info",accountJidText);
-                    editor.apply();
+            String userInfo = sharedPreferences.getString("account_info", "");
+            Config.USER_EMAIL_PHONE_INFO = userInfo;
 
-                    String userInfo = sharedPreferences.getString("account_info", "");
-                    Config.USER_EMAIL_PHONE_INFO = userInfo;
+            doLoginRequest(userInfo, password);
 
-                    AccountInfo info = res.getData();
-                    doLogin(info.getUsername(), password);
-                    refreshUiReal();
-                }
-            };
+            refreshUiReal();
 
-            Runnable runnable = () -> {
-                Message message = new Message();
-                message.obj = OkStackBackend.Get(selectedState).getJid(accountJidText);
-                handler.sendMessage(message);
-            };
-            StackConfig.executorService.execute(runnable);
+//            Runnable runnable = () -> {
+//                Message message = new Message();
+//                message.obj = OkStackBackend.Get(selectedState).getJid(accountJidText);
+//                handler.sendMessage(message);
+//            };
+//            StackConfig.executorService.execute(runnable);
         }
     };
 
@@ -299,12 +315,42 @@ public class EditAccountActivity extends OmemoActivity implements OnAccountUpdat
         super.onBackPressed();
     }
 
+    private void doLoginRequest(String username, String password){
+        //获取选择的服务
+        if (selectedState == null) {
+            Log.w(Config.LOGTAG, "Not select provider");
+            return;
+        }
+
+        binding.loadingProgressbar.setVisibility(View.VISIBLE);
+
+        String hostName = selectedState.getStackUrl();
+
+        VolleyUtil.INSTANCE.doLogin(hostName, username, password, new Function4<LoginInfo, LoginInfoExtra, Integer, String, Unit>() {
+            @Override
+            public Unit invoke(LoginInfo loginInfo, LoginInfoExtra loginInfoExtra, Integer integer, String s) {
+                if(integer != 0){
+                    Log.w(Config.LOGTAG, "用户平台登录失败，错误信息：" + s);
+
+                    binding.loadingProgressbar.setVisibility(View.GONE);
+                    return null;
+                }
+                Log.w(Config.LOGTAG, "用户平台登录成功...");
+                String imUserName = loginInfo.getUsername();
+                loginInfo.getAccessToken();
+                doLogin(imUserName,password);
+                return null;
+            }
+        });
+    }
+
     private void doLogin(String username, String password) {
         Log.i(Config.LOGTAG, "login: " + username);
 
         //获取选择的服务
         if (selectedState == null) {
             Log.w(Config.LOGTAG, "Not select provider");
+            binding.loadingProgressbar.setVisibility(View.GONE);
             return;
         }
 
@@ -333,6 +379,8 @@ public class EditAccountActivity extends OmemoActivity implements OnAccountUpdat
             if (!xmppConnectionService.updateAccount(mAccount)) {
                 ToastCompat.makeText(EditAccountActivity.this, R.string.unable_to_update_account, ToastCompat.LENGTH_SHORT).show();
             }
+
+            binding.loadingProgressbar.setVisibility(View.GONE);
             return;
         }
         final boolean registerNewAccount = false;
@@ -358,10 +406,13 @@ public class EditAccountActivity extends OmemoActivity implements OnAccountUpdat
             } else {
                 TorServiceUtils.downloadOrbot(EditAccountActivity.this, REQUEST_ORBOT);
             }
+
+            binding.loadingProgressbar.setVisibility(View.GONE);
             return;
         }
 
         if (startI2P) {
+            binding.loadingProgressbar.setVisibility(View.GONE);
             return; // just exit
         }
 
@@ -370,6 +421,7 @@ public class EditAccountActivity extends OmemoActivity implements OnAccountUpdat
             if (!xmppConnectionService.updateAccount(mAccount)) {
                 ToastCompat.makeText(EditAccountActivity.this, R.string.unable_to_update_account, ToastCompat.LENGTH_SHORT).show();
             }
+            binding.loadingProgressbar.setVisibility(View.GONE);
             return;
         }
         final boolean openRegistrationUrl = registerNewAccount && !accountInfoEdited && mAccount != null && mAccount.getStatus() == Account.State.REGISTRATION_WEB;
@@ -377,6 +429,7 @@ public class EditAccountActivity extends OmemoActivity implements OnAccountUpdat
         final boolean redirectionWorthyStatus = openPaymentUrl || openRegistrationUrl;
         final HttpUrl url = connection != null && redirectionWorthyStatus ? connection.getRedirectionUrl() : null;
         if (url != null && !wasDisabled) {
+            binding.loadingProgressbar.setVisibility(View.GONE);
             try {
                 CustomTab.openTab(EditAccountActivity.this, Uri.parse(url.toString()), isDarkTheme());
                 return;
@@ -475,6 +528,8 @@ public class EditAccountActivity extends OmemoActivity implements OnAccountUpdat
             mAccount.setOption(Account.OPTION_REGISTER, registerNewAccount);
             if (!xmppConnectionService.updateAccount(mAccount)) {
                 ToastCompat.makeText(EditAccountActivity.this, R.string.unable_to_update_account, ToastCompat.LENGTH_SHORT).show();
+
+                binding.loadingProgressbar.setVisibility(View.GONE);
                 return;
             }
         } else {
@@ -482,6 +537,8 @@ public class EditAccountActivity extends OmemoActivity implements OnAccountUpdat
                 binding.accountJidLayout.setError(getString(R.string.account_already_exists));
                 removeErrorsOnAllBut(binding.accountJidLayout);
                 binding.accountJid.requestFocus();
+
+                binding.loadingProgressbar.setVisibility(View.GONE);
                 return;
             }
             mAccount = new Account(jid.asBareJid(), password);
@@ -505,7 +562,7 @@ public class EditAccountActivity extends OmemoActivity implements OnAccountUpdat
 //            updateAccountInformation(true);
         }
 
-
+        binding.loadingProgressbar.setVisibility(View.GONE);
     }
 
     private void deleteAccountAndReturnIfNecessary() {

@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <menu xmlns:android="http://schemas.android.com/apk/res/android">
-    <item
-        android:id="@+id/discover_public_channels"
-        android:icon="@drawable/ic_search_white_24dp"
-        android:title="@string/discover_channels" />
+<!--    <item-->
+<!--        android:id="@+id/discover_public_channels"-->
+<!--        android:icon="@drawable/ic_search_white_24dp"-->
+<!--        android:title="@string/discover_channels"/>-->
     <item
         android:id="@+id/create_public_channel"
         android:icon="@drawable/ic_public_white_24dp"
