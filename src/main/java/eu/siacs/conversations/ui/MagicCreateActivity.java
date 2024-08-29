@@ -22,34 +22,25 @@ import androidx.annotation.NonNull;
 import androidx.appcompat.widget.Toolbar;
 import androidx.databinding.DataBindingUtil;
 
-import com.google.common.reflect.TypeToken;
-import com.google.gson.Gson;
-
-import java.io.IOException;
-import java.util.Arrays;
-import java.util.Collections;
 import java.util.List;
 import java.util.Objects;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.stream.Collectors;
 
-import eu.siacs.conversations.BuildConfig;
 import eu.siacs.conversations.Config;
 import eu.siacs.conversations.R;
 import eu.siacs.conversations.cloud.FederalInfo;
 import eu.siacs.conversations.cloud.OkCloudBackend;
 import eu.siacs.conversations.databinding.ActivityMagicCreateBinding;
-import eu.siacs.conversations.entities.SignUpForm;
 import eu.siacs.conversations.entities.SignUpResult;
-import eu.siacs.conversations.http.HttpConnectionManager;
-import eu.siacs.conversations.stack.OkStackBackend;
-import eu.siacs.conversations.stack.Res;
+
+import org.okstar.okmsg.stack.OkStackBackend;
+import org.okstar.okmsg.stack.Res;
 import eu.siacs.conversations.utils.InstallReferrerUtils;
 import eu.siacs.conversations.utils.StringUtils;
 import eu.siacs.conversations.xmpp.Jid;
 import me.drakeet.support.toast.ToastCompat;
-import okhttp3.HttpUrl;
 
 public class MagicCreateActivity extends XmppActivity
         implements TextWatcher, AdapterView.OnItemSelectedListener, CompoundButton.OnCheckedChangeListener {

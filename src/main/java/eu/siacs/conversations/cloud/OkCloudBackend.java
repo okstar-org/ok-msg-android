@@ -2,7 +2,6 @@ package eu.siacs.conversations.cloud;
 
 import android.util.Log;
 
-import com.google.common.reflect.TypeToken;
 import com.google.gson.Gson;
 
 import java.io.IOException;
@@ -10,9 +9,6 @@ import java.io.IOException;
 import eu.siacs.conversations.BuildConfig;
 import eu.siacs.conversations.Config;
 import eu.siacs.conversations.http.HttpConnectionManager;
-import eu.siacs.conversations.stack.AccountInfo;
-import eu.siacs.conversations.stack.MeetInfo;
-import eu.siacs.conversations.stack.Res;
 import okhttp3.HttpUrl;
 
 public class OkCloudBackend {

@@ -1,4 +1,4 @@
-package eu.siacs.conversations.stack;
+package org.okstar.okmsg.stack;
 
 public class MeetInfo {
    private String host;

@@ -49,7 +49,6 @@ import androidx.appcompat.widget.Toolbar;
 import androidx.core.app.TaskStackBuilder;
 import androidx.databinding.DataBindingUtil;
 
-import com.google.android.exoplayer2.C;
 import com.google.android.material.textfield.TextInputLayout;
 import com.google.common.base.CharMatcher;
 
@@ -58,7 +57,6 @@ import com.rarepebble.colorpicker.ColorPickerView;
 import org.openintents.openpgp.util.OpenPgpUtils;
 
 import java.util.Arrays;
-import java.util.Collections;
 import java.util.List;
 import java.util.Set;
 import java.util.concurrent.ExecutorService;
@@ -70,7 +68,6 @@ import java.util.stream.Collectors;
 import eu.siacs.conversations.BuildConfig;
 import eu.siacs.conversations.Config;
 import eu.siacs.conversations.R;
-import eu.siacs.conversations.StackConfig;
 import eu.siacs.conversations.cloud.FederalInfo;
 import eu.siacs.conversations.cloud.OkCloudBackend;
 import eu.siacs.conversations.crypto.axolotl.AxolotlService;
@@ -80,11 +77,8 @@ import eu.siacs.conversations.databinding.DialogPresenceBinding;
 import eu.siacs.conversations.entities.Account;
 import eu.siacs.conversations.entities.Presence;
 import eu.siacs.conversations.entities.PresenceTemplate;
-import eu.siacs.conversations.stack.AccountInfo;
-import eu.siacs.conversations.stack.Res;
 import eu.siacs.conversations.services.BarcodeProvider;
 import eu.siacs.conversations.services.QuickConversationsService;
-import eu.siacs.conversations.stack.OkStackBackend;
 import eu.siacs.conversations.services.XmppConnectionService;
 import eu.siacs.conversations.services.XmppConnectionService.OnAccountUpdate;
 import eu.siacs.conversations.services.XmppConnectionService.OnCaptchaRequested;

@@ -27,9 +27,9 @@ import eu.siacs.conversations.entities.Account;
 import eu.siacs.conversations.entities.Contact;
 import eu.siacs.conversations.entities.Presence;
 import eu.siacs.conversations.entities.ServiceDiscoveryResult;
-import eu.siacs.conversations.stack.AccountInfo;
-import eu.siacs.conversations.stack.Res;
-import eu.siacs.conversations.stack.OkStackBackend;
+import org.okstar.okmsg.stack.AccountInfo;
+import org.okstar.okmsg.stack.Res;
+import org.okstar.okmsg.stack.OkStackBackend;
 import eu.siacs.conversations.xmpp.OnGatewayResult;
 
 
@@ -43,7 +43,6 @@ import java.util.Arrays;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.List;
-import io.michaelrocks.libphonenumber.android.NumberParseException;
 
 
 import eu.siacs.conversations.Config;
@@ -53,7 +52,6 @@ import eu.siacs.conversations.services.XmppConnectionService;
 import eu.siacs.conversations.ui.interfaces.OnBackendConnected;
 import eu.siacs.conversations.ui.util.DelayedHintHelper;
 import eu.siacs.conversations.xmpp.Jid;
-import eu.siacs.conversations.utils.PhoneNumberUtilWrapper;
 
 public class EnterJidDialog extends DialogFragment implements OnBackendConnected, TextWatcher {
 
