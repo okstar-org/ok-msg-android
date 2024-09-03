@@ -5,6 +5,7 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.res.Configuration;
 import android.os.Bundle;
+import android.os.Handler;
 import android.util.Log;
 
 import androidx.appcompat.app.AppCompatActivity;
@@ -25,11 +26,14 @@ public class StartUI extends AppCompatActivity {
         SharedPreferences FirstStart = getApplicationContext().getSharedPreferences(PREF_FIRST_START, Context.MODE_PRIVATE);
         long FirstStartTime = FirstStart.getLong(PREF_FIRST_START, 0);
         Log.d(Config.LOGTAG, "Starting " + getString(R.string.app_name) + "(" + FirstStartTime + ")");
-        Intent intent = new Intent(this, ConversationsActivity.class);
-        intent.putExtra(PREF_FIRST_START, FirstStartTime);
-        startActivity(intent);
-        overridePendingTransition(R.animator.fade_in, R.animator.fade_out);
-        finish();
+        new Handler().postDelayed(()->{
+            Intent intent = new Intent(this, ConversationsActivity.class);
+            intent.putExtra(PREF_FIRST_START, FirstStartTime);
+            startActivity(intent);
+            overridePendingTransition(R.animator.fade_in, R.animator.fade_out);
+            finish();
+        },1000);
+
     }
 
 
