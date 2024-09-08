@@ -49,6 +49,7 @@ import java.util.Map;
 import java.util.stream.Collectors;
 
 import eu.siacs.conversations.BuildConfig;
+import eu.siacs.conversations.ui.kotlin.WorkbenchPanelActivity;
 import eu.siacs.conversations.utils.UIHelper;
 
 import androidx.annotation.MenuRes;

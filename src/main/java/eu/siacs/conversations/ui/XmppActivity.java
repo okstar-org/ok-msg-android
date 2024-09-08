@@ -71,6 +71,7 @@ import androidx.databinding.DataBindingUtil;
 
 import com.google.common.base.Strings;
 import com.google.common.collect.Collections2;
+import com.tencent.mmkv.MMKV;
 
 import java.util.HashMap;
 import java.io.File;
@@ -152,6 +153,8 @@ public abstract class XmppActivity extends ActionBarActivity {
     protected boolean mUsingEnterKey = false;
     public boolean mUseTor = false;
     public boolean mUseI2P = false;
+
+    public MMKV mmkv = null;
 
     protected Toast mToast;
     protected Runnable onOpenPGPKeyPublished = () -> ToastCompat.makeText(XmppActivity.this, R.string.openpgp_has_been_published, ToastCompat.LENGTH_SHORT).show();
@@ -305,6 +308,7 @@ public abstract class XmppActivity extends ActionBarActivity {
         return xmppConnectionService.getPgpEngine() != null;
     }
 
+    @SuppressLint("StringFormatInvalid")
     public void showInstallPgpDialog() {
         final AlertDialog.Builder builder = new AlertDialog.Builder(this);
         builder.setTitle(getString(R.string.openkeychain_required));
@@ -503,6 +507,13 @@ public abstract class XmppActivity extends ActionBarActivity {
         mColorDefaultButtonText = ContextCompat.getColor(this, R.color.realwhite);
         mColorWhite = ContextCompat.getColor(this, R.color.white70);
         this.mUsingEnterKey = usingEnterKey();
+
+        try {
+            mmkv = MMKV.defaultMMKV();
+        }catch (Exception e){
+            MMKV.initialize(this);
+            mmkv = MMKV.defaultMMKV();
+        }
     }
 
     protected boolean isCameraFeatureAvailable() {

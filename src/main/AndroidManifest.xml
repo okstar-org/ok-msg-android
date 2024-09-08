@@ -601,7 +601,7 @@
             android:launchMode="singleInstance"
             android:supportsPictureInPicture="true" />
 
-        <activity android:name=".ui.WebActivity"
+        <activity android:name=".ui.kotlin.WorkbenchPanelActivity"
             android:exported="true"
             android:launchMode="singleTask"/>
 
