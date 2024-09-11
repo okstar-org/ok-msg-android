@@ -3,6 +3,7 @@ package eu.siacs.conversations.ui;
 import static eu.siacs.conversations.utils.PermissionUtils.allGranted;
 import static eu.siacs.conversations.utils.PermissionUtils.readGranted;
 
+import android.annotation.SuppressLint;
 import android.app.KeyguardManager;
 import android.content.Context;
 import android.app.Activity;
@@ -58,6 +59,7 @@ import org.openintents.openpgp.util.OpenPgpUtils;
 
 import java.util.Arrays;
 import java.util.List;
+import java.util.Objects;
 import java.util.Set;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
@@ -84,6 +86,7 @@ import eu.siacs.conversations.services.XmppConnectionService.OnAccountUpdate;
 import eu.siacs.conversations.services.XmppConnectionService.OnCaptchaRequested;
 import eu.siacs.conversations.ui.adapter.PresenceTemplateAdapter;
 import eu.siacs.conversations.ui.util.AvatarWorkerTask;
+import eu.siacs.conversations.ui.util.ConstCommon;
 import eu.siacs.conversations.ui.util.CustomTab;
 import eu.siacs.conversations.ui.util.PendingItem;
 import eu.siacs.conversations.ui.util.SoftKeyboardUtils;
@@ -150,7 +153,7 @@ public class EditAccountActivity extends OmemoActivity implements OnAccountUpdat
     private List<FederalInfo.State> states;
     private FederalInfo.State selectedState;
 
-    private static final String SP_NAME = "Account_name";
+
 
     @Override
     public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
@@ -194,7 +197,7 @@ public class EditAccountActivity extends OmemoActivity implements OnAccountUpdat
             }
 
             final String accountJidText = binding.accountJid.getText().toString();
-            final String password = binding.accountPassword.getText().toString();
+            final String password = Objects.requireNonNull(binding.accountPassword.getText()).toString();
 
 //            Handler handler = new Handler(Looper.getMainLooper()) {
 //                @Override
@@ -225,7 +228,7 @@ public class EditAccountActivity extends OmemoActivity implements OnAccountUpdat
 //                }
 //            };
 
-            SharedPreferences sharedPreferences = getSharedPreferences(SP_NAME,MODE_PRIVATE);
+            SharedPreferences sharedPreferences = getSharedPreferences(ConstCommon.SP_NAME,MODE_PRIVATE);
             SharedPreferences.Editor editor = sharedPreferences.edit();
             editor.putString("account_info",accountJidText);
             editor.apply();
@@ -319,6 +322,7 @@ public class EditAccountActivity extends OmemoActivity implements OnAccountUpdat
         binding.loadingProgressbar.setVisibility(View.VISIBLE);
 
         String hostName = selectedState.getStackUrl();
+        mmkv.putString(ConstCommon.stackUrl,hostName);
 
         VolleyUtil.INSTANCE.doLogin(hostName, username, password, new Function4<LoginInfo, LoginInfoExtra, Integer, String, Unit>() {
             @Override
@@ -331,7 +335,10 @@ public class EditAccountActivity extends OmemoActivity implements OnAccountUpdat
                 }
                 Log.w(Config.LOGTAG, "用户平台登录成功...");
                 String imUserName = loginInfo.getUsername();
-                loginInfo.getAccessToken();
+                String accessToken = loginInfo.getAccessToken();
+
+                mmkv.putString(ConstCommon.accessToken,accessToken);
+
                 doLogin(imUserName,password);
                 return null;
             }
@@ -1016,7 +1023,7 @@ public class EditAccountActivity extends OmemoActivity implements OnAccountUpdat
             final String password = intent.getStringExtra("password");
             final String email = intent.getStringExtra("email");
 
-            SharedPreferences sharedPreferences = getSharedPreferences(SP_NAME,MODE_PRIVATE);
+            SharedPreferences sharedPreferences = getSharedPreferences(ConstCommon.SP_NAME,MODE_PRIVATE);
             Config.USER_EMAIL_PHONE_INFO = sharedPreferences.getString("account_info", "");
             //Log.d(Config.LOGTAG,"用户信息 :"+Config.USER_EMAIL_PHONE_INFO);
 

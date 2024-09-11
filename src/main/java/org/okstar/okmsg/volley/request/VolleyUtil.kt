@@ -11,6 +11,9 @@ import org.okstar.okmsg.volley.bean.LoginResponse
 import org.okstar.okmsg.volley.parser.VolleyParser.parser
 import kotlinx.serialization.Serializable
 import kotlinx.serialization.json.Json
+import org.okstar.okmsg.volley.bean.WorkbenchBean
+import org.okstar.okmsg.volley.bean.WorkbenchInfo
+import org.okstar.okmsg.volley.bean.WorkbenchResponse
 
 
 object VolleyUtil {
@@ -45,11 +48,48 @@ fun doLogin(host:String, username:String, password:String, block:(loginInfo: Log
             override fun onFailure(errorNo: Int, strMsg: String?) {
 
                 Log.i(Config.LOGTAG,"errorCode: $errorNo message: $strMsg")
+                block.invoke(null, null,errorNo, strMsg?:"登录失败~")
                 super.onFailure(errorNo, strMsg)
 
             }
         })
     }
+}
+
+fun doWorkbench(host:String, token:String, pageIndex:Int, pageSize:Int, block:(workbenchBeans: MutableList<WorkbenchBean>?, code:Int, msg:String)->Unit){
+    val baseUrl = "$host/api/work/app/page"
+
+    val workbenchJson = Json.encodeToString(
+        WorkbenchBody.serializer(),
+        WorkbenchBody(
+            pageIndex = pageIndex,
+            pageSize = pageSize,
+        )
+    )
+
+    val params = HttpParams().apply {
+        putHeaders("Authorization","Bearer $token")
+        putJsonParams(workbenchJson)
+    }
+
+    Log.i(Config.LOGTAG + "workbench", "workbench in request: $baseUrl body:$workbenchJson token:$token" )
+    RxVolley.jsonPost(baseUrl, params, object : HttpCallback() {
+        override fun onSuccess(success: String) {
+            Log.i(Config.LOGTAG + "workbench","success: $success")
+            super.onSuccess(success)
+
+            val serializerBean = success.parser(WorkbenchResponse.serializer())
+            block.invoke(serializerBean.data?.list, serializerBean.code?:0, serializerBean.msg?:"")
+        }
+
+        override fun onFailure(errorNo: Int, strMsg: String?) {
+
+            Log.i(Config.LOGTAG + "workbench","errorCode: $errorNo message: $strMsg")
+            block.invoke(null, errorNo, strMsg?:"出错啦~")
+            super.onFailure(errorNo, strMsg)
+
+        }
+    })
 }
 
 @Serializable
@@ -59,3 +99,10 @@ data class LoginBody(
     val account:String,
     val password: String,
     val rememberMe:Boolean)
+
+
+
+@Serializable
+data class WorkbenchBody(
+    val pageIndex:Int,
+    val pageSize:Int,)

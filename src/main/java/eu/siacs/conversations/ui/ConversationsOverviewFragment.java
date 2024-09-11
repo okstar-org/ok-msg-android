@@ -58,6 +58,7 @@ import java.util.concurrent.atomic.AtomicReference;
 import eu.siacs.conversations.entities.Account;
 import eu.siacs.conversations.entities.Conversational;
 import eu.siacs.conversations.ui.interfaces.OnConversationArchived;
+import eu.siacs.conversations.ui.kotlin.WorkbenchPanelActivity;
 import eu.siacs.conversations.ui.util.StyledAttributes;
 import eu.siacs.conversations.utils.EasyOnboardingInvite;
 import eu.siacs.conversations.utils.ThemeHelper;
@@ -301,7 +302,8 @@ public class ConversationsOverviewFragment extends XmppFragment {
         this.mSwipeEscapeVelocity = getResources().getDimension(R.dimen.swipe_escape_velocity);
         this.binding = DataBindingUtil.inflate(inflater, R.layout.fragment_conversations_overview, container, false);
         this.binding.fab.setOnClickListener((view) -> StartConversationActivity.launch(getActivity()));
-        this.binding.web.setOnClickListener((view) -> WebViewActivity.launch(getActivity()));
+        this.binding.web.setOnClickListener((view) -> WebViewActivity.launch(activity));
+        this.binding.workbenchPanel.setOnClickListener((view) -> WorkbenchPanelActivity.Companion.launch(activity));
 
         this.conversationsAdapter = new ConversationAdapter(this.activity, this.conversations);
         if (this.conversations.size() > 0) {

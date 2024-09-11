@@ -10,6 +10,8 @@ import android.util.Log;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import com.tencent.mmkv.MMKV;
+
 import eu.siacs.conversations.Config;
 import eu.siacs.conversations.R;
 import eu.siacs.conversations.ui.ConversationsActivity;
@@ -24,6 +26,7 @@ public class StartUI extends AppCompatActivity {
         IntroHelper.showIntro(this, false);
         String PREF_FIRST_START = "FirstStart";
         SharedPreferences FirstStart = getApplicationContext().getSharedPreferences(PREF_FIRST_START, Context.MODE_PRIVATE);
+        MMKV.initialize(this);
         long FirstStartTime = FirstStart.getLong(PREF_FIRST_START, 0);
         Log.d(Config.LOGTAG, "Starting " + getString(R.string.app_name) + "(" + FirstStartTime + ")");
         new Handler().postDelayed(()->{
