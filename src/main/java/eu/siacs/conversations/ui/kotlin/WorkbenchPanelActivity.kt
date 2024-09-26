@@ -65,7 +65,6 @@ class WorkbenchPanelActivity : XmppActivity() {
             pageSize = 100
         ) { workbenchBeans: MutableList<WorkbenchBean>?, integer: Int, s: String ->
             binding?.workbenchPanelLoadingProgressbar?.visibility = View.GONE
-
             if (integer != 0) {
                 Log.w(
                     Config.LOGTAG,
@@ -75,7 +74,6 @@ class WorkbenchPanelActivity : XmppActivity() {
                     visibility = View.VISIBLE
                     text = "出错啦~"
                 }
-//                binding.loadingProgressbar.setVisibility(View.GONE)
                 return@doWorkbench
             }
             mAdapter.setDatas(workbenchBeans)
@@ -84,8 +82,6 @@ class WorkbenchPanelActivity : XmppActivity() {
                     visibility = View.VISIBLE
                     text = "工作台为空"
                 }
-            }else{
-                binding?.workbenchPanelEmpty?.visibility = View.GONE
             }
             Log.w(Config.LOGTAG, "工作平台获取成功...")
         }

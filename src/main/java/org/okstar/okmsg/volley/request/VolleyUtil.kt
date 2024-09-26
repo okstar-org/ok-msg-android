@@ -5,15 +5,14 @@ import com.kymjs.rxvolley.RxVolley
 import com.kymjs.rxvolley.client.HttpCallback
 import com.kymjs.rxvolley.client.HttpParams
 import eu.siacs.conversations.Config
+import kotlinx.serialization.Serializable
+import kotlinx.serialization.json.Json
 import org.okstar.okmsg.volley.bean.LoginInfo
 import org.okstar.okmsg.volley.bean.LoginInfoExtra
 import org.okstar.okmsg.volley.bean.LoginResponse
-import org.okstar.okmsg.volley.parser.VolleyParser.parser
-import kotlinx.serialization.Serializable
-import kotlinx.serialization.json.Json
 import org.okstar.okmsg.volley.bean.WorkbenchBean
-import org.okstar.okmsg.volley.bean.WorkbenchInfo
 import org.okstar.okmsg.volley.bean.WorkbenchResponse
+import org.okstar.okmsg.volley.parser.VolleyParser.parser
 
 
 object VolleyUtil {
@@ -83,6 +82,9 @@ fun doWorkbench(host:String, token:String, pageIndex:Int, pageSize:Int, block:(w
         }
 
         override fun onFailure(errorNo: Int, strMsg: String?) {
+            if(errorNo == 401){
+                //登录失效
+            }
 
             Log.i(Config.LOGTAG + "workbench","errorCode: $errorNo message: $strMsg")
             block.invoke(null, errorNo, strMsg?:"出错啦~")
@@ -104,5 +106,6 @@ data class LoginBody(
 
 @Serializable
 data class WorkbenchBody(
-    val pageIndex:Int,
-    val pageSize:Int,)
+    val pageIndex: Int,
+    val pageSize: Int,
+)
