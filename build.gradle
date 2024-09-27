@@ -248,7 +248,7 @@ android {
         playstore {
             dimension "distribution"
             versionNameSuffix "-playstore"
-            applicationId "org.okstar.chat"
+            applicationId "org.okstar.okmsg"
             buildConfigField("boolean", "SHOW_MIGRATION_INFO", 'false')
             resValue "string", "applicationId", applicationId
         }
