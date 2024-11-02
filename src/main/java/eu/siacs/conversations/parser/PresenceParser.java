@@ -226,6 +226,7 @@ public class PresenceParser extends AbstractParser implements
                     }
                 } else {
                     final String text = error.findChildContent("text");
+                    Log.e(Config.LOGTAG, "Error:"+text);
                     if (text != null && text.contains("attribute 'to'")) {
                         if (mucOptions.online()) {
                             invokeRenameListener(mucOptions, false);

@@ -174,7 +174,10 @@ public class Contact implements ListItem, Blockable {
                 return displayName;
             }
         }
-        if (Config.X509_VERIFICATION && !TextUtils.isEmpty(this.commonName)) {
+
+        if (!TextUtils.isEmpty(this.presenceName)) {
+            return this.presenceName;
+        }else if (Config.X509_VERIFICATION && !TextUtils.isEmpty(this.commonName)) {
             return this.commonName;
         } else if (!TextUtils.isEmpty(this.systemName)) {
             return this.systemName;
