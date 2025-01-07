@@ -9,12 +9,20 @@ import com.baidu.location.LocationClientOption.FirstLocType
 import com.baidu.location.LocationClientOption.LocationMode
 import org.webrtc.ContextUtils.getApplicationContext
 
+/**
+ * 百度地图定位，可用于打卡和其他获取地理位置信息的功能
+ */
 object Local2Baidu {
     private val TAG = "Local2Baidu"
     var mLocationClient:LocationClient? = null
-    fun init(){
+
+    /**
+     * 百度地图初始化
+     *              isAgreePrivacy用于处理合规隐私，如果同意传true，否则fale
+     */
+    fun initBaidu(isAgreePrivacy: Boolean){
         //隐私合规
-        LocationClient.setAgreePrivacy(true)
+        LocationClient.setAgreePrivacy(isAgreePrivacy)
         try {
             mLocationClient=  LocationClient(getApplicationContext())
         } catch(e:Exception) {
@@ -28,6 +36,7 @@ object Local2Baidu {
      *                 val latitude = location?.latitude    //获取纬度信息
      *                 val longitude = location?.longitude    //获取经度信息
      *                 val radius = location?.radius    //获取定位精度，默认值为0.0f
+     *                 注意：调用getLocal({location->})前，请先调用initBaidu(isAgreePrivacy)完成初始化
      */
     fun getLocal(block:(BDLocation?)-> Unit){
         val option = LocationClientOption()
