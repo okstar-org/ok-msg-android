@@ -8,13 +8,12 @@ import com.baidu.location.LocationClient
 import com.baidu.location.LocationClientOption
 import com.baidu.location.LocationClientOption.FirstLocType
 import com.baidu.location.LocationClientOption.LocationMode
-import org.webrtc.ContextUtils.getApplicationContext
 
 /**
  * 百度地图定位，可用于打卡和其他获取地理位置信息的功能
  */
 object Local2Baidu {
-    private val TAG = "Local2Baidu"
+    val TAG = "Local2Baidu"
     var mLocationClient:LocationClient? = null
 
     /**
@@ -121,7 +120,6 @@ object Local2Baidu {
             })
             //启动定位
             start()
-
         }
 
 
