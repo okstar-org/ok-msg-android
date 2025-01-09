@@ -48,7 +48,6 @@ import android.graphics.Canvas;
 import android.graphics.Paint;
 import android.widget.Toast;
 
-import androidx.core.content.ContextCompat;
 import androidx.recyclerview.widget.ItemTouchHelper;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -58,7 +57,10 @@ import java.util.concurrent.atomic.AtomicReference;
 import eu.siacs.conversations.entities.Account;
 import eu.siacs.conversations.entities.Conversational;
 import eu.siacs.conversations.ui.interfaces.OnConversationArchived;
-import eu.siacs.conversations.ui.kotlin.WorkbenchPanelActivity;
+
+import org.okstar.okmsg.ui.java.WebViewActivity;
+import org.okstar.okmsg.ui.kotlin.VideoConferenceActivity;
+import org.okstar.okmsg.ui.kotlin.WorkbenchPanelActivity;
 import eu.siacs.conversations.ui.util.StyledAttributes;
 import eu.siacs.conversations.utils.EasyOnboardingInvite;
 import eu.siacs.conversations.utils.ThemeHelper;
@@ -304,6 +306,7 @@ public class ConversationsOverviewFragment extends XmppFragment {
         this.binding.fab.setOnClickListener((view) -> StartConversationActivity.launch(getActivity()));
         this.binding.web.setOnClickListener((view) -> WebViewActivity.launch(activity));
         this.binding.workbenchPanel.setOnClickListener((view) -> WorkbenchPanelActivity.Companion.launch(activity));
+        this.binding.videoConferencePanel.setOnClickListener((view) -> VideoConferenceActivity.Companion.launch(activity));
 
         this.conversationsAdapter = new ConversationAdapter(this.activity, this.conversations);
         if (this.conversations.size() > 0) {

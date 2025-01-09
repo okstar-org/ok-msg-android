@@ -611,11 +611,15 @@
             android:launchMode="singleInstance"
             android:supportsPictureInPicture="true" />
 
-        <activity android:name=".ui.kotlin.WorkbenchPanelActivity"
+        <activity android:name="org.okstar.okmsg.ui.kotlin.WorkbenchPanelActivity"
             android:exported="true"
             android:launchMode="singleTask"/>
 
-        <activity android:name=".ui.WebViewActivity"
+        <activity android:name="org.okstar.okmsg.ui.kotlin.VideoConferenceActivity"
+            android:exported="true"
+            android:launchMode="singleTask"/>
+
+        <activity android:name="org.okstar.okmsg.ui.java.WebViewActivity"
             android:exported="true"
             android:launchMode="singleTask"/>
 

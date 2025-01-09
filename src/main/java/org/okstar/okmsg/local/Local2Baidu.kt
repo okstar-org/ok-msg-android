@@ -1,5 +1,6 @@
 package org.okstar.okmsg.local
 
+import android.content.Context
 import android.util.Log
 import com.baidu.location.BDAbstractLocationListener
 import com.baidu.location.BDLocation
@@ -20,11 +21,11 @@ object Local2Baidu {
      * 百度地图初始化
      *              isAgreePrivacy用于处理合规隐私，如果同意传true，否则false
      */
-    fun initBaidu(isAgreePrivacy: Boolean){
+    fun initBaidu(isAgreePrivacy: Boolean,context: Context){
         //隐私合规
         LocationClient.setAgreePrivacy(isAgreePrivacy)
         try {
-            mLocationClient=  LocationClient(getApplicationContext())
+            mLocationClient=  LocationClient(context)
         } catch(e:Exception) {
             e.printStackTrace()
             Log.w(TAG,"请检查是否合规")
@@ -38,9 +39,9 @@ object Local2Baidu {
      *                 val radius = location?.radius    //获取定位精度，默认值为0.0f
      *                 注意：调用getLocal({location->})前，请先调用initBaidu(isAgreePrivacy)完成初始化
      */
-    fun getLocal(isAgreePrivacy: Boolean, block:(BDLocation?)-> Unit){
+    fun getLocal(context: Context, isAgreePrivacy: Boolean, block:(BDLocation?)-> Unit){
         if(mLocationClient == null){
-            initBaidu(isAgreePrivacy)
+            initBaidu(context = context, isAgreePrivacy = isAgreePrivacy)
         }
         val option = LocationClientOption()
 

@@ -1,4 +1,4 @@
-package eu.siacs.conversations.ui.kotlin.adapter
+package org.okstar.okmsg.ui.kotlin.adapter
 
 import android.view.LayoutInflater
 import android.view.ViewGroup

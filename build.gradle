@@ -50,6 +50,15 @@ allprojects {
         google()
         mavenCentral()
     }
+    // 添加这行解决报错
+    tasks.withType(org.jetbrains.kotlin.gradle.tasks.KotlinCompile).configureEach {
+        kotlinOptions.jvmTarget = "1.8"
+    }
+
+    // 添加这行解决报错
+    tasks.withType(org.jetbrains.kotlin.gradle.tasks.KaptGenerateStubs).configureEach {
+        kotlinOptions.jvmTarget = "1.8"
+    }
 }
 
 repositories {
@@ -250,6 +259,8 @@ android {
         sourceCompatibility JavaVersion.VERSION_1_8
         targetCompatibility JavaVersion.VERSION_1_8
     }
+
+    kotlinOptions {jvmTarget = 1.8}
 
 
     flavorDimensions("distribution")
