@@ -88,7 +88,7 @@ class VideoConferenceActivity : XmppActivity() {
         SendMeeting(index = 1, nickName = "发起会议", resId = R.drawable.video_conference_send),
         AddMeeting(index = 2, nickName = "加入会议", resId = R.drawable.video_conference_add),
         MakeMeeting(index = 3, nickName = "预约会议", resId = R.drawable.video_conference_make),
-        NoteMeeting(index = 4, nickName = "妙记", resId = R.drawable.video_conference_note),
+        NoteMeeting(index = 4, nickName = "会记", resId = R.drawable.video_conference_note),
         PhoneMeeting(index = 5, nickName = "电话", resId = R.drawable.video_conference_phone)
     }
 
