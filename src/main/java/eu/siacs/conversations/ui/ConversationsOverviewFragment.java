@@ -35,6 +35,7 @@ import android.app.Activity;
 import android.app.Fragment;
 import android.content.Intent;
 import android.os.Bundle;
+import android.os.Handler;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
@@ -50,12 +51,18 @@ import android.graphics.Canvas;
 import android.graphics.Paint;
 import android.widget.Toast;
 
+import androidx.annotation.Nullable;
 import androidx.core.content.ContextCompat;
 import androidx.recyclerview.widget.ItemTouchHelper;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.google.android.material.snackbar.Snackbar;
 import com.google.common.collect.Collections2;
+
+import java.io.File;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.util.Objects;
 import java.util.concurrent.atomic.AtomicReference;
 import eu.siacs.conversations.entities.Account;
 import eu.siacs.conversations.entities.Conversational;
@@ -324,20 +331,13 @@ public class ConversationsOverviewFragment extends XmppFragment {
         this.binding.list.setLayoutManager(new LinearLayoutManager(getActivity(), LinearLayoutManager.VERTICAL, false));
         registerForContextMenu(this.binding.list);
 
-        //todo 测试完删除
-//        String filePath = BinaryFileManager.getInstance().getFilePath();
-        Log.d(LOGTAG,"Conversation filePath :"+
-                BinaryFileManager.getInstance().getFilePath().getAbsolutePath());
-//        byte[] data = {0x01, 0x02, 0x03, 0x04};
-//        try (FileOutputStream fos = new FileOutputStream(filePath)) {
-//            fos.write(data);
-//        } catch (IOException e) {
-//            e.printStackTrace();
-//        }
-
-//        BinaryFileManager.getInstance().saveFile();
-
         return binding.getRoot();
+    }
+
+    @Override
+    public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
+        super.onViewCreated(view, savedInstanceState);
+
     }
 
     @Override

@@ -3,10 +3,14 @@ package org.okstar.okmsg.store.disk.files;
 import android.util.Log;
 
 import java.io.File;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.util.Objects;
 
+import eu.siacs.conversations.BuildConfig;
 import eu.siacs.conversations.Config;
 
-public class BinaryFileManager extends FileManager{
+public class BinaryFileManager extends FileManager {
 
     // 直接初始化一个实例对象
     private static final BinaryFileManager instance = new BinaryFileManager();
@@ -18,26 +22,33 @@ public class BinaryFileManager extends FileManager{
 
     // 私有构造函数，防止外部实例化
     private BinaryFileManager() {
-       super();
-        Log.d(Config.LOGTAG,"binary :"+childFile.getAbsolutePath());
+        super();
+        Log.d(Config.LOGTAG, "binary :" + childFile.getAbsolutePath());
     }
-
-
 
     @Override
     protected String createFile() {
         return "/files";
     }
 
+    public File getBinaryFile() {
+        return childFile;
+    }
+
+
     @Override
     public void saveFile(File file) {
 
     }
 
+
     @Override
     public void deleteFile(File file) {
 
     }
+
+
+
 
 
 }
