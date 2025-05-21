@@ -26,7 +26,7 @@ public abstract class FileManager implements FileHandler{
         }
     }
 
-    protected File getFilePath(){
+    public File getFilePath(){
         return filesDirs;
     }
 

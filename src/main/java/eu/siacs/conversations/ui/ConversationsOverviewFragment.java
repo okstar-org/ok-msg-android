@@ -43,6 +43,8 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import static androidx.recyclerview.widget.ItemTouchHelper.RIGHT;
+import static eu.siacs.conversations.Config.LOGTAG;
+
 import android.app.AlertDialog;
 import android.graphics.Canvas;
 import android.graphics.Paint;
@@ -71,6 +73,8 @@ import eu.siacs.conversations.services.XmppConnectionService;
 import eu.siacs.conversations.xmpp.jingle.OngoingRtpSession;
 import androidx.databinding.DataBindingUtil;
 import androidx.recyclerview.widget.LinearLayoutManager;
+
+import org.okstar.okmsg.store.disk.files.BinaryFileManager;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -319,6 +323,20 @@ public class ConversationsOverviewFragment extends XmppFragment {
         this.binding.list.setAdapter(this.conversationsAdapter);
         this.binding.list.setLayoutManager(new LinearLayoutManager(getActivity(), LinearLayoutManager.VERTICAL, false));
         registerForContextMenu(this.binding.list);
+
+        //todo 测试完删除
+//        String filePath = BinaryFileManager.getInstance().getFilePath();
+        Log.d(LOGTAG,"Conversation filePath :"+
+                BinaryFileManager.getInstance().getFilePath().getAbsolutePath());
+//        byte[] data = {0x01, 0x02, 0x03, 0x04};
+//        try (FileOutputStream fos = new FileOutputStream(filePath)) {
+//            fos.write(data);
+//        } catch (IOException e) {
+//            e.printStackTrace();
+//        }
+
+//        BinaryFileManager.getInstance().saveFile();
+
         return binding.getRoot();
     }
 

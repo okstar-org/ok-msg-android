@@ -22,6 +22,8 @@ public class BinaryFileManager extends FileManager{
         Log.d(Config.LOGTAG,"binary :"+childFile.getAbsolutePath());
     }
 
+
+
     @Override
     protected String createFile() {
         return "/files";
