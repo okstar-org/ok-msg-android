@@ -7,6 +7,8 @@ import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.util.Objects;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
 
 import eu.siacs.conversations.BuildConfig;
 import eu.siacs.conversations.Config;
@@ -20,6 +22,10 @@ public abstract class FileManager implements FileHandler{
     private final File filesDirs;
 
     protected File childFile;
+
+    // 创建一个固定大小的线程池(可根据需要调整大小)
+    protected static final ExecutorService fileOperationExecutor =
+            Executors.newFixedThreadPool(4); // 通常4个线程足够
 
     // 私有构造函数，防止外部实例化
     public FileManager() {
@@ -79,11 +85,10 @@ public abstract class FileManager implements FileHandler{
         String tempPath;
         if (filePath == null || filePath.trim().isEmpty()) {
             tempPath = getChildFilePath() + "/" + System.currentTimeMillis();
-            filePath = tempPath;
         }else {
             tempPath = getChildFilePath() + "/" + filePath;
-            filePath = tempPath;
         }
+        filePath = tempPath;
 
         FileOutputStream fos = null;
         try {

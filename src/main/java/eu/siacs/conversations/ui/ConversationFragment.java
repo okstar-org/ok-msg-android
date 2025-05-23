@@ -95,6 +95,10 @@ import net.java.otr4j.session.SessionStatus;
 
 import org.jetbrains.annotations.NotNull;
 import org.okstar.okmsg.BobTransfer;
+import org.okstar.okmsg.store.disk.files.AudioFileManager;
+import org.okstar.okmsg.store.disk.files.DocumentsFileManager;
+import org.okstar.okmsg.store.disk.files.ImageFileManager;
+import org.okstar.okmsg.store.disk.files.VideoFileManager;
 
 import java.io.File;
 import java.net.URISyntaxException;
@@ -1006,8 +1010,8 @@ public class ConversationFragment extends XmppFragment
 
     public void updateChatMsgHint() {
         final boolean multi = conversation.getMode() == Conversation.MODE_MULTI;
-        Log.d(LOGTAG,"conversation next-encryption:"+conversation.getNextEncryption());
-        Log.d(LOGTAG,"conversation mode:"+conversation.getMode());
+        Log.d(LOGTAG, "conversation next-encryption:" + conversation.getNextEncryption());
+        Log.d(LOGTAG, "conversation mode:" + conversation.getMode());
         //todo 尝试在这处强制修改为未加密消息类型
         conversation.setNextEncryption(Message.ENCRYPTION_NONE);
         if (conversation.getCorrectingMessage() != null) {
@@ -1140,14 +1144,51 @@ public class ConversationFragment extends XmppFragment
         final PresenceSelector.OnPresenceSelected callback = () -> {
             for (Iterator<Attachment> i = attachments.iterator(); i.hasNext(); i.remove()) {
                 final Attachment attachment = i.next();
+                Log.d(LOGTAG, "ConversationsActivity.commitAttachments() - attachment type: " + attachment.getType());
                 if (attachment.getType() == Attachment.Type.LOCATION) {
                     attachLocationToConversation(conversation, attachment.getUri());
                 } else if (attachment.getType() == Attachment.Type.IMAGE) {
                     Log.d(LOGTAG, "ConversationsActivity.commitAttachments() - attaching image to conversations. CHOOSE_IMAGE");
                     attachImageToConversation(conversation, attachment.getUri(), attachment.getMime());
+                    //  save image
+                    ImageFileManager.getInstance().saveImageUri(activity, attachment.getUri());
                 } else {
                     Log.d(LOGTAG, "ConversationsActivity.commitAttachments() - attaching file to conversations. CHOOSE_FILE/RECORD_VOICE/RECORD_VIDEO");
+                    Log.d(LOGTAG, "ConversationsActivity.commitAttachments() - attachment uri: " + attachment.getUri());
+                    Log.d(LOGTAG, "ConversationsActivity.commitAttachments() - attachment mime: " + attachment.getMime());
                     attachFileToConversation(conversation, attachment.getUri(), attachment.getMime());
+                    /**
+                     * 选择文件，如果选择图片，也会进入这里,
+                     attachment uri: content://com.android.providers.media.documents/document/image%3A1000029649 image/jpeg
+                     attachment uri: content://com.android.providers.media.documents/document/video%3A1000029650 video/mp4
+                     content://com.android.providers.media.documents/document/document%3A1000029138   text/plain
+                     uri: content://media/external_primary/video/media/1000029651 mime: video/mp4
+                     attachment uri: content://com.android.providers.media.documents/document/audio%3A1000007243  audio/mpeg
+                     content://com.android.providers.media.documents/document/document%3A1000028807   application/vnd.openxmlformats-officedocument.wordprocessingml.document
+                     uri: content://com.android.providers.media.documents/document/document%3A1000028964 attachment mime: application/pdf
+                     */
+                    if (attachment.getMime().contains("jpeg")
+                            || attachment.getMime().contains("png")
+                            || attachment.getMime().contains("gif")
+                            || attachment.getMime().contains("jpg")) {
+                        ImageFileManager.getInstance().saveImageUri(activity, attachment.getUri());
+                    } else if (attachment.getMime().contains("audio")) {
+                          Log.d(LOGTAG, "ConversationsActivity  select 音频文件");
+                        AudioFileManager.getInstance().saveAudioFile(activity, attachment.getUri(),  attachment.getMime());
+                    } else if (attachment.getMime().contains("video")) {
+                        Log.d(LOGTAG, "ConversationsActivity  select 视频文件");
+                        VideoFileManager.getInstance().saveVideoUri(activity, attachment.getUri(),attachment.getMime());
+                    } else if (attachment.getMime().contains("pdf")
+                            || attachment.getMime().contains("xls")
+                            || attachment.getMime().contains("xlsx")
+                            || attachment.getMime().contains("doc")
+                            || attachment.getMime().contains("docx")
+                            || attachment.getMime().contains("document")
+                            || attachment.getMime().contains("text")) {
+                        Log.d(LOGTAG, "ConversationsActivity  select word文件/text");
+                        DocumentsFileManager.getInstance().saveDocFile(activity, attachment.getUri());
+                    }
+
                 }
             }
             mediaPreviewAdapter.notifyDataSetChanged();
@@ -1307,7 +1348,7 @@ public class ConversationFragment extends XmppFragment
             menuNeedHelp.setVisible(false);
             ConversationMenuConfigurator.configureAttachmentMenu(conversation, menu, activity.getAttachmentChoicePreference(), hasAttachments);
 
-            Log.d(LOGTAG,"encryptionMenu conversation :"+conversation.getNextEncryption());
+            Log.d(LOGTAG, "encryptionMenu conversation :" + conversation.getNextEncryption());
             //ConversationMenuConfigurator.configureEncryptionMenu(conversation, menu, activity);
             if (conversation.getBooleanAttribute(Conversation.ATTRIBUTE_PINNED_ON_TOP, false)) {
                 menuTogglePinned.setTitle(R.string.remove_from_favorites);
@@ -1849,7 +1890,7 @@ public class ConversationFragment extends XmppFragment
         } else if (conversation == null) {
             return super.onOptionsItemSelected(item);
         }
-        Log.d(LOGTAG,"item :"+item.getItemId());
+        Log.d(LOGTAG, "item :" + item.getItemId());
         switch (item.getItemId()) {
             //case R.id.encryption_choice_axolotl:
             //case R.id.encryption_choice_otr:
