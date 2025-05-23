@@ -30,6 +30,7 @@ public class NewSettingsActivity extends XmppActivity {
         settingsRecyclerview.setLayoutManager(new LinearLayoutManager(this, LinearLayoutManager.VERTICAL,false));
         newSettingsAdapter = new NewSettingsAdapter();
         newSettingsAdapter.setItem(getString(R.string.pref_ui_options));
+        newSettingsAdapter.setItem(getString(R.string.new_setting_storage_ui));
         newSettingsAdapter.setItem(getString(R.string.title_activity_about));
         settingsRecyclerview.setAdapter(newSettingsAdapter);
     }

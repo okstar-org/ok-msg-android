@@ -1,4 +1,4 @@
-package eu.siacs.conversations.ui;
+package eu.siacs.conversations.ui.settings;
 
 import android.content.Context;
 import android.content.Intent;
@@ -6,6 +6,7 @@ import android.preference.Preference;
 import android.util.AttributeSet;
 
 import eu.siacs.conversations.R;
+import eu.siacs.conversations.ui.settings.AboutActivity;
 import eu.siacs.conversations.utils.PhoneHelper;
 
 public class AboutPreference extends Preference {

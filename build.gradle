@@ -178,6 +178,8 @@ dependencies {
     implementation 'com.github.kymjs.rxvolley:okhttp:3.0.1'
     implementation 'com.tencent:mmkv:1.2.16'
     implementation 'com.github.bumptech.glide:glide:4.16.0'
+    //android平台上的图表库
+    implementation 'com.github.PhilJay:MPAndroidChart:v3.1.0'
 }
 
 ext {

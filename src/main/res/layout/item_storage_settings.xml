@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="40dp"
+    android:orientation="horizontal"
+    android:background="@color/black">
+
+    <!-- 复选框 -->
+    <CheckBox
+        android:id="@+id/checkbox_select_file_storage"
+        android:layout_width="wrap_content"
+        android:layout_height="0dp"
+        android:layout_marginEnd="8dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <!-- 显示文案1的TextView -->
+    <TextView
+        android:id="@+id/tv_show_title_storage"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textColor="@color/white"
+        android:textSize="16sp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toStartOf="@+id/tv_show_proportion_storage"
+        app:layout_constraintStart_toEndOf="@id/checkbox_select_file_storage"
+        app:layout_constraintTop_toTopOf="parent"
+        tools:text="文案1" />
+
+    <!-- 显示文案2的TextView -->
+    <TextView
+        android:id="@+id/tv_show_proportion_storage"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="10dp"
+        android:textColor="@color/white"
+        android:textSize="12sp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toEndOf="@id/tv_show_title_storage"
+        app:layout_constraintTop_toTopOf="parent"
+        tools:text="文案2" />
+
+    <!-- 最左边的TextView，显示蓝色字体14.5GB -->
+    <TextView
+        android:id="@+id/tv_show_value_count_storage"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="12dp"
+        android:textColor="@color/accent"
+        android:textSize="16sp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        tools:text="14.5GB" />
+
+</androidx.constraintlayout.widget.ConstraintLayout>

@@ -201,6 +201,7 @@
             android:windowSoftInputMode="stateHidden">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
+
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
@@ -480,7 +481,7 @@
             android:label="@string/trust_omemo_fingerprints"
             android:windowSoftInputMode="stateAlwaysHidden" />
         <activity
-            android:name=".ui.AboutActivity"
+            android:name=".ui.settings.AboutActivity"
             android:exported="true"
             android:label="@string/title_activity_about"
             android:launchMode="singleTask"
@@ -564,8 +565,7 @@
             android:name=".ui.settings.userui.UserUIActivity"
             android:exported="false"
             android:label="@string/pref_ui_options"
-            android:launchMode="singleTask"/>
-
+            android:launchMode="singleTask" />
 
         <service android:name=".services.ExportBackupService" />
         <service android:name=".services.ImportBackupService" />
@@ -598,14 +598,19 @@
             android:autoRemoveFromRecents="true"
             android:launchMode="singleInstance"
             android:supportsPictureInPicture="true" />
-
-        <activity android:name=".ui.kotlin.WorkbenchPanelActivity"
+        <activity
+            android:name=".ui.kotlin.WorkbenchPanelActivity"
             android:exported="true"
-            android:launchMode="singleTask"/>
-
-        <activity android:name=".ui.WebViewActivity"
+            android:launchMode="singleTask" />
+        <activity
+            android:name=".ui.WebViewActivity"
             android:exported="true"
-            android:launchMode="singleTask"/>
+            android:launchMode="singleTask" />
+        <activity
+            android:name=".ui.settings.storageui.StorageActivity"
+            android:exported="false"
+            android:launchMode="singleTask"
+            android:screenOrientation="portrait"/>
     </application>
 
 </manifest>

@@ -1,4 +1,4 @@
-package eu.siacs.conversations.ui;
+package eu.siacs.conversations.ui.settings;
 
 import android.net.Uri;
 import android.os.Bundle;
@@ -10,6 +10,7 @@ import java.util.Calendar;
 
 import eu.siacs.conversations.Config;
 import eu.siacs.conversations.R;
+import eu.siacs.conversations.ui.XmppActivity;
 import eu.siacs.conversations.ui.util.CustomTab;
 import eu.siacs.conversations.ui.util.MyLinkify;
 import eu.siacs.conversations.utils.ThemeHelper;
