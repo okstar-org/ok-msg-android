@@ -2,6 +2,7 @@ package eu.siacs.conversations.ui.settings.storageui;
 
 import static eu.siacs.conversations.Config.LOGTAG;
 
+import androidx.appcompat.widget.AppCompatButton;
 import androidx.appcompat.widget.Toolbar;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -29,6 +30,14 @@ import com.github.mikephil.charting.listener.OnChartValueSelectedListener;
 import com.github.mikephil.charting.utils.ColorTemplate;
 import com.github.mikephil.charting.utils.MPPointF;
 
+import org.okstar.okmsg.ThumbHash;
+import org.okstar.okmsg.store.disk.files.AudioFileManager;
+import org.okstar.okmsg.store.disk.files.BinaryFileManager;
+import org.okstar.okmsg.store.disk.files.DocumentsFileManager;
+import org.okstar.okmsg.store.disk.files.FileManager;
+import org.okstar.okmsg.store.disk.files.ImageFileManager;
+import org.okstar.okmsg.store.disk.files.VideoFileManager;
+
 import java.util.ArrayList;
 
 import eu.siacs.conversations.R;
@@ -45,9 +54,11 @@ public class StorageActivity extends XmppActivity implements OnChartValueSelecte
     private RecyclerView autoClearRecyclerView;
     private StorageAdapter storageAdapter;
     private AutoClearAdapter autoClearAdapter;
+    private AppCompatButton btnClearCache;
+    private long allFileSize = 0;
 
-    protected final String[] parties = new String[] {
-           "all","image","audio","video","doc","binary"
+    protected final String[] parties = new String[]{
+            "all", "image", "audio", "video", "doc", "binary"
     };
 
     @SuppressLint("MissingInflatedId")
@@ -63,21 +74,22 @@ public class StorageActivity extends XmppActivity implements OnChartValueSelecte
         setSupportActionBar(toolbar);
         configureActionBar(getSupportActionBar());
 
+        btnClearCache = findViewById(R.id.btn_clear_cache_storage);
+        btnClearCache.setText("清理 "+FileManager.getInstance().formatFileSize(allFileSize));
+
         initChart();
 
         initRecyclerView();
     }
 
-    private void initChart(){
+    private void initChart() {
         chart = findViewById(R.id.chart1);
 
         chart.setUsePercentValues(true);
         chart.getDescription().setEnabled(false);
         chart.setExtraOffsets(5, 10, 5, 5);
-
         chart.setDragDecelerationFrictionCoef(0.95f);
-
-        //chart.setCenterTextTypeface(tfLight);
+        //设置圆心文字
         chart.setCenterText(generateCenterSpannableText());
 
         chart.setDrawHoleEnabled(true);
@@ -97,10 +109,6 @@ public class StorageActivity extends XmppActivity implements OnChartValueSelecte
         chart.setHighlightPerTapEnabled(true);
         chart.setDrawEntryLabels(false);
 
-        // chart.setUnit(" €");
-        // chart.setDrawUnitsInChart(true);
-
-        // add a selection listener
         chart.setOnChartValueSelectedListener(this);
 
         chart.animateY(1400, Easing.EaseInOutQuad);
@@ -113,23 +121,20 @@ public class StorageActivity extends XmppActivity implements OnChartValueSelecte
 
         // entry label styling
         chart.setEntryLabelColor(Color.WHITE);
-//        chart.setEntryLabelTypeface(tfRegular);
         chart.setEntryLabelTextSize(12f);
 
-        setData(6, 1);
+        setData();
     }
 
 
-    private void setData(int count, float range) {
+    private void setData() {
         ArrayList<PieEntry> entries = new ArrayList<>();
 
-        // NOTE: The order of the entries when being added to the entries array determines their position around the center of
-        // the chart.
-        //(float) ((Math.random() * range) + range / 5
-        for (int i = 0; i < count ; i++) {
-            entries.add(new PieEntry(range, parties[i % parties.length],
-                    null));
-        }
+        entries.add(new PieEntry(AudioFileManager.getInstance().getFilesCount(),  "音频文件"));
+        entries.add(new PieEntry(BinaryFileManager.getInstance().getFilesCount(),  "二进制文件"));
+        entries.add(new PieEntry(DocumentsFileManager.getInstance().getFilesCount(),  "文档文件"));
+        entries.add(new PieEntry(ImageFileManager.getInstance().getFilesCount(),  "图片文件"));
+        entries.add(new PieEntry(VideoFileManager.getInstance().getFilesCount(),  "视频文件"));
 
         PieDataSet dataSet = new PieDataSet(entries, "Election Results");
 
@@ -176,7 +181,7 @@ public class StorageActivity extends XmppActivity implements OnChartValueSelecte
 
     private SpannableString generateCenterSpannableText() {
 
-        SpannableString s = new SpannableString("14.8\nGB");
+        SpannableString s = new SpannableString(FileManager.getInstance().formatFileSize(allFileSize));
         s.setSpan(new RelativeSizeSpan(1.7f), 0, s.length(), 0);
         s.setSpan(new StyleSpan(Typeface.NORMAL), 0, s.length(), 0);
         s.setSpan(new ForegroundColorSpan(Color.WHITE), 0, s.length(), 0);
@@ -188,22 +193,27 @@ public class StorageActivity extends XmppActivity implements OnChartValueSelecte
 
     private void initRecyclerView() {
         recyclerView = findViewById(R.id.recycler_view_storage);
-        recyclerView.setLayoutManager(new LinearLayoutManager(this,  LinearLayoutManager.VERTICAL, false));
+        recyclerView.setLayoutManager(new LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false));
         storageAdapter = new StorageAdapter();
         recyclerView.setAdapter(storageAdapter);
 
-        storageAdapter.addStorageItem(new StorageItem("音频文件", "<1%", "14.8MB", false));
-        storageAdapter.addStorageItem(new StorageItem("视频文件", "<1.2%", "20MB", false));
-        storageAdapter.addStorageItem(new StorageItem("图片文件", "<2%", "890KB", false));
-        storageAdapter.addStorageItem(new StorageItem("其他文件", "<3%", "16GB", false));
-        storageAdapter.addStorageItem(new StorageItem("文档文件", "<5.4%", "14.2MB", false));
+        storageAdapter.addStorageItem(new StorageItem("音频文件", AudioFileManager.getInstance().calculateStoragePercentage(),
+                AudioFileManager.getInstance().getFileCountFormat(), false));
+        storageAdapter.addStorageItem(new StorageItem("视频文件", VideoFileManager.getInstance().calculateStoragePercentage(),
+                VideoFileManager.getInstance().getFileCountFormat(), false));
+        storageAdapter.addStorageItem(new StorageItem("图片文件", ImageFileManager.getInstance().calculateStoragePercentage(),
+                ImageFileManager.getInstance().getFileCountFormat(), false));
+        storageAdapter.addStorageItem(new StorageItem("其他文件", BinaryFileManager.getInstance().calculateStoragePercentage(),
+                BinaryFileManager.getInstance().getFileCountFormat(), false));
+        storageAdapter.addStorageItem(new StorageItem("文档文件", DocumentsFileManager.getInstance().calculateStoragePercentage(),
+                DocumentsFileManager.getInstance().getFileCountFormat(), false));
 
         autoClearRecyclerView = findViewById(R.id.recycler_view_auto_clear);
-        autoClearRecyclerView.setLayoutManager(new LinearLayoutManager(this,  LinearLayoutManager.VERTICAL, false));
+        autoClearRecyclerView.setLayoutManager(new LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false));
         autoClearAdapter = new AutoClearAdapter();
         autoClearRecyclerView.setAdapter(autoClearAdapter);
-        autoClearAdapter.addStorageItem(new AutoClearItem("音频文件", "14.8MB"));
-        autoClearAdapter.addStorageItem(new AutoClearItem("视频文件", "20MB"));
+        autoClearAdapter.addStorageItem(new AutoClearItem("音频文件", AudioFileManager.getInstance().getFileCountFormat()));
+        autoClearAdapter.addStorageItem(new AutoClearItem("视频文件", VideoFileManager.getInstance().getFileCountFormat()));
 
 
     }

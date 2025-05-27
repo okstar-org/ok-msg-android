@@ -107,5 +107,10 @@ public class ImageFileManager extends FileManager{
         return false;
     }
 
+    public String getFileCountFormat() {
+        long count = getFilesCount();
+        return formatFileSize(count);
+    }
+
 
 }

@@ -116,5 +116,9 @@ public class AudioFileManager extends FileManager{
 
     }
 
+    public String getFileCountFormat() {
+        long count = getFilesCount();
+        return formatFileSize(count);
+    }
 
 }

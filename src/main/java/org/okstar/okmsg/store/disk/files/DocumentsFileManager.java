@@ -102,5 +102,9 @@ public class DocumentsFileManager extends FileManager{
 
     }
 
+    public String getFileCountFormat() {
+        long count = getFilesCount();
+        return formatFileSize(count);
+    }
 
 }

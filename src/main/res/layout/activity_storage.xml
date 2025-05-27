@@ -36,14 +36,15 @@
                 android:layout_marginBottom="15dp"/>
 
             <!-- 清除缓存按钮 -->
-            <Button
+            <androidx.appcompat.widget.AppCompatButton
                 android:id="@+id/btn_clear_cache_storage"
                 android:layout_width="match_parent"
                 android:layout_height="50dp"
-                android:text="Clear Cache 14.75 GB"
+                tools:text="Clear Cache 14.75 GB"
                 android:layout_marginStart="20dp"
                 android:layout_marginEnd="20dp"
-                android:layout_marginBottom="15dp"/>
+                android:layout_marginBottom="15dp"
+                android:background="@color/deep_purple_a200"/>
 
             <TextView
                 android:layout_width="wrap_content"
