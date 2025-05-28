@@ -52,4 +52,8 @@ public class StorageAdapter extends RecyclerView.Adapter<StorageViewHolder>{
         notifyDataSetChanged();
     }
 
+    public ArrayList<StorageItem> getStorageItems() {
+        return storageList;
+    }
+
 }

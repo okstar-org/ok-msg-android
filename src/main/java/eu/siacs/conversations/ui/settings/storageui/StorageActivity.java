@@ -16,6 +16,7 @@ import android.text.style.ForegroundColorSpan;
 import android.text.style.RelativeSizeSpan;
 import android.text.style.StyleSpan;
 import android.util.Log;
+import android.view.View;
 
 import com.github.mikephil.charting.animation.Easing;
 import com.github.mikephil.charting.charts.PieChart;
@@ -74,13 +75,13 @@ public class StorageActivity extends XmppActivity implements OnChartValueSelecte
         setSupportActionBar(toolbar);
         configureActionBar(getSupportActionBar());
 
-        btnClearCache = findViewById(R.id.btn_clear_cache_storage);
-        btnClearCache.setText("清理 "+FileManager.getInstance().formatFileSize(allFileSize));
+
 
         initChart();
-
+        initClearButton();
         initRecyclerView();
     }
+
 
     private void initChart() {
         chart = findViewById(R.id.chart1);
@@ -189,6 +190,42 @@ public class StorageActivity extends XmppActivity implements OnChartValueSelecte
         s.setSpan(new StyleSpan(Typeface.ITALIC), 0, s.length(), 0);
         s.setSpan(new ForegroundColorSpan(ColorTemplate.getHoloBlue()), 0, s.length(), 0);
         return s;
+    }
+
+    private void initClearButton() {
+        btnClearCache = findViewById(R.id.btn_clear_cache_storage);
+        if(allFileSize >0) {
+            btnClearCache.setText("清理 "+FileManager.getInstance().formatFileSize(allFileSize));
+        }else {
+            btnClearCache.setText("清理数据");
+        }
+
+        btnClearCache.setOnClickListener(v -> {
+             ArrayList<StorageItem> items = storageAdapter.getStorageItems();
+            for(StorageItem item : items) {
+                if(item.isSelected()) {
+                    switch (item.getTitle()) {
+                        case "音频文件":
+                            AudioFileManager.getInstance().deleteAllFiles();
+                            break;
+                        case "视频文件":
+                            VideoFileManager.getInstance().deleteAllFiles();
+                            break;
+                        case "图片文件":
+                            ImageFileManager.getInstance().deleteAllFiles();
+                            break;
+                        case "文档文件":
+                            DocumentsFileManager.getInstance().deleteAllFiles();
+                            break;
+                        case "二进制文件":
+                            BinaryFileManager.getInstance().deleteAllFiles();
+                            break;
+                    }
+                }
+            }
+
+
+        });
     }
 
     private void initRecyclerView() {
