@@ -2,6 +2,7 @@ package eu.siacs.conversations.ui.settings.storageui;
 
 import android.view.View;
 import android.widget.CheckBox;
+import android.widget.CompoundButton;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
@@ -35,6 +36,11 @@ public class StorageViewHolder extends RecyclerView.ViewHolder {
         tvShowTitle.setText(storageItem.getTitle());
         tvShowProportion.setText(storageItem.getProportion());
         tvShowValueCount.setText(storageItem.getValueCount());
+
+
+        cbSelectFile.setOnCheckedChangeListener((buttonView, isChecked) -> {
+            storageItem.setSelected(isChecked);
+        });
     }
 
 }

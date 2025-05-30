@@ -76,7 +76,6 @@ public class StorageActivity extends XmppActivity implements OnChartValueSelecte
         configureActionBar(getSupportActionBar());
 
 
-
         initChart();
         initClearButton();
         initRecyclerView();
@@ -131,11 +130,11 @@ public class StorageActivity extends XmppActivity implements OnChartValueSelecte
     private void setData() {
         ArrayList<PieEntry> entries = new ArrayList<>();
 
-        entries.add(new PieEntry(AudioFileManager.getInstance().getFilesCount(),  "音频文件"));
-        entries.add(new PieEntry(BinaryFileManager.getInstance().getFilesCount(),  "二进制文件"));
-        entries.add(new PieEntry(DocumentsFileManager.getInstance().getFilesCount(),  "文档文件"));
-        entries.add(new PieEntry(ImageFileManager.getInstance().getFilesCount(),  "图片文件"));
-        entries.add(new PieEntry(VideoFileManager.getInstance().getFilesCount(),  "视频文件"));
+        entries.add(new PieEntry(AudioFileManager.getInstance().getFilesCount(), "音频文件"));
+        entries.add(new PieEntry(BinaryFileManager.getInstance().getFilesCount(), "二进制文件"));
+        entries.add(new PieEntry(DocumentsFileManager.getInstance().getFilesCount(), "文档文件"));
+        entries.add(new PieEntry(ImageFileManager.getInstance().getFilesCount(), "图片文件"));
+        entries.add(new PieEntry(VideoFileManager.getInstance().getFilesCount(), "视频文件"));
 
         PieDataSet dataSet = new PieDataSet(entries, "Election Results");
 
@@ -181,7 +180,11 @@ public class StorageActivity extends XmppActivity implements OnChartValueSelecte
     }
 
     private SpannableString generateCenterSpannableText() {
-
+        allFileSize = AudioFileManager.getInstance().getFilesCount()
+                + BinaryFileManager.getInstance().getFilesCount()
+                + DocumentsFileManager.getInstance().getFilesCount()
+                + ImageFileManager.getInstance().getFilesCount()
+                + VideoFileManager.getInstance().getFilesCount();
         SpannableString s = new SpannableString(FileManager.getInstance().formatFileSize(allFileSize));
         s.setSpan(new RelativeSizeSpan(1.7f), 0, s.length(), 0);
         s.setSpan(new StyleSpan(Typeface.NORMAL), 0, s.length(), 0);
@@ -194,19 +197,20 @@ public class StorageActivity extends XmppActivity implements OnChartValueSelecte
 
     private void initClearButton() {
         btnClearCache = findViewById(R.id.btn_clear_cache_storage);
-        if(allFileSize >0) {
-            btnClearCache.setText("清理 "+FileManager.getInstance().formatFileSize(allFileSize));
-        }else {
+        if (allFileSize > 0) {
+            btnClearCache.setText("清理 " + FileManager.getInstance().formatFileSize(allFileSize));
+        } else {
             btnClearCache.setText("清理数据");
         }
 
         btnClearCache.setOnClickListener(v -> {
-             ArrayList<StorageItem> items = storageAdapter.getStorageItems();
-            for(StorageItem item : items) {
-                if(item.isSelected()) {
+            ArrayList<StorageItem> items = storageAdapter.getStorageItems();
+            for (StorageItem item : items) {
+                if (item.isSelected()) {
                     switch (item.getTitle()) {
                         case "音频文件":
                             AudioFileManager.getInstance().deleteAllFiles();
+                            chart.getData().getDataSet().getEntryForIndex(0).setY(0);
                             break;
                         case "视频文件":
                             VideoFileManager.getInstance().deleteAllFiles();
@@ -217,14 +221,28 @@ public class StorageActivity extends XmppActivity implements OnChartValueSelecte
                         case "文档文件":
                             DocumentsFileManager.getInstance().deleteAllFiles();
                             break;
-                        case "二进制文件":
+                        case "其他文件":
                             BinaryFileManager.getInstance().deleteAllFiles();
                             break;
                     }
+                    item.setProportion(AudioFileManager.getInstance().calculateStoragePercentage());
+                    item.setValueCount(AudioFileManager.getInstance().getFileCountFormat());
                 }
             }
 
+            //设置圆心文字
+            chart.setCenterText(generateCenterSpannableText());
 
+
+            chart.invalidate();
+
+            if (allFileSize > 0) {
+                btnClearCache.setText("清理 " + FileManager.getInstance().formatFileSize(allFileSize));
+            } else {
+                btnClearCache.setText("清理数据");
+            }
+
+            storageAdapter.notifyDataSetChanged();
         });
     }
 
