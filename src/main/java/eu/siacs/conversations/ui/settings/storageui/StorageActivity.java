@@ -209,21 +209,22 @@ public class StorageActivity extends XmppActivity implements OnChartValueSelecte
                 if (item.isSelected()) {
                     switch (item.getTitle()) {
                         case "音频文件":
-                            AudioFileManager.getInstance().deleteAllFiles();
-                            chart.getData().getDataSet().getEntryForIndex(0).setY(0);
+                           // AudioFileManager.getInstance().deleteAllFiles();
+
                             break;
                         case "视频文件":
-                            VideoFileManager.getInstance().deleteAllFiles();
+                           // VideoFileManager.getInstance().deleteAllFiles();
                             break;
                         case "图片文件":
-                            ImageFileManager.getInstance().deleteAllFiles();
+                           // ImageFileManager.getInstance().deleteAllFiles();
                             break;
                         case "文档文件":
-                            DocumentsFileManager.getInstance().deleteAllFiles();
+                          //  DocumentsFileManager.getInstance().deleteAllFiles();
                             break;
                         case "其他文件":
-                            BinaryFileManager.getInstance().deleteAllFiles();
-                            break;
+                          //  BinaryFileManager.getInstance().deleteAllFiles();
+
+                                break;
                     }
                     item.setProportion(AudioFileManager.getInstance().calculateStoragePercentage());
                     item.setValueCount(AudioFileManager.getInstance().getFileCountFormat());
