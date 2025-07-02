@@ -5,18 +5,18 @@ buildscript {
         kotlin_version = '2.0.0'
     }
     repositories {
-//        google()
-        maven { url 'https://maven.aliyun.com/repository/google' }
+        google()
         mavenCentral()
+        maven { url 'https://maven.aliyun.com/repository/google' }
+        maven { url "https://jitpack.io" }
         maven {
             url = uri("https://storage.googleapis.com/r8-releases/raw")
         }
-
     }
     dependencies {
         classpath 'com.android.tools.build:gradle:7.4.2'
         classpath "com.diffplug.spotless:spotless-plugin-gradle:6.13.0"
-        classpath("com.android.tools:r8:8.5.35")
+        classpath("com.android.tools:r8:8.9.35")
     }
 }
 
@@ -34,43 +34,15 @@ apply plugin: 'kotlin-android'
 
 allprojects {
     repositories {
-//        google()
-//        maven { url 'https://maven.aliyun.com/repository/google' }
-//        mavenCentral()
-//        maven { url "https://jitpack.io" }
-
-        maven { url = uri("https://jitpack.io") }
-        maven { url = uri("https://maven.aliyun.com/repository/central") }
-        maven { url = uri("https://maven.aliyun.com/repository/google") }
-
-        maven { url = uri("https://maven.aliyun.com/repository/gradle-plugin") }
-        maven { url = uri("https://maven.aliyun.com/repository/public") }
-        maven { url = uri("https://maven.aliyun.com/repository/jcenter") }
-
         google()
         mavenCentral()
+        maven { url "https://jitpack.io" }
     }
 }
 
 repositories {
-//    google()
-//    maven { url 'https://maven.aliyun.com/repository/google' }
-//    mavenCentral()
-//    jcenter()
-//    maven { url "https://jitpack.io" }
-
-
-    maven { url = uri("https://jitpack.io") }
-    maven { url = uri("https://maven.aliyun.com/repository/central") }
-    maven { url = uri("https://maven.aliyun.com/repository/google") }
-
-    maven { url = uri("https://maven.aliyun.com/repository/gradle-plugin") }
-    maven { url = uri("https://maven.aliyun.com/repository/public") }
-    maven { url = uri("https://maven.aliyun.com/repository/jcenter") }
-
     google()
     mavenCentral()
-    jcenter()
     maven { url "https://jitpack.io" }
 }
 
