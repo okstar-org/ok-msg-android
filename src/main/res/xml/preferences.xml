@@ -672,8 +672,13 @@
 <!--                android:title="@string/pref_enable_persistent_rooms_title" />-->
 <!--        </PreferenceCategory>-->
 <!--    </PreferenceScreen>-->
+
+    <eu.siacs.conversations.ui.settings.storageui.StoragePreference
+        android:key="storage"
+        android:title="@string/new_setting_storage_ui" />
+
     <!--About-->
-    <eu.siacs.conversations.ui.AboutPreference
+    <eu.siacs.conversations.ui.settings.AboutPreference
         android:summary="@string/pref_about_conversations_summary"
         android:title="@string/title_activity_about" />
 </PreferenceScreen>

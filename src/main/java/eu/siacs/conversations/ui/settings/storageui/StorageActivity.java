@@ -1,0 +1,301 @@
+package eu.siacs.conversations.ui.settings.storageui;
+
+import static eu.siacs.conversations.Config.LOGTAG;
+
+import androidx.appcompat.widget.AppCompatButton;
+import androidx.appcompat.widget.Toolbar;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
+
+import android.annotation.SuppressLint;
+import android.graphics.Color;
+import android.graphics.Typeface;
+import android.os.Bundle;
+import android.text.SpannableString;
+import android.text.style.ForegroundColorSpan;
+import android.text.style.RelativeSizeSpan;
+import android.text.style.StyleSpan;
+import android.util.Log;
+import android.view.View;
+
+import com.github.mikephil.charting.animation.Easing;
+import com.github.mikephil.charting.charts.PieChart;
+import com.github.mikephil.charting.components.Legend;
+import com.github.mikephil.charting.data.Entry;
+import com.github.mikephil.charting.data.PieData;
+import com.github.mikephil.charting.data.PieDataSet;
+import com.github.mikephil.charting.data.PieEntry;
+import com.github.mikephil.charting.formatter.PercentFormatter;
+import com.github.mikephil.charting.highlight.Highlight;
+import com.github.mikephil.charting.listener.OnChartValueSelectedListener;
+import com.github.mikephil.charting.utils.ColorTemplate;
+import com.github.mikephil.charting.utils.MPPointF;
+
+import org.okstar.okmsg.ThumbHash;
+import org.okstar.okmsg.store.disk.files.AudioFileManager;
+import org.okstar.okmsg.store.disk.files.BinaryFileManager;
+import org.okstar.okmsg.store.disk.files.DocumentsFileManager;
+import org.okstar.okmsg.store.disk.files.FileManager;
+import org.okstar.okmsg.store.disk.files.ImageFileManager;
+import org.okstar.okmsg.store.disk.files.VideoFileManager;
+
+import java.util.ArrayList;
+
+import eu.siacs.conversations.R;
+import eu.siacs.conversations.ui.XmppActivity;
+import eu.siacs.conversations.ui.settings.storageui.item.AutoClearItem;
+import eu.siacs.conversations.ui.settings.storageui.item.StorageItem;
+import eu.siacs.conversations.ui.util.StyledAttributes;
+import eu.siacs.conversations.utils.ThemeHelper;
+
+public class StorageActivity extends XmppActivity implements OnChartValueSelectedListener {
+
+    private PieChart chart;
+    private RecyclerView recyclerView;
+    private RecyclerView autoClearRecyclerView;
+    private StorageAdapter storageAdapter;
+    private AutoClearAdapter autoClearAdapter;
+    private AppCompatButton btnClearCache;
+    private long allFileSize = 0;
+
+    protected final String[] parties = new String[]{
+            "all", "image", "audio", "video", "doc", "binary"
+    };
+
+    @SuppressLint("MissingInflatedId")
+    @Override
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        setTheme(ThemeHelper.find(this));
+        ThemeHelper.applyCustomColors(this);
+        setContentView(R.layout.activity_storage);
+        getWindow().getDecorView().setBackgroundColor(StyledAttributes.getColor(this, R.attr.color_background_secondary));
+        Toolbar toolbar = findViewById(R.id.toolbar);
+        toolbar.setTitle(R.string.new_setting_storage_ui);
+        setSupportActionBar(toolbar);
+        configureActionBar(getSupportActionBar());
+
+
+        initChart();
+        initClearButton();
+        initRecyclerView();
+    }
+
+
+    private void initChart() {
+        chart = findViewById(R.id.chart1);
+
+        chart.setUsePercentValues(true);
+        chart.getDescription().setEnabled(false);
+        chart.setExtraOffsets(5, 10, 5, 5);
+        chart.setDragDecelerationFrictionCoef(0.95f);
+        //设置圆心文字
+        chart.setCenterText(generateCenterSpannableText());
+
+        chart.setDrawHoleEnabled(true);
+        chart.setHoleColor(Color.BLACK);
+
+        chart.setTransparentCircleColor(Color.BLACK);
+        chart.setTransparentCircleAlpha(110);
+
+        chart.setHoleRadius(58f);
+        chart.setTransparentCircleRadius(61f);
+
+        chart.setDrawCenterText(true);
+
+        chart.setRotationAngle(0);
+        // enable rotation of the chart by touch
+        chart.setRotationEnabled(false);
+        chart.setHighlightPerTapEnabled(true);
+        chart.setDrawEntryLabels(false);
+
+        chart.setOnChartValueSelectedListener(this);
+
+        chart.animateY(1400, Easing.EaseInOutQuad);
+        // chart.spin(2000, 0, 360);
+
+        //设置说明文案,setEnabled = false，说明文案不显示
+        Legend l = chart.getLegend();
+        l.setDrawInside(false);
+        l.setEnabled(false);
+
+        // entry label styling
+        chart.setEntryLabelColor(Color.WHITE);
+        chart.setEntryLabelTextSize(12f);
+
+        setData();
+    }
+
+
+    private void setData() {
+        ArrayList<PieEntry> entries = new ArrayList<>();
+
+        entries.add(new PieEntry(AudioFileManager.getInstance().getFilesCount(), "音频文件"));
+        entries.add(new PieEntry(BinaryFileManager.getInstance().getFilesCount(), "二进制文件"));
+        entries.add(new PieEntry(DocumentsFileManager.getInstance().getFilesCount(), "文档文件"));
+        entries.add(new PieEntry(ImageFileManager.getInstance().getFilesCount(), "图片文件"));
+        entries.add(new PieEntry(VideoFileManager.getInstance().getFilesCount(), "视频文件"));
+
+        PieDataSet dataSet = new PieDataSet(entries, "Election Results");
+
+        dataSet.setDrawIcons(false);
+        dataSet.setSliceSpace(3f);
+        dataSet.setIconsOffset(new MPPointF(0, 40));
+        dataSet.setSelectionShift(5f);
+
+        // add a lot of colors
+
+        ArrayList<Integer> colors = new ArrayList<>();
+
+        for (int c : ColorTemplate.VORDIPLOM_COLORS)
+            colors.add(c);
+
+        for (int c : ColorTemplate.JOYFUL_COLORS)
+            colors.add(c);
+
+        for (int c : ColorTemplate.COLORFUL_COLORS)
+            colors.add(c);
+
+        for (int c : ColorTemplate.LIBERTY_COLORS)
+            colors.add(c);
+
+        for (int c : ColorTemplate.PASTEL_COLORS)
+            colors.add(c);
+
+        colors.add(ColorTemplate.getHoloBlue());
+
+        dataSet.setColors(colors);
+
+        PieData data = new PieData(dataSet);
+        data.setValueFormatter(new PercentFormatter());
+        data.setValueTextSize(11f);
+        data.setValueTextColor(Color.WHITE);
+//        data.setValueTypeface(tfLight);
+        chart.setData(data);
+
+        // undo all highlights
+        chart.highlightValues(null);
+
+        chart.invalidate();
+    }
+
+    private SpannableString generateCenterSpannableText() {
+        allFileSize = AudioFileManager.getInstance().getFilesCount()
+                + BinaryFileManager.getInstance().getFilesCount()
+                + DocumentsFileManager.getInstance().getFilesCount()
+                + ImageFileManager.getInstance().getFilesCount()
+                + VideoFileManager.getInstance().getFilesCount();
+        SpannableString s = new SpannableString(FileManager.getInstance().formatFileSize(allFileSize));
+        s.setSpan(new RelativeSizeSpan(1.7f), 0, s.length(), 0);
+        s.setSpan(new StyleSpan(Typeface.NORMAL), 0, s.length(), 0);
+        s.setSpan(new ForegroundColorSpan(Color.WHITE), 0, s.length(), 0);
+        s.setSpan(new RelativeSizeSpan(.8f), 0, s.length(), 0);
+        s.setSpan(new StyleSpan(Typeface.ITALIC), 0, s.length(), 0);
+        s.setSpan(new ForegroundColorSpan(ColorTemplate.getHoloBlue()), 0, s.length(), 0);
+        return s;
+    }
+
+    private void initClearButton() {
+        btnClearCache = findViewById(R.id.btn_clear_cache_storage);
+        if (allFileSize > 0) {
+            btnClearCache.setText("清理 " + FileManager.getInstance().formatFileSize(allFileSize));
+        } else {
+            btnClearCache.setText("清理数据");
+        }
+
+        btnClearCache.setOnClickListener(v -> {
+            ArrayList<StorageItem> items = storageAdapter.getStorageItems();
+            for (StorageItem item : items) {
+                if (item.isSelected()) {
+                    switch (item.getTitle()) {
+                        case "音频文件":
+                           // AudioFileManager.getInstance().deleteAllFiles();
+
+                            break;
+                        case "视频文件":
+                           // VideoFileManager.getInstance().deleteAllFiles();
+                            break;
+                        case "图片文件":
+                           // ImageFileManager.getInstance().deleteAllFiles();
+                            break;
+                        case "文档文件":
+                          //  DocumentsFileManager.getInstance().deleteAllFiles();
+                            break;
+                        case "其他文件":
+                          //  BinaryFileManager.getInstance().deleteAllFiles();
+
+                                break;
+                    }
+                    item.setProportion(AudioFileManager.getInstance().calculateStoragePercentage());
+                    item.setValueCount(AudioFileManager.getInstance().getFileCountFormat());
+                }
+            }
+
+            //设置圆心文字
+            chart.setCenterText(generateCenterSpannableText());
+
+
+            chart.invalidate();
+
+            if (allFileSize > 0) {
+                btnClearCache.setText("清理 " + FileManager.getInstance().formatFileSize(allFileSize));
+            } else {
+                btnClearCache.setText("清理数据");
+            }
+
+            storageAdapter.notifyDataSetChanged();
+        });
+    }
+
+    private void initRecyclerView() {
+        recyclerView = findViewById(R.id.recycler_view_storage);
+        recyclerView.setLayoutManager(new LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false));
+        storageAdapter = new StorageAdapter();
+        recyclerView.setAdapter(storageAdapter);
+
+        storageAdapter.addStorageItem(new StorageItem("音频文件", AudioFileManager.getInstance().calculateStoragePercentage(),
+                AudioFileManager.getInstance().getFileCountFormat(), false));
+        storageAdapter.addStorageItem(new StorageItem("视频文件", VideoFileManager.getInstance().calculateStoragePercentage(),
+                VideoFileManager.getInstance().getFileCountFormat(), false));
+        storageAdapter.addStorageItem(new StorageItem("图片文件", ImageFileManager.getInstance().calculateStoragePercentage(),
+                ImageFileManager.getInstance().getFileCountFormat(), false));
+        storageAdapter.addStorageItem(new StorageItem("其他文件", BinaryFileManager.getInstance().calculateStoragePercentage(),
+                BinaryFileManager.getInstance().getFileCountFormat(), false));
+        storageAdapter.addStorageItem(new StorageItem("文档文件", DocumentsFileManager.getInstance().calculateStoragePercentage(),
+                DocumentsFileManager.getInstance().getFileCountFormat(), false));
+
+        autoClearRecyclerView = findViewById(R.id.recycler_view_auto_clear);
+        autoClearRecyclerView.setLayoutManager(new LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false));
+        autoClearAdapter = new AutoClearAdapter();
+        autoClearRecyclerView.setAdapter(autoClearAdapter);
+        autoClearAdapter.addStorageItem(new AutoClearItem("音频文件", AudioFileManager.getInstance().getFileCountFormat()));
+        autoClearAdapter.addStorageItem(new AutoClearItem("视频文件", VideoFileManager.getInstance().getFileCountFormat()));
+
+
+    }
+
+
+    @Override
+    protected void refreshUiReal() {
+
+    }
+
+    @Override
+    protected void onBackendConnected() {
+
+    }
+
+    @Override
+    public void onValueSelected(Entry e, Highlight h) {
+        if (e == null)
+            return;
+        Log.d(LOGTAG,
+                "Value: " + e.getY() + ", index: " + h.getX()
+                        + ", DataSet index: " + h.getDataSetIndex());
+    }
+
+    @Override
+    public void onNothingSelected() {
+        Log.i(LOGTAG, "nothing selected");
+    }
+}

@@ -50,7 +50,6 @@
 # 📦 欢迎体验
 
 - 下载地址：https://www.chuanshaninfo.com/download/OkEDU/
-- 测试帐号：ok_1001到ok_1005，密码:okedu
 - 更多请加微信：chuanshantech
 
 

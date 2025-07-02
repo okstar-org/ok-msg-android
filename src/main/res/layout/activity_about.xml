@@ -5,7 +5,7 @@
     android:layout_height="match_parent"
     android:background="?attr/color_background_tertiary"
     android:orientation="vertical"
-    tools:context="eu.siacs.conversations.ui.AboutActivity">
+    tools:context="eu.siacs.conversations.ui.settings.AboutActivity">
 
     <include layout="@layout/toolbar" />
 

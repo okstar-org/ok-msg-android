@@ -14,6 +14,7 @@
         android:paddingStart="20dp"
         android:textSize="16sp"
         tools:text="TextView"
+        tools:visibility="visible"
         android:visibility="gone"
         android:textColor="@color/primary_black"
         app:layout_constraintStart_toStartOf="parent"

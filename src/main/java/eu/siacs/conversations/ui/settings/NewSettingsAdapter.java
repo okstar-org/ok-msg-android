@@ -12,7 +12,6 @@ import androidx.recyclerview.widget.RecyclerView;
 import java.util.ArrayList;
 
 import eu.siacs.conversations.R;
-import eu.siacs.conversations.ui.AboutActivity;
 import eu.siacs.conversations.ui.settings.userui.UserUIActivity;
 import eu.siacs.conversations.utils.PhoneHelper;
 
@@ -24,7 +23,7 @@ public class NewSettingsAdapter extends RecyclerView.Adapter<NewSettingsViewHold
     @Override
     public NewSettingsViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.item_new_settings, parent, false);
-        return new NewSettingsViewHolder(parent,view);
+        return new NewSettingsViewHolder(parent, view);
     }
 
     @Override
@@ -34,28 +33,39 @@ public class NewSettingsAdapter extends RecyclerView.Adapter<NewSettingsViewHold
         String uiOptions = holder.parent.getContext().getResources().getString(R.string.pref_ui_options);
         String aboutOptions = holder.parent.getContext().getResources().getString(R.string.title_activity_about);
         String aboutOptionsChild = holder.parent.getContext().getResources().getString(R.string.app_name) + PhoneHelper.getVersionName(holder.parent.getContext());
-        if(itemStr.equals(uiOptions)) {
+        String storageUIOptions = holder.parent.getContext().getResources().getString(R.string.new_setting_storage_ui);
+
+        if (itemStr.equals(uiOptions)) {
             holder.tvSettingsContentFirst.setVisibility(View.VISIBLE);
+            holder.tvSettingsContentFirst.setText(itemStr);
             holder.tvSettingContentParent.setVisibility(View.GONE);
             holder.tvSettingContentChild.setVisibility(View.GONE);
-            holder.tvSettingsContentFirst.setText(itemStr);
-        }else if (itemStr.equals(aboutOptions)){
+        } else if (itemStr.equals(aboutOptions)) {
             holder.tvSettingsContentFirst.setVisibility(View.GONE);
             holder.tvSettingContentParent.setVisibility(View.VISIBLE);
             holder.tvSettingContentChild.setVisibility(View.VISIBLE);
             holder.tvSettingContentParent.setText(itemStr);
             holder.tvSettingContentChild.setText(aboutOptionsChild);
+        }else if (itemStr.equals(storageUIOptions)) {
+            holder.tvSettingsContentFirst.setVisibility(View.VISIBLE);
+            holder.tvSettingsContentFirst.setText(itemStr);
+            holder.tvSettingContentParent.setVisibility(View.GONE);
+            holder.tvSettingContentChild.setVisibility(View.GONE);
         }
 
         holder.itemView.setOnClickListener(v -> {
-           if (position == 0) {
-
-               Intent intent = new Intent(holder.parent.getContext(), UserUIActivity.class);
-               holder.parent.getContext().startActivity(intent);
-           }else {
-                Intent intent = new Intent(holder.parent.getContext(), AboutActivity.class);
-               holder.parent.getContext().startActivity(intent);
-           }
+            Intent intent = null;
+            if (position == 0) {
+                intent = new Intent(holder.parent.getContext(), UserUIActivity.class);
+            } else if(position == 1) {
+                intent = new Intent(holder.parent.getContext(), AboutActivity.class);
+            }else if (position == 2) {
+                Toast.makeText(holder.parent.getContext(), "跳转存储", Toast.LENGTH_SHORT).show();
+                intent = new Intent(holder.parent.getContext(), AboutActivity.class);
+            }
+            if(intent !=null) {
+                holder.parent.getContext().startActivity(intent);
+            }
 
         });
 

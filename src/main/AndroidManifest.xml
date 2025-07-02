@@ -490,7 +490,7 @@
             android:label="@string/trust_omemo_fingerprints"
             android:windowSoftInputMode="stateAlwaysHidden" />
         <activity
-            android:name=".ui.AboutActivity"
+            android:name=".ui.settings.AboutActivity"
             android:exported="true"
             android:label="@string/title_activity_about"
             android:launchMode="singleTask"
@@ -574,8 +574,7 @@
             android:name=".ui.settings.userui.UserUIActivity"
             android:exported="false"
             android:label="@string/pref_ui_options"
-            android:launchMode="singleTask"/>
-
+            android:launchMode="singleTask" />
 
         <service android:name=".services.ExportBackupService" />
         <service android:name=".services.ImportBackupService" />

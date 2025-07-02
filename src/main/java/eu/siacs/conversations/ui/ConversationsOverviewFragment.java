@@ -29,31 +29,36 @@
 
 package eu.siacs.conversations.ui;
 
+import static androidx.recyclerview.widget.ItemTouchHelper.RIGHT;
+
 import android.animation.Animator;
 import android.animation.AnimatorInflater;
 import android.annotation.SuppressLint;
 import android.app.Activity;
+import android.app.AlertDialog;
 import android.app.Fragment;
 import android.content.Intent;
+import android.graphics.Canvas;
+import android.graphics.Paint;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.ContextMenu;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
-import static androidx.recyclerview.widget.ItemTouchHelper.RIGHT;
-import android.app.AlertDialog;
-import android.graphics.Canvas;
-import android.graphics.Paint;
+import android.widget.AdapterView.AdapterContextMenuInfo;
 import android.widget.Toast;
 
 import androidx.recyclerview.widget.ItemTouchHelper;
+import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.baidu.location.BDLocation;
 import com.google.android.material.snackbar.Snackbar;
+import com.google.common.base.Optional;
 import com.google.common.collect.Collections2;
 import java.util.concurrent.atomic.AtomicReference;
 import eu.siacs.conversations.entities.Account;
@@ -79,19 +84,31 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.concurrent.atomic.AtomicReference;
 
 import eu.siacs.conversations.Config;
 import eu.siacs.conversations.R;
 import eu.siacs.conversations.databinding.FragmentConversationsOverviewBinding;
+import eu.siacs.conversations.entities.Account;
+import eu.siacs.conversations.entities.Contact;
 import eu.siacs.conversations.entities.Conversation;
+import eu.siacs.conversations.entities.Conversational;
+import eu.siacs.conversations.entities.MucOptions;
+import eu.siacs.conversations.services.XmppConnectionService;
 import eu.siacs.conversations.ui.adapter.ConversationAdapter;
+import eu.siacs.conversations.ui.interfaces.OnConversationArchived;
 import eu.siacs.conversations.ui.interfaces.OnConversationSelected;
+import eu.siacs.conversations.ui.kotlin.WorkbenchPanelActivity;
 import eu.siacs.conversations.ui.util.PendingActionHelper;
 import eu.siacs.conversations.ui.util.PendingItem;
 import eu.siacs.conversations.ui.util.ScrollState;
+import eu.siacs.conversations.ui.util.StyledAttributes;
+import eu.siacs.conversations.utils.EasyOnboardingInvite;
 import eu.siacs.conversations.utils.MenuDoubleTabUtil;
 import kotlin.Unit;
 import kotlin.jvm.functions.Function1;
+import eu.siacs.conversations.utils.ThemeHelper;
+import eu.siacs.conversations.xmpp.jingle.OngoingRtpSession;
 
 public class ConversationsOverviewFragment extends XmppFragment {
 
@@ -339,7 +356,14 @@ public class ConversationsOverviewFragment extends XmppFragment {
         this.binding.list.setAdapter(this.conversationsAdapter);
         this.binding.list.setLayoutManager(new LinearLayoutManager(getActivity(), LinearLayoutManager.VERTICAL, false));
         registerForContextMenu(this.binding.list);
+
         return binding.getRoot();
+    }
+
+    @Override
+    public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
+        super.onViewCreated(view, savedInstanceState);
+
     }
 
     @Override
