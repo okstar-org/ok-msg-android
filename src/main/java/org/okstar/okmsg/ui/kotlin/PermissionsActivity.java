@@ -1,4 +1,4 @@
-package org.okstar.okmsg.ui;
+package org.okstar.okmsg.ui.kotlin;
 
 import android.Manifest;
 import android.widget.Toast;

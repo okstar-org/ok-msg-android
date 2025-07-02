@@ -1,4 +1,4 @@
-package eu.siacs.conversations.ui;
+package org.okstar.okmsg.ui.java;
 
 import android.annotation.SuppressLint;
 import android.content.Context;
@@ -11,11 +11,9 @@ import android.webkit.WebSettings;
 import androidx.appcompat.widget.Toolbar;
 import androidx.databinding.DataBindingUtil;
 
-import java.io.File;
-import java.util.HashSet;
-
 import eu.siacs.conversations.R;
 import eu.siacs.conversations.databinding.ActivityWebBinding;
+import eu.siacs.conversations.ui.XmppActivity;
 
 public class WebViewActivity extends XmppActivity {
     private ActivityWebBinding binding;

@@ -2336,9 +2336,7 @@ public class JingleRtpConnection extends AbstractJingleConnection
 
     @Override
     public void onConnectionChange(final PeerConnection.PeerConnectionState newState) {
-        Log.d(
-                Config.LOGTAG,
-                id.account.getJid().asBareJid() + ": PeerConnectionState changed to " + newState);
+        Log.d(Config.LOGTAG, id.account.getJid().asBareJid() + ": PeerConnectionState changed to " + newState);
         this.stateHistory.add(newState);
         if (newState == PeerConnection.PeerConnectionState.CONNECTED) {
             this.sessionDuration.start();
@@ -2348,15 +2346,11 @@ public class JingleRtpConnection extends AbstractJingleConnection
             updateOngoingCallNotification();
         }
 
-        final boolean neverConnected =
-                !this.stateHistory.contains(PeerConnection.PeerConnectionState.CONNECTED);
-
+        final boolean neverConnected = !this.stateHistory.contains(PeerConnection.PeerConnectionState.CONNECTED);
         if (newState == PeerConnection.PeerConnectionState.FAILED) {
             if (neverConnected) {
                 if (isTerminated()) {
-                    Log.d(
-                            Config.LOGTAG,
-                            id.account.getJid().asBareJid()
+                    Log.d(Config.LOGTAG, id.account.getJid().asBareJid()
                                     + ": not sending session-terminate after connectivity error because session is already in state "
                                     + this.state);
                     return;

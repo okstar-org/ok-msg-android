@@ -31,6 +31,7 @@ package eu.siacs.conversations.ui;
 
 import android.animation.Animator;
 import android.animation.AnimatorInflater;
+import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.app.Fragment;
 import android.content.Intent;
@@ -48,17 +49,21 @@ import android.graphics.Canvas;
 import android.graphics.Paint;
 import android.widget.Toast;
 
-import androidx.core.content.ContextCompat;
 import androidx.recyclerview.widget.ItemTouchHelper;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.baidu.location.BDLocation;
 import com.google.android.material.snackbar.Snackbar;
 import com.google.common.collect.Collections2;
 import java.util.concurrent.atomic.AtomicReference;
 import eu.siacs.conversations.entities.Account;
 import eu.siacs.conversations.entities.Conversational;
 import eu.siacs.conversations.ui.interfaces.OnConversationArchived;
-import eu.siacs.conversations.ui.kotlin.WorkbenchPanelActivity;
+
+import org.okstar.okmsg.local.Local2Baidu;
+import org.okstar.okmsg.ui.java.WebViewActivity;
+import org.okstar.okmsg.ui.kotlin.VideoConferenceActivity;
+import org.okstar.okmsg.ui.kotlin.WorkbenchPanelActivity;
 import eu.siacs.conversations.ui.util.StyledAttributes;
 import eu.siacs.conversations.utils.EasyOnboardingInvite;
 import eu.siacs.conversations.utils.ThemeHelper;
@@ -85,6 +90,8 @@ import eu.siacs.conversations.ui.util.PendingActionHelper;
 import eu.siacs.conversations.ui.util.PendingItem;
 import eu.siacs.conversations.ui.util.ScrollState;
 import eu.siacs.conversations.utils.MenuDoubleTabUtil;
+import kotlin.Unit;
+import kotlin.jvm.functions.Function1;
 
 public class ConversationsOverviewFragment extends XmppFragment {
 
@@ -297,6 +304,7 @@ public class ConversationsOverviewFragment extends XmppFragment {
         setHasOptionsMenu(true);
     }
 
+    @SuppressLint("NewApi")
     @Override
     public View onCreateView(final LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         this.mSwipeEscapeVelocity = getResources().getDimension(R.dimen.swipe_escape_velocity);
@@ -304,6 +312,18 @@ public class ConversationsOverviewFragment extends XmppFragment {
         this.binding.fab.setOnClickListener((view) -> StartConversationActivity.launch(getActivity()));
         this.binding.web.setOnClickListener((view) -> WebViewActivity.launch(activity));
         this.binding.workbenchPanel.setOnClickListener((view) -> WorkbenchPanelActivity.Companion.launch(activity));
+        this.binding.videoConferencePanel.setOnClickListener((view) -> VideoConferenceActivity.Companion.launch(activity));
+
+        this.binding.clockIn.setOnClickListener((view) -> {
+            Local2Baidu.INSTANCE.getLocal(getContext(), true, bdLocation -> {
+                double latitude = bdLocation.getLatitude();
+                double longitude = bdLocation.getLongitude();
+
+                //TODO 打卡定位信息
+                Log.w(Local2Baidu.INSTANCE.getTAG(), "打卡定位，经度：" + latitude + "纬度：" + longitude);
+                return null;
+            });
+        });
 
         this.conversationsAdapter = new ConversationAdapter(this.activity, this.conversations);
         if (this.conversations.size() > 0) {

@@ -1,8 +1,7 @@
-package eu.siacs.conversations.ui.kotlin
+package org.okstar.okmsg.ui.kotlin
 
 import android.content.Context
 import android.content.Intent
-import android.content.SharedPreferences
 import android.os.Bundle
 import android.util.Log
 import android.view.View
@@ -13,8 +12,8 @@ import eu.siacs.conversations.Config
 import eu.siacs.conversations.R
 import eu.siacs.conversations.databinding.ActivityWorkbenchPanelBinding
 import eu.siacs.conversations.ui.XmppActivity
-import eu.siacs.conversations.ui.kotlin.adapter.WorkbenchPanelAdapter
 import eu.siacs.conversations.ui.util.ConstCommon
+import org.okstar.okmsg.ui.kotlin.adapter.WorkbenchPanelAdapter
 import org.okstar.okmsg.volley.bean.WorkbenchBean
 import org.okstar.okmsg.volley.request.doWorkbench
 
@@ -24,7 +23,7 @@ import org.okstar.okmsg.volley.request.doWorkbench
 class WorkbenchPanelActivity : XmppActivity() {
     private var binding: ActivityWorkbenchPanelBinding? = null
 
-    private val mAdapter: WorkbenchPanelAdapter by lazy {  WorkbenchPanelAdapter() }
+    private val mAdapter: WorkbenchPanelAdapter by lazy { WorkbenchPanelAdapter() }
 
 
     override fun refreshUiReal() {
